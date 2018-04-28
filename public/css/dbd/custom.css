@@ -1,0 +1,99 @@
+/*!
+ * Custom CSS for sb-admin
+*/
+
+
+body {
+/*    background: red;*/
+}
+
+h1 {
+/*    color: blue !important;*/
+    font-size: 1.8em;
+    padding-bottom: 0.2em;
+    margin-bottom: 0.3em;
+    border-bottom: 1px solid #ddd;
+    color: red;
+}
+.no-img {
+    display: block;
+    width: 100%;
+    min-height: 200px;
+    line-height: 200px;
+    text-align: center;
+    background: #f7f6f5/*#fbfafa*/;
+    border: 1px solid #dfdfdf;
+    color: #aaa;
+}
+
+.content-wrapper {
+	padding-left: 1em;
+/*    background: red;*/
+/*    border: 2px solid red;*/
+}
+.bg-midLight {
+    background: #fdfcfb;    
+/*    background: blue;*/
+}
+
+/* Tag */
+/* TagList */
+.ui-state-active,
+.ui-widget-content .ui-state-active,
+.ui-widget-header .ui-state-active,
+a.ui-button:active,
+.ui-button:active,
+.ui-button.ui-state-active:hover {
+    background: skyblue;
+}
+/* TagList END */
+.tag-wrap {
+    margin: 3em 0 5em;
+}
+.tag-group {
+    margin-bottom: 2em;
+}
+.tag-group .tag-control {
+    display: inline;
+    //width: 30%;
+}
+.tag-group .tag-control + .add-btn {
+    display: none;
+    width: auto;
+    border: 1px solid #aaa;
+    border-radius: 3px;
+    cursor: pointer;
+    padding: 0.4em 0.5em;
+    background: #fdfcfc;
+}
+.tag-area {
+    margin-top: 0.8em;
+    width: 100%;
+}
+.tag-area span {
+    display: inline-block;
+    margin-right: 0.5em;
+    word-wrap: break-word;
+    margin-bottom: 0.8em;
+}
+.tag-area em {
+    border: 1px solid #ccc;
+    background: linen;
+    padding: 0.3em 0.6em;
+    border-radius: 2px;
+    font-style: normal;
+    text-align: center;
+}
+.tag-area em + .fa { /* xマーク */
+    display: inline-block;
+    font-size: 0.8em;
+    width: 1.8em;
+    height: 1.8em;
+    line-height: 1.7em;
+    text-align: center;
+    margin-left: 0.2em;
+    border: 1px solid #aaa;
+    border-radius: 50%;
+    cursor: pointer;
+    vertical-align: top;
+}
