@@ -34,6 +34,8 @@ class ItemController extends Controller
         //env()ヘルパー：環境変数（$_SERVER）の値を取得 .env内の値も$_SERVERに入る
     }
     
+    
+    
     public function index()
     {
         $itemObjs = Item::orderBy('id', 'desc')->paginate($this->perPage);
