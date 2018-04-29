@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests;
     
 use Auth;
+use Mail;
 
 class MainController extends Controller
 {
@@ -35,9 +36,46 @@ class MainController extends Controller
     public function index()
     {
     	$adminUser = Auth::guard('admin')->user();
+     
+     	$data = array();
+      	$data['is_user'] = 1;   
+       	$data['user_name'] = "aaa";   
+        Mail::send('emails.contact', $data, function($message) use ($data) //引数について　http://readouble.com/laravel/5/1/ja/mail.html
+        {
+            //$dataは連想配列としてviewに渡され、その配列のkey名を変数としてview内で取得出来る
+            $message -> from(env('ADMIN_EMAIL'), env('ADMIN_NAME'))
+                     -> to('szk.create@gmail.com', 'sample')
+                     -> subject('お問い合わせの送信が完了しました');
+            //$message->attach($pathToFile);
+        });  
      	   
         return view('dashboard.index', ['name'=>$adminUser->name]);
     }
+    
+    private function sendMail($data)
+    {
+        $data['is_user'] = 1;
+        Mail::send('emails.contact', $data, function($message) use ($data) //引数について　http://readouble.com/laravel/5/1/ja/mail.html
+        {
+            //$dataは連想配列としてviewに渡され、その配列のkey名を変数としてview内で取得出来る
+            $message -> from(env('ADMIN_EMAIL'), env('ADMIN_NAME'))
+                     -> to($data['user_email'], $data['user_name'])
+                     -> subject('お問い合わせの送信が完了しました');
+            //$message->attach($pathToFile);
+        });
+        
+        //for Admin
+        $data['is_user'] = 0;
+        //if(! env('MAIL_CHECK', 0)) { //本番時 env('MAIL_CHECK')がfalseの時
+            Mail::send('emails.contact', $data, function($message) use ($data)
+            {
+                $message -> from(env('ADMIN_EMAIL'), env('ADMIN_NAME'))
+                         -> to(env('ADMIN_EMAIL'), env('ADMIN_NAME'))
+                         -> subject('お問い合わせがありました - '. config('app.name', 'MovieReview'). ' -');
+            });
+    }
+    
+    
 
     public function getRegister ($id='')
     {
