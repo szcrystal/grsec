@@ -31,13 +31,13 @@ Route::get('dashboard/logout', 'DashBoard\MainController@getLogout');
 Route::resource('dashboard/settings', 'DashBoard\SettingController');
 
 //Item
-Route::resource('dashboard/items', 'dashboard\ItemController');
+Route::resource('dashboard/items', 'DashBoard\ItemController');
 
 //Category
-Route::resource('dashboard/categories', 'dashboard\CategoryController');
+Route::resource('dashboard/categories', 'DashBoard\CategoryController');
 
 //Category
-Route::resource('dashboard/tags', 'dashboard\TagController');
+Route::resource('dashboard/tags', 'DashBoard\TagController');
 
 
 Auth::routes();
