@@ -6,14 +6,17 @@ use App\Admin;
 use App\Item;
 use App\Category;
 use App\Tag;
+use App\TagRelation;
 
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
+use Storage;
+
 class ItemController extends Controller
 {
-    public function __construct(Admin $admin, Item $item, Tag $tag, Category $category/*, TagRelation $tagRelation*/)
+    public function __construct(Admin $admin, Item $item, Tag $tag, Category $category, TagRelation $tagRelation)
     {
         
         $this -> middleware('adminauth');
@@ -23,7 +26,7 @@ class ItemController extends Controller
         $this-> item = $item;
         $this->category = $category;
         $this -> tag = $tag;
-        //$this->tagRelation = $tagRelation;
+        $this->tagRelation = $tagRelation;
         
         $this->perPage = 20;
         
@@ -38,42 +41,34 @@ class ItemController extends Controller
     
     public function index()
     {
+        
         $itemObjs = Item::orderBy('id', 'desc')->paginate($this->perPage);
         
-        $cateModel = $this->category;
+        $cates= $this->category;
+        
         
         //$status = $this->articlePost->where(['base_id'=>15])->first()->open_date;
         
-        return view('dashboard.item.index', ['itemObjs'=>$itemObjs, 'cateModel'=>$cateModel]);
+        return view('dashboard.item.index', ['itemObjs'=>$itemObjs, 'cates'=>$cates,  ]);
     }
-/*
+
     public function show($id)
     {
-        $article = $this->article->find($id);
+        $item = $this->item->find($id);
         $cates = $this->category->all();
-        $users = $this->user->where('active',1)->get();
+        //$users = $this->user->where('active',1)->get();
         
-//        $atclTag = array();
-//        $n = 0;
-//        while($n < 3) {
-//            $name = 'tag_'.$n+1;
-//            $atclTag[] = explode(',', $article->tag_{$n+1});
-//            $n++;
-//        }
-//        
-//        print_r($atclTag);
-//        exit();
+		$tagNames = $this->tagRelation->where(['item_id'=>$id])->get()->map(function($item) {
+            return $this->tag->find($item->tag_id)->name;
+        })->all();
         
-        //$tags = $this->getTags();
+        $allTags = $this->tag->get()->map(function($item){
+            return $item->name;
+        })->all();
         
-//        echo $article->tag_1. "aaaaa";
-//        foreach($tags[0] as $tag)
-//            echo $tag-> id."<br>";
-//        exit();
-        
-        return view('dashboard.article.form', ['article'=>$article, 'cates'=>$cates, 'users'=>$users, 'id'=>$id, 'edit'=>1]);
+        return view('dashboard.item.form', ['item'=>$item, 'cates'=>$cates, 'tagNames'=>$tagNames, 'allTags'=>$allTags, 'id'=>$id, 'edit'=>1]);
     }
-*/    
+   
     public function create()
     {
         $cates = $this->category->all();
@@ -92,7 +87,125 @@ class ItemController extends Controller
      */
     public function store(Request $request)
     {
-        //
+    	$editId = $request->has('edit_id') ? $request->input('edit_id') : 0;
+        
+    	$rules = [
+            //'title' => 'required|max:255',
+            //'movie_url' => 'required|max:255',
+            //'main_img' => 'filenaming',
+        ];
+        
+         $messages = [
+         	'title.required' => '「商品名」を入力して下さい。',
+            'cate_id.required' => '「カテゴリー」を選択して下さい。',
+            
+            //'post_thumb.filenaming' => '「サムネイル-ファイル名」は半角英数字、及びハイフンとアンダースコアのみにして下さい。',
+            //'post_movie.filenaming' => '「動画-ファイル名」は半角英数字、及びハイフンとアンダースコアのみにして下さい。',
+            //'slug.unique' => '「スラッグ」が既に存在します。',
+        ];
+        
+        $this->validate($request, $rules, $messages);
+        
+        $data = $request->all();
+        
+        //status
+        if(isset($data['open_status'])) { //非公開On
+            $data['open_status'] = 0;
+        }
+        else {
+            $data['open_status'] = 1;
+        }
+        
+        if($editId) { //update（編集）の時
+            $status = '商品が更新されました！';
+            $item = $this->item->find($editId);
+        }
+        else { //新規追加の時
+            $status = '商品が追加されました！';
+            //$data['model_id'] = 1;
+            
+            $item = $this->item;
+        }
+        
+        $item->fill($data);
+        $item->save();
+        $itemId = $item->id;
+        
+//        print_r($data['main_img']);
+//        exit;
+        
+        
+        if(isset($data['main_img'])) {
+                
+            //$filename = $request->file('main_img')->getClientOriginalName();
+            $filename = $data['main_img']->getClientOriginalName();
+            $filename = str_replace(' ', '_', $filename);
+            
+            //$aId = $editId ? $editId : $rand;
+            //$pre = time() . '-';
+            $filename = 'item/' . $itemId . '/thumbnail/'/* . $pre*/ . $filename;
+            //if (App::environment('local'))
+            $path = $data['main_img']->storeAs('public', $filename);
+            //else
+            //$path = Storage::disk('s3')->putFileAs($filename, $request->file('thumbnail'), 'public');
+            //$path = $request->file('thumbnail')->storeAs('', $filename, 's3');
+            
+            $item->main_img = $path;
+            $item->save();
+        }
+        
+        
+        //タグのsave動作
+        if(isset($data['tags'])) {
+            $tagArr = $data['tags'];
+        
+            foreach($tagArr as $tag) {
+                
+                //Tagセット
+                $setTag = Tag::firstOrCreate(['name'=>$tag]); //既存を取得 or なければ作成
+                
+                if(!$setTag->slug) { //新規作成時slugは一旦NULLでcreateされるので、その後idをセットする
+                    $setTag->slug = $setTag->id;
+                    $setTag->save();
+                }
+                
+                $tagId = $setTag->id;
+                $tagName = $tag;
+
+
+                //tagIdがRelationになければセット ->firstOrCreate() ->updateOrCreate()
+                $tagRel = $this->tagRelation->firstOrCreate(
+                    ['tag_id'=>$tagId, 'item_id'=>$itemId]
+                );
+                /*
+                $tagRel = $this->tagRelation->where(['tag_id'=>$tagId, 'item_id'=>$itemId])->get();
+                if($tagRel->isEmpty()) {
+                    $this->tagRelation->create([
+                        'tag_id' => $tagId,
+                        'item_id' => $itemId,
+                    ]);
+                }
+                */
+
+                //tagIdを配列に入れる　削除確認用
+                $tagIds[] = $tagId;
+            }
+        
+            //編集時のみ削除されたタグを消す
+            if(isset($editId)) {
+                //元々relationにあったtagがなくなった場合：今回取得したtagIdの中にrelationのtagIdがない場合をin_arrayにて確認
+                $tagRels = $this->tagRelation->where('item_id', $itemId)->get();
+                
+                foreach($tagRels as $tagRel) {
+                    if(! in_array($tagRel->tag_id, $tagIds)) {
+                        $tagRel->delete();
+                    }
+                }
+            }
+        }
+        
+        
+        return redirect('dashboard/items/'. $itemId)->with('status', $status);
     }
 
     /**

@@ -49,7 +49,6 @@
           </ul>
         </li>
         
-        <div class="border border-secondary border-top-0 w-75 mx-auto"></div>
     
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Example Pages">
           <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseCate" data-parent="#exampleAccordion">
@@ -67,7 +66,6 @@
           </ul>
         </li>
         
-        <div class="border border-secondary border-top-0 w-75 mx-auto"></div>
     
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Example Pages">
           <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseTag" data-parent="#exampleAccordion">
@@ -102,7 +100,23 @@
             </li>
 
           </ul>
-        </li>      
+        </li> 
+        
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Example Pages">
+          <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseSale" data-parent="#exampleAccordion">
+            <i class="fa fa-fw fa-file"></i>
+            <span class="nav-link-text">売上管理</span>
+          </a>
+          <ul class="sidenav-second-level collapse" id="collapseSale">
+            <li>
+              <a href="{{ url('dashboard/items') }}">売上一覧</a>
+            </li>
+            <li>
+              {{-- <a href="{{ url('dashboard/items/create') }}">会員登録</a> --}}
+            </li>
+
+          </ul>
+        </li>        
 
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Link">
           <a class="nav-link" href="#">

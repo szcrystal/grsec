@@ -26,11 +26,14 @@ class CategoryController extends Controller
         return view('dashboard.category.index', ['cates'=>$cates]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function show($id)
+    {
+        $cate = $this->category->find($id);
+        
+        return view('dashboard.category.form', ['cate'=>$cate, 'id'=>$id, 'edit'=>1]);
+    }
+    
+    
     public function create()
     {
         return view('dashboard.category.form');
@@ -84,12 +87,7 @@ class CategoryController extends Controller
     }
 
 
-    public function show($id)
-    {
-        $cate = $this->category->find($id);
-        
-        return view('dashboard.category.form', ['cate'=>$cate, 'id'=>$id, 'edit'=>1]);
-    }
+    
 
     /**
      * Show the form for editing the specified resource.

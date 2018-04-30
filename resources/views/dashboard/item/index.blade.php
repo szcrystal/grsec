@@ -57,17 +57,20 @@
 
 
 
-        <div class="card-body">
+        <div class="card-body row">
           <div class="table-responsive">
             <table class="table table-striped table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
               <thead>
                 <tr>
-                  <th>Name</th>
-                  <th>Position</th>
-                  <th>Office</th>
-                  <th>Age</th>
-                  <th>Start date</th>
-                  <th>Salary</th>
+                  <th>ID</th>
+                  <th>画像</th>
+                  <th class="col-md-2">商品名</th>
+                  <th>カテゴリー</th>
+                  <th>金額</th>
+                  <th>説明</th>
+                  <th>ステータス</th>
+                  <th>作成日</th>
+                  <th></th>
                   <th></th>
                 </tr>
               </thead>
@@ -89,11 +92,27 @@
               <tbody>
               @foreach($itemObjs as $item)
                 <tr>
-                  <td>{{ $item->name }}</td>
-                  <td>{{ $item->cate }}</td>
-                  <td></td>
-                  <td></td>
-                  <td>{{ $item-> created_at}}</td>
+                  <td>{{ $item->id }}</td>
+                  <td>
+                  @if($item->main_img != '')
+                  <img src="{{ Storage::url($item->main_img) }}" width="80" height="60"></td>
+                  @else
+                  <span class="no-img">No Image</span>
+                  @endif
+                  <td>{{ $item->title }}</td>
+                  <td>{{ $cates->find($item->cate_id)->name }}</td>
+                  <td>{{ $item->price }}</td>
+                  
+                  <td>{{-- $item->what_is --}}</td>
+                  <td>
+                    @if($item->open_status)
+                    <span class="text-success">公開中</span>
+                    @else
+                    <span class="text-warning">未公開（保存済）</span>
+                    @endif
+
+                </td>
+                  <td><small>{{ Ctm::changeDate($item->created_at, 1) }}</small></td>
                   <td></td>
                   <td><a href="{{url('dashboard/items/'. $item->id)}}" class="btn btn-success btn-sm center-block">編集</a></td>
                 </tr>

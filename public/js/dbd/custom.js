@@ -124,7 +124,8 @@ var exe = (function() {
            		if(bool) {
                 	//$tagArea.append('<span data-text="'+text+'" data-group="'+groupId+'" data-value="'+val+'"><em>' + text + '</em><i class="fa fa-times del-tag" aria-hidden="true"></i></span>');
                     $tagArea.append('<span><em>' + text + '</em><i class="fa fa-times del-tag" aria-hidden="true"></i></span>');
-           			$tagArea.append('<input type="hidden" name="'+groupId+'[]" value="'+text+'">');
+                       //$tagArea.append('<input type="hidden" name="'+groupId+'[]" value="'+text+'">');
+                    $tagArea.append('<input type="hidden" name="tags[]" value="'+text+'">');
                 }
                 else {
            			$tagArea.prepend('<p class="text-danger"><i class="fa fa-exclamation" aria-hidden="true"></i> 既に追加されているタグです</p>');

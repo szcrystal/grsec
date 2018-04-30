@@ -2,19 +2,26 @@
 
 @section('content')
 	
-	<h3 class="page-header">
+	<div class="text-left">
+        <h1 class="Title">
 	@if(isset($edit))
     タグ情報編集
 	@else
 	タグ新規追加
     @endif
-    </h3>
+    </h1>
+    <p class="Description"></p>
+    </div>
 
-    <div class="bs-component clearfix">
+    <div class="row">
+      <div class="col-sm-12 col-md-6 col-lg-6 col-xl-5 mb-5">
+        <div class="bs-component clearfix">
         <div class="pull-left">
-            <a href="{{ url('/dashboard/tags') }}"><i class="fa fa-angle-double-left" aria-hidden="true"></i>一覧へ戻る</a>
+            <a href="{{ url('/dashboard/tags') }}" class="btn bg-white border border-1 border-round text-primary"><i class="fa fa-angle-double-left" aria-hidden="true"></i>一覧へ戻る</a>
+        </div>
         </div>
     </div>
+  </div>
 
     @if (count($errors) > 0)
         <div class="alert alert-danger">
@@ -33,43 +40,21 @@
         </div>
     @endif
         
-    <div class="well">
+    <div class="col-lg-10">
         <form class="form-horizontal" role="form" method="POST" action="/dashboard/tags">
-			@if(isset($edit))
+			
+            {{ csrf_field() }}
+            
+            @if(isset($edit))
                 <input type="hidden" name="edit_id" value="{{$tagId}}">
             @endif
 
-            {{ csrf_field() }}
 
-            <div class="form-group{{ $errors->has('group_id') ? ' has-error' : '' }}">
-                <label for="group" class="col-md-3 control-label">グループ</label>
-                <div class="col-md-6">
-                    <select class="form-control" name="group_id">
+            <fieldset class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
+                <label for="name" class="control-label">タグ名</label>
 
-                        @foreach($groups as $group)
-                            @if(old('group_id') !== NULL)
-                                <option value="{{ $group->id }}"{{ old('group_id') == $group->id ? ' selected' : '' }}>{{ $group->name }}</option>
-                            @else
-                                <option value="{{ $group->id }}"{{ isset($tag) && $tag->group_id == $group->id ? ' selected' : '' }}>{{ $group->name }}</option>
-                            @endif
-                        @endforeach
-
-                    </select>
-
-                    @if ($errors->has('group_id'))
-                        <span class="help-block">
-                            <strong>{{ $errors->first('group_id') }}</strong>
-                        </span>
-                    @endif
-                </div>
-            </div>
-
-
-            <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-                <label for="name" class="col-md-3 control-label">タグ名</label>
-
-                <div class="col-md-6">
-                    <input id="name" type="text" class="form-control" name="name" value="{{ old('name') === NULL && isset($tag) ? $tag->name : old('name') }}" required>
+                <div class="">
+                    <input id="name" type="text" class="form-control" name="name" value="{{ Ctm::isOld() ? old('name') : (isset($tag) ? $tag->name : '') }}" required>
 
                     @if ($errors->has('name'))
                         <span class="help-block">
@@ -77,14 +62,14 @@
                         </span>
                     @endif
                 </div>
-            </div>
+            </fieldset>
 
 
-            <div class="form-group{{ $errors->has('slug') ? ' has-error' : '' }}">
-                <label for="slug" class="col-md-3 control-label">スラッグ</label>
+            <fieldset class="form-group{{ $errors->has('slug') ? ' has-error' : '' }}">
+                <label for="slug" class="control-label">スラッグ</label>
 
-                <div class="col-md-6">
-                    <input id="slug" type="text" class="form-control" name="slug" value="{{ old('slug') === NULL && isset($tag) ? $tag->slug : old('slug') }}" required>
+                <div class="">
+                    <input id="slug" type="text" class="form-control" name="slug" value="{{ Ctm::isOld() ? old('slug') : (isset($tag) ? $tag->slug : '') }}" required>
 
                     @if ($errors->has('slug'))
                         <span class="help-block">
@@ -92,12 +77,12 @@
                         </span>
                     @endif
                 </div>
-            </div>
+            </fieldset>
 
 
           <div class="form-group">
-            <div class="col-md-4 col-md-offset-3">
-                <button type="submit" class="btn btn-primary center-block w-btn"><span class="octicon octicon-sync"></span>更　新</button>
+            <div class="">
+                <button type="submit" class="col-md-6 mt-3 btn btn-primary center-block w-btn"><span class="octicon octicon-sync"></span>更　新</button>
             </div>
         </div>
 

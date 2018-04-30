@@ -2,19 +2,26 @@
 
 @section('content')
 	
-	<h3 class="page-header">
+	<div class="text-left">
+        <h1 class="Title">
 	@if(isset($edit))
     カテゴリー編集
 	@else
 	カテゴリー新規追加
     @endif
-    </h3>
+    </h1>
+    <p class="Description"></p>
+    </div>
 
-    <div class="bs-component clearfix">
+    <div class="row">
+      <div class="col-sm-12 col-md-6 col-lg-6 col-xl-5 mb-5">
+        <div class="bs-component clearfix">
         <div class="pull-left">
-            <a href="{{ url('/dashboard/categories') }}" class=""><i class="fa fa-angle-double-left" aria-hidden="true"></i>一覧へ戻る</a>
+            <a href="{{ url('/dashboard/categories') }}" class="btn bg-white border border-1 border-round text-primary"><i class="fa fa-angle-double-left" aria-hidden="true"></i>一覧へ戻る</a>
+        </div>
         </div>
     </div>
+  </div>
 
     @if (count($errors) > 0)
         <div class="alert alert-danger">
@@ -33,19 +40,20 @@
         </div>
     @endif
         
-    <div class="well">
+    <div class="col-lg-10">
         <form class="form-horizontal" role="form" method="POST" action="/dashboard/categories">
-			@if(isset($edit))
+
+            {{ csrf_field() }}
+            
+            @if(isset($edit))
                 <input type="hidden" name="edit_id" value="{{$id}}">
             @endif
 
-            {{ csrf_field() }}
+            <fieldset class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
+                <label for="name" class="control-label">カテゴリー名</label>
 
-            <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-                <label for="name" class="col-md-3 control-label">カテゴリー名</label>
-
-                <div class="col-md-6">
-                    <input id="name" type="text" class="form-control" name="name" value="{{ old('name') === NULL && isset($cate) ? $cate->name : old('name') }}" required>
+                <div class="">
+                    <input id="name" type="text" class="form-control" name="name" value="{{ Ctm::isOld() ? old('name') : (isset($cate) ? $cate->name : '') }}" required>
 
                     @if ($errors->has('name'))
                         <span class="help-block">
@@ -53,14 +61,14 @@
                         </span>
                     @endif
                 </div>
-            </div>
+            </fieldset>
 
 
-            <div class="form-group{{ $errors->has('slug') ? ' has-error' : '' }}">
-                <label for="slug" class="col-md-3 control-label">スラッグ</label>
+            <fieldset class="form-group{{ $errors->has('slug') ? ' has-error' : '' }}">
+                <label for="slug" class="control-label">スラッグ</label>
 
-                <div class="col-md-6">
-                    <input id="slug" type="text" class="form-control" name="slug" value="{{ old('slug') === NULL && isset($cate) ? $cate->slug : old('slug') }}" required>
+                <div class="">
+                    <input id="slug" type="text" class="form-control" name="slug" value="{{ Ctm::isOld() ? old('slug') : (isset($cate) ? $cate->slug : '') }}" required>
 
                     @if ($errors->has('slug'))
                         <span class="help-block">
@@ -68,11 +76,11 @@
                         </span>
                     @endif
                 </div>
-            </div>
+            </fieldset>
 
           <div class="form-group">
-            <div class="col-md-4 col-md-offset-3">
-                <button type="submit" class="btn btn-primary center-block w-btn"><span class="octicon octicon-sync"></span>更　新</button>
+            <div class="">
+                <button type="submit" class="col-md-6 mt-3 btn btn-primary center-block w-btn"><span class="octicon octicon-sync"></span>更　新</button>
             </div>
         </div>
 

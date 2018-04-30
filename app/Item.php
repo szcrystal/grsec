@@ -7,23 +7,23 @@ use Illuminate\Database\Eloquent\Model;
 class Item extends Model
 {
     protected $fillable = [ //varchar:文字数
-        'owner_id',
-        'del_status',
+        'open_status',
+        'main_img',
 
         'cate_id',
         'title',
-        'movie_site',
-        'movie_url',
+        'price',
+        'delivery_fee',
+        'what_is',
+        'detail',
+        'warning',
     
-        'thumbnail',
-        'thumbnail_org',
-        'thumbnail_comment',
-    
-        'open_status',
-        'open_history',
         'open_date',
-        'not_newdate',
         //'view_count',
 
     ];
+    
+    
 }
+
+
