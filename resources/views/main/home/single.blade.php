@@ -127,11 +127,11 @@ use App\User;
                     
                     <div class="mt-4">
                     	{{ $item->title}} とは
-                    	<p>{{ nl2br($item->what_is) }}</p>
+                    	<p>{!! nl2br($item->what_is) !!}</p>
                     </div>
                     
                     <div class="mt-4">
-                    	{{ nl2br($item->warning) }}
+                    	{!! nl2br($item->warning) !!}
                     </div>
 					
 
