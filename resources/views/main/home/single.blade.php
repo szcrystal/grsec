@@ -125,12 +125,12 @@ use App\User;
                     </div>
 
                     
-                    <div class="">
+                    <div class="mt-4">
                     	{{ $item->title}} とは
                     	<p>{{ $item->what_is }}</p>
                     </div>
                     
-                    <div class="">
+                    <div class="mt-4">
                     	{{ $item->warning }}
                     </div>
 					

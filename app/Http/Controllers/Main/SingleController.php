@@ -77,6 +77,11 @@ class SingleController extends Controller
         
     }
     
+    public function endCart()
+    {
+    	return view('main.cart.end');
+    }
+    
     
     
     

@@ -53,7 +53,10 @@ if(Schema::hasTable('fixes')) {
 
 //Single
 Route::get('/item/{id}', 'Main\SingleController@index');
+
+//Cart
 Route::post('/cart', 'Main\SingleController@postCart');
+Route::get('/cart/thankyou', 'Main\SingleController@endCart');
 
 
 Auth::routes();
