@@ -7,10 +7,9 @@ use App\User;
 
 ?>
 
-    <div class="single">
+    <div class="single top-cont">
 
             <div class="head-frame clearfix">
-            
                 <h2>Thank You !</h2>
             </div>
 
@@ -21,21 +20,17 @@ use App\User;
                 	
 
                     <div class="clear contents">
-							<p>お買い上げありがとうございました</p>
-
+                        <p>お買い上げありがとうございました</p>
                     </div>
 
-                    <div class="map-wrap">
-
-                    </div>
 
                     
 
 
-                	</div>
+                </div>
 
 
-				</div><!-- panelbody -->
+            </div><!-- panelbody -->
 
     </div>
 @endsection
