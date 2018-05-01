@@ -43,10 +43,12 @@ Route::resource('dashboard/fixes', 'DashBoard\FixController');
 
 //Main =========================================================
 //Fix Page
-use App\Fix;
-$fixes = Fix::where('open_status', 1)->get();
-foreach($fixes as $fix) {
-    Route::get($fix->slug, 'Main\HomeController@getFix');
+if(Schema::hasTable('fixes')) {
+    use App\Fix;
+    $fixes = Fix::where('open_status', 1)->get();
+    foreach($fixes as $fix) {
+        Route::get($fix->slug, 'Main\HomeController@getFix');
+    }
 }
 
 //Single
