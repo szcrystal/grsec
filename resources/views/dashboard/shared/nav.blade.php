@@ -93,10 +93,10 @@
           </a>
           <ul class="sidenav-second-level collapse" id="collapseUser">
             <li>
-              <a href="{{ url('dashboard/items') }}">会員一覧</a>
+              <a href="{{ url('dashboard/users') }}">会員一覧</a>
             </li>
             <li>
-              <a href="{{ url('dashboard/items/create') }}">会員登録</a>
+              <a href="{{ url('dashboard/users/create') }}">会員登録</a>
             </li>
 
           </ul>
@@ -109,10 +109,29 @@
           </a>
           <ul class="sidenav-second-level collapse" id="collapseSale">
             <li>
-              <a href="{{ url('dashboard/items') }}">売上一覧</a>
+              <a href="{{ url('dashboard/sales') }}">売上一覧</a>
             </li>
             <li>
-              {{-- <a href="{{ url('dashboard/items/create') }}">会員登録</a> --}}
+              {{-- <a href="{{ url('dashboard/sales/create') }}">会員登録</a> --}}
+            </li>
+
+          </ul>
+        </li> 
+        
+        <div class="border border-secondary border-top-0 w-75 mx-auto"></div>
+        
+        
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Example Pages">
+          <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseFix" data-parent="#exampleAccordion">
+            <i class="fa fa-fw fa-file"></i>
+            <span class="nav-link-text">固定ページ</span>
+          </a>
+          <ul class="sidenav-second-level collapse" id="collapseFix">
+            <li>
+              <a href="{{ url('dashboard/fixes') }}">固定ページ一覧</a>
+            </li>
+            <li>
+              <a href="{{ url('dashboard/fixes/create') }}">固定ページ追加</a>
             </li>
 
           </ul>
@@ -121,7 +140,7 @@
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Link">
           <a class="nav-link" href="#">
             <i class="fa fa-fw fa-link"></i>
-            <span class="nav-link-text">Link</span>
+            <span class="nav-link-text"></span>
           </a>
         </li>
       

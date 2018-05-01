@@ -11,13 +11,11 @@
 |
 */
 
-Route::get('/', function () {
-    //return view('welcome');
-    echo "";
-});
+Route::get('/', 'Main\HomeController@index');
 
 
-//DashBoard
+
+//DashBoard ===================================================
 Route::get('dashboard', 'DashBoard\MainController@index');
 
 Route::get('dashboard/login', 'DashBoard\LoginController@index');
@@ -38,6 +36,22 @@ Route::resource('dashboard/categories', 'DashBoard\CategoryController');
 
 //Category
 Route::resource('dashboard/tags', 'DashBoard\TagController');
+
+//Fix
+Route::resource('dashboard/fixes', 'DashBoard\FixController');
+
+
+//Main =========================================================
+//Fix Page
+use App\Fix;
+$fixes = Fix::where('open_status', 1)->get();
+foreach($fixes as $fix) {
+    Route::get($fix->slug, 'Main\HomeController@getFix');
+}
+
+//Single
+Route::get('/item/{id}', 'Main\SingleController@index');
+Route::post('/cart', 'Main\SingleController@postCart');
 
 
 Auth::routes();

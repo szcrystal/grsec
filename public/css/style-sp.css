@@ -1,0 +1,203 @@
+/* 
+for SP
+*/
+
+
+@import url('style.css');
+
+
+@media only screen and (max-width: 1000px) {
+	body {
+    	min-width: 100%;
+     	//background: red;
+      	font-size: 95%;     
+    }
+	.head-wrap,
+    .menu-wrap,
+    .site-content,
+    .foot-wrap {
+    	width: 100%;
+      
+    }
+    .site-content,
+    .foot-wrap {
+        padding-left: 0.3em;
+        padding-right: 0.3em;      
+    }
+    .comp-info {
+        width: 20%;
+        
+    }
+    .comp-info div {
+		//font-size: 1.1em;
+    }
+    
+    .company {
+    	width: 37%;
+    }
+    
+    
+}	
+
+@media only screen and (max-width: 800px) { /* iPad */
+	body {
+    	//font-size: 13px;
+    }
+    
+}
+
+/* iPhone6+ LandScape/ 6 LandScape/ 5s LandScape(570px) */
+@media only screen and (max-width: 750px) {
+	
+	.head-wrap {
+		margin: 0;
+	}
+	
+	.site-branding,
+	.comp-info {
+		float: none;
+  		width: 100%;
+    	//border: 1px solid red;          
+	}
+	.site-branding {
+		padding: 1.1em;
+	}
+	.site-branding h1 {
+        margin-left: 1.4em;
+        margin-top: 1.8em;
+    }
+    .head-wrap > img {
+        position: absolute;
+        top: 55px;
+        left: 70%;
+        width: 70px;
+    }
+    
+	div.tel-sp {
+		display: block;
+		float: right;
+        width: 100%;
+        margin: 0;
+        padding: 0.4em 0;
+        background: #333;
+        color: #fff;   
+        font-size: 1.4em;         
+    }
+    div.tel-sp a {
+    	color: #fff;
+    }
+    
+    .comp-info {
+    	padding-left: 1em;
+    }
+    .comp-info div {
+        display: none;
+    }
+    .comp-info .fab {
+        font-size: 2.7em;
+        margin: 0.2em 0.1em 0 0;
+    }
+    
+    .site-description {
+    	width: 100%;
+     	background: none;  
+      	border: none;     
+     	//float: right;   
+    }
+    
+    
+    
+    .fa-bars {
+        color: #2a2a2a;
+        float: right;
+        font-size: 3em;
+        margin-right: 0.3em;
+    }
+    .main-navigation {
+    	display: block;
+        padding: 0;
+        margin: 1em 0 0;
+        background: #eceaea;
+    }
+    .main-navigation ul {
+    	width: 100%;
+        margin: 0 0 0 2em;
+        padding: 0;
+        border: none;
+    }
+    .main-navigation li {
+    	float: none;
+    	width: 100%;
+    }
+    .main-navigation a {
+    	padding: 0;
+    }
+    ul.ask_menu,
+    ul.fix_menu {
+    	float: none;
+        width: 100%;
+        height: auto;
+        
+    }
+    ul.ask_menu li,
+	ul.fix_menu li,
+	ul.cate_menu li {
+		width: 100%;
+  		text-align: left;
+        
+	}
+    ul.cate_menu li:first-of-type a {
+        border-left: none;   
+    }
+    .menu-title {
+        display: block;
+        border-bottom: 1px solid #aaa;
+    }
+	
+    .main-atcl {
+		float: none;
+  		width: 100%;
+    	            
+	}
+	.main-atcl .shop-link a {
+		display: inline-block;
+		width: 100%;
+        text-align: center;
+	}
+	
+	.site-info,
+	.company {
+		width: 90%;
+  		margin: auto;      
+  		float: none;      
+	}
+	.site-info ul {
+		margin: 0;
+  		padding: 0;      
+	}
+	.site-info ul li {
+		margin-bottom: 0.7em;
+	}
+}
+
+@media only screen and (max-width: 500px) { /* Portlait: iPhone6+ /6/ 5s */
+
+
+
+}
+@media only screen and (max-width: 400px) { /* 6 */
+	
+}
+
+@media only screen and (max-width: 320px) { /* 5s */
+	body {
+    	font-size: 11px;
+    }
+    .site-branding h1 img {
+		width: 85%;
+    }
+
+}
+
+
+
