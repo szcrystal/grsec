@@ -608,7 +608,9 @@ body {
 	min-width: 1100px;
 	padding: 0;
 }
-
+.contents {
+	min-height: 1700px;
+}
 .top-cont {
 	min-height: 1800px;
 }

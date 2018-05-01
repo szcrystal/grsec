@@ -33,3 +33,8 @@
     </script>
 
 </head>
+
+@if(Ctm::isAgent('all'))
+<?php exit; ?>
+
+@endif

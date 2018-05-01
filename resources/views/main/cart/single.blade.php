@@ -53,7 +53,7 @@ use App\User;
                                     
                                     <td>{{ $buyItem ->title }}</td>
                                     
-                                    <td>{{ $buyItem->price + $tax }}</td>
+                                    <td>{{ number_format($buyItem->price + $tax) }}</td>
                                 
                                     <td>{{ $count }} <br><a href="#">削除する</a></td>
                                 </tr>
@@ -67,7 +67,7 @@ use App\User;
                             </tfoot>
                 		</table>
                   
-                  		<p class="text-bold">小計：{{ $count * ($buyItem->price + $tax) }} 円</p>      
+                  		<p class="text-bold">小計：{{ number_format($count * ($buyItem->price + $tax) ) }} 円</p>      
                     </div>
 
                     
