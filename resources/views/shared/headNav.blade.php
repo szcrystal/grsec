@@ -29,6 +29,7 @@
     
     <div class="head-navi float-right col-md-8 mt-3">
         <nav>
+        	{{--
             <ul class="clearfix">
                  <li><a href="#">初めての方へ</a>
 
@@ -37,7 +38,8 @@
                 <li>
                 	<i class="fa fa-search"></i>
                 </li>
-           </ul>         
+           </ul> 
+           --}}        
         </nav>
     </div>
 

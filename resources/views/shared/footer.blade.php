@@ -28,7 +28,7 @@
 				@endforeach
 
 
-                <li class="nav-link"><a href="{{ url('/contact') }}">お問合わせ</a></li>
+                
             </ul>
             @endif
         </div>
