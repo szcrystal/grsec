@@ -104,6 +104,9 @@
                     <label class="radio-inline">
                         <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline3" value="option3">代引き決済
                     </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline3" value="option3">銀行振込
+                    </label>
                     <br>
                     {{--
                     <label class="radio-inline">

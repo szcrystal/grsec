@@ -10,7 +10,7 @@ use App\User;
     <div class="single top-cont">
 
             <div class="head-frame clearfix">
-                <h2>Thank You !</h2>
+                <h2></h2>
             </div>
 
 
@@ -20,7 +20,7 @@ use App\User;
                 	
 
                     <div class="clear contents">
-                        <p>お買い上げありがとうございました</p>
+                        <p>決済画面</p>
                     </div>
 
 
