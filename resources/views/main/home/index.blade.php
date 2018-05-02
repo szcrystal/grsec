@@ -37,7 +37,7 @@
             </a>
             
             <div class="meta">
-            	<h3><a href="">{{ $item->title }}</a></h3>
+            	<h3><a href="{{ url('/item/'.$item->id) }}">{{ $item->title }}</a></h3>
                 <p></p>
             </div>
 
