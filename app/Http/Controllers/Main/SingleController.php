@@ -57,6 +57,17 @@ class SingleController extends Controller
     }
     
     
+    public function postForm(Request $request)
+    {
+    	$data = $request->all();
+     
+     	$buyItem = $this->item->find($data['item_id']);
+      
+         
+        return view('main.cart.index', ['data'=>$data ]);
+    }
+    
+    
     public function postCart(Request $request)
     {
     	$data = $request->all();
@@ -73,7 +84,7 @@ class SingleController extends Controller
       //ここでsessionに入れる必要がある
          
     	
-        return view('main.cart.single', ['buyItem'=>$buyItem, 'tax'=>$data['tax'], 'count'=>$data['count'] ]); 
+        return view('main.cart.single', ['buyItem'=>$buyItem, 'tax'=>$data['tax'], 'count'=>$data['count'], 'name'=>$data['name'] ]); 
         
     }
     

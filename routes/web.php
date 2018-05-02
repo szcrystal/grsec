@@ -55,7 +55,8 @@ if(Schema::hasTable('fixes')) {
 Route::get('/item/{id}', 'Main\SingleController@index');
 
 //Cart
-Route::post('/cart', 'Main\SingleController@postCart');
+Route::post('/cart/form', 'Main\SingleController@postForm');
+Route::post('/cart/payment', 'Main\SingleController@postCart');
 Route::get('/cart/thankyou', 'Main\SingleController@endCart');
 
 

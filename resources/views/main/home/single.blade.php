@@ -37,7 +37,7 @@ use App\User;
                     <p>{{ $item->detail }}</p>
                   
                   	<div>
-                   		<form method="post" action="{{ url('cart') }}">
+                   		<form method="post" action="{{ url('cart/form') }}">
                      		{{ csrf_field() }}
                                    
                      		<input type="hidden" name="item_id" value="{{ $item->id }}">      

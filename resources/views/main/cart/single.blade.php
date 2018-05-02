@@ -71,7 +71,7 @@ use App\User;
                     </div>
 
                     
-					<a href="{{ url('cart/thankyou') }}" class="btn btn-warning">購入する<!-- レジに進む --></a>
+					<a href="{{ url('cart/thankyou') }}" class="btn btn-warning">決済する<!-- レジに進む --></a>
 
 
                 	</div>

@@ -180,8 +180,7 @@
 			<fieldset class="form-group{{ $errors->has('what_is') ? ' has-error' : '' }}">
                     <label for="story_text" class="control-label">What is</label>
 
-                        <textarea id="what_is" type="text" class="form-control" name="what_is" rows="10">{{ Ctm::isOld() ? old('what_is') : (isset($item) ? $item->what_is : '') }}
-                        </textarea>
+                        <textarea id="what_is" type="text" class="form-control" name="what_is" rows="10">{{ Ctm::isOld() ? old('what_is') : (isset($item) ? $item->what_is : '') }}</textarea>
 
                         @if ($errors->has('what_is'))
                             <span class="help-block">
@@ -193,8 +192,7 @@
             <fieldset class="form-group{{ $errors->has('detail') ? ' has-error' : '' }}">
                     <label for="detail" class="control-label">詳細</label>
 
-                        <textarea id="detail" type="text" class="form-control" name="detail" rows="10">{{ Ctm::isOld() ? old('detail') : (isset($item) ? $item->detail : '') }}
-                        </textarea>
+                        <textarea id="detail" type="text" class="form-control" name="detail" rows="10">{{ Ctm::isOld() ? old('detail') : (isset($item) ? $item->detail : '') }}</textarea>
 
                         @if ($errors->has('detail'))
                             <span class="help-block">
@@ -206,8 +204,7 @@
             <fieldset class="form-group{{ $errors->has('warning') ? ' has-error' : '' }}">
                     <label for="warning" class="control-label">ご注意</label>
 
-                    <textarea id="warning" type="text" class="form-control" name="warning" rows="10">{{ Ctm::isOld() ? old('warning') : (isset($item) ? $item->warning : '') }}
-                    </textarea>
+                    <textarea id="warning" type="text" class="form-control" name="warning" rows="10">{{ Ctm::isOld() ? old('warning') : (isset($item) ? $item->warning : '') }}</textarea>
 
                     @if ($errors->has('warning'))
                         <span class="help-block">
