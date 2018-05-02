@@ -99,25 +99,9 @@ use App\User;
                                     </td>
                                 </tr>
 
-                                <tr>
-                                    <th>A</th>
-                                    <td><span class="rank-tag"></span></td>
-                                </tr>
+                               
                                 
-                                <tr>
-									{{--
-									<th>作成</th>
-									<td>{{ User::find($item->model_id)->name }}</td>
-                                    --}}
-
-                                    <th>C</th>
-                                        
-                                        <td>
-                                            <span class="rank-tag">
-                                            <i class="fa fa-user" aria-hidden="true"></i>
-                                            </td>
-                                            </span>
-                                </tr>
+                                
 
 
                             </tbody>
