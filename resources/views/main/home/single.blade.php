@@ -74,7 +74,7 @@ use App\User;
                             <tbody>
 
                                 
-
+							{{--
                                 <tr>
                                     <th>カテゴリー</th>
                                     <td>
@@ -99,7 +99,7 @@ use App\User;
                                     </td>
                                 </tr>
 
-                               
+                              --}} 
                                 
                                 
 
@@ -111,7 +111,7 @@ use App\User;
                     
                     <div class="mt-4">
                     	{{ $item->title}} とは
-                    	<p>{!! nl2br($item->what_is) !!}</p>
+                    	{!! nl2br($item->what_is) !!}
                     </div>
                     
                     <div class="mt-4">
