@@ -25,6 +25,7 @@
                         --}}
                         	<li><a href="{{ url('transactions-law') }}">特定商取引法の表示</a></li>
                          	<li><a href="{{ url('company') }}">会社概要</a></li>   
+                          	<li><a href="{{ url('about-delfee') }}">送料について</a>   
                         </ul>
                 </div>
 
