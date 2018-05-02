@@ -91,6 +91,33 @@
                 @endif
             </fieldset>
             
+            <fieldset class="form-group">
+                    <label>お支払い方法</label><br>
+                    <label class="radio-inline">
+                        <input type="radio" name="card" id="optionsRadiosInline1" value="card" checked>クレジットカード
+                    </label>
+                    <br>
+                    <label class="radio-inline">
+                        <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline2" value="option2">コンビニ決済
+                    </label>
+                    <br>
+                    <label class="radio-inline">
+                        <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline3" value="option3">代引き決済
+                    </label>
+                    <br>
+                    {{--
+                    <label class="radio-inline">
+                        <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline3" value="option3">配送サービス
+                    </label>
+                    --}}
+                    
+                    {{--
+                    <label class="radio-inline">
+                        <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline3" value="option3">ネット銀行決済
+                    </label>
+                    --}}
+                </fieldset>
+            
             
             <fieldset class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
             	<label>備考</label>
