@@ -19,6 +19,19 @@ h1 {
 .btn {
 	cursor: pointer;
 }
+.hide {
+	display: none;
+}
+.del-spareimg {
+	//padding-top: 0.4em;
+	cursor: pointer;
+}
+
+label {
+	font-weight: bold;
+	color: #555;
+	font-size: 1.05em;
+}
 .no-img {
     display: block;
     width: 85px;
@@ -35,6 +48,14 @@ h1 {
     width: 100%;
     height: 160px;
     line-height: 160px;
+}
+.spare-img .thumb-prev {
+	height: 110px;
+	overflow: hidden;
+}
+.spare-img .thumb-prev .no-img {
+	height: 100%;
+	line-height: 110px;
 }
 .thumb-prev img,
 .thumb-prev video {

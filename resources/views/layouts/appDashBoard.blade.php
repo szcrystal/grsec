@@ -7,7 +7,7 @@
 
 
 		<div class="content-wrapper bg-midLight">
-    		<div class="container-fluid">
+    		<div class="container-fluid mb-5 pb-3">
             	@yield('content')
             </div>
         </div>

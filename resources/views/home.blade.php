@@ -13,8 +13,29 @@
                             {{ session('status') }}
                         </div>
                     @endif
+                    
+                    @if (Auth::guest())
+                        <li class="nav-link"><a href="{{ url('/login') }}">Login</a></li>
+                        <li class="nav-link"><a href="{{ url('/register') }}">Register</a></li>
+                    @else
+                    	{{ Auth::user()->name }} <span class="caret"></span><br>
+                        
+                    	
+                            <a href="{{ url('/mypage') }}" class="dropdown-item">マイページ</a>
 
-                    You are logged in!
+                            <a href="{{ url('/logout') }}" class="dropdown-item"
+                                onclick="event.preventDefault();
+                                         document.getElementById('logout-form').submit();">
+                                ログアウト
+                            </a>
+
+                            <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
+                                {{ csrf_field() }}
+                            </form>
+                       
+                    @endif
+
+
                 </div>
             </div>
         </div>

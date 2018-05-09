@@ -1,8 +1,9 @@
-@extends('layouts.app')
+@extends('layouts.appSingle')
 
 @section('content')
-        <div id="main" class="fix-page">
-            <div class="panel panel-default col-md-12 text-center">
+    <div class="row">
+        <div class="col-md-10 mx-auto py-4">
+            <div class="panel panel-default">
 
                 <div class="panel-heading">
                 	<h2 class="h2">お問合せ完了</h2>
@@ -14,4 +15,5 @@
 
 	    	</div>
         </div>
+    </div>
 @endsection

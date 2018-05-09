@@ -5,7 +5,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="noindex, nofollow">
-	<title>DashBoard | Modular Admin - Bootstrap Admin Template</title>
+	<title>DashBoard | Green Rocket</title>
 
     <!-- Fonts -->
 	<!--
@@ -20,6 +20,7 @@
     <link href="{{ asset('/css/app.css') }}" rel="stylesheet">
 
     <!-- Custom Fonts -->
+    <!-- <link href="{{ asset('/fontawesome/web-fonts-with-css/css/fontawesome-all.min.css') }}" rel="stylesheet" type="text/css"> -->
     <link href="{{ asset('/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet" type="text/css">
 
 

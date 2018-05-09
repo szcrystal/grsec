@@ -349,6 +349,7 @@ var exe = (function() {
                       return function(e) {
                         //既存のプレビューを削除
                         $preview.empty();
+                        $th.siblings('input[type="hidden"]').val(0);
                         // .prevewの領域の中にロードした画像を表示するimageタグを追加
                         $preview.append($('<img>').attr({
                                   src: e.target.result,
@@ -357,11 +358,9 @@ var exe = (function() {
                                   title: file.name
                         }));
                         //console.log(file.name);
-                        $th.parents('.thumb-wrap').children('.thumb-choice-hidden').val(0);
-                    	$th.parents('.thumb-wrap').children('.thumb-success-hidden').val(1);
                         
-                        console.log($th.parents('.thumb-wrap').children('.thumb-choice-hidden').val());
-                        console.log($th.parents('.thumb-wrap').children('.thumb-success-hidden').val());
+                        $th.parents('.thumb-wrap').find('.del-spareimg').fadeIn(100);
+
                     };
                 })(file);
 
@@ -369,109 +368,26 @@ var exe = (function() {
                 });
             	
             });
-           
-           	//Thumbnail URL check
-            $('.thumb-check').on('click', function(e){
-            	e.preventDefault();
-            	
-                var imgUrl = $(this).prevAll('input').val();
-                var $prevFrame = $(this).parents('.thumb-wrap').find('.thumb-prev');
-                var $th = $(this);
-                var img = new Image();
-                img.src = imgUrl;
-                //console.log(img);
+            
+            //削除を押した時
+            $('.del-spareimg').on('click', function(){
+                //console.log("aaa");
                 
-                img.onerror = function(){
-                	$prevFrame.empty();
-                    $prevFrame.append('<span class="no-img text-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> 画像が見つかりません</span>');
-                    
-                    $th.parents('.thumb-wrap').children('.thumb-choice-hidden').val(0);
-                    $th.parents('.thumb-wrap').children('.thumb-success-hidden').val(0);
-                    //console.log('Error');
-                }
+                $preview = $(this).parents('.thumb-wrap').find('.thumb-prev');
+                $preview.empty();
+                $preview.append('<span class="no-img">No Image</span>');
                 
-                img.onload = function(){
-                	$prevFrame.empty();
-                	$prevFrame.append('<img src="'+ imgUrl +'">');
-                    
-                    $th.parents('.thumb-wrap').children('.thumb-choice-hidden').val(1);
-                    $th.parents('.thumb-wrap').children('.thumb-success-hidden').val(1);
-                    
-                    console.log($th.parents('.thumb-wrap').children('.thumb-choice-hidden').val());
-                	console.log($th.parents('.thumb-wrap').children('.thumb-success-hidden').val());
-                }
-                
+                $(this).siblings('input[type="hidden"]').val(1);
+                $(this).siblings('.thumb-file').val('');
+                $(this).fadeOut(100);
+             
             });
-            //---------
+            
+            
+            
+            
            
-           	//Image File load Btn
-            $('.img-file').on('click', function(){
-            	var $th = $(this);
-                $th.on('change', function(e){
-                	var file = e.target.files[0],
-                    reader = new FileReader(),
-                    $preview = $(this).parents('.item-image').find('.preview');
-                    t = this;
-
-                    // 画像ファイル以外の場合は何もしない
-                    if(file.type.indexOf("image") < 0){
-                      return false;
-                    }
-
-                    // ファイル読み込みが完了した際のイベント登録
-                    reader.onload = (function(file) {
-                      return function(e) {
-                        //既存のプレビューを削除
-                        $preview.empty();
-                        // .prevewの領域の中にロードした画像を表示するimageタグを追加
-                        $preview.append($('<img>').attr({
-                                  src: e.target.result,
-                                  width: "100%",
-                                  //class: "preview",
-                                  title: file.name
-                        }));
-                        //console.log(file.name);
-                        $th.nextAll('.image-choice-hidden').val(0);
-                        $th.nextAll('.image-success-hidden').val(1);
-                        
-                      };
-                	})(file);
-
-                	reader.readAsDataURL(file);
-                });
-            	
-            });
-           
-           	//Image url check
-            $('.img-check').on('click', function(e){
-            	e.preventDefault();
-            	
-                var imgUrl = $(this).prev('input[type="text"]').val();
-                var $prevFrame = $(this).parents('.item-image').find('.preview');
-                var $th = $(this);
-                var img = new Image();
-                img.src = imgUrl;
-                //console.log(img);
-                
-                img.onerror = function(){
-                	$prevFrame.empty();
-                    $prevFrame.append('<span class="no-img text-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> 画像が見つかりません</span>');
-                    
-                    $th.nextAll('.image-choice-hidden').val(0);
-                    $th.nextAll('.image-success-hidden').val(0);
-                }
-                
-                img.onload = function(){
-                	$prevFrame.empty();
-                	$prevFrame.append('<img src="'+ imgUrl +'">');
-                    $prevFrame.find('img').attr('width', '170px');
-                    
-                    $th.nextAll('.image-choice-hidden').val(1);
-                    $th.nextAll('.image-success-hidden').val(1);
-                    
-                }
-                
-            });
+           	
            
            
            	//ctrl-nav edit

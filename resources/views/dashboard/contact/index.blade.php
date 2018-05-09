@@ -2,9 +2,15 @@
 
 @section('content')
 
+	<div class="text-left">
+        <h1 class="Title">お問い合わせ一覧</h1>
+        <p class="Description"></p>
+    </div>
+
 	<div class="clearfix">
-    	<h3 class="page-header">問合せ一覧</h3>
+     	{{--   
     	<a href="{{ url('/dashboard/contacts/create') }}" class="btn btn-success pull-right">問合せカテゴリー追加</a>
+      --}}   
     </div>
 
     @if (session('status'))
@@ -16,17 +22,15 @@
     {{ $contacts->links() }}
         
     <div class="table-responsive">
-        <table class="table table-striped table-bordered">
+        <table class="table table-striped table-bordered table-hover bg-white"{{-- id="dataTable"--}} width="100%" cellspacing="0">
           <thead>
             <tr>
               <th>ID</th>
-              <th class="col-md-1">問合わせ日</th>
-              <th class="col-md-2">カテゴリー</th>
-              <th class="col-md-2">削除記事<br>ID/タイトル</th>
-              <th class="col-md-2">名前</th>
-              <th class="col-md-2">メール</th>
-              <th class="col-md-2">テキスト</th>
-              <th class="col-md-1">対応状況</th>
+              <th>問合わせ日</th>
+              <th>種別</th>
+              <th>名前</th>
+              <th>メール</th>
+              <th>内容</th>
               <th></th>
               <th></th>
             </tr>
@@ -48,47 +52,39 @@
 				<td>
 	        		{{$obj->ask_category}}
                 </td>
-
-                <td>
-                	@if($obj->delete_id)
-                    	<a href="{{ url('dashboard/articles/'.$contact->delete_id) }}">{{ $obj->delete_id }}</a><br>
-						<a href="{{ url('dashboard/articles/'.$contact->delete_id) }}">{{ $atcl->find($obj->delete_id)->title }}</a>
-                    @endif
-                </td>
                                     
                 <td>
-                	{{ $obj->user_name }}
+                	{{ $obj->name }}
                 </td>
 
                 <td>
-                	{{ $obj->user_email }}
+                	<a href="mailto:{{ $obj->email }}">{{ $obj->email }}</a>
                 </td>
 
                 <td>
-                	@if(strlen($obj->context) > 100)
-					{{ substr($obj->context, 0, 100) . "..." }}
+                	@if(strlen($obj->comment) > 100)
+					{{ substr($obj->comment, 0, 100) . "..." }}
                     @else
-					{{ $obj->context }}
-                    @endif
-                </td>
-                <td>
-                	@if($obj->done_status)
-					対応済
-                    @else
-					<span class="text-danger">未対応</span>
+					{{ $obj->comment }}
                     @endif
                 </td>
 
                 <td>
-                	<a style="margin:auto;" href="{{url('dashboard/contacts/'.$obj->id. '/edit')}}" class="btn btn-primary btn-sm center-block">編集</a>
+                	<a style="margin:auto;" href="{{url('dashboard/contacts/'.$obj->id)}}" class="btn btn-primary btn-sm center-block">確認</a>
+                	{{--
+                	<a style="margin:auto;" href="{{url('dashboard/contacts/'.$obj->id. '/edit')}}" class="btn btn-primary btn-sm center-block">確認</a>
+                 	--}}   
+                 	   
                 </td>
                 <td>
+                	{{--
 					<form role="form" method="POST" action="{{ url('/dashboard/contacts/'.$obj->id) }}">
                         {{ csrf_field() }}
                         {{ method_field('DELETE') }}
 
                         <input type="submit" class="btn btn-danger btn-sm center-block" value="削除">
                     </form>
+                    --}}
                 </td>
         	</tr>
         @endforeach

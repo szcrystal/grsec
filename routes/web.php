@@ -28,14 +28,31 @@ Route::get('dashboard/logout', 'DashBoard\MainController@getLogout');
 //setting
 Route::resource('dashboard/settings', 'DashBoard\SettingController');
 
+//Consignor
+Route::resource('dashboard/consignors', 'DashBoard\ConsignorController');
+
+//MailTemplate
+Route::resource('dashboard/mails', 'DashBoard\MailTemplateController');
+
+//DeliveryGroup
+Route::resource('dashboard/dgs', 'DashBoard\DeliveryGroupController');
+Route::get('dashboard/dgs/fee/{dgId}', 'DashBoard\DeliveryGroupController@getFee');
+Route::post('dashboard/dgs/fee/{dgId}', 'DashBoard\DeliveryGroupController@postFee');
+
+//Prefecture
+//Route::resource('dashboard/prefectures', 'DashBoard\PrefectureController');
+
 //Item
 Route::resource('dashboard/items', 'DashBoard\ItemController');
 
 //Category
 Route::resource('dashboard/categories', 'DashBoard\CategoryController');
 
-//Category
+//Tag
 Route::resource('dashboard/tags', 'DashBoard\TagController');
+
+//Contact
+Route::resource('dashboard/contacts', 'DashBoard\ContactController');
 
 //Fix
 Route::resource('dashboard/fixes', 'DashBoard\FixController');
@@ -51,6 +68,9 @@ if(Schema::hasTable('fixes')) {
     }
 }
 
+//Contact
+Route::resource('contact', 'Main\ContactController');
+
 //Single
 Route::get('/item/{id}', 'Main\SingleController@index');
 
@@ -60,6 +80,9 @@ Route::post('/cart/payment', 'Main\SingleController@postCart');
 Route::get('/cart/thankyou', 'Main\SingleController@endCart');
 
 
+
+//Route::get('logout', 'Auth\LoginController@getLogout');
 Auth::routes();
+
 
 Route::get('/home', 'HomeController@index')->name('home');

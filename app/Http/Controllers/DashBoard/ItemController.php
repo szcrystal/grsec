@@ -7,6 +7,7 @@ use App\Item;
 use App\Category;
 use App\Tag;
 use App\TagRelation;
+use App\Consignor;
 
 
 use Illuminate\Http\Request;
@@ -16,7 +17,7 @@ use Storage;
 
 class ItemController extends Controller
 {
-    public function __construct(Admin $admin, Item $item, Tag $tag, Category $category, TagRelation $tagRelation)
+    public function __construct(Admin $admin, Item $item, Tag $tag, Category $category, TagRelation $tagRelation, Consignor $consignor)
     {
         
         $this -> middleware('adminauth');
@@ -27,6 +28,7 @@ class ItemController extends Controller
         $this->category = $category;
         $this -> tag = $tag;
         $this->tagRelation = $tagRelation;
+        $this->consignor = $consignor;
         
         $this->perPage = 20;
         
@@ -56,6 +58,7 @@ class ItemController extends Controller
     {
         $item = $this->item->find($id);
         $cates = $this->category->all();
+        $consignors = $this->consignor->all();
         //$users = $this->user->where('active',1)->get();
         
 		$tagNames = $this->tagRelation->where(['item_id'=>$id])->get()->map(function($item) {
@@ -66,17 +69,19 @@ class ItemController extends Controller
             return $item->name;
         })->all();
         
-        return view('dashboard.item.form', ['item'=>$item, 'cates'=>$cates, 'tagNames'=>$tagNames, 'allTags'=>$allTags, 'id'=>$id, 'edit'=>1]);
+        return view('dashboard.item.form', ['item'=>$item, 'cates'=>$cates, 'consignors'=>$consignors, 'tagNames'=>$tagNames, 'allTags'=>$allTags, 'id'=>$id, 'edit'=>1]);
     }
    
     public function create()
     {
         $cates = $this->category->all();
+        $consignors = $this->consignor->all();
+        
         $allTags = $this->tag->get()->map(function($item){
         	return $item->name;
         })->all();
 //        $users = $this->user->where('active',1)->get();
-        return view('dashboard.item.form', ['cates'=>$cates, 'allTags'=>$allTags]);
+        return view('dashboard.item.form', ['cates'=>$cates, 'consignors'=>$consignors, 'allTags'=>$allTags]);
     }
 
     /**
@@ -90,7 +95,7 @@ class ItemController extends Controller
     	$editId = $request->has('edit_id') ? $request->input('edit_id') : 0;
         
     	$rules = [
-            //'title' => 'required|max:255',
+            'title' => 'required|max:255',
             //'movie_url' => 'required|max:255',
             //'main_img' => 'filenaming',
         ];
@@ -134,7 +139,7 @@ class ItemController extends Controller
 //        print_r($data['main_img']);
 //        exit;
         
-        
+        //Main-img
         if(isset($data['main_img'])) {
                 
             //$filename = $request->file('main_img')->getClientOriginalName();
@@ -154,6 +159,54 @@ class ItemController extends Controller
             $item->save();
         }
         
+        //Spare-img
+        if(isset($data['spare_img'])) {
+            $spares = $data['spare_img'];
+            
+//            print_r($spares);
+//            exit;
+            
+            foreach($spares as $key => $spare) {
+            	if($spare != '') {
+            
+                    $filename = $spare->getClientOriginalName();
+                    $filename = str_replace(' ', '_', $filename);
+                    
+                    //$aId = $editId ? $editId : $rand;
+                    //$pre = time() . '-';
+                    $filename = 'item/' . $itemId . '/thumbnail/'/* . $pre*/ . $filename;
+                    //if (App::environment('local'))
+                    $path = $spare->storeAs('public', $filename);
+                    //else
+                    //$path = Storage::disk('s3')->putFileAs($filename, $request->file('thumbnail'), 'public');
+                    //$path = $request->file('thumbnail')->storeAs('', $filename, 's3');
+                    
+                    //$item->spare_img .'_'. $ii = $path;
+                    $item['spare_img_'. $key] = $path;
+                    $item->save();
+                }
+
+            }
+        }
+        
+        //spare画像の削除
+        if(isset($data['del_spareimg'])) {
+        	$dels = $data['del_spareimg'];     
+         	
+          	foreach($dels as $key => $del) {
+           		if($del) {
+             		$imgName = $item['spare_img_'. $key];
+               		if($imgName != '') {
+                 		Storage::delete($imgName);
+                 	}
+                    
+           			$item['spare_img_'. $key] = '';
+            		$item->save();
+             	}   
+           }
+        }
+        
+
         
         //タグのsave動作
         if(isset($data['tags'])) {
@@ -250,6 +303,17 @@ class ItemController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $name = $this->category->find($id)->name;
+        
+        $atcls = $this->item->where('cate_id', $id)->get()->map(function($item){
+            $item->cate_id = 0;
+            $item->save();
+        });
+        
+        $cateDel = $this->category->destroy($id);
+        
+        $status = $cateDel ? '商品「'.$name.'」が削除されました' : '商品「'.$name.'」が削除出来ませんでした';
+        
+        return redirect('dashboard/items')->with('status', $status);
     }
 }

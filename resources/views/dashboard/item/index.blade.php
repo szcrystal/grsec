@@ -41,25 +41,23 @@
     @endif
     </div>
 
-    {{-- $atclObjs->links() --}}
+    {{ $itemObjs->links() }}
 
 
     <!-- Example DataTables Card-->
     <div class="row">
     <div class="col-md-12">
-    <div class="card mb-3">
-    	<!--
-        <div class="card-header">
-            <i class="fa fa-table"></i> Data Table Example
+    <div class="mb-3">
+    	
+        <div class="mb-3 text-right">
+            <a href="{{url('dashboard/items/create')}}" class="btn btn-info">商品新規追加</a>
         </div>
-        -->
+        
 
 
-
-
-        <div class="card-body row">
+        <div class="">
           <div class="table-responsive">
-            <table class="table table-striped table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
+            <table class="table table-striped table-bordered table-hover bg-white"{{-- id="dataTable"--}} width="100%" cellspacing="0">
               <thead>
                 <tr>
                   <th>ID</th>
@@ -101,7 +99,7 @@
                   @endif
                   <td>{{ $item->title }}</td>
                   <td>{{ $cates->find($item->cate_id)->name }}</td>
-                  <td>{{ $item->price }}</td>
+                  <td>{{ number_format($item->price) }}</td>
                   
                   <td>{{-- $item->what_is --}}</td>
                   <td>
