@@ -105,6 +105,9 @@ body {
 	margin-right: 1.0%;
 	//border: 1px solid red;
 }
+.top-cont article img {
+	width: 100%;
+}
 
 .wrap-all,
 .site-content,
