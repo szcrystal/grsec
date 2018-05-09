@@ -50,7 +50,8 @@ class MainController extends Controller
             //$message->attach($pathToFile);
         });  
      	   
-        return view('dashboard.index', ['name'=>$adminUser->name]);
+        //return view('dashboard.index', ['name'=>$adminUser->name]);
+        return redirect('dashboard/register');
     }
     
     private function sendMail($data)
