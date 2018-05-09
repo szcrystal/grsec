@@ -131,11 +131,9 @@
           </a>
           <ul class="sidenav-second-level collapse" id="collapseSale">
             <li>
-              <a href="{{ url('dashboard/sales') }}">売上一覧</a>
+              <a href="#{{-- url('dashboard/sales') --}}">売上一覧</a>
             </li>
-            <li>
-              {{-- <a href="{{ url('dashboard/sales/create') }}">会員登録</a> --}}
-            </li>
+
 
           </ul>
         </li> 
@@ -149,11 +147,13 @@
           </a>
           <ul class="sidenav-second-level collapse" id="collapseUser">
             <li>
-              <a href="{{ url('dashboard/users') }}">会員一覧</a>
+              <a href="#{{-- url('dashboard/users') --}}">会員一覧</a>
             </li>
+            {{--
             <li>
               <a href="{{ url('dashboard/users/create') }}">会員登録</a>
             </li>
+            --}}
 
           </ul>
         </li> 
