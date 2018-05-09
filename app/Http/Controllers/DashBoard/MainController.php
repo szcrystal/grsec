@@ -40,15 +40,22 @@ class MainController extends Controller
      
      	$data = array();
       	$data['is_user'] = 1;   
-       	$data['user_name'] = "aaa";   
-        Mail::send('emails.contact', $data, function($message) use ($data) //引数について　http://readouble.com/laravel/5/1/ja/mail.html
-        {
-            //$dataは連想配列としてviewに渡され、その配列のkey名を変数としてview内で取得出来る
-            $message -> from(env('ADMIN_EMAIL'), env('ADMIN_NAME'))
+       	$data['user_name'] = "aaa";
+        
+        Mail::raw('Text to e-mail', function ($message) {
+    		$message -> from('szk.create@gmail.com', 'name')
                      -> to('szk.create@gmail.com', 'sample')
                      -> subject('お問い合わせの送信が完了しました');
-            //$message->attach($pathToFile);
-        });  
+		});
+            
+//        Mail::send('emails.contact', $data, function($message) use ($data) //引数について　http://readouble.com/laravel/5/1/ja/mail.html
+//        {
+//            //$dataは連想配列としてviewに渡され、その配列のkey名を変数としてview内で取得出来る
+//            $message -> from(env('ADMIN_EMAIL'), env('ADMIN_NAME'))
+//                     -> to('szk.create@gmail.com', 'sample')
+//                     -> subject('お問い合わせの送信が完了しました');
+//            //$message->attach($pathToFile);
+//        });  
      	   
         //return view('dashboard.index', ['name'=>$adminUser->name]);
         return redirect('dashboard/register');
