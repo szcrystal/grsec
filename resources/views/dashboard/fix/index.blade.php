@@ -2,9 +2,9 @@
 
 @section('content')
 
-    <div class="clearfix mb-2">
-    	<h3 class="page-header">静的ページ一覧</h3>
-		<a href="{{ url('/dashboard/fixes/create') }}" class="btn btn-success pull-right">新規追加</a>
+    <div class="clearfix mb-3">
+    	<h3 class="page-header">固定ページ一覧</h3>
+		<a href="{{ url('/dashboard/fixes/create') }}" class="btn btn-info pull-right">新規追加</a>
     </div>
 
     @if (session('status'))
@@ -16,15 +16,15 @@
     {{ $fixes->links() }}
         
     <div class="table-responsive">
-        <table class="table table-striped table-bordered">
+        <table class="table table-striped table-bordered bg-white">
           <thead>
             <tr>
               <th>ID</th>
-              <th class="col-md-4">タイトル</th>
-              <th class="col-md-2">サブタイトル</th>
-              <th class="col-md-2">スラッグ</th>
-              <th class="col-md-1">ステータス</th>
-              <th class="col-md-3">更新日</th>
+              <th>タイトル</th>
+              <th>サブタイトル</th>
+              <th>スラッグ</th>
+              <th>ステータス</th>
+              <th>更新日</th>
               <th></th>
               <th></th>
               
@@ -66,15 +66,17 @@
                 </td>
 
                 <td>
-                	<a href="{{url('dashboard/fixes/'.$obj->id)}}" class="btn btn-primary btn-sm center-block">編集</a>
+                	<a href="{{url('dashboard/fixes/'.$obj->id)}}" class="btn btn-success btn-sm center-block">編集</a>
                 </td>
                 <td>
+                	{{--
                 	<form role="form" method="POST" action="{{ url('/dashboard/fixes/'.$obj->id) }}">
                     {{ csrf_field() }}
                     {{ method_field('DELETE') }}
 
                 	<input type="submit" class="btn btn-danger btn-sm center-block" value="削除">
                     </form>
+                    --}}
                 </td>
         	</tr>
         @endforeach
