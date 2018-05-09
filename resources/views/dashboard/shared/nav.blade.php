@@ -202,26 +202,29 @@
       
       <ul class="navbar-nav ml-auto">
 
+		{{--
         <li class="nav-item">
-          <a href="{{ url('dashboard/logout') }}" class="nav-link" data-toggle="modal" data-target="#exampleModal">
+          <a href="{{ url('dashboard/logout') }}" class="nav-link">
             <i class="fa fa-fw fa-sign-out"></i>Logout</a>
         </li>
+        --}}
 
         <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle mr-lg-2" id="adminDropdown" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fa fa-fw fa-user"></i> {{ Auth::guard('admin')->user()->name }}さん
+			<a class="nav-link dropdown-toggle mr-lg-2" id="adminDropdown" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            	<i class="fa fa-fw fa-user"></i> {{ Auth::guard('admin')->user()->name }}さん
             </a>
 
             <div style="left:initial; right:0;" class="dropdown-menu" aria-labelledby="adminDropdown">
 
-                <div class="dropdown-divider"></div>
+                
                 <a class="dropdown-item" href="{{ url('dashboard/logout') }}">
-                    <span class="text-success">
-                        <strong><i class="fa fa-fw fa-sign-out"></i>Logout</strong>
+                    <span class="text-secondary">
+                        <i class="fa fa-fw fa-sign-out"></i>Logout
                     </span>
                 </a>
 
             </div>
+            
         </li>
       </ul>
 

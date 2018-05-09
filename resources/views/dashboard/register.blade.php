@@ -27,59 +27,55 @@
             </div>
         @endif
 
-        <div class="well">
+        <div class="mt-5">
 
             <form class="form-horizontal" role="form" method="POST" action="/dashboard/register">
                 {{ csrf_field() }}
 
                 <input type="hidden" name="edit_id" value="{{$editId}}">
 
-                <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-                    <label for="name" class="col-md-2 control-label">管理者名</label>
+                <fieldset class="form-group">
+                    <label for="name" class="control-label">管理者名</label>
 
-                    <div class="col-md-6">
-                        <input id="name" type="text" class="form-control" name="name" value="{{ isset($admin) ? $admin->name : old('name') }}" required autofocus>
+                        <input id="name" type="text" class="form-control col-md-6{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ isset($admin) ? $admin->name : old('name') }}" required autofocus>
 
                         @if ($errors->has('name'))
-                            <span class="help-block">
+                            <span class="help-block text-danger">
                                 <strong>{{ $errors->first('name') }}</strong>
                             </span>
                         @endif
-                    </div>
-                </div>
 
-                <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                    <label for="email" class="col-md-2 control-label">メールアドレス</label>
+                </fieldset>
 
-                    <div class="col-md-6">
-                        <input id="email" type="email" class="form-control" name="email" value="{{ isset($admin) ? $admin->email : old('email') }}" required>
+                <fieldset class="form-group">
+                    <label for="email" class="control-label">メールアドレス</label>
+
+                        <input id="email" type="email" class="form-control col-md-6{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ isset($admin) ? $admin->email : old('email') }}" required>
 
                         @if ($errors->has('email'))
-                            <span class="help-block">
+                            <span class="help-block text-danger">
                                 <strong>{{ $errors->first('email') }}</strong>
                             </span>
                         @endif
-                    </div>
-                </div>
 
-                <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                    <label for="password" class="col-md-2 control-label">パスワード</label>
+                </fieldset>
 
-                    <div class="col-md-6">
-                        <input id="password" type="password" class="form-control" name="password" required>
+                <fieldset class="form-group">
+                    <label for="password" class="control-label">パスワード</label>
+
+                        <input id="password" type="password" class="form-control col-md-6{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
 
                         @if ($errors->has('password'))
-                            <span class="help-block">
+                            <span class="help-block text-danger">
                                 <strong>{{ $errors->first('password') }}</strong>
                             </span>
                         @endif
-                    </div>
-                </div>
+                </fieldset>
 
 
                 <div class="form-group">
-                    <div class="col-md-2 col-md-offset-2">
-                        <button type="submit" class="btn btn-primary col-md-12">
+                    <div class="">
+                        <button type="submit" class="btn btn-primary col-md-2">
                             登録
                         </button>
                     </div>
@@ -88,14 +84,14 @@
 
         </div>
 
-		<div class="row">
+		<div class="row mt-5">
         <div class="table-responsive col-md-10">
-        <table class="table table-striped table-bordered">
+        <table class="table table-striped table-bordered bg-white">
           <thead>
             <tr>
-              <th class="col-md-1">ID</th>
-              <th class="col-md-4">管理者名</th>
-              <th class="col-md-4">メールアドレス</th>
+              <th>ID</th>
+              <th>管理者名</th>
+              <th>メールアドレス</th>
             </tr>
           </thead>
           <tbody>

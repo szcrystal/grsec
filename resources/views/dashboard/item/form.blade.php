@@ -121,7 +121,7 @@
     	</div>            
   
         
-			<fieldset class="mb-4 form-group{{ $errors->has('number') ? ' has-error' : '' }}">
+			<fieldset class="mb-4 form-group">
                 <label>商品番号</label>
                 <input class="form-control{{ $errors->has('number') ? ' is-invalid' : '' }}" name="number" value="{{ Ctm::isOld() ? old('number') : (isset($item) ? $item->number : '') }}">
 
@@ -133,7 +133,7 @@
                 @endif
             </fieldset>
             
-            <fieldset class="mb-4 form-group{{ $errors->has('title') ? ' has-error' : '' }}">
+            <fieldset class="mb-4 form-group">
                 <label>商品名</label>
                 <input class="form-control{{ $errors->has('title') ? ' is-invalid' : '' }}" name="title" value="{{ Ctm::isOld() ? old('title') : (isset($item) ? $item->title : '') }}">
 
@@ -145,7 +145,7 @@
                 @endif
             </fieldset>
             
-            <fieldset class="mb-4 form-group{{ $errors->has('catchcopy') ? ' has-error' : '' }}">
+            <fieldset class="mb-4 form-group">
                 <label>キャッチコピー</label>
                 <input class="form-control{{ $errors->has('catchcopy') ? ' is-invalid' : '' }}" name="catchcopy" value="{{ Ctm::isOld() ? old('catchcopy') : (isset($item) ? $item->catchcopy : '') }}">
 
@@ -159,9 +159,9 @@
             
             
             
-            <div class="mb-4 form-group{{ $errors->has('cate_id') ? ' has-error' : '' }}">
+            <fieldset class="mb-4 form-group">
                 <label>カテゴリー</label>
-                <select class="form-control select-first col-md-6" name="cate_id">
+                <select class="form-control select-first col-md-6{{ $errors->has('cate_id') ? ' is-invalid' : '' }}" name="cate_id">
                     <option disabled selected>選択して下さい</option>
                     @foreach($cates as $cate)
                         <?php
@@ -181,17 +181,18 @@
                 </select>
                 
                 @if ($errors->has('cate_id'))
-                    <span class="help-block text-warning">
-                        <strong>{{ $errors->first('cate_id') }}</strong>
-                    </span>
+                    <div class="help-block text-danger">
+                    	<span class="fa fa-exclamation form-control-feedback"></span>
+                        <span>{{ $errors->first('cate_id') }}</span>
+                    </div>
                 @endif
                 
-            </div>
+            </fieldset>
             
             
-            <fieldset class="mb-4 form-group{{ $errors->has('price') ? ' has-error' : '' }}">
+            <fieldset class="mb-4 form-group">
                 <label for="price" class="control-label">価格</label>
-                <input class="form-control col-md-6" name="price" value="{{ Ctm::isOld() ? old('price') : (isset($item) ? $item->price : '') }}">
+                <input class="form-control col-md-6{{ $errors->has('price') ? ' is-invalid' : '' }}" name="price" value="{{ Ctm::isOld() ? old('price') : (isset($item) ? $item->price : '') }}">
                 
 
                 @if ($errors->has('price'))
@@ -202,9 +203,9 @@
                 @endif
             </fieldset>
             
-            <fieldset class="mb-4 form-group{{ $errors->has('cost_price') ? ' has-error' : '' }}">
+            <fieldset class="mb-4 form-group">
                 <label for="cost_price" class="control-label">仕入れ値</label>
-                <input class="form-control col-md-6" name="cost_price" value="{{ Ctm::isOld() ? old('cost_price') : (isset($item) ? $item->cost_price : '') }}">
+                <input class="form-control col-md-6{{ $errors->has('cost_price') ? ' is-invalid' : '' }}" name="cost_price" value="{{ Ctm::isOld() ? old('cost_price') : (isset($item) ? $item->cost_price : '') }}">
                 
 
                 @if ($errors->has('cost_price'))
@@ -215,9 +216,9 @@
                 @endif
             </fieldset>
             
-            <div class="mb-4 form-group{{ $errors->has('consignor_id') ? ' has-error' : '' }}">
+            <div class="mb-4 form-group">
                 <label>出荷元</label>
-                <select class="form-control select-first col-md-6" name="consignor_id">
+                <select class="form-control select-first col-md-6{{ $errors->has('consignor_id') ? ' is-invalid' : '' }}" name="consignor_id">
                     <option selected>選択して下さい</option>
                     @foreach($consignors as $consignor)
                         <?php
@@ -246,9 +247,9 @@
             
             
 
-            <div class="mb-4 form-group{{ $errors->has('cod') ? ' has-error' : '' }}">
+            <div class="mb-4 form-group">
                 <label>代金引換設定</label>
-                <select class="form-control select-first col-md-6" name="cod">
+                <select class="form-control select-first col-md-6{{ $errors->has('cod') ? ' is-invalid' : '' }}" name="cod">
                     <option disabled selected>選択して下さい</option>
                         <?php
                         	$cods = array( 'なし', 'あり');
@@ -278,9 +279,9 @@
                 
             </div>
             
-            <fieldset class="mb-4 form-group{{ $errors->has('stock') ? ' has-error' : '' }}">
+            <fieldset class="mb-4 form-group">
                 <label for="stock" class="control-label">在庫数</label>
-                <input class="form-control col-md-6" name="stock" value="{{ Ctm::isOld() ? old('stock') : (isset($item) ? $item->stock : '') }}">
+                <input class="form-control col-md-6{{ $errors->has('stock') ? ' is-invalid' : '' }}" name="stock" value="{{ Ctm::isOld() ? old('stock') : (isset($item) ? $item->stock : '') }}">
                 
 
                 @if ($errors->has('stock'))
@@ -292,7 +293,7 @@
             </fieldset>
 
             
-            <fieldset class="mb-4 form-group{{ $errors->has('about_ship') ? ' has-error' : '' }}">
+            <fieldset class="mb-4 form-group{{ $errors->has('about_ship') ? ' is-invalid' : '' }}">
                     <label for="detail" class="control-label">配送について</label>
 
                         <textarea id="detail" type="text" class="form-control" name="detail" rows="15">{{ Ctm::isOld() ? old('detail') : (isset($item) ? $item->detail : '') }}</textarea>
@@ -304,7 +305,7 @@
                         @endif
             </fieldset>
             
-            <fieldset class="mb-4 form-group{{ $errors->has('explain') ? ' has-error' : '' }}">
+            <fieldset class="mb-4 form-group{{ $errors->has('explain') ? ' is-invalid' : '' }}">
                     <label for="explain" class="control-label">説明</label>
 
                     <textarea id="explain" type="text" class="form-control" name="explain" rows="15">{{ Ctm::isOld() ? old('explain') : (isset($item) ? $item->explain : '') }}</textarea>
@@ -316,7 +317,7 @@
                     @endif
             </fieldset>
             
-            <fieldset class="mb-4 form-group{{ $errors->has('detail') ? ' has-error' : '' }}">
+            <fieldset class="mb-4 form-group{{ $errors->has('detail') ? ' is-invalid' : '' }}">
                     <label for="detail" class="control-label">商品情報</label>
 
                     <textarea id="detail" type="text" class="form-control" name="detail" rows="15">{{ Ctm::isOld() ? old('detail') : (isset($item) ? $item->detail : '') }}</textarea>
@@ -331,7 +332,7 @@
             
             <div class="clearfix tag-wrap">
 
-                <div class="tag-group form-group{{ $errors->has('tag-group') ? ' has-error' : '' }}">
+                <div class="tag-group form-group{{ $errors->has('tag-group') ? ' is-invalid' : '' }}">
                     <label for="tag-group" class="control-label">タグ</label>
                     <div class="clearfix">
                         <input id="tag-group" type="text" class="form-control col-md-5 tag-control" name="input-tag-group" value="" autocomplete="off" placeholder="Enter tag">
@@ -364,7 +365,7 @@
             </div><?php //tagwrap ?>
             
             
-            <fieldset class="mb-4 form-group{{ $errors->has('what_is') ? ' has-error' : '' }}">
+            <fieldset class="mb-4 form-group{{ $errors->has('what_is') ? ' is-invalid' : '' }}">
                     <label for="story_text" class="control-label">What is</label>
 
                         <textarea id="what_is" type="text" class="form-control" name="what_is" rows="10">{{ Ctm::isOld() ? old('what_is') : (isset($item) ? $item->what_is : '') }}</textarea>
@@ -377,7 +378,7 @@
             </fieldset>
             
             
-            <fieldset class="mb-4 form-group{{ $errors->has('warning') ? ' has-error' : '' }}">
+            <fieldset class="mb-4 form-group{{ $errors->has('warning') ? ' is-invalid' : '' }}">
                     <label for="warning" class="control-label">Warning</label>
 
                         <textarea id="warning" type="text" class="form-control" name="warning" rows="10">{{ Ctm::isOld() ? old('warning') : (isset($item) ? $item->warning : '') }}</textarea>

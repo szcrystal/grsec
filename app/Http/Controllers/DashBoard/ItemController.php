@@ -96,7 +96,7 @@ class ItemController extends Controller
         
     	$rules = [
             'title' => 'required|max:255',
-            //'movie_url' => 'required|max:255',
+            'cate_id' => 'required',
             //'main_img' => 'filenaming',
         ];
         
