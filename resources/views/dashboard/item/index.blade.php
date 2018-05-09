@@ -62,7 +62,7 @@
                 <tr>
                   <th>ID</th>
                   <th>画像</th>
-                  <th class="col-md-2">商品名</th>
+                  <th>商品名</th>
                   <th>カテゴリー</th>
                   <th>金額</th>
                   <th>説明</th>
@@ -111,8 +111,9 @@
 
                 </td>
                   <td><small>{{ Ctm::changeDate($item->created_at, 1) }}</small></td>
-                  <td></td>
+                  
                   <td><a href="{{url('dashboard/items/'. $item->id)}}" class="btn btn-success btn-sm center-block">編集</a></td>
+                  <td></td>
                 </tr>
             @endforeach
 
