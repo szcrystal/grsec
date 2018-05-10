@@ -53,6 +53,8 @@
                 <input type="hidden" name="edit_id" value="{{$id}}">
             @endif
 		
+  			<h4 class="mt-5">■ メール設定</h4>
+     		<hr>              
 			<fieldset class="mb-4 form-group{{ $errors->has('admin_name') ? ' has-error' : '' }}">
                 <label>管理者名</label>
                 <input class="form-control{{ $errors->has('admin_name') ? ' is-invalid' : '' }}" name="admin_name" value="{{ Ctm::isOld() ? old('admin_name') : (isset($setting) ? $setting->admin_name : '') }}">
@@ -92,8 +94,9 @@
                     @endif
             </fieldset>
             
-            <hr class="my-5">
             
+            <h4 class="mt-5">■ Shop設定</h4>
+            <hr>
             <fieldset class="mb-4 form-group{{ $errors->has('tax_per') ? ' has-error' : '' }}">
                 <label>消費税率</label><br>
                 <input class="form-control d-inline-block col-md-4{{ $errors->has('tax_per') ? ' is-invalid' : '' }}" name="tax_per" value="{{ Ctm::isOld() ? old('tax_per') : (isset($setting) ? $setting->tax_per : '') }}"> <span>%</span>

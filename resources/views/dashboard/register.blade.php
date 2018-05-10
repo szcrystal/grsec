@@ -92,6 +92,7 @@
               <th>ID</th>
               <th>管理者名</th>
               <th>メールアドレス</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -115,6 +116,17 @@
                 	<a href="{{url('dashboard/register/'.$obj->id)}}" class="btn btn-primary btn-sm center-block">編集</a>
                 </td>
                 --}}
+                
+                <td>
+                	@if($obj->id > 2 && $obj->id != Auth::guard('admin')->id())
+                        <form role="form" method="POST" action="{{ url('/dashboard/register/'.$obj->id) }}">
+                            {{ csrf_field() }}
+                            {{ method_field('DELETE') }}
+
+                            <input type="submit" class="btn btn-danger btn-sm center-block" value="削除">
+                        </form>
+                    @endif
+                </td>
 
         	</tr>
         @endforeach

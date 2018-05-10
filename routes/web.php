@@ -23,6 +23,7 @@ Route::post('dashboard/login', 'DashBoard\LoginController@postLogin');
 
 Route::get('dashboard/register', 'DashBoard\MainController@getRegister');
 Route::post('dashboard/register', 'DashBoard\MainController@postRegister');
+Route::delete('dashboard/register/{id}', 'DashBoard\MainController@destroy');
 Route::get('dashboard/logout', 'DashBoard\MainController@getLogout');
 
 //setting

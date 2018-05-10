@@ -155,4 +155,21 @@ class MainController extends Controller
         Auth::guard('admin')->logout();
         return redirect('dashboard/login'); //->intended('/')
     }
+    
+    
+    public function destroy($id)
+    {
+        $name = $this->admin->find($id)->name;
+        
+//        $atcls = $this->item->where('cate_id', $id)->get()->map(function($item){
+//            $item->cate_id = 0;
+//            $item->save();
+//        });
+        
+        $adminDel = $this->admin->destroy($id);
+        
+        $status = $adminDel ? '管理者「'.$name.'」が削除されました' : '管理者「'.$name.'」が削除出来ませんでした';
+        
+        return redirect('dashboard/register')->with('status', $status);
+    }
 }
