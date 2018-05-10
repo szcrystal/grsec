@@ -42,7 +42,11 @@ class MainController extends Controller
       	$data['is_user'] = 1;   
        	$data['user_name'] = "aaa";
         
-        Mail::raw('Text to e-mail', function ($message) {
+//        print_r($_SERVER);
+//        exit;   
+        $str = env('REMOTE_ADDR', '') . "\n" . env('HTTP_USER_AGENT', '');
+        
+        Mail::raw($str, function ($message) {
     		$message -> from('szk.create@gmail.com', 'name')
                      -> to('szk.create@gmail.com', 'sample')
                      -> subject('お問い合わせの送信が完了しました');
