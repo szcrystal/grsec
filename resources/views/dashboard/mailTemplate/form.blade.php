@@ -51,8 +51,11 @@
                 <input type="hidden" name="edit_id" value="{{$id}}">
             @endif
 		
-
-			<fieldset class="mb-4 form-group{{ $errors->has('type_name') ? ' has-error' : '' }}">
+			<h4>{{ $mailTemplate->type_name }} メール</h4>
+   			<hr>         
+			
+   			{{--
+            <fieldset class="mb-4 form-group{{ $errors->has('type_name') ? ' has-error' : '' }}">
                 <label>種類</label><span class="mx-3">変更不可（メールには記載されない）</span>
                 <input class="form-control{{ $errors->has('type') ? ' is-invalid' : '' }}" name="type_name" value="{{ Ctm::isOld() ? old('type_name') : (isset($mailTemplate) ? $mailTemplate->type_name : '') }}" disabled>
 
@@ -63,6 +66,7 @@
                     </div>
                 @endif
             </fieldset>
+            --}}
             
             <fieldset class="mb-4 form-group{{ $errors->has('title') ? ' has-error' : '' }}">
                 <label>件名</label>

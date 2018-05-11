@@ -61,6 +61,7 @@
               <thead>
                 <tr>
                   <th>ID</th>
+                  <th>商品番号</th>
                   <th>画像</th>
                   <th>商品名</th>
                   <th>カテゴリー</th>
@@ -91,6 +92,7 @@
               @foreach($itemObjs as $item)
                 <tr>
                   <td>{{ $item->id }}</td>
+                  <td>{{ $item->number }}</td>
                   <td>
                   @if($item->main_img != '')
                   <img src="{{ Storage::url($item->main_img) }}" width="80" height="60"></td>
