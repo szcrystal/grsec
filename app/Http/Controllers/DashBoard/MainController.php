@@ -39,11 +39,10 @@ class MainController extends Controller
     	$adminUser = Auth::guard('admin')->user();
      
      	$data = array();
-      	$data['is_user'] = 1;   
+      	$data['is_user'] = 1;
        	$data['user_name'] = "aaa";
         
-//        print_r($_SERVER);
-//        exit;   
+  
         $str = env('REMOTE_ADDR', '') . "\n" . env('HTTP_USER_AGENT', '');
         
         Mail::raw($str, function ($message) {

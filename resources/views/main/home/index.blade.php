@@ -30,7 +30,7 @@
 
 <h2></h2>
     @foreach($items as $item)
-    <article style="background-image:url()" class="float-left">
+    <article class="float-left">
 
             <a href="{{ url('/item/'.$item->id) }}">
 				<img src="{{ Storage::url($item->main_img) }}" alt="{{ $item->title }}">

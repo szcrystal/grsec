@@ -20,8 +20,7 @@
     <div class="Intro">
       
       <h1 class="Title"></h1>
-      <p class="Description">
-    </p>
+      <p class="Description"></p>
 
 	<p class="text-left">
 

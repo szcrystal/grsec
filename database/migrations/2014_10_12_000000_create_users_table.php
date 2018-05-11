@@ -51,7 +51,7 @@ class CreateUsersTable extends Migration
         DB::table('users')->insert([
                 'name' => 'gr-user',
                 'email' => 'gr@gr.com',
-                'password' => bcrypt('grgrgr'),
+                'password' => bcrypt('grgrgrgr'),
                 
                 'hurigana' => 'ジーアール',
                 'gender' => '男性',

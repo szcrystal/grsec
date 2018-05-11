@@ -55,6 +55,12 @@ Route::resource('dashboard/tags', 'DashBoard\TagController');
 //Contact
 Route::resource('dashboard/contacts', 'DashBoard\ContactController');
 
+//Sale
+Route::resource('dashboard/sales', 'DashBoard\SaleController');
+
+//User
+Route::resource('dashboard/users', 'DashBoard\UserController');
+
 //Fix
 Route::resource('dashboard/fixes', 'DashBoard\FixController');
 

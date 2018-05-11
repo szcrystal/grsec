@@ -12,17 +12,23 @@
     <title>{{ config('app.name', 'GREEN ROCKET') }}</title>
 
     <!-- Styles -->
+    
     <link href="{{ asset('font-awesome/css/font-awesome.min.css') }}" rel="stylesheet" type="text/css">
+    {{--
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.12/css/all.css" integrity="sha384-G0fIWCsCzJIMAVNQPfjH08cyYaUtMwjJwqiRKxxE/rx96Uroj1BtIQ6MLJuheaO9" crossorigin="anonymous">
+    --}}
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
-    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+    
     @if(Ctm::isAgent('all'))
     <link href="{{ asset('css/style-sp.css') }}" rel="stylesheet">
+    @else
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
 	@endif
 
-  <script src="//code.jquery.com/jquery-1.12.4.min.js"></script>
-  <script src="//code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+  	<script src="//code.jquery.com/jquery-1.12.4.min.js"></script>
+  	<script src="//code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
     <script src="{{ asset('js/script.js') }}"></script>
 
     <!-- Scripts -->

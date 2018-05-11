@@ -189,7 +189,7 @@
           </a>
           <ul class="sidenav-second-level collapse" id="collapseUser">
             <li>
-              <a href="#{{-- url('dashboard/users') --}}">会員一覧</a>
+              <a href="{{ url('dashboard/users') }}">会員一覧</a>
             </li>
             {{--
             <li>
