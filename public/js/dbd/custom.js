@@ -615,6 +615,34 @@ var exe = (function() {
             });
         },
         
+        openNav: function() {
+        	
+                if(location.pathname != "/") {
+                	var loc = location.pathname.split("/")[2];
+                 
+                 	   
+                 	console.log(location.href);
+                  	
+                   	$('a#'+ loc).addClass('thisActive');
+                    
+                     $('a[href="'+location.href + '"]').addClass('thisActive');
+                     $('a[href="'+location.href + '"]').parents('ul').parent('li').children('a').addClass('thisActive').attr({href: '', }); 
+                  
+                       
+                    $thisUl = $('ul#'+ loc);
+                    $thisUl.removeClass('collapse');
+                    //$thisUl.siblings('a').addClass('thisActive');
+                    $thisUl.parents('ul').removeClass('collapse');
+                    //$thisUl.parents('ul').parent('li').children('a').addClass('thisActive');
+                }
+                
+            
+//            $collapse = $('.collapse');
+//         
+//             $collapse.show();
+//              console.log($collapse.data('area'));      
+        },
+        
         
     } //return
 
@@ -635,6 +663,8 @@ $(function(e){ //ready
     //exe.mypagePost();
     
     exe.changeSelectRelation();
+    
+    exe.openNav();
 
 });
 

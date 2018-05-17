@@ -26,6 +26,10 @@ h1 {
 	//padding-top: 0.4em;
 	cursor: pointer;
 }
+.thisActive {
+	//background: #aaa !important;
+	color: #fff !important;
+}
 
 label {
 	font-weight: bold;

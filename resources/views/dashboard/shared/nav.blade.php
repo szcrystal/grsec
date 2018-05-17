@@ -20,17 +20,25 @@
         --}}
         
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
-            <a class="nav-link" href="{{ url('dashboard/register') }}">
+            <a class="nav-link" href="{{ url('dashboard/register') }}" id="register">
                 <i class="fa fa-fw fa-dashboard"></i>
                 <span class="nav-link-text">管理者設定</span>
               </a>
         </li>
         
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
-            <a class="nav-link" href="{{ url('dashboard/settings') }}">
+            <a class="nav-link" href="{{ url('dashboard/settings') }}" id="settings">
                 <i class="fa fa-fw fa-dashboard"></i>
                 <span class="nav-link-text">サイト設定</span>
               </a>
+        </li>
+        
+            
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Example Pages">
+              <a class="nav-link" href="{{ url('dashboard/mails') }}" id="mails">
+              	<i class="fa fa-fw fa-dashboard"></i>
+                <span>メールテンプレート</span>
+            </a>
         </li>
         
         <div class="border border-secondary border-top-0 w-100 mx-auto"></div>
@@ -41,14 +49,14 @@
             <span class="nav-link-text">マスター登録</span>
           </a>
           
-          <ul class="sidenav-second-level collapse" id="collapseMaster">
+          <ul class="sidenav-second-level collapse" id="collapseMaster" data-area="settings"><!--  collapse -->
           		
             <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Example Pages">
-            	<a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseConsig" data-parent="#collapseMaster">
+            	<a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#consignors" data-parent="#collapseMaster">
                     <i class="fa fa-fw fa-file"></i>
                     <span class="nav-link-text">出荷元</span>
                 </a>
-             	<ul class="sidenav-third-level collapse" id="collapseConsig">
+             	<ul class="sidenav-third-level collapse" id="consignors"><!-- class=" collapse" -->
                     <li>
                       <a href="{{ url('dashboard/consignors') }}">出荷元一覧</a>
                     </li>
@@ -61,11 +69,11 @@
              <div class="border border-secondary border-top-0 w-75 mx-auto"></div>  
              
              <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Example Pages">
-             	<a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseDg" data-parent="#collapseMaster">
+             	<a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#dgs" data-parent="#collapseMaster">
                     <i class="fa fa-fw fa-file"></i>
                     <span class="nav-link-text">配送区分</span>
                 </a>
-             	<ul class="sidenav-third-level collapse" id="collapseDg">
+             	<ul class="sidenav-third-level collapse" id="dgs"><!-- class=" collapse" -->
               		<li>
                       <a href="{{ url('dashboard/dgs') }}">配送区分一覧</a>
                     </li>
@@ -78,11 +86,11 @@
            	<div class="border border-secondary border-top-0 w-75 mx-auto"></div>
               
               <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Example Pages">
-        		<a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseCate" data-parent="#collapseMaster">
+        		<a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#categories" data-parent="#collapseMaster">
                     <i class="fa fa-fw fa-file"></i>
                     <span class="nav-link-text">カテゴリー</span>
                 </a>
-                <ul class="sidenav-third-level collapse" id="collapseCate">
+                <ul class="sidenav-third-level collapse" id="categories"><!-- class=" collapse" -->
                     <li>
                       <a href="{{ url('dashboard/categories') }}">カテゴリー一覧</a>
                     </li>
@@ -91,30 +99,19 @@
                     </li>
 
                 </ul>
-            </li>
-                
-          
-            
-            <div class="border border-secondary border-top-0 w-75 mx-auto"></div>
-            
-            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Example Pages">
-              <a href="{{ url('dashboard/mails') }}">メールテンプレ一覧</a>
-            </li>
-            
+            </li>  
             
           </ul>
-          
-          
         </li>
         
         <div class="border border-secondary border-top-0 w-100 mx-auto"></div>
         
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Example Pages">
-          <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseItem" data-parent="#exampleAccordion">
+          <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#items" data-parent="#exampleAccordion">
             <i class="fa fa-fw fa-file"></i>
             <span class="nav-link-text">商品管理</span>
           </a>
-          <ul class="sidenav-second-level collapse" id="collapseItem">
+          <ul class="sidenav-second-level collapse" id="items">
             <li>
               <a href="{{ url('dashboard/items') }}">商品一覧</a>
             </li>
@@ -143,11 +140,11 @@
             <div class="border border-secondary border-top-0 w-75 mx-auto"></div>
             
             <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Example Pages">
-              <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseTag" data-parent="#collapseItem">
+              <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#tags" data-parent="#collapseItem">
                 <i class="fa fa-fw fa-file"></i>
                 <span class="nav-link-text">タグ管理</span>
               </a>
-              <ul class="sidenav-third-level collapse" id="collapseTag">
+              <ul class="sidenav-third-level collapse" id="tags">
                 <li>
                   <a href="{{ url('dashboard/tags') }}">タグ一覧</a>
                 </li>
@@ -183,11 +180,11 @@
         <div class="border border-secondary border-top-0 w-100 mx-auto"></div>
         
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Example Pages">
-          <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseUser" data-parent="#exampleAccordion">
+          <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#users" data-parent="#exampleAccordion">
             <i class="fa fa-fw fa-file"></i>
             <span class="nav-link-text">会員管理</span>
           </a>
-          <ul class="sidenav-second-level collapse" id="collapseUser">
+          <ul class="sidenav-second-level collapse" id="users">
             <li>
               <a href="{{ url('dashboard/users') }}">会員一覧</a>
             </li>
@@ -204,11 +201,11 @@
         
         
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Example Pages">
-          <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseFix" data-parent="#exampleAccordion">
+          <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#fixes" data-parent="#exampleAccordion">
             <i class="fa fa-fw fa-file"></i>
             <span class="nav-link-text">固定ページ</span>
           </a>
-          <ul class="sidenav-second-level collapse" id="collapseFix">
+          <ul class="sidenav-second-level collapse" id="fixes">
             <li>
               <a href="{{ url('dashboard/fixes') }}">固定ページ一覧</a>
             </li>
