@@ -31,6 +31,9 @@ h1 {
 	color: #fff !important;
 }
 
+.text-big {
+	font-size: 1.2em;
+}
 label {
 	font-weight: bold;
 	color: #555;
@@ -54,12 +57,12 @@ label {
     line-height: 160px;
 }
 .spare-img .thumb-prev {
-	height: 110px;
+	height: 130px;
 	overflow: hidden;
 }
 .spare-img .thumb-prev .no-img {
 	height: 100%;
-	line-height: 110px;
+	line-height: 130px;
 }
 .thumb-prev img,
 .thumb-prev video {

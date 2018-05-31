@@ -4,13 +4,17 @@ namespace App\Http\Controllers\DashBoard;
 
 use App\Admin;
 use App\User;
+use App\UserNoregist;
+use App\Sale;
+use App\SaleRelation;
+use App\Item;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class UserController extends Controller
 {
-    public function __construct(Admin $admin, User $user/*, Tag $tag, Category $category, TagRelation $tagRelation, Consignor $consignor*/)
+    public function __construct(Admin $admin, User $user, UserNoregist $un, Sale $sale, SaleRelation $saleRel, Item $item)
     {
         
         $this -> middleware('adminauth');
@@ -18,6 +22,10 @@ class UserController extends Controller
         
         $this -> admin = $admin;
         $this-> user = $user;
+        $this->un = $un;
+        $this->sale = $sale;
+        $this->saleRel = $saleRel;
+        $this->item = $item;
 //        $this->category = $category;
 //        $this -> tag = $tag;
 //        $this->tagRelation = $tagRelation;
@@ -34,22 +42,53 @@ class UserController extends Controller
     
     
     
-    public function index()
+    public function index(Request $request)
     {
+        if($request->has('no_r')) {
+        	$model = $this->un;
+         	$isUser = 0;  
+        }
+        else {
+        	$model = $this->user;
+         	$isUser = 1;   
+        }
         
-        $userObjs = User::orderBy('id', 'desc')->paginate($this->perPage);
+        $userObjs = $model->orderBy('id', 'desc')->paginate($this->perPage);
         
         //$cates= $this->category;
         
         
         //$status = $this->articlePost->where(['base_id'=>15])->first()->open_date;
         
-        return view('dashboard.user.index', ['userObjs'=>$userObjs,  ]);
+        return view('dashboard.user.index', ['userObjs'=>$userObjs, 'isUser'=>$isUser, ]);
     }
 
-    public function show($id)
+    public function show($id, Request $request)
     {
-        $user = $this->user->find($id);
+    	if($request->has('no_r')) {
+            $model = $this->un;
+            $isUser = 0; 
+
+        }
+        else {
+            $model = $this->user;
+            $isUser = 1;   
+        }
+        
+        $user = $model->find($id);
+        
+        $itemModel = $this->item;
+        $relIds = $this->saleRel->where(['user_id'=>$user->id])->get()->map(function($obj){
+        	return $obj->id;
+        })->all();
+        
+//        print_r($relIds);
+//        exit;
+        
+        $sales = $this->sale->whereIn('salerel_id', $relIds)->orderBy('id', 'desc')->paginate($this->perPage);
+//        print_r($sales);
+//        exit;
+        
 //        $cates = $this->category->all();
 //        $consignors = $this->consignor->all();
 //        //$users = $this->user->where('active',1)->get();
@@ -62,7 +101,7 @@ class UserController extends Controller
 //            return $item->name;
 //        })->all();
         
-        return view('dashboard.user.form', ['user'=>$user, 'id'=>$id, 'edit'=>1]);
+        return view('dashboard.user.form', ['user'=>$user, 'isUser'=>$isUser, 'sales'=>$sales, 'itemModel'=>$itemModel, 'id'=>$id, 'edit'=>1]);
     }
    
     public function create()

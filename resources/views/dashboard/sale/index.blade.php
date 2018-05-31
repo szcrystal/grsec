@@ -3,7 +3,7 @@
 @section('content')
 
     <div class="text-left">
-		<h1 class="Title"> 会員一覧</h1>
+		<h1 class="Title"> 売上一覧</h1>
 		<p class="Description"></p>
     </div>
 
@@ -42,62 +42,74 @@
     @endif
     </div>
 
-    {{ $userObjs->links() }}
+    {{ $saleObjs->links() }}
 
 
     <!-- Example DataTables Card-->
-    <div class="row">
-    <div class="col-md-12">
+    <div style="overflow:scroll;" class="col-md-12">
     <div class="mb-3">
     	
-     	{{--   
-        <div class="mb-3 text-right">
-            <a href="{{url('dashboard/items/create')}}" class="btn btn-info">商品新規追加</a>
-        </div>
-        --}}
-        
 
-
-        <div class="">
+        <div style="width: 130%;" class="">
           <div class="table-responsive">
             <table class="table table-striped table-bordered table-hover bg-white"{{-- id="dataTable"--}} width="100%" cellspacing="0">
               <thead>
                 <tr>
+                	<th></th>
                   <th>ID</th>
-                  <th>名前</th>
-                  <th>性別</th>
-                  <th>生年月日</th>
-                  <th>都道府県</th>
-                  <th>eMail</th>
-                  <th>メルマガ</th>
-                  <th>登録日</th>
+                  <th>注文番号</th>
+                  <th>(ID)商品名</th>
+                  <th>発送状況</th>
+                  <th>個数</th>
+                  <th>金額（税込）</th>
+                  <th>送料</th>
+                  <th>代引手数料</th>
+                  <th>決済方法</th>
+                  <th>粗利額</th>
+                  <th>粗利率</th>
+                  <th>会員</th>
+                  <th>購入日</th>
+                  
                   <th></th>
                   <th></th>
                 </tr>
               </thead>
               
               <tbody>
-              @foreach($userObjs as $user)
+              @foreach($saleObjs as $sale)
                 <tr>
-                  <td>{{ $user->id }}</td>
-                  <td>{{ $user->name }}</td>
-                  <td>{{ $user->gender }}</td>
-                  <td>{{ $user->birth_year }}/{{ $user->birth_month }}/{{ $user->birth_day }}</td>
-                  <td>{{ $user->prefecture }}</td>
-                  
-                  <td><a href="mailto:{{ $user->email }}">{{ $user->email }}</a></td>
+                	<?php
+                 		$saleRel = $saleRels->find($sale->salerel_id);
+                 	?>   
+                	<td><a href="{{url('dashboard/sales/'. $sale->id)}}" class="btn btn-success btn-sm center-block">確認</a></td>
+                  <td>{{ $sale->id }}</td>
+                  <td>{{ $saleRel->order_number }}</td>
+                  <td>({{ $sale->item_id }}){{ $items->find($sale->item_id)->title }}</td>
                   <td>
-                  	@if($user->magazine)
-                  	<span class="text-info">登録済</span>
-                    @else
-                    <span class="text-warning">未登録</span>
-                    @endif
-                	</td>
+                  	 @if($sale->deli_done)
+                       <span class="text-success">発送済み</span>
+                     @else
+                      <span class="text-danger">未配送</span>
+                    @endif   
+                  </td>
+                  <td>{{ $sale->item_count }}</td>
+                  <td>¥{{ number_format($sale->total_price) }}</td>
+                  <td>¥{{ number_format($sale->deli_fee) }}</td>
+                  <td>¥{{ number_format($sale->cod_fee) }}</td>
+                  <td>{{ $pms->find($sale->pay_method)->name }}</td>
+                  <td></td>
+                  <td></td>
+                  <td>
+                  	@if($saleRel->is_user)
+                		<span class="text-primary">会員</span>:{{ $users->find($saleRel->user_id)->name }}さん
+                	@else
+                 		<span class="text-danger">非会員</span>:{{ $userNs->find($saleRel->user_id)->name }}さん
+                 	@endif   
+                </td>
                   
-                  <td><small>{{ Ctm::changeDate($user->created_at, 1) }}</small></td>
+                  <td>{{ Ctm::changeDate($sale->created_at, 0) }}</td>
                   
-                  
-                  <td><a href="{{url('dashboard/users/'. $user->id)}}" class="btn btn-success btn-sm center-block">確認</a></td>
+                  <td><a href="{{url('dashboard/sales/'. $sale->id)}}" class="btn btn-success btn-sm center-block">確認</a></td>
                   
                   <td></td>
                 </tr>
@@ -113,6 +125,8 @@
     </div><!-- /.card -->
     </div>
     </div>
+    
+    {{ $saleObjs->links() }}
 
         
 @endsection

@@ -13,6 +13,7 @@ class Setting extends Model
         'mail_footer',
         'tax_per',
         'bank_info',
+        'cot_per',
 
     ];
 }

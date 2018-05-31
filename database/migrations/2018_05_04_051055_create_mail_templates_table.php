@@ -28,7 +28,7 @@ class CreateMailTemplatesTable extends Migration
         
         DB::table('mail_templates')->insert(
             [ 
-                'type_code' => 'inquire',
+                'type_code' => 'contact',
                 'type_name' => 'お問い合わせ',
                 'title' => 'お問い合わせありがとうございます',
                 'header' => 'aaa',
@@ -41,8 +41,8 @@ class CreateMailTemplatesTable extends Migration
         
         DB::table('mail_templates')->insert(
             [ 
-                'type_code' => 'user_register',
-                'type_name' => '会員登録完了',
+                'type_code' => 'register',
+                'type_name' => '会員登録',
                 'title' => 'ご登録ありがとうございます',
                 'header' => 'bbb',
                 'footer' => '222',
@@ -54,8 +54,8 @@ class CreateMailTemplatesTable extends Migration
         
         DB::table('mail_templates')->insert(
             [ 
-                'type_code' => 'item_end',
-                'type_name' => '注文完了',
+                'type_code' => 'itemEnd',
+                'type_name' => 'ご注文',
                 'title' => 'ご注文ありがとうございます',
                 'header' => 'ccc',
                 'footer' => '333',
@@ -67,7 +67,7 @@ class CreateMailTemplatesTable extends Migration
         
         DB::table('mail_templates')->insert(
             [ 
-                'type_code' => 'item_delivery',
+                'type_code' => 'itemDelivery',
                 'type_name' => '発送完了',
                 'title' => '商品を発送しました',
                 'header' => 'ddd',

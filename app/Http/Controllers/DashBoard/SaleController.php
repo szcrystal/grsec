@@ -3,6 +3,15 @@
 namespace App\Http\Controllers\DashBoard;
 
 use App\Admin;
+use App\User;
+use App\UserNoregist;
+use App\Sale;
+use App\SaleRelation;
+use App\Item;
+use App\PayMethod;
+use App\Receiver;
+use App\DeliveryGroup;
+use App\Consignor;
 
 
 use Illuminate\Http\Request;
@@ -10,14 +19,21 @@ use App\Http\Controllers\Controller;
 
 class SaleController extends Controller
 {
-    public function __construct(Admin $admin/*, User $user*//*, Tag $tag, Category $category, TagRelation $tagRelation, Consignor $consignor*/)
+    public function __construct(Admin $admin, Sale $sale, SaleRelation $saleRel, Item $item, User $user, PayMethod $payMethod, UserNoregist $userNoregist, Receiver $receiver, DeliveryGroup $dg, Consignor $consignor)
     {
         
         $this -> middleware('adminauth');
         //$this -> middleware('log', ['only' => ['getIndex']]);
         
         $this -> admin = $admin;
-        //$this-> user = $user;
+        $this-> sale = $sale;
+        $this->saleRel = $saleRel;
+        $this-> item = $item;
+        $this-> user = $user;
+        $this->userNoregist = $userNoregist;
+        $this->payMethod = $payMethod;
+        $this->receiver = $receiver;
+        $this->dg = $dg;
 //        $this->category = $category;
 //        $this -> tag = $tag;
 //        $this->tagRelation = $tagRelation;
@@ -28,31 +44,43 @@ class SaleController extends Controller
         // URLの生成
         //$url = route('dashboard');
         
-        /* ************************************** */
-        //env()ヘルパー：環境変数（$_SERVER）の値を取得 .env内の値も$_SERVERに入る
     }
     
     
     
     public function index()
     {
+        $saleObjs = Sale::orderBy('id', 'desc')->paginate($this->perPage);
+        $saleRels = $this->saleRel;
         
-        $userObjs = User::orderBy('id', 'desc')->paginate($this->perPage);
-        
-        //$cates= $this->category;
-        
+        $items= $this->item;
+        $pms = $this->payMethod;
+        $users = $this->user;
+        $userNs = $this->userNoregist;
         
         //$status = $this->articlePost->where(['base_id'=>15])->first()->open_date;
         
-        return view('dashboard.sale.index', ['userObjs'=>$userObjs,  ]);
+        return view('dashboard.sale.index', ['saleObjs'=>$saleObjs, 'saleRels'=>$saleRels, 'items'=>$items, 'pms'=>$pms, 'users'=>$users, 'userNs'=>$userNs, ]);
     }
 
     public function show($id)
     {
-        $user = $this->user->find($id);
-//        $cates = $this->category->all();
-//        $consignors = $this->consignor->all();
-//        //$users = $this->user->where('active',1)->get();
+        $sale = $this->sale->find($id);
+        $saleRel = $this->saleRel->find($sale->salerel_id);
+        
+        $sameSales= $this->sale->whereNotIn('id', [$id])->where(['salerel_id'=>$saleRel->id])->get();
+        
+        $item= $this->item->find($sale->item_id);
+        $items = $this->item;
+        
+        $pms = $this->payMethod;
+        
+        $users = $this->user;
+        $userNs = $this->userNoregist;
+
+		$receiver = $this->receiver->find($saleRel->receiver_id);
+  
+  		$itemDg = $this->dg->find($item->dg_id);      
 //        
 //        $tagNames = $this->tagRelation->where(['item_id'=>$id])->get()->map(function($item) {
 //            return $this->tag->find($item->tag_id)->name;
@@ -62,7 +90,7 @@ class SaleController extends Controller
 //            return $item->name;
 //        })->all();
         
-        return view('dashboard.user.form', ['user'=>$user, 'id'=>$id, 'edit'=>1]);
+        return view('dashboard.sale.form', ['sale'=>$sale, 'saleRel'=>$saleRel, 'sameSales'=>$sameSales, 'item'=>$item, 'items'=>$items, 'pms'=>$pms, 'users'=>$users, 'userNs'=>$userNs, 'receiver'=>$receiver, 'itemDg'=>$itemDg, 'id'=>$id, 'edit'=>1]);
     }
    
     public function create()

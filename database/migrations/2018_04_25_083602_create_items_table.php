@@ -20,9 +20,11 @@ class CreateItemsTable extends Migration
             $table->string('number')->nullable()->default(NULL);
             $table->string('title');
             $table->string('catchcopy')->nullable()->default(NULL);
-            $table->integer('cate_id');
+            $table->integer('cate_id')->nullable()->default(NULL);
+            $table->integer('subcate_id')->nullable()->default(NULL);
             
             $table->string('main_img')->nullable()->default(NULL);
+            /*
             $table->string('spare_img_0')->nullable()->default(NULL);
             $table->string('spare_img_1')->nullable()->default(NULL);
             $table->string('spare_img_2')->nullable()->default(NULL);
@@ -33,12 +35,19 @@ class CreateItemsTable extends Migration
             $table->string('spare_img_7')->nullable()->default(NULL);
             $table->string('spare_img_8')->nullable()->default(NULL);
             $table->string('spare_img_9')->nullable()->default(NULL);
+            */
             
             $table->integer('price')->nullable()->default(NULL);
             $table->integer('cost_price')->nullable()->default(NULL);
             $table->string('consignor_id')->nullable()->default(NULL);
+            $table->integer('dg_id')->nullable()->default(NULL);
+            $table->boolean('deli_fee')->nullable()->default(NULL);
             $table->integer('cod')->nullable()->default(NULL);
+            
             $table->integer('stock')->nullable()->default(NULL);
+            $table->boolean('stock_show')->nullable()->default(NULL);
+            
+            $table->integer('point_back')->nullable()->default(NULL);
             
             
             $table->text('about_ship')->nullable()->default(NULL);
@@ -68,25 +77,30 @@ class CreateItemsTable extends Migration
                     'title' => 'シマトネリコ 株立 1.7m程度（根鉢含まず）',
                     'catchcopy' => '薄紫色品種の「マスコギー」',
                     'cate_id' => 1,
+                    'subcate_id'=>1,
                     
                     'main_img' => '',
-                    'spare_img_0' => '',
-                    'spare_img_1' => '',
-                    'spare_img_2' => '',
-                    'spare_img_3' => '',
-                    'spare_img_4' => '',
-                    'spare_img_5' => '',
-                    'spare_img_6' => '',
-                    'spare_img_7' => '',
-                    'spare_img_8' => '',
-                    'spare_img_9' => '',
+//                    'spare_img_0' => '',
+//                    'spare_img_1' => '',
+//                    'spare_img_2' => '',
+//                    'spare_img_3' => '',
+//                    'spare_img_4' => '',
+//                    'spare_img_5' => '',
+//                    'spare_img_6' => '',
+//                    'spare_img_7' => '',
+//                    'spare_img_8' => '',
+//                    'spare_img_9' => '',
                     
                     'price' => 14000,
                     'cost_price' => 8500,
                     
                     'consignor_id' => 1,
             		'cod' => 1,
+              		'dg_id' =>1,
+                	'deli_fee'=>0,          
             		'stock' => 20,
+                    'stock_show' => 1,
+                    'point_back' => 2,
                     
                     'about_ship' => 'オールマイティな活躍をしてくれるシマトネリコだけに、当店のシマトネリコの特徴は、端正で素直な樹形のものだけを厳選している点です。',
                     'detail' => 'オールマイティな活躍をしてくれるシマトネリコだけに、当店のシマトネリコの特徴は、端正で素直な樹形のものだけを厳選している点です。',

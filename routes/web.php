@@ -44,10 +44,13 @@ Route::post('dashboard/dgs/fee/{dgId}', 'DashBoard\DeliveryGroupController@postF
 //Route::resource('dashboard/prefectures', 'DashBoard\PrefectureController');
 
 //Item
+Route::post('dashboard/items/script', 'DashBoard\ItemController@postScript');
 Route::resource('dashboard/items', 'DashBoard\ItemController');
 
 //Category
+Route::resource('dashboard/categories/sub', 'DashBoard\CategorySecondController');
 Route::resource('dashboard/categories', 'DashBoard\CategoryController');
+
 
 //Tag
 Route::resource('dashboard/tags', 'DashBoard\TagController');
@@ -81,15 +84,34 @@ Route::resource('contact', 'Main\ContactController');
 //Single
 Route::get('/item/{id}', 'Main\SingleController@index');
 
-//Cart
+//Shop Cart
 Route::post('/cart/form', 'Main\SingleController@postForm');
 Route::post('/cart/payment', 'Main\SingleController@postCart');
 Route::get('/cart/thankyou', 'Main\SingleController@endCart');
 
 
+Route::post('/shop/cart', 'Cart\CartController@postCart');
+Route::get('/shop/cart', 'Cart\CartController@postCart');
+
+Route::post('/shop/form', 'Cart\CartController@postForm');
+Route::get('/shop/form', 'Cart\CartController@postForm');
+
+Route::post('/shop/confirm', 'Cart\CartController@postConfirm');
+Route::get('/shop/confirm', 'Cart\CartController@postConfirm');
+
+Route::post('/shop/thankyou', 'Cart\CartController@getThankyou');
+Route::get('/shop/thankyou', 'Cart\CartController@getThankyou');
+
+Route::get('/shop/clear', 'Cart\CartController@getClear');
+
+//Route::resource('/shop/cart', 'Cart\CartController');
+
+
 
 //Route::get('logout', 'Auth\LoginController@getLogout');
+
 Auth::routes();
+//Route::post('login', 'Auth\LoginController@postLogin');
 
 
 Route::get('/home', 'HomeController@index')->name('home');

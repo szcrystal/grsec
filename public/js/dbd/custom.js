@@ -569,15 +569,14 @@ var exe = (function() {
          	$select.on('change', function(){
                 var value = $(this).val();
                 var _tokenVal = $('input[name=_token]').val();
-                var $select2 = $('.select-second');
                 
-                $(this).next('span').text('! select2の選択肢の変更に注意');
+                $(this).next('span').text('! 子カテゴリーも変更して下さい');
                 
-                $('h1').text(_tokenVal);
+                //$('label').text(_tokenVal);
 
 				//controllerでajax処理する場合、_tokenも送る必要がある
                 $.ajax({
-                    url: '/dashboard/articles/script',
+                    url: '/dashboard/items/script',
                     type: "POST",
                     cache: false,
                     data: {
@@ -586,8 +585,8 @@ var exe = (function() {
                     },
                     //dataType: "json",
                     success: function(resData){
-                        //console.log(resData.selectValue[1]);
-                        var selectArr = resData.selectValue;
+                        //console.log(resData.subCates[1]);
+                        var selectArr = resData.subCates;
                         
                         $select2.empty().append(
                         	$('<option>'+ '選択して下さい' + '</option>').attr({
@@ -597,9 +596,11 @@ var exe = (function() {
                         );
                         
                         $.each(selectArr, function(index, val){
+                        	console.log(Object.keys(val));
+                            
                         	$select2.append(
-                         	   $('<option>' + val + '</option>').attr({
-                                  value: val,
+                         	   $('<option>' + Object.values(val) + '</option>').attr({
+                                  value: Object.keys(val),
                                   
                         		})
                         	);
@@ -619,21 +620,23 @@ var exe = (function() {
         	
                 if(location.pathname != "/") {
                 	var loc = location.pathname.split("/")[2];
-                 
-                 	   
-                 	console.log(location.href);
+
+                 	console.log(loc);
                   	
-                   	$('a#'+ loc).addClass('thisActive');
+                   	//$('a#'+ loc).addClass('thisActive');
                     
-                     $('a[href="'+location.href + '"]').addClass('thisActive');
-                     $('a[href="'+location.href + '"]').parents('ul').parent('li').children('a').addClass('thisActive').attr({href: '', }); 
+                    $('a[href="'+location.href + '"]').addClass('thisActive');
+                    $('a[href="'+location.href + '"]').parents('ul').parent('li').children('a').addClass('thisActive').attr({href: '', }); 
                   
                        
                     $thisUl = $('ul#'+ loc);
+                    console.log($thisUl);
+                    
                     $thisUl.removeClass('collapse');
+                    $thisUl.parent('li').children('a').addClass('thisActive').attr({href: ''});
                     //$thisUl.siblings('a').addClass('thisActive');
                     $thisUl.parents('ul').removeClass('collapse');
-                    //$thisUl.parents('ul').parent('li').children('a').addClass('thisActive');
+                    $thisUl.parents('ul').parent('li').children('a').addClass('thisActive').attr({href: ''});
                 }
                 
             

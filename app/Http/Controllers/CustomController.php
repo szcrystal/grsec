@@ -9,15 +9,19 @@ use App\TagGroup;
 use App\TagRelation;
 use App\Fix;
 use App\TotalizeAll;
+use App\Setting;
+use App\MailTemplate;
+
+use Mail;
 
 use Illuminate\Http\Request;
 
 class CustomController extends Controller
 {
 	
-    public function __construct(Article $article, Category $category, Tag $tag, TotalizeAll $totalizeAll)
+    public function __construct(Setting $setting, Article $article, Category $category, Tag $tag, TotalizeAll $totalizeAll)
     {
-    	
+    	$this->setting = $setting;
     	$this->article = $article;
         $this->category = $category;
         $this->tag = $tag;
@@ -32,6 +36,14 @@ class CustomController extends Controller
 	        return date('Y/m/d H:i', strtotime($arg));
         else
         	return date('Y/m/d', strtotime($arg));
+    }
+    
+    static function getPriceWithTax($price)
+    {
+    	$tax_per = Setting::get()->first()->tax_per;
+     	$tax = floor($price * $tax_per/100);   
+     	$price = $price + $tax;
+      	return $price;      
     }
     
     
@@ -176,6 +188,43 @@ class CustomController extends Controller
         return $checked;
     }
     
+    //郵便番号の出力
+    static function getPostNum($post_code)
+    {
+    	$post_code = str_pad($post_code, 7, 0, STR_PAD_LEFT); //0埋め
+    	return preg_replace("/^(\d{3})(\d{4})$/", "$1-$2", $post_code);
+    }
+    
+    static function sendMail($data, $typeCode)
+    {
+    	$set = Setting::get()->first();
+     	$templ = MailTemplate::where(['type_code'=>$typeCode])->first();   
+      
+//         echo $set->admin_email;
+//        exit;      
+        
+        $data['is_user'] = 1; //引数について　http://readouble.com/laravel/5/1/ja/mail.html
+        Mail::send('emails.'. $templ->type_code, $data, function($message) use ($data, $set, $templ) 
+        {
+            //$dataは連想配列としてviewに渡され、その配列のkey名を変数としてview内で取得出来る
+            $message -> from($set->admin_email, $set->admin_name)
+                     -> to($data['user']['email'], $data['user']['name'])
+                     -> subject($template->title);
+            //$message->attach($pathToFile);
+            
+        });
+        
+        //for Admin
+        $data['is_user'] = 0;
+        //if(! env('MAIL_CHECK', 0)) { //本番時 env('MAIL_CHECK')がfalseの時
+        Mail::send('emails.'. $template->type_code, $data, function($message) use ($data)
+        {
+            $message -> from($set->admin_email, $set->admin_name)
+                     -> to($set->admin_email, $set->admin_name)
+                     -> subject($template->type_name .'がありました - '. config('app.name'). ' -');
+        });
+    }
+    
     static function isAgent($agent)
     {
         $ua_sp = array('iPhone','iPod','Mobile ','Mobile;','Windows Phone','IEMobile');
@@ -205,6 +254,11 @@ class CustomController extends Controller
         }
         
         return preg_match('/'. $agent .'/', $_SERVER['HTTP_USER_AGENT']);
+    }
+    
+    static function isLocal()
+    {
+    	return env('APP_ENV') == 'local';
     }
     
 }

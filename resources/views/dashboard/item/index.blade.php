@@ -50,7 +50,7 @@
     <div class="mb-3">
     	
         <div class="mb-3 text-right">
-            <a href="{{url('dashboard/items/create')}}" class="btn btn-info">商品新規追加</a>
+            <a href="{{url('dashboard/items/create')}}" class="btn btn-info">新規追加</a>
         </div>
         
 

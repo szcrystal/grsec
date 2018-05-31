@@ -13,8 +13,11 @@ class Item extends Model
         'title' ,
         'catchcopy',
         'cate_id',
+        'subcate_id',
         
         'main_img',
+        
+        /*
         'spare_img_0',
         'spare_img_1',
         'spare_img_2',
@@ -25,13 +28,18 @@ class Item extends Model
         'spare_img_7',
         'spare_img_8',
         'spare_img_9',
+        */
         
         'price',
         'cost_price',
         
         'consignor_id',
         'cod',
+        'dg_id',
+        'deli_fee',
         'stock',
+        'stock_show',
+        'point_back',
         
         'about_ship',
         'detail',

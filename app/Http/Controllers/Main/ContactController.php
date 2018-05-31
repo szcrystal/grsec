@@ -40,10 +40,12 @@ class ContactController extends Controller
 //        });
 		
   		$cate_option = [
-    		'全般',
-      		'商品について',
-        	'購入について',
-         	'その他',               
+    		'商品について',
+      		'商品の入荷時期について',
+        	'配送方法・送料について',
+         	'ご注文後の変更について',
+          	'サイトの使用方法について',
+           	'その他',              
         ];
 
 //        $atclObj = NULL;
@@ -145,7 +147,7 @@ class ContactController extends Controller
             {
                 $message -> from($admin_email, $admin_name)
                          -> to($admin_email, $admin_name)
-                         -> subject('お問い合わせがありました - '. config('app.name', 'GREEN ROCKET'). ' -');
+                         -> subject('お問い合わせがありました - ' . $data['ask_category'] . ' -');
             });
     }
     

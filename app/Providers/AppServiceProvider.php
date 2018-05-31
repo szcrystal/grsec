@@ -4,6 +4,9 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
+/* **** for dip */
+//use Illuminate\Support\Facades\Schema;
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -13,7 +16,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+    	/* ***** for dip */
+        //Schema::defaultStringLength(191);
     }
 
     /**

@@ -16,6 +16,9 @@ class CreateUsersTable extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
+            //$table->string('email')->unique();
+            $table->string('email')->nullable()->default(NULL);
+            
             $table->string('hurigana')->nullable()->default(NULL);
             $table->string('gender')->nullable()->default(NULL);
             
@@ -29,8 +32,8 @@ class CreateUsersTable extends Migration
             $table->string('address_2')->nullable()->default(NULL);
             $table->string('address_3')->nullable()->default(NULL);
             
-            $table->string('email')->unique();
-            $table->integer('tel_num')->nullable()->default(NULL);
+            
+            $table->string('tel_num')->nullable()->default(NULL);
             
             $table->boolean('magazine')->nullable()->default(NULL);
             $table->boolean('user_register')->nullable()->default(NULL);
@@ -38,7 +41,7 @@ class CreateUsersTable extends Migration
             
             $table->boolean('destination')->nullable()->default(NULL);
             
-            $table->boolean('active');
+            $table->boolean('active')->nullable()->default(NULL);
             
             
             $table->string('password');
@@ -47,6 +50,8 @@ class CreateUsersTable extends Migration
             $table->rememberToken();
             $table->timestamps();
         });
+        
+        DB::statement('ALTER TABLE users CHANGE post_num post_num INT(7) UNSIGNED ZEROFILL');
         
         DB::table('users')->insert([
                 'name' => 'gr-user',
@@ -60,13 +65,13 @@ class CreateUsersTable extends Migration
                 'birth_month' => 1,
                 'birth_day' => 10,
                 
-                'post_num' => 1001701,
+                'post_num' => '0111701',
                 'prefecture' => '東京都',
                 'address_1' => '青ヶ島村',
                 'address_2' => '1番',
                 'address_3' => 'ABCビル',
                 
-                'tel_num' => 0311112222,
+                'tel_num' => '0311112222',
                 
                 'magazine' => 1,
                 'user_register' =>1,

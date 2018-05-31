@@ -6,13 +6,20 @@
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name', 'GREEN LOCKET') }}
                 </a>
-                <p></p>
+                <p>
+                <?php //use Ctm; ?>
+                @if(Ctm::isLocal())
+                	<a href="{{ url('shop/clear') }}">CLEAR</a>
+                 	<a href="{{ url('shop/cart') }}">cart</a>   
+                @endif
+                </p>
             </div>
         </div>
 
         <div class="float-left foot-wrap">
         	<?php
             	use App\Fix;
+             	  
             	$fixes = Fix::where('open_status', 1)->orderBy('id', 'asc')->get();
             ?>
         	@if($fixes)
@@ -27,7 +34,7 @@
                 </a></li>
 				@endforeach
 
-
+				
                 
             </ul>
             @endif

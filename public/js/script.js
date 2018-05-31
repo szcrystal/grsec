@@ -253,6 +253,29 @@ var exe = (function() {
         
         },
         
+        outReceive: function() {
+        	var $destination = $('input[name="destination"]');
+         	var $em = $('.receiver').find('em');
+             
+              if($destination.is(':checked')) {
+                $em.hide();
+              }
+              else {
+                $em.show();
+              }
+
+            $destination.on('click', function(){
+                if($(this).is(':checked')) { 
+                    $em.fadeOut(30);
+                    $('.receiver-error:visible').fadeOut(30).siblings().removeClass('is-invalid');
+                    //$('.receiver-error:visible');
+                }
+                else {
+                    $em.fadeIn(30);
+                }
+            });
+        },
+        
         
         
     } //return
@@ -270,6 +293,8 @@ $(function(e){ //ready
     exe.dropDown();
     exe.eventItem();
     exe.searchSlide();
+    
+    exe.outReceive();
   
   	//exe.addClass();
 });

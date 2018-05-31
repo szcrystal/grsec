@@ -5,19 +5,24 @@ namespace App\Http\Controllers\DashBoard;
 use App\Admin;
 use App\Item;
 use App\Category;
+use App\CategorySecond;
 use App\Tag;
 use App\TagRelation;
 use App\Consignor;
+use App\DeliveryGroup;
+use App\ItemImage;
 
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
+use App\Http\Requests;
+
 use Storage;
 
 class ItemController extends Controller
 {
-    public function __construct(Admin $admin, Item $item, Tag $tag, Category $category, TagRelation $tagRelation, Consignor $consignor)
+    public function __construct(Admin $admin, Item $item, Tag $tag, Category $category, CategorySecond $categorySecond, TagRelation $tagRelation, Consignor $consignor, DeliveryGroup $dg, ItemImage $itemImg)
     {
         
         $this -> middleware('adminauth');
@@ -26,9 +31,12 @@ class ItemController extends Controller
         $this -> admin = $admin;
         $this-> item = $item;
         $this->category = $category;
+        $this->categorySecond = $categorySecond;
         $this -> tag = $tag;
         $this->tagRelation = $tagRelation;
         $this->consignor = $consignor;
+        $this->dg = $dg;
+        $this->itemImg = $itemImg;
         
         $this->perPage = 20;
         
@@ -58,7 +66,13 @@ class ItemController extends Controller
     {
         $item = $this->item->find($id);
         $cates = $this->category->all();
+        $subcates = $this->categorySecond->where(['parent_id'=>$item->cate_id])->get();
         $consignors = $this->consignor->all();
+        $dgs = $this->dg->all();
+        
+        $spares = $this->itemImg->where(['item_id'=>$id, 'type'=>1])->get();
+        $snaps = $this->itemImg->where(['item_id'=>$id, 'type'=>2])->get();
+        
         //$users = $this->user->where('active',1)->get();
         
 		$tagNames = $this->tagRelation->where(['item_id'=>$id])->get()->map(function($item) {
@@ -69,19 +83,20 @@ class ItemController extends Controller
             return $item->name;
         })->all();
         
-        return view('dashboard.item.form', ['item'=>$item, 'cates'=>$cates, 'consignors'=>$consignors, 'tagNames'=>$tagNames, 'allTags'=>$allTags, 'id'=>$id, 'edit'=>1]);
+        return view('dashboard.item.form', ['item'=>$item, 'cates'=>$cates, 'subcates'=>$subcates, 'consignors'=>$consignors, 'dgs'=>$dgs, 'tagNames'=>$tagNames, 'allTags'=>$allTags, 'spares'=>$spares, 'snaps'=>$snaps, 'id'=>$id, 'edit'=>1]);
     }
    
     public function create()
     {
         $cates = $this->category->all();
         $consignors = $this->consignor->all();
+        $dgs = $this->dg->all();
         
         $allTags = $this->tag->get()->map(function($item){
         	return $item->name;
         })->all();
 //        $users = $this->user->where('active',1)->get();
-        return view('dashboard.item.form', ['cates'=>$cates, 'consignors'=>$consignors, 'allTags'=>$allTags]);
+        return view('dashboard.item.form', ['cates'=>$cates, 'consignors'=>$consignors, 'dgs'=>$dgs, 'allTags'=>$allTags]);
     }
 
     /**
@@ -96,7 +111,7 @@ class ItemController extends Controller
         
     	$rules = [
             'title' => 'required|max:255',
-            'cate_id' => 'required',
+            //'cate_id' => 'required',
             //'main_img' => 'filenaming',
         ];
         
@@ -120,6 +135,10 @@ class ItemController extends Controller
         else {
             $data['open_status'] = 1;
         }
+        
+        //stock_show
+        $data['stock_show'] = isset($data['stock_show']) ? 1 : 0;
+        
         
         if($editId) { //update（編集）の時
             $status = '商品が更新されました！';
@@ -148,7 +167,7 @@ class ItemController extends Controller
             
             //$aId = $editId ? $editId : $rand;
             //$pre = time() . '-';
-            $filename = 'item/' . $itemId . '/thumbnail/'/* . $pre*/ . $filename;
+            $filename = 'item/' . $itemId . '/main/'/* . $pre*/ . $filename;
             //if (App::environment('local'))
             $path = $data['main_img']->storeAs('public', $filename);
             //else
@@ -159,53 +178,132 @@ class ItemController extends Controller
             $item->save();
         }
         
-        //Spare-img
-        if(isset($data['spare_img'])) {
-            $spares = $data['spare_img'];
+        
+        //Spare Save ==================================================
+        foreach($data['spare_count'] as $count) {
+                        
+            if(isset($data['del_spare'][$count]) && $data['del_spare'][$count]) { //削除チェックの時
+                
+                $spareModel = $this->itemImg->where(['item_id'=>$itemId, 'type'=>1, 'number'=>$count+1])->first();
+                
+                if($spareModel !== null) {
+                    $spareModel ->delete();
+                }
             
-//            print_r($spares);
-//            exit;
+            }
+            else {
             
-            foreach($spares as $key => $spare) {
-            	if($spare != '') {
-            
-                    $filename = $spare->getClientOriginalName();
+                $spareImg = $this->itemImg->updateOrCreate(
+                    ['item_id'=>$itemId, 'type'=>1, 'number'=>$count+1],
+                    [
+                        'item_id'=>$itemId,
+                        'type' => 1,
+                        'number'=> $count+1,
+                    ]
+                );
+                
+                if(isset($data['spare_thumb'][$count])) {
+                
+                    $filename = $data['spare_thumb'][$count]->getClientOriginalName();
                     $filename = str_replace(' ', '_', $filename);
                     
                     //$aId = $editId ? $editId : $rand;
                     //$pre = time() . '-';
-                    $filename = 'item/' . $itemId . '/thumbnail/'/* . $pre*/ . $filename;
+                    $filename = 'item/' . $itemId . '/spare/'/* . $pre*/ . $filename;
                     //if (App::environment('local'))
-                    $path = $spare->storeAs('public', $filename);
+                    $path = $data['spare_thumb'][$count]->storeAs('public', $filename);
                     //else
                     //$path = Storage::disk('s3')->putFileAs($filename, $request->file('thumbnail'), 'public');
                     //$path = $request->file('thumbnail')->storeAs('', $filename, 's3');
+                
+                    //$data['model_thumb'] = $filename;
                     
-                    //$item->spare_img .'_'. $ii = $path;
-                    $item['spare_img_'. $key] = $path;
-                    $item->save();
+                    $spareImg->img_path = $filename;
+                    $spareImg->save();
                 }
-
             }
+            
+        } //foreach
+        
+        $num = 1;
+        $spares = $this->itemImg->where(['item_id'=>$itemId, 'type'=>1])->get();
+        
+        //Snapのナンバーを振り直す
+        foreach($spares as $spare) {
+            $spare->number = $num;
+            $spare->save();
+            $num++;
         }
         
-        //spare画像の削除
-        if(isset($data['del_spareimg'])) {
-        	$dels = $data['del_spareimg'];     
-         	
-          	foreach($dels as $key => $del) {
-           		if($del) {
-             		$imgName = $item['spare_img_'. $key];
-               		if($imgName != '') {
-                 		Storage::delete($imgName);
-                 	}
+        //Spare END ===========================================
+        
+        //Snap Save ==================================================
+        foreach($data['snap_count'] as $count) {
+        
+//            echo $data['del_snap'][0];
+//            exit;
+ 
+            if(isset($data['del_snap'][$count]) && $data['del_snap'][$count]) { //削除チェックの時
+                //echo $count . '/' .$data['del_snap'][$count];
+                //exit;
+                
+                $snapModel = $this->itemImg->where(['item_id'=>$itemId, 'type'=>2, 'number'=>$count+1])->first();
+                
+                if($snapModel !== null) {
+                    $snapModel ->delete();
+                }
+            
+            }
+            else {
+            
+                $snapImg = $this->itemImg->updateOrCreate(
+                    ['item_id'=>$itemId, 'type'=>2, 'number'=>$count+1],
+                    [
+                        'item_id'=>$itemId,
+                        //'snap_path' =>'',
+                        'type' => 2,
+                        'number'=> $count+1,
+                    ]
+                );
+                
+                if(isset($data['snap_thumb'][$count])) {
+                
+                    $filename = $data['snap_thumb'][$count]->getClientOriginalName();
+                    $filename = str_replace(' ', '_', $filename);
                     
-           			$item['spare_img_'. $key] = '';
-            		$item->save();
-             	}   
-           }
+                    //$aId = $editId ? $editId : $rand;
+                    //$pre = time() . '-';
+                    $filename = 'item/' . $itemId . '/snap/'/* . $pre*/ . $filename;
+                    //if (App::environment('local'))
+                    $path = $data['snap_thumb'][$count]->storeAs('public', $filename);
+                    //else
+                    //$path = Storage::disk('s3')->putFileAs($filename, $request->file('thumbnail'), 'public');
+                    //$path = $request->file('thumbnail')->storeAs('', $filename, 's3');
+                
+                    //$data['model_thumb'] = $filename;
+                    
+                    $snapImg->img_path = $filename;
+                    $snapImg->save();
+                }
+            }
+            
+        } //foreach
+        
+        $num = 1;
+        $snaps = $this->itemImg->where(['item_id'=>$itemId, 'type'=>2])->get();
+//            $snaps = $this->modelSnap->where(['model_id'=>$modelId])->get()->map(function($obj) use($num){
+//                
+//                return true;
+//            });
+        
+        //Snapのナンバーを振り直す
+        foreach($snaps as $snap) {
+            $snap->number = $num;
+            $snap->save();
+            $num++;
         }
         
+        //Snap END ===========================================
 
         
         //タグのsave動作
@@ -259,18 +357,74 @@ class ItemController extends Controller
         
         
         return redirect('dashboard/items/'. $itemId)->with('status', $status);
+        
+        
+        //Spare-img ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+//        if(isset($data['spare_img'])) {
+//            $spares = $data['spare_img'];
+//            
+////            print_r($spares);
+////            exit;
+//            
+//            foreach($spares as $key => $spare) {
+//                if($spare != '') {
+//            
+//                    $filename = $spare->getClientOriginalName();
+//                    $filename = str_replace(' ', '_', $filename);
+//                    
+//                    //$aId = $editId ? $editId : $rand;
+//                    //$pre = time() . '-';
+//                    $filename = 'item/' . $itemId . '/thumbnail/'/* . $pre*/ . $filename;
+//                    //if (App::environment('local'))
+//                    $path = $spare->storeAs('public', $filename);
+//                    //else
+//                    //$path = Storage::disk('s3')->putFileAs($filename, $request->file('thumbnail'), 'public');
+//                    //$path = $request->file('thumbnail')->storeAs('', $filename, 's3');
+//                    
+//                    //$item->spare_img .'_'. $ii = $path;
+//                    $item['spare_img_'. $key] = $path;
+//                    $item->save();
+//                }
+//
+//            }
+//        }
+//        
+//        //spare画像の削除
+//        if(isset($data['del_spareimg'])) {
+//            $dels = $data['del_spareimg'];     
+//             
+//              foreach($dels as $key => $del) {
+//                   if($del) {
+//                     $imgName = $item['spare_img_'. $key];
+//                       if($imgName != '') {
+//                         Storage::delete($imgName);
+//                     }
+//                    
+//                       $item['spare_img_'. $key] = '';
+//                    $item->save();
+//                 }   
+//           }
+//        }
+        
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-//    public function show($id)
-//    {
-//        //
-//    }
+	public function postScript(Request $request)
+    {
+        $cate_id = $request->input('selectValue');
+        
+//        $allTags = $this->tag->get()->map(function($item){
+//            return $item->name;
+//        })->all();
+        
+        $subCates = $this->categorySecond->where(['parent_id'=>$cate_id, ])->get()->map(function($obj) {
+        	return [ $obj->id => $obj->name ];
+        })->all();
+        
+         $array = [1, 11, 12, 13, 14, 15];
+         
+        return response()->json(array('subCates'=> $subCates)/*, 200*/); //200を指定も出来るが自動で200が返される  
+          //return view('dashboard.script.index', ['val'=>$val]);
+    }
 
     /**
      * Show the form for editing the specified resource.

@@ -37,8 +37,12 @@ class HomeController extends Controller
         
     }
     
-    public function index()
+    public function index(Request $request)
     {
+//        $request->session()->forget('item.data');
+//        $request->session()->forget('all');
+
+
         $cates = $this->category->all();
         
         $whereArr = ['open_status'=>1];

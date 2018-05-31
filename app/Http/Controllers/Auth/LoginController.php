@@ -8,6 +8,8 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 use Illuminate\Support\Facades\Auth;
 
+use Illuminate\Http\Request;
+
 class LoginController extends Controller
 {
     /*
@@ -38,6 +40,18 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+    
+//    public function postLogin(Request $request)
+//    {
+//        return view('auth.login');
+//    }
+    
+    protected function redirectTo()
+    {    	
+        if(isset($_POST['to_cart'])) {
+     		return '/shop/cart'; 
+      	}
     }
     
     

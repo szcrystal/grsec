@@ -90,6 +90,14 @@ a:hover, a:active {
 	outline: 0;
 }
 
+a.btn-custom:hover,
+button.btn-custom:hover {
+	color: #fff;
+	opacity: 0.7;
+}
+button.btn:hover {
+	opacity: 0.7;
+}
 
 /*max-width*/
 body {
@@ -117,10 +125,56 @@ body {
 	//border: 1px solid red;
 }
 
+
 .table-custom th {
-	background: #4a4b4c;
+	background: #3a3b3c;
 	color: #fff;
 }
+.table-custom th:after {
+	display: block;
+	clear: both;
+	content: "";
+	height: 0;
+}
+.table-custom th em {
+	font-size: 0.9em;
+	line-height: 0.9em;
+	font-style: normal;
+	background: lightsalmon;
+	color: #fff;
+	padding: 0.3em 0.2em;
+	float: right;
+}
+.btn-custom {
+	background: #3a3b3c;
+    color: #fff;
+    cursor: pointer;
+}
+.text-big {
+	font-size: 1.1em;
+}
+
+#guide {
+	margin: 1em 0 3em;
+}
+#guide > div {
+	width: 25%;
+	color: #cfcfcf;
+	font-size: 1.1em;
+}
+#guide .active-page {
+	color: #333;
+}
+#guide > div div {
+	background: #cfcfcf;
+	height: 5px;
+    width: 100%;
+    margin-bottom: 0.3em;
+}
+#guide .active-page div {
+	background: #333;
+}
+
 
 /* header */
 #masthead {

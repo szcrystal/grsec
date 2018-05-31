@@ -92,10 +92,17 @@
                 </a>
                 <ul class="sidenav-third-level collapse" id="categories"><!-- class=" collapse" -->
                     <li>
-                      <a href="{{ url('dashboard/categories') }}">カテゴリー一覧</a>
+                      <a href="{{ url('dashboard/categories') }}">親カテゴリー一覧</a>
                     </li>
                     <li>
-                      <a href="{{ url('dashboard/categories/create') }}">カテゴリー新規登録</a>
+                      <a href="{{ url('dashboard/categories/create') }}">親カテゴリー新規追加</a>
+                    </li>
+                    
+                    <li>
+                      <a href="{{ url('dashboard/categories/sub') }}">子カテゴリー一覧</a>
+                    </li>
+                    <li>
+                      <a href="{{ url('dashboard/categories/sub/create') }}">子カテゴリー新規追加</a>
                     </li>
 
                 </ul>
@@ -164,13 +171,13 @@
     	
         
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Example Pages">
-          <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseSale" data-parent="#exampleAccordion">
+          <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#sales" data-parent="#exampleAccordion">
             <i class="fa fa-fw fa-file"></i>
             <span class="nav-link-text">売上管理</span>
           </a>
-          <ul class="sidenav-second-level collapse" id="collapseSale">
+          <ul class="sidenav-second-level collapse" id="sales">
             <li>
-              <a href="#{{-- url('dashboard/sales') --}}">売上一覧</a>
+              <a href="{{ url('dashboard/sales') }}">売上一覧</a>
             </li>
 
 
@@ -187,6 +194,9 @@
           <ul class="sidenav-second-level collapse" id="users">
             <li>
               <a href="{{ url('dashboard/users') }}">会員一覧</a>
+            </li>
+            <li>
+              <a href="{{ url('dashboard/users?no_r=1') }}">非会員一覧</a>
             </li>
             {{--
             <li>

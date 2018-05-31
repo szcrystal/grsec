@@ -3,7 +3,13 @@
 @section('content')
 
     <div class="text-left">
-		<h1 class="Title"> 会員一覧</h1>
+		<h1 class="Title">
+  		@if($isUser)      
+        <span class="text-primary">会員一覧</span>
+        @else
+        <span class="text-warning">非会員一覧</span>
+        @endif
+        </h1>
 		<p class="Description"></p>
     </div>
 
@@ -96,8 +102,13 @@
                   
                   <td><small>{{ Ctm::changeDate($user->created_at, 1) }}</small></td>
                   
-                  
-                  <td><a href="{{url('dashboard/users/'. $user->id)}}" class="btn btn-success btn-sm center-block">確認</a></td>
+                  <?php 
+                  		$link = $user->id;
+                        if(! $isUser) {
+                            $link = $link . "?no_r=1";
+                        }
+                  ?>
+                  <td><a href="{{url('dashboard/users/'. $link)}}" class="btn btn-success btn-sm center-block">確認</a></td>
                   
                   <td></td>
                 </tr>

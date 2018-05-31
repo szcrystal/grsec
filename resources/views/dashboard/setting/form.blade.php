@@ -44,8 +44,14 @@
         </div>
     @endif
         
-    <div class="col-lg-10">
+    <div class="col-lg-11">
         <form class="form-horizontal" role="form" method="POST" action="/dashboard/settings" enctype="multipart/form-data">
+        	
+         	<div class="form-group">
+                <div class="">
+                    <button type="submit" class="btn btn-primary d-block w-25 mt-5 mb-2 mx-auto"><span class="octicon octicon-sync"></span>更　新</button>
+                </div>
+            </div>   
 
             {{ csrf_field() }}
             
@@ -53,7 +59,7 @@
                 <input type="hidden" name="edit_id" value="{{$id}}">
             @endif
 		
-  			<h4 class="mt-5">■ メール設定</h4>
+  			<h4 class="mt-5"><span class="text-secondary">■</span> メール設定</h4>
      		<hr>              
 			<fieldset class="mb-4 form-group{{ $errors->has('admin_name') ? ' has-error' : '' }}">
                 <label>管理者名</label>
@@ -95,7 +101,7 @@
             </fieldset>
             
             
-            <h4 class="mt-5">■ Shop設定</h4>
+            <h4 class="mt-5 pt-3"><span class="text-secondary">■</span> Shop設定</h4>
             <hr>
             <fieldset class="mb-4 form-group{{ $errors->has('tax_per') ? ' has-error' : '' }}">
                 <label>消費税率</label><br>
@@ -105,6 +111,18 @@
                     <div class="text-danger">
                         <span class="fa fa-exclamation form-control-feedback"></span>
                         <span>{{ $errors->first('tax_per') }}</span>
+                    </div>
+                @endif
+            </fieldset>
+            
+            <fieldset class="mb-4 form-group{{ $errors->has('cot_per') ? ' has-error' : '' }}">
+                <label>代引き手数料率</label><br>
+                <input class="form-control d-inline-block col-md-4{{ $errors->has('cot_per') ? ' is-invalid' : '' }}" name="cot_per" value="{{ Ctm::isOld() ? old('cot_per') : (isset($setting) ? $setting->cot_per : '') }}"> <span>%</span>
+
+                @if ($errors->has('cot_per'))
+                    <div class="text-danger">
+                        <span class="fa fa-exclamation form-control-feedback"></span>
+                        <span>{{ $errors->first('cot_per') }}</span>
                     </div>
                 @endif
             </fieldset>
@@ -120,6 +138,8 @@
                         </span>
                     @endif
             </fieldset>
+            
+            
             
         
             

@@ -12,11 +12,12 @@
     <title>{{ config('app.name', 'GREEN ROCKET') }}</title>
 
     <!-- Styles -->
-    
-    <link href="{{ asset('font-awesome/css/font-awesome.min.css') }}" rel="stylesheet" type="text/css">
     {{--
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.12/css/all.css" integrity="sha384-G0fIWCsCzJIMAVNQPfjH08cyYaUtMwjJwqiRKxxE/rx96Uroj1BtIQ6MLJuheaO9" crossorigin="anonymous">
+    <link href="{{ asset('font-awesome/css/font-awesome.min.css') }}" rel="stylesheet" type="text/css">
     --}}
+    
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
@@ -39,6 +40,11 @@
     </script>
 
 </head>
+<div style="position: relative; bottom:0; z-index:10000; background:red; width: 100%;">
+<?php 
+echo "aaa";
+print_r(session('item.data')); ?>
+</div>
 
 @if(Ctm::isAgent('all'))
 <?php exit; ?>

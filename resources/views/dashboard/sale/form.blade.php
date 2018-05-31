@@ -5,9 +5,9 @@
 	<div class="text-left">
         <h1 class="Title">
         @if(isset($edit))
-        会員情報
+        売上情報
         @else
-        会員情報
+        売上情報
         @endif
         </h1>
         <p class="Description"></p>
@@ -17,7 +17,7 @@
       <div class="col-sm-12 col-md-6 col-lg-6 col-xl-5 mb-5">
         <div class="bs-component clearfix">
         <div class="pull-left">
-            <a href="{{ url('/dashboard/users') }}" class="btn bg-white border border-1 border-round border-secondary text-primary"><i class="fa fa-angle-double-left" aria-hidden="true"></i>一覧へ戻る</a>
+            <a href="{{ url('/dashboard/sales') }}" class="btn bg-white border border-1 border-round border-secondary text-primary"><i class="fa fa-angle-double-left" aria-hidden="true"></i>一覧へ戻る</a>
         </div>
         </div>
     </div>
@@ -41,11 +41,24 @@
     @endif
         
     <div class="col-lg-12 mb-5">
-        <form class="form-horizontal" role="form" method="POST" action="/dashboard/users/{{$id}}">
+        <form class="form-horizontal" role="form" method="POST" action="/dashboard/sales/{{$id}}">
 
             {{ csrf_field() }}
 
             {{ method_field('PUT') }}
+            
+             <div class="form-group mb-3">
+                <div class="clearfix">
+                	<p class="w-50 float-left">
+                 		@if($sale->deli_done)
+                   		<span class="text-success text-big">この商品は発送済みです。</span>
+                     	@else
+                      	<span class="text-danger text-big">この商品は未配送です。</span>
+                       	@endif                  
+                    </p>
+                    <button type="submit" class="btn btn-info btn-block float-right mx-auto w-btn w-25 text-white"><i class="fa fa-envelope"></i> 配送済みメールを送る</button>
+                </div>
+            </div>
 
 
             	<div class="table-responsive">
@@ -56,70 +69,194 @@
                         </colgroup>
                         
                         <tbody>
-                            <tr>
-                                <th>ID</th>
-                                <td>{{ $user->id }}</td>
+                        	<tr>
+                                <th>売上ID</th>
+                                <td>{{ $sale->id }}</td>
                             </tr>
-
-                            <tr>
-                                <th>名前</th>
-                                <td>{{ $user->name }}</td>
-                            </tr>
-                            <tr>
-                                <th>フリガナ</th>
-                                <td>{{ $user->hurigana }}</td>
+                        	<tr>
+                                <th>購入日</th>
+                                <td>{{ Ctm::changeDate($sale->created_at, 0) }}</td>
                             </tr>
                             <tr>
-                                <th>性別</th>
-                                <td>{{ $user->gender }}</td>
+                                <th>購入者</th>
+                                <td>
+                                    @if($saleRel->is_user)
+                                        <span class="text-dark">会員</span>: 
+                                        <a href="{{ url('dashboard/users/'. $saleRel->user_id) }}">
+                                        （{{ $users->find($saleRel->user_id)->id }}）
+                                        {{ $users->find($saleRel->user_id)->name }}さん
+                                        </a>
+                                    @else
+                                         <span class="text-danger">非会員</span>: 
+                                         <a href="{{ url('dashboard/users/'. $saleRel->user_id.'?no_r=1') }}">
+                                         {{ $userNs->find($saleRel->user_id)->name }}さん
+                                         </a>
+                                     @endif
+                                </td>
                             </tr>
                             <tr>
-                                <th>メールアドレス</th>
-                                <td><a href="mailto:{{ $user->email }}">{{ $user->email }}</a></td>
-                            </tr>
-                            
-                            <tr>
-                                <th>生年月日</th>
-                                <td>{{$user->birth_year}}/{{$user->birth_month}}/{{$user->birth_day}}</td>
-                            </tr>
-                            <tr>
-                                <th>郵便番号</th>
-                                <td>{{ $user->post_num }}</td>
+                                <th>配送先</th>
+                                <td>
+                                〒{{ Ctm::getPostNum($receiver->post_num) }}<br>
+                                {{ $receiver->prefecture }}{{ $receiver->address_1 }}{{ $receiver->address_2 }}&nbsp;
+                                {{ $receiver->address_3 }}<br>
+                                {{ $receiver->name }} 様<br>
+                                TEL: {{ $receiver->tel_num }}
+                                
+                                </td>
                             </tr>
                             <tr>
-                                <th>都道府県</th>
-                                <td>{{ $user-> prefecture }}</td>
-                            </tr>
-                            <tr>
-                                <th>住所1</th>
-                                <td>{{ $user->address_1 }}</td>
-                            </tr>
-                            <tr>
-                                <th>住所2</th>
-                                <td>{{ $user->address_2 }}</td>
-                            </tr>
-                            <tr>
-                                <th>住所3</th>
-                                <td>{{ $user->address_3 }}</td>
-                            </tr>
-                            <tr>
-                                <th>電話番号</th>
-                                <td>{{ $user->tel_num }}</a></td>
+                            	<th>配送状況</th>
+                             	<td>   
+                            	@if($sale->deli_done)
+                                   <span class="text-success">発送済み</span>
+                                 @else
+                                  <span class="text-danger">未配送</span>
+                                @endif
+                                </td>  
                             </tr>
                             
-                            
                             <tr>
-                                <th>メールマガジン</th>
-                                <td>@if($user->magazine)
-                                  <span class="text-info">登録済</span>
+                                <th>注文番号</th>
+                                <td>{{ $sale->order_number }}</td>
+                            </tr>
+                            <tr>
+                                <th>(ID)商品名</th>
+                                <td class="clearfix">
+                                	
+                                	<a href="{{ url('dashboard/items/'. $item->id) }}">
+                                	<img src="{{ Storage::url($item->main_img) }}" width="80" height="60" class="img-fluid float-left mr-3">
+                                 	</a>   
+                                	<div>
+                                 		商品番号: {{ $item->number }}<br>   
+                                 		<a href="{{ url('dashboard/items/'. $item->id) }}">   
+                                 	   	（{{ $item->id }}）{{ $item->title }}
+                                     	</a>
+                                      	<br>   
+                                      	¥{{ number_format(Ctm::getPriceWithTax($item->price)) }} （税込）  
+                                    </div>
+	
+									<input type="hidden" name="send_mail[]" value="$sale->id">
+                                </td>
+                  
+                            </tr>
+                            <tr>
+                                <th>個数</th>
+                                <td>{{ $sale->item_count }}</td>
+                            </tr>
+                            <tr>
+                                <th>決済方法</th>
+                                <td>{{ $pms->find($sale->pay_method)->name }}</td>
+                            </tr>
+                            <tr>
+                                <th>商品合計金額（税込）</th>
+                                <td>¥{{ number_format($sale->total_price) }}</td>
+                            </tr>
+                            <tr>
+                                <th>送料区分／送料</th>
+                                <td>
+                                @if($item->deli_fee)
+                                	<span class="text-warning">送料無料商品</span>
                                 @else
-                                <span class="text-warning">未登録</span>
-                                @endif</td>
+                                	{{ $itemDg->name }}<br>
+                                @endif
+                                ¥{{ number_format($sale->deli_fee) }}
+                                </td>
+                            </tr>
+                            @if($sale->pay_method == 5)
+                            <tr>
+                                <th>代引手数料</th>
+                                <td>¥{{ number_format($sale->cod_fee) }}</td>
+                            </tr>
+                            @endif
+                            <tr>
+                                <th>総合計（A）</th>
+                                <?php $total = $sale->total_price + $sale->deli_fee + $sale->cod_fee; ?>
+                                <td><span style="font-size: 1.3em;" class="text-success"><b>¥{{ number_format($total) }}</b></span></td>
+                            </tr>
+                            
+                  			<tr>
+                                <th>粗利額</th>
+                                <td>
+                                <?php $arari = ($item->price - $item->cost_price) * $sale->item_count; ?>
+                                ¥{{ number_format($arari) }}
+                                </td>
                             </tr>
                             <tr>
-                                <th>登録日</th>
-                            	<td>{{ Ctm::changeDate($user->created_at) }}</td>
-                             </tr>   
+                                <th>粗利率</th>
+                                <td>{{ round($arari / $total * 100, 1) }}%</td>
+                            </tr>
+                  
+                  			<?php 
+                                $all = 0;
+                     			$num = 1; 
+                        	?>                 
+                  
+                  			@foreach($sameSales as $sameSale)
+                            <tr>
+                                <th>同時購入商品.{{ $num }}</th>
+                                <td class="clearfix">
+                                	@if(! $sale->deli_done)
+                                	<fieldset class="form-group checkbox">
+                                            <label>
+                                                <?php
+                                                    $checked = '';
+                                                    if(Ctm::isOld()) {
+                                                        if(old('open_status'))
+                                                            $checked = ' checked';
+                                                    }
+                                                    else {
+                                                        if(isset($item) && ! $item->open_status) {
+                                                            $checked = ' checked';
+                                                        }
+                                                    }
+                                                ?>
+                                                <input type="checkbox" name="send_mail[]" value="$sameSale->id"{{ $checked }}> 同時にメールする
+                                            </label>
+                                    </fieldset>
+                                    @endif
+                                    
+                                	<a href="{{ url('dashboard/sales/'.$sameSale->id) }}" class="float-right btn border border-secondary text-dark bg-white"><i class="fa fa-arrow-right"></i> 売上情報</a>
+                                    
+                                    商品番号: {{ $items->find($sameSale->item_id)->number }}<br>
+                                	<a href="{{ url('dashboard/items/'. $sameSale->item_id) }}">
+                                 	   
+                                    （{{ $sameSale->item_id }}）
+                                    {{ $items->find($sameSale->item_id)->title }}<br>
+                                    </a>
+                                    配送状況：
+                                    @if($sale->deli_done)
+                                       <span class="text-success">発送済み</span>
+                                     @else
+                                      <span class="text-danger">未配送</span>
+                                    @endif
+                                    <br>
+                                    個数：{{ $sameSale->item_count }}<br>
+                                    商品合計：¥{{ number_format($sameSale->total_price) }}<br>
+                                    送料：¥{{ number_format($sameSale->deli_fee) }}<br>
+                                    @if($sameSale->pay_method == 5)
+                                    	代引手数料：¥{{ number_format($sameSale->cod_fee) }}<br>
+                                    @endif
+                                    <?php $allTotal = $sameSale->total_price + $sameSale->deli_fee +  $sameSale->cod_fee; ?>
+                                    <b>総合計（B）：<span class="text-success">¥{{ number_format($allTotal) }}</span></b>
+                                    
+                                    <?php 
+                                    	$all += $allTotal;
+                                     	$num++;   
+                                    ?>
+                                    
+                                </td>
+                            </tr>
+                            @endforeach
+                            
+                            <tr>
+                                <th>購入総合計（A+B）</th>
+                                <td><span style="font-size: 1.2em;">¥{{ number_format($total + $all) }}</span></td>
+                            </tr>
+                            
+                            
+                            
+                 
                             
                             {{--
                             <tr>
@@ -147,13 +284,13 @@
                     </table>
                 </div>
 
-				{{--
+				
                 <div class="form-group mb-5">
                     <div class="clearfix">
-                        <button type="submit" class="btn btn-primary btn-block mx-auto w-btn w-25">更　新</button>
+                        <button type="submit" class="btn btn-info btn-block mx-auto w-btn w-25 text-white"><i class="fa fa-envelope"></i> 配送済みメールを送る</button>
                     </div>
                 </div>
-                --}}
+                
 
         </form>
     </div>

@@ -50,10 +50,6 @@
                     <button type="submit" class="btn btn-primary btn-block mx-auto w-btn w-25">更　新</button>
                 </div>
             </div>
-        
-			@if(isset($edit))
-                <input type="hidden" name="edit_id" value="{{$id}}">
-            @endif
 
             {{ csrf_field() }}
             
@@ -61,7 +57,7 @@
                 <input type="hidden" name="edit_id" value="{{$id}}">
             @endif
 
-		<div class="form-group">
+			<div class="form-group">
                 <div class="col-md-12 text-right">
                     <div class="checkbox">
                         <label>
@@ -72,7 +68,7 @@
                                         $checked = ' checked';
                                 }
                                 else {
-                                    if(isset($atcl) && ! $atcl->open_status) {
+                                    if(isset($item) && ! $item->open_status) {
                                         $checked = ' checked';
                                     }
                                 }
@@ -114,12 +110,87 @@
             @endif
         </div>
         
+        {{--
         <div class="form-group clearfix">
             @for($i=0; $i< 10; $i++)
                 @include('dashboard.item.img')
             @endfor
-    	</div>            
-  
+    	</div>
+     	--}}
+                    
+  		<div class="clearfix mb-3">
+                <hr>
+                <?php
+                    $s=0;
+                    //use App\Setting;
+                    $setCount = 10;
+                    //$setCount = Setting::get()->first()->snap_count;
+                ?>
+                @while($s < $setCount)
+                <div class="clearfix spare-img thumb-wrap">
+
+                <fieldset class="col-md-4 float-right">
+                	<div class="col-md-12 checkbox text-right px-5">
+                        <label>
+                            <?php
+                                $checked = '';
+                                if(Ctm::isOld()) {
+                                    if(old('del_spare.'.$s))
+                                        $checked = ' checked';
+                                }
+                                else {
+                                    if(isset($item) && $item->del_spare) {
+                                        $checked = ' checked';
+                                    }
+                                }
+                            ?>
+
+                            <input type="hidden" name="del_spare[{{$s}}]" value="0">
+                            <input type="checkbox" name="del_spare[{{$s}}]" value="1"{{ $checked }}> この画像を削除
+                        </label>
+                    </div>
+                </fieldset>
+                    
+                <fieldset class="float-left col-md-8 clearfix">
+                    <div class="col-md-5 float-left thumb-prev">
+                        @if(count(old()) > 0)
+                            @if(old('spare_thumb.'.$s) != '' && old('spare_thumb.'.$s))
+                            <img src="{{ Storage::url(old('spare_thumb.'.$s)) }}" class="img-fluid">
+                            @elseif(isset($snaps[$s]) && $snaps[$s]->snap_path)
+                            <img src="{{ Storage::url($spares[$s]->snap_path) }}" class="img-fluid">
+                            @else
+                            <span class="no-img">No Image</span>
+                            @endif
+                        @elseif(isset($spares[$s]) && $spares[$s]->img_path)
+                            <img src="{{ Storage::url($spares[$s]->img_path) }}" class="img-fluid">
+                        @else
+                            <span class="no-img">No Image</span>
+                        @endif
+                    </div>
+
+                    <div class="col-md-6 pull-left text-left form-group{{ $errors->has('spare_thumb.'.$s) ? ' has-error' : '' }}">
+                        <label for="model_thumb" class="col-md-12 text-left">サブ画像 <span class="text-primary">{{ $s+1}}</spa></label>
+                        <div class="col-md-12">
+                            <input id="model_thumb" class="thumb-file" type="file" name="spare_thumb[]">
+
+                            @if ($errors->has('spare_thumb.'.$s))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('spare_thumb.'.$s) }}</strong>
+                            </span>
+                        @endif
+                        </div>
+                    </div>
+                </fieldset>
+				</div>
+                <hr>
+
+                <input type="hidden" name="spare_count[]" value="{{ $s }}">
+
+                <?php $s++; ?>
+                @endwhile
+
+
+            </div>
         
 			<fieldset class="mb-4 form-group">
                 <label>商品番号</label>
@@ -160,7 +231,7 @@
             
             
             <fieldset class="mb-4 form-group">
-                <label>カテゴリー</label>
+                <label>親カテゴリー</label>
                 <select class="form-control select-first col-md-6{{ $errors->has('cate_id') ? ' is-invalid' : '' }}" name="cate_id">
                     <option disabled selected>選択して下さい</option>
                     @foreach($cates as $cate)
@@ -179,6 +250,7 @@
                         <option value="{{ $cate->id }}"{{ $selected }}>{{ $cate->name }}</option>
                     @endforeach
                 </select>
+                <span class="text-warning"></span>
                 
                 @if ($errors->has('cate_id'))
                     <div class="help-block text-danger">
@@ -189,12 +261,46 @@
                 
             </fieldset>
             
+            <fieldset class="mb-4 form-group">
+                <label>子カテゴリー</label>
+                <select class="form-control select-second col-md-6{{ $errors->has('subcate_id') ? ' is-invalid' : '' }}" name="subcate_id">
+                    
+                    @if(isset($subcates))
+                    	<option disabled selected>選択して下さい</option>
+                        @foreach($subcates as $subcate)
+                            <?php
+                                $selected = '';
+                                if(Ctm::isOld()) {
+                                    if(old('subcate_id') == $subcate->id)
+                                        $selected = ' selected';
+                                }
+                                else {
+                                    if(isset($item) && $item->subcate_id == $subcate->id) {
+                                        $selected = ' selected';
+                                    }
+                                }
+                            ?>
+                            <option value="{{ $subcate->id }}"{{ $selected }}>{{ $subcate->name }}</option>
+                        @endforeach
+                    @else
+                    	<option disabled selected>親カテゴリーを選択して下さい</option>
+                    @endif
+                </select>
+                
+                @if ($errors->has('subcate_id'))
+                    <div class="help-block text-danger">
+                        <span class="fa fa-exclamation form-control-feedback"></span>
+                        <span>{{ $errors->first('subcate_id') }}</span>
+                    </div>
+                @endif
+                
+            </fieldset>
+            
             
             <fieldset class="mb-4 form-group">
-                <label for="price" class="control-label">価格</label>
-                <input class="form-control col-md-6{{ $errors->has('price') ? ' is-invalid' : '' }}" name="price" value="{{ Ctm::isOld() ? old('price') : (isset($item) ? $item->price : '') }}">
+                <label for="price" class="control-label">価格（本体価格）</label>
+                <input class="form-control col-md-6{{ $errors->has('price') ? ' is-invalid' : '' }}" name="price" value="{{ Ctm::isOld() ? old('price') : (isset($item) ? $item->price : '') }}" placeholder="税抜き金額を入力">
                 
-
                 @if ($errors->has('price'))
                     <div class="text-danger">
                         <span class="fa fa-exclamation form-control-feedback"></span>
@@ -218,7 +324,7 @@
             
             <div class="mb-4 form-group">
                 <label>出荷元</label>
-                <select class="form-control select-first col-md-6{{ $errors->has('consignor_id') ? ' is-invalid' : '' }}" name="consignor_id">
+                <select class="form-control col-md-6{{ $errors->has('consignor_id') ? ' is-invalid' : '' }}" name="consignor_id">
                     <option selected>選択して下さい</option>
                     @foreach($consignors as $consignor)
                         <?php
@@ -245,14 +351,65 @@
                 
             </div>
             
+            <fieldset class="mb-2 form-group">
+                <label>配送区分</label>
+                <select class="form-control col-md-6{{ $errors->has('dg_id') ? ' is-invalid' : '' }}" name="dg_id">
+                    <option disabled selected>選択して下さい</option>
+                    @foreach($dgs as $dg)
+                        <?php
+                            $selected = '';
+                            if(Ctm::isOld()) {
+                                if(old('dg_id') == $dg->id)
+                                    $selected = ' selected';
+                            }
+                            else {
+                                if(isset($item) && $item->dg_id == $dg->id) {
+                                    $selected = ' selected';
+                                }
+                            }
+                        ?>
+                        <option value="{{ $dg->id }}"{{ $selected }}>{{ $dg->name }}</option>
+                    @endforeach
+                </select>
+                <span class="text-warning"></span>
+                
+                @if ($errors->has('dg_id'))
+                    <div class="help-block text-danger">
+                        <span class="fa fa-exclamation form-control-feedback"></span>
+                        <span>{{ $errors->first('dg_id') }}</span>
+                    </div>
+                @endif
+                
+            </fieldset>
+            
+            <fieldset class="form-group mb-4">
+                    <div class="checkbox">
+                        <label>
+                            <?php
+                                $checked = '';
+                                if(Ctm::isOld()) {
+                                    if(old('deli_fee'))
+                                        $checked = ' checked';
+                                }
+                                else {
+                                    if(isset($item) && $item->deli_fee) {
+                                        $checked = ' checked';
+                                    }
+                                }
+                            ?>
+                            <input type="checkbox" name="deli_fee" value="1"{{ $checked }}> 送料を無料にする
+                        </label>
+                    </div>
+            </fieldset>
+            
             
 
             <div class="mb-4 form-group">
                 <label>代金引換設定</label>
-                <select class="form-control select-first col-md-6{{ $errors->has('cod') ? ' is-invalid' : '' }}" name="cod">
+                <select class="form-control col-md-6{{ $errors->has('cod') ? ' is-invalid' : '' }}" name="cod">
                     <option disabled selected>選択して下さい</option>
                         <?php
-                        	$cods = array( 'なし', 'あり');
+                        	$cods = [ 1 =>'可', 0 =>'不可'];
                         ?>
                     @foreach($cods as $key => $cod)
                         <?php
@@ -279,7 +436,7 @@
                 
             </div>
             
-            <fieldset class="mb-4 form-group">
+            <fieldset class="mb-2 form-group">
                 <label for="stock" class="control-label">在庫数</label>
                 <input class="form-control col-md-6{{ $errors->has('stock') ? ' is-invalid' : '' }}" name="stock" value="{{ Ctm::isOld() ? old('stock') : (isset($item) ? $item->stock : '') }}">
                 
@@ -291,9 +448,42 @@
                     </div>
                 @endif
             </fieldset>
+            
+            <fieldset class="form-group mb-4">
+                    <div class="checkbox">
+                        <label>
+                            <?php
+                                $checked = '';
+                                if(Ctm::isOld()) {
+                                    if(old('stock_show'))
+                                        $checked = ' checked';
+                                }
+                                else {
+                                    if(isset($item) && $item->stock_show) {
+                                        $checked = ' checked';
+                                    }
+                                }
+                            ?>
+                            <input type="checkbox" name="stock_show" value="1"{{ $checked }}> 在庫数を表示する
+                        </label>
+                    </div>
+            </fieldset>
+            
+            <fieldset class="mb-4 form-group">
+                <label for="point_back" class="control-label">ポイント還元率</label>
+                <input class="form-control col-md-6{{ $errors->has('point_back') ? ' is-invalid' : '' }}" name="point_back" value="{{ Ctm::isOld() ? old('point_back') : (isset($item) ? $item->point_back : '') }}">
+                
+
+                @if ($errors->has('point_back'))
+                    <div class="text-danger">
+                        <span class="fa fa-exclamation form-control-feedback"></span>
+                        <span>{{ $errors->first('point_back') }}</span>
+                    </div>
+                @endif
+            </fieldset>
 
             
-            <fieldset class="mb-4 form-group{{ $errors->has('about_ship') ? ' is-invalid' : '' }}">
+            <fieldset class="my-5 form-group{{ $errors->has('about_ship') ? ' is-invalid' : '' }}">
                     <label for="detail" class="control-label">配送について</label>
 
                         <textarea id="detail" type="text" class="form-control" name="detail" rows="15">{{ Ctm::isOld() ? old('detail') : (isset($item) ? $item->detail : '') }}</textarea>
@@ -305,7 +495,7 @@
                         @endif
             </fieldset>
             
-            <fieldset class="mb-4 form-group{{ $errors->has('explain') ? ' is-invalid' : '' }}">
+            <fieldset class="my-5 form-group{{ $errors->has('explain') ? ' is-invalid' : '' }}">
                     <label for="explain" class="control-label">説明</label>
 
                     <textarea id="explain" type="text" class="form-control" name="explain" rows="15">{{ Ctm::isOld() ? old('explain') : (isset($item) ? $item->explain : '') }}</textarea>
@@ -329,9 +519,82 @@
                     @endif
             </fieldset>
             
+            <div class="clearfix mb-3">
+                <hr>
+                <?php
+                    $n=0;
+                    //use App\Setting;
+                    $setCount = 5;
+                    //$setCount = Setting::get()->first()->snap_count;
+                ?>
+                @while($n < $setCount)
+
+                <div class="clearfix spare-img thumb-wrap ">
+                    
+                <fieldset class="col-md-4 float-right">
+                    <div class="col-md-12 checkbox text-right px-5">
+                        <label>
+                            <?php
+                                $checked = '';
+                                if(Ctm::isOld()) {
+                                    if(old('del_snap.'.$n))
+                                        $checked = ' checked';
+                                }
+                                else {
+                                    if(isset($item) && $item->del_snap) {
+                                        $checked = ' checked';
+                                    }
+                                }
+                            ?>
+
+                            <input type="hidden" name="del_snap[{{$n}}]" value="0">
+                            <input type="checkbox" name="del_snap[{{$n}}]" value="1"{{ $checked }}> この画像を削除
+                        </label>
+                    </div>
+                </fieldset>
+                  
+                <fieldset class="float-left col-md-8 clearfix">
+                    <div class="col-md-5 float-left thumb-prev">
+                        @if(count(old()) > 0)
+                            @if(old('snap_thumb.'.$n) != '' && old('snap_thumb.'.$n))
+                            <img src="{{ Storage::url(old('snap_thumb.'.$n)) }}" class="img-fluid">
+                            @elseif(isset($snaps[$n]) && $snaps[$n]->snap_path)
+                            <img src="{{ Storage::url($snaps[$n]->snap_path) }}" class="img-fluid">
+                            @else
+                            <span class="no-img">No Image</span>
+                            @endif
+                        @elseif(isset($snaps[$n]) && $snaps[$n]->img_path)
+                            <img src="{{ Storage::url($snaps[$n]->img_path) }}" class="img-fluid">
+                        @else
+                            <span class="no-img">No Image</span>
+                        @endif
+                    </div>
+
+                    <div class="col-md-6 float-left text-left form-group{{ $errors->has('snap_thumb.'.$n) ? ' has-error' : '' }}">
+                        <label for="model_thumb" class="col-md-12 text-left">商品情報画像 <span class="text-primary">{{ $n+1 }}</span></label>
+                        <div class="col-md-12">
+                            <input id="model_thumb" class="thumb-file" type="file" name="snap_thumb[]">
+
+                            @if ($errors->has('snap_thumb.'.$n))
+                                <span class="help-block">
+                                <strong>{{ $errors->first('snap_thumb.'.$n) }}</strong>
+                            </span>
+                        @endif
+                        </div>
+                    </div>
+                </fieldset>
+                
+                </div>            
+                <hr>
+
+                <input type="hidden" name="snap_count[]" value="{{ $n }}">
+
+                <?php $n++; ?>
+                @endwhile
+            </div>
+            
             
             <div class="clearfix tag-wrap">
-
                 <div class="tag-group form-group{{ $errors->has('tag-group') ? ' is-invalid' : '' }}">
                     <label for="tag-group" class="control-label">タグ</label>
                     <div class="clearfix">
@@ -363,6 +626,7 @@
                 </div>
 
             </div><?php //tagwrap ?>
+            
             
             
             <fieldset class="mb-4 form-group{{ $errors->has('what_is') ? ' is-invalid' : '' }}">

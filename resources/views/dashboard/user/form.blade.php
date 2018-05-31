@@ -4,10 +4,10 @@
 	
 	<div class="text-left">
         <h1 class="Title">
-        @if(isset($edit))
+        @if($isUser)
         会員情報
         @else
-        会員情報
+        非会員情報
         @endif
         </h1>
         <p class="Description"></p>
@@ -17,7 +17,10 @@
       <div class="col-sm-12 col-md-6 col-lg-6 col-xl-5 mb-5">
         <div class="bs-component clearfix">
         <div class="pull-left">
-            <a href="{{ url('/dashboard/users') }}" class="btn bg-white border border-1 border-round border-secondary text-primary"><i class="fa fa-angle-double-left" aria-hidden="true"></i>一覧へ戻る</a>
+        	<?php
+         		$link = $isUser ? '' : "?no_r=1";
+         	?>   
+            <a href="{{ url('/dashboard/users'.$link) }}" class="btn bg-white border border-1 border-round border-secondary text-primary"><i class="fa fa-angle-double-left" aria-hidden="true"></i>一覧へ戻る</a>
         </div>
         </div>
     </div>
@@ -40,14 +43,14 @@
         </div>
     @endif
         
-    <div class="col-lg-12 mb-5">
+    <div class="mb-5">
         <form class="form-horizontal" role="form" method="POST" action="/dashboard/users/{{$id}}">
 
             {{ csrf_field() }}
 
             {{ method_field('PUT') }}
 
-
+	<h4 class="mb-1">会員情報</h4>
             	<div class="table-responsive">
                     <table class="table table-bordered">
                         <colgroup>
@@ -56,6 +59,16 @@
                         </colgroup>
                         
                         <tbody>
+                        	<tr>
+                                <th></th>
+                                <td>
+                                	@if($isUser)
+                                 		<span class="text-primary text-big"><b>会員</b></a>   
+                                 	@else
+                                  		<span class="text-warning text-big"><b>非会員</b></a>   
+                                  	@endif      
+                                </td>
+                            </tr>
                             <tr>
                                 <th>ID</th>
                                 <td>{{ $user->id }}</td>
@@ -77,14 +90,18 @@
                                 <th>メールアドレス</th>
                                 <td><a href="mailto:{{ $user->email }}">{{ $user->email }}</a></td>
                             </tr>
+                            <tr>
+                                <th>電話番号</th>
+                                <td>{{ $user->tel_num }}</a></td>
+                            </tr>
                             
                             <tr>
                                 <th>生年月日</th>
-                                <td>{{$user->birth_year}}/{{$user->birth_month}}/{{$user->birth_day}}</td>
+                                <td>{{$user->birth_year}}年{{$user->birth_month}}月{{$user->birth_day}}日</td>
                             </tr>
                             <tr>
                                 <th>郵便番号</th>
-                                <td>{{ $user->post_num }}</td>
+                                <td>〒{{ Ctm::getPostNum($user->post_num) }}</td>
                             </tr>
                             <tr>
                                 <th>都道府県</th>
@@ -102,11 +119,6 @@
                                 <th>住所3</th>
                                 <td>{{ $user->address_3 }}</td>
                             </tr>
-                            <tr>
-                                <th>電話番号</th>
-                                <td>{{ $user->tel_num }}</a></td>
-                            </tr>
-                            
                             
                             <tr>
                                 <th>メールマガジン</th>
@@ -116,6 +128,12 @@
                                 <span class="text-warning">未登録</span>
                                 @endif</td>
                             </tr>
+                            @if($isUser)
+                            <tr>
+                            	<th>残ポイント</th>
+                             	<td>{{ $user->point }}</td>   
+                            </tr>
+                            @endif
                             <tr>
                                 <th>登録日</th>
                             	<td>{{ Ctm::changeDate($user->created_at) }}</td>
@@ -146,6 +164,48 @@
                         </tbody>
                     </table>
                 </div>
+   
+   
+                
+                <h4 class="mt-3">購入商品</h4>
+       
+        {{ $sales->links() }}
+        
+                <div class="table-responsive">
+                    <table class="table table-bordered bg-white">
+                    	<thead>
+                     		<tr style="background: #dfdcdb;">
+                       			<th>SaleID</th>      
+                       			<th>(ID)商品名</th>
+                          		<th>個数</th>
+                            	<th>商品合計</th>
+                             	<th>発送状況</th>    
+                             	<th>購入日</th>
+                                <th></th>
+                       		</tr>         
+                        </thead>
+                        
+                        <tbody>
+                        	@foreach($sales as $sale)
+                        	<tr>
+                         		<td>{{ $sale->id }}</td>
+                           		<td>({{ $itemModel->find($sale->item_id)->id }}){{ $itemModel->find($sale->item_id)->title }}</td>
+                             	<td>{{ $sale->item_count }}</td>
+                              	<td>¥{{ number_format($sale->total_price) }}</td>
+                               <td>
+                               	@if($sale->deli_done)
+                                	<span class="text-success">発送済み</span>
+                                @else
+                                	<span class="text-danger">未発送</span>
+                                @endif   
+                               </td>   
+                              <td>{{ Ctm::changeDate($sale->created_at, 0)  }}</td>   
+                              <td><a href="{{ url('dashboard/sales/'.$sale->id) }}" class="btn btn-info">確認</a></td>              
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
 
 				{{--
                 <div class="form-group mb-5">
@@ -154,6 +214,8 @@
                     </div>
                 </div>
                 --}}
+                
+{{ $sales->links() }}
 
         </form>
     </div>
