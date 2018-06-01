@@ -18,8 +18,9 @@ class CreateReceiversTable extends Migration
             
             $table->integer('user_id')->nullable()->default(NULL);
             $table->boolean('regist')->nullable()->default(NULL);
+            $table->integer('salerel_id')->nullable()->default(NULL);
             
-            $table->integer('order_number')->nullable()->default(NULL);
+            $table->string('order_number')->nullable()->default(NULL);
             
             $table->string('name')->nullable()->default(NULL);
             $table->string('hurigana')->nullable()->default(NULL);

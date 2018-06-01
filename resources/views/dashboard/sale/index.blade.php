@@ -84,7 +84,11 @@
                 	<td><a href="{{url('dashboard/sales/'. $sale->id)}}" class="btn btn-success btn-sm center-block">確認</a></td>
                   <td>{{ $sale->id }}</td>
                   <td>{{ $saleRel->order_number }}</td>
-                  <td>({{ $sale->item_id }}){{ $items->find($sale->item_id)->title }}</td>
+                  <td>
+                  	<?php $item = $items->find($sale->item_id) ?>
+                  	({{ $sale->item_id }}){{ $item->title }}<br>
+                  	[{{ $cates->find($item->cate_id)->name }}]
+                  </td>
                   <td>
                   	 @if($sale->deli_done)
                        <span class="text-success">発送済み</span>

@@ -25,7 +25,7 @@
 
     @if (count($errors) > 0)
         <div class="alert alert-danger">
-            <strong>Error!!</strong> 追加できません<br><br>
+            <strong>Error!!</strong><br><br>
             <ul>
                 @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
@@ -41,11 +41,10 @@
     @endif
         
     <div class="col-lg-12 mb-5">
-        <form class="form-horizontal" role="form" method="POST" action="/dashboard/sales/{{$id}}">
+        <form class="form-horizontal" role="form" method="POST" action="/dashboard/sales">
 
             {{ csrf_field() }}
 
-            {{ method_field('PUT') }}
             
              <div class="form-group mb-3">
                 <div class="clearfix">
@@ -83,15 +82,20 @@
                                     @if($saleRel->is_user)
                                         <span class="text-dark">会員</span>: 
                                         <a href="{{ url('dashboard/users/'. $saleRel->user_id) }}">
-                                        （{{ $users->find($saleRel->user_id)->id }}）
-                                        {{ $users->find($saleRel->user_id)->name }}さん
-                                        </a>
+                                        <?php
+                                        	$users = $users->find($saleRel->user_id);
+                                        ?>
                                     @else
                                          <span class="text-danger">非会員</span>: 
                                          <a href="{{ url('dashboard/users/'. $saleRel->user_id.'?no_r=1') }}">
-                                         {{ $userNs->find($saleRel->user_id)->name }}さん
-                                         </a>
+                                         <?php
+                                            $users = $userNs->find($saleRel->user_id);
+                                        ?>   
                                      @endif
+                                     （{{ $users->id }}）{{ $users->name }}さん
+                                     <input type="hidden" name="user_email" value="{{ $users->email }}">
+                                     <input type="hidden" name="user_name" value="{{ $users->name }}">
+                                    </a>
                                 </td>
                             </tr>
                             <tr>
@@ -132,11 +136,13 @@
                                  		<a href="{{ url('dashboard/items/'. $item->id) }}">   
                                  	   	（{{ $item->id }}）{{ $item->title }}
                                      	</a>
-                                      	<br>   
-                                      	¥{{ number_format(Ctm::getPriceWithTax($item->price)) }} （税込）  
+                                      	<br>
+                                       	[{{ $cates->find($item->cate_id)->name }}]
+                                       	<br>      
+                                      	¥<b>{{ number_format(Ctm::getPriceWithTax($item->price)) }}</b> （税込）  
                                     </div>
 	
-									<input type="hidden" name="send_mail[]" value="$sale->id">
+									<input type="hidden" name="sale_ids[]" value="{{ $sale->id }}">
                                 </td>
                   
                             </tr>
@@ -150,7 +156,7 @@
                             </tr>
                             <tr>
                                 <th>商品合計金額（税込）</th>
-                                <td>¥{{ number_format($sale->total_price) }}</td>
+                                <td><b>¥{{ number_format($sale->total_price) }}</b></td>
                             </tr>
                             <tr>
                                 <th>送料区分／送料</th>
@@ -211,7 +217,7 @@
                                                         }
                                                     }
                                                 ?>
-                                                <input type="checkbox" name="send_mail[]" value="$sameSale->id"{{ $checked }}> 同時にメールする
+                                                <input type="checkbox" name="sale_ids[]" value="{{ $sameSale->id }}"{{ $checked }}> 同時にメールする
                                             </label>
                                     </fieldset>
                                     @endif

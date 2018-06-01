@@ -17,7 +17,7 @@ class CreateSalesTable extends Migration
             $table->increments('id');
             
             $table->integer('salerel_id')->nullable()->default(NULL);
-            $table->integer('order_number')->nullable()->default(NULL);
+            $table->string('order_number')->nullable()->default(NULL);
             
             $table->integer('item_id')->nullable()->default(NULL);
             $table->integer('item_count')->nullable()->default(NULL);

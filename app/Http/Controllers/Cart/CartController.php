@@ -180,7 +180,7 @@ class CartController extends Controller
         } //AuthCheck
         
         
-        //別配送先登録 Receiver
+        //配送先登録 Receiver 別先であってもなくても登録
         $isEmpty = 1;
         foreach($receiverData as $receive) {
         	if(empty($receive)) { //空の時はTrueになる
@@ -211,6 +211,7 @@ class CartController extends Controller
         $receiver->save();
         
         $receiverId = $receiver->id;
+        //配送先END -----------------------------------------------
    
        
        //paymentCode ネットバンクとGMOのみ
@@ -231,7 +232,7 @@ class CartController extends Controller
        //SaleRelationのcreate
         $saleRel = $this->saleRel->create([
             'order_number' => $all['order_number'], //コンビニなし
-             'regist' =>$all['regist'],
+            'regist' =>$all['regist'],
             'user_id' =>$userId,
             'is_user' => $isUser,
             'receiver_id' => $receiverId, 
@@ -244,6 +245,7 @@ class CartController extends Controller
             
             'destination' => $destination,
             'deli_done' => 0,
+            'pay_done' => 0,
             
             'pay_trans_code' =>$data['trans_code'], //コンビニはこれのみ
             'pay_user_id' =>isset($data['user_id']) ? $data['user_id'] : null, //コンビニなし
@@ -255,6 +257,9 @@ class CartController extends Controller
         ]);
         
         $saleRelId = $saleRel->id;
+        
+        $receiver->salerel_id = $saleRelId;
+        $receiver->save();
     
     	$saleIds = array();
         //売上登録処理 Sale create
@@ -280,6 +285,7 @@ class CartController extends Controller
                     'total_price' => $val['item_total_price'],
                     
                     'deli_done' => 0,
+                    'pay_done' => 0,
                     
                     /*
                     'destination' => $destination,
@@ -475,7 +481,8 @@ class CartController extends Controller
         $number = $itemData[0]->number;
         
         //Order_Number
-        $rand = mt_rand();
+        //$rand = mt_rand();
+        $orderNum = Ctm::getOrderNum(10);
         
         //UserInfo
         if(isset($data['user'])) { 
@@ -520,7 +527,7 @@ class CartController extends Controller
         $settles['user_mail_add'] = $user_email;
         $settles['item_code'] = $number;
         $settles['item_name'] = $title;
-        $settles['order_number'] = $rand;
+        $settles['order_number'] = $orderNum;
         $settles['st_code'] = $payCode;
         $settles['mission_code'] = 1;
         $settles['item_price'] = $totalFee;
@@ -600,6 +607,8 @@ class CartController extends Controller
         $itemData = array();
         $allPrice = 0;
         
+//        echo date('Y/m/d', '2018-04-01 12:57:30');
+//        exit;
 //        $request->session()->forget('item.data');
 //        $request->session()->forget('all');
         

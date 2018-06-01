@@ -12,14 +12,18 @@ use App\PayMethod;
 use App\Receiver;
 use App\DeliveryGroup;
 use App\Consignor;
+use App\Category;
 
+use App\Mail\OrderSend;
+
+use Mail;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class SaleController extends Controller
 {
-    public function __construct(Admin $admin, Sale $sale, SaleRelation $saleRel, Item $item, User $user, PayMethod $payMethod, UserNoregist $userNoregist, Receiver $receiver, DeliveryGroup $dg, Consignor $consignor)
+    public function __construct(Admin $admin, Sale $sale, SaleRelation $saleRel, Item $item, User $user, PayMethod $payMethod, UserNoregist $userNoregist, Receiver $receiver, DeliveryGroup $dg, Consignor $consignor, Category $category)
     {
         
         $this -> middleware('adminauth');
@@ -34,6 +38,7 @@ class SaleController extends Controller
         $this->payMethod = $payMethod;
         $this->receiver = $receiver;
         $this->dg = $dg;
+        $this->category = $category;
 //        $this->category = $category;
 //        $this -> tag = $tag;
 //        $this->tagRelation = $tagRelation;
@@ -58,9 +63,11 @@ class SaleController extends Controller
         $users = $this->user;
         $userNs = $this->userNoregist;
         
+        $cates = $this->category;
+        
         //$status = $this->articlePost->where(['base_id'=>15])->first()->open_date;
         
-        return view('dashboard.sale.index', ['saleObjs'=>$saleObjs, 'saleRels'=>$saleRels, 'items'=>$items, 'pms'=>$pms, 'users'=>$users, 'userNs'=>$userNs, ]);
+        return view('dashboard.sale.index', ['saleObjs'=>$saleObjs, 'saleRels'=>$saleRels, 'items'=>$items, 'pms'=>$pms, 'users'=>$users, 'userNs'=>$userNs, 'cates'=>$cates]);
     }
 
     public function show($id)
@@ -80,7 +87,9 @@ class SaleController extends Controller
 
 		$receiver = $this->receiver->find($saleRel->receiver_id);
   
-  		$itemDg = $this->dg->find($item->dg_id);      
+  		$itemDg = $this->dg->find($item->dg_id); 
+    
+    	$cates = $this->category;           
 //        
 //        $tagNames = $this->tagRelation->where(['item_id'=>$id])->get()->map(function($item) {
 //            return $this->tag->find($item->tag_id)->name;
@@ -90,7 +99,7 @@ class SaleController extends Controller
 //            return $item->name;
 //        })->all();
         
-        return view('dashboard.sale.form', ['sale'=>$sale, 'saleRel'=>$saleRel, 'sameSales'=>$sameSales, 'item'=>$item, 'items'=>$items, 'pms'=>$pms, 'users'=>$users, 'userNs'=>$userNs, 'receiver'=>$receiver, 'itemDg'=>$itemDg, 'id'=>$id, 'edit'=>1]);
+        return view('dashboard.sale.form', ['sale'=>$sale, 'saleRel'=>$saleRel, 'sameSales'=>$sameSales, 'item'=>$item, 'items'=>$items, 'pms'=>$pms, 'users'=>$users, 'userNs'=>$userNs, 'receiver'=>$receiver, 'cates'=>$cates, 'itemDg'=>$itemDg, 'id'=>$id, 'edit'=>1]);
     }
    
     public function create()
@@ -113,173 +122,192 @@ class SaleController extends Controller
      */
     public function store(Request $request)
     {
-        $editId = $request->has('edit_id') ? $request->input('edit_id') : 0;
-        
-        $rules = [
-            'title' => 'required|max:255',
-            'cate_id' => 'required',
-            //'main_img' => 'filenaming',
-        ];
-        
-         $messages = [
-             'title.required' => '「商品名」を入力して下さい。',
-            'cate_id.required' => '「カテゴリー」を選択して下さい。',
-            
-            //'post_thumb.filenaming' => '「サムネイル-ファイル名」は半角英数字、及びハイフンとアンダースコアのみにして下さい。',
-            //'post_movie.filenaming' => '「動画-ファイル名」は半角英数字、及びハイフンとアンダースコアのみにして下さい。',
-            //'slug.unique' => '「スラッグ」が既に存在します。',
-        ];
-        
-        $this->validate($request, $rules, $messages);
+//        $editId = $request->has('edit_id') ? $request->input('edit_id') : 0;
+//        
+//        $rules = [
+//            'title' => 'required|max:255',
+//            'cate_id' => 'required',
+//            //'main_img' => 'filenaming',
+//        ];
+//        
+//         $messages = [
+//             'title.required' => '「商品名」を入力して下さい。',
+//            'cate_id.required' => '「カテゴリー」を選択して下さい。',
+//            
+//            //'post_thumb.filenaming' => '「サムネイル-ファイル名」は半角英数字、及びハイフンとアンダースコアのみにして下さい。',
+//            //'post_movie.filenaming' => '「動画-ファイル名」は半角英数字、及びハイフンとアンダースコアのみにして下さい。',
+//            //'slug.unique' => '「スラッグ」が既に存在します。',
+//        ];
+//        
+//        $this->validate($request, $rules, $messages);
         
         $data = $request->all();
         
-        //status
-        if(isset($data['open_status'])) { //非公開On
-            $data['open_status'] = 0;
-        }
+        
+        $mail = Mail::to($data['user_email'], $data['user_name'])->send(new OrderSend($data['sale_ids']));
+        
+        if(! $mail) {
+        	$status = 'メールが送信されました。';
+         	
+            $sales = $this->sale->find($data['sale_ids']);
+          	foreach($sales as $sale) {
+                $sale->deli_done = 1;
+                $sale ->save();      
+           	}   
+    
+	        return redirect('dashboard/sales/'. $data['sale_ids'][0])->with('status', $status);
+        } 
         else {
-            $data['open_status'] = 1;
+        	$errors = array('メールの送信に失敗しました。');
+        	return redirect('dashboard/sales/'. $data['sale_ids'][0])->withErrors($errors)->withInput();
         }
         
-        if($editId) { //update（編集）の時
-            $status = '商品が更新されました！';
-            $item = $this->item->find($editId);
-        }
-        else { //新規追加の時
-            $status = '商品が追加されました！';
-            //$data['model_id'] = 1;
-            
-            $item = $this->item;
-        }
-        
-        $item->fill($data);
-        $item->save();
-        $itemId = $item->id;
-        
-//        print_r($data['main_img']);
-//        exit;
-        
-        //Main-img
-        if(isset($data['main_img'])) {
-                
-            //$filename = $request->file('main_img')->getClientOriginalName();
-            $filename = $data['main_img']->getClientOriginalName();
-            $filename = str_replace(' ', '_', $filename);
-            
-            //$aId = $editId ? $editId : $rand;
-            //$pre = time() . '-';
-            $filename = 'item/' . $itemId . '/thumbnail/'/* . $pre*/ . $filename;
-            //if (App::environment('local'))
-            $path = $data['main_img']->storeAs('public', $filename);
-            //else
-            //$path = Storage::disk('s3')->putFileAs($filename, $request->file('thumbnail'), 'public');
-            //$path = $request->file('thumbnail')->storeAs('', $filename, 's3');
-            
-            $item->main_img = $path;
-            $item->save();
-        }
-        
-        //Spare-img
-        if(isset($data['spare_img'])) {
-            $spares = $data['spare_img'];
-            
-//            print_r($spares);
-//            exit;
-            
-            foreach($spares as $key => $spare) {
-                if($spare != '') {
-            
-                    $filename = $spare->getClientOriginalName();
-                    $filename = str_replace(' ', '_', $filename);
-                    
-                    //$aId = $editId ? $editId : $rand;
-                    //$pre = time() . '-';
-                    $filename = 'item/' . $itemId . '/thumbnail/'/* . $pre*/ . $filename;
-                    //if (App::environment('local'))
-                    $path = $spare->storeAs('public', $filename);
-                    //else
-                    //$path = Storage::disk('s3')->putFileAs($filename, $request->file('thumbnail'), 'public');
-                    //$path = $request->file('thumbnail')->storeAs('', $filename, 's3');
-                    
-                    //$item->spare_img .'_'. $ii = $path;
-                    $item['spare_img_'. $key] = $path;
-                    $item->save();
-                }
-
-            }
-        }
-        
-        //spare画像の削除
-        if(isset($data['del_spareimg'])) {
-            $dels = $data['del_spareimg'];     
-             
-              foreach($dels as $key => $del) {
-                   if($del) {
-                     $imgName = $item['spare_img_'. $key];
-                       if($imgName != '') {
-                         Storage::delete($imgName);
-                     }
-                    
-                       $item['spare_img_'. $key] = '';
-                    $item->save();
-                 }   
-           }
-        }
-        
-
-        
-        //タグのsave動作
-        if(isset($data['tags'])) {
-            $tagArr = $data['tags'];
-        
-            foreach($tagArr as $tag) {
-                
-                //Tagセット
-                $setTag = Tag::firstOrCreate(['name'=>$tag]); //既存を取得 or なければ作成
-                
-                if(!$setTag->slug) { //新規作成時slugは一旦NULLでcreateされるので、その後idをセットする
-                    $setTag->slug = $setTag->id;
-                    $setTag->save();
-                }
-                
-                $tagId = $setTag->id;
-                $tagName = $tag;
-
-
-                //tagIdがRelationになければセット ->firstOrCreate() ->updateOrCreate()
-                $tagRel = $this->tagRelation->firstOrCreate(
-                    ['tag_id'=>$tagId, 'item_id'=>$itemId]
-                );
-                /*
-                $tagRel = $this->tagRelation->where(['tag_id'=>$tagId, 'item_id'=>$itemId])->get();
-                if($tagRel->isEmpty()) {
-                    $this->tagRelation->create([
-                        'tag_id' => $tagId,
-                        'item_id' => $itemId,
-                    ]);
-                }
-                */
-
-                //tagIdを配列に入れる　削除確認用
-                $tagIds[] = $tagId;
-            }
-        
-            //編集時のみ削除されたタグを消す
-            if(isset($editId)) {
-                //元々relationにあったtagがなくなった場合：今回取得したtagIdの中にrelationのtagIdがない場合をin_arrayにて確認
-                $tagRels = $this->tagRelation->where('item_id', $itemId)->get();
-                
-                foreach($tagRels as $tagRel) {
-                    if(! in_array($tagRel->tag_id, $tagIds)) {
-                        $tagRel->delete();
-                    }
-                }
-            }
-        }
-        
-        
-        return redirect('dashboard/items/'. $itemId)->with('status', $status);
+        //status
+//        if(isset($data['open_status'])) { //非公開On
+//            $data['open_status'] = 0;
+//        }
+//        else {
+//            $data['open_status'] = 1;
+//        }
+//        
+//        if($editId) { //update（編集）の時
+//            $status = '商品が更新されました！';
+//            $item = $this->item->find($editId);
+//        }
+//        else { //新規追加の時
+//            $status = '商品が追加されました！';
+//            //$data['model_id'] = 1;
+//            
+//            $item = $this->item;
+//        }
+//        
+//        $item->fill($data);
+//        $item->save();
+//        $itemId = $item->id;
+//        
+////        print_r($data['main_img']);
+////        exit;
+//        
+//        //Main-img
+//        if(isset($data['main_img'])) {
+//                
+//            //$filename = $request->file('main_img')->getClientOriginalName();
+//            $filename = $data['main_img']->getClientOriginalName();
+//            $filename = str_replace(' ', '_', $filename);
+//            
+//            //$aId = $editId ? $editId : $rand;
+//            //$pre = time() . '-';
+//            $filename = 'item/' . $itemId . '/thumbnail/'/* . $pre*/ . $filename;
+//            //if (App::environment('local'))
+//            $path = $data['main_img']->storeAs('public', $filename);
+//            //else
+//            //$path = Storage::disk('s3')->putFileAs($filename, $request->file('thumbnail'), 'public');
+//            //$path = $request->file('thumbnail')->storeAs('', $filename, 's3');
+//            
+//            $item->main_img = $path;
+//            $item->save();
+//        }
+//        
+//        //Spare-img
+//        if(isset($data['spare_img'])) {
+//            $spares = $data['spare_img'];
+//            
+////            print_r($spares);
+////            exit;
+//            
+//            foreach($spares as $key => $spare) {
+//                if($spare != '') {
+//            
+//                    $filename = $spare->getClientOriginalName();
+//                    $filename = str_replace(' ', '_', $filename);
+//                    
+//                    //$aId = $editId ? $editId : $rand;
+//                    //$pre = time() . '-';
+//                    $filename = 'item/' . $itemId . '/thumbnail/'/* . $pre*/ . $filename;
+//                    //if (App::environment('local'))
+//                    $path = $spare->storeAs('public', $filename);
+//                    //else
+//                    //$path = Storage::disk('s3')->putFileAs($filename, $request->file('thumbnail'), 'public');
+//                    //$path = $request->file('thumbnail')->storeAs('', $filename, 's3');
+//                    
+//                    //$item->spare_img .'_'. $ii = $path;
+//                    $item['spare_img_'. $key] = $path;
+//                    $item->save();
+//                }
+//
+//            }
+//        }
+//        
+//        //spare画像の削除
+//        if(isset($data['del_spareimg'])) {
+//            $dels = $data['del_spareimg'];     
+//             
+//              foreach($dels as $key => $del) {
+//                   if($del) {
+//                     $imgName = $item['spare_img_'. $key];
+//                       if($imgName != '') {
+//                         Storage::delete($imgName);
+//                     }
+//                    
+//                       $item['spare_img_'. $key] = '';
+//                    $item->save();
+//                 }   
+//           }
+//        }
+//        
+//
+//        
+//        //タグのsave動作
+//        if(isset($data['tags'])) {
+//            $tagArr = $data['tags'];
+//        
+//            foreach($tagArr as $tag) {
+//                
+//                //Tagセット
+//                $setTag = Tag::firstOrCreate(['name'=>$tag]); //既存を取得 or なければ作成
+//                
+//                if(!$setTag->slug) { //新規作成時slugは一旦NULLでcreateされるので、その後idをセットする
+//                    $setTag->slug = $setTag->id;
+//                    $setTag->save();
+//                }
+//                
+//                $tagId = $setTag->id;
+//                $tagName = $tag;
+//
+//
+//                //tagIdがRelationになければセット ->firstOrCreate() ->updateOrCreate()
+//                $tagRel = $this->tagRelation->firstOrCreate(
+//                    ['tag_id'=>$tagId, 'item_id'=>$itemId]
+//                );
+//                /*
+//                $tagRel = $this->tagRelation->where(['tag_id'=>$tagId, 'item_id'=>$itemId])->get();
+//                if($tagRel->isEmpty()) {
+//                    $this->tagRelation->create([
+//                        'tag_id' => $tagId,
+//                        'item_id' => $itemId,
+//                    ]);
+//                }
+//                */
+//
+//                //tagIdを配列に入れる　削除確認用
+//                $tagIds[] = $tagId;
+//            }
+//        
+//            //編集時のみ削除されたタグを消す
+//            if(isset($editId)) {
+//                //元々relationにあったtagがなくなった場合：今回取得したtagIdの中にrelationのtagIdがない場合をin_arrayにて確認
+//                $tagRels = $this->tagRelation->where('item_id', $itemId)->get();
+//                
+//                foreach($tagRels as $tagRel) {
+//                    if(! in_array($tagRel->tag_id, $tagIds)) {
+//                        $tagRel->delete();
+//                    }
+//                }
+//            }
+//        }
+//        
+//        
+//        return redirect('dashboard/items/'. $itemId)->with('status', $status);
     }
 
     /**

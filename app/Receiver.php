@@ -10,6 +10,7 @@ class Receiver extends Model
 
         'user_id', 
         'regist',
+        'salerel_id',
         
         'order_number',
         

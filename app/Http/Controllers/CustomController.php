@@ -195,6 +195,27 @@ class CustomController extends Controller
     	return preg_replace("/^(\d{3})(\d{4})$/", "$1-$2", $post_code);
     }
     
+    //注文番号 OrderNumberの作成
+    static function getOrderNum($length) {
+        $eng = array_merge(range('a', 'z'), range('A', 'Z'));
+        $num = array_merge(range('0', '9'));
+        
+        $r_str = null;
+        
+        for ($i = 0; $i < 3; $i++) {
+            $r_str .= $eng[mt_rand(0, count($eng) - 1)];
+        }
+        
+        //$r_str .= '-';
+        
+        for ($n = 0; $n < 8; $n++) {
+            $r_str .= $num[mt_rand(0, count($num) - 1)];
+        }
+        
+        return $r_str;
+        
+    }
+    
     static function sendMail($data, $typeCode)
     {
     	$set = Setting::get()->first();

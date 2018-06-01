@@ -16,7 +16,7 @@ class CreateSaleRelationsTable extends Migration
         Schema::create('sale_relations', function (Blueprint $table) {
             $table->increments('id');
             
-            $table->integer('order_number')->nullable()->default(NULL);
+            $table->string('order_number')->nullable()->default(NULL);
             
             $table->boolean('regist')->nullable()->default(NULL);
             $table->integer('user_id')->nullable()->default(NULL);
