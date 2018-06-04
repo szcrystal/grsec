@@ -106,7 +106,12 @@ Route::get('/shop/clear', 'Cart\CartController@getClear');
 
 //Route::resource('/shop/cart', 'Cart\CartController');
 
+//MyPage
+Route::get('/mypage', 'MyPage\MyPageController@index');
+Route::get('/mypage/history', 'MyPage\MyPageController@history');
 
+Route::get('/mypage/register', 'MyPage\MyPageController@getRegister');
+Route::post('/mypage/register', 'MyPage\MyPageController@postRegister');
 
 //Route::get('logout', 'Auth\LoginController@getLogout');
 

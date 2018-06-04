@@ -2,6 +2,12 @@
 <body>
 
     <div id="app">
+    	{{--
+    	@if(Auth::check())
+     		@include('shared.authNav')
+     	@endif
+      --}}   
+            
     	@if(Ctm::isAgent('sp'))
 			@include('shared.headNavSp')
         @else

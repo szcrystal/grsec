@@ -60,7 +60,8 @@ class CreateItemsTable extends Migration
             
             $table->timestamp('open_date')->nullable()->default(NULL);
             
-            $table->integer('view_count')->nullable()->default(NULL);
+            $table->integer('view_count')->nullable()->default(0);
+            $table->integer('sale_count')->nullable()->default(0);
             
             $table->timestamps();
             

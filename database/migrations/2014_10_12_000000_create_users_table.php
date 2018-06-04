@@ -37,7 +37,7 @@ class CreateUsersTable extends Migration
             
             $table->boolean('magazine')->nullable()->default(NULL);
             $table->boolean('user_register')->nullable()->default(NULL);
-            $table->integer('point')->nullable()->default(NULL);
+            $table->integer('point')->nullable()->default(0);
             
             $table->boolean('destination')->nullable()->default(NULL);
             

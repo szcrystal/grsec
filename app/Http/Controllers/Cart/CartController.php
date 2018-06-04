@@ -277,7 +277,6 @@ class CartController extends Controller
                     'is_user' => $isUser,
                     'receiver_id' => $receiverId,
 					
-     				               
                     'pay_method' => $pm,
                     'deli_fee' => $deliFee,
                     'cod_fee' => 0,
@@ -305,8 +304,10 @@ class CartController extends Controller
             
             //在庫引く処理
             $item = $this->item->find($val['item_id']);
-            $item->stock -= $val['item_count'];
-            $item->save();
+            $item->decrement('stock', $val['item_count']);
+            
+            //Sale Count処理
+            $item->increment('sale_count', $val['item_count']);
                         
         } //foreach
         

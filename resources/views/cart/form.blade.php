@@ -391,7 +391,7 @@
                 <?php
                     $checked = '';
                     if(Ctm::isOld()) {
-                        if(old('magazine'))
+                        if(old('user.magazine'))
                             $checked = ' checked';
                     }
                     else {
