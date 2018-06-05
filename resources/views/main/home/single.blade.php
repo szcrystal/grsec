@@ -43,7 +43,7 @@ use App\User;
                   	<div>
                   	@if($item->stock > 0)
                   	
-                   		   @if(env('APP_ENV') != 'local')   
+                   		   @if(env('APP_ENV') == 'trial')   
                             <form method="post" action="{{ url('cart/form') }}">
                                 {{ csrf_field() }}
                                        
@@ -129,7 +129,9 @@ use App\User;
                         
                         <div class="clearfix">
                         @foreach($imgsSec as $sec)
+                        	@if(isset($sec->img_path))
                         	<img src="{{ Storage::url($sec->img_path) }}" class="img-fluid col-md-3 mr-2 my-4">
+                         	@endif   
                         @endforeach
                         </div>
                     </div>
