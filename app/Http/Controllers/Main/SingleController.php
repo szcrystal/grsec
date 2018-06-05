@@ -6,13 +6,14 @@ use App\Item;
 use App\Category;
 use App\Tag;
 use App\TagRelation;
+use App\ItemImage;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class SingleController extends Controller
 {
-    public function __construct(Item $item, Category $category, Tag $tag, TagRelation $tagRel)
+    public function __construct(Item $item, Category $category, Tag $tag, TagRelation $tagRel, ItemImage $itemImg)
     {
         //$this->middleware('search');
         
@@ -20,7 +21,7 @@ class SingleController extends Controller
         $this->category = $category;
         $this->tag = $tag;
         $this->tagRel = $tagRel;
-        //$this->fix = $fix;
+        $this->itemImg = $itemImg;
 //        $this->tag = $tag;
 //        $this->tagRelation = $tagRelation;
 //        $this->tagGroup = $tagGroup;
@@ -49,11 +50,12 @@ class SingleController extends Controller
             return $obj->tag_id;
         })->all();
         
-        
         $tags = $this->tag->find($tagRels);
         
+        $imgsPri = $this->itemImg->where(['item_id'=>$id, 'type'=>1])->orderBy('number', 'asc')->get();
+        $imgsSec = $this->itemImg->where(['item_id'=>$id, 'type'=>2])->orderBy('number', 'asc')->get();
         
-        return view('main.home.single', ['item'=>$item, 'otherItem'=>$otherItem, 'cateObj'=>$cateObj, 'tags'=>$tags]);
+        return view('main.home.single', ['item'=>$item, 'otherItem'=>$otherItem, 'cateObj'=>$cateObj, 'tags'=>$tags, 'imgsPri'=>$imgsPri, 'imgsSec'=>$imgsSec]);
     }
     
     

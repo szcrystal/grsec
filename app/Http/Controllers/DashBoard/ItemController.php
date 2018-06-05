@@ -179,7 +179,7 @@ class ItemController extends Controller
         }
         
         
-        //Spare Save ==================================================
+        //SpareImg Save ==================================================
         foreach($data['spare_count'] as $count) {
                         
             if(isset($data['del_spare'][$count]) && $data['del_spare'][$count]) { //削除チェックの時
@@ -192,17 +192,17 @@ class ItemController extends Controller
             
             }
             else {
-            
-                $spareImg = $this->itemImg->updateOrCreate(
-                    ['item_id'=>$itemId, 'type'=>1, 'number'=>$count+1],
-                    [
-                        'item_id'=>$itemId,
-                        'type' => 1,
-                        'number'=> $count+1,
-                    ]
-                );
+            	if(isset($data['spare_thumb'][$count])) {
+                    
+                    $spareImg = $this->itemImg->updateOrCreate(
+                        ['item_id'=>$itemId, 'type'=>1, 'number'=>$count+1],
+                        [
+                            'item_id'=>$itemId,
+                            'type' => 1,
+                            'number'=> $count+1,
+                        ]
+                    );
                 
-                if(isset($data['spare_thumb'][$count])) {
                 
                     $filename = $data['spare_thumb'][$count]->getClientOriginalName();
                     $filename = str_replace(' ', '_', $filename);
@@ -255,19 +255,18 @@ class ItemController extends Controller
             
             }
             else {
-            
-                $snapImg = $this->itemImg->updateOrCreate(
-                    ['item_id'=>$itemId, 'type'=>2, 'number'=>$count+1],
-                    [
-                        'item_id'=>$itemId,
-                        //'snap_path' =>'',
-                        'type' => 2,
-                        'number'=> $count+1,
-                    ]
-                );
-                
-                if(isset($data['snap_thumb'][$count])) {
-                
+            	if(isset($data['snap_thumb'][$count])) {
+                    
+                    $snapImg = $this->itemImg->updateOrCreate(
+                        ['item_id'=>$itemId, 'type'=>2, 'number'=>$count+1],
+                        [
+                            'item_id'=>$itemId,
+                            //'snap_path' =>'',
+                            'type' => 2,
+                            'number'=> $count+1,
+                        ]
+                    );
+
                     $filename = $data['snap_thumb'][$count]->getClientOriginalName();
                     $filename = str_replace(' ', '_', $filename);
                     

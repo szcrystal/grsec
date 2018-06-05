@@ -21,6 +21,7 @@ use App\User;
                 
                 <div class="float-right col-md-5">
                 	<h2>{{ $item -> title }}</h2>
+                 	<p>{{ $item->catchcopy }}</p>   
                  	
                   	<?php
                    	$per = env('TAX_PER');
@@ -36,7 +37,7 @@ use App\User;
                     </div>	
                     
                     <div class="">
-                    	<p>{{ $item->detail }}</p>
+                    	<p>{{ $item->explain }}</p>
                     </div>
                   
                   	<div>
@@ -52,7 +53,7 @@ use App\User;
                                 <input type="hidden" name="count" value="1">           
                                 <button type="submit" class="btn btn-warning">カートに入れる</button>
                            </form>  
-                       @else
+                        @else
                                <form method="post" action="{{ url('shop/cart') }}">
                                 {{ csrf_field() }}
                                 
@@ -112,9 +113,25 @@ use App\User;
                 <div class="cont-wrap">
                 	
 
-                    <div class="clear contents">
-
-
+                    <div class="clear contents mt-4">
+                    	<h4>説明</h4>
+						{!! nl2br($item->explain) !!}
+                    </div>
+                    
+                    <div class="clear contents mt-4">
+                    	<h4>配送について</h4>
+                        {!! nl2br($item->about_ship) !!}
+                    </div>
+                    
+                    <div class="clear contents mt-4">
+                        <h4>商品情報</h4>
+                        {!! nl2br($item->detail) !!}
+                        
+                        <div class="clearfix">
+                        @foreach($imgsSec as $sec)
+                        	<img src="{{ Storage::url($sec->img_path) }}" class="img-fluid col-md-3 mr-2 my-4">
+                        @endforeach
+                        </div>
                     </div>
 
                     <div class="map-wrap">

@@ -40,11 +40,13 @@
     </script>
 
 </head>
+@if(Ctm::isLocal())
 <div style="position: relative; bottom:0; z-index:10000; background:red; width: 100%;">
 <?php 
 echo "aaa";
 print_r(session('item.data')); ?>
 </div>
+@endif
 
 @if(Ctm::isAgent('all'))
 <?php exit; ?>

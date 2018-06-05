@@ -486,11 +486,11 @@
             <fieldset class="my-5 form-group{{ $errors->has('about_ship') ? ' is-invalid' : '' }}">
                     <label for="detail" class="control-label">配送について</label>
 
-                        <textarea id="detail" type="text" class="form-control" name="detail" rows="15">{{ Ctm::isOld() ? old('detail') : (isset($item) ? $item->detail : '') }}</textarea>
+                        <textarea id="detail" type="text" class="form-control" name="about_ship" rows="15">{{ Ctm::isOld() ? old('about_ship') : (isset($item) ? $item->about_ship : '') }}</textarea>
 
-                        @if ($errors->has('detail'))
+                        @if ($errors->has('about_ship'))
                             <span class="help-block">
-                                <strong>{{ $errors->first('detail') }}</strong>
+                                <strong>{{ $errors->first('about_ship') }}</strong>
                             </span>
                         @endif
             </fieldset>
@@ -628,7 +628,7 @@
             </div><?php //tagwrap ?>
             
             
-            
+            {{--
             <fieldset class="mb-4 form-group{{ $errors->has('what_is') ? ' is-invalid' : '' }}">
                     <label for="story_text" class="control-label">What is</label>
 
@@ -653,7 +653,7 @@
                             </span>
                         @endif
             </fieldset>
-            
+            --}}
             
             <div class="form-group">
                 <div class="">

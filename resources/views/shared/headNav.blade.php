@@ -27,19 +27,33 @@
 
     </a></h1>
     
-    <div class="head-navi float-right col-md-8 mt-3">
+    <div class="head-navi float-right col-md-5 mt-5">
         <nav>
-        	{{--
-            <ul class="clearfix">
-                 <li><a href="#">初めての方へ</a>
 
-                <li>ログイン</li>
+            <ul class="clearfix">
+            	@if(! Auth::check())
+                <li><a href="{{ url('login') }}">LogIn</a></li>
+                @else
+                <li>
+                	<a href="{{ url('/logout') }}" class="dropdown-item"
+                                onclick="event.preventDefault();
+                                         document.getElementById('logout-form').submit();">
+                                ログアウト
+                    </a>
+
+                    <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
+                        {{ csrf_field() }}
+                    </form>
+                </li>
+                @endif
                 <li>新規登録</li>
+                {{--
                 <li>
                 	<i class="fa fa-search"></i>
                 </li>
+                --}}
            </ul> 
-           --}}        
+       
         </nav>
     </div>
 
