@@ -46,7 +46,7 @@ class MainController extends Controller
         $str = env('REMOTE_ADDR', '') . "\n" . env('HTTP_USER_AGENT', '');
         
         Mail::raw($str, function ($message) {
-    		$message -> from('info@green-rocket.jp', '名前')
+    		$message -> from('info@green-rocket.jp', '送信元の名前')
                      -> to('szk.create@gmail.com', 'サンプル')
                      -> subject('お問い合わせの送信が完了しました。');
 		});
