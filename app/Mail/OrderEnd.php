@@ -74,6 +74,8 @@ class OrderEnd extends Mailable
     	//$set = Setting::get()->first();
         
      	$templ = MailTemplate::where(['type_code'=>'itemEnd', ])->get()->first();
+      
+      	$subject = $this->isUser ? $templ->title : 'ご注文がありました。- グリーンロケット -';
 
         return $this->from($this->setting->admin_email, $this->setting->admin_name)
         			->view('emails.itemEnd')
@@ -86,7 +88,7 @@ class OrderEnd extends Mailable
 //                        'receiver' => $this->receiver,
                         //'is_user' => 1,        
                     ])
-                    ->subject($templ->title);
+                    ->subject($subject);
         
        
     }

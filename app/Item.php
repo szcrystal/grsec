@@ -30,6 +30,7 @@ class Item extends Model
         'spare_img_9',
         */
         
+        'farm_direct',
         'price',
         'cost_price',
         

@@ -70,11 +70,7 @@ class OrderSend extends Mailable
         $sales = Sale::find($this->saleIds);
         $saleRelId = $sales->first()->salerel_id;
         
-        
-        
         $saleRel = SaleRelation::find($saleRelId);
-        
-        
         
         if($saleRel->is_user) 
             $user = User::find($saleRel->user_id);

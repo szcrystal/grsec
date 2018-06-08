@@ -46,9 +46,9 @@ class MainController extends Controller
         $str = env('REMOTE_ADDR', '') . "\n" . env('HTTP_USER_AGENT', '');
         
         Mail::raw($str, function ($message) {
-    		$message -> from('szk.create@gmail.com', 'name')
-                     -> to('szk.create@gmail.com', 'sample')
-                     -> subject('お問い合わせの送信が完了しました');
+    		$message -> from('info@green-rocket.jp', '名前')
+                     -> to('szk.create@gmail.com', 'サンプル')
+                     -> subject('お問い合わせの送信が完了しました。');
 		});
             
 //        Mail::send('emails.contact', $data, function($message) use ($data) //引数について　http://readouble.com/laravel/5/1/ja/mail.html
