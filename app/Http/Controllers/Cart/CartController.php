@@ -160,7 +160,9 @@ class CartController extends Controller
             if($regist) {   
                 $userData['password'] = bcrypt($userData['password']);
       			$userData['point'] = $addPoint;
-    //            $userData['email'] = 'co@frank.fam.cx';
+//                $userData['birth_year'] = $userData['birth_year'] ? $userData['birth_year'] : null;
+//                $userData['birth_month'] = $userData['birth_month'] ? $userData['birth_month'] : null;
+//                $userData['birth_day'] = $userData['birth_day'] ? $userData['birth_day'] : null;
                 
                 $user = $this->user;
                 $user->fill($userData);

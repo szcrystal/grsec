@@ -123,14 +123,18 @@
              <td>
              	@if(isset($userArr['gender']))
                  {{ $userArr['gender'] }}
+                @else
+                	--
                 @endif
             </td>
         </tr>
         <tr>
             <th><label class="control-label">生年月日</label></th>
              <td>
-             	@if(isset($userArr['birth_year']))
+             	@if($userArr['birth_year'] && $userArr['birth_month'] && $userArr['birth_day'])
              		{{ $userArr['birth_year'] }}/{{ $userArr['birth_month'] }}/{{ $userArr['birth_day'] }}
+               @else
+               	--      
               	@endif   
             </td>
         </tr>

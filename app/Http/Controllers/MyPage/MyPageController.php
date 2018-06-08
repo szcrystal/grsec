@@ -157,6 +157,10 @@ class MyPageController extends Controller
         
         $data['user']['magazine'] = isset($data['user']['magazine']) ? 1 : 0;
         
+//        $data['user']['birth_year'] = $data['user']['birth_year'] ? $data['user']['birth_year'] : null;
+//        $data['user']['birth_month'] = $data['user']['birth_month'] ? $data['user']['birth_month'] : null;
+//        $data['user']['birth_day'] = $data['user']['birth_day'] ? $data['user']['birth_day'] : null;
+        
         $uId = Auth::id();
         $user = $this->user->find($uId);
         

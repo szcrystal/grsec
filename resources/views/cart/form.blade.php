@@ -189,7 +189,7 @@
                <td>
                    
                 <select class="form-control select-first col-md-2 d-inline{{ $errors->has('user.birth_year') ? ' is-invalid' : '' }}" name="user[birth_year]">
-                    <option selected>年</option>
+                    <option value="0" selected>年</option>
                     <?php
                         $yNow = date('Y');
                         $y = 1900;
@@ -223,7 +223,7 @@
                 @endif
                 
                 <select class="form-control select-first col-md-1 d-inline{{ $errors->has('user.birth_month') ? ' is-invalid' : '' }}" name="user[birth_month]">
-                    <option selected>月</option>
+                    <option value="0" selected>月</option>
                     <?php
                         $m = 1;
                     ?>
@@ -256,7 +256,7 @@
                 @endif
                 
                 <select class="form-control select-first col-md-1 d-inline{{ $errors->has('user.birth_day') ? ' is-invalid' : '' }}" name="user[birth_day]">
-                    <option selected>日</option>
+                    <option value="0" selected>日</option>
                     <?php
                         $d = 1;
                     ?>
