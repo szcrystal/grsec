@@ -115,6 +115,7 @@
                 @endif
             </fieldset>
             
+            {{--
             <fieldset class="mb-4 form-group{{ $errors->has('cot_per') ? ' has-error' : '' }}">
                 <label>代引き手数料率</label><br>
                 <input class="form-control d-inline-block col-md-4{{ $errors->has('cot_per') ? ' is-invalid' : '' }}" name="cot_per" value="{{ Ctm::isOld() ? old('cot_per') : (isset($setting) ? $setting->cot_per : '') }}"> <span>%</span>
@@ -126,6 +127,7 @@
                     </div>
                 @endif
             </fieldset>
+            --}}
             
             <fieldset class="mb-4 form-group{{ $errors->has('bank_info') ? ' has-error' : '' }}">
                     <label for="bank_info" class="control-label">銀行振込先</label>
