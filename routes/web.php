@@ -83,6 +83,7 @@ Route::resource('contact', 'Main\ContactController');
 
 //Single
 Route::get('/item/{id}', 'Main\SingleController@index');
+Route::post('/item/script', 'Main\SingleController@postScript');
 
 //Shop Cart
 Route::post('/cart/form', 'Main\SingleController@postForm');
@@ -112,6 +113,8 @@ Route::get('/mypage/history', 'MyPage\MyPageController@history');
 
 Route::get('/mypage/register', 'MyPage\MyPageController@getRegister');
 Route::post('/mypage/register', 'MyPage\MyPageController@postRegister');
+
+Route::get('/mypage/favorite', 'MyPage\MyPageController@favorite');
 
 //Route::get('logout', 'Auth\LoginController@getLogout');
 

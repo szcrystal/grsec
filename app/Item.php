@@ -42,12 +42,12 @@ class Item extends Model
         'stock_show',
         'point_back',
         
+        'exp_first',
+        'explain',
         'about_ship',
         'detail',
-        'explain',
-        
+                
         'what_is',
-        //'detail',
         'warning',
         
         'open_date',

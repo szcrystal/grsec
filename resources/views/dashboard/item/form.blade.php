@@ -483,6 +483,30 @@
             </fieldset>
 
             
+            <fieldset class="my-5 form-group{{ $errors->has('exp_first') ? ' is-invalid' : '' }}">
+                    <label for="explain" class="control-label">キャッチ説明</label>
+
+                    <textarea id="explain" type="text" class="form-control" name="exp_first" rows="15">{{ Ctm::isOld() ? old('exp_first') : (isset($item) ? $item->exp_first : '') }}</textarea>
+
+                    @if ($errors->has('exp_first'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('exp_first') }}</strong>
+                        </span>
+                    @endif
+            </fieldset>
+            
+            <fieldset class="my-5 form-group{{ $errors->has('explain') ? ' is-invalid' : '' }}">
+                    <label for="explain" class="control-label">メイン説明</label>
+
+                    <textarea id="explain" type="text" class="form-control" name="explain" rows="15">{{ Ctm::isOld() ? old('explain') : (isset($item) ? $item->explain : '') }}</textarea>
+
+                    @if ($errors->has('explain'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('explain') }}</strong>
+                        </span>
+                    @endif
+            </fieldset>
+            
             <fieldset class="my-5 form-group{{ $errors->has('about_ship') ? ' is-invalid' : '' }}">
                     <label for="detail" class="control-label">配送について</label>
 
@@ -495,22 +519,10 @@
                         @endif
             </fieldset>
             
-            <fieldset class="my-5 form-group{{ $errors->has('explain') ? ' is-invalid' : '' }}">
-                    <label for="explain" class="control-label">説明</label>
-
-                    <textarea id="explain" type="text" class="form-control" name="explain" rows="15">{{ Ctm::isOld() ? old('explain') : (isset($item) ? $item->explain : '') }}</textarea>
-
-                    @if ($errors->has('explain'))
-                        <span class="help-block">
-                            <strong>{{ $errors->first('explain') }}</strong>
-                        </span>
-                    @endif
-            </fieldset>
-            
             <fieldset class="mb-4 form-group{{ $errors->has('detail') ? ' is-invalid' : '' }}">
                     <label for="detail" class="control-label">商品情報</label>
 
-                    <textarea id="detail" type="text" class="form-control" name="detail" rows="15">{{ Ctm::isOld() ? old('detail') : (isset($item) ? $item->detail : '') }}</textarea>
+                    <textarea id="detail" type="text" class="form-control" name="detail" rows="22">{{ Ctm::isOld() ? old('detail') : (isset($item) ? $item->detail : '') }}</textarea>
 
                     @if ($errors->has('detail'))
                         <span class="help-block">
@@ -529,7 +541,7 @@
                 ?>
                 @while($n < $setCount)
 
-                <div class="clearfix spare-img thumb-wrap ">
+                <div class="clearfix spare-img thumb-wrap">
                     
                 <fieldset class="col-md-4 float-right">
                     <div class="col-md-12 checkbox text-right px-5">
@@ -570,16 +582,20 @@
                         @endif
                     </div>
 
-                    <div class="col-md-6 float-left text-left form-group{{ $errors->has('snap_thumb.'.$n) ? ' has-error' : '' }}">
+                    <div class="col-md-7 float-left text-left form-group{{ $errors->has('snap_thumb.'.$n) ? ' has-error' : '' }}">
                         <label for="model_thumb" class="col-md-12 text-left">商品情報画像 <span class="text-primary">{{ $n+1 }}</span></label>
                         <div class="col-md-12">
                             <input id="model_thumb" class="thumb-file" type="file" name="snap_thumb[]">
-
+							
+       						@if(isset($snaps[$n]) && $snaps[$n]->img_path)
+             					<p class="mt-4 mb-0 text-info">src="{{ Storage::url($snaps[$n]->img_path) }}"</p>
+             				@endif                  
+                            
                             @if ($errors->has('snap_thumb.'.$n))
                                 <span class="help-block">
-                                <strong>{{ $errors->first('snap_thumb.'.$n) }}</strong>
-                            </span>
-                        @endif
+                                    <strong>{{ $errors->first('snap_thumb.'.$n) }}</strong>
+                                </span>
+                            @endif
                         </div>
                     </div>
                 </fieldset>

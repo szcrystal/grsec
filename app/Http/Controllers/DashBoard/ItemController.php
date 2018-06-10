@@ -419,7 +419,7 @@ class ItemController extends Controller
         	return [ $obj->id => $obj->name ];
         })->all();
         
-         $array = [1, 11, 12, 13, 14, 15];
+        //$array = [1, 11, 12, 13, 14, 15];
          
         return response()->json(array('subCates'=> $subCates)/*, 200*/); //200を指定も出来るが自動で200が返される  
           //return view('dashboard.script.index', ['val'=>$val]);

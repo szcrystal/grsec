@@ -71,6 +71,10 @@
 	</table>
 </div>
 
+<div>
+    {{ $sales->links() }}
+</div>
+
 <a href="{{ url('mypage') }}" class="btn border-secondary bg-white mt-5">
 <i class="fas fa-angle-double-left"></i> マイページに戻る
 </a>                  

@@ -8,20 +8,56 @@ use App\User;
 ?>
 
     <div class="single">
-
-            <div class="head-frame clearfix">
-                
-                <div class="float-left col-md-7">
-                    @if($item -> main_img)
-                        <img src="{{ Storage::url($item->main_img) }}" alt="{{ $item->title }}" class="img-fluid">
-                     @else
-                        <span class="no-img">No Image</span>
-                     @endif   
+		
+        <div class="head-frame clearfix">
+            
+            <div class="float-left col-md-7">
+                @if($item -> main_img)
+                <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" data-interval="7500">
+                      <ol class="carousel-indicators">
+                        <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                        
+                        <?php 
+                        	$count = count($imgsPri);
+                        ?>
+                        @for($n=1; $n<=$count; $n++)
+                        	<li data-target="#carouselExampleIndicators" data-slide-to="{{$n}}"></li>
+                        @endfor
+                      </ol>
+                      
+                      <div class="carousel-inner">
+                        <div class="carousel-item active">
+                          <img class="d-block w-100" src="{{ Storage::url($item->main_img) }}" alt="First slide">
+                        </div>
+                        
+                        @foreach($imgsPri as $img)
+                            @if($img->img_path !== null )
+                            <div class="carousel-item">
+                              <img class="d-block w-100" src="{{ Storage::url($img->img_path)}}" alt="Sub slide">
+                            </div>
+                            @endif
+                        @endforeach
+                        
+                      </div>
+                      
+                      <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                      </a>
+                      <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                      </a>
                 </div>
+                    
+                @else
+                    <span class="no-img">No Image</span>
+                @endif   
+            </div>
                 
-                <div class="float-right col-md-5">
+            <div class="float-right col-md-5">
                 	<h2>{{ $item -> title }}</h2>
-                 	<p>{{ $item->catchcopy }}</p>   
+                 	<p class="text-big">{{ $item->catchcopy }}</p>   
                  	
                   	<?php
                    	$per = env('TAX_PER');
@@ -33,11 +69,38 @@ use App\User;
                    ?>      
                     
                  	<div class="price-meta">
-                  	   価格 {{ number_format($price) }}円　(内税:{{ number_format($tax) }}円)
-                    </div>	
+                  	   価格 {{ number_format($price) }}円　(税込)
+                    </div>
                     
-                    <div class="">
-                    	<p>{{ $item->explain }}</p>
+                    <div class="favorite my-2">
+                    @if(Auth::check())
+                    	<?php
+                     		if($isFav) {
+                       			$on = ' d-none';
+                          		$off = ' d-inline'; 
+                            	$str = 'お気に入り登録済み';              
+                       		}
+                         	else {
+                          		$on = ' d-inline';
+                                $off = ' d-none';
+                                $str = 'お気に入りに登録';
+                          	}               
+                     	?>
+
+                        <span class="fav fav-on{{ $on }}" data-id="{{ $item->id }}"><i class="far fa-heart"></i></span>
+                        <span class="fav fav-off{{ $off }}" data-id="{{ $item->id }}"><i class="fas fa-heart"></i></span>
+                        <small class="fav-str"><span class="loader"><i class="fas fa-square"></i></span>{{ $str }}</small>    
+                        
+                    @else
+                    	<span class="fav-temp"><i class="far fa-heart"></i></span>
+                     	<small class="fav-str"><a href="{{ url('login') }}">ログイン</a>するとお気に入りに登録できます</small>   
+                    @endif
+                    	
+                     	   
+                    </div>
+                    
+                    <div class="mt-3">
+                    	<p>{{ $item->exp_first }}</p>
                     </div>
                   
                   	<div>
@@ -95,7 +158,7 @@ use App\User;
                                 <input type="hidden" name="item_price" value="{{ $item->price }}">
                                 <input type="hidden" name="tax" value="{{ $tax }}"> 
                                 --}}     
-                                <button type="submit" class="btn btn-warning">カートに入れる</button>
+                                <button type="submit" class="btn btn-custom px-5">カートに入れる</button>
                            </form>  
                        @endif                            
                 	
@@ -103,9 +166,10 @@ use App\User;
                     	<span class="text-warning text-big">在庫がありません</span>
                  	@endif  
                   	</div>    
-            	</div>
+            	
+                </div>
                 
-            </div>
+        </div><!-- head-frame -->
 
 
             <div class="col-md-12 panel-body">

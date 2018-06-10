@@ -8,7 +8,8 @@ use App\Sale;
 use App\SaleRelation;
 use App\PayMethod;
 use App\Prefecture;
-
+use App\Favorite;
+use App\Category;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -17,7 +18,7 @@ use Auth;
 
 class MyPageController extends Controller
 {
-    public function __construct(Item $item, User $user, Sale $sale, SaleRelation $saleRel, PayMethod $payMethod, Prefecture $pref)
+    public function __construct(Item $item, User $user, Sale $sale, SaleRelation $saleRel, PayMethod $payMethod, Prefecture $pref, Favorite $favorite, Category $category)
     {
         
         $this -> middleware('auth');
@@ -31,16 +32,16 @@ class MyPageController extends Controller
         $this->saleRel = $saleRel;
         $this->payMethod = $payMethod;
         $this->pref = $pref;
-//        $this->receiver = $receiver;
+        $this->favorite = $favorite;
         
 //        $this-> prefecture = $prefecture;
-//        $this->category = $category;
+        $this->category = $category;
 //        $this->categorySecond = $categorySecond;
 //        $this -> tag = $tag;
 //        $this->tagRelation = $tagRelation;
 //        $this->consignor = $consignor;
 //        
-//        $this->perPage = 20;
+        $this->perPage = 20;
         
     }
     
@@ -74,7 +75,7 @@ class MyPageController extends Controller
 //        print_r($relIds);
 //        exit;
         
-        $sales = $this->sale->where(['salerel_id'=>$relIds])->get();
+        $sales = $this->sale->whereIn('salerel_id', $relIds)->orderBy('id', 'desc')->paginate($this->perPage);
         
         $saleRel = $this->saleRel;
         $item = $this->item;
@@ -169,6 +170,20 @@ class MyPageController extends Controller
         $status = "会員登録情報が変更されました。";
         
         return redirect('mypage/register')->with('status', $status);
+    }
+    
+    public function favorite()
+    {
+    	$user = $this->user->find(Auth::id());
+     	$itemIds = $this->favorite->where(['user_id'=>$user->id])->get()->map(function($obj){
+         	return $obj->item_id;
+        })->all();
+      
+      	$items = $this->item->whereIn('id', $itemIds)->orderBy('id', 'desc')->paginate($this->perPage); 
+       
+       	$cates = $this->category;   
+      
+        return view('mypage.favorite', ['user'=>$user, 'items'=>$items, 'cates'=>$cates, ]);   
     }
     
     public function create()

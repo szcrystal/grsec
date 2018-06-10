@@ -564,14 +564,14 @@ class CartController extends Controller
     
     public function postForm(Request $request)
     {
-//        print_r(session('item.data'));
+//       print_r(session('item.data'));
+//       exit;
 //         print_r(session('all'));   
 //         exit; 
       
       	if($request->has('from_cart') ) { //cartからpostで来た時
        		$data = $request -> all(); 
             
-       		
             $regist = $request->has('regist_on') ? 1 : 0;
          	$request->session()->put('all.regist', $regist);
           	
@@ -599,9 +599,19 @@ class CartController extends Controller
         $userObj = null;
         if(Auth::check()) {
         	$userObj = $this->user->find(Auth::id());
-        }        
+        } 
+        
+        $sesItems = session('item.data');
+        $codCheck = 0;
+        foreach($sesItems as $item) {
+        	$cod = $this->item->find($item['item_id'])->cod;
+            if($cod) {
+          		$codCheck = 1;
+            	break;      
+          	}      
+        }
      
-     	return view('cart.form', ['regist'=>$regist, 'payMethod'=>$payMethod, 'prefs'=>$prefs, 'userObj'=>$userObj, 'active'=>2]);   
+     	return view('cart.form', ['regist'=>$regist, 'payMethod'=>$payMethod, 'prefs'=>$prefs, 'userObj'=>$userObj, 'codCheck'=>$codCheck, 'active'=>2]);   
     }
     
     

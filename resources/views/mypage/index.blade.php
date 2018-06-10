@@ -31,11 +31,18 @@
     	<li class="float-left col-md-6 mb-3"><a href="{{ url('mypage/register') }}">会員情報の変更</a></li>
      	<li class="float-left col-md-6 mb-3">パスワードの変更</li>
       	
-       	<li class="float-left col-md-6 mb-3">お気に入り</li>
+       	<li class="float-left col-md-6 mb-3"><a href="{{ url('mypage/favorite') }}">お気に入り</a></li>
         <li class="float-left col-md-6 mb-3">メルマガ登録・解除</li>
         <li class="float-left col-md-6 mb-3">退会する</li>
-        <li class="float-left col-md-6 mb-3">ログアウト</li>            
-    
+        <li class="float-left col-md-6 mb-3">
+        	<a href="{{ url('/logout') }}" class=""
+                                onclick="event.preventDefault();
+                                         document.getElementById('logout-form').submit();">ログアウト</a>
+
+                    <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
+                        {{ csrf_field() }}
+                    </form>
+        </li>
     </ul>
 
 </div>

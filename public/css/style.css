@@ -99,6 +99,21 @@ button.btn:hover {
 	opacity: 0.7;
 }
 
+input[type=checkbox] {
+  -ms-transform: scale(1, 1);
+  -webkit-transform: scale(1, 1);
+  transform: scale(1, 1);
+}
+
+.big-check input[type=checkbox] {
+  	//transform: scale(1.02, 1.02);
+  	margin-right: 0.2em;
+}
+.big-check {
+	font-size: 1.1em;
+	font-weight: bold;
+}
+
 /*max-width*/
 body {
 	min-width: 1100px;
@@ -153,6 +168,9 @@ body {
 .text-big {
 	font-size: 1.1em;
 }
+.text-small {
+	font-size: 0.9em;
+}
 
 #guide {
 	margin: 1em 0 3em;
@@ -174,6 +192,76 @@ body {
 #guide .active-page div {
 	background: #333;
 }
+
+
+/* Favorite */
+.favorite {
+	position: relative;
+	
+}
+.fav,
+.fav-temp {
+	height: 2em;
+	width: 2em;
+	font-size: 1.8em;
+	color: #888;
+    vertical-align: middle;
+    cursor: pointer;
+}
+.fav-temp {
+	cursor: default;
+}
+.fav-on {
+	
+}
+.fav-off {
+	color: salmon;
+	display: none;
+}
+.fav-str {
+	font-size: 0.9em;
+	padding-left: 0.9em;
+	position: relative;
+	//border: 1px solid red;
+}
+
+.loader {
+	font-size: 0.8em;
+	display: none;
+	color: #777;
+    position: absolute;
+    top: -1.5px;
+    left: -2.2px;
+}
+.loader .fas {
+	-webkit-animation: rt 0.8s infinite linear alternate;
+    animation: rt 0.8s infinite linear alternate;
+}
+@keyframes rt {
+    100% {
+        -webkit-transform: rotateZ(360deg);
+        transform: rotateZ(360deg);
+    }
+}
+
+
+.no-img {
+    display: block;
+    width: 100%;
+    height: 550px;
+    line-height: 550px;
+    text-align: center;
+    background: #FCFCFB;
+    border: 1px solid #dfdfdf;
+    color: #aaa;
+    font-size: 0.9em;
+}
+
+/*.thumb-prev .no-img {*/
+/*    width: 100%;*/
+/*    height: 160px;*/
+/*    line-height: 160px;*/
+/*}*/
 
 
 /* header */

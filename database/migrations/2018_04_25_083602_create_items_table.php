@@ -51,13 +51,13 @@ class CreateItemsTable extends Migration
             
             $table->integer('point_back')->nullable()->default(NULL);
             
-            
+            $table->text('exp_first')->nullable()->default(NULL);
+            $table->text('explain')->nullable()->default(NULL);
             $table->text('about_ship')->nullable()->default(NULL);
             $table->text('detail')->nullable()->default(NULL);
-            $table->text('explain')->nullable()->default(NULL);
+            
             
             $table->text('what_is')->nullable()->default(NULL);
-            //$table->text('detail')->nullable()->default(NULL);
             $table->text('warning')->nullable()->default(NULL);
             
             $table->timestamp('open_date')->nullable()->default(NULL);

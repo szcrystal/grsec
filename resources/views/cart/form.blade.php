@@ -31,7 +31,8 @@
     {{ csrf_field() }}
     
     <?php 
-    //print_r($itemData); 
+//    print_r($itemData); 
+//    exit;
 //    echo session('all.all_price'). "///";
 //    echo session('all.regist');
     ?>
@@ -452,7 +453,7 @@
                  
             <fieldset class="form-group col-md-12 text-left mt-3">
                 <div class="checkbox">
-                    <label>
+                    <label class="big-check">
                         <?php                            
                             $checked = '';
                             if(Ctm::isOld()) {
@@ -621,9 +622,7 @@
                 
                 <div>
                 	<h3 class="card-header mt-5">お支払い方法</h3>
-                 	@if(Ctm::isLocal())   
-                 	ここの各所セカンドの指定とメール送信、ポイント、現在位置のbox、管理画面の連結  
-                  	@endif    
+   
                     <fieldset class="form-group my-3 px-5 py-2{{ $errors->has('pay_method') ? ' border border-danger' : '' }}">
                     @if ($errors->has('pay_method'))
                         <div class="help-block text-danger mb-2">
@@ -647,10 +646,17 @@
                                 }
                             }
                          ?>
-                     
-                     	<label class="d-block mb-2">
-                            <input type="radio" name="pay_method" class="payMethodRadio" value="{{ $method->id }}"{{ $checked }}>{{ $method->name }}
-                        </label>
+                         
+                         
+                        <label class="d-block mb-2">
+                        	@if(! $codCheck && $method->id == 5)
+                         		<input type="radio" name="pay_method" class="payMethodRadio" value="{{ $method->id }}" disabled>{{ $method->name }}
+                           		<span class="text-secondary ml-3"><i class="fas fa-exclamation-circle"></i> ご注文商品の代金引換決済はご利用できません。</span>      
+                         	@else
+                                <input type="radio" name="pay_method" class="payMethodRadio" value="{{ $method->id }}"{{ $checked }}>{{ $method->name }}
+                            @endif
+                            </label>
+                        
                      @endforeach
                     
                 </fieldset>
