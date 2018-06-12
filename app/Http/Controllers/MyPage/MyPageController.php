@@ -10,6 +10,7 @@ use App\PayMethod;
 use App\Prefecture;
 use App\Favorite;
 use App\Category;
+use App\Receiver;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -18,7 +19,7 @@ use Auth;
 
 class MyPageController extends Controller
 {
-    public function __construct(Item $item, User $user, Sale $sale, SaleRelation $saleRel, PayMethod $payMethod, Prefecture $pref, Favorite $favorite, Category $category)
+    public function __construct(Item $item, User $user, Sale $sale, SaleRelation $saleRel, PayMethod $payMethod, Prefecture $pref, Favorite $favorite, Category $category, Receiver $receiver)
     {
         
         $this -> middleware('auth');
@@ -33,9 +34,9 @@ class MyPageController extends Controller
         $this->payMethod = $payMethod;
         $this->pref = $pref;
         $this->favorite = $favorite;
-        
-//        $this-> prefecture = $prefecture;
         $this->category = $category;
+    	$this-> receiver = $receiver;
+        
 //        $this->categorySecond = $categorySecond;
 //        $this -> tag = $tag;
 //        $this->tagRelation = $tagRelation;
@@ -89,6 +90,13 @@ class MyPageController extends Controller
         $uId = Auth::id();
         $user = $this->user->find($uId);
         
+        $sale = $this->sale->find($saleId);
+        
+        $item = $this->item->find($sale->item_id);
+        
+        $saleRel = $this->saleRel->find($sale->salerel_id);
+        $receiver = $this->receiver->find($saleRel->receiver_id);
+        
         $relIds = $this->saleRel->where(['user_id'=>$uId, 'is_user'=>1])->get()->map(function($obj){
             return $obj->id;
         })->all();
@@ -99,10 +107,10 @@ class MyPageController extends Controller
         $sales = $this->sale->where(['salerel_id'=>$relIds])->get();
         
         $saleRel = $this->saleRel;
-        $item = $this->item;
+        
         $pm = $this->payMethod;
         
-         return view('mypage.history', ['user'=>$user, 'saleRel'=>$saleRel, 'sales'=>$sales, 'item'=>$item, 'pm'=>$pm]);   
+         return view('mypage.historySingle', ['user'=>$user, 'sale'=>$sale, 'saleRel'=>$saleRel, 'receiver'=>$receiver, 'item'=>$item, 'pm'=>$pm]);   
     }
     
     public function getRegister()
@@ -180,6 +188,14 @@ class MyPageController extends Controller
         })->all();
       
       	$items = $this->item->whereIn('id', $itemIds)->orderBy('id', 'desc')->paginate($this->perPage); 
+       
+       	foreach($items as $item) {
+        	$fav = $this->favorite->where(['user_id'=>$user->id, 'item_id'=>$item->id])->first();
+         	if($fav->sale_id) {
+          		$item->saleDate = $this->sale->find($fav->sale_id)->created_at;
+          	}        
+        	$item->saled = 1;
+        }      
        
        	$cates = $this->category;   
       

@@ -14,6 +14,8 @@ class Setting extends Model
         'tax_per',
         'bank_info',
         'cot_per',
+        'snap_primary',
+        'snap_secondary',
 
     ];
 }

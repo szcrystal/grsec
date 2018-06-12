@@ -142,6 +142,33 @@
             </fieldset>
             
             
+            <h4 class="mt-5 pt-3"><span class="text-secondary">■</span> 商品画像枚数設定</h4>
+            <hr>
+            <fieldset class="mb-4 form-group{{ $errors->has('snap_primary') ? ' has-error' : '' }}">
+                <label>サブ画像の枚数</label><br>
+                <input class="form-control d-inline-block col-md-4{{ $errors->has('snap_primary') ? ' is-invalid' : '' }}" name="snap_primary" value="{{ Ctm::isOld() ? old('snap_primary') : (isset($setting) ? $setting->snap_primary : '') }}"> <span>枚</span>
+
+                @if ($errors->has('snap_primary'))
+                    <div class="text-danger">
+                        <span class="fa fa-exclamation form-control-feedback"></span>
+                        <span>{{ $errors->first('snap_primary') }}</span>
+                    </div>
+                @endif
+            </fieldset>
+            
+            <fieldset class="mb-4 form-group{{ $errors->has('snap_secondary') ? ' has-error' : '' }}">
+                <label>商品説明画像の枚数</label><br>
+                <input class="form-control d-inline-block col-md-4{{ $errors->has('snap_secondary') ? ' is-invalid' : '' }}" name="snap_secondary" value="{{ Ctm::isOld() ? old('snap_secondary') : (isset($setting) ? $setting->snap_secondary : '') }}"> <span>枚</span>
+
+                @if ($errors->has('snap_secondary'))
+                    <div class="text-danger">
+                        <span class="fa fa-exclamation form-control-feedback"></span>
+                        <span>{{ $errors->first('snap_secondary') }}</span>
+                    </div>
+                @endif
+            </fieldset>
+            
+            
             
         
             

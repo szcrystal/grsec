@@ -152,6 +152,7 @@ class SaleController extends Controller
             $sales = $this->sale->find($data['sale_ids']);
           	foreach($sales as $sale) {
                 $sale->deli_done = 1;
+                $sale->deli_date = date('Y-m-d H:i:s', time());
                 $sale ->save();      
            	}   
     

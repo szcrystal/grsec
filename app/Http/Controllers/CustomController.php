@@ -13,6 +13,7 @@ use App\Setting;
 use App\MailTemplate;
 
 use Mail;
+use DateTime;
 
 use Illuminate\Http\Request;
 
@@ -215,6 +216,23 @@ class CustomController extends Controller
         return $r_str;
         
     }
+    
+    //枯れ保証期間の書き出し
+    static function getKareHosyou($createDate)
+    {
+        $limit = strtotime($createDate." +91 day");
+
+        $limitDay = new DateTime(date('Y-m-d', $limit));
+        $current = new DateTime('now');
+        $diff = $current->diff($limitDay);
+        //echo $diff->days;
+            
+//                    $limit = $limit - strtotime("now");  
+//                     $days = (strtotime('Y-m-d', $limit) - strtotime("1970-01-01")) / 86400;   
+  
+    	return ['limit'=>date('Y/m/d', $limit), 'diffDay'=>$diff->days];
+    }
+    
     
     static function sendMail($data, $typeCode)
     {

@@ -137,7 +137,9 @@ class ItemController extends Controller
         }
         
         //stock_show
+        $data['deli_fee'] = isset($data['deli_fee']) ? 1 : 0;
         $data['stock_show'] = isset($data['stock_show']) ? 1 : 0;
+        $data['farm_direct'] = isset($data['farm_direct']) ? 1 : 0;
         
         
         if($editId) { //update（編集）の時

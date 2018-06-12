@@ -27,6 +27,7 @@ class Sale extends Model
         'total_price',
         
         'deli_done',
+        'deli_date',
         'pay_done',
         
         /*

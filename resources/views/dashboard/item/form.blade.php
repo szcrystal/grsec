@@ -191,6 +191,8 @@
 
 
             </div>
+            
+            
         
 			<fieldset class="mb-4 form-group">
                 <label>商品番号</label>
@@ -404,7 +406,7 @@
             
             
 
-            <div class="mb-4 form-group">
+            <fieldset class="mb-2 form-group">
                 <label>代金引換設定</label>
                 <select class="form-control col-md-6{{ $errors->has('cod') ? ' is-invalid' : '' }}" name="cod">
                     <option disabled selected>選択して下さい</option>
@@ -434,7 +436,27 @@
                     </span>
                 @endif
                 
-            </div>
+            </fieldset>
+            
+            <fieldset class="form-group mb-4">
+                    <div class="checkbox">
+                        <label>
+                            <?php
+                                $checked = '';
+                                if(Ctm::isOld()) {
+                                    if(old('farm_direct'))
+                                        $checked = ' checked';
+                                }
+                                else {
+                                    if(isset($item) && $item->farm_direct) {
+                                        $checked = ' checked';
+                                    }
+                                }
+                            ?>
+                            <input type="checkbox" name="farm_direct" value="1"{{ $checked }}> 産地直送
+                        </label>
+                    </div>
+            </fieldset>
             
             <fieldset class="mb-2 form-group">
                 <label for="stock" class="control-label">在庫数</label>

@@ -11,6 +11,7 @@ use App\SaleRelation;
 use App\Receiver;
 use App\PayMethod;
 use App\Prefecture;
+use App\Favorite;
 
 use App\Mail\OrderEnd;
 
@@ -23,7 +24,7 @@ use Auth;
 
 class CartController extends Controller
 {
-    public function __construct(Item $item, Setting $setting, User $user, UserNoregist $userNor, Sale $sale, SaleRelation $saleRel, Receiver $receiver, PayMethod $payMethod, Prefecture $prefecture)
+    public function __construct(Item $item, Setting $setting, User $user, UserNoregist $userNor, Sale $sale, SaleRelation $saleRel, Receiver $receiver, PayMethod $payMethod, Prefecture $prefecture, Favorite $favorite)
     {
         
         //$this -> middleware('adminauth');
@@ -40,6 +41,7 @@ class CartController extends Controller
         $this->receiver = $receiver;
         $this->payMethod = $payMethod;
         $this-> prefecture = $prefecture;
+        $this->favorite = $favorite;
 //        $this->category = $category;
 //        $this->categorySecond = $categorySecond;
 //        $this -> tag = $tag;
@@ -101,7 +103,7 @@ class CartController extends Controller
         return view('dashboard.item.form', ['cates'=>$cates, 'consignors'=>$consignors, 'allTags'=>$allTags]);
     }
     
-    public function getClear()
+    public function getClear(Request $request)
     {
     	$request->session()->forget('item');
         $request->session()->forget('all');
@@ -148,14 +150,15 @@ class CartController extends Controller
         	$uObj = $this->user->find(Auth::id());
         	$userId = $uObj->id;
          	
-          	$uObj->point += $addPoint;
-           	$uObj->save();
+          	$uObj->increment('point', $addPoint);
+//              $uObj->point += $addPoint;
+//               $uObj->save();
                      
          	$isUser = 1;   
         }
         else {   
             $userData['magazine'] = isset($userData['magazine']) ? $userData['magazine'] : 0;
-            session('all.data.user.magazine', $userData['magazine']);
+            session('all.data.user.magazine', $userData['magazine']); //session入れ　不要？？
             
             if($regist) {   
                 $userData['password'] = bcrypt($userData['password']);
@@ -310,6 +313,16 @@ class CartController extends Controller
             
             //Sale Count処理
             $item->increment('sale_count', $val['item_count']);
+            
+            //お気に入りにsale_idを入れる
+            if($isUser) {
+            	$fav = $this->favorite->where(['user_id'=>$userId, 'item_id'=>$val['item_id']])->first();
+             	if(isset($fav)) {
+              		$fav->sale_id = $sale->id;
+                	$fav->save();      
+              	}
+            }
+            
                         
         } //foreach
         
@@ -319,7 +332,6 @@ class CartController extends Controller
         
         
         //Mail送信 ----------------------------------------------
-        
         //Ctm::sendMail($data, 'itemEnd');
         Mail::to($userData['email'], $userData['name'])->send(new OrderEnd($saleRelId, 1));
         Mail::to($this->set->admin_email, $this->set->admin_name)->send(new OrderEnd($saleRelId, 0));
@@ -399,7 +411,7 @@ class CartController extends Controller
         $data = $request->all();
         
 
-        //全データをsessionに入れる
+        //全データをsessionに入れる session入れ
         $request->session()->put('all.data', $data); //user receiver destination paymentMethod
         //$request->session()->put('all.user', $data['user']);
         //$request->session()->put('all.receiver', $data['receiver']);
@@ -426,7 +438,7 @@ class CartController extends Controller
           	//トータルプライス   
             $obj['item_total_price'] = $val['item_total_price'];
             //ポイント計算
-            $obj['point'] = ceil($val['item_total_price'] * ($obj->point_back/100)); //切り上げ？ 切り捨て:floor()
+            $obj['point'] = ceil($val['item_total_price'] * ($obj->point_back/100)); //商品金額のみに対してのパーセント 切り上げ 切り捨て->floor()
 			$addPoint += $obj['point'];
             
 			$itemData[] = $obj;
@@ -568,17 +580,28 @@ class CartController extends Controller
 //       exit;
 //         print_r(session('all'));   
 //         exit; 
-      
+        
+        $allPrice = 0;
+          
       	if($request->has('from_cart') ) { //cartからpostで来た時
        		$data = $request -> all(); 
             
             $regist = $request->has('regist_on') ? 1 : 0;
-         	$request->session()->put('all.regist', $regist);
+         	$request->session()->put('all.regist', $regist); //session入れ
           	
            	foreach($data['last_item_count'] as $key => $val) {   
-            	$request->session()->put('item.data.'.$key.'.item_count', $val); //session入れ   
-            	$request->session()->put('item.data.'.$key.'.item_total_price', $data['last_item_total_price'][$key]); //session入れ
+            	$request->session()->put('item.data.'.$key.'.item_count', $val); //session入れ 
+             
+             	//個数*値段の再計算
+              	$itemId = $data['last_item_id'][$key];
+               	$lastPrice = Ctm::getPriceWithTax($this->item->find($itemId)->price);   
+                $lastPrice = $lastPrice * $val;
+            	$request->session()->put('item.data.'.$key.'.item_total_price', $lastPrice); //session入れ
+             
+                $allPrice += $lastPrice;
             }
+            //all priceのsession入れ
+            $request->session()->put('all.all_price', $allPrice);
        	}
         else { //getの時
         	if($request->session()->has('all.regist')) {
@@ -601,6 +624,7 @@ class CartController extends Controller
         	$userObj = $this->user->find(Auth::id());
         } 
         
+        //代引きが可能かどうかを判定してboolを渡す
         $sesItems = session('item.data');
         $codCheck = 0;
         foreach($sesItems as $item) {
@@ -663,7 +687,7 @@ class CartController extends Controller
         	$data = $request->all();
             $request->session()->forget('item.data.'.$data['del_item_key']);
             
-            //Keyの連番を振り直してsessionに入れ直す
+            //Keyの連番を振り直してsessionに入れ直す session入れ
             $reData = array_merge(session('item.data'));
             $request->session()->put('item.data', $reData);
         }
@@ -694,8 +718,10 @@ class CartController extends Controller
                 
                 $itemData[] = $obj;       
             }
-            
+            /************
             $request->session()->put('all.all_price', $allPrice);
+            *************/
+            
             //合計金額を算出
 //            $priceArr = collect($itemData)->map(function($item) use($allPrice) {
 //                return $item->total_price; 

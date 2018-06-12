@@ -100,7 +100,7 @@ use App\User;
                     </div>
                     
                     <div class="mt-3">
-                    	<p>{{ $item->exp_first }}</p>
+                    	<p>{!! nl2br($item->exp_first) !!}</p>
                     </div>
                   
                   	<div>

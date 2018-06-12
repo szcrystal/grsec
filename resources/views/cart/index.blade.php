@@ -27,7 +27,7 @@
 @else
 
 <form id="with1" class="form-horizontal" role="form" method="POST" action="{{ url('shop/cart') }}">
-                        {{ csrf_field() }}
+      {{ csrf_field() }}
                         
 <div class="table-responsive table-custom table-cart">
 	<table class="table table-bordered bg-white">
@@ -49,14 +49,21 @@
                 	<img src="{{ Storage::url($item->main_img) }}" alt="{{ $item->title }}" class="img-fluid" width=80 height=80>
                 </td>
                 
-                <td>{{ $item->title }}<br>[ {{ $item->number }} ]</td>
-                
+                <td>
+                	<a href="{{ url('item/'.$item->id) }}">
+                	{{ $item->title }}<br>
+                	[ {{ $item->number }} ]
+                 	</a>   
+                	<span class="d-block mt-2">¥{{ number_format(Ctm::getPriceWithTax($item->price)) }}（税込）</span></td>
+                	
                 <td>
                     <fieldset class="mb-4 form-group">
                         {{-- <label>数量</label> --}}
                         
                         <input type="hidden" name="last_item_id[]" value="{{ $item->id }}">
+                        {{--
                         <input type="hidden" name="last_item_total_price[]" value="{{ $item->total_price }}">
+                        --}}
                         
                         <select class="form-control col-md-11{{ $errors->has('last_item_count') ? ' is-invalid' : '' }}" name="last_item_count[]">
                             
@@ -95,7 +102,7 @@
                  		<input type="hidden" name="item_id" value="{{ $item->id }}">
                    		<input type="hidden" name="delete_item" value="1">  
                      	--}}             
-                		<button class="btn bg-white btn-normal" type="submit" name="del_item_key" value="{{ $key }}"><i class="fas fa-times"></i> 削除</button>
+                		<button class="btn bg-white border-secondary btn-normal" type="submit" name="del_item_key" value="{{ $key }}"><i class="fas fa-times"></i> 削除</button>
 
                 </td>        
 
@@ -111,7 +118,7 @@
              	<td>
               			
                         <input type="hidden" name="calc" value="1" form="re">
-                        <button class="btn border border-secondary bg-white" type="submit" name="re_calc" value="1">再計算する</button>
+                        <button class="btn border border-secondary bg-white px-2" type="submit" name="re_calc" value="1"><i class="fas fa-redo"></i> 再計算する</button>
                         {{-- <input type="submit" name="re_calc" value="再計算"> --}}
                        
                     
@@ -133,7 +140,7 @@
 			<input type="hidden" name="from_cart" value="1">
    
    			@if(Auth::check())
-      			<button class="btn btn-block btn-custom mb-4 py-2 px-5" type="submit" name="regist_off" value="1" formaction="{{ url('shop/form') }}">購入手続きへ</button>
+      			<button class="btn btn-block btn-custom mb-4 py-2 px-5" type="submit" name="regist_off" value="1" formaction="{{ url('shop/form') }}"><i class="fas fa-shopping-basket"></i> 購入手続きへ</button>
       		@else
         	<div class="table-responsibe">
          		<table class="table">

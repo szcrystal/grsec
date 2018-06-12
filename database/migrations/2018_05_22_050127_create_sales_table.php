@@ -36,6 +36,8 @@ class CreateSalesTable extends Migration
             $table->integer('total_price')->nullable()->default(NULL);
             
             $table->boolean('deli_done')->nullable()->default(NULL);
+            $table->timestamp('deli_date')->nullable()->default(NULL);
+            
             $table->boolean('pay_done')->nullable()->default(NULL);
             
             /*

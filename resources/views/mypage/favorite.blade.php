@@ -20,7 +20,7 @@
 
 <h3 class="mb-3 card-header">お気に入り一覧</h3>
 <div class="table-responsive table-custom">
-    <table class="table table-borderd border bg-white">
+    <table class="table table-bordered bg-white"> {{-- table-striped  --}}
         <thead>
         <tr>
         	<th>登録日</th>
@@ -28,7 +28,6 @@
           	<th>カテゴリー</th>
            	<th>金額</th>
 			<th></th>
-   			<th></th>         
         </tr>
         </thead>
         
@@ -47,11 +46,24 @@
              <td>¥{{ number_format(Ctm::getPriceWithTax($item->price)) }}</td>
              <td>
                 <a href="{{ url('item/'.$item->id) }}" class="btn border-secondary bg-white text-small">
-                この商品ページへ
+                商品ページへ <i class="fas fa-angle-double-right"></i>
                 </a> 
-             </td>
-             <td>
-             	<button type="submit" class="btn btn-custom text-small">カートに入れる</button>
+             
+             	@if($item->saled)
+              		<small class="d-block mb-2 mt-4">この商品は{{ Ctm::changeDate($item->saleDate, 1) }}<br>に購入しています</small>
+                	<form class="form-horizontal" role="form" method="POST" action="{{ url('shop/cart') }}">
+                        {{ csrf_field() }}
+                                                                               
+                        <input type="hidden" name="item_count" value="1">
+                        <input type="hidden" name="from_item" value="1">
+                        <input type="hidden" name="item_id" value="{{ $item->id }}">
+                        <input type="hidden" name="uri" value="{{ Request::path() }}"> 
+                                          
+                       <button class="btn btn-custom text-small px-4" type="submit" name="regist_off" value="1"><i class="fas fa-shopping-basket"></i> もう一度購入</button>                 
+                    </form>      
+              	@else   
+             		<button type="submit" class="btn btn-custom text-small">カートに入れる</button>
+              	@endif   
              </td>
         </tr>
         @endforeach

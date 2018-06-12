@@ -31,11 +31,32 @@
         <nav>
 
             <ul class="clearfix">
+            	<li>
+                    <i class="fa fa-search"></i>
+                    <div style="display:block;" class="clear s-form">
+                        <div class="float-left">
+                            <form class="my-1 my-lg-0" role="form" method="GET" action="{{ url('search') }}">
+                                {{-- csrf_field() --}}
+
+                                <div class="">
+                                    <input type="search" class="form-control" name="s" placeholder="Search...">
+                                </div>
+                            </form>
+                        </div>
+
+                        <button class="btn btn-s float-left" type="submit">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+                </li>
+            	<li><a href="{{ url('cart') }}">カートを見る</a></li>
             	@if(! Auth::check())
                 <li><a href="{{ url('login') }}">LogIn</a></li>
+                <li>新規登録</li>
                 @else
+                <li><a href="{{ url('mypage') }}">マイページ</a></li>
                 <li>
-                	<a href="{{ url('/logout') }}" class="dropdown-item"
+                	<a href="{{ url('/logout') }}" class=""
                                 onclick="event.preventDefault();
                                          document.getElementById('logout-form').submit();">
                                 ログアウト
@@ -45,33 +66,19 @@
                         {{ csrf_field() }}
                     </form>
                 </li>
+                
                 @endif
-                <li>新規登録</li>
-                {{--
-                <li>
-                	<i class="fa fa-search"></i>
-                </li>
-                --}}
+                
+                
+                
+                
+                
            </ul> 
        
         </nav>
     </div>
 
-	<div style="display:none;" class="clear s-form">
-		<div class="float-left">
-            <form class="my-1 my-lg-0" role="form" method="GET" action="{{ url('search') }}">
-                {{-- csrf_field() --}}
-
-                <div class="">
-                    <input type="search" class="form-control" name="s" placeholder="Search...">
-                </div>
-            </form>
-        </div>
-
-        <button class="btn btn-s float-left" type="submit">
-            <i class="fa fa-search"></i>
-        </button>
-    </div>
+	
     
     
 </header>

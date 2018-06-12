@@ -25,6 +25,9 @@ class CreateSettingsTable extends Migration
             $table->text('bank_info')->nullable()->default(NULL);
             $table->integer('cot_per')->nullable()->default(NULL);
             
+            $table->integer('snap_primary')->nullable()->default(NULL);
+            $table->integer('snap_secondary')->nullable()->default(NULL);
+            
             
             $table->timestamps();
         });
@@ -35,6 +38,9 @@ class CreateSettingsTable extends Migration
 
                 'tax_per' => 8,
                 'bank_info' => "【振込先１】楽天銀行　ジャズ支店（普）7039167\n八進緑産株式会社　※カタカナ表記：ハッシンリョクサンカブシキガイシャ",
+                
+                'snap_primary'=> 10,
+                'snap_secondary'=> 5,
                 
                 'created_at' => date('Y-m-d H:i:s', time()),
                 'updated_at' => date('Y-m-d H:i:s', time()),

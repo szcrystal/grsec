@@ -37,7 +37,7 @@ class CreateItemsTable extends Migration
             $table->string('spare_img_9')->nullable()->default(NULL);
             */
             
-            $table->boolean('farm_direct')->nullable()->default(NULL);
+            
             
             $table->integer('price')->nullable()->default(NULL);
             $table->integer('cost_price')->nullable()->default(NULL);
@@ -45,6 +45,7 @@ class CreateItemsTable extends Migration
             $table->integer('dg_id')->nullable()->default(NULL);
             $table->boolean('deli_fee')->nullable()->default(NULL);
             $table->integer('cod')->nullable()->default(NULL);
+            $table->boolean('farm_direct')->nullable()->default(NULL);
             
             $table->integer('stock')->nullable()->default(NULL);
             $table->boolean('stock_show')->nullable()->default(NULL);
