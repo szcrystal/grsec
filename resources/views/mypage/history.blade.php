@@ -61,8 +61,7 @@
             </td>
              <td>
              	<?php 
-              	   $days = Ctm::getKareHosyou($sale->created_at);
-                  
+              	   $days = Ctm::getKareHosyou($sale->created_at);   
                 ?>
                 {{ $days['limit'] }}まで<br>
                <b>残{{ $days['diffDay'] }}日</b>

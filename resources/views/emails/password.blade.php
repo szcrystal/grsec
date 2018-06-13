@@ -1,16 +1,20 @@
 
-{{ $name }} さん
+{{ $name }} 様
 <br /><br />
-
-▼パスワードリセット用のリンクは下記となります。<br />
+グリーンロケットです。<br>
+パスワードリセットのリクエストを受け付けました。<br><br>
+▼パスワードリセット用のリンクは下記となります。<br>
 {{ url('password/reset/'. $token) }}
 <br /><br />
 
-有効時間の{{ config('auth.expire') }}分以内にクリックをしてパスワードをリセットして下さい。
+このリンクの有効時間は{{ config('auth.expire') }}分となります。<br>
+{{ config('auth.passwords.users.expire') }}以内にクリックをしてパスワードをリセットして下さい。
 
-<br /><br /><br /><br />
+<br /><br /><br />
 
 
-___________________________
-<br>
-{{ env('ADMIN_NAME', 'MovieReview') }}
+<?php
+use App\Setting;
+$setting = Setting::get()->first();
+?>
+{{ $setting->mail_footer }}

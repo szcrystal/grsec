@@ -22,7 +22,7 @@ class MyPageController extends Controller
     public function __construct(Item $item, User $user, Sale $sale, SaleRelation $saleRel, PayMethod $payMethod, Prefecture $pref, Favorite $favorite, Category $category, Receiver $receiver)
     {
         
-        $this -> middleware('auth');
+        $this -> middleware('auth', ['except'=>['getRegister', 'postRegister']]);
         //$this -> middleware('log', ['only' => ['getIndex']]);
         
         $this ->item = $item;
@@ -113,14 +113,34 @@ class MyPageController extends Controller
          return view('mypage.historySingle', ['user'=>$user, 'sale'=>$sale, 'saleRel'=>$saleRel, 'receiver'=>$receiver, 'item'=>$item, 'pm'=>$pm]);   
     }
     
-    public function getRegister()
+    public function getUserRegister()
     {
-    	$uId = Auth::id();
-        $user = $this->user->find($uId);
+    
+    }
+    
+    public function getRegister(Request $request)
+    {
+    	
         
         $prefs = $this->pref->all();
         
-    	return view('mypage.form', ['user'=>$user, 'prefs'=>$prefs, ]);
+       if($request->is('mypage/*')) {
+       		if(! Auth::check()) {
+         		abort(404);
+         	}
+          	else {   
+       			$uId = Auth::id();
+        		$user = $this->user->find($uId);
+       			$isMypage = 1;
+         	}      
+       }
+       else {
+       		$user = null;
+       		$isMypage = 0;
+       }
+       
+        //return view('auth.register', ['user'=>$user, 'prefs'=>$prefs, 'isMypage'=>1]);
+    	return view('mypage.form', ['user'=>$user, 'prefs'=>$prefs, 'isMypage'=>$isMypage]);
     }
     
     public function postRegister(Request $request)
@@ -136,8 +156,7 @@ class MyPageController extends Controller
                'user.address_1' => 'filled|max:255',
               'user.address_2' => 'filled|max:255',  
             //'user.password' => 'filled|min:8|confirmed',                      
-                       
-            
+  
         ];
         
         //

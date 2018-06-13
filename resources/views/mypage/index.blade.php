@@ -29,7 +29,7 @@
     <ul class="mt-5">
     	<li class="float-left col-md-6 mb-3"><a href="{{ url('mypage/history') }}">購入履歴</a></li>
     	<li class="float-left col-md-6 mb-3"><a href="{{ url('mypage/register') }}">会員情報の変更</a></li>
-     	<li class="float-left col-md-6 mb-3">パスワードの変更</li>
+     	<li class="float-left col-md-6 mb-3"><a href="{{ url('password/reset') }}">パスワードの変更</a></li>
       	
        	<li class="float-left col-md-6 mb-3"><a href="{{ url('mypage/favorite') }}">お気に入り</a></li>
         <li class="float-left col-md-6 mb-3">メルマガ登録・解除</li>

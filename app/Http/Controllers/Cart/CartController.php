@@ -14,6 +14,7 @@ use App\Prefecture;
 use App\Favorite;
 
 use App\Mail\OrderEnd;
+use App\Mail\Register;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -335,6 +336,10 @@ class CartController extends Controller
         //Ctm::sendMail($data, 'itemEnd');
         Mail::to($userData['email'], $userData['name'])->send(new OrderEnd($saleRelId, 1));
         Mail::to($this->set->admin_email, $this->set->admin_name)->send(new OrderEnd($saleRelId, 0));
+        
+        if($regist) { 
+        	Mail::to($userData['email'], $userData['name'])->send(new Register($userId));
+        }
         
         
         if(! Ctm::isLocal()) {

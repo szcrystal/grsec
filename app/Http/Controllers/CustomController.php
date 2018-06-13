@@ -198,7 +198,8 @@ class CustomController extends Controller
     
     //注文番号 OrderNumberの作成
     static function getOrderNum($length) {
-        $eng = array_merge(range('a', 'z'), range('A', 'Z'));
+        //$eng = array_merge(range('a', 'z'), range('A', 'Z'));
+        $eng = array_merge(range('a', 'z'));
         $num = array_merge(range('0', '9'));
         
         $r_str = null;

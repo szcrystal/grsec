@@ -23,10 +23,10 @@
 【ご注文者】：{{ $user->name }} 様<br>
 【お届け先】： 
 <div style="margin: 0 0 1.5em 1.0em;">
-{{ $receiver->name }} 様<br>
 〒{{ Ctm::getPostNum($receiver->post_num) }}<br>
 {{ $receiver->prefecture }}{{ $receiver->address_1 }}{{ $receiver->address_2 }}<br>
-{{ $receiver->address_3 }}
+{{ $receiver->address_3 }}<br>
+{{ $receiver->name }} 様<br>
 </div>
 
 【ご注文商品】： <br>
@@ -48,14 +48,16 @@
 <div style="margin: 0 0 1.5em 1.0em;">
 商品金額合計：￥{{ number_format($saleRel->all_price) }} <br>
 送料：￥{{ number_format($saleRel->deli_fee) }} <br>
+@if($saleRel->pay_method == 5)
 代引手数料：￥{{ number_format($saleRel->cod_fee) }} <br>
+@endif
 @if(Auth::check())
 ポイント利用：{{ $saleRel->use_point }}ポイント <br>
 @endif
 <?php
 $allTotal = $saleRel->all_price + $saleRel->deli_fee + $saleRel->cod_fee - $saleRel->use_point;
 ?>
-<b style="font-size:1.1em; padding-top:0.3em;">ご注文金額合計：￥{{ number_format($allTotal) }} </b><br>
+<b style="font-size:1.1em; padding-top:0.5em;">ご注文金額合計：￥{{ number_format($allTotal) }} （税込）</b><br>
 </div>
 【お支払方法】：{{ $pmModel->find($saleRel->pay_method)->name }} <br>
 @if($saleRel->pay_method == 6)

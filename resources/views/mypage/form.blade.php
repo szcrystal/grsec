@@ -33,7 +33,11 @@
 @endif
 
 <div class="">
+@if($isMypage)
 <form class="form-horizontal" role="form" method="POST" action="{{ url('mypage/register') }}">
+@else
+<form class="form-horizontal" role="form" method="POST" action="{{ url('register') }}">
+@endif
     {{ csrf_field() }}
     
 

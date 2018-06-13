@@ -4,6 +4,7 @@ namespace App;
 
 use Mail;
 use Request;
+use App\Setting;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -69,11 +70,13 @@ class User extends Authenticatable
         $data['name'] = $user->name;
         $data['token'] = $token;
         
-        Mail::send('emails.password', $data, function($message) use ($data)
+        $setting = Setting::get()->first();
+        
+        Mail::send('emails.password', $data, function($message) use ($data, $setting)
         {
-            $message -> from(env('ADMIN_EMAIL'), env('ADMIN_NAME'))
+            $message -> from($setting->admin_email, $setting->admin_name)
                      -> to($data['email'], $data['name'])
-                     -> subject('パスワードリセット用リンク');
+                     -> subject('パスワードリセット用リンク -グリーンロケット-');
             //$message->attach($pathToFile);
         });
     }

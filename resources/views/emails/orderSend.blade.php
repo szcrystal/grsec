@@ -43,7 +43,7 @@
 
 <?php $num++; ?>
 @endforeach
-
+<br>
 <hr>
 <br><br>
 

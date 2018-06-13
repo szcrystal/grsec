@@ -121,7 +121,8 @@ Route::get('/mypage/favorite', 'MyPage\MyPageController@favorite');
 //Route::get('logout', 'Auth\LoginController@getLogout');
 
 Auth::routes();
-//Route::post('login', 'Auth\LoginController@postLogin');
+Route::get('/register', 'MyPage\MyPageController@getRegister');
+Route::post('/register', 'MyPage\MyPageController@postRegister');
 
 
 Route::get('/home', 'HomeController@index')->name('home');
