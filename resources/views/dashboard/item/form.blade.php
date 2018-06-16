@@ -123,10 +123,10 @@
                 <?php
                     $s=0;
                     //use App\Setting;
-                    $setCount = 10;
+                    //$subSetCount = 10;
                     //$setCount = Setting::get()->first()->snap_count;
                 ?>
-                @while($s < $setCount)
+                @while($s < $primaryCount)
                 <div class="clearfix spare-img thumb-wrap">
 
                 <fieldset class="col-md-4 float-right">
@@ -503,10 +503,17 @@
                     </div>
                 @endif
             </fieldset>
+            
+            
+            <div class="form-group mb-5 mr-3">
+                <div class="clearfix">
+                    <button type="submit" class="btn btn-primary btn-block mx-auto w-btn w-25 float-right">更　新</button>
+                </div>
+            </div>
 
             
             <fieldset class="my-5 form-group{{ $errors->has('exp_first') ? ' is-invalid' : '' }}">
-                    <label for="explain" class="control-label">キャッチ説明</label>
+                    <label for="explain" class="control-label">キャッチ説明（商品ヘッドの中に表示される）</label>
 
                     <textarea id="explain" type="text" class="form-control" name="exp_first" rows="15">{{ Ctm::isOld() ? old('exp_first') : (isset($item) ? $item->exp_first : '') }}</textarea>
 
@@ -558,10 +565,10 @@
                 <?php
                     $n=0;
                     //use App\Setting;
-                    $setCount = 5;
+                    //$setCount = 5;
                     //$setCount = Setting::get()->first()->snap_count;
                 ?>
-                @while($n < $setCount)
+                @while($n < $secondaryCount)
 
                 <div class="clearfix spare-img thumb-wrap">
                     

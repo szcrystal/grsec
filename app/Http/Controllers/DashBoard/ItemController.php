@@ -11,6 +11,7 @@ use App\TagRelation;
 use App\Consignor;
 use App\DeliveryGroup;
 use App\ItemImage;
+use App\Setting;
 
 
 use Illuminate\Http\Request;
@@ -22,7 +23,7 @@ use Storage;
 
 class ItemController extends Controller
 {
-    public function __construct(Admin $admin, Item $item, Tag $tag, Category $category, CategorySecond $categorySecond, TagRelation $tagRelation, Consignor $consignor, DeliveryGroup $dg, ItemImage $itemImg)
+    public function __construct(Admin $admin, Item $item, Tag $tag, Category $category, CategorySecond $categorySecond, TagRelation $tagRelation, Consignor $consignor, DeliveryGroup $dg, ItemImage $itemImg, Setting $setting)
     {
         
         $this -> middleware('adminauth');
@@ -37,6 +38,7 @@ class ItemController extends Controller
         $this->consignor = $consignor;
         $this->dg = $dg;
         $this->itemImg = $itemImg;
+        $this->setting = $setting;
         
         $this->perPage = 20;
         
@@ -83,7 +85,11 @@ class ItemController extends Controller
             return $item->name;
         })->all();
         
-        return view('dashboard.item.form', ['item'=>$item, 'cates'=>$cates, 'subcates'=>$subcates, 'consignors'=>$consignors, 'dgs'=>$dgs, 'tagNames'=>$tagNames, 'allTags'=>$allTags, 'spares'=>$spares, 'snaps'=>$snaps, 'id'=>$id, 'edit'=>1]);
+        $setting = $this->setting->get()->first();
+        $primaryCount = $setting->snap_primary;
+        $secondaryCount = $setting->snap_secondary;
+        
+        return view('dashboard.item.form', ['item'=>$item, 'cates'=>$cates, 'subcates'=>$subcates, 'consignors'=>$consignors, 'dgs'=>$dgs, 'tagNames'=>$tagNames, 'allTags'=>$allTags, 'spares'=>$spares, 'snaps'=>$snaps, 'primaryCount'=>$primaryCount, 'secondaryCount'=>$secondaryCount, 'id'=>$id, 'edit'=>1]);
     }
    
     public function create()
@@ -95,8 +101,13 @@ class ItemController extends Controller
         $allTags = $this->tag->get()->map(function($item){
         	return $item->name;
         })->all();
+        
+        $setting = $this->setting->get()->first();
+        $primaryCount = $setting->snap_primary;
+        $secondaryCount = $setting->snap_secondary;
+        
 //        $users = $this->user->where('active',1)->get();
-        return view('dashboard.item.form', ['cates'=>$cates, 'consignors'=>$consignors, 'dgs'=>$dgs, 'allTags'=>$allTags]);
+        return view('dashboard.item.form', ['cates'=>$cates, 'consignors'=>$consignors, 'dgs'=>$dgs, 'allTags'=>$allTags, 'primaryCount'=>$primaryCount, 'secondaryCount'=>$secondaryCount, ]);
     }
 
     /**
