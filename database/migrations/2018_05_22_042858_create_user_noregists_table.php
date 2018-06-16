@@ -39,7 +39,7 @@ class CreateUserNoregistsTable extends Migration
             
             $table->boolean('destination')->nullable()->default(NULL);
             
-            $table->boolean('active')->nullable()->default(NULL);
+            $table->integer('active')->nullable()->default(NULL);
             
             
             //$table->string('password');

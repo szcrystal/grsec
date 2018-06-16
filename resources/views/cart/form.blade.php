@@ -152,6 +152,105 @@
          </tr>
          
          <tr class="form-group">
+             <th><label class="control-label">郵便番号</label><em>必須</em></th>
+               <td>
+                <input type="text" class="form-control col-md-12{{ $errors->has('user.post_num') ? ' is-invalid' : '' }}" name="user[post_num]" value="{{ Ctm::isOld() ? old('user.post_num') : (Session::has('all.data.user') ? session('all.data.user.post_num') : '') }}" placeholder="例）1234567 ハイフンなし半角数字">
+                
+                @if ($errors->has('user.post_num'))
+                    <div class="help-block text-danger">
+                        <span class="fa fa-exclamation form-control-feedback"></span>
+                        <span>{{ $errors->first('user.post_num') }}</span>
+                    </div>
+                @endif
+            </td>
+         </tr>
+         
+         <tr class="form-group">
+             <th><label class="control-label">都道府県</label><em>必須</em></th>
+               <td>
+                <select class="form-control select-first col-md-6{{ $errors->has('user.prefecture') ? ' is-invalid' : '' }}" name="user[prefecture]">
+                    <option selected value="0">選択して下さい</option>
+                    <?php
+//                        use App\Prefecture;
+//                        $prefs = Prefecture::all();  
+                    ?>
+                    @foreach($prefs as $pref)
+                        <?php
+                            $selected = '';
+                            if(Ctm::isOld()) {
+                                if(old('user.prefecture') == $pref->name)
+                                    $selected = ' selected';
+                            }
+                            else {
+                                if(Session::has('all.data.user')  && session('all.data.user.prefecture') == $pref->name) {
+                                    $selected = ' selected';
+                                }
+                            }
+                        ?>
+                        <option value="{{ $pref->name }}"{{ $selected }}>{{ $pref->name }}</option>
+                    @endforeach
+                </select>
+                
+                @if ($errors->has('user.prefecture'))
+                    <div class="help-block text-danger">
+                        <span class="fa fa-exclamation form-control-feedback"></span>
+                        <span>{{ $errors->first('user.prefecture') }}</span>
+                    </div>
+                @endif
+            </td>
+         </tr>
+         
+         <tr class="form-group">
+             <th><label class="control-label">住所1（都市区）</label><em>必須</em></th>
+               <td>
+                <input type="text" class="form-control col-md-12{{ $errors->has('user.address_1') ? ' is-invalid' : '' }}" name="user[address_1]" value="{{ Ctm::isOld() ? old('user.address_1') : (Session::has('all.data.user') ? session('all.data.user.address_1') : '') }}" placeholder="例）小美玉市">
+                
+                @if ($errors->has('user.address_1'))
+                    <div class="help-block text-danger">
+                        <span class="fa fa-exclamation form-control-feedback"></span>
+                        <span>{{ $errors->first('user.address_1') }}</span>
+                    </div>
+                @endif
+            </td>
+         </tr>
+         
+         <tr class="form-group">
+             <th><label class="control-label">住所2（それ以降）</label><em>必須</em></th>
+               <td>
+                <input type="text" class="form-control col-md-12{{ $errors->has('user.address_2') ? ' is-invalid' : '' }}" name="user[address_2]" value="{{ Ctm::isOld() ? old('user.address_2') : (Session::has('all.data.user') ? session('all.data.user.address_2') : '') }}" placeholder="例）下吉影1-1">
+                
+                @if ($errors->has('user.address_2'))
+                    <div class="help-block text-danger">
+                        <span class="fa fa-exclamation form-control-feedback"></span>
+                        <span>{{ $errors->first('user.address_2') }}</span>
+                    </div>
+                @endif
+            </td>
+         </tr>
+         
+         <tr class="form-group">
+             <th><label class="control-label">住所3（建物/マンション名等）</label></th>
+               <td>
+                <input type="text" class="form-control col-md-12{{ $errors->has('user.address_3') ? ' is-invalid' : '' }}" name="user[address_3]" value="{{ Ctm::isOld() ? old('user.address_3') : (Session::has('all.data.user') ? session('all.data.user.address_3') : '') }}" placeholder="例）GRビル 101号">
+                
+                @if ($errors->has('user.address_3'))
+                    <div class="help-block text-danger">
+                        <span class="fa fa-exclamation form-control-feedback"></span>
+                        <span>{{ $errors->first('user.address_3') }}</span>
+                    </div>
+                @endif
+            </td>
+         </tr>
+        </table>
+        </div>
+         
+         
+         <div class="table-responsive table-custom">
+         <p class="mt-3 text-small">よろしければ以下もお答え下さい。</p>
+            <table class="table table-borderd">
+            <col style="width:27%;"></col>
+            <col></col>
+         <tr class="form-group">
              <th><label class="control-label">性別</label></th>
                <td>
                 <?php 
@@ -291,101 +390,15 @@
                 
             </td>
          </tr>
+        </table>
+        </div>
          
          
-         <tr class="form-group">
-             <th><label class="control-label">郵便番号</label><em>必須</em></th>
-               <td>
-                <input type="text" class="form-control col-md-12{{ $errors->has('user.post_num') ? ' is-invalid' : '' }}" name="user[post_num]" value="{{ Ctm::isOld() ? old('user.post_num') : (Session::has('all.data.user') ? session('all.data.user.post_num') : '') }}" placeholder="例）1234567 ハイフンなし半角数字">
-                
-                @if ($errors->has('user.post_num'))
-                    <div class="help-block text-danger">
-                        <span class="fa fa-exclamation form-control-feedback"></span>
-                        <span>{{ $errors->first('user.post_num') }}</span>
-                    </div>
-                @endif
-            </td>
-         </tr>
-         
-         <tr class="form-group">
-             <th><label class="control-label">都道府県</label><em>必須</em></th>
-               <td>
-                <select class="form-control select-first col-md-6{{ $errors->has('user.prefecture') ? ' is-invalid' : '' }}" name="user[prefecture]">
-                    <option disabled selected>選択して下さい</option>
-                    <?php
-//                        use App\Prefecture;
-//                        $prefs = Prefecture::all();  
-                    ?>
-                    @foreach($prefs as $pref)
-                        <?php
-                            $selected = '';
-                            if(Ctm::isOld()) {
-                                if(old('user.prefecture') == $pref->name)
-                                    $selected = ' selected';
-                            }
-                            else {
-                                if(Session::has('all.data.user')  && session('all.data.user.prefecture') == $pref->name) {
-                                    $selected = ' selected';
-                                }
-                            }
-                        ?>
-                        <option value="{{ $pref->name }}"{{ $selected }}>{{ $pref->name }}</option>
-                    @endforeach
-                </select>
-                
-                @if ($errors->has('user.prefecture'))
-                    <div class="help-block text-danger">
-                        <span class="fa fa-exclamation form-control-feedback"></span>
-                        <span>{{ $errors->first('user.prefecture') }}</span>
-                    </div>
-                @endif
-            </td>
-         </tr>
-         
-         <tr class="form-group">
-             <th><label class="control-label">住所1（都市区）</label><em>必須</em></th>
-               <td>
-                <input type="text" class="form-control col-md-12{{ $errors->has('user.address_1') ? ' is-invalid' : '' }}" name="user[address_1]" value="{{ Ctm::isOld() ? old('user.address_1') : (Session::has('all.data.user') ? session('all.data.user.address_1') : '') }}" placeholder="例）小美玉市">
-                
-                @if ($errors->has('user.address_1'))
-                    <div class="help-block text-danger">
-                        <span class="fa fa-exclamation form-control-feedback"></span>
-                        <span>{{ $errors->first('user.address_1') }}</span>
-                    </div>
-                @endif
-            </td>
-         </tr>
-         
-         <tr class="form-group">
-             <th><label class="control-label">住所2（それ以降）</label><em>必須</em></th>
-               <td>
-                <input type="text" class="form-control col-md-12{{ $errors->has('user.address_2') ? ' is-invalid' : '' }}" name="user[address_2]" value="{{ Ctm::isOld() ? old('user.address_2') : (Session::has('all.data.user') ? session('all.data.user.address_2') : '') }}" placeholder="例）下吉影1-1">
-                
-                @if ($errors->has('user.address_2'))
-                    <div class="help-block text-danger">
-                        <span class="fa fa-exclamation form-control-feedback"></span>
-                        <span>{{ $errors->first('user.address_2') }}</span>
-                    </div>
-                @endif
-            </td>
-         </tr>
-         
-         <tr class="form-group">
-             <th><label class="control-label">住所3（建物/マンション名等）</label></th>
-               <td>
-                <input type="text" class="form-control col-md-12{{ $errors->has('user.address_3') ? ' is-invalid' : '' }}" name="user[address_3]" value="{{ Ctm::isOld() ? old('user.address_3') : (Session::has('all.data.user') ? session('all.data.user.address_3') : '') }}" placeholder="例）GRビル 101号">
-                
-                @if ($errors->has('user.address_3'))
-                    <div class="help-block text-danger">
-                        <span class="fa fa-exclamation form-control-feedback"></span>
-                        <span>{{ $errors->first('user.address_3') }}</span>
-                    </div>
-                @endif
-            </td>
-         </tr>
-         
-         
-         
+         <div id="magazine" class="table-responsive table-custom">
+        <p class="mt-3 text-small">当店からのお知らせを希望しますか？</p>
+            <table class="table table-borderd border">
+                <col style="width:27%;"></col>
+                <col></col>   
          <tr class="form-group">
              <th><label class="control-label">メールマガジンの登録</label></th>
                <td>
@@ -411,8 +424,15 @@
                 @endif
             </td>
          </tr>
+        </table>
+        </div>
          
          @if($regist)
+         <div class="table-responsive table-custom">
+            <p class="mt-3 text-small">8文字以上（半角）で、忘れないものを入力して下さい。<br>メールアドレスとパスワードは当店をご利用の際に必要となります。</p>
+            <table class="table table-borderd border">
+                <col style="width:27%;"></col>
+                <col></col>
              <tr class="form-group">
              	
                  <th><label class="control-label">パスワード</label><em>必須</em></th>
@@ -451,7 +471,7 @@
         <div class="receiver">
             <h3 class="mt-5 card-header">お届け先</h3>     
                  
-            <fieldset class="form-group col-md-12 text-left mt-3">
+            <fieldset class="form-group col-md-12 text-left mt-3 py-3 border rounded bg-white">
                 <div class="checkbox">
                     <label class="big-check">
                         <?php                            

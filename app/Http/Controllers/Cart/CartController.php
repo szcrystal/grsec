@@ -363,18 +363,22 @@ class CartController extends Controller
     	if(Auth::check()) {
      		$pt = $this->user->find(Auth::id())->point;
      	}
+      
+//      echo $request->input('user.prefecture');  
+//      exit; 
 
         $rules = [
-            'user.name' => 'filled|max:255',
-            'user.hurigana' => 'filled|max:255',
-            'user.email' => 'filled|email|max:255',
-            'user.tel_num' => 'filled|numeric',
+            'user.name' => 'sometimes|required|max:255',
+            'user.hurigana' => 'sometimes|required|max:255',
+            'user.email' => 'sometimes|required|email|max:255',
+            'user.tel_num' => 'sometimes|required|numeric',
 //            'cate_id' => 'required',
-			'user.post_num' => 'filled|nullable|numeric|digits:7', //numeric|max:7
-   			//'user.prefecture' => 'required',         
-   			'user.address_1' => 'filled|max:255',
-      		'user.address_2' => 'filled|max:255',  
-        	'user.password' => 'filled|min:8|confirmed',                      
+			'user.post_num' => 'sometimes|required|nullable|numeric|digits:7', //numeric|max:7
+   			'user.prefecture' => 'sometimes|not_in:0',         
+   			'user.address_1' => 'sometimes|required|max:255',
+      		'user.address_2' => 'sometimes|required|max:255',  
+        	'user.password' => 'sometimes|required|min:8|confirmed', 
+         	'user.password_confirmation' => 'sometimes|required|min:8|confirmed',      
 			'use_point' => 'numeric|max:'.$pt,
    			        
 			'destination' => 'required_without:receiver.name,receiver.hurigana,receiver.tel_num,receiver.post_num,receiver.prefecture,receiver.address_1,receiver.address_2,receiver.address_3',
@@ -393,7 +397,7 @@ class CartController extends Controller
         
         //
         if(! Auth::check()) {
-        	$rules['user.prefecture'] = 'required';
+        	//$rules['user.prefecture'] = 'required';
          	
           	if($request->input('regist') && ! Ctm::isLocal()) {
           		$rules['user.email'] = 'filled|email|unique:users,email|max:255';
@@ -402,8 +406,8 @@ class CartController extends Controller
         }
         
          $messages = [
-            'title.required' => '「商品名」を入力して下さい。',
-            'cate_id.required' => '「カテゴリー」を選択して下さい。',
+            //'title.required' => '「商品名」を入力して下さい。',
+            'user.prefecture.not_in' => '「都道府県」を選択して下さい。',
             'destination.required_without' => '「配送先」を入力して下さい。', //登録先住所に配送の場合は「登録先住所に配送する」にチェックをして下さい。
             'pay_method.required' => '「お支払い方法」を選択して下さい。',
             'use_point.max' => '「ポイント」が保持ポイントを超えています。',

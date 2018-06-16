@@ -115,14 +115,19 @@ Route::get('/mypage/history/{id}', 'MyPage\MyPageController@showHistory');
 
 Route::get('/mypage/register', 'MyPage\MyPageController@getRegister');
 Route::post('/mypage/register', 'MyPage\MyPageController@postRegister');
+Route::post('/mypage/register/end', 'MyPage\MyPageController@registerEnd');
 
 Route::get('/mypage/favorite', 'MyPage\MyPageController@favorite');
+
+Route::get('/mypage/optout', 'MyPage\MyPageController@getOptout');
+Route::post('/mypage/optout', 'MyPage\MyPageController@postOptout');
 
 //Route::get('logout', 'Auth\LoginController@getLogout');
 
 Auth::routes();
 Route::get('/register', 'MyPage\MyPageController@getRegister');
 Route::post('/register', 'MyPage\MyPageController@postRegister');
+Route::post('/register/end', 'MyPage\MyPageController@registerEnd');
 
 
 Route::get('/home', 'HomeController@index')->name('home');

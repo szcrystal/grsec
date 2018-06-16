@@ -49,10 +49,10 @@
                         </button>
                     </div>
                 </li>
-            	<li><a href="{{ url('cart') }}">カートを見る</a></li>
+            	<li><a href="{{ url('shop/cart') }}">カートを見る</a></li>
             	@if(! Auth::check())
                 <li><a href="{{ url('login') }}">LogIn</a></li>
-                <li>新規登録</li>
+                <li><a href="{{ url('register') }}">新規登録</a></li>
                 @else
                 <li><a href="{{ url('mypage') }}">マイページ</a></li>
                 <li>

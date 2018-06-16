@@ -112,6 +112,7 @@ return [
     	'email' => '「メールアドレス」', //for login register
         'user_id' => '「ユーザーID（メールアドレス）」', //for login
         'password' => '「パスワード」', //for login register
+        'password_confirmation' => '「パスワードの確認」', 
         'name' => '「お名前」', // forお問い合わせ
         'email' => '「メールアドレス」',// forお問い合わせ
         
@@ -124,6 +125,7 @@ return [
         'user.address_1' => '「住所1」',
         'user.address_2' => '「住所2」',
         'user.password' => '「パスワード」',
+        'user.password_confirmation' => '「パスワードの確認」',
         
         'receiver.name' => '「配送先氏名」',
         'receiver.hurigana' => '「配送先フリガナ」',

@@ -30,7 +30,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/';
+    //protected $redirectTo = '/';
 
     /**
      * Create a new controller instance.
@@ -42,16 +42,42 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
     
-//    public function postLogin(Request $request)
-//    {
-//        return view('auth.login');
-//    }
+	public function login(Request $request)
+    {
+//        print_r(session()->all());
+//         exit;   
+        
+    	$rules = [
+            'email' => 'required|email|max:255',
+            'password' => 'required|min:8', 
+        ];
+        
+         $messages = [
+            //'title.required' => '「商品名」を入力して下さい。',
+        ];
+        
+        $this->validate($request, $rules, $messages);
+        $data = $request->all();
+        
+        $credentials = $request->only('email', 'password');
+        
+        $prevUrl = $request->has('to_cart') ? '/shop/cart' : $data['previous'];
+
+        if (Auth::attempt($credentials)) { // 認証に成功した
+            return redirect()->intended($prevUrl);
+            
+        }
+        else {
+        	$errors = ['認証できません。メールアドレス・パスワードを確認して下さい。'];
+        	return redirect()->back()->withInput()->withErrors($errors);
+        }
+    }
     
     protected function redirectTo()
     {    	
-        if(isset($_POST['to_cart'])) {
-     		return '/shop/cart'; 
-      	}
+//        if(isset($_POST['to_cart'])) {
+//             return '/shop/cart'; 
+//          }
     }
     
     
