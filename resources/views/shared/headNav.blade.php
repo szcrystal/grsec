@@ -27,6 +27,7 @@
 
     </a></h1>
     
+    @if(env('APP_ENV') != 'trial') 
     <div class="head-navi float-right col-md-5 mt-5">
         <nav>
 
@@ -77,6 +78,7 @@
        
         </nav>
     </div>
+    @endif
 
 	
     

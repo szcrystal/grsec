@@ -57,21 +57,13 @@ use App\User;
                 
             <div class="float-right col-md-5">
                 	<h2>{{ $item -> title }}</h2>
-                 	<p class="text-big">{{ $item->catchcopy }}</p>   
-                 	
-                  	<?php
-                   	$per = env('TAX_PER');
-                    $per = $per/100;
-                    
-                    $tax = floor($item->price * $per);
-                    $price = $item->price + $tax;
-                   	
-                   ?>      
+                 	<p class="text-big">{{ $item->catchcopy }}</p>    
                     
                  	<div class="price-meta">
-                  	   価格 {{ number_format($price) }}円　(税込)
+                  	   価格 {{ number_format(Ctm::getPriceWithTax($item->price)) }}円　(税込)
                     </div>
                     
+                    @if(env('APP_ENV') != 'trial') 
                     <div class="favorite my-2">
                     @if(Auth::check())
                     	<?php
@@ -94,10 +86,9 @@ use App\User;
                     @else
                     	<span class="fav-temp"><i class="far fa-heart"></i></span>
                      	<small class="fav-str"><a href="{{ url('login') }}">ログイン</a>するとお気に入りに登録できます</small>   
-                    @endif
-                    	
-                     	   
+                    @endif 	   
                     </div>
+                    @endif
                     
                     <div class="mt-3">
                     	<p>{!! nl2br($item->exp_first) !!}</p>
