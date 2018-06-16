@@ -19,16 +19,16 @@
 ?>
 
 
-<div class="col-md-11 mx-auto clearfix">
+<div class="mx-auto clearfix">
 
-<h2>マイページ</h2>
-	<div class="text-right text-big">
+<h2 class="mb-3 card-header">マイページ</h2>
+	<div class="text-right text-big mr-5">
 		{{ $user->name }} 様<br>
   		現在のポイント：{{ $user->point }} pt      
 	</div>
 	<hr>
 	
-    <ul class="mt-5">
+    <ul class="mt-5 col-md-10 mx-auto">
     	<li class="mb-5">
      	   <a href="{{ url('mypage/history') }}" class="d-block">購入履歴</a>
      		今までに購入した商品や枯れ保証の残り期間を確認できます。

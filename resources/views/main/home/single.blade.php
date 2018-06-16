@@ -79,7 +79,7 @@ use App\User;
                      		if($isFav) {
                        			$on = ' d-none';
                           		$off = ' d-inline'; 
-                            	$str = 'お気に入り登録済み';              
+                            	$str = 'お気に入りの商品です';              
                        		}
                          	else {
                           		$on = ' d-inline';

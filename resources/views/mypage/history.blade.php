@@ -16,10 +16,10 @@
 
 
 
-<div class="">
+<div class="top-cont">
 
 <h3 class="mb-3 card-header">購入履歴一覧</h3>
-@if(!isset($sales))
+@if(! count($sales) > 0)
 <div>
 	<p>まだ購入した商品がありません。</p>
 </div>
