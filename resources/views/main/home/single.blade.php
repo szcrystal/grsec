@@ -57,7 +57,16 @@ use App\User;
                 
             <div class="float-right col-md-5">
                 	<h2>{{ $item -> title }}</h2>
-                 	<p class="text-big">{{ $item->catchcopy }}</p>    
+                 	<p class="text-big">{{ $item->catchcopy }}</p>   
+                 	
+                  	<?php
+                   	$per = env('TAX_PER');
+                    $per = $per/100;
+                    
+                    $tax = floor($item->price * $per);
+                    $price = $item->price + $tax;
+                   	
+                   ?>      
                     
                  	<div class="price-meta">
                   	   価格 {{ number_format(Ctm::getPriceWithTax($item->price)) }}円　(税込)
