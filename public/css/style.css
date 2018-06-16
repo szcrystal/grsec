@@ -183,6 +183,8 @@ body {
 	font-size: 0.9em;
 }
 
+
+/* Shop ******* */
 #guide {
 	margin: 1em 0 3em;
 }
@@ -347,7 +349,7 @@ body {
 	display: block;
 	float: none;
 	width: 100%;
-	margin-top: 5.8em;
+	margin-top: 8.8em;
 	background: #eceaea;
 }
 
@@ -689,6 +691,33 @@ ul.cate_menu a:hover {
 	//width: 250px;
 	//height: 250px;
 	//float: right;
+}
+
+.top_btn {
+    display: block;
+    position: fixed;
+    bottom: 30px;
+    right: 2%;
+    width: 2.7em;
+    height: 2.6em;
+    line-height: 2.3em;
+    text-align: center;
+    padding: 0;
+    cursor: pointer;
+    background: rgba(0,0,0,0.6);
+    border-radius: 0.3em;
+    z-index: 9999;
+}
+.top_btn .fa {
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+    font-size: 2.5em;
+    color: #fff;
+    vertical-align: middle;
+}
+.top_btn:hover {
+    opacity: 0.6;
 }
 
 .site-main .comment-navigation, .site-main
