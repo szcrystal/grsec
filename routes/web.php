@@ -78,6 +78,9 @@ if(Schema::hasTable('fixes')) {
     }
 }
 
+//Search
+Route::get('search', 'Main\SearchController@index');
+
 //Contact
 Route::resource('contact', 'Main\ContactController');
 

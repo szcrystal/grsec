@@ -42,12 +42,14 @@
                                 <div class="">
                                     <input type="search" class="form-control" name="s" placeholder="Search...">
                                 </div>
+                                
+                                <button class="btn btn-s float-left" type="submit">
+                                    <i class="fa fa-search"></i>
+                                </button>
                             </form>
                         </div>
 
-                        <button class="btn btn-s float-left" type="submit">
-                            <i class="fa fa-search"></i>
-                        </button>
+                        
                     </div>
                 </li>
             	<li><a href="{{ url('shop/cart') }}">カートを見る</a></li>
