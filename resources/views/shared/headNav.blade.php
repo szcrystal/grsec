@@ -28,30 +28,24 @@
     </a></h1>
     
     @if(env('APP_ENV') != 'trial') 
-    <div class="head-navi float-right col-md-5 mt-5">
-        <nav>
+    <div class="head-navi float-right col-md-4 mt-5">
+    
+    	<div class="clearfix s-form">
+            <form class="my-1 my-lg-0" role="form" method="GET" action="{{ url('search') }}">
+                {{-- csrf_field() --}}
+
+                
+                <input type="search" class="form-control w-75 float-left" name="s" placeholder="Search...">
+
+                <button class="btn btn-s float-left" type="submit">
+                    <i class="fa fa-search"></i>
+                </button>
+            </form>
+        </div>
+    
+        <nav class="mt-2">
 
             <ul class="clearfix">
-            	<li>
-                    <i class="fa fa-search"></i>
-                    <div style="display:block;" class="clear s-form">
-                        <div class="float-left">
-                            <form class="my-1 my-lg-0" role="form" method="GET" action="{{ url('search') }}">
-                                {{-- csrf_field() --}}
-
-                                <div class="">
-                                    <input type="search" class="form-control" name="s" placeholder="Search...">
-                                </div>
-                                
-                                <button class="btn btn-s float-left" type="submit">
-                                    <i class="fa fa-search"></i>
-                                </button>
-                            </form>
-                        </div>
-
-                        
-                    </div>
-                </li>
             	<li><a href="{{ url('shop/cart') }}">カートを見る</a></li>
             	@if(! Auth::check())
                 <li><a href="{{ url('login') }}">LogIn</a></li>
