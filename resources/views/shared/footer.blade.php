@@ -22,8 +22,9 @@
              	  
             	$fixes = Fix::where('open_status', 1)->orderBy('id', 'asc')->get();
             ?>
-        	@if($fixes)
+        	
 			<ul>
+   			@if($fixes)         
             	@foreach($fixes as $fix)
 				<li><a href="{{ url($fix->slug) }}">
 					@if($fix->sub_title != '')
@@ -33,11 +34,9 @@
                     @endif
                 </a></li>
 				@endforeach
-
-				
-                
+    		@endif 
+      			<li><a href="{{ url('contact') }}">お問い合わせ</a></li>                 
             </ul>
-            @endif
         </div>
 
         <div class="foot-company">
