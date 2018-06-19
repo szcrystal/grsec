@@ -62,20 +62,16 @@
                   <th>ID</th>
                   <th>配送区分名</th>
                   <th></th>
-                  {{--
-                  <th>カテゴリー</th>
-                  <th>金額</th>
-                  <th>説明</th>
-                  <th>ステータス</th>
-                  <th>作成日</th>
-                  --}}
+                  <th>容量</th>
+                  <th>係数</th>
+                  <th>時間指定</th>
+                  <th></th>
                   <th></th>
                   <th></th>
                 </tr>
               </thead>
               
-              
-              
+ 
               <tbody>
               @foreach($dgs as $dg)
                 <tr>
@@ -98,6 +94,18 @@
                 	}
                    ?>
                    <span class="text-danger">{{$str}}</span>   
+                  </td>
+                  
+                  <td>{{ $dg->capacity }}</td>
+                  
+                  <td>{{ $dg->factor }}</td>
+                  
+                  <td>
+                  @if($dg->is_time)
+                  <span class="text-success">可能</span>
+                  @else
+                  <span class="text-danger">不可</span>
+                  @endif	
                   </td>
                   
                   {{--
