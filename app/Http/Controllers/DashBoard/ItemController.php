@@ -140,17 +140,15 @@ class ItemController extends Controller
         $data = $request->all();
         
         //status
-        if(isset($data['open_status'])) { //非公開On
-            $data['open_status'] = 0;
-        }
-        else {
-            $data['open_status'] = 1;
-        }
+        $data['open_status'] = isset($data['open_status']) ? 0 : 1;
+        
+       
         
         //stock_show
         $data['deli_fee'] = isset($data['deli_fee']) ? 1 : 0;
         $data['stock_show'] = isset($data['stock_show']) ? 1 : 0;
         $data['farm_direct'] = isset($data['farm_direct']) ? 1 : 0;
+        $data['is_once'] = isset($data['is_once']) ? 1 : 0;
         
         
         if($editId) { //update（編集）の時

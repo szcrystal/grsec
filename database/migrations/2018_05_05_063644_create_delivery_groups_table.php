@@ -18,6 +18,9 @@ class CreateDeliveryGroupsTable extends Migration
             
             $table->string('name')->nullable()->default(NULL);
             $table->boolean('open_status')->nullable()->default(NULL);
+            $table->integer('capacity')->nullable()->default(NULL);
+            $table->float('factor')->nullable()->default(NULL);
+            $table->boolean('is_time')->nullable()->default(NULL);
 //            $table->string('title')->nullable()->default(NULL);
 //            $table->text('header')->nullable()->default(NULL);
 //            $table->text('footer')->nullable()->default(NULL);

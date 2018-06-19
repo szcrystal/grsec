@@ -384,7 +384,7 @@
                 
             </fieldset>
             
-            <fieldset class="form-group mb-4">
+            <fieldset class="form-group mb-2">
                     <div class="checkbox">
                         <label>
                             <?php
@@ -400,6 +400,26 @@
                                 }
                             ?>
                             <input type="checkbox" name="deli_fee" value="1"{{ $checked }}> 送料を無料にする
+                        </label>
+                    </div>
+            </fieldset>
+            
+            <fieldset class="form-group mb-4">
+                    <div class="checkbox">
+                        <label>
+                            <?php
+                                $checked = '';
+                                if(Ctm::isOld()) {
+                                    if(old('is_once'))
+                                        $checked = ' checked';
+                                }
+                                else {
+                                    if(isset($item) && $item->is_once) {
+                                        $checked = ' checked';
+                                    }
+                                }
+                            ?>
+                            <input type="checkbox" name="is_once" value="1"{{ $checked }}> 同梱包可能
                         </label>
                     </div>
             </fieldset>

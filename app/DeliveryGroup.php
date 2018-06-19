@@ -9,5 +9,8 @@ class DeliveryGroup extends Model
     protected $fillable = [
         'name',
         'open_status',
+        'capacity',
+        'factor',
+        'is_time',
     ];
 }

@@ -11,6 +11,8 @@ use App\SaleRelation;
 use App\Receiver;
 use App\PayMethod;
 use App\Prefecture;
+use App\DeliveryGroup;
+use App\DeliveryGroupRelation;
 use App\Favorite;
 
 use App\Mail\OrderEnd;
@@ -25,7 +27,7 @@ use Auth;
 
 class CartController extends Controller
 {
-    public function __construct(Item $item, Setting $setting, User $user, UserNoregist $userNor, Sale $sale, SaleRelation $saleRel, Receiver $receiver, PayMethod $payMethod, Prefecture $prefecture, Favorite $favorite)
+    public function __construct(Item $item, Setting $setting, User $user, UserNoregist $userNor, Sale $sale, SaleRelation $saleRel, Receiver $receiver, PayMethod $payMethod, Prefecture $prefecture, DeliveryGroup $dg, DeliveryGroupRelation $dgRel, Favorite $favorite)
     {
         
         //$this -> middleware('adminauth');
@@ -42,6 +44,8 @@ class CartController extends Controller
         $this->receiver = $receiver;
         $this->payMethod = $payMethod;
         $this-> prefecture = $prefecture;
+        $this->dg = $dg;
+        $this->dgRel = $dgRel;
         $this->favorite = $favorite;
 //        $this->category = $category;
 //        $this->categorySecond = $categorySecond;
@@ -378,7 +382,7 @@ class CartController extends Controller
    			'user.address_1' => 'sometimes|required|max:255',
       		'user.address_2' => 'sometimes|required|max:255',  
         	'user.password' => 'sometimes|required|min:8|confirmed', 
-         	'user.password_confirmation' => 'sometimes|required|min:8|confirmed',      
+         	'user.password_confirmation' => 'sometimes|required|min:8',      
 			'use_point' => 'numeric|max:'.$pt,
    			        
 			'destination' => 'required_without:receiver.name,receiver.hurigana,receiver.tel_num,receiver.post_num,receiver.prefecture,receiver.address_1,receiver.address_2,receiver.address_3',
@@ -461,11 +465,69 @@ class CartController extends Controller
         $totalFee = $allPrice - $usePoint;
         
         
-        //送料 -----------
+        //送料 ---------------------------------
         $deliFee = 0;
         
+        if(! isset($data['destination'])) {
+        	$prefName = $data['receiver']['prefecture'];
+         	//$prefId = $this->prefecture->where('name', $prefName)->first()->id;   
+        }
+        else {
+        	if(Auth::check()) {
+        		$prefName = $this->user->find(Auth::id())->prefecture;
+         	}
+          	else {
+           		$prefName = $data['user']['prefecture'];
+           }
+        }
         
+        $prefId = $this->prefecture->where('name', $prefName)->first()->id;
+        
+        $isOnceItem = array();
+        
+        //同梱包可能で、配送区分も同じ場合を区別する必要がある
+        
+        foreach($itemData as $item) {
+        	if(! $item->is_once) { //同梱包不可のものはそれぞれ単独で
+         		$fee = $this->dgRel->where(['dg_id'=>$item->dg_id, 'pref_id'=>$prefId])->first()->fee;
+                $deliFee += $fee;
+                //$dgIds[] = $item->dg_id;
+         	} 
+          	else { //同梱包可能なものは別配列へ入れて下記へ
+           		$isOnceItem[] = $item;
+             	$dgIds[$item->id] = $item->dg_id; //itemIdをkeyとしてdeliveryGroupIdを別配列へ    
+           	}        
+        }
+        
+        //同梱包可能なもので配送区分の同じものと異なるものを分けて送料を出す        
+        if(count($isOnceItem) > 0) {
+        	foreach($isOnceItem as $ioi) {
+         		if(isset($dgIds[$ioi->id])) { //ここでsetされていなければ519行目のarray_diffで削除されているので送料算出の必要なし
+           			unset($dgIds[$ioi->id]); //自身の要素を削除
+             	
+                    if(in_array($ioi->dg_id, $dgIds)) { //同じ配送区分があるかどうか                        
+                        //容量を超えていないかの確認
+                        $out = array_count_values($dgIds); //要素がkeyになって個数がvalとして配列になる
+                        $count = $out[$ioi->dg_id] + 1;
+                        $capacity = $this->dg->find($ioi->dg_id)->capacity;
+                        
+                        if($count <= $capacity) {
+                        	$dgIds = array_diff($dgIds, array($ioi->dg_id)); //同じ配送区分のdg_idを削除
+                        }
+                        else {
+                        	//容量を超えている時、ここどうするか
+                        }
+                          
+                    }
+                    
+                    $fee = $this->dgRel->where(['dg_id'=>$ioi->dg_id, 'pref_id'=>$prefId])->first()->fee;
+                    $deliFee += $fee;       
+                }
+         	}   
+        }
+         
         $totalFee = $totalFee + $deliFee;
+        //送料END -----------------
         
         //代引き手数料 -----------
         $codFee = 0;
@@ -501,7 +563,7 @@ class CartController extends Controller
 
         
         // Settle 決済 ====================================================
-        $title = $itemData[0]->title;
+        $title = $itemData[0]->title; //購入１個目の商品をタイトルにする。これ以外なさそう。
         $number = $itemData[0]->number;
         
         //Order_Number

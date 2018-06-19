@@ -100,9 +100,53 @@
                 @endif
             </fieldset>
             
+            <fieldset class="mb-2 form-group">
+                <label for="stock" class="control-label">容量</label>
+                <input class="form-control col-md-6{{ $errors->has('capacity') ? ' is-invalid' : '' }}" name="capacity" value="{{ Ctm::isOld() ? old('capacity') : (isset($dg) ? $dg->capacity : '') }}">
+                
+
+                @if ($errors->has('capacity'))
+                    <div class="text-danger">
+                        <span class="fa fa-exclamation form-control-feedback"></span>
+                        <span>{{ $errors->first('capacity') }}</span>
+                    </div>
+                @endif
+            </fieldset>
             
+            <fieldset class="mb-4 form-group">
+                <label for="stock" class="control-label">係数</label>
+                <input class="form-control col-md-6{{ $errors->has('factor') ? ' is-invalid' : '' }}" name="factor" value="{{ Ctm::isOld() ? old('factor') : (isset($dg) ? $dg->factor : '') }}">
+                
+
+                @if ($errors->has('factor'))
+                    <div class="text-danger">
+                        <span class="fa fa-exclamation form-control-feedback"></span>
+                        <span>{{ $errors->first('factor') }}</span>
+                    </div>
+                @endif
+            </fieldset>
             
+            <fieldset class="form-group mb-4">
+                    <div class="checkbox">
+                        <label>
+                            <?php
+                                $checked = '';
+                                if(Ctm::isOld()) {
+                                    if(old('is_time'))
+                                        $checked = ' checked';
+                                }
+                                else {
+                                    if(isset($dg) && $dg->is_time) {
+                                        $checked = ' checked';
+                                    }
+                                }
+                            ?>
+                            <input type="checkbox" name="is_time" value="1"{{ $checked }}> 時間指定を可能にする
+                        </label>
+                    </div>
+            </fieldset>
             
+
             <div class="form-group">
                 <div class="">
                     <button type="submit" class="btn btn-primary btn-block w-btn w-25">更　新</button>

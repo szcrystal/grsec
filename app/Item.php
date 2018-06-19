@@ -38,6 +38,7 @@ class Item extends Model
         'farm_direct',
         'dg_id',
         'deli_fee',
+        'is_once',
         'stock',
         'stock_show',
         'point_back',

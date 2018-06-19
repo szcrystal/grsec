@@ -60,8 +60,7 @@
             @if(isset($edit))
                 <input type="hidden" name="edit_id" value="{{$id}}">
             @endif
-
-
+ 
             
             @foreach($prefs as $key => $pref)
             <fieldset class="mb-2 form-group{{ $errors->has('fee.'.$key) ? ' has-error' : '' }}">

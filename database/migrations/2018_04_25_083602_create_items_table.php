@@ -44,6 +44,7 @@ class CreateItemsTable extends Migration
             $table->string('consignor_id')->nullable()->default(NULL);
             $table->integer('dg_id')->nullable()->default(NULL);
             $table->boolean('deli_fee')->nullable()->default(NULL);
+            $table->boolean('is_once')->nullable()->default(NULL);
             $table->integer('cod')->nullable()->default(NULL);
             $table->boolean('farm_direct')->nullable()->default(NULL);
             
