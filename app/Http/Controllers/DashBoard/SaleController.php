@@ -133,15 +133,20 @@ class SaleController extends Controller
 //         $messages = [
 //             'title.required' => '「商品名」を入力して下さい。',
 //            'cate_id.required' => '「カテゴリー」を選択して下さい。',
-//            
-//            //'post_thumb.filenaming' => '「サムネイル-ファイル名」は半角英数字、及びハイフンとアンダースコアのみにして下さい。',
-//            //'post_movie.filenaming' => '「動画-ファイル名」は半角英数字、及びハイフンとアンダースコアのみにして下さい。',
-//            //'slug.unique' => '「スラッグ」が既に存在します。',
 //        ];
 //        
 //        $this->validate($request, $rules, $messages);
         
         $data = $request->all();
+
+        if(isset($data['only_craim'])) {
+            $saleModel = $this->sale->find($data['saleId']);
+            $saleModel->craim = $data['craim'];
+            $saleModel->save();
+         	
+          	$status = "クレームが更新されました。";   
+            return redirect('dashboard/sales/'. $data['saleId'])->with('status', $status);
+        }
         
         
         $mail = Mail::to($data['user_email'], $data['user_name'])->send(new OrderSend($data['sale_ids']));

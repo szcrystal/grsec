@@ -59,8 +59,8 @@ class CreateItemsTable extends Migration
             $table->text('detail')->nullable()->default(NULL);
             
             
-            $table->text('what_is')->nullable()->default(NULL);
-            $table->text('warning')->nullable()->default(NULL);
+            //$table->text('what_is')->nullable()->default(NULL);
+            //$table->text('warning')->nullable()->default(NULL);
             
             $table->timestamp('open_date')->nullable()->default(NULL);
             

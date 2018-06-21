@@ -12,6 +12,7 @@ use App\User;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Cache;
 
 use Auth;
 
@@ -71,7 +72,33 @@ class SingleController extends Controller
             if(isset($fav)) $isFav = 1;   
         }
         
-        return view('main.home.single', ['item'=>$item, 'otherItem'=>$otherItem, 'cateObj'=>$cateObj, 'tags'=>$tags, 'imgsPri'=>$imgsPri, 'imgsSec'=>$imgsSec, 'isFav'=>$isFav]);
+        //count
+        $item->increment('view_count');
+        
+        //Cache
+        $cacheIds = array();
+        $cacheItems = null;
+        
+        if(cache()->has('cacheIds')) {
+        	
+        	$cacheIds = cache('cacheIds');
+          	$cacheItems = $this->item->find($cacheIds);  
+        }
+        
+        if(! in_array($item->id, $cacheIds)) {
+        	$count = array_unshift($cacheIds, $item->id);
+         	
+          	if($count > 11) {
+            	$cacheIds = array_slice($cacheIds, 0, 9); 
+        	}      
+        }
+
+        cache(['cacheIds'=>$cacheIds], 360);
+        
+//        print_r(cache('cacheIds'));
+//        exit;
+        
+        return view('main.home.single', ['item'=>$item, 'otherItem'=>$otherItem, 'cateObj'=>$cateObj, 'tags'=>$tags, 'imgsPri'=>$imgsPri, 'imgsSec'=>$imgsSec, 'isFav'=>$isFav, 'cacheItems'=>$cacheItems]);
     }
     
     
@@ -106,6 +133,7 @@ class SingleController extends Controller
         
     }
     
+    //お気に入り ajax
     public function postScript(Request $request)
     {
         $itemId = $request->input('itemId');

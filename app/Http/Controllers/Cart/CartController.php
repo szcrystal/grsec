@@ -509,19 +509,26 @@ class CartController extends Controller
                         //容量を超えていないかの確認
                         $out = array_count_values($dgIds); //要素がkeyになって個数がvalとして配列になる
                         $count = $out[$ioi->dg_id] + 1;
-                        $capacity = $this->dg->find($ioi->dg_id)->capacity;
+                        
+                        $dg = $this->dg->find($ioi->dg_id);
+                        $capacity = $dg->find($ioi->dg_id)->capacity;
                         
                         if($count <= $capacity) {
                         	$dgIds = array_diff($dgIds, array($ioi->dg_id)); //同じ配送区分のdg_idを削除
+                         	
+                          	$fee = $this->dgRel->where(['dg_id'=>$ioi->dg_id, 'pref_id'=>$prefId])->first()->fee;
+                        	$fee = $fee * ($count / $capacity * $dg->factor); //ここの計算式 ?????
+                        	$deliFee += $fee;
                         }
                         else {
                         	//容量を超えている時、ここどうするか
                         }
-                          
+                        
                     }
-                    
-                    $fee = $this->dgRel->where(['dg_id'=>$ioi->dg_id, 'pref_id'=>$prefId])->first()->fee;
-                    $deliFee += $fee;       
+                    else {
+                    	$fee = $this->dgRel->where(['dg_id'=>$ioi->dg_id, 'pref_id'=>$prefId])->first()->fee;
+                    	$deliFee += $fee;  
+                    }     
                 }
          	}   
         }

@@ -240,9 +240,6 @@ use App\User;
                                 </tr>
 
                               --}} 
-                                
-                                
-
 
                             </tbody>
                 		</table>
@@ -250,12 +247,24 @@ use App\User;
 
                     
                     <div class="mt-4">
-                    
-                    	{!! $item->what_is !!}
+                    	@if(isset($cacheItems))
+                    	<h4>最近見た商品</h4>
+                    	<ul class="clearfix">
+                     		@foreach($cacheItems as $cacheItem)
+                       			<li class="float-left w-25 mr-2">
+                          			<a href="{{ url('item/'. $cacheItem->id) }}">         
+                          			<img src="{{ Storage::url($cacheItem->main_img) }}" class="img-fluid">
+                                    <p>{{ $cacheItem->title }}</p>
+                                    </a>
+                          		</li>         
+                       		@endforeach      
+                     	</ul> 
+                      	@endif     
                     </div>
                     
                     <div class="mt-4">
-                    	{!! nl2br($item->warning) !!}
+                    	<h4>あなたにおすすめの商品</h4>
+                        
                     </div>
 					
 

@@ -29,6 +29,7 @@ class Sale extends Model
         'deli_done',
         'deli_date',
         'pay_done',
+        'craim',
         
         /*
         'destination',

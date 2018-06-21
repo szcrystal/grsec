@@ -40,6 +40,8 @@ class CreateSalesTable extends Migration
             
             $table->boolean('pay_done')->nullable()->default(NULL);
             
+            $table->text('craim')->nullable()->default(NULL);
+            
             /*
             $table->boolean('destination')->nullable()->default(NULL);
             

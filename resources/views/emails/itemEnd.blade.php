@@ -11,10 +11,13 @@
 {!! nl2br( $header ) !!}
 
 @else
-よりご注文がありました。<br>
+よりご注文がありました。<br><br>
+@foreach($sales as $sale)
+{{ url('dashboard/sales/'.$sale->id) }}<br>
+@endforeach
+<br><br>
 ご注文内容は下記となります。
 @endif
-
 
 <br /><br />
 <hr>
@@ -57,7 +60,7 @@
 <?php
 $allTotal = $saleRel->all_price + $saleRel->deli_fee + $saleRel->cod_fee - $saleRel->use_point;
 ?>
-<b style="font-size:1.1em; padding-top:0.5em;">ご注文金額合計：￥{{ number_format($allTotal) }} （税込）</b><br>
+<b style="display:block; font-size:1.1em; margin-top:0.5em;">ご注文金額合計：￥{{ number_format($allTotal) }} （税込）</b><br>
 </div>
 【お支払方法】：{{ $pmModel->find($saleRel->pay_method)->name }} <br>
 @if($saleRel->pay_method == 6)
@@ -66,6 +69,7 @@ $allTotal = $saleRel->all_price + $saleRel->deli_fee + $saleRel->cod_fee - $sale
 {!! nl2br($setting['bank_info']) !!}
 </div>
 @endif
+<br>
 <hr>
 <br><br>
 

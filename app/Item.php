@@ -48,8 +48,8 @@ class Item extends Model
         'about_ship',
         'detail',
                 
-        'what_is',
-        'warning',
+        //'what_is',
+        //'warning',
         
         'open_date',
         'view_count',

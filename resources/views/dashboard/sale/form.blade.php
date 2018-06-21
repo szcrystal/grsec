@@ -281,9 +281,6 @@
                             </tr>
                             --}}
 
-                            <tr>
-
-                            </tr>
                             
 
                         </tbody>
@@ -296,9 +293,29 @@
                         <button type="submit" class="btn btn-info btn-block mx-auto w-btn w-25 text-white"><i class="fa fa-envelope"></i> 配送済みメールを送る</button>
                     </div>
                 </div>
-                
-
         </form>
+        
+        <form class="form-horizontal" role="form" method="POST" action="/dashboard/sales">
+
+            {{ csrf_field() }}
+            
+            <input type="hidden" name="saleId" value="{{ $sale->id }}">
+            
+            <fieldset class="mb-2 form-group{{ $errors->has('craim') ? ' is-invalid' : '' }}">
+                <label for="detail" class="control-label">クレーム</label>
+
+                    <textarea id="detail" class="form-control" name="craim" rows="10">{{ Ctm::isOld() ? old('craim') : (isset($sale) ? $sale->craim : '') }}</textarea>
+
+                    @if ($errors->has('craim'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('craim') }}</strong>
+                        </span>
+                    @endif
+            </fieldset>
+                
+                <button type="submit" class="btn btn-warning" name="only_craim" value="1">クレームを更新</button>
+             </td>   
+        </tr>
     </div>
 
 @endsection
