@@ -16,6 +16,7 @@ class Setting extends Model
         'cot_per',
         'snap_primary',
         'snap_secondary',
+        'snap_category',
 
     ];
 }

@@ -17,7 +17,7 @@
       <div class="col-sm-12 col-md-6 col-lg-6 col-xl-5 mb-5">
         <div class="bs-component clearfix">
         <div class="pull-left">
-            <a href="{{ url('/dashboard/tags') }}" class="btn bg-white border border-1 border-round text-primary"><i class="fa fa-angle-double-left" aria-hidden="true"></i>一覧へ戻る</a>
+            <a href="{{ url('/dashboard/tags') }}" class="btn bg-white border border-secondary border-round text-primary"><i class="fa fa-angle-double-left" aria-hidden="true"></i>一覧へ戻る</a>
         </div>
         </div>
     </div>
@@ -40,8 +40,8 @@
         </div>
     @endif
         
-    <div class="col-lg-10">
-        <form class="form-horizontal" role="form" method="POST" action="/dashboard/tags">
+    <div class="col-lg-12">
+        <form class="form-horizontal" role="form" method="POST" action="/dashboard/tags" enctype="multipart/form-data">
 			
             {{ csrf_field() }}
             
@@ -54,7 +54,7 @@
                 <label for="name" class="control-label">タグ名</label>
 
                 <div class="">
-                    <input id="name" type="text" class="form-control" name="name" value="{{ Ctm::isOld() ? old('name') : (isset($tag) ? $tag->name : '') }}" required>
+                    <input id="name" type="text" class="form-control col-md-10" name="name" value="{{ Ctm::isOld() ? old('name') : (isset($tag) ? $tag->name : '') }}">
 
                     @if ($errors->has('name'))
                         <span class="help-block">
@@ -69,7 +69,7 @@
                 <label for="slug" class="control-label">スラッグ</label>
 
                 <div class="">
-                    <input id="slug" type="text" class="form-control" name="slug" value="{{ Ctm::isOld() ? old('slug') : (isset($tag) ? $tag->slug : '') }}" required>
+                    <input id="slug" type="text" class="form-control col-md-10" name="slug" value="{{ Ctm::isOld() ? old('slug') : (isset($tag) ? $tag->slug : '') }}">
 
                     @if ($errors->has('slug'))
                         <span class="help-block">
@@ -78,11 +78,20 @@
                     @endif
                 </div>
             </fieldset>
+            
+            <?php
+                $obj = null;
+                if(isset($tag)) $obj = $tag;
+            ?>
+            
+            @include('dashboard.shared.meta')
+            
+            @include('dashboard.shared.contents')
 
 
-          <div class="form-group">
+          <div class="form-group mt-5">
             <div class="">
-                <button type="submit" class="col-md-6 mt-3 btn btn-primary center-block w-btn"><span class="octicon octicon-sync"></span>更　新</button>
+                <button type="submit" class="btn btn-primary btn-block w-btn w-25 mx-auto">更　新</button>
             </div>
         </div>
 

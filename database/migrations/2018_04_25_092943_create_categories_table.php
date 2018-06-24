@@ -15,8 +15,15 @@ class CreateCategoriesTable extends Migration
     {
         Schema::create('categories', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
-            $table->string('slug')->unique();
+            $table->string('name')->nullable()->default(NULL);
+            $table->string('slug')->unique()->nullable()->default(NULL);
+            
+            $table->string('meta_title')->nullable()->default(NULL);
+            $table->string('meta_description')->nullable()->default(NULL);
+            $table->string('meta_keyword')->nullable()->default(NULL);
+            
+            $table->text('contents')->nullable()->default(NULL);
+            
             $table->timestamps();
         });
         

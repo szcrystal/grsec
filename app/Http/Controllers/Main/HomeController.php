@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Main;
 
 use App\Item;
 use App\Category;
+use App\CategorySecond;
 use App\Tag;
 use App\TagRelation;
 use App\Fix;
@@ -14,16 +15,17 @@ use App\Http\Controllers\Controller;
 
 class HomeController extends Controller
 {
-    public function __construct(Item $item, Category $category, Tag $tag, TagRelation $tagRel, Fix $fix)
+    public function __construct(Item $item, Category $category, CategorySecond $cateSec, Tag $tag, TagRelation $tagRel, Fix $fix)
     {
         //$this->middleware('search');
         
         $this->item = $item;
         $this->category = $category;
+        $this->cateSec = $cateSec;
         $this->tag = $tag;
         $this->tagRel = $tagRel;
         $this->fix = $fix;
-//        $this->tag = $tag;
+        $this->tag = $tag;
 //        $this->tagRelation = $tagRelation;
 //        $this->tagGroup = $tagGroup;
 //        $this->category = $category;
@@ -60,26 +62,26 @@ class HomeController extends Controller
 //        }
         
         //新着3件 carousel
-        $items = $this->item->where($whereArr)->orderBy('created_at','DESC')->take(21)->get();
+        //$items = $this->item->where($whereArr)->orderBy('created_at','DESC')->take(21)->get();
+        $itemCates = array();
+        foreach($cates as $cate) { //カテゴリー名をkeyとしてatclのかたまりを配列に入れる
         
-//        foreach($cates as $cate) { //カテゴリー名をkeyとしてatclのかたまりを配列に入れる
-//        
-//            $whereArr['cate_id'] = $cate->id;
-//            
-//            $as = $this->item->where($whereArr)->orderBy('created_at','DESC')->take(3)->get()->all();
-//            
-//            if(count($as) > 0) {
-//                $items[$cate->slug] = $as;
-//            }
-//        }
-//        $atcls = $this->item->where(['open_status'=>1, 'feature'=>0])->orderBy('created_at','DESC')->get();
-//        $atcls = $atcls->groupBy('cate_id')->toArray();
+            $whereArr['cate_id'] = $cate->id;
+            
+            $as = $this->item->where($whereArr)->orderBy('created_at','DESC')->take(8)->get()->all();
+            
+            if(count($as) > 0) {
+                $itemCates[$cate->name] = $as;
+            }
+        }
+//        print_r($itemCates);
+//        exit;
+        
+//        $items = $this->item->where(['open_status'=>1¥])->orderBy('created_at','DESC')->get();
+//        $items = $items->groupBy('cate_id')->toArray();
         
         
-
-        
-        
-        return view('main.home.index', ['items'=>$items, 'cates'=>$cates,]);
+        return view('main.home.index', ['itemCates'=>$itemCates, 'cates'=>$cates,]);
     }
 
     public function getFix(Request $request)

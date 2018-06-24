@@ -10,6 +10,12 @@ class CategorySecond extends Model
         'parent_id',
         'name',
         'slug',
+        
+        'meta_title',
+        'meta_description',
+        'meta_keyword',
+            
+        'contents',
 
     ];
 }

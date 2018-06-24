@@ -7,8 +7,7 @@
 //        use App\Setting;
         
         $path = Request::path();
-        $path = explode('/', $path);
-        
+        $path = explode('/', $path);        
 
     ?>
 
@@ -22,64 +21,61 @@
         </div>
     @endif
 
-    <h1 class="float-left mt-3 ml-2 col-md-3"><a class="navbar-brand" href="{{ url('/') }}">
-        <img src="{{ url('images/logo-name.png') }}" alt="{{ config('app.name', 'GREEN ROCKET') }}">
-
-    </a></h1>
+    <h1 class="float-left">
+    	<a href="{{ url('/') }}">
+        <img src="{{ url('images/logo-name.png') }}" alt="{{ config('app.name', 'グリーンロケット') }}">
+    	</a>
+    </h1>
     
-    @if(env('APP_ENV') != 'trial') 
-    <div class="head-navi float-right col-md-4 mt-5">
+    <div class="head-center">
+    	<img src="{{ url('images/logo-symbol.png') }}" alt="{{ config('app.name', 'グリーンロケット') }}-logo">
+    </div>
     
-    	<div class="clearfix s-form">
+    <div class="head-navi">
+        <div class="clearfix s-form">
             <form class="my-1 my-lg-0" role="form" method="GET" action="{{ url('search') }}">
                 {{-- csrf_field() --}}
-
-                
-                <input type="search" class="form-control w-75 float-left" name="s" placeholder="Search...">
-
-                <button class="btn btn-s float-left" type="submit">
-                    <i class="fa fa-search"></i>
-                </button>
+ 
+                <input type="search" class="form-control" name="s" placeholder="Search...">
+ 
             </form>
         </div>
-    
-        <nav class="mt-2">
-
+            
             <ul class="clearfix">
-            	<li><a href="{{ url('shop/cart') }}">カートを見る</a></li>
+            	<li><a href="#"><i class="fa fa-search btn-s"></i></a></li>
+            	<li><a href="{{ url('shop/cart') }}"><i class="fas fa-shopping-basket"></i></a></li>
             	@if(! Auth::check())
-                <li><a href="{{ url('login') }}">LogIn</a></li>
-                <li><a href="{{ url('register') }}">新規登録</a></li>
+                    <li><a href="{{ url('login') }}"><i class="fas fa-user"></i></a></li>
                 @else
-                <li><a href="{{ url('mypage') }}">マイページ</a></li>
-                <li>
-                	<a href="{{ url('/logout') }}" class=""
-                                onclick="event.preventDefault();
-                                         document.getElementById('logout-form').submit();">
-                                ログアウト
-                    </a>
+                	<li><a href="{{ url('mypage/favorite') }}"><i class="fas fa-heart"></i></a></li>
+                	<li class="dropdown show">
+                      <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user"></i></a>
 
-                    <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
-                        {{ csrf_field() }}
-                    </form>
-                </li>
-                
+                          <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <a class="dropdown-item" href="{{ url('mypage') }}">マイページ</a>
+                            <a class="dropdown-item" href="{{ url('mypage/favorite') }}">お気に入り</a>
+                            <a href="{{ url('/logout') }}" class="dropdown-item"
+                                    onclick="event.preventDefault();
+                                             document.getElementById('logout-form').submit();">
+                                    ログアウト
+                            </a>
+
+                            <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
+                                {{ csrf_field() }}
+                            </form>
+                          </div>
+                    </li>
+                    
                 @endif
-                
-                
-                
                 
                 
            </ul> 
        
-        </nav>
     </div>
-    @endif
-
-	
-    
     
 </header>
+
+
 
 </div>
 

@@ -40,8 +40,8 @@
         </div>
     @endif
         
-    <div class="col-lg-10">
-        <form class="form-horizontal" role="form" method="POST" action="/dashboard/categories">
+    <div class="col-lg-12">
+        <form class="form-horizontal" role="form" method="POST" action="/dashboard/categories" enctype="multipart/form-data">
 
             {{ csrf_field() }}
             
@@ -52,7 +52,7 @@
             <fieldset class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
                 <label for="name" class="control-label">カテゴリー名</label>
 
-                    <input id="name" type="text" class="form-control col-md-10" name="name" value="{{ Ctm::isOld() ? old('name') : (isset($cate) ? $cate->name : '') }}" required>
+                    <input id="name" type="text" class="form-control col-md-10" name="name" value="{{ Ctm::isOld() ? old('name') : (isset($cate) ? $cate->name : '') }}">
 
                 @if ($errors->has('name'))
                 <div class="text-danger">
@@ -66,7 +66,7 @@
             <fieldset class="form-group{{ $errors->has('slug') ? ' has-error' : '' }}">
                 <label for="slug" class="control-label">スラッグ</label>
 
-                    <input id="slug" type="text" class="form-control col-md-10" name="slug" value="{{ Ctm::isOld() ? old('slug') : (isset($cate) ? $cate->slug : '') }}" required>
+                    <input id="slug" type="text" class="form-control col-md-10" name="slug" value="{{ Ctm::isOld() ? old('slug') : (isset($cate) ? $cate->slug : '') }}">
 
                 @if ($errors->has('slug'))
                     <div class="text-danger">
@@ -75,6 +75,15 @@
                     </div>
                 @endif
             </fieldset>
+            
+            <?php
+            	$obj = null;
+            	if(isset($cate)) $obj = $cate;
+            ?>
+            
+            @include('dashboard.shared.meta')
+            
+            @include('dashboard.shared.contents')
 
           <div class="form-group mt-5">
             <div class="">

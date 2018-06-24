@@ -78,6 +78,10 @@ if(Schema::hasTable('fixes')) {
     }
 }
 
+//Category
+Route::get('category/{slug}', 'Main\HomeController@category');
+Route::get('category/{slug}/{subslug}', 'Main\HomeController@subCategory');
+
 //Search
 Route::get('search', 'Main\SearchController@index');
 

@@ -46,7 +46,7 @@ class Item extends Model
         'exp_first',
         'explain',
         'about_ship',
-        'detail',
+        'contents',
                 
         //'what_is',
         //'warning',

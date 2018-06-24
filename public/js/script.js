@@ -115,7 +115,7 @@ var exe = (function() {
             else {
                 $('.btn-s').on('click', function(){
                     if($input.is(':hidden')) {
-                        $input.show().animate({width:'22em', opacity:1}, 300, 'linear', function(){
+                        $input.show().animate({width:'14em', opacity:1}, 300, 'linear', function(){
                     
                         });
                     }

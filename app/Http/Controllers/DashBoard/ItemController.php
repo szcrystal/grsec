@@ -87,9 +87,9 @@ class ItemController extends Controller
         
         $setting = $this->setting->get()->first();
         $primaryCount = $setting->snap_primary;
-        $secondaryCount = $setting->snap_secondary;
+        $imgCount = $setting->snap_secondary;
         
-        return view('dashboard.item.form', ['item'=>$item, 'cates'=>$cates, 'subcates'=>$subcates, 'consignors'=>$consignors, 'dgs'=>$dgs, 'tagNames'=>$tagNames, 'allTags'=>$allTags, 'spares'=>$spares, 'snaps'=>$snaps, 'primaryCount'=>$primaryCount, 'secondaryCount'=>$secondaryCount, 'id'=>$id, 'edit'=>1]);
+        return view('dashboard.item.form', ['item'=>$item, 'cates'=>$cates, 'subcates'=>$subcates, 'consignors'=>$consignors, 'dgs'=>$dgs, 'tagNames'=>$tagNames, 'allTags'=>$allTags, 'spares'=>$spares, 'snaps'=>$snaps, 'primaryCount'=>$primaryCount, 'imgCount'=>$imgCount, 'id'=>$id, 'edit'=>1]);
     }
    
     public function create()
@@ -104,10 +104,10 @@ class ItemController extends Controller
         
         $setting = $this->setting->get()->first();
         $primaryCount = $setting->snap_primary;
-        $secondaryCount = $setting->snap_secondary;
+        $imgCount = $setting->snap_secondary;
         
 //        $users = $this->user->where('active',1)->get();
-        return view('dashboard.item.form', ['cates'=>$cates, 'consignors'=>$consignors, 'dgs'=>$dgs, 'allTags'=>$allTags, 'primaryCount'=>$primaryCount, 'secondaryCount'=>$secondaryCount, ]);
+        return view('dashboard.item.form', ['cates'=>$cates, 'consignors'=>$consignors, 'dgs'=>$dgs, 'allTags'=>$allTags, 'primaryCount'=>$primaryCount, 'imgCount'=>$imgCount, ]);
     }
 
     /**
@@ -141,8 +141,6 @@ class ItemController extends Controller
         
         //status
         $data['open_status'] = isset($data['open_status']) ? 0 : 1;
-        
-       
         
         //stock_show
         $data['deli_fee'] = isset($data['deli_fee']) ? 1 : 0;
@@ -198,6 +196,7 @@ class ItemController extends Controller
                 $spareModel = $this->itemImg->where(['item_id'=>$itemId, 'type'=>1, 'number'=>$count+1])->first();
                 
                 if($spareModel !== null) {
+                	Storage::delete('public/'.$snapModel->img_path); //Storageはpublicフォルダのあるところをルートとしてみる
                     $spareModel ->delete();
                 }
             
@@ -251,8 +250,13 @@ class ItemController extends Controller
         //Snap Save ==================================================
         foreach($data['snap_count'] as $count) {
         
-//            echo $data['del_snap'][0];
-//            exit;
+			/*
+               	type:1->item main
+               	type:2->item spare
+              	type:3->category
+            	type:4->sub category
+            	type:5->tag                              
+           */
  
             if(isset($data['del_snap'][$count]) && $data['del_snap'][$count]) { //削除チェックの時
                 //echo $count . '/' .$data['del_snap'][$count];
@@ -261,6 +265,7 @@ class ItemController extends Controller
                 $snapModel = $this->itemImg->where(['item_id'=>$itemId, 'type'=>2, 'number'=>$count+1])->first();
                 
                 if($snapModel !== null) {
+                	Storage::delete('public/'.$snapModel->img_path); //Storageはpublicフォルダのあるところをルートとしてみる
                     $snapModel ->delete();
                 }
             

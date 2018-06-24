@@ -40,8 +40,8 @@
         </div>
     @endif
         
-    <div class="col-lg-10">
-        <form class="form-horizontal" role="form" method="POST" action="/dashboard/categories/sub">
+    <div class="col-lg-12">
+        <form class="form-horizontal" role="form" method="POST" action="/dashboard/categories/sub" enctype="multipart/form-data">
 
             {{ csrf_field() }}
             
@@ -80,9 +80,9 @@
             </fieldset>
 
             <fieldset class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-                <label for="name" class="control-label">カテゴリー名</label>
+                <label for="name" class="control-label">子カテゴリー名</label>
 
-                <input id="name" type="text" class="form-control col-md-10" name="name" value="{{ Ctm::isOld() ? old('name') : (isset($subCate) ? $subCate->name : '') }}" required>
+                <input id="name" type="text" class="form-control col-md-10" name="name" value="{{ Ctm::isOld() ? old('name') : (isset($subCate) ? $subCate->name : '') }}">
 
                 @if ($errors->has('name'))
                 <div class="text-danger">
@@ -96,7 +96,7 @@
             <fieldset class="form-group{{ $errors->has('slug') ? ' has-error' : '' }}">
                 <label for="slug" class="control-label">スラッグ</label>
 
-                <input id="slug" type="text" class="form-control col-md-10" name="slug" value="{{ Ctm::isOld() ? old('slug') : (isset($subCate) ? $subCate->slug : '') }}" required>
+                <input id="slug" type="text" class="form-control col-md-10" name="slug" value="{{ Ctm::isOld() ? old('slug') : (isset($subCate) ? $subCate->slug : '') }}">
 
                 @if ($errors->has('slug'))
                     <div class="text-danger">
@@ -105,6 +105,15 @@
                     </div>
                 @endif
             </fieldset>
+            
+            <?php
+                $obj = null;
+                if(isset($subCate)) $obj = $subCate;
+            ?>
+            
+            @include('dashboard.shared.meta')
+            
+            @include('dashboard.shared.contents')
 
           <div class="form-group mt-5">
             <div class="">

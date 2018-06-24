@@ -5,17 +5,24 @@ namespace App\Http\Controllers\DashBoard;
 use App\Category;
 use App\CategorySecond;
 use App\Item;
+use App\ItemImage;
+use App\Setting;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
+use Storage;
+
 class CategorySecondController extends Controller
 {
-    public function __construct(Category $category, CategorySecond $cateSec, Item $item)
+    public function __construct(Category $category, CategorySecond $cateSec, Item $item, ItemImage $itemImg, Setting $setting)
     {
         $this->category = $category;
         $this->cateSec = $cateSec;
         $this->item = $item;
+        $this->itemImg = $itemImg;
+        $this->setting = $setting;
+        
         $this->perPage = 30;
     }
     
@@ -35,15 +42,21 @@ class CategorySecondController extends Controller
     	$cates = $this->category->all();
         $subCate = $this->cateSec->find($id);
         
-        return view('dashboard.categorySecond.form', ['subCate'=>$subCate, 'cates'=>$cates, 'id'=>$id, 'edit'=>1]);
+        $snaps = $this->itemImg->where(['item_id'=>$id, 'type'=>4])->get();
+        
+        $imgCount = $this->setting->get()->first()->snap_category;
+        
+        return view('dashboard.categorySecond.form', ['subCate'=>$subCate, 'cates'=>$cates, 'snaps'=>$snaps, 'imgCount'=>$imgCount, 'id'=>$id, 'edit'=>1]);
     }
     
     
     public function create()
     {
     	$cates = $this->category->all();
+     
+     	$imgCount = $this->setting->get()->first()->snap_category;  
         
-        return view('dashboard.categorySecond.form', ['cates'=>$cates]);
+        return view('dashboard.categorySecond.form', ['cates'=>$cates, 'imgCount'=>$imgCount, ]);
     }
 
     /**
@@ -54,12 +67,12 @@ class CategorySecondController extends Controller
      */
     public function store(Request $request)
     {
-        $editId = $request->input('edit_id');
+        $editId = $request->has('edit_id') ? $request->input('edit_id') : 0;
         
         $rules = [
         	'parent_id' => 'required',
-            'name' => 'required|unique:categories,name,'.$editId.'|max:255',
-            'slug' => 'required|unique:categories,slug,'.$editId.'|max:255', /* 注意:unique */
+            'name' => 'required|unique:category_seconds,name,'.$editId.'|max:255',
+            'slug' => 'required|unique:category_seconds,slug,'.$editId.'|max:255', /* 注意:unique */
         ];
         
         $messages = [
@@ -70,14 +83,14 @@ class CategorySecondController extends Controller
         
         $this->validate($request, $rules, $messages);
         
-        $data = $request->all(); //requestから配列として$dataにする
+        $data = $request->all();
         
 //        if(! isset($data['open_status'])) { //checkbox
 //            $data['open_status'] = 0;
 //        }
         
 
-        if($request->input('edit_id') !== NULL ) { //update（編集）の時
+        if($editId) { //update（編集）の時
             $status = '子カテゴリーが更新されました！';
             $cateModel = $this->cateSec->find($request->input('edit_id'));
         }
@@ -90,9 +103,82 @@ class CategorySecondController extends Controller
         $cateModel->fill($data); //モデルにセット
         $cateModel->save(); //モデルからsave
         
-        $id = $cateModel->id;
+        $subCateId = $cateModel->id;
+        
+        //Snap Save ==================================================
+        foreach($data['snap_count'] as $count) {
+        
+            /*
+                   type:1->item main
+                   type:2->item spare
+                  type:3->category
+                type:4->sub category
+                 type:5->tag                              
+               */         
+ 
+            if(isset($data['del_snap'][$count]) && $data['del_snap'][$count]) { //削除チェックの時
+                //echo $count . '/' .$data['del_snap'][$count];
+                //exit;
+                
+                $snapModel = $this->itemImg->where(['item_id'=>$subCateId, 'type'=>4, 'number'=>$count+1])->first();
+                
+                if($snapModel !== null) {
+                    Storage::delete('public/'.$snapModel->img_path); //Storageはpublicフォルダのあるところをルートとしてみる
+                    $snapModel ->delete();
+                }
+            
+            }
+            else {
+                if(isset($data['snap_thumb'][$count])) {
+                    
+                    $snapImg = $this->itemImg->updateOrCreate(
+                        ['item_id'=>$subCateId, 'type'=>4, 'number'=>$count+1],
+                        [
+                            'item_id'=>$subCateId,
+                            //'snap_path' =>'',
+                            'type' => 4,
+                            'number'=> $count+1,
+                        ]
+                    );
 
-        return redirect('dashboard/categories/sub/'.$id)->with('status', $status);
+                    $filename = $data['snap_thumb'][$count]->getClientOriginalName();
+                    $filename = str_replace(' ', '_', $filename);
+                    
+                    //$aId = $editId ? $editId : $rand;
+                    //$pre = time() . '-';
+                    $filename = 'sub-category/' . $subCateId . '/snap/'/* . $pre*/ . $filename;
+                    //if (App::environment('local'))
+                    $path = $data['snap_thumb'][$count]->storeAs('public', $filename);
+                    //else
+                    //$path = Storage::disk('s3')->putFileAs($filename, $request->file('thumbnail'), 'public');
+                    //$path = $request->file('thumbnail')->storeAs('', $filename, 's3');
+                
+                    //$data['model_thumb'] = $filename;
+                    
+                    $snapImg->img_path = $filename;
+                    $snapImg->save();
+                }
+            }
+            
+        } //foreach
+        
+        $num = 1;
+        $snaps = $this->itemImg->where(['item_id'=>$subCateId, 'type'=>4])->get();
+//            $snaps = $this->modelSnap->where(['model_id'=>$modelId])->get()->map(function($obj) use($num){
+//                
+//                return true;
+//            });
+        
+        //Snapのナンバーを振り直す
+        foreach($snaps as $snap) {
+            $snap->number = $num;
+            $snap->save();
+            $num++;
+        }
+        
+        //Snap END ===========================================
+
+        return redirect('dashboard/categories/sub/'.$subCateId)->with('status', $status);
     }
 
 

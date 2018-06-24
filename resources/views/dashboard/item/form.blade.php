@@ -525,6 +525,40 @@
             </fieldset>
             
             
+            <div class="clearfix tag-wrap">
+                <div class="tag-group form-group{{ $errors->has('tag-group') ? ' is-invalid' : '' }}">
+                    <label for="tag-group" class="control-label">タグ</label>
+                    <div class="clearfix">
+                        <input id="tag-group" type="text" class="form-control col-md-5 tag-control" name="input-tag-group" value="" autocomplete="off" placeholder="Enter tag">
+
+                        <div class="add-btn" tabindex="0">追加</div>
+
+                        <span style="display:none;">{{ implode(',', $allTags) }}</span>
+
+                        <div class="tag-area">
+                            @if(count(old()) > 0)
+                                <?php
+                                    //$tagNames = old($tag->slug);
+                                    $tagNames = old('tags');
+                                ?>
+                            @endif
+
+                            @if(isset($tagNames))
+                                @foreach($tagNames as $name)
+                                <span><em>{{ $name }}</em><i class="fa fa-times del-tag" aria-hidden="true"></i></span>
+                                <input type="hidden" name="tags[]" value="{{ $name }}">
+                                @endforeach
+                            @endif
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div><?php //tagwrap ?>
+            
+            
             <div class="form-group mb-5 mr-3">
                 <div class="clearfix">
                     <button type="submit" class="btn btn-primary btn-block mx-auto w-btn w-25 float-right">更　新</button>
@@ -568,162 +602,19 @@
                         @endif
             </fieldset>
             
-            <fieldset class="mb-4 form-group{{ $errors->has('detail') ? ' is-invalid' : '' }}">
-                    <label for="detail" class="control-label">商品情報</label>
-
-                    <textarea id="detail" type="text" class="form-control" name="detail" rows="22">{{ Ctm::isOld() ? old('detail') : (isset($item) ? $item->detail : '') }}</textarea>
-
-                    @if ($errors->has('detail'))
-                        <span class="help-block">
-                            <strong>{{ $errors->first('detail') }}</strong>
-                        </span>
-                    @endif
-            </fieldset>
+            <?php
+                $obj = null;
+                if(isset($item)) $obj = $item;
+            ?>
             
-            <div class="clearfix mb-3">
-                <hr>
-                <?php
-                    $n=0;
-                    //use App\Setting;
-                    //$setCount = 5;
-                    //$setCount = Setting::get()->first()->snap_count;
-                ?>
-                @while($n < $secondaryCount)
-
-                <div class="clearfix spare-img thumb-wrap">
-                    
-                <fieldset class="col-md-4 float-right">
-                    <div class="col-md-12 checkbox text-right px-5">
-                        <label>
-                            <?php
-                                $checked = '';
-                                if(Ctm::isOld()) {
-                                    if(old('del_snap.'.$n))
-                                        $checked = ' checked';
-                                }
-                                else {
-                                    if(isset($item) && $item->del_snap) {
-                                        $checked = ' checked';
-                                    }
-                                }
-                            ?>
-
-                            <input type="hidden" name="del_snap[{{$n}}]" value="0">
-                            <input type="checkbox" name="del_snap[{{$n}}]" value="1"{{ $checked }}> この画像を削除
-                        </label>
-                    </div>
-                </fieldset>
-                  
-                <fieldset class="float-left col-md-8 clearfix">
-                    <div class="col-md-5 float-left thumb-prev">
-                        @if(count(old()) > 0)
-                            @if(old('snap_thumb.'.$n) != '' && old('snap_thumb.'.$n))
-                            <img src="{{ Storage::url(old('snap_thumb.'.$n)) }}" class="img-fluid">
-                            @elseif(isset($snaps[$n]) && $snaps[$n]->snap_path)
-                            <img src="{{ Storage::url($snaps[$n]->snap_path) }}" class="img-fluid">
-                            @else
-                            <span class="no-img">No Image</span>
-                            @endif
-                        @elseif(isset($snaps[$n]) && $snaps[$n]->img_path)
-                            <img src="{{ Storage::url($snaps[$n]->img_path) }}" class="img-fluid">
-                        @else
-                            <span class="no-img">No Image</span>
-                        @endif
-                    </div>
-
-                    <div class="col-md-7 float-left text-left form-group{{ $errors->has('snap_thumb.'.$n) ? ' has-error' : '' }}">
-                        <label for="model_thumb" class="col-md-12 text-left">商品情報画像 <span class="text-primary">{{ $n+1 }}</span></label>
-                        <div class="col-md-12">
-                            <input id="model_thumb" class="thumb-file" type="file" name="snap_thumb[]">
-							
-       						@if(isset($snaps[$n]) && $snaps[$n]->img_path)
-             					<p class="mt-4 mb-0 text-info">src="{{ Storage::url($snaps[$n]->img_path) }}"</p>
-             				@endif                  
-                            
-                            @if ($errors->has('snap_thumb.'.$n))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('snap_thumb.'.$n) }}</strong>
-                                </span>
-                            @endif
-                        </div>
-                    </div>
-                </fieldset>
-                
-                </div>            
-                <hr>
-
-                <input type="hidden" name="snap_count[]" value="{{ $n }}">
-
-                <?php $n++; ?>
-                @endwhile
-            </div>
+            {{-- @include('dashboard.shared.meta') --}}
+            
+            @include('dashboard.shared.contents')
             
             
-            <div class="clearfix tag-wrap">
-                <div class="tag-group form-group{{ $errors->has('tag-group') ? ' is-invalid' : '' }}">
-                    <label for="tag-group" class="control-label">タグ</label>
-                    <div class="clearfix">
-                        <input id="tag-group" type="text" class="form-control col-md-5 tag-control" name="input-tag-group" value="" autocomplete="off" placeholder="Enter tag">
-
-                        <div class="add-btn" tabindex="0">追加</div>
-
-                        <span style="display:none;">{{ implode(',', $allTags) }}</span>
-
-                        <div class="tag-area">
-                            @if(count(old()) > 0)
-                                <?php
-                                    //$tagNames = old($tag->slug);
-                                    $tagNames = old('tags');
-                                ?>
-                            @endif
-
-                            @if(isset($tagNames))
-                                @foreach($tagNames as $name)
-                                <span><em>{{ $name }}</em><i class="fa fa-times del-tag" aria-hidden="true"></i></span>
-                                <input type="hidden" name="tags[]" value="{{ $name }}">
-                                @endforeach
-                            @endif
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div><?php //tagwrap ?>
             
-            
-            {{--
-            <fieldset class="mb-4 form-group{{ $errors->has('what_is') ? ' is-invalid' : '' }}">
-                    <label for="story_text" class="control-label">What is</label>
-
-                        <textarea id="what_is" type="text" class="form-control" name="what_is" rows="10">{{ Ctm::isOld() ? old('what_is') : (isset($item) ? $item->what_is : '') }}</textarea>
-
-                        @if ($errors->has('what_is'))
-                            <span class="help-block">
-                                <strong>{{ $errors->first('what_is') }}</strong>
-                            </span>
-                        @endif
-            </fieldset>
-            
-            
-            <fieldset class="mb-4 form-group{{ $errors->has('warning') ? ' is-invalid' : '' }}">
-                    <label for="warning" class="control-label">Warning</label>
-
-                        <textarea id="warning" type="text" class="form-control" name="warning" rows="10">{{ Ctm::isOld() ? old('warning') : (isset($item) ? $item->warning : '') }}</textarea>
-
-                        @if ($errors->has('warning'))
-                            <span class="help-block">
-                                <strong>{{ $errors->first('warning') }}</strong>
-                            </span>
-                        @endif
-            </fieldset>
-            --}}
-            
-            <div class="form-group">
-                <div class="">
-                    <button type="submit" class="btn btn-primary btn-block w-btn w-25 mx-auto">更　新</button>
-                </div>
+            <div class="form-group mt-5 pt-3">
+                <button type="submit" class="btn btn-primary btn-block w-btn w-25 mx-auto">更　新</button>
             </div>
 
 

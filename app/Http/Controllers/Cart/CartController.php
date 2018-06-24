@@ -508,16 +508,35 @@ class CartController extends Controller
                     if(in_array($ioi->dg_id, $dgIds)) { //同じ配送区分があるかどうか                        
                         //容量を超えていないかの確認
                         $out = array_count_values($dgIds); //要素がkeyになって個数がvalとして配列になる
-                        $count = $out[$ioi->dg_id] + 1;
+                        //$count = $out[$ioi->dg_id] + 1;
+                        
+                        $count = 0;
+                        
+                        $itemIdKeys = array_keys($dgIds, $ioi->dg_id);
+                        if(count($itemIdKeys) > 0) {
+                        	foreach($itemIdKeys as $itemIdKey) {
+                                foreach($isOnceItem as $obj) {
+                                	if($obj->id == $itemIdKey) {
+                                 		$count += $obj->count; //買い物個数
+                                 	}   
+                                }
+                         		
+                         	}   
+                        }
+                        
+                        
+                        $count += $ioi->count;
                         
                         $dg = $this->dg->find($ioi->dg_id);
-                        $capacity = $dg->find($ioi->dg_id)->capacity;
+                        $capacity = $dg->capacity;
+                        $factor = $dg->factor;
+                        $max = $capacity / $factor; //切り上げ？切り捨て？
                         
-                        if($count <= $capacity) {
+                        if($count <= $max) {
                         	$dgIds = array_diff($dgIds, array($ioi->dg_id)); //同じ配送区分のdg_idを削除
                          	
                           	$fee = $this->dgRel->where(['dg_id'=>$ioi->dg_id, 'pref_id'=>$prefId])->first()->fee;
-                        	$fee = $fee * ($count / $capacity * $dg->factor); //ここの計算式 ?????
+                        	//$fee = $fee * ($count / $capacity * $dg->factor); //ここの計算式 ?????
                         	$deliFee += $fee;
                         }
                         else {

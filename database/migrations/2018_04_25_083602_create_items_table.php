@@ -56,11 +56,7 @@ class CreateItemsTable extends Migration
             $table->text('exp_first')->nullable()->default(NULL);
             $table->text('explain')->nullable()->default(NULL);
             $table->text('about_ship')->nullable()->default(NULL);
-            $table->text('detail')->nullable()->default(NULL);
-            
-            
-            //$table->text('what_is')->nullable()->default(NULL);
-            //$table->text('warning')->nullable()->default(NULL);
+            $table->text('contents')->nullable()->default(NULL);
             
             $table->timestamp('open_date')->nullable()->default(NULL);
             
@@ -108,12 +104,9 @@ class CreateItemsTable extends Migration
                     'point_back' => 2,
                     
                     'about_ship' => 'オールマイティな活躍をしてくれるシマトネリコだけに、当店のシマトネリコの特徴は、端正で素直な樹形のものだけを厳選している点です。',
-                    'detail' => 'オールマイティな活躍をしてくれるシマトネリコだけに、当店のシマトネリコの特徴は、端正で素直な樹形のものだけを厳選している点です。',
+                    'contents' => 'オールマイティな活躍をしてくれるシマトネリコだけに、当店のシマトネリコの特徴は、端正で素直な樹形のものだけを厳選している点です。',
                     'explain' => 'オールマイティな活躍をしてくれるシマトネリコだけに、当店のシマトネリコの特徴は、端正で素直な樹形のものだけを厳選している点です。',
                     
-                    'what_is' => 'シマトネリコは最近とても人気が高くなっている常緑樹です。',
-                    //'detail' => '',
-                    'warning' => '',
                     
                     'open_date' => '2018-05-10 11:11:11',
                     'view_count' => 3,

@@ -4,14 +4,18 @@ namespace App\Http\Controllers\DashBoard;
 
 use App\Admin;
 use App\Tag;
+use App\ItemImage;
+use App\Setting;
 
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
+use Storage;
+
 class TagController extends Controller
 {
-    public function __construct(Admin $admin, Tag $tag)
+    public function __construct(Admin $admin, Tag $tag, ItemImage $itemImg, Setting $setting)
     {
         
         $this -> middleware('adminauth');
@@ -19,6 +23,9 @@ class TagController extends Controller
         
         $this -> admin = $admin;
         $this->tag = $tag;
+        
+        $this->itemImg = $itemImg;
+        $this->setting = $setting;
         
         $this->perPage = 30;
         
@@ -41,14 +48,22 @@ class TagController extends Controller
         return view('dashboard.tag.index', ['tags'=>$tags]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function show($tagId)
+    {
+        $tag = $this->tag->find($tagId);
+        
+        $snaps = $this->itemImg->where(['item_id'=>$tagId, 'type'=>4])->get();
+        
+        $imgCount = $this->setting->get()->first()->snap_category;
+        
+        return view('dashboard.tag.form', ['tag'=>$tag, 'tagId'=>$tagId, 'snaps'=>$snaps, 'imgCount'=>$imgCount, 'edit'=>1]);
+    }
+    
     public function create()
     {
-        return view('dashboard.tag.form');
+    	$imgCount = $this->setting->get()->first()->snap_category;
+        
+        return view('dashboard.tag.form', ['imgCount'=>$imgCount, ]);
     }
 
     /**
@@ -59,7 +74,7 @@ class TagController extends Controller
      */
     public function store(Request $request)
     {
-        $editId = $request->input('edit_id');
+        $editId = $request->has('edit_id') ? $request->input('edit_id') : 0;
         
         $rules = [
             //'name' => 'required|same_tag:'.$editId.','.$groupId.'|max:255', //same_tag-> on AppServiceProvider
@@ -89,9 +104,80 @@ class TagController extends Controller
         $tagModel->fill($data); //モデルにセット
         $tagModel->save(); //モデルからsave
         
-        $id = $tagModel->id;
+        $tagId = $tagModel->id;
+        
+        //Snap Save ==================================================
+        foreach($data['snap_count'] as $count) {
+        
+            /*
+                type:1->item main
+                type:2->item spare
+                type:3->category
+                type:4->sub category
+                type:5->tag                              
+            */         
+ 
+            if(isset($data['del_snap'][$count]) && $data['del_snap'][$count]) { //削除チェックの時
+                
+                $snapModel = $this->itemImg->where(['item_id'=>$tagId, 'type'=>5, 'number'=>$count+1])->first();
+                
+                if($snapModel !== null) {
+                    Storage::delete('public/'.$snapModel->img_path); //Storageはpublicフォルダのあるところをルートとしてみる
+                    $snapModel ->delete();
+                }
+            
+            }
+            else {
+                if(isset($data['snap_thumb'][$count])) {
+                    
+                    $snapImg = $this->itemImg->updateOrCreate(
+                        ['item_id'=>$tagId, 'type'=>5, 'number'=>$count+1],
+                        [
+                            'item_id'=>$tagId,
+                            //'snap_path' =>'',
+                            'type' => 5,
+                            'number'=> $count+1,
+                        ]
+                    );
 
-        return redirect('dashboard/tags/'. $id)->with('status', $upText);
+                    $filename = $data['snap_thumb'][$count]->getClientOriginalName();
+                    $filename = str_replace(' ', '_', $filename);
+                    
+                    //$aId = $editId ? $editId : $rand;
+                    //$pre = time() . '-';
+                    $filename = 'tag/' . $tagId . '/snap/'/* . $pre*/ . $filename;
+                    //if (App::environment('local'))
+                    $path = $data['snap_thumb'][$count]->storeAs('public', $filename);
+                    //else
+                    //$path = Storage::disk('s3')->putFileAs($filename, $request->file('thumbnail'), 'public');
+                    //$path = $request->file('thumbnail')->storeAs('', $filename, 's3');
+                
+                    //$data['model_thumb'] = $filename;
+                    
+                    $snapImg->img_path = $filename;
+                    $snapImg->save();
+                }
+            }
+            
+        } //foreach
+        
+        $num = 1;
+        $snaps = $this->itemImg->where(['item_id'=>$tagId, 'type'=>5])->get();
+//            $snaps = $this->modelSnap->where(['model_id'=>$modelId])->get()->map(function($obj) use($num){
+//                
+//                return true;
+//            });
+        
+        //Snapのナンバーを振り直す
+        foreach($snaps as $snap) {
+            $snap->number = $num;
+            $snap->save();
+            $num++;
+        }
+        
+        //Snap END ===========================================
+
+        return redirect('dashboard/tags/'. $tagId)->with('status', $upText);
     }
 
     /**
@@ -100,12 +186,7 @@ class TagController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($tagId)
-    {
-        $tag = $this->tag->find($tagId);
-        
-        return view('dashboard.tag.form', ['tag'=>$tag, 'tagId'=>$tagId, 'edit'=>1]);
-    }
+    
 
     /**
      * Show the form for editing the specified resource.

@@ -106,7 +106,25 @@
                     </li>
 
                 </ul>
-            </li>  
+            </li>
+            
+            <div class="border border-secondary border-top-0 w-75 mx-auto"></div>
+            
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Example Pages">
+              <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#tags" data-parent="#collapseMaster">
+                <i class="fa fa-fw fa-file"></i>
+                <span class="nav-link-text">タグ管理</span>
+              </a>
+              <ul class="sidenav-third-level collapse" id="tags">
+                <li>
+                  <a href="{{ url('dashboard/tags') }}">タグ一覧</a>
+                </li>
+                <li>
+                  <a href="{{ url('dashboard/tags/create') }}">タグ新規登録</a>
+                </li>
+
+              </ul>
+            </li>
             
           </ul>
         </li>
@@ -144,23 +162,7 @@
                 </li>
             --}}
             
-            <div class="border border-secondary border-top-0 w-75 mx-auto"></div>
             
-            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Example Pages">
-              <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#tags" data-parent="#collapseItem">
-                <i class="fa fa-fw fa-file"></i>
-                <span class="nav-link-text">タグ管理</span>
-              </a>
-              <ul class="sidenav-third-level collapse" id="tags">
-                <li>
-                  <a href="{{ url('dashboard/tags') }}">タグ一覧</a>
-                </li>
-                <li>
-                  <a href="{{ url('dashboard/tags/create') }}">タグ新規登録</a>
-                </li>
-
-              </ul>
-            </li>
             
           </ul>
         </li>

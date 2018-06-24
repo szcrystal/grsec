@@ -27,6 +27,7 @@ class CreateSettingsTable extends Migration
             
             $table->integer('snap_primary')->nullable()->default(NULL);
             $table->integer('snap_secondary')->nullable()->default(NULL);
+            $table->integer('snap_category')->nullable()->default(NULL);
             
             
             $table->timestamps();

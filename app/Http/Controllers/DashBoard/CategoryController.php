@@ -4,16 +4,25 @@ namespace App\Http\Controllers\DashBoard;
 
 use App\Category;
 use App\Item;
+use App\ItemImage;
+use App\Setting;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
+use App\Http\Requests;
+
+use Illuminate\Support\Facades\Storage;
+
 class CategoryController extends Controller
 {
-    public function __construct(Category $category, Item $item)
+    public function __construct(Category $category, Item $item, ItemImage $itemImg, Setting $setting)
     {
         $this->category = $category;
         $this->item = $item;
+        $this->itemImg = $itemImg;
+        $this->setting = $setting;
+        
         $this->perPage = 30;
     }
     
@@ -30,13 +39,19 @@ class CategoryController extends Controller
     {
         $cate = $this->category->find($id);
         
-        return view('dashboard.category.form', ['cate'=>$cate, 'id'=>$id, 'edit'=>1]);
+        $snaps = $this->itemImg->where(['item_id'=>$id, 'type'=>3])->get();
+        
+        $imgCount = $this->setting->get()->first()->snap_category;
+        
+        return view('dashboard.category.form', ['cate'=>$cate, 'imgCount'=>$imgCount, 'snaps'=>$snaps, 'id'=>$id, 'edit'=>1]);
     }
     
     
     public function create()
     {
-        return view('dashboard.category.form');
+    	$imgCount = $this->setting->get()->first()->snap_category;
+        
+        return view('dashboard.category.form', ['imgCount'=>$imgCount, ]);
     }
 
     /**
@@ -47,7 +62,7 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $editId = $request->input('edit_id');
+        $editId = $request->has('edit_id') ? $request->input('edit_id') : 0;
         
         $rules = [
             'name' => 'required|unique:categories,name,'.$editId.'|max:255',
@@ -62,11 +77,6 @@ class CategoryController extends Controller
         $this->validate($request, $rules, $messages);
         
         $data = $request->all(); //requestから配列として$dataにする
-        
-//        if(! isset($data['open_status'])) { //checkbox
-//            $data['open_status'] = 0;
-//        }
-        
 
         if($request->input('edit_id') !== NULL ) { //update（編集）の時
             $status = 'カテゴリーが更新されました！';
@@ -81,9 +91,82 @@ class CategoryController extends Controller
         $cateModel->fill($data); //モデルにセット
         $cateModel->save(); //モデルからsave
         
-        $id = $cateModel->id;
+        $cateId = $cateModel->id;
+        
+        //Snap Save ==================================================
+        foreach($data['snap_count'] as $count) {
+        
+            /*
+                   type:1->item main
+                   type:2->item spare
+                  type:3->category
+                type:4->sub category
+                 type:5->tag                              
+               */         
+ 
+            if(isset($data['del_snap'][$count]) && $data['del_snap'][$count]) { //削除チェックの時
+                //echo $count . '/' .$data['del_snap'][$count];
+                //exit;
+                
+                $snapModel = $this->itemImg->where(['item_id'=>$cateId, 'type'=>3, 'number'=>$count+1])->first();
+                
+                if($snapModel !== null) {
+                	Storage::delete('public/'.$snapModel->img_path); //Storageはpublicフォルダのあるところをルートとしてみる
+                    $snapModel ->delete();
+                }
+            
+            }
+            else {
+                if(isset($data['snap_thumb'][$count])) {
+                    
+                    $snapImg = $this->itemImg->updateOrCreate(
+                        ['item_id'=>$cateId, 'type'=>3, 'number'=>$count+1],
+                        [
+                            'item_id'=>$cateId,
+                            //'snap_path' =>'',
+                            'type' => 3,
+                            'number'=> $count+1,
+                        ]
+                    );
 
-        return redirect('dashboard/categories/'.$id)->with('status', $status);
+                    $filename = $data['snap_thumb'][$count]->getClientOriginalName();
+                    $filename = str_replace(' ', '_', $filename);
+                    
+                    //$aId = $editId ? $editId : $rand;
+                    //$pre = time() . '-';
+                    $filename = 'category/' . $cateId . '/snap/'/* . $pre*/ . $filename;
+                    //if (App::environment('local'))
+                    $path = $data['snap_thumb'][$count]->storeAs('public', $filename);
+                    //else
+                    //$path = Storage::disk('s3')->putFileAs($filename, $request->file('thumbnail'), 'public');
+                    //$path = $request->file('thumbnail')->storeAs('', $filename, 's3');
+                
+                    //$data['model_thumb'] = $filename;
+                    
+                    $snapImg->img_path = $filename;
+                    $snapImg->save();
+                }
+            }
+            
+        } //foreach
+        
+        $num = 1;
+        $snaps = $this->itemImg->where(['item_id'=>$cateId, 'type'=>3])->get();
+//            $snaps = $this->modelSnap->where(['model_id'=>$modelId])->get()->map(function($obj) use($num){
+//                
+//                return true;
+//            });
+        
+        //Snapのナンバーを振り直す
+        foreach($snaps as $snap) {
+            $snap->number = $num;
+            $snap->save();
+            $num++;
+        }
+        
+        //Snap END ===========================================
+
+        return redirect('dashboard/categories/'.$cateId)->with('status', $status);
     }
 
 
