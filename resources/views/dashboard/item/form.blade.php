@@ -390,21 +390,21 @@
                             <?php
                                 $checked = '';
                                 if(Ctm::isOld()) {
-                                    if(old('deli_fee'))
+                                    if(old('is_delifee'))
                                         $checked = ' checked';
                                 }
                                 else {
-                                    if(isset($item) && $item->deli_fee) {
+                                    if(isset($item) && $item->is_delifee) {
                                         $checked = ' checked';
                                     }
                                 }
                             ?>
-                            <input type="checkbox" name="deli_fee" value="1"{{ $checked }}> 送料を無料にする
+                            <input type="checkbox" name="is_delifee" value="1"{{ $checked }}> 送料を無料にする
                         </label>
                     </div>
             </fieldset>
             
-            <fieldset class="form-group mb-4">
+            <fieldset class="form-group mb-2">
                     <div class="checkbox">
                         <label>
                             <?php
@@ -422,6 +422,18 @@
                             <input type="checkbox" name="is_once" value="1"{{ $checked }}> 同梱包可能
                         </label>
                     </div>
+            </fieldset>
+            
+            <fieldset class="mb-4 form-group">
+                <label for="factor" class="control-label d-inline">係数</label>
+                <input class="form-control d-inline col-md-4{{ $errors->has('factor') ? ' is-invalid' : '' }}" name="factor" value="{{ Ctm::isOld() ? old('factor') : (isset($item) ? $item->factor : '') }}" placeholder="">
+                
+                @if ($errors->has('factor'))
+                    <div class="text-danger">
+                        <span class="fa fa-exclamation form-control-feedback"></span>
+                        <span>{{ $errors->first('factor') }}</span>
+                    </div>
+                @endif
             </fieldset>
             
             

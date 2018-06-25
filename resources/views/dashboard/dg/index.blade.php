@@ -63,7 +63,7 @@
                   <th>配送区分名</th>
                   <th></th>
                   <th>容量</th>
-                  <th>係数</th>
+                  {{-- <th>係数</th> --}}
                   <th>時間指定</th>
                   <th></th>
                   <th></th>
@@ -98,7 +98,7 @@
                   
                   <td>{{ $dg->capacity }}</td>
                   
-                  <td>{{ $dg->factor }}</td>
+                  {{-- <td>{{ $dg->factor }}</td> --}}
                   
                   <td>
                   @if($dg->is_time)

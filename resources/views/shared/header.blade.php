@@ -38,6 +38,10 @@
     </script>
 
 </head>
+<?php 
+// $a = 7 % 4; echo $a; 
+?>
+
 <?php $switch = 0; ?>
 @if(Ctm::isLocal() && $switch)
 <div style="position: relative; bottom:0; z-index:10000; background:red; width: 100%;">

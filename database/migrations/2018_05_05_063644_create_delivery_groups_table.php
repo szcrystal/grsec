@@ -30,8 +30,9 @@ class CreateDeliveryGroupsTable extends Migration
         
         DB::table('delivery_groups')->insert(
             [ 
-                'name' => '西濃',
+                'name' => '下草(小)',
                 'open_status' => 1,
+                'capacity' => 20,
                 
                 'created_at' => date('Y-m-d H:i:s', time()),
                 'updated_at' => date('Y-m-d H:i:s', time()),
@@ -40,8 +41,9 @@ class CreateDeliveryGroupsTable extends Migration
         
         DB::table('delivery_groups')->insert(
             [ 
-                'name' => 'ヤマト運輸',
+                'name' => '下草(大)',
                 'open_status' => 1,
+                'capacity' => 40,
                 
                 'created_at' => date('Y-m-d H:i:s', time()),
                 'updated_at' => date('Y-m-d H:i:s', time()),

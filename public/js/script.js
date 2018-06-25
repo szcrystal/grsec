@@ -115,7 +115,7 @@ var exe = (function() {
             else {
                 $('.btn-s').on('click', function(){
                     if($input.is(':hidden')) {
-                        $input.show().animate({width:'14em', opacity:1}, 300, 'linear', function(){
+                        $input.show().animate({width:'16em', opacity:1}, 300, 'linear', function(){
                     
                         });
                     }
@@ -167,48 +167,120 @@ var exe = (function() {
         
         
         dropDown: function() {
-        	var $stateNav = $('.state-nav li');
+        	var $mainNav = $('.main-navi li');
+            
         	//var len = $('.state-nav li').length;
             var num = 0;
            
-            var speed = 200;
+            var speed = 250;
            	var easing = 'linear';
            
            	var hideSpeed = this.isSpTab('sp') ? 150 : 0;
             //console.log(len);
            
            	//$('.menu-dropdown').eq(1).slideToggle(200);
-           
-            $stateNav.on('click', function(e){
+            
+            
+            $mainNav.on({
+            	'mouseover': function(e){
 				
-                var $clickThis = $(this);
-                var n = $(this).index();
-                
-                $(e.target).addClass('nav-active');
-                
-                if($('.menu-dropdown').eq(n).is(':visible')) {
-                	
-                    $stateNav.removeClass('nav-active');
+                    var $clickThis = $(this);
+                    var $dropMenu = $('.drop-menu');
                     
-                	$('.menu-dropdown').eq(n).slideUp(speed, easing, function() {
-                        $(this).queue([]).stop();
-                    });
-                }
-                else {
-                
-                    $('.menu-dropdown').slideUp(hideSpeed, function(){
-                        $stateNav.removeClass('nav-active');
-                        $clickThis.addClass('nav-active');
+                    var n = $(this).index();
+                    
+                    $(e.target).addClass('nav-active');
+                    
+                    if($dropMenu.eq(n).is(':visible')) {
                         
-                        $('.menu-dropdown').eq(n).slideDown(speed, easing, function() {
+                        $clickThis.removeClass('nav-active');
+                        
+                        $dropMenu.fadeOut(speed, easing, function() {
                             $(this).queue([]).stop();
                         });
+                    }
+                    else {
                     
-                    });
+                        $dropMenu.fadeOut(hideSpeed, function(){
+                            $mainNav.removeClass('nav-active');
+                            $clickThis.addClass('nav-active');
+                            
+                            $clickThis.children('.drop-menu').fadeIn(speed, easing, function() {
+                                $(this).queue([]).stop();
+                            });
+                        
+                        });
+                    }
+                },
+                
+                'mouseout': function(e){
+				
+                    var $clickThis = $(this);
+                    var $dropMenu = $('.drop-menu');
+                    
+                    var n = $(this).index();
+                    
+                    $(e.target).addClass('nav-active');
+                    
+                    if($dropMenu.eq(n).is(':visible')) {
+                        
+                        $clickThis.removeClass('nav-active');
+                        
+                        $dropMenu.fadeOut(speed, easing, function() {
+                            $(this).queue([]).stop();
+                        });
+                    }
+                    else {
+                    
+                        $dropMenu.fadeOut(hideSpeed, function(){
+                            $mainNav.removeClass('nav-active');
+                            $clickThis.addClass('nav-active');
+                            
+                            $clickThis.children('.drop-menu').fadeIn(speed, easing, function() {
+                                $(this).queue([]).stop();
+                            });
+                        
+                        });
+                    }
                 }
                 
-                
             });
+            
+           
+//            $mainNav.on('click', function(e){
+//				
+//                var $clickThis = $(this);
+//                var $dropMenu = $('.drop-menu');
+//                
+//                var n = $(this).index();
+//                
+//                $(e.target).addClass('nav-active');
+//                
+//                if($dropMenu.eq(n).is(':visible')) {
+//                	
+//                    $clickThis.removeClass('nav-active');
+//                    
+//                	$dropMenu.fadeOut(speed, easing, function() {
+//                        $(this).queue([]).stop();
+//                    });
+//                }
+//                else {
+//                
+//                   	$dropMenu.fadeOut(hideSpeed, function(){
+//                        $mainNav.removeClass('nav-active');
+//                        $clickThis.addClass('nav-active');
+//                        
+//                        $clickThis.children('.drop-menu').fadeIn(speed, easing, function() {
+//                            $(this).queue([]).stop();
+//                        });
+//                    
+//                    });
+//                }
+//                
+//                return false;
+//                
+//                
+//            });
            
         },
         

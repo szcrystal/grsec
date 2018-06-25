@@ -100,7 +100,7 @@
                 @endif
             </fieldset>
             
-            <fieldset class="mb-2 form-group">
+            <fieldset class="mb-4 form-group">
                 <label for="stock" class="control-label">容量</label>
                 <input class="form-control col-md-6{{ $errors->has('capacity') ? ' is-invalid' : '' }}" name="capacity" value="{{ Ctm::isOld() ? old('capacity') : (isset($dg) ? $dg->capacity : '') }}">
                 
@@ -113,6 +113,7 @@
                 @endif
             </fieldset>
             
+            {{--
             <fieldset class="mb-4 form-group">
                 <label for="stock" class="control-label">係数</label>
                 <input class="form-control col-md-6{{ $errors->has('factor') ? ' is-invalid' : '' }}" name="factor" value="{{ Ctm::isOld() ? old('factor') : (isset($dg) ? $dg->factor : '') }}">
@@ -125,6 +126,7 @@
                     </div>
                 @endif
             </fieldset>
+            --}}
             
             <fieldset class="form-group mb-4">
                     <div class="checkbox">

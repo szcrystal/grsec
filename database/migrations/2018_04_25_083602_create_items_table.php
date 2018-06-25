@@ -42,16 +42,20 @@ class CreateItemsTable extends Migration
             $table->integer('price')->nullable()->default(NULL);
             $table->integer('cost_price')->nullable()->default(NULL);
             $table->string('consignor_id')->nullable()->default(NULL);
+            
             $table->integer('dg_id')->nullable()->default(NULL);
-            $table->boolean('deli_fee')->nullable()->default(NULL);
+            $table->boolean('is_delifee')->nullable()->default(NULL);
             $table->boolean('is_once')->nullable()->default(NULL);
+            $table->float('factor')->nullable()->default(NULL);
+            
+            
             $table->integer('cod')->nullable()->default(NULL);
             $table->boolean('farm_direct')->nullable()->default(NULL);
             
             $table->integer('stock')->nullable()->default(NULL);
             $table->boolean('stock_show')->nullable()->default(NULL);
             
-            $table->integer('point_back')->nullable()->default(NULL);
+            $table->float('point_back')->nullable()->default(NULL);
             
             $table->text('exp_first')->nullable()->default(NULL);
             $table->text('explain')->nullable()->default(NULL);
@@ -98,7 +102,7 @@ class CreateItemsTable extends Migration
                     'consignor_id' => 1,
             		'cod' => 1,
               		'dg_id' =>1,
-                	'deli_fee'=>0,          
+                	'is_delifee'=>0,          
             		'stock' => 20,
                     'stock_show' => 1,
                     'point_back' => 2,

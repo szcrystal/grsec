@@ -36,9 +36,12 @@ class Item extends Model
         'consignor_id',
         'cod',
         'farm_direct',
+        
         'dg_id',
-        'deli_fee',
+        'is_delifee',
         'is_once',
+        'factor',
+        
         'stock',
         'stock_show',
         'point_back',
