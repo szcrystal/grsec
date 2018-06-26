@@ -491,29 +491,32 @@ class CartController extends Controller
         
         $isOnceItem = array();
         $sitakusaItem = array();
+        $dgIds = array();
         
 
         //同梱包可能で、配送区分も同じ場合を区別する必要がある
-        
+        //同梱包可能なもので配送区分の同じものと異なるものを分けて送料を出す
         foreach($itemData as $item) {
-        	if(! $item->is_once) { //同梱包不可のものはそれぞれ単独で
-         		$fee = $this->dgRel->where(['dg_id'=>$item->dg_id, 'pref_id'=>$prefId])->first()->fee;
-                $deliFee += $fee;
-                //$dgIds[] = $item->dg_id;
-         	} 
-          	else { //同梱包可能なものは別配列へ入れて下記へ
-            	if($item->dg_id == $sitakusaSmId || $item->dg_id == $sitakusaBgId) {
-           			$sitakusaItem[] = $item;
+        	if(! $item->is_delifee) { //送料が無料でないもの
+                if(! $item->is_once) { //同梱包不可のものはそれぞれ単独で
+                    $fee = $this->dgRel->where(['dg_id'=>$item->dg_id, 'pref_id'=>$prefId])->first()->fee;
+                    $deliFee += $fee;
+                    //$dgIds[] = $item->dg_id;
+                } 
+                else { //同梱包可能なものは別配列へ入れて下記へ
+                    if($item->dg_id == $sitakusaSmId || $item->dg_id == $sitakusaBgId) { //下草の時 下草用の配列に入れる　下草だけ特別なので別計算で
+                        $sitakusaItem[] = $item;
+                    }
+                    else {
+                        $isOnceItem[] = $item;
+                        $dgIds[$item->id] = $item->dg_id; //itemIdをkeyとしてdeliveryGroupIdを別配列へ
+                    }
                 }
-                else {
-                	$isOnceItem[] = $item;
-             		$dgIds[$item->id] = $item->dg_id; //itemIdをkeyとしてdeliveryGroupIdを別配列へ
-                }
-           	}        
+            }      
         }
         
-        //同梱包可能なもので配送区分の同じものと異なるものを分けて送料を出す
-        //下草でない時 ===       
+        
+        //下草でない時 ============     
         if(count($isOnceItem) > 0) {
         	foreach($isOnceItem as $ioi) {
          		if(isset($dgIds[$ioi->id])) { //ここでsetされていなければ519行目のarray_diffで削除されているので送料算出の必要なし
@@ -549,23 +552,23 @@ class CartController extends Controller
                             
                         $dg = $this->dg->find($ioi->dg_id);
                         
-                        //dgの容量を取り、係数に対して割理、余りを出す。余りが１以下なら単独の送料、１以上なら少数切り上げをしてその整数値を送料に掛ける
+                        //dgの容量を取り、係数に対して割り、余りも出す。余りが0なら割ったanswerの倍数送料、余りがあればanswer１以上で少数切り上げをしてその整数値を送料に掛ける
                         $capacity = $dg->capacity;
                         $answer = $factor / $capacity;
                         $amari = $factor % $capacity;
                         
                         $fee = $this->dgRel->where(['dg_id'=>$ioi->dg_id, 'pref_id'=>$prefId])->first()->fee;
                     
-                    	if($amari > 0) {
+                    	if($amari > 0) { //割り切れない時
                             if($answer <= 1) {
                                 $deliFee += $fee;
                             }
                             else {
-                                $answer = ceil($answer);
+                                $answer = ceil($answer); //切り上げ
                                 $deliFee += $fee * $answer;
                             }
                         }
-                        else {
+                        else { //割り切れる時
                         	$deliFee += $fee * $answer;
                         }
                         
@@ -581,57 +584,59 @@ class CartController extends Controller
          	}   
         }
         
-        //下草の時 ===
+        //下草の時 下草だけ特別なので別計算で ========
         if(count($sitakusaItem) > 0) {
         	$count = 0;
             $factor = 0;
             
+            //下草小の容量: 20
+            $sitakusaSmCapa = $this->dg->find($sitakusaSmId)->capacity;
+            //下草大の容量: 40
+            $sitakusaBgCapa = $this->dg->find($sitakusaBgId)->capacity;
             
+            //下草小と大のそれぞれの送料
+			$smFee = $this->dgRel->where(['dg_id'=>$sitakusaSmId, 'pref_id'=>$prefId])->first()->fee;
+            $bgFee = $this->dgRel->where(['dg_id'=>$sitakusaBgId, 'pref_id'=>$prefId])->first()->fee;
+            
+            //下草商品の係数の合計を算出
         	foreach($sitakusaItem as $ioi) {	
                 $count += $ioi->count;
                 $factor += $ioi->factor * $ioi->count;   
         	}
+
             
-//            echo $count.'/';
-//            	echo $factor;
-//            	exit;
-            
-            
-            
-            if($factor <= 20) { //個数x係数が20以下なら下草小
-                $answer = $factor / 20;
-                $fee = $this->dgRel->where(['dg_id'=>$sitakusaSmId, 'pref_id'=>$prefId])->first()->fee;
-                $deliFee += $fee;        
+            if($factor <= $sitakusaSmCapa) { //個数x係数が20以下なら下草小
+//                $answer = $factor / $sitakusaSmCapa;
+//                $fee = $this->dgRel->where(['dg_id'=>$sitakusaSmId, 'pref_id'=>$prefId])->first()->fee;
+                $deliFee += $smFee;        
             }
             else {  //個数x係数が20以上なら各種計算が必要
-                $amari = $factor % 40;
-                $answer = $factor / 40;
+                $amari = $factor % $sitakusaBgCapa;
+                $answer = $factor / $sitakusaBgCapa;
                 
                 if($amari > 0) { //amariがある時 0以上の時
-                	$smFee = $this->dgRel->where(['dg_id'=>$sitakusaSmId, 'pref_id'=>$prefId])->first()->fee;
-                	$bgFee = $this->dgRel->where(['dg_id'=>$sitakusaBgId, 'pref_id'=>$prefId])->first()->fee;
-                	
+
                     if($answer <= 1) {
                         $deliFee += $bgFee;
                     }
                     else {
-                    	if($amari <= 20) { //40で割ったamariが下草小で可能の時
+                    	if($amari <= $sitakusaSmCapa) { //40で割ったamariが下草小で可能の時 下草小のcapacity以下の時 合計係数が95なら40で割ると余は15となり下草小で可能
                         	$deliFee += $smFee;
-                            $deliFee += $bgFee * floor($answer);
+                            $deliFee += $bgFee * floor($answer); //切り捨て
                         }
                         else {
-                    		$deliFee += $bgFee * ceil($answer);
+                    		$deliFee += $bgFee * ceil($answer); //切り上げ
                         }
                     }
                 }
                 else { //amari 0 割り切れる時
-                	$fee = $this->dgRel->where(['dg_id'=>$sitakusaBgId, 'pref_id'=>$prefId])->first()->fee;
+                	//$fee = $this->dgRel->where(['dg_id'=>$sitakusaBgId, 'pref_id'=>$prefId])->first()->fee;
                     
                     if($answer <= 1) {   
-                        $deliFee += $fee;
+                        $deliFee += $bgFee;
                     }
                     else {
-                    	$deliFee += $fee * $answer;
+                    	$deliFee += $bgFee * $answer; //割り切れるので切り上げ切り捨てなし
                     }
                 }
             }

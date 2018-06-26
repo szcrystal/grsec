@@ -182,12 +182,18 @@
             
             
             
+            <h4 class="mt-5 pt-3"><span class="text-secondary">■</span> TOPページのメタ設定</h4>
+            <hr>
+            <?php
+            	$obj = null;
+            	if(isset($setting)) $obj = $setting;
+            ?>
+            
+            @include('dashboard.shared.meta')
         
             
-            <div class="form-group">
-                <div class="">
-                    <button type="submit" class="btn btn-primary d-block w-25 mt-5 mx-auto"><span class="octicon octicon-sync"></span>更　新</button>
-                </div>
+            <div class="form-group mt-3">
+                <button type="submit" class="btn btn-primary d-block w-25 mt-5 mx-auto"><span class="octicon octicon-sync"></span>更　新</button>
             </div>
 
 

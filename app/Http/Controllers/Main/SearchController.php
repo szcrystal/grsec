@@ -73,7 +73,7 @@ class SearchController extends Controller
         
         //$groupModel = $this->tagGroup;
         
-        return view('main.search.index', ['items'=>$allResults, 'searchStr' => $search/*, 'rightRanks'=>$rightRanks, 'rankName'=>$rankName*/]);
+        return view('main.search.index', ['items'=>$allResults, 'searchStr' => $search, 'type'=>'search'/*, 'rightRanks'=>$rightRanks, 'rankName'=>$rankName*/]);
     }
     
     

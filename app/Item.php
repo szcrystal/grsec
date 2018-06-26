@@ -51,8 +51,9 @@ class Item extends Model
         'about_ship',
         'contents',
                 
-        //'what_is',
-        //'warning',
+        'meta_title',
+        'meta_description',
+        'meta_keyword',
         
         'open_date',
         'view_count',

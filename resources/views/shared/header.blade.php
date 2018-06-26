@@ -9,10 +9,17 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'グリーンロケット') }}</title>
-
-    <!-- Styles -->
+    <title>@if(isset($metaTitle)){{ $metaTitle }} | @endif{{ config('app.name', 'グリーンロケット') }}</title>
     
+    @if(isset($metaDesc))
+    <meta name="description" content="{{ str_replace(PHP_EOL, '', $metaDesc) }}">
+    @endif
+    
+    @if(isset($metaKeyword))
+    <meta name="keywords" content="{{ $metaKeyword }}">
+    @endif
+    
+    <!-- Styles -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
 
     {{-- <link href="{{ asset('css/app.css') }}" rel="stylesheet"> --}}
@@ -26,9 +33,8 @@
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
 	@endif
 
-	<script src="//code.jquery.com/jquery-1.12.4.min.js"></script>
-	<script src="//code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-	<script src="{{ asset('js/script.js') }}"></script>
+	{{-- <script type="text/javascript" src="//code.jquery.com/jquery-2.1.0.min.js"></script> --}}
+
 
     <!-- Scripts -->
     <script>

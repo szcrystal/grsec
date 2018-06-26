@@ -581,7 +581,7 @@
             <fieldset class="my-5 form-group{{ $errors->has('exp_first') ? ' is-invalid' : '' }}">
                     <label for="explain" class="control-label">キャッチ説明（商品ヘッドの中に表示される）</label>
 
-                    <textarea id="explain" type="text" class="form-control" name="exp_first" rows="15">{{ Ctm::isOld() ? old('exp_first') : (isset($item) ? $item->exp_first : '') }}</textarea>
+                    <textarea id="explain" type="text" class="form-control" name="exp_first" rows="10">{{ Ctm::isOld() ? old('exp_first') : (isset($item) ? $item->exp_first : '') }}</textarea>
 
                     @if ($errors->has('exp_first'))
                         <span class="help-block">
@@ -593,7 +593,7 @@
             <fieldset class="my-5 form-group{{ $errors->has('explain') ? ' is-invalid' : '' }}">
                     <label for="explain" class="control-label">メイン説明</label>
 
-                    <textarea id="explain" type="text" class="form-control" name="explain" rows="15">{{ Ctm::isOld() ? old('explain') : (isset($item) ? $item->explain : '') }}</textarea>
+                    <textarea id="explain" type="text" class="form-control" name="explain" rows="12">{{ Ctm::isOld() ? old('explain') : (isset($item) ? $item->explain : '') }}</textarea>
 
                     @if ($errors->has('explain'))
                         <span class="help-block">
@@ -605,7 +605,7 @@
             <fieldset class="my-5 form-group{{ $errors->has('about_ship') ? ' is-invalid' : '' }}">
                     <label for="detail" class="control-label">配送について</label>
 
-                        <textarea id="detail" type="text" class="form-control" name="about_ship" rows="15">{{ Ctm::isOld() ? old('about_ship') : (isset($item) ? $item->about_ship : '') }}</textarea>
+                        <textarea id="detail" type="text" class="form-control" name="about_ship" rows="12">{{ Ctm::isOld() ? old('about_ship') : (isset($item) ? $item->about_ship : '') }}</textarea>
 
                         @if ($errors->has('about_ship'))
                             <span class="help-block">
@@ -619,17 +619,21 @@
                 if(isset($item)) $obj = $item;
             ?>
             
-            {{-- @include('dashboard.shared.meta') --}}
             
             @include('dashboard.shared.contents')
             
             
             
-            <div class="form-group mt-5 pt-3">
+            <div class="form-group mt-3 pt-3 mb-5 pb-5">
                 <button type="submit" class="btn btn-primary btn-block w-btn w-25 mx-auto">更　新</button>
             </div>
 
-
+			
+            @include('dashboard.shared.meta')
+            
+            <div class="form-group mt-5 pt-3">
+                <button type="submit" class="btn btn-primary btn-block w-btn w-25 mx-auto">更　新</button>
+            </div>
             
 
         </form>

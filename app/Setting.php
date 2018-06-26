@@ -17,6 +17,10 @@ class Setting extends Model
         'snap_primary',
         'snap_secondary',
         'snap_category',
+        
+        'meta_title',
+        'meta_description',
+        'meta_keyword',
 
     ];
 }

@@ -21,7 +21,7 @@ class CreateCategorySecondsTable extends Migration
             $table->string('slug')->unique()->nullable()->default(NULL);
             
             $table->string('meta_title')->nullable()->default(NULL);
-            $table->string('meta_description')->nullable()->default(NULL);
+            $table->text('meta_description')->nullable()->default(NULL);
             $table->string('meta_keyword')->nullable()->default(NULL);
             
             $table->text('contents')->nullable()->default(NULL);

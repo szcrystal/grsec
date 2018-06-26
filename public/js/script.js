@@ -166,13 +166,37 @@ var exe = (function() {
         },
         
         
+        posts: function() {
+        	$('#zipcode').jpostal({
+                postcode : [
+                    '#zipcode'
+                ],
+                address : {
+                    '#pref':'%3',
+                    '#address':'%4%5'
+                }
+            });
+            
+            $('#zipcode_2').jpostal({
+                postcode : [
+                    '#zipcode_2'
+                ],
+                address : {
+                    '#pref_2':'%3',
+                    '#address_2':'%4%5'
+                }
+            });
+            
+        },
+        
+        
         dropDown: function() {
         	var $mainNav = $('.main-navi li');
             
         	//var len = $('.state-nav li').length;
             var num = 0;
            
-            var speed = 250;
+            var speed = 200;
            	var easing = 'linear';
            
            	var hideSpeed = this.isSpTab('sp') ? 150 : 0;
@@ -180,7 +204,58 @@ var exe = (function() {
            
            	//$('.menu-dropdown').eq(1).slideToggle(200);
             
+            $mainNav.on('click', function(e){
+				
+                var $clickThis = $(this);
+                var $dropMenu = $('.drop-menu');
+                
+                var n = $(this).index();
+                
+                $(e.target).addClass('nav-active');
+                
+                if($dropMenu.eq(n).is(':visible')) {
+                	
+                    $clickThis.removeClass('nav-active');
+                    
+                	$dropMenu.fadeOut(speed, easing, function() {
+                        $(this).queue([]).stop();
+                    });
+                }
+                else {
+                
+                   	$dropMenu.fadeOut(hideSpeed, function(){
+                        $mainNav.removeClass('nav-active');
+                        $clickThis.addClass('nav-active');
+                        
+                        $clickThis.children('.drop-menu').fadeIn(speed, easing, function() {
+                            $(this).queue([]).stop();
+                        });
+                    
+                    });
+                }
+                
+                //return false;
+
+            });
             
+            $('body').on('click', function(e){
+            	var $dropMenu = $('.drop-menu');
+                
+                if( ! $(e.target).parents().hasClass('.main-navi') ) {
+                	console.log("aaa");
+                    if($dropMenu.is(':visible')) {
+                        
+                        //$clickThis.removeClass('nav-active');
+                        
+                        $dropMenu.fadeOut(speed, easing, function() {
+                            $(this).queue([]).stop();
+                        });
+                    }
+                }
+            });
+
+            
+            /*
             $mainNav.on({
             	'mouseover': function(e){
 				
@@ -245,42 +320,9 @@ var exe = (function() {
                 }
                 
             });
+            */
             
            
-//            $mainNav.on('click', function(e){
-//				
-//                var $clickThis = $(this);
-//                var $dropMenu = $('.drop-menu');
-//                
-//                var n = $(this).index();
-//                
-//                $(e.target).addClass('nav-active');
-//                
-//                if($dropMenu.eq(n).is(':visible')) {
-//                	
-//                    $clickThis.removeClass('nav-active');
-//                    
-//                	$dropMenu.fadeOut(speed, easing, function() {
-//                        $(this).queue([]).stop();
-//                    });
-//                }
-//                else {
-//                
-//                   	$dropMenu.fadeOut(hideSpeed, function(){
-//                        $mainNav.removeClass('nav-active');
-//                        $clickThis.addClass('nav-active');
-//                        
-//                        $clickThis.children('.drop-menu').fadeIn(speed, easing, function() {
-//                            $(this).queue([]).stop();
-//                        });
-//                    
-//                    });
-//                }
-//                
-//                return false;
-//                
-//                
-//            });
            
         },
         
@@ -456,7 +498,7 @@ $(function(e){ //ready
     exe.outReceive();
     exe.addFavorite();
   
-  	//exe.addClass();
+  	exe.posts();
 });
 
 

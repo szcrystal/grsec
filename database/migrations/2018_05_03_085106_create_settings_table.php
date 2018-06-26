@@ -29,6 +29,10 @@ class CreateSettingsTable extends Migration
             $table->integer('snap_secondary')->nullable()->default(NULL);
             $table->integer('snap_category')->nullable()->default(NULL);
             
+            $table->string('meta_title')->nullable()->default(NULL);
+            $table->text('meta_description')->nullable()->default(NULL);
+            $table->string('meta_keyword')->nullable()->default(NULL);
+            
             
             $table->timestamps();
         });
@@ -42,6 +46,7 @@ class CreateSettingsTable extends Migration
                 
                 'snap_primary'=> 10,
                 'snap_secondary'=> 5,
+                'snap_category'=> 3,
                 
                 'created_at' => date('Y-m-d H:i:s', time()),
                 'updated_at' => date('Y-m-d H:i:s', time()),

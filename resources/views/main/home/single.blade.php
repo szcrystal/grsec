@@ -94,7 +94,7 @@ use App\User;
                         
                     @else
                     	<span class="fav-temp"><i class="far fa-heart"></i></span>
-                     	<small class="fav-str"><a href="{{ url('login') }}">ログイン</a>するとお気に入りに登録できます</small>   
+                     	<small class="fav-str"><a href="{{ url('login') }}"><b>ログイン</b></a>するとお気に入りに登録できます</small>   
                     @endif 	   
                     </div>
                     @endif
@@ -165,14 +165,25 @@ use App\User;
                     @else
                     	<span class="text-warning text-big">在庫がありません</span>
                  	@endif  
-                  	</div>    
+                  	</div> 
+                    
+                       
+                    <div class="mt-5">
+                    	@foreach($tags as $tag)
+                        	<span class="rank-tag">
+                            <i class="fa fa-tag" aria-hidden="true"></i>
+                            <a href="{{ url('tag/' . $tag->slug) }}">{{ $tag->name }}</a>
+                            </span>
+                        @endforeach
+                    
+                    </div>
             	
                 </div>
                 
         </div><!-- head-frame -->
 
 
-            <div class="col-md-12 panel-body">
+            <div class="col-md-12 panel-body mt-5 pt-1">
 
                 <div class="cont-wrap">
                 	

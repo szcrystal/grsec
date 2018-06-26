@@ -91,6 +91,7 @@ class CreateUsersTable extends Migration
                 'email' => 'opal@frank.fam.cx',
                 'password' => bcrypt('aaaaa111'),
                 'active' => 1,
+                'prefecture' => '青森県',
 //                'hurigana'
 //                'gender'
 //

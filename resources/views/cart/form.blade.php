@@ -154,7 +154,7 @@
          <tr class="form-group">
              <th><label class="control-label">郵便番号</label><em>必須</em></th>
                <td>
-                <input type="text" class="form-control col-md-12{{ $errors->has('user.post_num') ? ' is-invalid' : '' }}" name="user[post_num]" value="{{ Ctm::isOld() ? old('user.post_num') : (Session::has('all.data.user') ? session('all.data.user.post_num') : '') }}" placeholder="例）1234567 ハイフンなし半角数字">
+                <input id="zipcode" type="text" class="form-control col-md-12{{ $errors->has('user.post_num') ? ' is-invalid' : '' }}" name="user[post_num]" value="{{ Ctm::isOld() ? old('user.post_num') : (Session::has('all.data.user') ? session('all.data.user.post_num') : '') }}" placeholder="例）1234567 ハイフンなし半角数字">
                 
                 @if ($errors->has('user.post_num'))
                     <div class="help-block text-danger">
@@ -168,7 +168,7 @@
          <tr class="form-group">
              <th><label class="control-label">都道府県</label><em>必須</em></th>
                <td>
-                <select class="form-control select-first col-md-6{{ $errors->has('user.prefecture') ? ' is-invalid' : '' }}" name="user[prefecture]">
+                <select id="pref" class="form-control select-first col-md-6{{ $errors->has('user.prefecture') ? ' is-invalid' : '' }}" name="user[prefecture]">
                     <option selected value="0">選択して下さい</option>
                     <?php
 //                        use App\Prefecture;
@@ -203,7 +203,7 @@
          <tr class="form-group">
              <th><label class="control-label">住所1（都市区）</label><em>必須</em></th>
                <td>
-                <input type="text" class="form-control col-md-12{{ $errors->has('user.address_1') ? ' is-invalid' : '' }}" name="user[address_1]" value="{{ Ctm::isOld() ? old('user.address_1') : (Session::has('all.data.user') ? session('all.data.user.address_1') : '') }}" placeholder="例）小美玉市">
+                <input id="address" type="text" class="form-control col-md-12{{ $errors->has('user.address_1') ? ' is-invalid' : '' }}" name="user[address_1]" value="{{ Ctm::isOld() ? old('user.address_1') : (Session::has('all.data.user') ? session('all.data.user.address_1') : '') }}" placeholder="例）小美玉市">
                 
                 @if ($errors->has('user.address_1'))
                     <div class="help-block text-danger">
@@ -548,7 +548,7 @@
                      <tr class="form-group">
                          <th><label class="control-label">配送先郵便番号</label><em>必須</em></th>
                            <td>
-                            <input type="text" class="form-control col-md-12{{ $errors->has('receiver.post_num') ? ' is-invalid' : '' }}" name="receiver[post_num]" value="{{ Ctm::isOld() ? old('receiver.post_num') : (Session::has('all.data.receiver') ? session('all.data.receiver.post_num') : '') }}" placeholder="例）1234567 ハイフンなし半角数字">
+                            <input id="zipcode_2" type="text" class="form-control col-md-12{{ $errors->has('receiver.post_num') ? ' is-invalid' : '' }}" name="receiver[post_num]" value="{{ Ctm::isOld() ? old('receiver.post_num') : (Session::has('all.data.receiver') ? session('all.data.receiver.post_num') : '') }}" placeholder="例）1234567 ハイフンなし半角数字">
                             
                             @if ($errors->has('receiver.post_num'))
                                 <div class="help-block help-block text-danger receiver-error">
@@ -562,7 +562,7 @@
                      <tr class="form-group">
                          <th><label class="control-label">配送先都道府県</label><em>必須</em></th>
                            <td>
-                            <select class="form-control select-first col-md-6{{ $errors->has('receiver.prefecture') ? ' is-invalid' : '' }}" name="receiver[prefecture]">
+                            <select id="pref_2" class="form-control select-first col-md-6{{ $errors->has('receiver.prefecture') ? ' is-invalid' : '' }}" name="receiver[prefecture]">
                                 <option disabled selected>選択して下さい</option>
                                 <?php
 //                                    use App\Prefecture;
@@ -597,7 +597,7 @@
                      <tr class="form-group">
                          <th><label class="control-label">配送先住所1（都市区）</label><em>必須</em></th>
                            <td>
-                            <input type="text" class="form-control col-md-12{{ $errors->has('receiver.address_1') ? ' is-invalid' : '' }}" name="receiver[address_1]" value="{{ Ctm::isOld() ? old('receiver.address_1') : (Session::has('all.data.receiver') ? session('all.data.receiver.address_1') : '') }}" placeholder="例）小美玉市">
+                            <input id="address_2" type="text" class="form-control col-md-12{{ $errors->has('receiver.address_1') ? ' is-invalid' : '' }}" name="receiver[address_1]" value="{{ Ctm::isOld() ? old('receiver.address_1') : (Session::has('all.data.receiver') ? session('all.data.receiver.address_1') : '') }}" placeholder="例）小美玉市">
                             
                             @if ($errors->has('receiver.address_1'))
                                 <div class="help-block text-danger receiver-error">

@@ -80,7 +80,10 @@ if(Schema::hasTable('fixes')) {
 
 //Category
 Route::get('category/{slug}', 'Main\HomeController@category');
-Route::get('category/{slug}/{subslug}', 'Main\HomeController@subCategory');
+Route::get('category/{slug}/{subSlug}', 'Main\HomeController@subCategory');
+
+//Tag
+Route::get('tag/{slug}', 'Main\HomeController@tag');
 
 //Search
 Route::get('search', 'Main\SearchController@index');

@@ -8,6 +8,7 @@ use App\CategorySecond;
 use App\Tag;
 use App\TagRelation;
 use App\Fix;
+use App\Setting;
 
 
 use Illuminate\Http\Request;
@@ -15,7 +16,7 @@ use App\Http\Controllers\Controller;
 
 class HomeController extends Controller
 {
-    public function __construct(Item $item, Category $category, CategorySecond $cateSec, Tag $tag, TagRelation $tagRel, Fix $fix)
+    public function __construct(Item $item, Category $category, CategorySecond $cateSec, Tag $tag, TagRelation $tagRel, Fix $fix, Setting $setting)
     {
         //$this->middleware('search');
         
@@ -26,6 +27,7 @@ class HomeController extends Controller
         $this->tagRel = $tagRel;
         $this->fix = $fix;
         $this->tag = $tag;
+        $this->setting = $setting;
 //        $this->tagRelation = $tagRelation;
 //        $this->tagGroup = $tagGroup;
 //        $this->category = $category;
@@ -79,9 +81,14 @@ class HomeController extends Controller
         
 //        $items = $this->item->where(['open_status'=>1¥])->orderBy('created_at','DESC')->get();
 //        $items = $items->groupBy('cate_id')->toArray();
+
+		$setting = $this->setting->get()->first();
+        $metaTitle = $setting->meta_title;
+        $metaDesc = $setting->meta_description;
+        $metaKeyword = $setting->meta_keyword;
         
         
-        return view('main.home.index', ['itemCates'=>$itemCates, 'cates'=>$cates,]);
+        return view('main.home.index', ['itemCates'=>$itemCates, 'cates'=>$cates, 'metaTitle'=>$metaTitle, 'metaDesc'=>$metaDesc, 'metaKeyword'=>$metaKeyword, ]);
     }
 
     public function getFix(Request $request)
@@ -92,6 +99,50 @@ class HomeController extends Controller
         return view('main.home.fix', ['fix'=>$fix]);
     }
     
+    public function category($slug)
+    {
+    	$cate = $this->category->where('slug', $slug)->first();
+        
+        $items = $this->item->where(['cate_id'=>$cate->id, 'open_status'=>1])->orderBy('id', 'desc')->paginate($this->perPage);
+        
+        $metaTitle = $cate->meta_title;
+        $metaDesc = $cate->meta_description;
+        $metaKeyword = $cate->meta_keyword;
+        
+        return view('main.search.index', ['items'=>$items, 'cate'=>$cate, 'type'=>'category', 'metaTitle'=>$metaTitle, 'metaDesc'=>$metaDesc, 'metaKeyword'=>$metaKeyword,]);
+    }
+    
+    public function subCategory($slug, $subSlug)
+    {
+    	$cate = $this->category->where('slug', $slug)->first();
+        
+        $subcate = $this->cateSec->where('slug',$subSlug)->first();
+        
+        $items = $this->item->where(['subcate_id'=>$subcate->id, 'open_status'=>1])->orderBy('id', 'desc')->paginate($this->perPage);
+        
+        $metaTitle = $subcate->meta_title;
+        $metaDesc = $subcate->meta_description;
+        $metaKeyword = $subcate->meta_keyword;
+        
+        return view('main.search.index', ['items'=>$items, 'cate'=>$cate, 'subcate'=>$subcate, 'type'=>'subcategory', 'metaTitle'=>$metaTitle, 'metaDesc'=>$metaDesc, 'metaKeyword'=>$metaKeyword,]);
+    }
+    
+    public function tag($slug)
+    {
+    	$tag = $this->tag->where('slug', $slug)->first();
+        
+        $itemIds = $this->tagRel->where('tag_id',$tag->id)->get()->map(function($obj){
+        	return $obj -> item_id;
+        })->all();
+        
+        $items = $this->item->whereIn('id',$itemIds)->where(['open_status'=>1])->orderBy('id', 'desc')->paginate($this->perPage);
+        
+        $metaTitle = $tag->meta_title;
+        $metaDesc = $tag->meta_description;
+        $metaKeyword = $tag->meta_keyword;
+        
+        return view('main.search.index', ['items'=>$items, 'tag'=>$tag, 'type'=>'tag', 'metaTitle'=>$metaTitle, 'metaDesc'=>$metaDesc, 'metaKeyword'=>$metaKeyword,]);
+    }
     
     public function create()
     {

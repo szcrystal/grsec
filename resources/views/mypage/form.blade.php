@@ -102,13 +102,15 @@ $url = $isMypage ? url('mypage/register') : url('register');
             </td>
          </tr>
          
-         
+
+
+	
          
          
          <tr class="form-group">
              <th><label class="control-label">郵便番号</label><em>必須</em></th>
                <td>
-                <input type="text" class="form-control rounded-0 col-md-12{{ $errors->has('user.post_num') ? ' is-invalid' : '' }}" name="user[post_num]" value="{{ Ctm::isOld() ? old('user.post_num') : (isset($user) ? $user->post_num : '') }}" placeholder="例）1234567 ハイフンなし半角数字">
+                <input id="zipcode" type="text" class="form-control rounded-0 col-md-12{{ $errors->has('user.post_num') ? ' is-invalid' : '' }}" name="user[post_num]" value="{{ Ctm::isOld() ? old('user.post_num') : (isset($user) ? $user->post_num : '') }}" placeholder="例）1234567 ハイフンなし半角数字">
                 
                 @if ($errors->has('user.post_num'))
                     <div class="help-block text-danger">
@@ -122,7 +124,7 @@ $url = $isMypage ? url('mypage/register') : url('register');
          <tr class="form-group">
              <th><label class="control-label">都道府県</label><em>必須</em></th>
                <td>
-                <select class="form-control rounded-0 select-first col-md-6{{ $errors->has('user.prefecture') ? ' is-invalid' : '' }}" name="user[prefecture]">
+                <select id="pref" class="form-control rounded-0 select-first col-md-6{{ $errors->has('user.prefecture') ? ' is-invalid' : '' }}" name="user[prefecture]">
                     <option disabled selected>選択して下さい</option>
                     <?php
 //                        use App\Prefecture;
@@ -158,7 +160,7 @@ $url = $isMypage ? url('mypage/register') : url('register');
          <tr class="form-group">
              <th><label class="control-label">住所1（都市区）</label><em>必須</em></th>
                <td>
-                <input type="text" class="form-control rounded-0 col-md-12{{ $errors->has('user.address_1') ? ' is-invalid' : '' }}" name="user[address_1]" value="{{ Ctm::isOld() ? old('user.address_1') : (isset($user) ? $user->address_1 : '') }}" placeholder="例）小美玉市">
+                <input id="address" type="text" class="form-control rounded-0 col-md-12{{ $errors->has('user.address_1') ? ' is-invalid' : '' }}" name="user[address_1]" value="{{ Ctm::isOld() ? old('user.address_1') : (isset($user) ? $user->address_1 : '') }}" placeholder="例）小美玉市">
                 
                 @if ($errors->has('user.address_1'))
                     <div class="help-block text-danger">

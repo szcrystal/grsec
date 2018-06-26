@@ -3,31 +3,49 @@
 
 @section('content')
 
-<div id="main" class="top">
+<div id="main" class="archive">
 
-    <div class="panel panel-default">
+    <div class="panel panel-default top-cont">
 
-        <div class="panel-body">
                 {{-- @include('main.shared.main') --}}
 
-            <div class="main-list clearfix">
-            <div class="top-cont feature clear">
 
-            <div class="panel panel-default">
 				<div class="panel-heading">
-                    <h2 class="h2">
-                    @if(!count($items))
-                    検索ワード：{{ $searchStr }}の記事がありません
-                    @else
-                    検索ワード：{{ $searchStr }}
+                    <h2 class="h2 mb-3 card-header">
+                    @if($type == 'category')
+                    	{{ $cate->name }}
+                    @elseif($type == 'subcategory')
+                    	{{ $subcate->name }}
+                    @elseif($type == 'tag')
+                    	{{ $tag->name }}
+                    @elseif($type=='search')
+                        @if(!count($items))
+                        検索ワード：{{ $searchStr }}の記事がありません
+                        @else
+                        検索ワード：{{ $searchStr }}
+                        @endif
                     @endif
                     </h2>
                 </div>
                 
-                
-                @foreach($items as $item)
-                    <article class="float-left">
+                <div class="panel-body">
+                	
+                    @if($type == 'category' && isset($cate->contents))
+                        <div class="my-4">
+                        	{!! $cate->contents !!}
+                        </div>
+                    @elseif($type == 'subcategory' && isset($subcate->contents))
+                        <div class="my-4">
+                        	{!! $subcate->contents !!}
+                        </div>
+                    @elseif($type == 'tag' && isset($tag->contents))
+                        <div class="my-4">{!! $tag->contents !!}</div>
+                    
+                    @endif
 
+
+                    @foreach($items as $item)
+                        <article class="float-left">
                             <a href="{{ url('/item/'.$item->id) }}">
                                 <img src="{{ Storage::url($item->main_img) }}" alt="{{ $item->title }}">
                             </a>
@@ -35,24 +53,15 @@
                             <div class="meta">
                                 <h3><a href="{{ url('/item/'.$item->id) }}">{{ $item->title }}</a></h3>
                                 <p></p>
+                                <div class="text-right text-big">¥{{ number_format(Ctm::getPriceWithTax($item->price)) }}</div>
                             </div>
-
-                            <span><i class="fa fa-caret-right" aria-hidden="true"></i></span>
-                        
-                    </article>
-                @endforeach
+                        </article>
+                    @endforeach
                 
-                
-                
-                
-            </div>
+                </div>
             
-            </div>
-            </div>
+        {{ $items->links() }}
             
-            
-
-	</div>
 </div>
 </div>
 
