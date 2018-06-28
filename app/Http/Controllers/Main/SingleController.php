@@ -57,12 +57,13 @@ class SingleController extends Controller
             return $obj->tag_id;
         })->all();
         
-        $tags = $this->tag->find($tagRels);
+        $tags = $this->tag->whereIn('id', $tagRels)->orderBy('created_at', 'desc')->get();
         
         //サブ画像
         $imgsPri = $this->itemImg->where(['item_id'=>$id, 'type'=>1])->orderBy('number', 'asc')->get();
         //商品画像
         $imgsSec = $this->itemImg->where(['item_id'=>$id, 'type'=>2])->orderBy('number', 'asc')->get();
+        
         
         //お気に入り確認
         $isFav = 0;
@@ -75,7 +76,7 @@ class SingleController extends Controller
         //count
         $item->increment('view_count');
         
-        //Cache
+        //Cache 最近見た
         $cacheIds = array();
         $cacheItems = null;
         
@@ -93,7 +94,7 @@ class SingleController extends Controller
         	}      
         }
 
-        cache(['cacheIds'=>$cacheIds], 360);
+        cache(['cacheIds'=>$cacheIds], env('CACHE_TIME', 360));
         
 //        print_r(cache('cacheIds'));
 //        exit;

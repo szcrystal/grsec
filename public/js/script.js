@@ -110,22 +110,25 @@ var exe = (function() {
                     else {
                     	$('.s-form > div').slideToggle(220);
                     }
+                    
+                    
                 });
            	}
             else {
                 $('.btn-s').on('click', function(){
                     if($input.is(':hidden')) {
                         $input.show().animate({width:'16em', opacity:1}, 300, 'linear', function(){
-                    
+                    		//$(this).queue([]).stop();
                         });
                     }
                     else {
                         $input.animate({width:0, opacity:0}, 300, 'linear', function(){
-                    
-                        }).fadeOut(600);
+                    		//$(this).queue([]).stop();
+                        }).fadeOut(200);
                     
                     }
                 });
+                
             }
         },
         
@@ -166,7 +169,7 @@ var exe = (function() {
         },
         
         
-        posts: function() {
+        postNumSet: function() {
         	$('#zipcode').jpostal({
                 postcode : [
                     '#zipcode'
@@ -191,12 +194,12 @@ var exe = (function() {
         
         
         dropDown: function() {
-        	var $mainNav = $('.main-navi li');
+        	var $mainNav = $('.main-navi > ul > li');
             
         	//var len = $('.state-nav li').length;
             var num = 0;
            
-            var speed = 200;
+            var speed = 180;
            	var easing = 'linear';
            
            	var hideSpeed = this.isSpTab('sp') ? 150 : 0;
@@ -205,33 +208,38 @@ var exe = (function() {
            	//$('.menu-dropdown').eq(1).slideToggle(200);
             
             $mainNav.on('click', function(e){
+            	//console.log('bbb');
 				
                 var $clickThis = $(this);
-                var $dropMenu = $('.drop-menu');
+                var $dropMenu = $('.drops');
                 
-                var n = $(this).index();
+                var n = $clickThis.index();
                 
                 $(e.target).addClass('nav-active');
                 
                 if($dropMenu.eq(n).is(':visible')) {
                 	
-                    $clickThis.removeClass('nav-active');
-                    
-                	$dropMenu.fadeOut(speed, easing, function() {
-                        $(this).queue([]).stop();
-                    });
+                    if(! $(e.target).hasClass('drops') ) {
+                        $clickThis.removeClass('nav-active');
+                        
+                        $dropMenu.fadeOut(speed, easing, function() {
+                            $(this).queue([]).stop();
+                        });
+                    }
                 }
                 else {
-                
-                   	$dropMenu.fadeOut(hideSpeed, function(){
+                	//console.log('ccc');
+
+                    $dropMenu.fadeOut(hideSpeed, function(){
                         $mainNav.removeClass('nav-active');
                         $clickThis.addClass('nav-active');
                         
-                        $clickThis.children('.drop-menu').fadeIn(speed, easing, function() {
+                        $clickThis.children('.drops').slideDown(speed, easing, function() {
                             $(this).queue([]).stop();
                         });
                     
                     });
+                    
                 }
                 
                 //return false;
@@ -239,13 +247,15 @@ var exe = (function() {
             });
             
             $('body').on('click', function(e){
-            	var $dropMenu = $('.drop-menu');
+            	var $dropMenu = $('.drops');
                 
-                if( ! $(e.target).parents().hasClass('.main-navi') ) {
-                	console.log("aaa");
+                if( ! $(e.target).hasClass('drops') ) {
+                	
+                    //console.log("aaa");
+                    
                     if($dropMenu.is(':visible')) {
                         
-                        //$clickThis.removeClass('nav-active');
+                        $('.main-navi li').removeClass('nav-active');
                         
                         $dropMenu.fadeOut(speed, easing, function() {
                             $(this).queue([]).stop();
@@ -260,7 +270,7 @@ var exe = (function() {
             	'mouseover': function(e){
 				
                     var $clickThis = $(this);
-                    var $dropMenu = $('.drop-menu');
+                    var $dropMenu = $('.drops');
                     
                     var n = $(this).index();
                     
@@ -280,7 +290,7 @@ var exe = (function() {
                             $mainNav.removeClass('nav-active');
                             $clickThis.addClass('nav-active');
                             
-                            $clickThis.children('.drop-menu').fadeIn(speed, easing, function() {
+                            $clickThis.children('.drops').fadeIn(speed, easing, function() {
                                 $(this).queue([]).stop();
                             });
                         
@@ -291,7 +301,7 @@ var exe = (function() {
                 'mouseout': function(e){
 				
                     var $clickThis = $(this);
-                    var $dropMenu = $('.drop-menu');
+                    var $dropMenu = $('.drops');
                     
                     var n = $(this).index();
                     
@@ -311,7 +321,7 @@ var exe = (function() {
                             $mainNav.removeClass('nav-active');
                             $clickThis.addClass('nav-active');
                             
-                            $clickThis.children('.drop-menu').fadeIn(speed, easing, function() {
+                            $clickThis.children('.drops').fadeIn(speed, easing, function() {
                                 $(this).queue([]).stop();
                             });
                         
@@ -498,7 +508,7 @@ $(function(e){ //ready
     exe.outReceive();
     exe.addFavorite();
   
-  	exe.posts();
+  	exe.postNumSet();
 });
 
 

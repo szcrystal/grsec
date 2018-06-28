@@ -154,7 +154,7 @@
          <tr class="form-group">
              <th><label class="control-label">郵便番号</label><em>必須</em></th>
                <td>
-                <input id="zipcode" type="text" class="form-control col-md-12{{ $errors->has('user.post_num') ? ' is-invalid' : '' }}" name="user[post_num]" value="{{ Ctm::isOld() ? old('user.post_num') : (Session::has('all.data.user') ? session('all.data.user.post_num') : '') }}" placeholder="例）1234567 ハイフンなし半角数字">
+                <input id="zipcode" type="text" class="form-control col-md-6{{ $errors->has('user.post_num') ? ' is-invalid' : '' }}" name="user[post_num]" value="{{ Ctm::isOld() ? old('user.post_num') : (Session::has('all.data.user') ? session('all.data.user.post_num') : '') }}" placeholder="例）1234567 ハイフンなし半角数字">
                 
                 @if ($errors->has('user.post_num'))
                     <div class="help-block text-danger">
@@ -504,7 +504,7 @@
                     <tr class="form-group">
                          <th><label class="control-label">配送先氏名</label><em>必須</em></th>
                            <td>
-                            <input class="form-control col-md-12{{ $errors->has('receiver.name') ? ' is-invalid' : '' }}" name="receiver[name]" value="{{ Ctm::isOld() ? old('receiver.name') : (Session::has('all.data.receiver') ? session('all.data.receiver.name') : '') }}" placeholder="例）山田太郎">
+                            <input type="text" class="form-control col-md-12{{ $errors->has('receiver.name') ? ' is-invalid' : '' }}" name="receiver[name]" value="{{ Ctm::isOld() ? old('receiver.name') : (Session::has('all.data.receiver') ? session('all.data.receiver.name') : '') }}" placeholder="例）山田太郎">
                            
                             @if ($errors->has('receiver.name'))
                                 <div class="help-block text-danger receiver-error">
@@ -548,7 +548,7 @@
                      <tr class="form-group">
                          <th><label class="control-label">配送先郵便番号</label><em>必須</em></th>
                            <td>
-                            <input id="zipcode_2" type="text" class="form-control col-md-12{{ $errors->has('receiver.post_num') ? ' is-invalid' : '' }}" name="receiver[post_num]" value="{{ Ctm::isOld() ? old('receiver.post_num') : (Session::has('all.data.receiver') ? session('all.data.receiver.post_num') : '') }}" placeholder="例）1234567 ハイフンなし半角数字">
+                            <input id="zipcode_2" type="text" class="form-control col-md-6{{ $errors->has('receiver.post_num') ? ' is-invalid' : '' }}" name="receiver[post_num]" value="{{ Ctm::isOld() ? old('receiver.post_num') : (Session::has('all.data.receiver') ? session('all.data.receiver.post_num') : '') }}" placeholder="例）1234567 ハイフンなし半角数字">
                             
                             @if ($errors->has('receiver.post_num'))
                                 <div class="help-block help-block text-danger receiver-error">

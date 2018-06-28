@@ -16,6 +16,7 @@ class CreateCategoriesTable extends Migration
         Schema::create('categories', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->nullable()->default(NULL);
+            $table->string('link_name')->nullable()->default(NULL);
             $table->string('slug')->unique()->nullable()->default(NULL);
             
             $table->string('meta_title')->nullable()->default(NULL);
@@ -28,7 +29,7 @@ class CreateCategoriesTable extends Migration
         });
         
         DB::table('categories')->insert([
-                    'name' => '植木・庭木',
+                    'name' => '植木・庭木を選ぶ（シンボル）',
                     'slug' => 'ueki-niwaki',
                     'created_at' => date('Y-m-d H:i:s', time()),
                     'updated_at' => date('Y-m-d H:i:s', time()),

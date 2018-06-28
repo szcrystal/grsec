@@ -8,6 +8,7 @@ class Category extends Model
 {
     protected $fillable = [ //varchar:文字数
         'name',
+        'link_name',
         'slug',
         
         'meta_title',

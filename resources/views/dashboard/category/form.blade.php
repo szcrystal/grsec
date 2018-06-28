@@ -42,6 +42,10 @@
         
     <div class="col-lg-12">
         <form class="form-horizontal" role="form" method="POST" action="/dashboard/categories" enctype="multipart/form-data">
+        	
+            <div class="form-group mt-5">
+                <button type="submit" class="btn btn-primary btn-block w-btn w-25 mx-auto">更　新</button>
+        	</div>
 
             {{ csrf_field() }}
             
@@ -58,6 +62,19 @@
                 <div class="text-danger">
                     <span class="fa fa-exclamation form-control-feedback"></span>
                     <span>{{ $errors->first('name') }}</span>
+                </div>
+                @endif
+            </fieldset>
+            
+            <fieldset class="form-group{{ $errors->has('link_name') ? ' has-error' : '' }}">
+                <label for="link_name" class="control-label">カテゴリーリンク名（メニュー用）</label>
+
+                    <input id="link_name" type="text" class="form-control col-md-10" name="link_name" value="{{ Ctm::isOld() ? old('link_name') : (isset($cate) ? $cate->link_name : '') }}">
+
+                @if ($errors->has('link_name'))
+                <div class="text-danger">
+                    <span class="fa fa-exclamation form-control-feedback"></span>
+                    <span>{{ $errors->first('link_name') }}</span>
                 </div>
                 @endif
             </fieldset>
@@ -86,10 +103,8 @@
             @include('dashboard.shared.contents')
 
           <div class="form-group mt-5">
-            <div class="">
                 <button type="submit" class="btn btn-primary btn-block w-btn w-25 mx-auto">更　新</button>
-            </div>
-        </div>
+        	</div>
 
         </form>
 

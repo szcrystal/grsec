@@ -12,16 +12,11 @@
             <div class="panel-body">
                 {{-- @include('main.shared.main') --}}
 
-				<div class="main-list clearfix">
-
-
-
-<div class="top-cont">
 
 <h3 class="mb-3 card-header">購入履歴一覧</h3>
 @if(! count($sales) > 0)
 <div>
-	<p>まだ購入した商品がありません。</p>
+	<p style="min-height: 300px;">まだ購入した商品がありません。</p>
 </div>
 @else
 <div class="table-responsive table-custom">
@@ -114,8 +109,7 @@
 <i class="fas fa-angle-double-left"></i> マイページに戻る
 </a>                  
 
-</div>
-</div>
+
 </div>
 </div>
 </div>

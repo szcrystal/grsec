@@ -12,11 +12,11 @@
         <div class="panel-body">
             {{-- @include('main.shared.main') --}}
 
-            <div class="main-list clearfix">
 <?php
     use App\User;
     use App\Category;
     use App\Tag;
+    use App\TagRelation;
 
     $path = Request::path();
     $path = explode('/', $path);
@@ -44,7 +44,23 @@
                 
                 <div class="meta">
                     <h3><a href="{{ url('/item/'.$item->id) }}">{{ $item->title }}</a></h3>
-                    <p>{{ $item->catchcopy }}</p>
+                    {{-- <p>{{ $item->catchcopy }}</p> --}}
+                    <div class="tags">
+                    	<?php
+                        	$tagIds = TagRelation::where('item_id',$item->id)->get()->map(function($obj){
+                        		return $obj->tag_id;
+                        	})->all();
+                            
+                            $tags = Tag::find($tagIds);
+                        ?>
+                        @foreach($tags as $tag)
+                        	<span class="rank-tag">
+                            <i class="fa fa-tag" aria-hidden="true"></i>
+                            <a href="{{ url('tag/' . $tag->slug) }}">{{ $tag->name }}</a>
+                            </span>
+                        @endforeach
+                    	
+                    </div>
                     <div class="text-right text-big">¥{{ number_format(Ctm::getPriceWithTax($item->price)) }}</div>
                 </div>
             </article>
@@ -64,10 +80,9 @@
 
 
 
-</div>
+	</div>
 
-            </div>
-        </div>
+    </div>
 
 </div>
 

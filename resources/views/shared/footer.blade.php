@@ -6,7 +6,9 @@
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name', 'GREEN LOCKET') }}
                 </a>
-                <p>
+                <p style="font-size: 2em;">
+                	<a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-facebook"></i></a>
                 <?php //use Ctm; ?>
                 @if(Ctm::isLocal())
                 	<a href="{{ url('shop/clear') }}">CLEAR</a>

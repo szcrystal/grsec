@@ -5,20 +5,20 @@
 
 	{{-- @include('main.shared.carousel') --}}
 
-<div id="main" class="top">
+<div id="main" class="mypage">
 
         <div class="panel panel-default">
 
             <div class="panel-body">
                 {{-- @include('main.shared.main') --}}
 
-				<div class="main-list clearfix">
 
-
-
-<div class="">
 
 <h3 class="mb-3 card-header">お気に入り一覧</h3>
+@if(! count($items) > 0)
+<p style="min-height: 300px;">まだお気に入りに登録された商品がありません。</p>
+
+@else
 <div class="table-responsive table-custom">
     <table class="table table-bordered bg-white"> {{-- table-striped  --}}
         <thead>
@@ -76,13 +76,13 @@
 <div>
 	{{ $items->links() }}
 </div>
+@endif
 
 <a href="{{ url('mypage') }}" class="btn border-secondary bg-white mt-5">
 <i class="fas fa-angle-double-left"></i> マイページに戻る
 </a>                  
 
-</div>
-</div>
+
 </div>
 </div>
 </div>

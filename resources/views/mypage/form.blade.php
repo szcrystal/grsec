@@ -110,7 +110,7 @@ $url = $isMypage ? url('mypage/register') : url('register');
          <tr class="form-group">
              <th><label class="control-label">郵便番号</label><em>必須</em></th>
                <td>
-                <input id="zipcode" type="text" class="form-control rounded-0 col-md-12{{ $errors->has('user.post_num') ? ' is-invalid' : '' }}" name="user[post_num]" value="{{ Ctm::isOld() ? old('user.post_num') : (isset($user) ? $user->post_num : '') }}" placeholder="例）1234567 ハイフンなし半角数字">
+                <input id="zipcode" type="text" class="form-control rounded-0 col-md-6{{ $errors->has('user.post_num') ? ' is-invalid' : '' }}" name="user[post_num]" value="{{ Ctm::isOld() ? old('user.post_num') : (isset($user) ? $user->post_num : '') }}" placeholder="例）1234567 ハイフンなし半角数字">
                 
                 @if ($errors->has('user.post_num'))
                     <div class="help-block text-danger">

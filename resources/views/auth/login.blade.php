@@ -1,13 +1,15 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div style="min-height:800px;" class="col-md-8 my-5 pb-5">
-            <div class="card">
-                <div class="card-header">ログイン</div>
 
-                <div class="card-body">
+<div id="main" class="container clearfix login py-5 mb-5">
+     
+            
+            <div class="float-left w-50">
+                <h4 class="card-header">会員の方</h4>
+
+                <div class="card-body pl-0 pr-2">
+                	<p>メールアドレスとパスワードを入力してログインして下さい。</p>
                 
                 @if (count($errors) > 0)
                     <div class="alert alert-danger">
@@ -28,10 +30,10 @@
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
 
-                        <div class="form-group row">
-                            <label for="email" class="col-sm-3 col-form-label text-md-right">メールアドレス</label>
+                        <fieldset class="form-group row">
+                            <label for="email" class="col-sm-4 col-form-label text-md-right">メールアドレス</label>
 
-                            <div class="col-md-8">
+                            <div class="col-md-7">
                                 <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" autofocus>
 
                                 @if ($errors->has('email'))
@@ -41,12 +43,12 @@
                                     </span>
                                 @endif
                             </div>
-                        </div>
+                        </fieldset>
 
-                        <div class="form-group row">
-                            <label for="password" class="col-md-3 col-form-label text-md-right">パスワード</label>
+                        <fieldset class="form-group row">
+                            <label for="password" class="col-md-4 col-form-label text-md-right">パスワード</label>
 
-                            <div class="col-md-8">
+                            <div class="col-md-7">
                                 <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password">
 
                                 @if ($errors->has('password'))
@@ -56,25 +58,20 @@
                                     </span>
                                 @endif
                             </div>
-                        </div>
+                        </fieldset>
 
-                        <div class="form-group row">
-                            <div class="col-md-7 offset-md-3">
+                        <fieldset class="form-group row">
+                            <div class="col-md-7 offset-md-4">
                                 <div class="checkbox">
                                     <label>
                                         <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> ログイン状態を保存する
                                     </label>
                                 </div>
                             </div>
-                        </div>
+                        </fieldset>
                         
-                        <div class="text-right">
-                        	<a class="btn btn-link" href="{{ route('password.request') }}">
-                                パスワードを忘れた方 <i class="fas fa-angle-double-right"></i>
-                            </a>
-                        </div>
 
-                        <div class="form-group mt-3">
+                        <fieldset class="form-group mt-3">
                             <div class="">
                             	@if(Request::has('to_cart'))
                              		<input type="hidden" name="to_cart" value="1">
@@ -82,17 +79,38 @@
                               
                               	<input type="hidden" name="previous" value="{{ session('_previous.url') }}">   
                                  
-                                <button type="submit" class="col-md-6 btn btn-custom btn-block m-auto">
+                                <button type="submit" class="col-md-6 btn btn-custom btn-block m-auto rounded-0">
                                     ログイン
                                 </button>
 
                                 
                             </div>
+                        </fieldset>
+                        
+                        <div class="text-right pt-2">
+                        	<a class="" href="{{ route('password.request') }}">
+                                パスワードをお忘れの方 <i class="fas fa-angle-double-right"></i>
+                            </a>
                         </div>
                     </form>
+                    
+            	</div>
+            </div>
+            
+            
+            <div class="float-left w-50 pl-5">
+                <h4 class="card-header">会員登録がお済みでない方</h4>
+
+                <div class="card-body pl-3 pr-0">
+                	<p class="mb-5">初めての方はこちらより会員登録をして下さい。<br>あらかじめ会員登録を済ませておくと、お買い物が便利になります。</p>
+ 
+                    <a href="{{ url('register') }}" class="col-md-6 btn btn-custom rounded-0 btn-block m-auto">新規会員登録</a>
                 </div>
             </div>
-        </div>
-    </div>
+            
+            
+            
+	</div>
 </div>
+
 @endsection

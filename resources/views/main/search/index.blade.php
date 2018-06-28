@@ -15,7 +15,7 @@
                     @if($type == 'category')
                     	{{ $cate->name }}
                     @elseif($type == 'subcategory')
-                    	{{ $subcate->name }}
+                    	<small class="d-block pb-2">{{ $cate->name }}</small>{{ $subcate->name }}
                     @elseif($type == 'tag')
                     	{{ $tag->name }}
                     @elseif($type=='search')

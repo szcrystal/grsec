@@ -8,19 +8,18 @@
                 $cates = Category::all();
             ?>
 
-			<div class="menu-dropdown-wrap">
-				<div class="main-navi">
+
+            <div class="main-navi">
     					
             <ul class="clearfix">
             
             @foreach($cates as $cate)
                 <li class="">
                     
-                    <span>{{ $cate->name }}<i class="fa fa-caret-down" aria-hidden="true"></i></span>
+                    <span>{!! str_replace('/', "<br>", $cate->link_name) !!} <i class="fa fa-caret-down" aria-hidden="true"></i></span>
                     
-                    
-                    
-                    <section class="drop-menu clearfix">
+
+                    <section class="drops clearfix">
                     	
                         <div class="float-left clearfix">
                         	<h3><a href="{{ url('category/' . $cate->slug) }}">
@@ -61,11 +60,44 @@
                     </section>
                 </li>
             @endforeach
+            
+            	<li class="">
+                    
+                    <span>ページ<i class="fa fa-caret-down" aria-hidden="true"></i></span>
+                    
+
+                    <section class="drops clearfix">
+                    	
+                        <div class="float-left clearfix">
+                        	<h3><a href="#">
+                                    初めての方へ <i class="fas fa-angle-double-right"></i>
+                                </a></h3>
+                            <div class="float-left">
+                                
+                                <p>・・・</p>
+                                
+                            </div>
+                        
+                            <ul class="float-left"> 
+                                <li><a href="{{ url('#') }}">・・ <i class="fas fa-angle-double-right"></i></a></li>
+                                <li><a href="{{ url('#') }}">・・ <i class="fas fa-angle-double-right"></i></a></li>
+                                                  
+                            </ul>
+                        </div>
+                        
+                        <div class="clearfix float-right">
+                            
+                            <h3></h3>
+                                
+                        </div>
+
+                    </section>
+                </li>
              
             </ul>
             
             </div>
-            </div>
+
             
             
             

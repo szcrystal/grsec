@@ -7,11 +7,11 @@ use App\User;
 
 ?>
 
-    <div class="single">
+    <div id="main" class="single">
 		
         <div class="head-frame clearfix">
             
-            <div class="float-left col-md-7">
+            <div class="float-left col-md-7 pr-3">
                 @if($item -> main_img)
                 <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" data-interval="7500">
                       <ol class="carousel-indicators">
@@ -41,11 +41,11 @@ use App\User;
                       </div>
                       
                       <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="carousel-control-prev-icon" aria-hidden="true"><i class="fa fa-angle-left"></i></span>
                         <span class="sr-only">Previous</span>
                       </a>
                       <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="carousel-control-next-icon" aria-hidden="true"><i class="fa fa-angle-right"></i></span>
                         <span class="sr-only">Next</span>
                       </a>
                 </div>
@@ -69,7 +69,7 @@ use App\User;
                    ?>      
                     
                  	<div class="price-meta">
-                  	   価格 {{ number_format(Ctm::getPriceWithTax($item->price)) }}円　(税込)
+                  	   価格: {{ number_format(Ctm::getPriceWithTax($item->price)) }}円　(税込)
                     </div>
                     
                     @if(env('APP_ENV') != 'trial') 
@@ -105,62 +105,54 @@ use App\User;
                   
                   	<div>
                   	@if($item->stock > 0)
-                  	
-                   		   @if(env('APP_ENV') == 'trial')   
-                            <form method="post" action="{{ url('cart/form') }}">
-                                {{ csrf_field() }}
-                                       
-                                <input type="hidden" name="item_id" value="{{ $item->id }}">      
-                                <input type="hidden" name="price" value="{{ $item->price }}">
-                                <input type="hidden" name="tax" value="{{ $tax }}">      
-                                <input type="hidden" name="count" value="1">           
-                                <button type="submit" class="btn btn-warning">カートに入れる</button>
-                           </form>  
-                        @else
-                               <form method="post" action="{{ url('shop/cart') }}">
-                                {{ csrf_field() }}
+                    	
+                           <form method="post" action="{{ url('shop/cart') }}">
+                            {{ csrf_field() }}
+                            
+                            <fieldset class="mb-4 form-group">
+                                <label>数量</label>
+                                @if($item->stock_show)
+                                    <span><b>（在庫数：{{ $item->stock }}）</b></span>
+                                @endif
                                 
-                                <fieldset class="mb-4 form-group">
-                                    <label>数量</label>
-                                    <select class="form-control col-md-6{{ $errors->has('item_count') ? ' is-invalid' : '' }}" name="item_count">
-                                        <option disabled selected>選択して下さい</option>
-                                            @for($i=1; $i <= $item->stock; $i++)
-                                                <?php
-                                                    $selected = '';
-                                                    if(Ctm::isOld()) {
-                                                        if(old('item_count') == $i)
-                                                            $selected = ' selected';
+                                <select class="form-control col-md-6{{ $errors->has('item_count') ? ' is-invalid' : '' }}" name="item_count">
+                                    <option disabled selected>選択して下さい</option>
+                                        @for($i=1; $i <= $item->stock; $i++)
+                                            <?php
+                                                $selected = '';
+                                                if(Ctm::isOld()) {
+                                                    if(old('item_count') == $i)
+                                                        $selected = ' selected';
+                                                }
+                                                else {
+                                                    if($i == 1) {
+                                                        $selected = ' selected';
                                                     }
-                                                    else {
-                                                        if($i == 1) {
-                                                            $selected = ' selected';
-                                                        }
-                                                    }
-                                                ?>
-                                                <option value="{{ $i }}"{{ $selected }}>{{ $i }}</option>
-                                            @endfor
-                                    </select>
-                                    <span class="text-warning"></span>
-                                    
-                                    @if ($errors->has('item_count'))
-                                        <div class="help-block text-danger">
-                                            <span class="fa fa-exclamation form-control-feedback"></span>
-                                            <span>{{ $errors->first('item_count') }}</span>
-                                        </div>
-                                    @endif
-                                    
-                                </fieldset>
+                                                }
+                                            ?>
+                                            <option value="{{ $i }}"{{ $selected }}>{{ $i }}</option>
+                                        @endfor
+                                </select>
+                                <span class="text-warning"></span>
                                 
-                                <input type="hidden" name="from_item" value="1">
-                                <input type="hidden" name="item_id" value="{{ $item->id }}">
-                                <input type="hidden" name="uri" value="{{ Request::path() }}">     
-                                {{--
-                                <input type="hidden" name="item_price" value="{{ $item->price }}">
-                                <input type="hidden" name="tax" value="{{ $tax }}"> 
-                                --}}     
-                                <button type="submit" class="btn btn-custom px-5">カートに入れる</button>
-                           </form>  
-                       @endif                            
+                                @if ($errors->has('item_count'))
+                                    <div class="help-block text-danger">
+                                        <span class="fa fa-exclamation form-control-feedback"></span>
+                                        <span>{{ $errors->first('item_count') }}</span>
+                                    </div>
+                                @endif
+                                
+                            </fieldset>
+                            
+                            <input type="hidden" name="from_item" value="1">
+                            <input type="hidden" name="item_id" value="{{ $item->id }}">
+                            <input type="hidden" name="uri" value="{{ Request::path() }}">     
+                            {{--
+                            <input type="hidden" name="item_price" value="{{ $item->price }}">
+                            <input type="hidden" name="tax" value="{{ $tax }}"> 
+                            --}}     
+                            <button type="submit" class="btn btn-custom px-5">カートに入れる</button>
+                       </form>  
                 	
                     @else
                     	<span class="text-warning text-big">在庫がありません</span>

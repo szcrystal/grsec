@@ -168,8 +168,8 @@
 </div> 
 
 
-<div class="float-right col-md-4">
-<h5 class="mb-4">&nbsp;</h5>
+<div class="float-right col-md-4 mt-2">
+<h5 class="">&nbsp;</h5>
 <div class="table-responsive table-custom">
     <table class="table border table-borderd bg-white">
         <col class="w-50"></col>
@@ -278,7 +278,7 @@
    <button class="btn btn-block btn-custom col-md-4 mb-4 mx-auto py-2" type="submit" name="regist_off" value="1">注文する</button>                 
 </form>
 
-<a href="{{ url('shop/form') }}" class="btn border border-secondary bg-white"><i class="fas fa-angle-double-left"></i> お客様情報の入力に戻る</a>
+<a href="{{ url('shop/form') }}" class="btn border border-secondary bg-white mt-5"><i class="fas fa-angle-double-left"></i> お客様情報の入力に戻る</a>
 </div>
 
 
