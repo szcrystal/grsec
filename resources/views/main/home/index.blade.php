@@ -38,9 +38,12 @@
     	<div class="clearfix">
     	@foreach($items as $item)
             <article class="main-atcl">
-                <a href="{{ url('/item/'.$item->id) }}">
+                
+                	<div class="img-box">
+                    <a href="{{ url('/item/'.$item->id) }}">
                     <img src="{{ Storage::url($item->main_img) }}" alt="{{ $item->title }}">
-                </a>
+                    </a>
+                	</div>
                 
                 <div class="meta">
                     <h3><a href="{{ url('/item/'.$item->id) }}">{{ $item->title }}</a></h3>
@@ -63,6 +66,7 @@
                     </div>
                     <div class="text-right text-big">¥{{ number_format(Ctm::getPriceWithTax($item->price)) }}</div>
                 </div>
+                
             </article>
     	@endforeach
      	</div> 

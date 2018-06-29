@@ -579,8 +579,14 @@ body {
 	margin-bottom: 1.2em;
 	min-height: 23em;
 }
+.top .img-box {
+	width: 100%;
+    height: 270px;
+    overflow: hidden;
+}
 .top .main-atcl {
 	width: 24.0%;
+    height: 150px;
     margin-right: 1.2%;
 	//border: 1px solid red;
 }
@@ -610,6 +616,7 @@ body {
 	margin: 0;
 	padding: 0;
 }
+
 .main-atcl .entry-meta {
 	margin: 0 0 0.5em;
 	padding-bottom: 0.5em;
@@ -620,7 +627,7 @@ body {
 	margin-right: 0.5em;
 }
 .main-atcl img {
-	border-radius: 3px;
+	border-radius: 1px;
 }
 .main-atcl .shop-link {
 	text-align: right;
@@ -677,7 +684,7 @@ body {
 }
 .carousel-indicators li {
 	background: #ddd;
-    height: 0.3em;
+    height: 0.4em;
     cursor: pointer;
 }
 .carousel-indicators li.active {
@@ -703,6 +710,12 @@ body {
 .carousel-control-next-icon .fa {
 	color: #fff;
     opacity: 1;
+}
+
+.carousel-item {
+	height: 800px;
+    overflow: hidden;
+    //border: 1px solid red;
 }
 
 .single .head-frame h2 {
@@ -749,20 +762,21 @@ body {
 	border-radius: 0.3em;
     border: 1px solid #999/*#E2D2C8*/;
     cursor: pointer;
+    font-size: 0.9em;
 }
 .main-navigation .rank-tag {
 	background: mintcream/*#F7EBE4*/;/*#F7F1E4*/
 }
 
-.rank-tag:hover {
-	opacity: 0.65;
-}
+/*.rank-tag:hover {*/
+/*	opacity: 0.65;*/
+/*}*/
 .rank-tag a {
 	color: #4a4a4a !important;
     text-decoration: none;
 }
 .rank-tag .fa {
-	font-size: 0.9em;
+	font-size: 0.85em;
 	margin-right: 0.1em;
     color: #aaa;
 }
