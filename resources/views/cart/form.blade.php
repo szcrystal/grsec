@@ -675,7 +675,7 @@
                          	@else
                                 <input type="radio" name="pay_method" class="payMethodRadio" value="{{ $method->id }}"{{ $checked }}>{{ $method->name }}
                             @endif
-                            </label>
+                        </label>
                         
                      @endforeach
                     

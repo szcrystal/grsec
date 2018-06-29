@@ -489,8 +489,14 @@ class CartController extends Controller
         //配送区分：下草大のid
         $sitakusaBgId = 2;
         
+        //配送区分：コニファー小のid
+        $coniferSmId = 3;
+        //配送区分：コニファー大のid
+        $coniferBgId = 4;
+        
         $isOnceItem = array();
         $sitakusaItem = array();
+        $coniferItem = array();
         $dgIds = array();
         
 
@@ -506,6 +512,9 @@ class CartController extends Controller
                 else { //同梱包可能なものは別配列へ入れて下記へ
                     if($item->dg_id == $sitakusaSmId || $item->dg_id == $sitakusaBgId) { //下草の時 下草用の配列に入れる　下草だけ特別なので別計算で
                         $sitakusaItem[] = $item;
+                    }
+                    elseif($item->dg_id == $coniferSmId || $item->dg_id == $coniferBgId) { //コニファーの時 コニファー用の配列に入れる　コニファーだけ特別なので別計算で
+                    	$coniferItem[] = $item;
                     }
                     else {
                         $isOnceItem[] = $item;
@@ -640,6 +649,59 @@ class CartController extends Controller
                     }
                 }
             }
+        }
+        
+        
+        //コニファーの時 コニファーは大商品が含まれているかどうかを確認する必要があるので　大or小を判別できればあとは通常計算で ========
+        if(count($coniferItem) > 0) {
+        	$count = 0;
+            $factor = 0;
+            
+            $isBg = 0;
+            
+            foreach($coniferItem as $ioi) {
+            	if($ioi->dg_id == $coniferBgId) {
+                	$isBg = 1;
+                    break;
+                }
+            }
+        
+        	//コニファーの容量と送料を取得
+            if($isBg) { //コニファー大の時
+            	$coniferCapa = $this->dg->find($coniferBgId)->capacity;
+                $coniFee = $this->dgRel->where(['dg_id'=>$coniferBgId, 'pref_id'=>$prefId])->first()->fee;
+            }
+            else { //コニファー小の時
+            	$coniferCapa = $this->dg->find($coniferSmId)->capacity;
+                $coniFee = $this->dgRel->where(['dg_id'=>$coniferSmId, 'pref_id'=>$prefId])->first()->fee;
+            }
+            
+ 
+            //下草商品の係数の合計を算出
+        	foreach($coniferItem as $ioi) {	
+                $count += $ioi->count;
+                $factor += $ioi->factor * $ioi->count;   
+        	}
+            
+            //余りと割り算の解を計算
+            $amari = $factor % $coniferCapa;
+            $answer = $factor / $coniferCapa;
+            
+            //余りと割算の答えがあれば、あとは普通の計算と同じ
+            if($amari > 0) { //割り切れない時
+                if($answer <= 1) {
+                    $deliFee += $coniFee;
+                }
+                else {
+                    $answer = ceil($answer); //切り上げ
+                    $deliFee += $coniFee * $answer;
+                }
+            }
+            else { //割り切れる時
+                $deliFee += $coniFee * $answer;
+            }
+        
+        
         }
         
          

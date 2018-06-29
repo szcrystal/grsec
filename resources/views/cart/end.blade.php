@@ -20,13 +20,21 @@
                 	
                  <?php //print_r($data); ?>   
 
-                    <div class="clearfix contents">
+                    <div class="clearfix contents text-center">
                     	<?php
                      	   	$pmName = $pmModel->find($pm)->name; 
-                        	$thankStr = "お買い上げ、ありがとうございます。";
+                        	$thankStr = "お買い上げ、ありがとうございます。<br>ご注文が完了致しました。";
                         ?>
+                        
+                        お買い上げ、ありがとうございます。<br>ご注文が完了致しました。<br>
+                        
+                        @if(isset($data['order_number']))
+                        	ご注文番号：[ {{ $data['order_number'] }} ] <br>
+                        @endif
+                        
                      	
-
+					{{--
+                        
                         @if($pm ==1)
                         	@if($data['result'])
                          		{{ $thankStr }} <br>
@@ -70,10 +78,12 @@
                         
                         @else
                       		{{ $pmName }}によりお買い物が完了致しました。
-                        @endif  
+                        @endif
+                    
+                    --}}
                         
                         
-                        <div class="text-center">
+                        <div class="text-center mt-5 pb-3">
                         	<a href="{{ url('/') }}">HOMEへ</a>   
                         </div>    
                         

@@ -248,13 +248,32 @@ use App\User;
                 		</table>
                     </div>
 
+
+
+					
+
+                    <div class="mt-4 floar">
+                    	<h4>あなたにおすすめの商品</h4>
+                        @if(count($recommends) > 0)
+                        	<ul class="clearfix">
+                                @foreach($recommends as $recommend)
+                                    <li class="">
+                                        <a href="{{ url('item/'. $recommend->id) }}">         
+                                        	<img src="{{ Storage::url($recommend->main_img) }}" class="img-fluid">
+                                        	<p>{{ $recommend->title }}</p>
+                                        </a>
+                                    </li>         
+                                @endforeach      
+                            </ul> 
+                        @endif
+                    </div>
                     
-                    <div class="mt-4">
+                    <div class="mt-4 floar">
                     	@if(isset($cacheItems))
                     	<h4>最近見た商品</h4>
                     	<ul class="clearfix">
                      		@foreach($cacheItems as $cacheItem)
-                       			<li class="float-left w-25 mr-2">
+                       			<li>
                           			<a href="{{ url('item/'. $cacheItem->id) }}">         
                           			<img src="{{ Storage::url($cacheItem->main_img) }}" class="img-fluid">
                                     <p>{{ $cacheItem->title }}</p>
@@ -265,10 +284,7 @@ use App\User;
                       	@endif     
                     </div>
                     
-                    <div class="mt-4">
-                    	<h4>あなたにおすすめの商品</h4>
-                        
-                    </div>
+                    
 					
 
 
