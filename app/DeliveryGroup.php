@@ -12,5 +12,6 @@ class DeliveryGroup extends Model
         'capacity',
         'factor',
         'is_time',
+        'time_table',
     ];
 }

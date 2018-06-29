@@ -57,11 +57,12 @@ class ItemController extends Controller
         $itemObjs = Item::orderBy('id', 'desc')->paginate($this->perPage);
         
         $cates= $this->category;
+        $dgs = $this->dg;
         
         
         //$status = $this->articlePost->where(['base_id'=>15])->first()->open_date;
         
-        return view('dashboard.item.index', ['itemObjs'=>$itemObjs, 'cates'=>$cates,  ]);
+        return view('dashboard.item.index', ['itemObjs'=>$itemObjs, 'cates'=>$cates, 'dgs'=>$dgs]);
     }
 
     public function show($id)

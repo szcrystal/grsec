@@ -38,6 +38,8 @@ class CreateSalesTable extends Migration
             $table->boolean('deli_done')->nullable()->default(NULL);
             $table->timestamp('deli_date')->nullable()->default(NULL);
             
+            $table->string('deli_time')->nullable()->default(NULL);
+            
             $table->boolean('pay_done')->nullable()->default(NULL);
             
             $table->text('craim')->nullable()->default(NULL);

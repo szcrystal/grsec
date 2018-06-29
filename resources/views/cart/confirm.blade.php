@@ -41,7 +41,13 @@
                 
                 <td>{{ $item->count }}</td>
 
-                <td>¥{{ number_format( $item->item_total_price ) }}</td>
+                <td>
+                	<b>¥{{ number_format( $item->item_total_price ) }}</b>
+                
+                	@if(isset($item->deli_time))
+                    	<br><small class="pt-3">ご希望配送時間：</small><br>{{ $item->deli_time }}
+                    @endif
+                </td>
 
                </tr> 
              @endforeach

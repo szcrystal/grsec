@@ -66,8 +66,7 @@
                   <th>商品名</th>
                   <th>カテゴリー</th>
                   <th>金額</th>
-                  <th>説明</th>
-                  <th>ステータス</th>
+                  <th>配送区分</th>
                   <th>作成日</th>
                   <th></th>
                   <th></th>
@@ -100,19 +99,34 @@
                   <span class="no-img">No Image</span>
                   @endif
                   <td>{{ $item->title }}</td>
-                  <td>{{ $cates->find($item->cate_id)->name }}</td>
+                  <td>
+                  	@if(isset($item->cate_id))
+                    	{{ $cates->find($item->cate_id)->name }}
+                    @endif
+                	</td>
                   <td>{{ number_format($item->price) }}</td>
                   
-                  <td>{{-- $item->what_is --}}</td>
                   <td>
-                    @if($item->open_status)
-                    <span class="text-success">公開中</span>
-                    @else
-                    <span class="text-warning">未公開（保存済）</span>
+                  	@if(isset($item->dg_id))
+                  	{{ $dgs->find($item->dg_id)->name }}<br>
                     @endif
-
+                    <span class="text-info">同梱包：
+                    @if($item->is_once)
+                    	可
+					@else
+                    	不可
+                    @endif
+                    </span>
                 </td>
-                  <td><small>{{ Ctm::changeDate($item->created_at, 1) }}</small></td>
+                
+                <td>
+                  	@if($item->open_status)
+                    <span class="text-success">公開中</span><br>
+                    @else
+                    <span class="text-warning">未公開（保存済）</span><br>
+                    @endif
+                  	<small>{{ Ctm::changeDate($item->created_at, 1) }}</small>
+                </td>
                   
                   <td><a href="{{url('dashboard/items/'. $item->id)}}" class="btn btn-success btn-sm center-block">編集</a></td>
                   <td></td>
@@ -129,6 +143,8 @@
     </div><!-- /.card -->
     </div>
     </div>
+    
+    {{ $itemObjs->links() }}
 
         
 @endsection

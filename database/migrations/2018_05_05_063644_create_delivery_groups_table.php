@@ -21,6 +21,7 @@ class CreateDeliveryGroupsTable extends Migration
             $table->integer('capacity')->nullable()->default(NULL);
             $table->float('factor')->nullable()->default(NULL);
             $table->boolean('is_time')->nullable()->default(NULL);
+            $table->string('time_table')->nullable()->default(NULL);
 //            $table->string('title')->nullable()->default(NULL);
 //            $table->text('header')->nullable()->default(NULL);
 //            $table->text('footer')->nullable()->default(NULL);
@@ -44,6 +45,28 @@ class CreateDeliveryGroupsTable extends Migration
                 'name' => '下草(大)',
                 'open_status' => 1,
                 'capacity' => 40,
+                
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time()),
+            ]
+        );
+        
+        DB::table('delivery_groups')->insert(
+            [ 
+                'name' => 'モリヤコニファー（小）/低木・這い性コニファー',
+                'open_status' => 1,
+                'capacity' => 5,
+                
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time()),
+            ]
+        );
+        
+        DB::table('delivery_groups')->insert(
+            [ 
+                'name' => 'モリヤコニファー（大）/高木コニファー',
+                'open_status' => 1,
+                'capacity' => 10,
                 
                 'created_at' => date('Y-m-d H:i:s', time()),
                 'updated_at' => date('Y-m-d H:i:s', time()),

@@ -24,6 +24,7 @@ use App\Http\Controllers\Controller;
 use Ctm;
 use Mail;
 use Auth;
+use DB;
 
 class CartController extends Controller
 {
@@ -139,12 +140,25 @@ class CartController extends Controller
         $destination = isset($allData['destination']) ? 1 : 0;
         $pm = $allData['pay_method'];
         
+        $deliTime = $allData['deli_time'];
+        
         $userData = Auth::check() ? $this->user->find(Auth::id()) : $allData['user']; //session(all.data.user)
       	$receiverData = $allData['receiver']; //session('all.data.receiver');
       	
        
-       	//print_r($userData);
-		//exit;
+       	
+        //配送時間指定 itemごとにitemDataの配列内に入れる
+        if(count($allData['deli_time']) > 0) {
+            foreach($itemData as $key => $value) {
+                
+                foreach($deliTime as $dgKey => $dgTime ) {
+                    $dgId = $this->item->find($value['item_id'])->dg_id;
+                    if($dgKey == $dgId) {
+                        $itemData[$key]['deli_time'] = $dgTime;
+                    }
+                }
+            }
+        }
     
       
       	//User登録処理
@@ -292,6 +306,8 @@ class CartController extends Controller
                     'cod_fee' => 0,
                     'use_point' => 0,
                     'total_price' => $val['item_total_price'],
+                    
+                    'deli_time' => $val['deli_time'],
                     
                     'deli_done' => 0,
                     'pay_done' => 0,
@@ -453,6 +469,13 @@ class CartController extends Controller
             //ポイント計算
             $obj['point'] = ceil($val['item_total_price'] * ($obj->point_back/100)); //商品金額のみに対してのパーセント 切り上げ 切り捨て->floor()
 			$addPoint += $obj['point'];
+            
+            foreach($data['deli_time'] as $dgKey => $timeVal) {
+            	if($obj->dg_id == $dgKey) {
+                	$obj['deli_time'] = $timeVal;
+                }
+            }
+            
             
 			$itemData[] = $obj;
         }
@@ -700,8 +723,7 @@ class CartController extends Controller
             else { //割り切れる時
                 $deliFee += $coniFee * $answer;
             }
-        
-        
+          
         }
         
          
@@ -876,6 +898,7 @@ class CartController extends Controller
         
         //代引きが可能かどうかを判定してboolを渡す
         $sesItems = session('item.data');
+        
         $codCheck = 0;
         foreach($sesItems as $item) {
         	$cod = $this->item->find($item['item_id'])->cod;
@@ -884,8 +907,23 @@ class CartController extends Controller
             	break;      
           	}      
         }
+        
+        $dgGroup = array();
+        foreach($sesItems as $item) {
+        	$dgId = $this->item->find($item['item_id'])->dg_id;
+            
+            if($this->dg->find($dgId)->is_time) {
+            	$dgGroup[$dgId][] = $item['item_id'];
+            }
+            
+        }
+        
+        //$dgGroup = $this->item->groupBy('view_count')->get()->all();        
+//        print_r($dgGroup);
+//        exit;
+
      
-     	return view('cart.form', ['regist'=>$regist, 'payMethod'=>$payMethod, 'prefs'=>$prefs, 'userObj'=>$userObj, 'codCheck'=>$codCheck, 'active'=>2]);   
+     	return view('cart.form', ['regist'=>$regist, 'payMethod'=>$payMethod, 'prefs'=>$prefs, 'userObj'=>$userObj, 'codCheck'=>$codCheck, 'dgGroup'=>$dgGroup, 'active'=>2]);   
     }
     
     

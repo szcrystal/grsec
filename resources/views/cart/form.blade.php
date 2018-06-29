@@ -2,6 +2,10 @@
 
 @section('content')
 
+<?php
+use App\Item;
+use App\DeliveryGroup;
+?>
 
 	{{-- @include('main.shared.carousel') --}}
 
@@ -680,11 +684,73 @@
                      @endforeach
                     
                 </fieldset>
-                
                 </div>
+                
+                
+                @if(count($dgGroup) > 0)
+                <div class="mb-3">
+                	<h3 class="card-header mt-5">配送希望時間指定</h3>
+
+                    <fieldset class="form-group my-3 px-5 py-2{{ $errors->has('pay_method') ? ' border border-danger' : '' }}">
+                    @if ($errors->has('deli_time'))
+                        <div class="help-block text-danger mb-2">
+                            <span class="fa fa-exclamation form-control-feedback"></span>
+                            <span>{{ $errors->first('deli_time') }}</span>
+                        </div>
+                    @endif
+                    
+                    @foreach($dgGroup as $key => $val)
+						<div class="mb-3 pb-3">
+                        
+                        @if(count($dgGroup) == 1 && count($val) == 1)
+                        	
+                        @else
+                            <p class="text-small">■下記の商品につきまして、ご希望配送時間の指定ができます。</p>
+                             @foreach($val as $itemId)
+                                ・<b>{{ Item::find($itemId)->title }}</b><br>
+                             @endforeach
+                        @endif
+                         
+                        
+                        <label class="d-block mt-3 mb-3">
+                        	<?php
+                            	$timeTable = DeliveryGroup::find($key)->time_table;
+                                $timeTable = explode(",", $timeTable);
+                            ?>
+                            
+                            <input type="radio" name="deli_time[{{$key}}]" class="payMethodRadio" value="希望しない" checked><span class="mr-3">希望しない</span>
+                        	@foreach($timeTable as $table)
+                            	<?php 
+                                    $checked = '';
+                                    
+                                    if( Ctm::isOld()) {
+                                        if( old('deli_time.'.$key) == $table) {
+                                            $checked = ' checked';
+                                        }
+                                    }
+                                    elseif(Session::has('all.data.deli_time.'.$key)) {
+                                        if(session('all.data.deli_time.'.$key) == $table) {
+                                            $checked = ' checked';
+                                        }
+                                    }
+                                 ?>
+                         		<input type="radio" name="deli_time[{{$key}}]" class="payMethodRadio" value="{{ $table }}" {{ $checked }}><span class="mr-3">{{ $table }}</span>
+                         	@endforeach
+                                
+                        </label>
+                        </div>
+                        
+                     @endforeach
+                    
+                </fieldset>
+                </div>
+                @endif
+                
+                
+                
         
         <input type="hidden" name="regist" value="{{ $regist }}">
-       <button class="btn btn-block btn-custom col-md-3 mb-4 mx-auto py-2" type="submit" name="recognize" value="1">確認する</button>                 
+       <button class="btn btn-block btn-custom col-md-3 mb-4 mx-auto py-2 mt-4" type="submit" name="recognize" value="1">確認する</button>                 
     </form>
     
 </div>
