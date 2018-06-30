@@ -67,6 +67,7 @@
                   <th>カテゴリー</th>
                   <th>金額</th>
                   <th>配送区分</th>
+                  <th>在庫数</th>
                   <th>作成日</th>
                   <th></th>
                   <th></th>
@@ -118,6 +119,8 @@
                     @endif
                     </span>
                 </td>
+                
+                <td>{{ $item->stock }}</td>
                 
                 <td>
                   	@if($item->open_status)

@@ -150,14 +150,21 @@ class DeliveryGroupController extends Controller
     {
         
         $rules = [
-            //'title' => 'required|max:255',
+            'fee.*' => [
+            	'nullable',
+            	function($attribute, $value, $fail) {
+                    if (! is_numeric($value) && $value != '-') {
+                        return $fail('「送料」は半角数字か -（ハイフン）を入力して下さい。');
+                    }
+                },
+            ],
             //'movie_url' => 'required|max:255',
             //'main_img' => 'filenaming',
         ];
         
          $messages = [
-             'title.required' => '「商品名」を入力して下さい。',
-            'cate_id.required' => '「カテゴリー」を選択して下さい。',
+             'fee.*.numeric' => '「送料」は半角数字を入力して下さい。',
+            //'fee.*.nullable' => '「送料」を選択して下さい。',
             
             //'post_thumb.filenaming' => '「サムネイル-ファイル名」は半角英数字、及びハイフンとアンダースコアのみにして下さい。',
             //'post_movie.filenaming' => '「動画-ファイル名」は半角英数字、及びハイフンとアンダースコアのみにして下さい。',
@@ -167,23 +174,21 @@ class DeliveryGroupController extends Controller
         $this->validate($request, $rules, $messages);
         
         $data = $request->all();
+        
+//        print_r($data);
+//        exit;
 
         foreach($data['pref_id'] as $key => $prefId) {
         
+        	if($data['fee']['all'] == '-' || $data['fee'][$key] == '-') {
+                $fee = 99999;
+            }
+            else {
+        		$fee = isset($data['fee']['all']) ? $data['fee']['all'] : $data['fee'][$key];
+            }
             
-            //$feeObj = $this->dgRel->where(['dg_id'=>$dgId, 'pref_id'=>$prefId])->first();
-        
-            $this->dgRel->updateOrCreate(['dg_id'=>$dgId, 'pref_id'=>$prefId], ['fee'=>$data['fee'][$key]]);
-//            if(! isset($feeObj)) {
-//                $feeObj = $this->dgRel;    
-//             }
-//                   
-//        $feeObj->fee = $data['fee'][$key];
-//                   $feeObj->save();
-//        $dg->fill($data);
-//        $dg->save();
-//        $dgId = $dg->id;
-//        
+            $this->dgRel->updateOrCreate(['dg_id'=>$dgId, 'pref_id'=>$prefId], ['fee'=>$fee]);
+                    
         }
         
         $status = '送料が更新されました！';

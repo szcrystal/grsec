@@ -15,8 +15,8 @@
 <?php
     use App\User;
     use App\Category;
-    use App\Tag;
-    use App\TagRelation;
+//    use App\Tag;
+//    use App\TagRelation;
 
     $path = Request::path();
     $path = explode('/', $path);
@@ -36,38 +36,39 @@
         </div>
     
     	<div class="clearfix">
-    	@foreach($items as $item)
-            <article class="main-atcl">
-                
-                	<div class="img-box">
-                    <a href="{{ url('/item/'.$item->id) }}">
-                    <img src="{{ Storage::url($item->main_img) }}" alt="{{ $item->title }}">
-                    </a>
-                	</div>
-                
-                <div class="meta">
-                    <h3><a href="{{ url('/item/'.$item->id) }}">{{ $item->title }}</a></h3>
-                    {{-- <p>{{ $item->catchcopy }}</p> --}}
-                    <div class="tags">
-                    	<?php
-                        	$tagIds = TagRelation::where('item_id',$item->id)->get()->map(function($obj){
-                        		return $obj->tag_id;
-                        	})->all();
-                            
-                            $tags = Tag::find($tagIds);
-                        ?>
-                        @foreach($tags as $tag)
-                        	<span class="rank-tag">
-                            <i class="fa fa-tag" aria-hidden="true"></i>
-                            <a href="{{ url('tag/' . $tag->slug) }}">{{ $tag->name }}</a>
-                            </span>
-                        @endforeach
-                    	
+        
+        <?php $items = array_chunk($items, 4); ?>
+        
+    	@foreach($items as $itemVal)
+        	<div class="clearfix">
+            
+                @foreach($itemVal as $item)
+                <article class="main-atcl">
+                    <div class="img-box">
+                        <a href="{{ url('/item/'.$item->id) }}">
+                        <img src="{{ Storage::url($item->main_img) }}" alt="{{ $item->title }}">
+                        </a>
                     </div>
-                    <div class="text-right text-big">¥{{ number_format(Ctm::getPriceWithTax($item->price)) }}</div>
-                </div>
-                
-            </article>
+                    
+                    <div class="meta">
+                        <h3><a href="{{ url('/item/'.$item->id) }}">{{ $item->title }}</a></h3>
+                        <p>{{ $item->catchcopy }}</p>
+                        
+                        <div class="tags">
+                            <?php $num = 3; ?>
+                            @include('main.shared.tag')
+                        </div>
+                        
+                        
+                        <div class="price">
+                            ¥{{ number_format(Ctm::getPriceWithTax($item->price)) }}
+                        </div>
+                        
+                    </div>
+                    
+                </article>
+                @endforeach
+            </div>
     	@endforeach
      	</div> 
       

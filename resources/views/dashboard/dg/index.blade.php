@@ -89,10 +89,12 @@
 //                    exit;
                                 
               		$str = '';
-              		if(count($feeObjs) < 1 || in_array('', $feeObjs)) {
+              		if(count($feeObjs) < 1 || array_search(null, $feeObjs)) {
                 		$str = '送料が未入力の都道府県があります';
                 	}
+
                    ?>
+                   
                    <span class="text-danger">{{$str}}</span>   
                   </td>
                   

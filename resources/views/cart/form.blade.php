@@ -21,7 +21,7 @@ use App\DeliveryGroup;
 
 @if (count($errors) > 0)
     <div class="alert alert-danger">
-        <strong><i class="fas fa-exclamation-triangle"></i> Error!!</strong> 以下の入力を確認して下さい。<br><br>
+        <strong><i class="fas fa-exclamation-triangle"></i> Error!!</strong> 確認して下さい。<br><br>
         <ul>
             @foreach ($errors->all() as $error)
                 <li>{{ $error }}</li>

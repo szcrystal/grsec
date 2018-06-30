@@ -44,7 +44,7 @@ class CartController extends Controller
         $this->saleRel = $saleRel;
         $this->receiver = $receiver;
         $this->payMethod = $payMethod;
-        $this-> prefecture = $prefecture;
+        $this->prefecture = $prefecture;
         $this->dg = $dg;
         $this->dgRel = $dgRel;
         $this->favorite = $favorite;
@@ -459,38 +459,8 @@ class CartController extends Controller
         $addPoint = 0;
 //        print_r($itemSes);
 //        exit;
-        
-        foreach( $itemSes as $key => $val) {
-        	$obj = $this->item->find($val['item_id']);
-         	//カウント   
-         	$obj['count'] = $val['item_count'];
-          	//トータルプライス   
-            $obj['item_total_price'] = $val['item_total_price'];
-            //ポイント計算
-            $obj['point'] = ceil($val['item_total_price'] * ($obj->point_back/100)); //商品金額のみに対してのパーセント 切り上げ 切り捨て->floor()
-			$addPoint += $obj['point'];
-            
-            foreach($data['deli_time'] as $dgKey => $timeVal) {
-            	if($obj->dg_id == $dgKey) {
-                	$obj['deli_time'] = $timeVal;
-                }
-            }
-            
-            
-			$itemData[] = $obj;
-        }
-        
-        //手数料、送料、ポイントをここで合計する -------------------------
-        $totalFee = 0;
-        
-        //ポイント -----------
-        $usePoint = $data['use_point'];
-        $totalFee = $allPrice - $usePoint;
-        
-        
-        //送料 ---------------------------------
-        $deliFee = 0;
-        
+
+		//ユーザー(配送先)の都道府県NameとIdを取得
         if(! isset($data['destination'])) {
         	$prefName = $data['receiver']['prefecture'];
          	//$prefId = $this->prefecture->where('name', $prefName)->first()->id;   
@@ -504,8 +474,70 @@ class CartController extends Controller
            }
         }
         
-        //ユーザーの都道府県
+        //都道府県ID
         $prefId = $this->prefecture->where('name', $prefName)->first()->id;
+		
+        $prefDeli = array();
+        
+        foreach( $itemSes as $key => $val) {
+        	$obj = $this->item->find($val['item_id']);
+            
+            // 配送先が配送可能かどうかを確認するための配列をここで作る
+			$prefDeli[$obj->dg_id][] = $val['item_id'];
+            
+         	//カウント 個数  
+         	$obj['count'] = $val['item_count'];
+          	//トータルプライス   
+            $obj['item_total_price'] = $val['item_total_price'];
+            //ポイント計算
+            $obj['point'] = ceil($val['item_total_price'] * ($obj->point_back/100)); //商品金額のみに対してのパーセント 切り上げ 切り捨て->floor()
+			$addPoint += $obj['point'];
+            
+            foreach($data['deli_time'] as $dgKey => $timeVal) {
+            	if($obj->dg_id == $dgKey) {
+                	$obj['deli_time'] = $timeVal;
+                }
+            }
+            
+			$itemData[] = $obj;
+        }
+        
+        
+        //配送先都道府県への配送が可能かどうかを確認 -------------------------
+        $errorArr = array();
+        
+        foreach($prefDeli as $prefKey => $item_ids) {
+            
+            $prefFee = $this->dgRel->where(['dg_id'=>$prefKey, 'pref_id'=>$prefId])->first()->fee;
+	
+            if($prefFee == '99999' || $prefFee === null) {            	
+                foreach($item_ids as $item_id) {
+                	$title = $this->item->find($item_id)->title;
+                    $errorArr[] = '「'. $title .'」の商品の'. $prefName .'への配送は不可です。';
+                }
+                
+                //$noDeliPref = 0;
+            }
+        }
+        
+        if(count($errorArr) > 0) { //配送不可ならリダイレクト
+        	return redirect('shop/form')->withErrors($errorArr)->withInput();
+        }
+        
+        
+        
+        //手数料、送料、ポイントをここで合計する -------------------------
+        $totalFee = 0;
+        
+        //ポイント -----------
+        $usePoint = $data['use_point'];
+        $totalFee = $allPrice - $usePoint;
+        
+        
+        //送料 ---------------------------------
+        $deliFee = 0;
+        
+        //$prefId/$prefNameは上記で既に取得している
         
         //配送区分：下草小のid
         $sitakusaSmId = 1;

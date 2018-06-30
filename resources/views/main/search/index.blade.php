@@ -3,6 +3,11 @@
 
 @section('content')
 
+<?php
+    use App\Tag;
+    use App\TagRelation;
+?>
+
 <div id="main" class="archive">
 
     <div class="panel panel-default top-cont">
@@ -43,24 +48,50 @@
                     
                     @endif
 
-
-                    @foreach($items as $item)
-                        <article class="float-left">
-                            <a href="{{ url('/item/'.$item->id) }}">
-                                <img src="{{ Storage::url($item->main_img) }}" alt="{{ $item->title }}">
-                            </a>
-                            
-                            <div class="meta">
-                                <h3><a href="{{ url('/item/'.$item->id) }}">{{ $item->title }}</a></h3>
-                                <p></p>
-                                <div class="text-right text-big">¥{{ number_format(Ctm::getPriceWithTax($item->price)) }}</div>
-                            </div>
-                        </article>
+				<div class="pagination-wrap">
+                {{ $items->links() }}
+                </div>
+                	
+                    <?php $itemArr = array_chunk($items->all(), 3); ?>
+                    
+                    @foreach($itemArr as $itemVal)
+                    	<div class="clearfix">
+            
+                		@foreach($itemVal as $item)
+                            <article class="main-atcl">
+                            	<div class="img-box">
+                                <a href="{{ url('/item/'.$item->id) }}">
+                                    <img src="{{ Storage::url($item->main_img) }}" alt="{{ $item->title }}">
+                                </a>
+                                </div>
+                                
+                                <div class="meta">
+                                    <h3><a href="{{ url('/item/'.$item->id) }}">{{ $item->title }}</a></h3>
+                                    <p>{{ $item->catchcopy }}</p>
+                                    
+                                    <div class="tags">
+                                        <?php
+                                            $num = 5;
+                                        ?>
+                                        @include('main.shared.tag')
+                                        
+                                    </div>
+                                    
+                                    <div class="price">
+                                    	¥{{ number_format(Ctm::getPriceWithTax($item->price)) }}
+                                    </div>
+                                </div>
+                            </article>
+                        @endforeach
+                        
+                        </div>
                     @endforeach
                 
                 </div>
             
+        <div class="pagination-wrap">
         {{ $items->links() }}
+        </div>
             
 </div>
 </div>

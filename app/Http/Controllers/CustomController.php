@@ -189,6 +189,7 @@ class CustomController extends Controller
         return $checked;
     }
     
+    
     //郵便番号の出力
     static function getPostNum($post_code)
     {

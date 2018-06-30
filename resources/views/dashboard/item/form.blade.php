@@ -524,7 +524,7 @@
             </fieldset>
             
             <fieldset class="mb-4 form-group">
-                <label for="point_back" class="control-label">ポイント還元率</label>
+                <label for="point_back" class="control-label">ポイント還元率（%）</label>
                 <input class="form-control col-md-6{{ $errors->has('point_back') ? ' is-invalid' : '' }}" name="point_back" value="{{ Ctm::isOld() ? old('point_back') : (isset($item) ? $item->point_back : '') }}">
                 
 

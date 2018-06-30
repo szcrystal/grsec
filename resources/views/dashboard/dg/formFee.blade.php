@@ -46,6 +46,7 @@
     	<h3>{{ $dg->name }}</h3>
         <hr>
         
+        
         <form class="form-horizontal" role="form" method="POST" action="/dashboard/dgs/fee/{{$id}}" enctype="multipart/form-data">
         
         	<div class="form-group mt-4 mb-4">
@@ -53,6 +54,8 @@
                     <button type="submit" class="btn btn-primary btn-block mx-auto w-btn w-25">更　新</button>
                 </div>
             </div>
+            
+            <p class="text-primary mt-2 mb-3 text-big">配送不可の地域については、-（ハイフン）を入力して下さい。</p>
         
 
             {{ csrf_field() }}
@@ -60,6 +63,22 @@
             @if(isset($edit))
                 <input type="hidden" name="edit_id" value="{{$id}}">
             @endif
+            
+            <fieldset class="mt-5 mb-5 pt-3 form-group{{ $errors->has('fee.all') ? ' has-error' : '' }}">
+                <label style="width:10%;">一括設定</label>
+                
+                {{-- <input type="hidden" name="pref_id[all]" value="99"> --}}
+                <input class="form-control d-inline-block col-md-4{{ $errors->has('fee.all') ? ' is-invalid' : '' }}" name="fee[all]" value="{{ Ctm::isOld() ? old('fee.all') : '' }}">
+
+                @if ($errors->has('fee.all'))
+                    <div class="text-danger">
+                        <span class="fa fa-exclamation form-control-feedback"></span>
+                        <span>{{ $errors->first('fee.all') }}</span>
+                    </div>
+                @endif
+            </fieldset>
+            
+            <hr class="mb-5 w-50 mx-0">
  
             
             @foreach($prefs as $key => $pref)
@@ -67,12 +86,13 @@
                 <label style="width:10%;">{{ $pref->name }}</label>
                 <?php
                 	$prefFee = $dgRels-> where('pref_id', $pref->id)->first();
+                    
                 ?>
                 <input type="hidden" name="pref_id[]" value="{{ $pref->id }}">
-                <input class="form-control d-inline-block col-md-4{{ $errors->has('fee') ? ' is-invalid' : '' }}" name="fee[]" value="{{ Ctm::isOld() ? old('fee') : (isset($prefFee) ? $prefFee->fee : '') }}">
+                <input class="form-control d-inline-block col-md-4{{ $errors->has('fee.'.$key) ? ' is-invalid' : '' }}" name="fee[]" value="{{ Ctm::isOld() ? old('fee.'.$key) : (isset($prefFee) ? $prefFee->fee : '') }}">
 
                 @if ($errors->has('fee.'.$key))
-                    <div class="text-danger">
+                    <div class="text-danger mb-2">
                         <span class="fa fa-exclamation form-control-feedback"></span>
                         <span>{{ $errors->first('fee.'.$key) }}</span>
                     </div>
