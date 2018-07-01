@@ -49,15 +49,19 @@
     <div class="col-md-12">
     <div class="mb-3">
     	
-        <div class="mb-3 text-right">
+        <div class="mb-5 text-right">
             <a href="{{url('dashboard/items/create')}}" class="btn btn-info">新規追加</a>
         </div>
         
-
-
+		{{--
+		<div>
+        	<span class="changeSearch">SEARCH</span>
+        </div>
+        --}}
+        
         <div class="">
           <div class="table-responsive">
-            <table class="table table-striped table-bordered table-hover bg-white"{{-- id="dataTable"--}} width="100%" cellspacing="0">
+            <table id="dataTable" class="table table-striped table-bordered table-hover bg-white" width="100%" cellspacing="0">
               <thead>
                 <tr>
                   <th>ID</th>

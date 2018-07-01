@@ -12,7 +12,7 @@ use App\TagRelation;
 
 @foreach($tags as $tag)
     <span class="rank-tag">
-    <i class="fa fa-tag" aria-hidden="true"></i>
-    <a href="{{ url('tag/' . $tag->slug) }}">{{ $tag->name }}</a>
+    {{-- <i class="fa fa-tag" aria-hidden="true"></i> --}}
+    <a href="{{ url('tag/' . $tag->slug) }}">#{{ $tag->name }}</a>
     </span>
 @endforeach

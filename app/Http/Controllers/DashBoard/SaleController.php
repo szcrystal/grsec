@@ -15,6 +15,7 @@ use App\Consignor;
 use App\Category;
 
 use App\Mail\OrderSend;
+use App\Mail\PayDone;
 
 use Mail;
 
@@ -101,6 +102,75 @@ class SaleController extends Controller
         
         return view('dashboard.sale.form', ['sale'=>$sale, 'saleRel'=>$saleRel, 'sameSales'=>$sameSales, 'item'=>$item, 'items'=>$items, 'pms'=>$pms, 'users'=>$users, 'userNs'=>$userNs, 'receiver'=>$receiver, 'cates'=>$cates, 'itemDg'=>$itemDg, 'id'=>$id, 'edit'=>1]);
     }
+    
+    //銀行振込入金用Get
+    public function saleOrder($orderNum) 
+    {
+    	$saleRel = $this->saleRel->where('order_number', $orderNum)->first();
+        
+        $sales= $this->sale->where('order_number', $orderNum)->get();
+        
+        //$item= $this->item->find($sale->item_id);
+        $items = $this->item;
+        $pms = $this->payMethod;
+        
+        $users = $this->user;
+        $userNs = $this->userNoregist;
+
+		$receiver = $this->receiver->find($saleRel->receiver_id);
+  
+  		//$itemDg = $this->dg->find($item->dg_id); 
+    
+    	$cates = $this->category;           
+//        
+//        $tagNames = $this->tagRelation->where(['item_id'=>$id])->get()->map(function($item) {
+//            return $this->tag->find($item->tag_id)->name;
+//        })->all();
+//        
+//        $allTags = $this->tag->get()->map(function($item){
+//            return $item->name;
+//        })->all();
+        
+        return view('dashboard.sale.orderForm', ['saleRel'=>$saleRel, 'sales'=>$sales, 'items'=>$items, 'pms'=>$pms, 'users'=>$users, 'userNs'=>$userNs, 'receiver'=>$receiver, 'cates'=>$cates, 'id'=>$orderNum, 'edit'=>1]);
+    }
+    
+    
+    //銀行振込入金用Post
+    public function postSaleOrder(Request $request) 
+    {
+    	$rules = [
+            'pay_done' => 'required',
+            //'cate_id' => 'required',
+        ];
+        
+         $messages = [
+             'pay_done.required' => '「入金」のチェックがされていません。',
+           // 'cate_id.required' => '「カテゴリー」を選択して下さい。',
+        ];
+        
+        $this->validate($request, $rules, $messages);
+
+    	$data = $request->all();
+        
+        $saleRel = $this->saleRel->find($data['order_id']);
+        $saleRel->pay_done = isset($data['pay_done']) ? $data['pay_done'] : 0;
+        $saleRel->save();
+        
+        
+        $mail = Mail::to($data['user_email'], $data['user_name'])->send(new PayDone($saleRel->id));
+            
+        if(! $mail) {
+            $status = '入金済みメールが送信されました。';
+    
+            return redirect('dashboard/sales/order/'. $saleRel->order_number)->with('status', $status);
+        } 
+        else {
+            $errors = array('入金済みメールの送信に失敗しました。');
+            return redirect('dashboard/sales/order/'. $saleRel->order_number)->withErrors($errors)->withInput();
+        }
+        
+    }
+    
    
     public function create()
     {
@@ -111,7 +181,7 @@ class SaleController extends Controller
             return $item->name;
         })->all();
 //        $users = $this->user->where('active',1)->get();
-        return view('dashboard.item.form', ['cates'=>$cates, 'consignors'=>$consignors, 'allTags'=>$allTags]);
+        return view('dashboard.item.orderForm', ['cates'=>$cates, 'consignors'=>$consignors, 'allTags'=>$allTags]);
     }
 
     /**
@@ -139,33 +209,58 @@ class SaleController extends Controller
         
         $data = $request->all();
 
-        if(isset($data['only_craim'])) {
-            $saleModel = $this->sale->find($data['saleId']);
-            $saleModel->craim = $data['craim'];
-            $saleModel->save();
-         	
-          	$status = "クレームが更新されました。";   
-            return redirect('dashboard/sales/'. $data['saleId'])->with('status', $status);
+//        if(isset($data['only_craim'])) {
+//            $saleModel = $this->sale->find($data['saleId']);
+//            $saleModel->craim = $data['craim'];
+//            $saleModel->save();
+//         	
+//          	$status = "クレームが更新されました。";   
+//            return redirect('dashboard/sales/'. $data['saleId'])->with('status', $status);
+//        }
+
+        
+        $saleModel = $this->sale->find($data['saleId']); //saleIdとsale_idsの両方あるので注意
+        $saleModel->fill($data);
+        $saleModel->save();
+        
+        $item = $this->item->find($saleModel->item_id);
+        $item->cost_price = $data['cost_price'];
+        $item->save();
+        
+        $sales = $this->sale->find($data['sale_ids']); //saleIdとsale_idsの両方あるので注意
+        foreach($sales as $obj) {
+        	if($obj->id != $saleModel->id) {
+            	$obj->plan_date = $data['plan_date'];
+                $obj->information = $data['information'];
+                $obj->save();
+            }
         }
         
+        //if(isset())
+            
+        if(isset($data['only_up'])) {  
+        	$status = "更新されました。";   
+            return redirect('dashboard/sales/'. $data['saleId'])->with('status', $status);
+		}
+        elseif(isset($data['with_mail'])) { 
+            $mail = Mail::to($data['user_email'], $data['user_name'])->send(new OrderSend($saleModel->id, $data['sale_ids']));
+            
+            if(! $mail) {
+                $status = 'メールが送信されました。';
+                
+                $sales = $this->sale->find($data['sale_ids']);
+                foreach($sales as $sale) {
+                    $sale->deli_done = 1;
+                    $sale->deli_start_date = date('Y-m-d H:i:s', time());
+                    $sale ->save();      
+                }   
         
-        $mail = Mail::to($data['user_email'], $data['user_name'])->send(new OrderSend($data['sale_ids']));
-        
-        if(! $mail) {
-        	$status = 'メールが送信されました。';
-         	
-            $sales = $this->sale->find($data['sale_ids']);
-          	foreach($sales as $sale) {
-                $sale->deli_done = 1;
-                $sale->deli_date = date('Y-m-d H:i:s', time());
-                $sale ->save();      
-           	}   
-    
-	        return redirect('dashboard/sales/'. $data['sale_ids'][0])->with('status', $status);
-        } 
-        else {
-        	$errors = array('メールの送信に失敗しました。');
-        	return redirect('dashboard/sales/'. $data['sale_ids'][0])->withErrors($errors)->withInput();
+                return redirect('dashboard/sales/'. $data['sale_ids'][0])->with('status', $status);
+            } 
+            else {
+                $errors = array('メールの送信に失敗しました。');
+                return redirect('dashboard/sales/'. $data['sale_ids'][0])->withErrors($errors)->withInput();
+            }
         }
         
         //status

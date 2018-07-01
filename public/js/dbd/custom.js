@@ -621,7 +621,7 @@ var exe = (function() {
                 if(location.pathname != "/") {
                 	var loc = location.pathname.split("/")[2];
 
-                 	console.log(loc);
+                 	//console.log(loc);
                   	
                    	//$('a#'+ loc).addClass('thisActive');
                     
@@ -630,7 +630,7 @@ var exe = (function() {
                   
                        
                     $thisUl = $('ul#'+ loc);
-                    console.log($thisUl);
+                    //console.log($thisUl);
                     
                     $thisUl.removeClass('collapse');
                     $thisUl.parent('li').children('a').addClass('thisActive').attr({href: ''});
@@ -644,6 +644,23 @@ var exe = (function() {
 //         
 //             $collapse.show();
 //              console.log($collapse.data('area'));      
+        },
+        
+        changeSearch: function() {
+        	$change = $('.changeSearch');
+            $dataTable = $('.table');
+            
+            $change.on('click', function(e){
+            	console.log($dataTable.attr('id'));
+                
+            	if($dataTable.attr('id') == 'dataTable') {
+                	$dataTable.attr('id', '');
+                }
+                else {
+                	$dataTable.attr('id', 'dataTable');
+                }
+            });
+            
         },
         
         
@@ -668,6 +685,8 @@ $(function(e){ //ready
     exe.changeSelectRelation();
     
     exe.openNav();
+    
+    exe.changeSearch();
 
 });
 

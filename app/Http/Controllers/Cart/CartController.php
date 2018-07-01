@@ -140,7 +140,7 @@ class CartController extends Controller
         $destination = isset($allData['destination']) ? 1 : 0;
         $pm = $allData['pay_method'];
         
-        $deliTime = $allData['deli_time'];
+        $deliTime = isset($allData['deli_time']) ? $allData['deli_time'] : array();
         
         $userData = Auth::check() ? $this->user->find(Auth::id()) : $allData['user']; //session(all.data.user)
       	$receiverData = $allData['receiver']; //session('all.data.receiver');
@@ -148,7 +148,7 @@ class CartController extends Controller
        
        	
         //配送時間指定 itemごとにitemDataの配列内に入れる
-        if(count($allData['deli_time']) > 0) {
+        if(count($deliTime) > 0) {
             foreach($itemData as $key => $value) {
                 
                 foreach($deliTime as $dgKey => $dgTime ) {
@@ -307,7 +307,7 @@ class CartController extends Controller
                     'use_point' => 0,
                     'total_price' => $val['item_total_price'],
                     
-                    'deli_time' => $val['deli_time'],
+                    'deli_time' => isset($val['deli_time']) ? $val['deli_time'] : null,
                     
                     'deli_done' => 0,
                     'pay_done' => 0,
@@ -493,9 +493,11 @@ class CartController extends Controller
             $obj['point'] = ceil($val['item_total_price'] * ($obj->point_back/100)); //商品金額のみに対してのパーセント 切り上げ 切り捨て->floor()
 			$addPoint += $obj['point'];
             
-            foreach($data['deli_time'] as $dgKey => $timeVal) {
-            	if($obj->dg_id == $dgKey) {
-                	$obj['deli_time'] = $timeVal;
+            if(isset($data['deli_time'])) {
+                foreach($data['deli_time'] as $dgKey => $timeVal) {
+                    if($obj->dg_id == $dgKey) {
+                        $obj['deli_time'] = $timeVal;
+                    }
                 }
             }
             

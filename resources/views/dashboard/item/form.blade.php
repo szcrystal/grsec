@@ -14,11 +14,18 @@
     </div>
 
     <div class="row">
-      <div class="col-sm-12 col-md-6 col-lg-6 col-xl-5 mb-5">
+      <div class="col-md-12 mb-5">
         <div class="bs-component clearfix">
-        <div class="pull-left">
+        <div class="">
             <a href="{{ url('/dashboard/items') }}" class="btn bg-white border border-1 border-round border-secondary text-primary"><i class="fa fa-angle-double-left" aria-hidden="true"></i>一覧へ戻る</a>
         </div>
+        
+        @if(isset($edit))
+        <div class="mt-4 text-right">
+            <a href="{{ url('/item/'. $id) }}" class="btn btn-warning border border-1 border-round text-white" target="_brank">この商品のページを見る <i class="fa fa-angle-double-right" aria-hidden="true"></i></a>
+        </div>
+        @endif
+        
     	</div>
     </div>
   </div>

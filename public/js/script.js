@@ -117,7 +117,7 @@ var exe = (function() {
             else {
                 $('.btn-s').on('click', function(){
                     if($input.is(':hidden')) {
-                        $input.show().animate({width:'16em', opacity:1}, 300, 'linear', function(){
+                        $input.show().animate({width:'14em', opacity:1}, 300, 'linear', function(){
                     		//$(this).queue([]).stop();
                         });
                     }
@@ -199,10 +199,10 @@ var exe = (function() {
         	//var len = $('.state-nav li').length;
             var num = 0;
            
-            var speed = 180;
+            var speed = 350;
            	var easing = 'linear';
            
-           	var hideSpeed = this.isSpTab('sp') ? 150 : 0;
+           	var hideSpeed = this.isSpTab('sp') ? 150 : 100;
             //console.log(len);
            
            	//$('.menu-dropdown').eq(1).slideToggle(200);
@@ -230,7 +230,7 @@ var exe = (function() {
                 else {
                 	//console.log('ccc');
 
-                    $dropMenu.fadeOut(hideSpeed, function(){
+                    $dropMenu.fadeOut(hideSpeed, easing, function(){
                         $mainNav.removeClass('nav-active');
                         $clickThis.addClass('nav-active');
                         
@@ -257,7 +257,7 @@ var exe = (function() {
                         
                         $('.main-navi li').removeClass('nav-active');
                         
-                        $dropMenu.fadeOut(speed, easing, function() {
+                        $dropMenu.fadeOut(hideSpeed, easing, function() {
                             $(this).queue([]).stop();
                         });
                     }

@@ -77,6 +77,19 @@ class CreateMailTemplatesTable extends Migration
                 'updated_at' => date('Y-m-d H:i:s', time()),
             ]
         );
+        
+        DB::table('mail_templates')->insert(
+            [ 
+                'type_code' => 'payDone',
+                'type_name' => 'ご入金完了',
+                'title' => 'ご入金を確認しました',
+                'header' => 'eee',
+                'footer' => '55555',
+                
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time()),
+            ]
+        );
     }
 
     /**

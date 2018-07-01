@@ -52,7 +52,7 @@
 
         <div style="width: 130%;" class="">
           <div class="table-responsive">
-            <table class="table table-striped table-bordered table-hover bg-white"{{-- id="dataTable"--}} width="100%" cellspacing="0">
+            <table id="dataTable" class="table table-striped table-bordered table-hover bg-white"{{-- id="dataTable"--}} width="100%" cellspacing="0">
               <thead>
                 <tr>
                 	<th></th>
@@ -83,7 +83,7 @@
                  	?>   
                 	<td><a href="{{url('dashboard/sales/'. $sale->id)}}" class="btn btn-success btn-sm center-block">確認</a></td>
                   <td>{{ $sale->id }}</td>
-                  <td>{{ $saleRel->order_number }}</td>
+                  <td><a href="{{ url('dashboard/sales/order/'. $saleRel->order_number) }}">{{ $saleRel->order_number }}</td>
                   <td>
                   	<?php $item = $items->find($sale->item_id) ?>
                   	({{ $sale->item_id }}){{ $item->title }}<br>
@@ -93,21 +93,37 @@
                   	 @if($sale->deli_done)
                        <span class="text-success">発送済み</span>
                      @else
-                      <span class="text-danger">未配送</span>
+                      <span class="text-danger">未発送</span>
                     @endif   
                   </td>
                   <td>{{ $sale->item_count }}</td>
                   <td>¥{{ number_format($sale->total_price) }}</td>
                   <td>¥{{ number_format($sale->deli_fee) }}</td>
                   <td>¥{{ number_format($sale->cod_fee) }}</td>
-                  <td>{{ $pms->find($sale->pay_method)->name }}</td>
+                  <td>
+                  	@if($sale->pay_method == 6)
+                    <a href="{{ url('dashboard/sales/order/'. $saleRel->order_number) }}">
+                    	{{ $pms->find($sale->pay_method)->name }}
+                        <?php
+                        	$payDone = $saleRels->find($sale->salerel_id)->pay_done;
+                        ?>
+                        @if($payDone)
+                        	<span class="text-success"><small>入金済み</small></span>
+                        @else
+                        	<span class="text-danger"><small>未入金</small></span>
+                        @endif
+                    </a>
+                	@else
+                    	{{ $pms->find($sale->pay_method)->name }}
+                    @endif
+                	</td>
                   <td></td>
                   <td></td>
                   <td>
                   	@if($saleRel->is_user)
-                		<span class="text-primary">会員</span>:{{ $users->find($saleRel->user_id)->name }}さん
+                		<span class="text-primary">会員</span>:{{ $users->find($saleRel->user_id)->name }}
                 	@else
-                 		<span class="text-danger">非会員</span>:{{ $userNs->find($saleRel->user_id)->name }}さん
+                 		<span class="text-danger">非会員</span>:{{ $userNs->find($saleRel->user_id)->name }}
                  	@endif   
                 </td>
                   

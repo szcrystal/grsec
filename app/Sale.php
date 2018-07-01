@@ -26,10 +26,18 @@ class Sale extends Model
         'use_point',
         'total_price',
         
-        'deli_time',
+        'cost_price',
+        
         'deli_done',
+        'deli_start_date',
+        
         'deli_date',
+        'deli_time',
+        
         'pay_done',
+        
+        'plan_date',
+        'information',
         'craim',
         
         /*
