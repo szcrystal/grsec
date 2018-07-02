@@ -22,7 +22,7 @@
     {{ $contacts->links() }}
         
     <div class="table-responsive">
-        <table class="table table-striped table-bordered table-hover bg-white"{{-- id="dataTable"--}} width="100%" cellspacing="0">
+        <table id="dataTable" class="table table-striped table-bordered table-hover bg-white"{{-- id="dataTable"--}} width="100%" cellspacing="0">
           <thead>
             <tr>
               <th>ID</th>
@@ -70,7 +70,7 @@
                 </td>
 
                 <td>
-                	<a style="margin:auto;" href="{{url('dashboard/contacts/'.$obj->id)}}" class="btn btn-primary btn-sm center-block">確認</a>
+                	<a style="margin:auto;" href="{{url('dashboard/contacts/'.$obj->id)}}" class="btn btn-success btn-sm center-block">確認</a>
                 	{{--
                 	<a style="margin:auto;" href="{{url('dashboard/contacts/'.$obj->id. '/edit')}}" class="btn btn-primary btn-sm center-block">確認</a>
                  	--}}   

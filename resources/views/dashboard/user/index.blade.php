@@ -65,8 +65,8 @@
 
 
         <div class="">
-          <div class="table-responsive">
-            <table class="table table-striped table-bordered table-hover bg-white"{{-- id="dataTable"--}} width="100%" cellspacing="0">
+          <div class="table-responsive mt-5">
+            <table id="dataTable" class="table table-striped table-bordered table-hover bg-white" width="100%" cellspacing="0">
               <thead>
                 <tr>
                   <th>ID</th>
@@ -74,11 +74,11 @@
                   <th>性別</th>
                   <th>生年月日</th>
                   <th>都道府県</th>
-                  <th>eMail</th>
+                  <th>メールアドレス</th>
                   <th>メルマガ</th>
                   <th>登録日</th>
                   <th></th>
-                  <th></th>
+                  
                 </tr>
               </thead>
               
@@ -110,7 +110,6 @@
                   ?>
                   <td><a href="{{url('dashboard/users/'. $link)}}" class="btn btn-success btn-sm center-block">確認</a></td>
                   
-                  <td></td>
                 </tr>
             @endforeach
 

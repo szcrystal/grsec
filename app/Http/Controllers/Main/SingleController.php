@@ -83,13 +83,13 @@ class SingleController extends Controller
         if(cache()->has('cacheIds')) {
         	
         	$cacheIds = cache('cacheIds');
-          	$cacheItems = $this->item->find($cacheIds);  
+          	$cacheItems = $this->item->whereIn('id', $cacheIds)->take(7)->get();  
         }
         
         if(! in_array($item->id, $cacheIds)) {
         	$count = array_unshift($cacheIds, $item->id);
          	
-          	if($count > 8) {
+          	if($count > 7) {
             	$cacheIds = array_slice($cacheIds, 0, 6); 
         	}      
         }
@@ -100,7 +100,7 @@ class SingleController extends Controller
 //        exit;
 
 		//Recommend
-        $recommends = $this->item->whereNotIn('id',[$item->id])->where('subcate_id', $item->subcate_id)->skip(6)->take(7)->get();
+        $recommends = $this->item->whereNotIn('id',[$item->id])->where('subcate_id', $item->subcate_id)->skip(3)->take(7)->get();
         
         return view('main.home.single', ['item'=>$item, 'otherItem'=>$otherItem, 'cateObj'=>$cateObj, 'tags'=>$tags, 'imgsPri'=>$imgsPri, 'imgsSec'=>$imgsSec, 'isFav'=>$isFav, 'cacheItems'=>$cacheItems, 'recommends'=>$recommends]);
     }

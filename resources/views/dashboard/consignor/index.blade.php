@@ -57,7 +57,7 @@
 
         <div class="">
           <div class="table-responsive">
-            <table class="table table-striped table-bordered table-hover bg-white"{{-- id="dataTable"--}} width="100%" cellspacing="0">
+            <table id="dataTable" class="table table-striped table-bordered table-hover bg-white"{{-- id="dataTable"--}} width="100%" cellspacing="0">
               <thead>
                 <tr>
                   <th>ID</th>

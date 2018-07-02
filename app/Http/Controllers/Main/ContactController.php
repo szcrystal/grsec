@@ -119,7 +119,7 @@ class ContactController extends Controller
     	$set = $this->setting->first();
      	
                 
-     	$template = $this->mailTemplate->where(['type_code'=>'inquire'])->first();
+     	$template = $this->mailTemplate->where(['type_code'=>'contact'])->first();
             
     	$admin_name = $set->admin_name;
         $admin_email = $set->admin_email; 

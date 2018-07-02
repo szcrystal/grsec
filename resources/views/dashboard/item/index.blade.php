@@ -16,7 +16,7 @@
 
 
   
-    
+    {{--
     <div class="row -row-compact-sm -row-compact-md -row-compact-lg">
       <div class="col-sm-12 col-md-6 col-lg-6 col-xl-5 -sameheight">
         <div class="Card DashboardStats">
@@ -31,6 +31,7 @@
           </div>
     	</div>
   	</div>
+    --}}
 
 
 	<div class="row">
@@ -74,7 +75,7 @@
                   <th>在庫数</th>
                   <th>作成日</th>
                   <th></th>
-                  <th></th>
+                  {{-- <th></th> --}}
                 </tr>
               </thead>
               
@@ -106,7 +107,10 @@
                   <td>{{ $item->title }}</td>
                   <td>
                   	@if(isset($item->cate_id))
-                    	{{ $cates->find($item->cate_id)->name }}
+                    	{{ $cates->find($item->cate_id)->link_name }}
+                        @if(isset($item->subcate_id))
+                        <br><small>{{ $subCates->find($item->subcate_id)->name }}</small>
+                        @endif
                     @endif
                 	</td>
                   <td>{{ number_format($item->price) }}</td>
@@ -124,7 +128,13 @@
                     </span>
                 </td>
                 
-                <td>{{ $item->stock }}</td>
+                <td>
+                	@if(! $item->stock)
+                    	<span class="text-danger"><b>-0</b></span>
+                    @else
+                		{{ $item->stock }}
+                    @endif
+                </td>
                 
                 <td>
                   	@if($item->open_status)
@@ -136,7 +146,8 @@
                 </td>
                   
                   <td><a href="{{url('dashboard/items/'. $item->id)}}" class="btn btn-success btn-sm center-block">編集</a></td>
-                  <td></td>
+                  
+                  {{-- <td></td> --}}
                 </tr>
             @endforeach
 
