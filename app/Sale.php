@@ -25,8 +25,8 @@ class Sale extends Model
         'cod_fee',
         'use_point',
         'total_price',
-        
         'cost_price',
+        'arari',
         
         'deli_done',
         'deli_start_date',

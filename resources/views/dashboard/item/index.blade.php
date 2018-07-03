@@ -60,19 +60,26 @@
         </div>
         --}}
         
+        <style>
+        	.w-5 {
+            	width: 5%;
+            }
+        </style>
+        
         <div class="">
           <div class="table-responsive">
             <table id="dataTable" class="table table-striped table-bordered table-hover bg-white" width="100%" cellspacing="0">
               <thead>
                 <tr>
                   <th>ID</th>
-                  <th>商品番号</th>
+                  <th style="width: 5%;">商品番号</th>
                   <th>画像</th>
                   <th>商品名</th>
-                  <th>カテゴリー</th>
+                  <th style="width:8%;">カテゴリー</th>
                   <th>金額</th>
                   <th>配送区分</th>
                   <th>在庫数</th>
+                  <th>売上個数</th>
                   <th>作成日</th>
                   <th></th>
                   {{-- <th></th> --}}
@@ -97,10 +104,10 @@
               @foreach($itemObjs as $item)
                 <tr>
                   <td>{{ $item->id }}</td>
-                  <td>{{ $item->number }}</td>
+                  <td class="text-small">{{ $item->number }}</td>
                   <td>
                   @if($item->main_img != '')
-                  <img src="{{ Storage::url($item->main_img) }}" width="80" height="60"></td>
+                  <img src="{{ Storage::url($item->main_img) }}" width="70" height="60"></td>
                   @else
                   <span class="no-img">No Image</span>
                   @endif
@@ -135,6 +142,12 @@
                 		{{ $item->stock }}
                     @endif
                 </td>
+                
+                <td>
+                	{{ $item->sale_count }}
+                </td>
+                
+
                 
                 <td>
                   	@if($item->open_status)

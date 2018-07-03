@@ -34,8 +34,8 @@ class CreateSalesTable extends Migration
             $table->integer('cod_fee')->nullable()->default(NULL);
             $table->integer('use_point')->nullable()->default(NULL);
             $table->integer('total_price')->nullable()->default(NULL);
-            
             $table->integer('cost_price')->nullable()->default(NULL);
+            $table->integer('arari')->nullable()->default(NULL);
             
             $table->boolean('deli_done')->nullable()->default(NULL);
             $table->timestamp('deli_start_date')->nullable()->default(NULL);

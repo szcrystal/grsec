@@ -20,6 +20,7 @@ class CreateDeliveryGroupsTable extends Migration
             $table->boolean('open_status')->nullable()->default(NULL);
             $table->integer('capacity')->nullable()->default(NULL);
             $table->float('factor')->nullable()->default(NULL);
+            $table->integer('take_charge')->nullable()->default(NULL);
             $table->boolean('is_time')->nullable()->default(NULL);
             $table->string('time_table')->nullable()->default(NULL);
 //            $table->string('title')->nullable()->default(NULL);

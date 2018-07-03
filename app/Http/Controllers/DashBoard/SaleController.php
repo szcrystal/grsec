@@ -18,6 +18,7 @@ use App\Mail\OrderSend;
 use App\Mail\PayDone;
 
 use Mail;
+use DB;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -54,9 +55,104 @@ class SaleController extends Controller
     
     
     
-    public function index()
+    public function index(Request $request)
     {
-        $saleObjs = Sale::orderBy('id', 'desc')->paginate($this->perPage);
+    	//$saleObjs = $this->sale->whereYear('created_at', '=','2017', 'and')->whereYear('created_at', '2018')->orderBy('id', 'asc')->get();
+//        $saleObjs = $this->sale->whereBetween(DB::raw('DATE(created_at)'), ['2017-01-01', '2018-05-31'])->orderBy('id', 'asc')->get();
+
+		$saleRelForSum = null;
+        
+    	if($request->has('set')) {
+            $data = $request->all();
+            
+            if(! isset($data['last_y'])) { //only first
+            	if(isset($data['first_m'])) {
+            		$saleObjs = $this->sale->whereYear('created_at', $data['first_y'])->whereMonth('created_at', $data['first_m'])->orderBy('id', 'desc')->get();
+                }
+                else {
+                	$saleObjs = $this->sale->whereYear('created_at', $data['first_y'])->orderBy('id', 'desc')->get();
+                }
+            }
+            else {
+                $firstDate = $data['first_y'].'-'.$data['first_m']. '-01';
+                $lastDate = $data['last_y'].'-'.$data['last_m']. '-31';
+                
+                $saleObjs = $this->sale->whereBetween(DB::raw('DATE(created_at)'), [$firstDate, $lastDate])->orderBy('id', 'desc')->get();
+            }
+            
+            $numIds = $saleObjs->map(function($obj){
+                return $obj->order_number;
+            })->all();
+            
+
+            $numIds = array_unique($numIds); //重複データを削除する
+            $numIds = array_values($numIds); //keyを振り直す
+            
+            $saleRelForSum = $this->saleRel->whereIn('order_number', $numIds)->get();
+
+        }
+        else {
+        	//$saleObjs = Sale::orderBy('id', 'desc')->paginate($this->perPage);
+        	$saleObjs = Sale::orderBy('id', 'desc')->get();
+        }
+        $saleRels = $this->saleRel;
+        
+        $items= $this->item;
+        $pms = $this->payMethod;
+        $itemDg = $this->dg;
+        $users = $this->user;
+        $userNs = $this->userNoregist;
+        
+        $cates = $this->category;
+        
+        //$status = $this->articlePost->where(['base_id'=>15])->first()->open_date;
+        
+        return view('dashboard.sale.index', ['saleObjs'=>$saleObjs, 'saleRels'=>$saleRels, 'items'=>$items, 'pms'=>$pms, 'itemDg'=>$itemDg, 'users'=>$users, 'userNs'=>$userNs, 'cates'=>$cates, 'saleRelForSum'=>$saleRelForSum,]);
+    }
+    
+    public function saleCompare()
+    {
+    	$date = date('Y-m', time());
+        
+        
+        $saleObjs = $this->sale->whereYear('created_at', '2017')->whereMonth('created_at', '06')->orderBy('id', 'asc')->get();
+        
+        $totalSum = $saleObjs->sum('total_price');
+        
+        
+        
+        
+        $saleRels = $this->saleRel;
+        
+        $items= $this->item;
+        $pms = $this->payMethod;
+        $itemDg = $this->dg;
+        $users = $this->user;
+        $userNs = $this->userNoregist;
+        
+        $cates = $this->category;
+        
+        //$status = $this->articlePost->where(['base_id'=>15])->first()->open_date;
+        
+        return view('dashboard.sale.indexCompare', ['saleObjs'=>$saleObjs, 'saleRels'=>$saleRels, 'items'=>$items, 'pms'=>$pms, 'itemDg'=>$itemDg,'users'=>$users, 'userNs'=>$userNs, 'cates'=>$cates]);
+    }
+    
+    public function rankCompare()
+    {
+    	$date = date('Y-m', time());
+        
+        
+        $saleItemIds = $this->sale->whereYear('created_at', '2017')->whereMonth('created_at', '06')->get()->map(function($obj){
+        	return $obj->item_id;
+        });
+        
+        $saleItemIds = array_unique($saleItemIds); //重複データを削除する
+        $saleItemIds = array_values($saleItemIds); //keyを振り直す
+        
+        $saleObjs = $this->item->find($saleItemIds);
+        
+        
+        
         $saleRels = $this->saleRel;
         
         $items= $this->item;
@@ -68,7 +164,7 @@ class SaleController extends Controller
         
         //$status = $this->articlePost->where(['base_id'=>15])->first()->open_date;
         
-        return view('dashboard.sale.index', ['saleObjs'=>$saleObjs, 'saleRels'=>$saleRels, 'items'=>$items, 'pms'=>$pms, 'users'=>$users, 'userNs'=>$userNs, 'cates'=>$cates]);
+        return view('dashboard.sale.indexCompare', ['saleObjs'=>$saleObjs, 'saleRels'=>$saleRels, 'items'=>$items, 'pms'=>$pms, 'users'=>$users, 'userNs'=>$userNs, 'cates'=>$cates]);
     }
 
     public function show($id)

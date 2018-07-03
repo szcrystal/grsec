@@ -181,14 +181,20 @@
                                 <td><b>¥{{ number_format($sale->total_price) }}</b></td>
                             </tr>
                             <tr>
-                                <th>送料区分／送料</th>
+                                <th>送料区分/送料/送料差損</th>
                                 <td>
                                 @if($item->deli_fee)
                                 	<span class="text-warning">送料無料商品</span>
                                 @else
                                 	{{ $itemDg->name }}<br>
                                 @endif
-                                ¥{{ number_format($sale->deli_fee) }}
+                                ¥{{ number_format($sale->deli_fee) }}<br>
+                                
+                                @if(isset($itemDg->take_charge))
+                                ¥{{ number_format($itemDg->take_charge) }}
+                                @else
+                                0
+                                @endif
                                 </td>
                             </tr>
                             @if($sale->pay_method == 5)
@@ -208,6 +214,7 @@
                                 <td>
                                 <?php 
                                 	$costPrice = $items->find($sale->item_id)->cost_price;
+                                    $costPrice = $costPrice * $sale->item_count;
                                 ?>
                                 <fieldset class="mb-4 form-group">
                                     <input class="form-control col-md-5{{ $errors->has('cost_price') ? ' is-invalid' : '' }}" name="cost_price" value="{{ Ctm::isOld() ? old('cost_price') : (isset($sale->cost_price) ? $sale->cost_price : $costPrice) }}">
@@ -226,7 +233,10 @@
                   			<tr>
                                 <th>粗利額</th>
                                 <td>
-                                <?php $arari = ($item->price - $item->cost_price) * $sale->item_count; ?>
+                                <?php 
+                                	$arari = ($item->price - $item->cost_price - $itemDg->take_charge) * $sale->item_count;
+                                	
+                                ?>
                                 ¥{{ number_format($arari) }}
                                 </td>
                             </tr>

@@ -112,6 +112,7 @@ class DeliveryGroupController extends Controller
         
         $data['open_status'] = isset($data['open_status']) ? 0 : 1;
         $data['is_time'] = isset($data['is_time']) ? 1 : 0;
+        $data['take_charge'] = isset($data['take_charge']) ? $data['take_charge'] : 0;
         
         if($editId) { //update（編集）の時
             $status = '配送区分が更新されました！';

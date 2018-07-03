@@ -8,11 +8,184 @@
     </div>
 
 
-    <div class="row">
+    <div class="mb-4 pb-3">
 
+		<form class="form-horizontal" role="form" method="GET" action="/dashboard/sales">
+        
+		<select class="form-control col-md-2 d-inline{{ $errors->has('first_y') ? ' is-invalid' : '' }}" name="first_y">
+            <option selected disabled>--</option>
+            <?php
+                $yNow = date('Y');
+                $y = 2018;
+            ?>
+            @while($y <= $yNow)
+                <?php
+                    $selected = '';
+                    if(Ctm::isOld()) {
+                        if(old('first_y') == $y)
+                            $selected = ' selected';
+                    }
+                    else {
+                        if(Request::has('first_y') && Request::input('first_y') == $y) {
+                        //if(Session::has('all.data.user')  && session('all.data.user.birth_year') == $y) {
+                            $selected = ' selected';
+                        }
+                    }
+                ?>
+                <option value="{{ $y }}"{{ $selected }}>{{ $y }}</option>
+                
+                <?php $y++; ?>
+            
+            @endwhile
+        </select>
+        <span class="mr-2">年</span>
+        
+        @if ($errors->has('first_y'))
+            <div class="help-block text-danger">
+                <span class="fa fa-exclamation form-control-feedback"></span>
+                <span>{{ $errors->first('first_y') }}</span>
+            </div>
+        @endif
+        
+        <select class="form-control col-md-1 d-inline{{ $errors->has('first_m') ? ' is-invalid' : '' }}" name="first_m">
+            <option selected disabled>--</option>
+            <?php
+                $m = 1;
+            ?>
+            @while($m <= 12)
+                <?php
+                    $selected = '';
+                    if(Ctm::isOld()) {
+                        if(old('first_m') == $m)
+                            $selected = ' selected';
+                    }
+                    else {
+                        if(Request::has('first_m') && Request::input('first_m') == $m) {
+                        //if(Session::has('all.data.user')  && session('all.data.user.birth_month') == $m) {
+                            $selected = ' selected';
+                        }
+                    }
+                ?>
+                <option value="{{ $m }}"{{ $selected }}>{{ $m }}</option>
+                
+                <?php $m++; ?>
+            
+            @endwhile
+        </select>
+        <span class="mr-2">月</span>
+        
+        @if ($errors->has('first_m'))
+            <div class="help-block text-danger">
+                <span class="fa fa-exclamation form-control-feedback"></span>
+                <span>{{ $errors->first('first_m') }}</span>
+            </div>
+        @endif
+        
+        <b>〜</b>&nbsp;&nbsp;&nbsp;
+        
+        <select class="form-control col-md-2 d-inline{{ $errors->has('last_y') ? ' is-invalid' : '' }}" name="last_y">
+            <option selected disabled>--</option>
+            <?php
+                $yNow = date('Y');
+                $y = 2018;
+            ?>
+            @while($y <= $yNow)
+                <?php
+                    $selected = '';
+                    if(Ctm::isOld()) {
+                        if(old('user.birth_year') == $y)
+                            $selected = ' selected';
+                    }
+                    else {
+                        if(Request::has('last_y') && Request::input('last_y') == $y) {
+                        //if(Session::has('all.data.user')  && session('all.data.user.birth_year') == $y) {
+                            $selected = ' selected';
+                        }
+                    }
+                ?>
+                <option value="{{ $y }}"{{ $selected }}>{{ $y }}</option>
+                
+                <?php $y++; ?>
+            
+            @endwhile
+        </select>
+        <span class="mr-2">年</span>
+        
+        @if ($errors->has('last_y'))
+            <div class="help-block text-danger">
+                <span class="fa fa-exclamation form-control-feedback"></span>
+                <span>{{ $errors->first('last_y') }}</span>
+            </div>
+        @endif
+        
+        <select class="form-control col-md-1 d-inline{{ $errors->has('last_m') ? ' is-invalid' : '' }}" name="last_m">
+            <option selected disabled>--</option>
+            <?php
+                $m = 1;
+            ?>
+            @while($m <= 12)
+                <?php
+                    $selected = '';
+                    if(Ctm::isOld()) {
+                        if(old('last_month') == $m)
+                            $selected = ' selected';
+                    }
+                    else {
+                        if(Request::has('last_m') && Request::input('last_m') == $m) {
+                        //if(Session::has('all.data.user')  && session('all.data.user.birth_month') == $m) {
+                            $selected = ' selected';
+                        }
+                    }
+                ?>
+                <option value="{{ $m }}"{{ $selected }}>{{ $m }}</option>
+                
+                <?php $m++; ?>
+            
+            @endwhile
+        </select>
+        <span class="mr-2">月</span>
+        
+        @if ($errors->has('last_m'))
+            <div class="help-block text-danger">
+                <span class="fa fa-exclamation form-control-feedback"></span>
+                <span>{{ $errors->first('last_m') }}</span>
+            </div>
+        @endif
+        
+        
+        <button type="submit" name="set" value="1" class="btn btn-info ml-2 mr-4">送 信</button>
+        <a href="{{ url('dashboard/sales') }}" class="btn border border-secondary bg-white"><span class="text-secondary">クリア</span></a>
+        </form>
+        
+        
+        <div class="mt-3 text-big">
+        	@if(isset($saleRelForSum))
+            	<?php 
+                	$total = 
+                    	$saleRelForSum->sum('all_price') + 
+                        $saleRelForSum->sum('deli_fee') + 
+                        $saleRelForSum->sum('cod_fee') - 
+                        $saleRelForSum->sum('use_point');
+                ?>
+            	<p class="mb-0">売上 計：¥{{ number_format($total) }}</p>
+                <?php
+                	$tax = $saleRelForSum->sum('all_price') - ($saleRelForSum->sum('all_price') / 1.08);
+//                    echo $tax. "<br>";
+//                    echo $saleObjs->sum('cost_price'). "<br>";
+//                    echo $saleRelForSum->sum('take_charge_fee'). "<br>";
+//                    echo $saleRelForSum->sum('all_price') . "<br>";
+                    $arari = $total - $tax - $saleObjs->sum('cost_price') - $saleRelForSum->sum('take_charge_fee');
+                ?>
+                <p>粗利 計：¥{{ number_format($arari) }}</p>
+                
+            @else
+            
+            @endif
+        	{{-- $saleObjs->sum('total_price') + $saleObjs->sum('deli_fee') + $saleObjs->sum('cod_fee') --}}
+            
+        </div>
 
     </div>
-    <!-- /.row -->
 
 
   
@@ -42,11 +215,19 @@
     @endif
     </div>
 
-    {{ $saleObjs->links() }}
+    {{-- $saleObjs->links() --}}
 
-
+    
+	<style>
+    	#dataTable_filter input[type="search"] {
+        	margin-right: 30em;
+        }
+    </style>
+	
+    
+    
     <!-- Example DataTables Card-->
-    <div style="overflow:scroll;" class="col-md-12">
+    <div style="overflow:scroll;" class="">
     <div class="mb-3">
     	
 
@@ -71,9 +252,32 @@
                   <th>購入日</th>
                   
                   <th></th>
-                  <th></th>
                 </tr>
               </thead>
+              
+              {{--
+              <tfoot>
+              	<tr>
+                	<th></th>
+                  <th>ID</th>
+                  <th>注文番号</th>
+                  <th>(ID)商品名</th>
+                  <th>発送状況</th>
+                  <th>個数</th>
+                  <th>{{ $saleObjs->sum('total_price') }}</th>
+                  <th>{{ $saleObjs->sum('deli_fee') }}</th>
+                  <th>代引手数料</th>
+                  <th>決済方法</th>
+                  <th>粗利額</th>
+                  <th>粗利率</th>
+                  <th>会員</th>
+                  <th>購入日</th>
+                  
+                  <th></th>
+                
+                </tr>
+              </tfoot>
+              --}}
               
               <tbody>
               @foreach($saleObjs as $sale)
@@ -84,11 +288,13 @@
                 	<td><a href="{{url('dashboard/sales/'. $sale->id)}}" class="btn btn-success btn-sm center-block">確認</a></td>
                   <td>{{ $sale->id }}</td>
                   <td><a href="{{ url('dashboard/sales/order/'. $saleRel->order_number) }}">{{ $saleRel->order_number }}</td>
+                  
                   <td>
                   	<?php $item = $items->find($sale->item_id) ?>
                   	({{ $sale->item_id }}){{ $item->title }}<br>
                   	[{{ $cates->find($item->cate_id)->name }}]
                   </td>
+                  
                   <td>
                   	 @if($sale->deli_done)
                        <span class="text-success">発送済み</span>
@@ -96,10 +302,15 @@
                       <span class="text-danger">未発送</span>
                     @endif   
                   </td>
+                  
                   <td>{{ $sale->item_count }}</td>
+                  
                   <td>¥{{ number_format($sale->total_price) }}</td>
+                  
                   <td>¥{{ number_format($sale->deli_fee) }}</td>
+                  
                   <td>¥{{ number_format($sale->cod_fee) }}</td>
+                  
                   <td>
                   	@if($sale->pay_method == 6)
                     <a href="{{ url('dashboard/sales/order/'. $saleRel->order_number) }}">
@@ -117,8 +328,27 @@
                     	{{ $pms->find($sale->pay_method)->name }}
                     @endif
                 	</td>
-                  <td></td>
-                  <td></td>
+                  
+                  <td>
+                  	<?php 
+                    	$takeCharge = $itemDg->find($item->dg_id)->take_charge;
+                        if(isset($takeCharge)) {
+                        	$arari = ($item->price - $item->cost_price - $takeCharge) * $sale->item_count; 
+                        }
+                        else {
+                        	$arari = ($item->price - $item->cost_price - 0) * $sale->item_count;
+                        }
+                    ?>
+                    ¥{{ number_format($arari) }}
+                  
+                  </td>
+                  
+                  <td>
+                  	<?php $total = $sale->total_price + $sale->deli_fee + $sale->cod_fee; ?>
+                  	{{ round($arari / $total * 100, 1) }}%
+                  
+                  </td>
+                  
                   <td>
                   	@if($saleRel->is_user)
                 		<span class="text-primary">会員</span>:{{ $users->find($saleRel->user_id)->name }}
@@ -131,7 +361,6 @@
                   
                   <td><a href="{{url('dashboard/sales/'. $sale->id)}}" class="btn btn-success btn-sm center-block">確認</a></td>
                   
-                  <td></td>
                 </tr>
             @endforeach
 
@@ -146,7 +375,7 @@
     </div>
     </div>
     
-    {{ $saleObjs->links() }}
+    {{-- $saleObjs->links() --}}
 
         
 @endsection

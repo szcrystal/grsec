@@ -134,6 +134,7 @@ class CartController extends Controller
        	$allPrice = $all['all_price']; 
         $deliFee = $all['deli_fee'];
         $codFee = $all['cod_fee'];
+        $takeChargeFee = $all['take_charge_fee'];
         $usePoint = $all['use_point'];      
       	$addPoint = $all['add_point'];
           
@@ -264,8 +265,9 @@ class CartController extends Controller
             
             'deli_fee' => $deliFee,
             'cod_fee' => $codFee,
+            'take_charge_fee' => $takeChargeFee,
             'use_point' => $usePoint,
-            'all_price' => $allPrice,
+            'all_price' => $allPrice, //商品withTax x 個数 の合計　送料等は含まれない
             
             'destination' => $destination,
             'deli_done' => 0,
@@ -288,6 +290,10 @@ class CartController extends Controller
     	$saleIds = array();
         //売上登録処理 Sale create
         foreach($itemData as $key => $val) {
+        	
+//            ($item->price - $item->cost_price - $itemDg->take_charge) * $sale->item_count;
+//        	$arari = $val['item_total_price']
+        
             $sale = $this->sale->create(
                 [
                 	'salerel_id' => $saleRelId,
@@ -306,6 +312,8 @@ class CartController extends Controller
                     'cod_fee' => 0,
                     'use_point' => 0,
                     'total_price' => $val['item_total_price'],
+                    
+                    'cost_price' => $this->item->find($val['item_id'])->cost_price * $val['item_count'],
                     
                     'deli_time' => isset($val['deli_time']) ? $val['deli_time'] : null,
                     
@@ -538,6 +546,7 @@ class CartController extends Controller
         
         //送料 ---------------------------------
         $deliFee = 0;
+        $takeChargeFee = 0;
         
         //$prefId/$prefNameは上記で既に取得している
         
@@ -564,7 +573,7 @@ class CartController extends Controller
                 if(! $item->is_once) { //同梱包不可のものはそれぞれ単独で
                     $fee = $this->dgRel->where(['dg_id'=>$item->dg_id, 'pref_id'=>$prefId])->first()->fee;
                     $deliFee += $fee;
-                    //$dgIds[] = $item->dg_id;
+                    $takeChargeFee += $this->dg->find($item->dg_id)->take_charge; //送料負担分を加算
                 } 
                 else { //同梱包可能なものは別配列へ入れて下記へ
                     if($item->dg_id == $sitakusaSmId || $item->dg_id == $sitakusaBgId) { //下草の時 下草用の配列に入れる　下草だけ特別なので別計算で
@@ -573,7 +582,7 @@ class CartController extends Controller
                     elseif($item->dg_id == $coniferSmId || $item->dg_id == $coniferBgId) { //コニファーの時 コニファー用の配列に入れる　コニファーだけ特別なので別計算で
                     	$coniferItem[] = $item;
                     }
-                    else {
+                    else { //下草・コニファー以外の同梱包商品
                         $isOnceItem[] = $item;
                         $dgIds[$item->id] = $item->dg_id; //itemIdをkeyとしてdeliveryGroupIdを別配列へ
                     }
@@ -645,7 +654,9 @@ class CartController extends Controller
                     else { //同じ配送区分がない時
                     	$fee = $this->dgRel->where(['dg_id'=>$ioi->dg_id, 'pref_id'=>$prefId])->first()->fee;
                     	$deliFee += $fee;  
-                    }     
+                    }
+                    
+                    $takeChargeFee += $this->dg->find($ioi->dg_id)->take_charge; //送料負担分を加算
                 }
          	}   
         }
@@ -727,14 +738,18 @@ class CartController extends Controller
             if($isBg) { //コニファー大の時
             	$coniferCapa = $this->dg->find($coniferBgId)->capacity;
                 $coniFee = $this->dgRel->where(['dg_id'=>$coniferBgId, 'pref_id'=>$prefId])->first()->fee;
+                
+                $takeChargeFee += $this->dg->find($coniferBgId)->take_charge; //送料負担分を加算
             }
             else { //コニファー小の時
             	$coniferCapa = $this->dg->find($coniferSmId)->capacity;
                 $coniFee = $this->dgRel->where(['dg_id'=>$coniferSmId, 'pref_id'=>$prefId])->first()->fee;
+                
+                $takeChargeFee += $this->dg->find($coniferSmId)->take_charge; //送料負担分を加算
             }
             
  
-            //下草商品の係数の合計を算出
+            //コニファー商品の係数の合計を算出
         	foreach($coniferItem as $ioi) {	
                 $count += $ioi->count;
                 $factor += $ioi->factor * $ioi->count;   
@@ -794,7 +809,7 @@ class CartController extends Controller
         $totalFee = $totalFee + $codFee;
         
         //送料、手数料、ポイントのsession入れ *********************
-        session(['all.deli_fee'=>$deliFee, 'all.cod_fee'=>$codFee, 'all.use_point'=>$usePoint, 'all.add_point'=>$addPoint]);
+        session(['all.deli_fee'=>$deliFee, 'all.cod_fee'=>$codFee, 'all.take_charge_fee'=>$takeChargeFee, 'all.use_point'=>$usePoint, 'all.add_point'=>$addPoint]);
 
         
         // Settle 決済 ====================================================
@@ -942,6 +957,7 @@ class CartController extends Controller
           	}      
         }
         
+        //時間指定の選択肢
         $dgGroup = array();
         foreach($sesItems as $item) {
         	$dgId = $this->item->find($item['item_id'])->dg_id;
@@ -951,6 +967,9 @@ class CartController extends Controller
             }
             
         }
+        
+//        print_r($dgGroup);
+//        exit;
         
         //$dgGroup = $this->item->groupBy('view_count')->get()->all();        
 //        print_r($dgGroup);

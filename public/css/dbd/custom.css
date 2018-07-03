@@ -34,6 +34,13 @@ h1 {
 .text-big {
 	font-size: 1.2em;
 }
+.text-small {
+	font-size: 0.9em;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+
 label {
 	font-weight: bold;
 	color: #555;

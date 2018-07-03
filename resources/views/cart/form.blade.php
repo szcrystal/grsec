@@ -647,7 +647,7 @@ use App\DeliveryGroup;
                 <div>
                 	<h3 class="card-header mt-5">お支払い方法</h3>
    
-                    <fieldset class="form-group my-3 px-5 py-2{{ $errors->has('pay_method') ? ' border border-danger' : '' }}">
+                    <fieldset class="form-group my-3 px-4 py-2{{ $errors->has('pay_method') ? ' border border-danger' : '' }}">
                     @if ($errors->has('pay_method'))
                         <div class="help-block text-danger mb-2">
                             <span class="fa fa-exclamation form-control-feedback"></span>
@@ -691,7 +691,7 @@ use App\DeliveryGroup;
                 <div class="mb-3">
                 	<h3 class="card-header mt-5">配送希望時間指定</h3>
 
-                    <fieldset class="form-group my-3 px-5 py-2{{ $errors->has('pay_method') ? ' border border-danger' : '' }}">
+                    <fieldset class="form-group my-3 px-4 py-2{{ $errors->has('pay_method') ? ' border border-danger' : '' }}">
                     @if ($errors->has('deli_time'))
                         <div class="help-block text-danger mb-2">
                             <span class="fa fa-exclamation form-control-feedback"></span>
@@ -702,9 +702,7 @@ use App\DeliveryGroup;
                     @foreach($dgGroup as $key => $val)
 						<div class="mb-3 pb-3">
                         
-                        @if(count($dgGroup) == 1 && count($val) == 1)
-                        	
-                        @else
+                        @if(session()->has('item.data') && count(session('item.data')) > 0)
                             <p class="text-small">■下記の商品につきまして、ご希望配送時間の指定ができます。</p>
                              @foreach($val as $itemId)
                                 ・<b>{{ Item::find($itemId)->title }}</b><br>

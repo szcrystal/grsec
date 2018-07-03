@@ -59,6 +59,7 @@ Route::resource('dashboard/tags', 'DashBoard\TagController');
 Route::resource('dashboard/contacts', 'DashBoard\ContactController');
 
 //Sale
+Route::get('dashboard/sales/compare', 'DashBoard\SaleController@saleCompare');
 Route::get('dashboard/sales/order/{orderNum}', 'DashBoard\SaleController@saleOrder');
 Route::post('dashboard/sales/order', 'DashBoard\SaleController@postSaleOrder');
 Route::resource('dashboard/sales', 'DashBoard\SaleController');

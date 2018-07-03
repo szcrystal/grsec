@@ -113,20 +113,20 @@
                 @endif
             </fieldset>
             
-            {{--
+            
             <fieldset class="mb-4 form-group">
-                <label for="stock" class="control-label">係数</label>
-                <input class="form-control col-md-6{{ $errors->has('factor') ? ' is-invalid' : '' }}" name="factor" value="{{ Ctm::isOld() ? old('factor') : (isset($dg) ? $dg->factor : '') }}">
+                <label for="take_charge" class="control-label">送料差損</label>
+                <input class="form-control col-md-6{{ $errors->has('take_charge') ? ' is-invalid' : '' }}" name="take_charge" value="{{ Ctm::isOld() ? old('take_charge') : (isset($dg) ? $dg->take_charge : '') }}">
                 
 
-                @if ($errors->has('factor'))
+                @if ($errors->has('take_charge'))
                     <div class="text-danger">
                         <span class="fa fa-exclamation form-control-feedback"></span>
-                        <span>{{ $errors->first('factor') }}</span>
+                        <span>{{ $errors->first('take_charge') }}</span>
                     </div>
                 @endif
             </fieldset>
-            --}}
+            
             
             <fieldset class="form-group mb-2">
                     <div class="checkbox">
