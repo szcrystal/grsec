@@ -34,10 +34,10 @@
         </li>
         
             
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Example Pages">
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
               <a class="nav-link" href="{{ url('dashboard/mails') }}" id="mails">
               	<i class="fa fa-fw fa-dashboard"></i>
-                <span>メールテンプレート</span>
+                <span class="nav-link-text">メールテンプレート</span>
             </a>
         </li>
         
@@ -45,7 +45,7 @@
         
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Example Pages">
           <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseMaster" data-parent="#exampleAccordion">
-            <i class="fa fa-fw fa-file"></i>
+            <i class="fa fa-pencil"></i>
             <span class="nav-link-text">マスター登録</span>
           </a>
           
@@ -133,7 +133,7 @@
         
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Example Pages">
           <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#items" data-parent="#exampleAccordion">
-            <i class="fa fa-fw fa-file"></i>
+            <i class="fa fa-crop"></i>
             <span class="nav-link-text">商品管理</span>
           </a>
           <ul class="sidenav-second-level collapse" id="items">
@@ -174,7 +174,7 @@
         
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Example Pages">
           <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#sales" data-parent="#exampleAccordion">
-            <i class="fa fa-fw fa-file"></i>
+            <i class="fa fa-yen"></i>
             <span class="nav-link-text">売上管理</span>
           </a>
           <ul class="sidenav-second-level collapse" id="sales">
@@ -190,7 +190,7 @@
         
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Example Pages">
           <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#users" data-parent="#exampleAccordion">
-            <i class="fa fa-fw fa-file"></i>
+            <i class="fa fa-user"></i>
             <span class="nav-link-text">会員管理</span>
           </a>
           <ul class="sidenav-second-level collapse" id="users">
@@ -253,7 +253,7 @@
         
       	<li class="nav-item">
           <a class="nav-link" href="{{ url('dashboard/contacts') }}">
-            <i class="fa fa-fw fa-file"></i>
+            <i class="fa fa-question-circle"></i>
             <span class="nav-link-text">お問い合わせ一覧</span>
           </a>
           

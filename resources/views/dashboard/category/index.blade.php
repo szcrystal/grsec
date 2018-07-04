@@ -15,7 +15,7 @@
         </div>
     @endif
 
-    {{ $cates->links() }}
+    {{-- $cates->links() --}}
     
     
     <div class="row">
@@ -27,7 +27,7 @@
         </div>
                            
             <div class="table-responsive">
-                <table class="table table-striped table-bordered table-hover bg-white">
+                <table id="dataTable" class="table table-striped table-bordered table-hover bg-white" width="100%" cellspacing="0">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -90,7 +90,7 @@
         
     
     
-    {{ $cates->links() }}
+    {{-- $cates->links() --}}
         
 @endsection
 

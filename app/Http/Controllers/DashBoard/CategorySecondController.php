@@ -30,9 +30,8 @@ class CategorySecondController extends Controller
     {
     	$cates = $this->category->all();
         
-        $subCates = CategorySecond::orderBy('id', 'desc')
-           //->take(10)
-           ->paginate($this->perPage);
+        //$subCates = CategorySecond::orderBy('id', 'desc')->paginate($this->perPage);
+        $subCates = CategorySecond::orderBy('id', 'desc')->get();
         
         return view('dashboard.categorySecond.index', ['subCates'=>$subCates, 'cates'=>$cates]);
     }

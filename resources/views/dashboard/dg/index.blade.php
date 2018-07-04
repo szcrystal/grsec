@@ -42,7 +42,7 @@
     @endif
     </div>
 
-    {{ $dgs->links() }}
+    {{-- $dgs->links() --}}
 
 
     <!-- Example DataTables Card-->
@@ -55,8 +55,8 @@
 
 
         <div class="">
-          <div class="table-responsive">
-            <table class="table table-striped table-bordered table-hover bg-white"{{-- id="dataTable"--}} width="100%" cellspacing="0">
+        <div class="table-responsive">
+        	<table id="dataTable" class="table table-striped table-bordered table-hover bg-white"{{-- id="dataTable"--}} width="100%" cellspacing="0">
               <thead>
                 <tr>
                   <th>ID</th>
@@ -65,7 +65,6 @@
                   <th>容量</th>
                   {{-- <th>係数</th> --}}
                   <th>時間指定</th>
-                  <th></th>
                   <th></th>
                   <th></th>
                 </tr>

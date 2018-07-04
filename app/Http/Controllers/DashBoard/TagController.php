@@ -38,9 +38,8 @@ class TagController extends Controller
     
     public function index()
     {
-        $tags = Tag::orderBy('id', 'desc')
-           //->take(10)->get();
-           ->paginate($this->perPage);
+        //$tags = Tag::orderBy('id', 'desc')->paginate($this->perPage);
+        $tags = Tag::orderBy('id', 'desc')->get();
         
         
         //$status = $this->articlePost->where(['base_id'=>15])->first()->open_date;

@@ -53,7 +53,8 @@ class UserController extends Controller
          	$isUser = 1;   
         }
         
-        $userObjs = $model->orderBy('id', 'desc')->paginate($this->perPage);
+        //$userObjs = $model->orderBy('id', 'desc')->paginate($this->perPage);
+        $userObjs = $model->orderBy('id', 'desc')->get();
         
         //$cates= $this->category;
         

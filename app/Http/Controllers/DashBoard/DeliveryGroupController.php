@@ -38,7 +38,8 @@ class DeliveryGroupController extends Controller
     public function index()
     {
         
-        $dgs = $this->dg->orderBy('id', 'asc')->paginate($this->perPage);
+        //$dgs = $this->dg->orderBy('id', 'asc')->paginate($this->perPage);
+        $dgs = $this->dg->orderBy('id', 'asc')->get();
         
         $dgRels = $this->dgRel;
         

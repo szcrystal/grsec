@@ -54,7 +54,8 @@ class ItemController extends Controller
     public function index()
     {
         
-        $itemObjs = Item::orderBy('id', 'desc')->paginate($this->perPage);
+        //$itemObjs = Item::orderBy('id', 'desc')->paginate($this->perPage);
+        $itemObjs = Item::orderBy('id', 'desc')->get();
         
         $cates= $this->category;
         $subCates= $this->categorySecond;

@@ -42,7 +42,7 @@
     @endif
     </div>
 
-    {{ $itemObjs->links() }}
+    {{-- $itemObjs->links() --}}
 
 
     <!-- Example DataTables Card-->
@@ -175,7 +175,7 @@
     </div>
     </div>
     
-    {{ $itemObjs->links() }}
+    {{-- $itemObjs->links() --}}
 
         
 @endsection

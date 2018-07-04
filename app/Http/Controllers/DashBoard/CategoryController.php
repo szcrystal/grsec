@@ -28,9 +28,8 @@ class CategoryController extends Controller
     
     public function index()
     {
-        $cates = Category::orderBy('id', 'desc')
-           //->take(10)
-           ->paginate($this->perPage);
+        //$cates = Category::orderBy('id', 'desc')->paginate($this->perPage);
+        $cates = Category::orderBy('id', 'desc')->get();
         
         return view('dashboard.category.index', ['cates'=>$cates]);
     }

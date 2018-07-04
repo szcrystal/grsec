@@ -15,7 +15,7 @@
     <!-- /.row -->
     
 
-    {{ $tags->links() }}
+    {{-- $tags->links() --}}
     
       
     <div class="mb-3 text-right">
@@ -85,7 +85,7 @@
         
     
     
-    {{ $tags->links() }}
+    {{-- $tags->links() --}}
         
 @endsection
 

@@ -48,7 +48,7 @@
     @endif
     </div>
 
-    {{ $userObjs->links() }}
+    {{-- $userObjs->links() --}}
 
 
     <!-- Example DataTables Card-->

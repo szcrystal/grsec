@@ -15,7 +15,7 @@
         </div>
     @endif
 
-    {{ $subCates->links() }}
+    {{-- $subCates->links() --}}
     
   	<div class="row">
     <div class="col-md-12">
@@ -95,7 +95,7 @@
         
     
     
-    {{ $subCates->links() }}
+    {{-- $subCates->links() --}}
         
 @endsection
 
