@@ -5,7 +5,7 @@
 
 	{{-- @include('main.shared.carousel') --}}
 
-<div id="main" class="top">
+<div id="main" class="top confirm">
 
         <div class="panel panel-default">
 
@@ -20,11 +20,10 @@
 
 <div class="float-left col-md-8">
 	<h5 class="card-header mb-3 py-2">ご注文の商品</h5>
-	<div class="table-responsive table-custom table-cart">
+	<div class="table-responsive table-cart">
     <table class="table table-bordered bg-white">
         <thead>
               <tr>
-                <th></th>
                 <th>商品名</th>
                 <th>数量</th>
                 <th>金額（税込）</th>
@@ -35,9 +34,11 @@
              
              @foreach($itemData as $item)    
              <tr>
-                <td class="text-center"><img src="{{ Storage::url($item->main_img) }}" alt="{{ $item->title }}" class="img-fluid" width=80 height=80></td>
                 
-                <td>{{ $item->title }}<br>[ {{ $item->number }} ]</td>
+                <td>
+                	<img src="{{ Storage::url($item->main_img) }}" alt="{{ $item->title }}" class="img-fluid" width=80 height=80>
+                	{{ $item->title }}<br>[ {{ $item->number }} ]
+                </td>
                 
                 <td>{{ $item->count }}</td>
 
@@ -104,8 +105,6 @@
 </h5>
 <div class="table-responsive table-custom">
     <table class="table border table-borderd bg-white">
-        <col class="w-25"></col>
-        <col></col>
         
         <tbody>
         <tr>
@@ -178,8 +177,6 @@
 <h5 class="">&nbsp;</h5>
 <div class="table-responsive table-custom">
     <table class="table border table-borderd bg-white">
-        <col class="w-50"></col>
-        <col class="text-right"></col>
         
         <tbody>
         <tr>
@@ -218,8 +215,7 @@
 @if($regist || Auth::check())
 <div class="table-responsive table-custom mt-3">
     <table class="table border table-borderd bg-white">
-        <col style="width:50%;"></col>
-        <col class="text-right"></col>
+
         @if(Auth::check())
         <tr>
             <th><label class="control-label">ポイント残高</label></th>
@@ -236,8 +232,6 @@
 
 <div class="table-responsive table-custom mt-3">
     <table class="table border table-borderd bg-white">
-        <col style="width:50%;"></col>
-        <col class="text-right"></col>
         
         <tr>
             <th><label class="control-label">お支払い方法</label></th>

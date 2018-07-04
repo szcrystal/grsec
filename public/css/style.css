@@ -131,8 +131,9 @@ input[type=checkbox] {
 
 /*max-width*/
 body {
-	min-width: 1200px;
+	min-width: 1200px !important;
 	padding: 0;
+    //border: 1px solid red;
 }
 
 .top-cont {
@@ -140,15 +141,17 @@ body {
 }
 
 .wrap-all,
+.fixed-top,
 .site-content,
-.foot-wrap {
-	width: 1200px;
+#colop {
+	min-width: 1100px;
 	margin: auto;
 	//border: 1px solid red;
 }
 
 
-.table-custom th {
+.table-custom th,
+.table-cart th {
 	background: #3a3b3c;
 	color: #fff;
 	font-size: 0.95em;
@@ -202,6 +205,23 @@ body {
 }
 #guide .active-page div {
 	background: #333;
+}
+
+.table-custom .table tbody th {
+	width: 27%;
+}
+.confirm .table-custom .table tbody th {
+	width: 53%;
+    font-size: 0.9em;
+}
+.table-cart .table {
+	width: 99.7%;
+}
+.table-cart .table td img.img-fluid {
+	float: left;
+    display: block;
+    margin-right: 1em;
+    //border: 1px solid red;
 }
 
 
@@ -358,7 +378,7 @@ body {
     //z-index: 9;
     display: none;
     opacity: 0;
-    padding: 0.2em 0.7em;
+    padding: 0.2em 0.8em;
 }
 .s-form input:focus {
     background: #3a3a3a;
@@ -553,7 +573,7 @@ body {
 	font-weight: bold;
     background: none;
     border-bottom: 1px solid #222;
-    padding-left: 0.5em;
+    padding-left: 0.4em;
 }
 .wrap-atcl {
 	margin-bottom: 8em;
@@ -573,7 +593,7 @@ body {
 	width: 32.0%;
 	margin-right: 1.8%;	
 	margin-bottom: 1.5em;
-	min-height: 23em;
+	//min-height: 23em;
     //border: 1px solid red;
 }
 .top .main-atcl {
@@ -589,7 +609,7 @@ body {
     overflow: hidden;
 }
 .top .img-box {
-    height: 270px;
+    height: 290px;
 }
 .single .img-box {
 	height: 145px;
@@ -622,7 +642,7 @@ body {
 .main-atcl h3 {
 	font-size: 1.3em;
 	font-weight: normal;
-	margin: 0.2em 0 0.2em;
+	margin: 0.1em 0 0.2em;
 	padding: 0;
 }
 .top .main-atcl h3 {
@@ -667,6 +687,10 @@ body {
 	margin-left: 0.5em;
 }
 
+.wrap-atcl > a.btn {
+	width: 25%;
+}
+
 
 .main-atcl .detail-link {
 	border: 2px solid turquoise;
@@ -697,6 +721,7 @@ body {
 
 
 /* Single */
+
 .carousel-indicators {
 	//border: 1px solid red;
     bottom: -2em;
@@ -732,14 +757,17 @@ body {
 }
 
 .carousel-item {
-	height: 800px;
+	height: 700px;
     overflow: hidden;
     //border: 1px solid red;
 }
 
 .single .head-frame h2 {
-	border-bottom: 1px solid #aaa;
+	font-weight: bold;
+	font-size: 1.6em;
+	border-bottom: 1px solid #222;
 	margin-bottom: 0.3em;
+    padding-bottom: 0.3em;
 }
 .single .price-meta {
 	font-size: 1.3em;
@@ -825,7 +853,13 @@ body {
 	font-weight: bold;
     font-size: 0.95em;
 }
-
+.login > div {
+	width: 50%;
+    float: left;
+}
+.login > div:last-of-type {
+	padding-left: 1.4em;
+}
 
 /* Pagination */
 .pagination-wrap {
@@ -930,7 +964,7 @@ body {
 #colop {
 	background: #eceaea;
 	height: auto;
-	padding: 2em 0 0;
+	padding: 2em 5% 0;
 	margin-top: 4em;
 	border-top: 1px solid #cdcecf;
 }

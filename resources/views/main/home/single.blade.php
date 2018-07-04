@@ -56,7 +56,7 @@ use App\User;
             </div>
                 
             <div class="float-right col-md-5">
-                	<h2>{{ $item -> title }}</h2>
+                	<h2 class="single-title">{{ $item -> title }}</h2>
                  	<p class="text-big">{{ $item->catchcopy }}</p>   
                  	
                   	<?php

@@ -8,34 +8,85 @@ for SP
 
 @media only screen and (max-width: 1000px) {
 	body {
-    	min-width: 100%;
+    	min-width: 100% !important;
      	//background: red;
-      	font-size: 95%;     
-    }
-	.head-wrap,
-    .menu-wrap,
-    .site-content,
-    .foot-wrap {
-    	width: 100%;
-      
-    }
-    .site-content,
-    .foot-wrap {
-        padding-left: 0.3em;
-        padding-right: 0.3em;      
-    }
-    .comp-info {
-        width: 20%;
-        
-    }
-    .comp-info div {
-		//font-size: 1.1em;
+      	font-size: 85%;
+        //border: 2px solid orange;     
     }
     
-    .company {
-    	width: 37%;
+    .wrap-all,
+	.fixed-top,	
+	.site-content,
+	#colop {
+    	min-width: 100% !important;
+        //border: 1px solid blue;
+      	padding: 0;
     }
     
+    .container {
+    	padding: 0;
+    }
+    
+    .site-header h1 {
+        margin: 0.1em 0 0 0.4em;
+    }
+    .site-header h1 img {
+        width: 200px;
+    }
+    .head-center {
+        width: 70px;
+        margin: auto;
+    }
+	.head-navi {
+        top: 1.7em;
+		right: 1.0em;
+    }
+	.s-form {
+    	top: 2.4em;
+    	right: 8%;
+	}
+    .s-form input {
+    	font-size: 0.9em;
+    }
+    
+    
+    .main-navi > ul > li > span {
+    	font-size: 0.75em;
+        line-height: 3.2em;
+    }
+    
+    .card-header {
+    	font-size: 1.5em;
+    }
+    
+    .img-box {
+        width: 100%;
+        height: 300px;
+        overflow: hidden;
+    }
+    .top .img-box {
+        height: 195px;
+    }
+    
+    
+    .carousel-item {
+		height: 420px;
+    }
+    .single .head-frame h2 {
+    	font-size: 1.4em;
+    }
+    
+    #colop {
+    	padding-top: 2em;
+    }
+    .foot-menu {
+    	width: 48%;
+        margin-left: 1.5%;
+    }
+    .foot-company {
+        width: 47%;
+        margin-right: 1%;
+    }
     
 }	
 
@@ -49,28 +100,162 @@ for SP
 /* iPhone6+ LandScape/ 6 LandScape/ 5s LandScape(570px) */
 @media only screen and (max-width: 750px) {
 	
-	.head-wrap {
-		margin: 0;
+    body {
+    	font-size: 0.9em;
+    }
+	.site-header {
+		position: relative;
+        padding: 0.5em 0.2em;
+        border-bottom: 1px solid #bbb;
 	}
 	
-	.site-branding,
-	.comp-info {
-		float: none;
-  		width: 100%;
+
+	.site-header .logos {
+  		width: 70%;
+        margin: auto;
+        padding: 0 0 0 0.2em;
     	//border: 1px solid red;          
 	}
-	.site-branding {
-		padding: 1.1em;
-	}
-	.site-branding h1 {
-        margin-left: 1.4em;
-        margin-top: 1.8em;
+    .site-header h1 {
+    	margin: 0;
+        padding: 0;
+        line-height: 0;
     }
-    .head-wrap > img {
+    .site-header h1 a {
+    	display: inline-block;
+    }
+    .site-header .logos h1 img:first-of-type {
+		float: none;
+  		width: 76%;
+        margin-top: 0;
+        margin-left: 0.2em;
+    	//border: 1px solid red;          
+	}
+    .site-header .logos h1 img:last-of-type {
+		float: none;
+  		width: 17%;
+        margin-top: 0;
+        margin-left: -0.2em;
+    	//border: 1px solid red;          
+	}
+    
+    .s-form {
+    	position: absolute;
+        top: 11px;
+        right: 1%;
+        text-align: right;
+        width: 70%;
+        float: right;
+        margin-right: 3%;
+    }
+    .s-form .fa {
+    	font-size: 1.7em;
+        color: #333;
+    }
+    
+    /* ******** */
+    #menuButton {
+      display: block;
+      width: 38px;
+      height: 35px;
+      float: left;
+      margin: 0 0 0 3%;
+      position: absolute;
+      top: 11px;
+      left: 1%;
+      text-decoration: none;
+      //border: 1px solid red;
+    }
+    #menuButton span {
+      display: block;
+      background: #333;
+      width: 28px;
+      height: 3px;
+      position: absolute;
+      left: 0;
+/*      transition: all 0.4s;*/
+/*      -webkit-transition: all 0.4s;*/
+/*      -moz-transition: all 0.4s;*/
+    }
+    #menuButton em {
+    	display: block;
+    	font-style: normal;
         position: absolute;
-        top: 55px;
-        left: 70%;
-        width: 70px;
+        bottom: 3px;
+        left: 2px;
+        font-size: 0.8em;
+    }
+    #menuButton span:first-child {
+    	top: 5px;
+    }
+    #menuButton span:nth-child(2) {
+    	top: 14px;
+    }
+    #menuButton span:last-child {
+    	top: 23px;
+    }
+    
+    .table-custom .table {
+    	table-layout: fixed;
+    }
+    .table-custom .table tbody th,
+    .table-custom .table tbody td {
+    	display: block;
+    	float: none;
+        width: 100%;
+        //border: 1px solid red;
+    } 
+    .confirm .table-custom .table tbody th { /* shop confirm -> Price */
+    	display: block;
+		width: 100%;
+    }
+    .table-custom .table tbody th {
+    	padding: 0.4em 0.6em 0;
+        vertical-align: middle;
+    }
+    .table-custom .table select {
+    	width: 85%;
+        margin-bottom: 0.8em;
+    }
+    
+    .table-cart .table {
+        width: 100%;
+        font-size: 0.9em;
+        table-layout: fixed;
+    }
+    .table-cart .table td img.img-fluid {
+        float: none;
+        display: block;
+        margin-right: 0;
+    }
+   	.table-cart .table thead th {
+   		font-size: 0.9em;
+   	}
+   	.table-cart .table thead th:first-of-type {
+    	width: 30% !important;
+    }
+    .table-cart .table thead th:nth-of-type(2) {
+    	width: 25%;
+    }
+    .table-cart .table thead th:nth-of-type(3) {
+    	width: 30%;
+    }
+    .table-cart .table thead th:nth-of-type(4) {
+    	width: 25%;
+    }
+    .table-cart .btn {
+    	font-size: 0.9em;
+    }
+    
+    
+    
+    .login > div {
+        width: 100%;
+        float: none;
+    }
+    .login > div:last-of-type {
+        padding-left: 0;
+        margin-top: 2em;
     }
     
 	div.tel-sp {
@@ -105,14 +290,7 @@ for SP
      	//float: right;   
     }
     
-    
-    
-    .fa-bars {
-        color: #2a2a2a;
-        float: right;
-        font-size: 3em;
-        margin-right: 0.3em;
-    }
+
     .main-navigation {
     	display: block;
         padding: 0;
@@ -154,30 +332,53 @@ for SP
         border-bottom: 1px solid #aaa;
     }
 	
-    .main-atcl {
-		float: none;
-  		width: 100%;
+    .wrap-all {
+    	padding-left: 1.6%;
+        padding-right: 1.5%;
+        //border: 1px solid green;
+    }
+    
+    .head-atcl h2 {
+    	font-size: 1.3em;
+        text-align: left;
+        padding-left: 0.2em;
+    }
+    .main-atcl,
+    .top .main-atcl {
+		float: left;
+  		width: 49%;
     	            
 	}
-	.main-atcl .shop-link a {
-		display: inline-block;
-		width: 100%;
-        text-align: center;
-	}
+    .main-atcl:nth-of-type(3n) {
+        margin-right: 1.2%;
+    }
+    .top .main-atcl:nth-of-type(3n) {
+        margin-right: 1.2%;
+    }
+    .top .main-atcl:nth-of-type(4n) {
+        margin-right: 1.2%;
+    }
+    .main-atcl:nth-of-type(2n),
+    .top .main-atcl:nth-of-type(2n) {
+        margin-right: 0;
+    }
+    
+    .wrap-atcl > a.btn {
+        width: 100%;
+    }
+    
+    
+    .foot-menu {
+    	float: none;
+        width: 90%;
+        margin: auto;
+    }
+    .foot-company {
+    	float: none;
+        width: 88%;
+        margin: 10em auto 1em;
+    }
 	
-	.site-info,
-	.company {
-		width: 90%;
-  		margin: auto;      
-  		float: none;      
-	}
-	.site-info ul {
-		margin: 0;
-  		padding: 0;      
-	}
-	.site-info ul li {
-		margin-bottom: 0.7em;
-	}
 }
 
 @media only screen and (max-width: 500px) { /* Portlait: iPhone6+ /6/ 5s */

@@ -1,5 +1,39 @@
+<div class="fixed-top">
+<header class="site-header clearfix">
 
-<nav class="main-navigation">
+	<div class="logos">
+        <h1>
+            <a href="{{ url('/') }}">
+                <img src="{{ url('images/logo-name.png') }}" alt="{{ config('app.name', 'グリーンロケット') }}">
+                <img src="{{ url('images/logo-symbol.png') }}" alt="{{ config('app.name', 'グリーンロケット') }}-ロゴマーク">
+            </a>
+        </h1>	
+    </div>
+
+	<div id="menuButton" class="nav-tgl float-left">
+        <div>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+
+		<div class="clearfix s-form">
+            <form class="my-1 my-lg-0" role="form" method="GET" action="{{ url('search') }}">
+                {{-- csrf_field() --}}
+ 
+                <input type="search" class="" name="s" placeholder="Search...">
+            </form>
+            
+            <span><i class="fa fa-search btn-s"></i></span>
+        </div>
+            
+        
+
+</header>
+
+
+<nav class="navbar main-navigation">
 
         <?php
             use App\Category;
@@ -37,7 +71,7 @@
                                 
                                 <ul>
                                 	<?php
-                                		$subCates = CategorySecond::where('cate_id', $cate->id)->get();
+                                		$subCates = CategorySecond::where('parent_id', $cate->id)->get();
                                     ?>
                                     
                                 	@foreach($subCates as $subCate)
@@ -55,8 +89,9 @@
             </li>
         </ul>
 
-
-
-
 </nav>
+
+
+</div>
+
 

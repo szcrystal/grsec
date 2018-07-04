@@ -226,7 +226,28 @@
             </li>
 
           </ul>
-        </li>        
+        </li>
+        
+        {{--
+        <div class="border border-secondary border-top-0 w-100 mx-auto"></div>
+        
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Example Pages">
+          <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#magazine" data-parent="#exampleAccordion">
+            <i class="fa fa-fw fa-file"></i>
+            <span class="nav-link-text">メルマガ</span>
+          </a>
+          <ul class="sidenav-second-level collapse" id="magazine">
+            <li>
+              <a href="#">メルマガ一覧</a>
+            </li>
+            <li>
+              <a href="#">メルマガ新規作成</a>
+            </li>
+
+          </ul>
+        </li>
+        --}}
+        
 
 		<div class="border border-secondary border-top-0 w-100 mx-auto"></div>
         

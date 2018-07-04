@@ -47,8 +47,7 @@ use App\DeliveryGroup;
 <h3 class="mb-3 card-header">会員登録情報</h3>
 <div class="table-responsive table-custom">
     <table class="table table-borderd border">
-        <col style="width:27%;"></col>
-        <col></col>
+
         <tr>
         	<th>氏名</th>
          	<td>{{ $userObj->name }}</td>   
@@ -96,8 +95,7 @@ use App\DeliveryGroup;
 
 <div class="table-responsive table-custom">
     <table class="table table-borderd border">
-        <col style="width:27%;"></col>
-        <col></col>
+       
         
         <tr class="form-group">
              <th><label class="control-label">氏名</label><em>必須</em></th>
@@ -252,8 +250,7 @@ use App\DeliveryGroup;
          <div class="table-responsive table-custom">
          <p class="mt-3 text-small">よろしければ以下もお答え下さい。</p>
             <table class="table table-borderd">
-            <col style="width:27%;"></col>
-            <col></col>
+
          <tr class="form-group">
              <th><label class="control-label">性別</label></th>
                <td>
@@ -401,8 +398,7 @@ use App\DeliveryGroup;
          <div id="magazine" class="table-responsive table-custom">
         <p class="mt-3 text-small">当店からのお知らせを希望しますか？</p>
             <table class="table table-borderd border">
-                <col style="width:27%;"></col>
-                <col></col>   
+ 
          <tr class="form-group">
              <th><label class="control-label">メールマガジンの登録</label></th>
                <td>
@@ -435,8 +431,7 @@ use App\DeliveryGroup;
          <div class="table-responsive table-custom">
             <p class="mt-3 text-small">8文字以上（半角）で、忘れないものを入力して下さい。<br>メールアドレスとパスワードは当店をご利用の際に必要となります。</p>
             <table class="table table-borderd border">
-                <col style="width:27%;"></col>
-                <col></col>
+
              <tr class="form-group">
              	
                  <th><label class="control-label">パスワード</label><em>必須</em></th>
@@ -503,8 +498,7 @@ use App\DeliveryGroup;
         
             <div class="table-responsive table-custom">
                 <table class="table table-borderd border">
-                    <col style="width:27%;"></col>
-                    <col></col>
+
                     <tr class="form-group">
                          <th><label class="control-label">配送先氏名</label><em>必須</em></th>
                            <td>

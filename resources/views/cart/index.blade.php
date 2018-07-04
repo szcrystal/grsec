@@ -29,11 +29,10 @@
 <form id="with1" class="form-horizontal" role="form" method="POST" action="{{ url('shop/cart') }}">
       {{ csrf_field() }}
                         
-<div class="table-responsive table-custom table-cart">
+<div class="table-responsive table-cart">
 	<table class="table table-bordered bg-white">
 		<thead>
   			<tr>
-                <th></th>
                 <th>商品名</th>
                 <th>数量</th>
                 <th>金額（税込）</th>
@@ -45,16 +44,15 @@
      		
      		@foreach($itemData as $key => $item)    
      		<tr>
-                <td class="text-center">
+                <td class="clearfix">
                 	<img src="{{ Storage::url($item->main_img) }}" alt="{{ $item->title }}" class="img-fluid" width=80 height=80>
-                </td>
                 
-                <td>
                 	<a href="{{ url('item/'.$item->id) }}">
                 	{{ $item->title }}<br>
                 	[ {{ $item->number }} ]
                  	</a>   
-                	<span class="d-block mt-2">¥{{ number_format(Ctm::getPriceWithTax($item->price)) }}（税込）</span></td>
+                	<span class="d-block mt-2">¥{{ number_format(Ctm::getPriceWithTax($item->price)) }}（税込）</span>
+                </td>
                 	
                 <td>
                     <fieldset class="mb-4 form-group">
@@ -113,12 +111,12 @@
          
          <tfoot>
          	<tr>
-          		<td colspan="3" class="text-right"><strong>小計</strong></td>
+          		<td colspan="2" class="text-right"><strong>小計</strong></td>
             	<td class="text-danger text-big">¥{{ number_format($allPrice) }}</td>
              	<td>
               			
                         <input type="hidden" name="calc" value="1" form="re">
-                        <button class="btn border border-secondary bg-white px-2" type="submit" name="re_calc" value="1"><i class="fas fa-redo"></i> 再計算する</button>
+                        <button class="btn border border-secondary bg-white px-2" type="submit" name="re_calc" value="1"><i class="fas fa-redo"></i> 再計算</button>
                         {{-- <input type="submit" name="re_calc" value="再計算"> --}}
                        
                     
@@ -132,10 +130,7 @@
 </div>
 
 <div class="clearfix mt-3">
-	<div class="float-left">
-		<input type="hidden" name="uri" value="{{ $uri }}">
-		<a href="{{ url($uri)}}" class="btn border border-secondary bg-white"><i class="fas fa-angle-double-left"></i> 元の画面に戻って買い物を続ける</a>
-	</div>
+	
 	<div class="float-right">
 			<input type="hidden" name="from_cart" value="1">
    
@@ -165,6 +160,13 @@
             
 			@endif
 	</div>
+    
+    <div class="float-left">
+		<input type="hidden" name="uri" value="{{ $uri }}">
+        
+		<a href="{{ url($uri)}}" class="btn border border-secondary bg-white"><i class="fas fa-angle-double-left"></i> 元に戻って買い物を続ける</a>
+	</div>
+    
 </div>
     </form>  
 @endif

@@ -90,6 +90,19 @@ class CreateMailTemplatesTable extends Migration
                 'updated_at' => date('Y-m-d H:i:s', time()),
             ]
         );
+        
+        DB::table('mail_templates')->insert(
+            [ 
+                'type_code' => 'kareEnsure',
+                'type_name' => '枯れ保証',
+                'title' => '枯れ保証期間について',
+                'header' => 'ababab',
+                'footer' => '121212',
+                
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time()),
+            ]
+        );
     }
 
     /**

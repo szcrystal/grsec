@@ -73,7 +73,7 @@
      	</div> 
       
       	<?php $slug = Category::where('name', $key)->first()->slug; ?>
-      	<a href="{{ url('category/'.$slug) }}" class="btn btn-block w-25 mx-auto btn-custom bg-white border-secondary text-dark rounded-0">VIEW MORE <i class="fa fa-caret-right" aria-hidden="true"></i></a>
+      	<a href="{{ url('category/'.$slug) }}" class="btn btn-block mx-auto btn-custom bg-white border-secondary text-dark rounded-0">VIEW MORE <i class="fa fa-caret-right" aria-hidden="true"></i></a>
            
      </div>   
     @endforeach
