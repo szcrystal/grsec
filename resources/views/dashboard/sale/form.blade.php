@@ -396,7 +396,7 @@
                         <button type="submit" class="btn btn-primary btn-block w-btn w-100 text-white" name="only_up" value="1"> 更新のみする</button>
                     </div>
                 
-                    <div class="form-group float-right col-md-5 w-25">
+                    <div class="form-group float-right col-md-4">
                         <button type="submit" class="btn btn-danger btn-block mx-auto w-btn w-100 text-white" name="with_mail" value="1"><i class="fa fa-envelope"></i> 更新して発送済みメールを送る</button>
                     </div>
                 </div>
