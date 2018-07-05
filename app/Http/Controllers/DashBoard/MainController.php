@@ -171,7 +171,7 @@ class MainController extends Controller
         
         $adminDel = $this->admin->destroy($id);
         
-        $status = $adminDel ? '管理者「'.$name.'」が削除されました' : '管理者「'.$name.'」が削除出来ませんでした';
+        $status = $adminDel ? '管理者「'.$name.'」さんが削除されました' : '管理者「'.$name.'」さんが削除出来ませんでした';
         
         return redirect('dashboard/register')->with('status', $status);
     }

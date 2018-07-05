@@ -105,15 +105,16 @@ for SP
     }
 	.site-header {
 		position: relative;
-        padding: 0.5em 0.2em;
+        padding: 0.5em 0.2em 2.7em;
         border-bottom: 1px solid #bbb;
 	}
 	
 
 	.site-header .logos {
-  		width: 70%;
-        margin: auto;
+  		width: 62%;
+        margin: 0 auto 0.3em;
         padding: 0 0 0 0.2em;
+        //height: 10em;
     	//border: 1px solid red;          
 	}
     .site-header h1 {
@@ -126,32 +127,123 @@ for SP
     }
     .site-header .logos h1 img:first-of-type {
 		float: none;
-  		width: 76%;
+  		width: 74%;
         margin-top: 0;
         margin-left: 0.2em;
     	//border: 1px solid red;          
 	}
     .site-header .logos h1 img:last-of-type {
 		float: none;
-  		width: 17%;
+  		width: 15%;
         margin-top: 0;
         margin-left: -0.2em;
     	//border: 1px solid red;          
 	}
     
-    .s-form {
-    	position: absolute;
-        top: 11px;
-        right: 1%;
-        text-align: right;
-        width: 70%;
-        float: right;
-        margin-right: 3%;
-    }
-    .s-form .fa {
-    	font-size: 1.7em;
+    .nav-tgl {
+    	width: 3em;
+		position: absolute;
+        top: 50%;
+        left: 2%;
+        font-size: 1.8em;
         color: #333;
     }
+    
+    .head-navi {
+    	top: 53%;
+        right: 1em;
+        //color: #231815;
+    }
+    .head-navi li:last-of-type {
+    	margin-right: 0;
+    }
+    .head-navi li a {
+    	color: #3f3f3f;
+    }
+    
+    .fade-black {
+    	width: 100%;
+        height: 0;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 9998;
+        background: rgba(0,0,0,0.7);
+        display: none;
+    }
+    
+    .main-navigation {
+    	display: none;
+        padding: 0;
+        margin: 0;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 9999;
+        width: 75%;
+        //background: rgba(0,0,0,0.7);
+    }
+    .main-navigation .panel-body {
+		overflow: scroll;
+    }
+    .fade-black .nav-tgl {
+		position: absolute;
+        top: 1em;
+        left: 80%;
+        color: #fff;
+        font-size: 2em;
+        z-index: 10000;
+    }
+    .main-navigation ul {
+    	width: 100%;
+        margin: 0 0 0 2em;
+        padding: 0;
+        border: none;
+    }
+    .main-navigation li {
+    	float: none;
+    	width: 100%;
+    }
+    .main-navigation a {
+    	padding: 0;
+    }
+    ul.ask_menu,
+    ul.fix_menu {
+    	float: none;
+        width: 100%;
+        height: auto;
+        
+    }
+    ul.ask_menu li,
+	ul.fix_menu li,
+	ul.cate_menu li {
+		width: 100%;
+  		text-align: left;
+        
+	}
+    ul.cate_menu li:first-of-type a {
+        border-left: none;   
+    }
+    .menu-title {
+        display: block;
+        border-bottom: 1px solid #aaa;
+    }
+    
+
+    
+/*    .s-form {*/
+/*    	position: absolute;*/
+/*        top: 11px;*/
+/*        right: 1%;*/
+/*        text-align: right;*/
+/*        width: 70%;*/
+/*        float: right;*/
+/*        margin-right: 3%;*/
+/*    }*/
+/*    .s-form .fa {*/
+/*    	font-size: 1.7em;*/
+/*        color: #333;*/
+/*    }*/
     
     /* ******** */
     #menuButton {
@@ -195,6 +287,11 @@ for SP
     	top: 23px;
     }
     
+    
+    
+    
+    
+    /* Shop */
     .table-custom .table {
     	table-layout: fixed;
     }
@@ -291,46 +388,6 @@ for SP
     }
     
 
-    .main-navigation {
-    	display: block;
-        padding: 0;
-        margin: 1em 0 0;
-        background: #eceaea;
-    }
-    .main-navigation ul {
-    	width: 100%;
-        margin: 0 0 0 2em;
-        padding: 0;
-        border: none;
-    }
-    .main-navigation li {
-    	float: none;
-    	width: 100%;
-    }
-    .main-navigation a {
-    	padding: 0;
-    }
-    ul.ask_menu,
-    ul.fix_menu {
-    	float: none;
-        width: 100%;
-        height: auto;
-        
-    }
-    ul.ask_menu li,
-	ul.fix_menu li,
-	ul.cate_menu li {
-		width: 100%;
-  		text-align: left;
-        
-	}
-    ul.cate_menu li:first-of-type a {
-        border-left: none;   
-    }
-    .menu-title {
-        display: block;
-        border-bottom: 1px solid #aaa;
-    }
 	
     .wrap-all {
     	padding-left: 1.6%;

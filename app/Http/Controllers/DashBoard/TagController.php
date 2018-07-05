@@ -4,6 +4,7 @@ namespace App\Http\Controllers\DashBoard;
 
 use App\Admin;
 use App\Tag;
+use App\TagRelation;
 use App\ItemImage;
 use App\Setting;
 
@@ -15,7 +16,7 @@ use Storage;
 
 class TagController extends Controller
 {
-    public function __construct(Admin $admin, Tag $tag, ItemImage $itemImg, Setting $setting)
+    public function __construct(Admin $admin, Tag $tag, TagRelation $tagRel, ItemImage $itemImg, Setting $setting)
     {
         
         $this -> middleware('adminauth');
@@ -23,6 +24,7 @@ class TagController extends Controller
         
         $this -> admin = $admin;
         $this->tag = $tag;
+        $this->tagRel = $tagRel;
         
         $this->itemImg = $itemImg;
         $this->setting = $setting;
@@ -216,17 +218,17 @@ class TagController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($tagId)
     {
-        $name = $this->tag->find($id)->name;
+        $name = $this->tag->find($tagId)->name;
         
         //tag relationをここで消す
-//        $atcls = $this->article->where('cate_id', $id)->get()->map(function($atcl){
-//            $atcl->cate_id = 0;
-//            $atcl->save();
-//        });
+        $tagRels = $this->tagRel->where('tag_id', $tagId)->get()->map(function($obj){
+            return $obj->id;
+        })->all();
         
-        $tagDel = $this->tag->destroy($id);
+        $tagDel = $this->tag->destroy($tagId);
+        $this->tagRel->destroy($tagRels);
         
         $status = $tagDel ? 'タグ「'.$name.'」が削除されました' : 'タグ「'.$name.'」が削除出来ませんでした';
         

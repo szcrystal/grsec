@@ -115,19 +115,19 @@
                 @endif
             </fieldset>
             
-            {{--
-            <fieldset class="mb-4 form-group{{ $errors->has('cot_per') ? ' has-error' : '' }}">
-                <label>代引き手数料率</label><br>
-                <input class="form-control d-inline-block col-md-4{{ $errors->has('cot_per') ? ' is-invalid' : '' }}" name="cot_per" value="{{ Ctm::isOld() ? old('cot_per') : (isset($setting) ? $setting->cot_per : '') }}"> <span>%</span>
+            
+            <fieldset class="mb-4 form-group{{ $errors->has('kare_ensure') ? ' has-error' : '' }}">
+                <label>枯れ保証日数</label><br>
+                <input class="form-control d-inline-block col-md-4{{ $errors->has('kare_ensure') ? ' is-invalid' : '' }}" name="kare_ensure" value="{{ Ctm::isOld() ? old('kare_ensure') : (isset($setting) ? $setting->kare_ensure : '') }}"> <span>日</span>
 
-                @if ($errors->has('cot_per'))
+                @if ($errors->has('kare_ensure'))
                     <div class="text-danger">
                         <span class="fa fa-exclamation form-control-feedback"></span>
-                        <span>{{ $errors->first('cot_per') }}</span>
+                        <span>{{ $errors->first('kare_ensure') }}</span>
                     </div>
                 @endif
             </fieldset>
-            --}}
+            
             
             <fieldset class="mb-4 form-group{{ $errors->has('bank_info') ? ' has-error' : '' }}">
                     <label for="bank_info" class="control-label">銀行振込先</label>

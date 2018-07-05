@@ -55,7 +55,7 @@
                 </div>
             </div>
             
-            <p class="text-primary mt-2 mb-3 text-big">配送不可の地域については、-（ハイフン）を入力して下さい。</p>
+            <p class="text-success mt-2 mb-3 text-big"><i class="fa fa-exclamation"></i> 配送不可の地域については、-（ハイフン）を入力して下さい。</p>
         
 
             {{ csrf_field() }}

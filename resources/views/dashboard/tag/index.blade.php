@@ -22,6 +22,12 @@
         <a href="{{url('dashboard/tags/create')}}" class="btn btn-info">新規追加</a>
     </div>
     
+    @if (session('status'))
+        <div class="alert alert-success">
+            {{ session('status') }}
+        </div>
+    @endif
+    
     
 	<div class="">
         <div class="table-responsive">
@@ -65,14 +71,14 @@
                             </td>
                             
                             <td>
-                            	{{--
+                            	
                                 <form role="form" method="POST" action="{{ url('/dashboard/tags/'. $tag->id) }}">
                                     {{ csrf_field() }}
                                     {{ method_field('DELETE') }}
 
                                     <input type="submit" class="btn btn-danger btn-sm center-block" value="削除">
                                 </form>
-                                --}}
+                                
                             </td>
                         </tr>
                     @endforeach

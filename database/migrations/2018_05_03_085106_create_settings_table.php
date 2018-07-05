@@ -22,6 +22,7 @@ class CreateSettingsTable extends Migration
             $table->text('mail_user')->nullable()->default(NULL);
             
             $table->integer('tax_per')->nullable()->default(NULL);
+            $table->integer('kare_ensure')->nullable()->default(NULL);
             $table->text('bank_info')->nullable()->default(NULL);
             $table->integer('cot_per')->nullable()->default(NULL);
             
@@ -42,6 +43,7 @@ class CreateSettingsTable extends Migration
                 'admin_email' => 'bonjour@frank.fam.cx',
 
                 'tax_per' => 8,
+                'kare_ensure' => 90,
                 'bank_info' => "【振込先１】楽天銀行　ジャズ支店（普）7039167\n八進緑産株式会社　※カタカナ表記：ハッシンリョクサンカブシキガイシャ",
                 
                 'snap_primary'=> 10,

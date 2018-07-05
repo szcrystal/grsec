@@ -118,13 +118,15 @@
                 --}}
                 
                 <td>
-                	@if($obj->id > 2 && $obj->id != Auth::guard('admin')->id())
-                        <form role="form" method="POST" action="{{ url('/dashboard/register/'.$obj->id) }}">
-                            {{ csrf_field() }}
-                            {{ method_field('DELETE') }}
+                	@if(Auth::guard('admin')->id() < 3)
+                        @if($obj->id > 2 && $obj->id != Auth::guard('admin')->id())
+                            <form role="form" method="POST" action="{{ url('/dashboard/register/'.$obj->id) }}">
+                                {{ csrf_field() }}
+                                {{ method_field('DELETE') }}
 
-                            <input type="submit" class="btn btn-danger btn-sm center-block" value="削除">
-                        </form>
+                                <input type="submit" class="btn btn-danger btn-sm center-block" value="削除">
+                            </form>
+                        @endif
                     @endif
                 </td>
 

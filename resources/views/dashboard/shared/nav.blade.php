@@ -21,7 +21,7 @@
         
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
             <a class="nav-link" href="{{ url('dashboard/register') }}" id="register">
-                <i class="fa fa-fw fa-dashboard"></i>
+                <i class="fa fa-lock"></i>
                 <span class="nav-link-text">管理者設定</span>
               </a>
         </li>
@@ -36,7 +36,7 @@
             
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
               <a class="nav-link" href="{{ url('dashboard/mails') }}" id="mails">
-              	<i class="fa fa-fw fa-dashboard"></i>
+              	<i class="fa fa-envelope"></i>
                 <span class="nav-link-text">メールテンプレート</span>
             </a>
         </li>
@@ -70,7 +70,7 @@
              
              <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Example Pages">
              	<a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#dgs" data-parent="#collapseMaster">
-                    <i class="fa fa-fw fa-file"></i>
+                    <i class="fa fa-truck"></i>
                     <span class="nav-link-text">配送区分</span>
                 </a>
              	<ul class="sidenav-third-level collapse" id="dgs"><!-- class=" collapse" -->
@@ -87,7 +87,7 @@
               
               <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Example Pages">
         		<a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#categories" data-parent="#collapseMaster">
-                    <i class="fa fa-fw fa-file"></i>
+                    <i class="fa fa-align-left"></i>
                     <span class="nav-link-text">カテゴリー</span>
                 </a>
                 <ul class="sidenav-third-level collapse" id="categories"><!-- class=" collapse" -->
@@ -112,7 +112,7 @@
             
             <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Example Pages">
               <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#tags" data-parent="#collapseMaster">
-                <i class="fa fa-fw fa-file"></i>
+                <i class="fa fa-tag"></i>
                 <span class="nav-link-text">タグ管理</span>
               </a>
               <ul class="sidenav-third-level collapse" id="tags">
@@ -228,12 +228,12 @@
           </ul>
         </li>
         
-        {{--
+        
         <div class="border border-secondary border-top-0 w-100 mx-auto"></div>
         
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Example Pages">
           <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#magazine" data-parent="#exampleAccordion">
-            <i class="fa fa-fw fa-file"></i>
+            <i class="fa fa-book"></i>
             <span class="nav-link-text">メルマガ</span>
           </a>
           <ul class="sidenav-second-level collapse" id="magazine">
@@ -246,7 +246,7 @@
 
           </ul>
         </li>
-        --}}
+        
         
 
 		<div class="border border-secondary border-top-0 w-100 mx-auto"></div>

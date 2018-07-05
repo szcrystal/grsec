@@ -134,38 +134,72 @@ var exe = (function() {
         
         toggleSp: function() {
            
-            //SP Only
-            $('.site-header .nav-tgl').on('click', function(){
-            	
-                var $nav = $('.main-navigation');
-                var $sForm = $('.s-form > div');
-                var t = $(window).scrollTop();
-                
-                if($nav.is(':visible')) {
-                	var top = $nav.data('top');
-                    $('html,body').css({position:'static'}).scrollTop(top);
-                }
-                else {
-                    $('html,body').css({position:'fixed', top:-t});
-                    $nav.data('top', t);
-                }
-
-				if($sForm.is(':visible')) {
-                	$sForm.slideUp(200, function(){
-                        $nav.slideToggle(300, 'linear', function(){
-                            $('.menu-dropdown').hide();
-                        });
-                        
-                        $(this).queue([]).stop();
-                    });
-                }
-                else {
-                    $nav.slideToggle(300, 'linear', function(){
-                        $('.menu-dropdown').hide();
-                    });
-                }
-                
+        	$('.head-navi .fa-search').on('click', function(){
+            	$('.searchform').slideToggle(150);
             });
+           
+            var t;
+            $('.nav-tgl').on('click', function(){
+            	var $leftbar = $('.main-navigation');
+                
+                var h = $(window).height();
+                h = h-60;
+                
+                $leftbar.find('.panel-body').css({height:h});
+
+            	if($leftbar.is(':visible')) {
+                	$('.fade-black').css({height:0}).fadeOut(50);
+                    
+                	$leftbar.stop().animate({left:'-200px'}, 80, 'linear', function(){
+                    	$(this).hide(0);
+                        $('html,body').css({position:'static'}).scrollTop(t);
+                    });
+                }
+                else {
+                	t = $(window).scrollTop();
+                    
+                    $('.fade-black').css({height:h}).fadeIn(100);
+                    
+            		$leftbar.show(50, function(){
+                    	$(this).stop().animate({left:0}, 100);
+                        $('html,body').css({position:'fixed', top:-t}); //overflow:'hidden',
+                    });
+                }
+                //$('.navbar-brand').text(t);
+            });
+
+            //SP Only
+//            $('.site-header .nav-tgl').on('click', function(){
+//            	
+//                var $nav = $('.main-navigation');
+//                var $sForm = $('.s-form > div');
+//                var t = $(window).scrollTop();
+//                
+//                if($nav.is(':visible')) {
+//                	var top = $nav.data('top');
+//                    $('html,body').css({position:'static'}).scrollTop(top);
+//                }
+//                else {
+//                    $('html,body').css({position:'fixed', top:-t});
+//                    $nav.data('top', t);
+//                }
+//
+//				if($sForm.is(':visible')) {
+//                	$sForm.slideUp(200, function(){
+//                        $nav.slideToggle(300, 'linear', function(){
+//                            $('.menu-dropdown').hide();
+//                        });
+//                        
+//                        $(this).queue([]).stop();
+//                    });
+//                }
+//                else {
+//                    $nav.slideToggle(300, 'linear', function(){
+//                        $('.menu-dropdown').hide();
+//                    });
+//                }
+//                
+//            });
         },
         
         
@@ -499,11 +533,17 @@ $(function(e){ //ready
     //exe.autoComplete();
     
     exe.scrollFunc();
-    exe.toggleSp();
+    
+    if(exe.isSpTab('sp')) {
+    	exe.toggleSp();
+    }
+    else {
+    	exe.searchSlide();
+    }
   
     exe.dropDown();
     exe.eventItem();
-    exe.searchSlide();
+    
     
     exe.outReceive();
     exe.addFavorite();
