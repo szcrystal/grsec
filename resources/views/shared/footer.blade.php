@@ -1,5 +1,5 @@
 <footer id="colop">
-	<div class="clearfix">
+	<div class="clearfix foot-wrap">
 
         <div class="foot-menu">
         	<div>
