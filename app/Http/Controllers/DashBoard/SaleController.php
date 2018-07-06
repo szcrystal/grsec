@@ -317,6 +317,7 @@ class SaleController extends Controller
         
         $saleModel = $this->sale->find($data['saleId']); //saleIdとsale_idsの両方あるので注意
         $saleModel->fill($data);
+        $saleModel->cost_price = $data['cost_price'] * $data['this_count'];
         $saleModel->save();
         
         $item = $this->item->find($saleModel->item_id);

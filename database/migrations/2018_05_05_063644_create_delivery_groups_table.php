@@ -20,7 +20,7 @@ class CreateDeliveryGroupsTable extends Migration
             $table->boolean('open_status')->nullable()->default(NULL);
             $table->integer('capacity')->nullable()->default(NULL);
             $table->float('factor')->nullable()->default(NULL);
-            $table->integer('take_charge')->nullable()->default(NULL);
+            //$table->integer('take_charge')->nullable()->default(NULL);
             $table->boolean('is_time')->nullable()->default(NULL);
             $table->string('time_table')->nullable()->default(NULL);
 //            $table->string('title')->nullable()->default(NULL);
@@ -54,7 +54,40 @@ class CreateDeliveryGroupsTable extends Migration
         
         DB::table('delivery_groups')->insert(
             [ 
-                'name' => 'モリヤコニファー（小）/低木・這い性コニファー',
+                'name' => '高木コニファー（小）',
+                'open_status' => 1,
+                'capacity' => 3,
+                
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time()),
+            ]
+        );
+        
+        DB::table('delivery_groups')->insert(
+            [ 
+                'name' => '高木コニファー（大）',
+                'open_status' => 1,
+                'capacity' => 6,
+                
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time()),
+            ]
+        );
+        
+        DB::table('delivery_groups')->insert(
+            [ 
+                'name' => 'シモツケ（小）',
+                'open_status' => 1,
+                'capacity' => 3,
+                
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time()),
+            ]
+        );
+        
+        DB::table('delivery_groups')->insert(
+            [ 
+                'name' => 'シモツケ（大）',
                 'open_status' => 1,
                 'capacity' => 5,
                 
@@ -65,7 +98,18 @@ class CreateDeliveryGroupsTable extends Migration
         
         DB::table('delivery_groups')->insert(
             [ 
-                'name' => 'モリヤコニファー（大）/高木コニファー',
+                'name' => 'モリヤコニファー（小）',
+                'open_status' => 1,
+                'capacity' => 5,
+                
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time()),
+            ]
+        );
+        
+        DB::table('delivery_groups')->insert(
+            [ 
+                'name' => 'モリヤコニファー（大）',
                 'open_status' => 1,
                 'capacity' => 10,
                 

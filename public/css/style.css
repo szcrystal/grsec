@@ -781,6 +781,10 @@ body {
     margin-bottom: 0.5em;
 }
 
+.slideDeli + .table-custom {
+	display: none;
+}
+
 .floar ul {
 	list-style: none;
     padding: 0;

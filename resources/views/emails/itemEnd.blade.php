@@ -33,7 +33,9 @@
 </div>
 
 【ご注文商品】： <br>
-<?php $num = 1; 
+<?php
+$num = 1;
+$planDate = ''; 
 ?>
 @foreach($sales as $sale)
 <div style="margin: 0 0 1.5em 1.0em;">
@@ -41,11 +43,24 @@
 商品番号: {{ $itemModel->find($sale->item_id)->number }}<br>
 商品名: {{ $itemModel->find($sale->item_id)->title }}<br>
 個数: {{ $sale->item_count}}<br>
-金額：¥{{ number_format($sale->total_price) }}（税込）
-</div>
+金額：¥{{ number_format($sale->total_price) }}（税込）<br>
+@if(isset($sale->deli_time))
+ご希望配送時間：{{ $sale->deli_time }}<br>
+@endif
 
+@if(isset($sale->plan_date))
+<?php $planDate = $sale->plan_date; ?>
+@endif
+</div>
 <?php $num++; ?>
 @endforeach
+
+@if($planDate != '')
+【ご希望の日程など】：
+<div style="margin: 0 0 1.5em 1.0em;">
+{{ $planDate }}
+</div>
+@endif
 
 【お買上金額】：
 <div style="margin: 0 0 1.5em 1.0em;">

@@ -4,6 +4,8 @@
 
 <?php
 use App\User;
+use App\DeliveryGroupRelation;
+use App\Prefecture;
 
 ?>
 
@@ -175,7 +177,26 @@ use App\User;
         </div><!-- head-frame -->
 
 
-            <div class="col-md-12 panel-body mt-5 pt-1">
+            <div class="col-md-12 panel-body mt-3 pt-1">
+
+                @if(count($isOnceItems) > 0)
+                    <div class="mt-4 mb-3 floar">
+                        <h4 class="text-small">同梱包が可能な他の商品</h4>
+                        <ul class="clearfix">
+                            @foreach($isOnceItems as $isOnceItem)
+                                <li class="">
+                                    <a href="{{ url('item/'. $isOnceItem->id) }}"> 
+                                        <div class="img-box">         
+                                            <img src="{{ Storage::url($isOnceItem->main_img) }}" class="img-fluid">
+                                        </div>
+                                        <p>{{ $isOnceItem->title }}</p>
+                                    </a>
+                                </li>
+                            @endforeach
+                    	</ul> 
+                	</div>
+                @endif
+                
 
                 <div class="cont-wrap">
                 	
@@ -187,7 +208,28 @@ use App\User;
                     
                     <div class="clear contents mt-4">
                     	<h4>配送について</h4>
+                        <div>
                         {!! nl2br($item->about_ship) !!}
+                        </div>
+                        
+                        @if($item->is_delifee_table)
+                        	<div class="btn btn-custom mt-4 slideDeli">送料表を見る <i class="fas fa-angle-down"></i></div>
+                        	<?php
+                        		$dgRels = DeliveryGroupRelation::where('dg_id', $item->dg_id)->get();
+                            ?>
+                            
+                            <div class="table-responsive table-custom text-small mt-3 col-md-8">
+                                <table class="table table-bordered bg-white">
+                                @foreach($dgRels as $dgRel)
+                                	<tr>
+                                    	<th class="py-1">{{ Prefecture::find($dgRel->pref_id)->name }}</th>
+                                        <td class="py-1">{{ number_format($dgRel->fee) }} 円</td>
+                                    </tr>
+                                @endforeach
+                                </table>
+                            </div>
+                        @endif
+                        
                     </div>
                     
                     <div class="clear contents mt-4">

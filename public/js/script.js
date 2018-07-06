@@ -521,6 +521,14 @@ var exe = (function() {
             });
         },
         
+        slideDeliFee: function() {
+        	$('.slideDeli').on('click', function(){
+            	$target = $(this).siblings('.table-custom');
+                
+                $target.slideToggle(250);
+            });
+        },
+        
         
         
     } //return
@@ -549,6 +557,8 @@ $(function(e){ //ready
     exe.addFavorite();
   
   	exe.postNumSet();
+    
+    exe.slideDeliFee();
 });
 
 

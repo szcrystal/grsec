@@ -2,7 +2,7 @@
 
 @section('content')
 <?php
-//use App\Item;
+use App\Setting;
 
 ?>
 	
@@ -162,8 +162,8 @@
                             <tr>
                                 <th>ご希望配送時間</th>
                                 <td>
-                                	@if(isset($sale->deli_date))
-                                        {{ $sale->deli_date }}
+                                	@if(isset($sale->plan_date))
+                                        <p class="mb-2">{{ $sale->plan_date }}</p>
                                     @endif
                                     
                                     @if(isset($sale->deli_time))
@@ -176,12 +176,21 @@
                                 <th>決済方法</th>
                                 <td>{{ $pms->find($sale->pay_method)->name }}</td>
                             </tr>
+                            
                             <tr>
-                                <th>商品合計金額（税込）</th>
-                                <td><b>¥{{ number_format($sale->total_price) }}</b></td>
+                                <th>商品合計金額</th>
+                                <td>
+                                	<?php 
+                                    	$per = Setting::find(1)->tax_per;
+                                    	$per = ($per/100) + 1;
+                                    ?>
+                                	<b>¥{{ number_format($sale->total_price / $per) }}</b>（税抜）<br>
+                                	<b>¥{{ number_format($sale->total_price) }}</b>（税込）
+                                </td>
                             </tr>
+                            
                             <tr>
-                                <th>送料区分/送料/送料差損</th>
+                                <th>送料区分/送料</th>
                                 <td>
                                 @if($item->deli_fee)
                                 	<span class="text-warning">送料無料商品</span>
@@ -190,11 +199,6 @@
                                 @endif
                                 ¥{{ number_format($sale->deli_fee) }}<br>
                                 
-                                @if(isset($itemDg->take_charge))
-                                ¥{{ number_format($itemDg->take_charge) }}
-                                @else
-                                0
-                                @endif
                                 </td>
                             </tr>
                             @if($sale->pay_method == 5)
@@ -214,16 +218,36 @@
                                 <td>
                                 <?php 
                                 	$costPrice = $items->find($sale->item_id)->cost_price;
-                                    $costPrice = $costPrice * $sale->item_count;
+                                    $sumCostPrice = $costPrice * $sale->item_count;
                                 ?>
                                 <fieldset class="mb-4 form-group">
-                                    <input class="form-control col-md-5{{ $errors->has('cost_price') ? ' is-invalid' : '' }}" name="cost_price" value="{{ Ctm::isOld() ? old('cost_price') : (isset($sale->cost_price) ? $sale->cost_price : $costPrice) }}">
+                                    <input class="form-control col-md-5 d-inline{{ $errors->has('cost_price') ? ' is-invalid' : '' }}" name="cost_price" value="{{ Ctm::isOld() ? old('cost_price') : (isset($costPrice) ? $costPrice : '') }}">
                                     
-
+                                    <span class="">x {{ $sale->item_count }} = {{ number_format($sumCostPrice) }}
+                                    
+									<input type="hidden" name="this_count" value="{{ $sale->item_count }}">
+                                    
                                     @if ($errors->has('cost_price'))
                                         <div class="text-danger">
                                             <span class="fa fa-exclamation form-control-feedback"></span>
                                             <span>{{ $errors->first('cost_price') }}</span>
+                                        </div>
+                                    @endif
+                                </fieldset>
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <th>送料差損</th>
+                                <td>
+                                <fieldset class="mb-4 form-group">
+                                    <input class="form-control col-md-5{{ $errors->has('charge_loss') ? ' is-invalid' : '' }}" name="charge_loss" value="{{ Ctm::isOld() ? old('charge_loss') : (isset($sale) ? $sale->charge_loss : '') }}">
+                                    
+
+                                    @if ($errors->has('charge_loss'))
+                                        <div class="text-danger">
+                                            <span class="fa fa-exclamation form-control-feedback"></span>
+                                            <span>{{ $errors->first('charge_loss') }}</span>
                                         </div>
                                     @endif
                                 </fieldset>
@@ -247,7 +271,7 @@
                   
                   			<?php 
                                 $all = 0;
-                     			$num = 1; 
+                     			$num = 2; 
                         	?>                 
                   
                   			@foreach($sameSales as $sameSale)

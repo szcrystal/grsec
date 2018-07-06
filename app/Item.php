@@ -48,6 +48,7 @@ class Item extends Model
         
         'exp_first',
         'explain',
+        'is_delifee_table',
         'about_ship',
         'contents',
                 

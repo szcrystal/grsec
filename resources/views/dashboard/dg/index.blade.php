@@ -80,21 +80,23 @@
                   
                   <td>
                   <?php
-            		$feeObjs = $dgRels->where(['dg_id'=>$dg->id])->get()->map(function($obj){
-                        return $obj->fee;
-                    })->all();
+                  	$result = 1;
                     
-//                      print_r($feeObjs);
-//                    exit;
-                                
-              		$str = '';
-              		if(count($feeObjs) < 1 || array_search(null, $feeObjs)) {
-                		$str = '送料が未入力の都道府県があります';
-                	}
-
-                   ?>
+            		$feeObjs = $dgRels->where(['dg_id'=>$dg->id])->get();
+                    
+                    foreach($feeObjs as $obj) {
+                    	if($obj->fee === null) {
+                        	$result = 0;
+                            break;
+                        }
+                    }
+                    ?>
+                    
+                	@if(count($feeObjs) < 47 || ! $result)
+                		<span class="text-danger">送料が未入力の都道府県があります</span>
+                   @endif
                    
-                   <span class="text-danger">{{$str}}</span>   
+                      
                   </td>
                   
                   <td>{{ $dg->capacity }}</td>

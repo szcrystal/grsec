@@ -609,7 +609,8 @@
                     @endif
             </fieldset>
             
-            <fieldset class="my-5 form-group{{ $errors->has('about_ship') ? ' is-invalid' : '' }}">
+            
+            <fieldset class="mt-3 mb-2 form-group{{ $errors->has('about_ship') ? ' is-invalid' : '' }}">
                     <label for="detail" class="control-label">配送について</label>
 
                         <textarea id="detail" type="text" class="form-control" name="about_ship" rows="12">{{ Ctm::isOld() ? old('about_ship') : (isset($item) ? $item->about_ship : '') }}</textarea>
@@ -619,6 +620,26 @@
                                 <strong>{{ $errors->first('about_ship') }}</strong>
                             </span>
                         @endif
+            </fieldset>
+            
+            <fieldset class="form-group mt-3 mb-5">
+                    <div class="checkbox">
+                        <label>
+                            <?php
+                                $checked = '';
+                                if(Ctm::isOld()) {
+                                    if(old('is_delifee_table'))
+                                        $checked = ' checked';
+                                }
+                                else {
+                                    if(isset($item) && $item->is_delifee_table) {
+                                        $checked = ' checked';
+                                    }
+                                }
+                            ?>
+                            <input type="checkbox" name="is_delifee_table" value="1"{{ $checked }}> 送料表を表示する
+                        </label>
+                    </div>
             </fieldset>
             
             <?php

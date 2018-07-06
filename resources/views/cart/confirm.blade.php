@@ -45,9 +45,11 @@
                 <td>
                 	<b>¥{{ number_format( $item->item_total_price ) }}</b>
                 
+                	{{--
                 	@if(isset($item->deli_time))
                     	<br><small class="pt-3">ご希望配送時間：</small><br>{{ $item->deli_time }}
                     @endif
+                    --}}
                 </td>
 
                </tr> 
@@ -94,6 +96,36 @@
          </tbody> 
     </table>
 </div>
+
+
+<div class="table-responsive table-custom mt-3">
+    <table class="table table-borderd border bg-white">
+    	<thead>
+     	   <tr><th>ご希望日時</th></tr>
+        </thead>
+        
+        <tbody>
+        	<tr>
+            <td>
+            {{ $data['plan_date'] }}<br>
+
+			
+			<ul class="px-4 mt-2">
+                @foreach($itemData as $item) 
+                	@if(isset($item->deli_time))                   
+                    <li>
+                        {{ $item->title }}<br>[ {{ $item->deli_time }} ]
+                    </li>
+                    @endif
+                @endforeach
+            </ul>
+            
+        	</tr>
+            </td>
+        </tbody>
+    </table>
+</div>
+                
 
 @if(! Auth::check())
 <h5 class="card-header mb-3 py-2 mt-5">

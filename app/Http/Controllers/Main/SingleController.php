@@ -76,6 +76,13 @@ class SingleController extends Controller
         //count
         $item->increment('view_count');
         
+        //同梱包可能商品レコメンド
+        $isOnceItems = null;
+        if($item->is_once) {
+        	$isOnceItems = $this->item->whereNotIn('id', [$item->id])->where(['dg_id'=>$item->dg_id, 'is_once'=>1, 'open_status'=>1])->skip(2)->take(4)->get();
+        }
+        
+        
         //Cache 最近見た
         $cacheIds = array();
         $cacheItems = null;
@@ -100,9 +107,9 @@ class SingleController extends Controller
 //        exit;
 
 		//Recommend
-        $recommends = $this->item->whereNotIn('id',[$item->id])->where('subcate_id', $item->subcate_id)->skip(3)->take(7)->get();
+        $recommends = $this->item->whereNotIn('id',[$item->id])->where(['subcate_id'=>$item->subcate_id, 'open_status'=>1])->skip(3)->take(7)->get();
         
-        return view('main.home.single', ['item'=>$item, 'otherItem'=>$otherItem, 'cateObj'=>$cateObj, 'tags'=>$tags, 'imgsPri'=>$imgsPri, 'imgsSec'=>$imgsSec, 'isFav'=>$isFav, 'cacheItems'=>$cacheItems, 'recommends'=>$recommends]);
+        return view('main.home.single', ['item'=>$item, 'otherItem'=>$otherItem, 'cateObj'=>$cateObj, 'tags'=>$tags, 'imgsPri'=>$imgsPri, 'imgsSec'=>$imgsSec, 'isFav'=>$isFav, 'isOnceItems'=>$isOnceItems, 'cacheItems'=>$cacheItems, 'recommends'=>$recommends]);
     }
     
     

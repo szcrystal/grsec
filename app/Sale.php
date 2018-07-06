@@ -26,6 +26,7 @@ class Sale extends Model
         'use_point',
         'total_price',
         'cost_price',
+        'charge_loss',
         'arari',
         
         'deli_done',

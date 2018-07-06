@@ -59,7 +59,10 @@ class CreateItemsTable extends Migration
             
             $table->text('exp_first')->nullable()->default(NULL);
             $table->text('explain')->nullable()->default(NULL);
+            
+            $table->boolean('is_delifee_table')->nullable()->default(NULL);
             $table->text('about_ship')->nullable()->default(NULL);
+            
             $table->text('contents')->nullable()->default(NULL);
             
             $table->string('meta_title')->nullable()->default(NULL);
