@@ -42,10 +42,7 @@
 
 <div class="table-responsive table-custom">
     <table class="table table-borderd border">
-        <col style="width:27%;"></col>
-        <col></col>
-        
-         
+
          <tr class="form-group">
              <th><label class="control-label">メールアドレス</label><em>必須</em></th>
                <td>

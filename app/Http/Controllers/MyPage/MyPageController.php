@@ -324,10 +324,14 @@ class MyPageController extends Controller
        
        	foreach($items as $item) {
         	$fav = $this->favorite->where(['user_id'=>$user->id, 'item_id'=>$item->id])->first();
+            
          	if($fav->sale_id) {
           		$item->saleDate = $this->sale->find($fav->sale_id)->created_at;
-          	}        
-        	$item->saled = 1;
+          	}
+            else {
+            	$item->saleDate = 0;
+            }       
+        	//$item->saled = 1;
         }      
        
        	$cates = $this->category;   

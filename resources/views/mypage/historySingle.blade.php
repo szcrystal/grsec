@@ -21,10 +21,8 @@
 <div class="float-left col-md-8">
 	<h5 class="card-header mb-3 py-2">購入履歴詳細</h5>
 	
-	<div class="table-responsive table-custom table-cart">
+	<div class="table-responsive table-custom">
     <table class="table table-bordered bg-white">
-    	<col class="w-25"></col>
-        <col></col>
         <tbody>
     	<tr>
      		<th>ご注文番号</th>
@@ -56,11 +54,10 @@
     </table>
     </div>
 	
-	<div class="table-responsive table-custom table-cart mt-4">
+	<div class="table-responsive table-cart mt-4">
     <table class="table table-bordered bg-white">
         <thead>
               <tr>
-                <th></th>
                 <th>商品名</th>
                 <th>数量</th>
                 <th>金額（税込）</th>
@@ -70,9 +67,12 @@
         <tbody>
              
              <tr>
-                <td class="text-center"><img src="{{ Storage::url($item->main_img) }}" alt="{{ $item->title }}" class="img-fluid" width=80 height=80></td>
-                
-                <td>{{ $item->title }}<br>[ {{ $item->number }} ]</td>
+                <td class="clearfix">
+                	<img src="{{ Storage::url($item->main_img) }}" alt="{{ $item->title }}" class="img-fluid float-left d-block" width=80 height=80>
+                    <div>
+                    {{ $item->title }}<br>[ {{ $item->number }} ]
+                    </div>
+                </td>
                 
                 <td>{{ $sale->item_count }}</td>
 
@@ -123,8 +123,6 @@
 <h5 class="mb-4">&nbsp;</h5>
 <div class="table-responsive table-custom">
     <table class="table border table-borderd bg-white">
-        <col class="w-50"></col>
-        <col class="text-right"></col>
         
         <tbody>
         <tr>
@@ -165,8 +163,7 @@
 
 <div class="table-responsive table-custom mt-3">
     <table class="table border table-borderd bg-white">
-        <col style="width:50%;"></col>
-        <col class="text-right"></col>
+
         {{--
         <tr>
             <th><label class="control-label">ポイント残高</label></th>
@@ -183,8 +180,6 @@
 
 <div class="table-responsive table-custom mt-3">
     <table class="table border table-borderd bg-white">
-        <col style="width:50%;"></col>
-        <col class="text-right"></col>
         
         <tr>
             <th><label class="control-label">お支払い方法</label></th>

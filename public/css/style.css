@@ -70,8 +70,8 @@ button {
 a {
 	color: #333;
 	text-decoration: none;
-/*	-webkit-transition: all linear .15s;*/
-/*    transition: all linear .15s;*/
+	-webkit-transition: none !important;
+    transition: none !important;
 }
 a:hover {
 	opacity: 0.7;
@@ -146,7 +146,7 @@ body {
 #colop {
 	min-width: 1100px;
 	margin: auto;
-	//border: 1px solid red;
+	//border: 2px solid red;
 }
 
 
@@ -352,8 +352,11 @@ body {
 .head-navi li {
 	list-style: none;
 	float: left;
-	margin-right: 1.2em;
+	margin-right: 1.1em;
 	font-size: 1.5em;
+}
+.head-navi li:last-of-type {
+	margin-left: -6px;
 }
 .head-navi li a,
 .head-navi li span {
@@ -552,11 +555,11 @@ body {
 
 /* Top */
 .wrap-all {
-	margin-top: 15em;
+	margin-top: 14em;
 }
 
 .site-content {
-	margin-top: 2em;
+	margin-top: 0;
 	min-height: 1000px;
 }
 
@@ -611,9 +614,7 @@ body {
 .top .img-box {
     height: 275px;
 }
-.single .img-box {
-	height: 145px;
-}
+
 .main-atcl:nth-of-type(3n) {
 	margin-right: 0;
 }
@@ -757,7 +758,7 @@ body {
 }
 
 .carousel-item {
-	height: 700px;
+	height: 630px;
     overflow: hidden;
     //border: 1px solid red;
 }
@@ -803,6 +804,9 @@ body {
     font-weight: bold;
     font-size: 0.9em;
     margin-top: 0.2em;
+}
+.floar .img-box {
+	height: 145px;
 }
 .floar li a:hover img {
 	opacity: 0.7;

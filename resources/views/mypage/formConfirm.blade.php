@@ -40,8 +40,6 @@ $str = $isMypage ? '変更する' : '登録する';
 
 <div class="table-responsive table-custom">
     <table class="table table-borderd border bg-white">
-        <col style="width:27%;"></col>
-        <col></col>
         
         <tr class="form-group">
              <th><label class="control-label">氏名</label></th>
@@ -103,8 +101,6 @@ $str = $isMypage ? '変更する' : '登録する';
          
 <div class="table-responsive table-custom mt-3">
     <table class="table table-borderd border bg-white">
-        <col style="width:27%;"></col>
-        <col></col>
         
         <tr class="form-group">
              <th><label class="control-label">性別</label></th>
@@ -137,8 +133,6 @@ $str = $isMypage ? '変更する' : '登録する';
 
 <div class="table-responsive table-custom mt-3">
     <table class="table table-borderd border bg-white">
-        <col style="width:27%;"></col>
-        <col></col>
          
          <tr class="form-group">
              <th><label class="control-label">メールマガジンの登録</label></th>
@@ -157,8 +151,7 @@ $str = $isMypage ? '変更する' : '登録する';
 @if(! $isMypage)
  <div class="table-responsive table-custom mt-3">
     <table class="table table-borderd border bg-white">
-        <col style="width:27%;"></col>
-        <col></col>        
+       
          <tr class="form-group">
              <th><label class="control-label">パスワード</label></th>
                <td>********（表示されません）</td>

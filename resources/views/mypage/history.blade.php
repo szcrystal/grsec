@@ -5,7 +5,7 @@
 
 	{{-- @include('main.shared.carousel') --}}
 
-<div id="main" class="top">
+<div id="main" class="top mypage">
 
         <div class="panel panel-default">
 
@@ -19,12 +19,12 @@
 	<p style="min-height: 300px;">まだ購入した商品がありません。</p>
 </div>
 @else
-<div class="table-responsive table-custom">
+<div class="table-responsive table-cart">
     <table class="table table-bordered bg-white">
         <thead>
         <tr>
         	<th>購入日/<br>ご注文番号</th>
-         	<th colspan="2">商品名</th>
+         	<th>商品名</th>
           	 
           	<th>個数</th>
            	<th>金額合計（税込）</th>
@@ -40,14 +40,15 @@
              	{{ Ctm::changeDate($sale->created_at, 1) }}
             	<p class="mt-2"><small>ご注文番号</small><br><b>{{ $sale->order_number }}</b></p>
             </td>
-            <td>
-            	<?php $i = $item->find($sale->item_id); ?>
-            	<img src="{{ Storage::url($i->main_img) }}" width="75" height="75" class="d-block img-fluid mx-auto">
-            </td>
             <td class="clearfix">
-             	{{ $i->title }}<br>
+            	<?php $i = $item->find($sale->item_id); ?>
+            	<img src="{{ Storage::url($i->main_img) }}" width="80" height="80" class="d-block img-fluid float-left">
+            
+            	<div class="text-small">
+             	{{ $i->title }}&nbsp;
               	[{{ $i->number }}]
                <span class="d-block mt-1">¥{{ number_format(Ctm::getPriceWithTax($i->price)) }}</span> 
+               </div>
             </td>
              <td>{{ $sale->item_count }}</td>
              <td>
@@ -76,7 +77,7 @@
                   
              </td>
              <td>
-             	<a href="{{ url('mypage/history/'.$sale->id) }}" class="btn btn-block border-secondary bg-white text-small mb-3">
+             	<a href="{{ url('mypage/history/'.$sale->id) }}" class="btn btn-block border-secondary bg-white text-small mb-3 w-100 rounded-0">
                 詳細を確認 <i class="fas fa-angle-double-right"></i>
                 </a>
                 
@@ -88,7 +89,7 @@
                     <input type="hidden" name="item_id" value="{{ $i->id }}">
                     <input type="hidden" name="uri" value="{{ Request::path() }}"> 
                                       
-                   <button class="btn btn-custom text-small px-4" type="submit" name="regist_off" value="1"><i class="fas fa-shopping-basket"></i> もう一度購入</button>                 
+                   <button class="btn btn-custom text-small text-center w-100" type="submit" name="regist_off" value="1">もう一度購入</button>                 
 				</form>
              </td>
         </tr>

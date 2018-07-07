@@ -43,8 +43,6 @@ $url = $isMypage ? url('mypage/register') : url('register');
 
 <div class="table-responsive table-custom">
     <table class="table table-borderd border">
-        <col style="width:27%;"></col>
-        <col></col>
         
         <tr class="form-group">
              <th><label class="control-label">氏名</label><em>必須</em></th>
@@ -204,8 +202,7 @@ $url = $isMypage ? url('mypage/register') : url('register');
          <div class="table-responsive table-custom">
          <p class="mt-4 text-small">よろしければ以下もお答え下さい。</p>
    		 <table class="table table-borderd">
-            <col style="width:27%;"></col>
-            <col></col>
+
          <tr>
          	<fieldset  class="form-group">
              <th><label class="control-label">性別</label></th>
@@ -358,8 +355,7 @@ $url = $isMypage ? url('mypage/register') : url('register');
 <div id="magazine" class="table-responsive table-custom">
 <p class="mt-4 text-small">当店からのお知らせを希望しますか？</p>
     <table class="table table-borderd border">
-        <col style="width:27%;"></col>
-        <col></col>         
+      
          <tr class="form-group">
              <th><label class="control-label">メールマガジンの登録</label></th>
                <td>

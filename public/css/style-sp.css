@@ -102,11 +102,31 @@ for SP
 	
     body {
     	font-size: 0.9em;
+        min-width: 100%  !important;
+        width: 100%;
     }
+    
+    .wrap-all,
+	.fixed-top,	
+	.site-content,
+	#colop {
+    	min-width: 100%  !important;
+    	width: 100%;
+        //border: 3px solid blue;
+      	padding: 0;
+    }
+    
+    
+    .wrap-all {
+        margin-top: 8em;
+    }
+    
+    
 	.site-header {
 		position: relative;
         padding: 0.5em 0.2em 2.7em;
         border-bottom: 1px solid #bbb;
+        
 	}
 	
 
@@ -115,10 +135,9 @@ for SP
         margin: 0 auto 0.3em;
         padding: 0 0 0 0.2em;
         //height: 10em;
-    	//border: 1px solid red;          
 	}
     .site-header h1 {
-    	margin: 0;
+    	margin: 0 0 3px;
         padding: 0;
         line-height: 0;
     }
@@ -128,7 +147,7 @@ for SP
     .site-header .logos h1 img:first-of-type {
 		float: none;
   		width: 74%;
-        margin-top: 0;
+        margin-top: 1px;
         margin-left: 0.2em;
     	//border: 1px solid red;          
 	}
@@ -141,13 +160,35 @@ for SP
 	}
     
     .nav-tgl {
-    	width: 3em;
+    	width: 1.9em;
+        padding: 0.2em 0.2em 0.2em 0.3em;
+        //border: 1px solid red;
 		position: absolute;
-        top: 50%;
-        left: 2%;
+        top: 45%;
+        left: 1.8%;
         font-size: 1.8em;
         color: #333;
     }
+    
+    
+    .s-form {
+        position: static;
+        margin-right: 0.5em;
+        //border: 1px solid red;
+    }
+    .s-form input {
+        background: #3a3a3a;
+        color: #fff;
+        border-radius: 1.5em;
+        border: none;
+        width: 0;
+        //position: relative;
+        //z-index: 9;
+        display: none;
+        opacity: 0;
+        padding: 0.3em 0.8em;
+    }
+    
     
     .head-navi {
     	top: 53%;
@@ -163,7 +204,7 @@ for SP
     
     .fade-black {
     	width: 100%;
-        height: 0;
+        height: 100%;
         position: absolute;
         top: 0;
         left: 0;
@@ -171,32 +212,36 @@ for SP
         background: rgba(0,0,0,0.7);
         display: none;
     }
-    
-    .main-navigation {
-    	display: none;
-        padding: 0;
-        margin: 0;
-        position: absolute;
-        top: 0;
-        left: 0;
-        z-index: 9999;
-        width: 75%;
-        //background: rgba(0,0,0,0.7);
-    }
-    .main-navigation .panel-body {
-		overflow: scroll;
-    }
     .fade-black .nav-tgl {
 		position: absolute;
-        top: 1em;
-        left: 80%;
+        top: 0.1em;
+        left: 85%;
         color: #fff;
         font-size: 2em;
         z-index: 10000;
     }
+    
+    .main-navigation {
+    	display: none;
+        padding: 1em 0.3em;
+        margin: 0;
+        position: absolute;
+        top: 0;
+        left: -200px;
+        z-index: 9999;
+        width: 83%;
+        //background: rgba(0,0,0,0.7);
+    }
+    .main-navigation .navi-body {
+		overflow-y: scroll;
+        overflow-x: hidden;
+        padding: 0;
+        margin: 0;
+    }
+   
     .main-navigation ul {
-    	width: 100%;
-        margin: 0 0 0 2em;
+    	width: 98%;
+        margin: 0 auto;
         padding: 0;
         border: none;
     }
@@ -207,87 +252,54 @@ for SP
     .main-navigation a {
     	padding: 0;
     }
-    ul.ask_menu,
-    ul.fix_menu {
-    	float: none;
+    
+    .drops {
+    	position: static;
+        display: block;
+        padding: 0.5em;
+        margin-bottom: 1.3em;
+    }
+    .drops ul li{
+    	margin-left: 1.5em;
+    }
+    .drops > div:first-of-type,
+    .drops > div:last-of-type {
         width: 100%;
-        height: auto;
-        
+        float: none;
     }
-    ul.ask_menu li,
-	ul.fix_menu li,
-	ul.cate_menu li {
-		width: 100%;
-  		text-align: left;
-        
-	}
-    ul.cate_menu li:first-of-type a {
-        border-left: none;   
+    .drops > div:first-of-type div {
+        width: 100%;
+        float: none;
+        margin-right: 1em;
     }
+    .drops > div:first-of-type ul {
+        width: 100%;
+        padding: 0;
+        margin: 1em 0 0;
+    }
+
+    .drops > div:last-of-type {
+    	margin-top: 2em;
+    }
+    .drops > div:last-of-type > h3 {
+    	font-size: 1em;
+    }
+    .drops > div:last-of-type > div {
+        width: 30%;
+        font-size: 0.9em;
+        line-height: 1.3em;
+        margin-right: 0.6em;
+    }
+    .drops > div:last-of-type img {
+        width: 100%;
+        height: 90px;
+    }
+    
+    
     .menu-title {
         display: block;
         border-bottom: 1px solid #aaa;
     }
-    
-
-    
-/*    .s-form {*/
-/*    	position: absolute;*/
-/*        top: 11px;*/
-/*        right: 1%;*/
-/*        text-align: right;*/
-/*        width: 70%;*/
-/*        float: right;*/
-/*        margin-right: 3%;*/
-/*    }*/
-/*    .s-form .fa {*/
-/*    	font-size: 1.7em;*/
-/*        color: #333;*/
-/*    }*/
-    
-    /* ******** */
-    #menuButton {
-      display: block;
-      width: 38px;
-      height: 35px;
-      float: left;
-      margin: 0 0 0 3%;
-      position: absolute;
-      top: 11px;
-      left: 1%;
-      text-decoration: none;
-      //border: 1px solid red;
-    }
-    #menuButton span {
-      display: block;
-      background: #333;
-      width: 28px;
-      height: 3px;
-      position: absolute;
-      left: 0;
-/*      transition: all 0.4s;*/
-/*      -webkit-transition: all 0.4s;*/
-/*      -moz-transition: all 0.4s;*/
-    }
-    #menuButton em {
-    	display: block;
-    	font-style: normal;
-        position: absolute;
-        bottom: 3px;
-        left: 2px;
-        font-size: 0.8em;
-    }
-    #menuButton span:first-child {
-    	top: 5px;
-    }
-    #menuButton span:nth-child(2) {
-    	top: 14px;
-    }
-    #menuButton span:last-child {
-    	top: 23px;
-    }
-    
-    
     
     
     
@@ -301,11 +313,21 @@ for SP
     	float: none;
         width: 100%;
         //border: 1px solid red;
-    } 
-    .confirm .table-custom .table tbody th { /* shop confirm -> Price */
+    }
+    .single .table-custom .table tbody th,
+    .single .table-custom .table tbody td { /* Single 送料表の部分 */
+    	display: inline-block;
+        width: 40%;
+    }
+    .single .table-custom .table tbody td {
+    	width: 60%;
+    }
+    
+    .confirm .table-custom .table tbody th { /* shop confirm -> Price の部分*/
     	display: block;
 		width: 100%;
     }
+    
     .table-custom .table tbody th {
     	padding: 0.4em 0.6em 0;
         vertical-align: middle;
@@ -342,6 +364,45 @@ for SP
     }
     .table-cart .btn {
     	font-size: 0.9em;
+    }
+    
+    .mypage .table-responsive.table-cart {
+    	overflow: scroll;
+        //border: 1px solid red;
+        width: 100%;
+    }
+    .mypage .table-cart .table td img.img-fluid {
+        margin-right: 0.5em;
+    }
+/*    .table-responsive {*/
+/*      display: block;*/
+/*      width: 150%;*/
+/*      overflow-x: scroll;*/
+/*      -webkit-overflow-scrolling: touch;*/
+/*      -ms-overflow-style: -ms-autohiding-scrollbar;*/
+/*    }*/
+    .mypage .table-responsive.table-cart .table {
+    	width: 250% !important;
+        max-width: 250%;
+        //overflow: scroll;
+    }
+    .mypage .table-cart .table thead th:first-of-type {
+    	width: 15% !important;
+    }
+    .mypage .table-cart .table thead th:nth-of-type(2) {
+    	width: 35%;
+    }
+    .mypage .table-cart .table thead th:nth-of-type(3) {
+    	width: 5%;
+    }
+    .mypage .table-cart .table thead th:nth-of-type(4) {
+    	width: 15%;
+    }
+    .mypage .table-cart .table thead th:nth-of-type(5) {
+    	width: 15%;
+    }
+    .mypage .table-cart .table thead th:nth-of-type(6) {
+    	width: 15%;
     }
     
     
@@ -388,11 +449,20 @@ for SP
     }
     
 
-	
-    .wrap-all {
+	.img-box {
+        height: 190px;
+        overflow: hidden;
+    }
+    .top .img-box {
+        height: 190px;
+    }
+    
+    .wrap-all,
+    .top .wrap-all {
     	padding-left: 1.6%;
         padding-right: 1.5%;
-        //border: 1px solid green;
+        padding-top: 0;
+        //border: 2px solid red;
     }
     
     .head-atcl h2 {
@@ -403,17 +473,17 @@ for SP
     .main-atcl,
     .top .main-atcl {
 		float: left;
-  		width: 49%;
-    	            
+  		width: 48.7%;
+        margin-right: 1.8%;
 	}
     .main-atcl:nth-of-type(3n) {
-        margin-right: 1.2%;
+        margin-right: 1.4%;
     }
-    .top .main-atcl:nth-of-type(3n) {
-        margin-right: 1.2%;
+    .top .main-atcl:nth-of-type(6) {
+        margin-right: 0;
     }
     .top .main-atcl:nth-of-type(4n) {
-        margin-right: 1.2%;
+        margin-right: 0;
     }
     .main-atcl:nth-of-type(2n),
     .top .main-atcl:nth-of-type(2n) {
@@ -424,7 +494,52 @@ for SP
         width: 100%;
     }
     
+    .main-atcl h3 {
+		font-size: 1.05em;
+    }
     
+    
+    /* Single */
+    .carousel-item {
+        height: 350px;
+        //border: 1px solid red;
+    }
+    .head-frame > div:last-of-type {
+    	margin-top: 3em;
+    }
+    .floar ul li {
+    	width: 32%;
+    }
+    .floar .img-box {
+    	height: 100px;
+        //border: 1px solid red;
+    }
+    
+    .tab-content {
+    	min-height: 300px;
+    }
+    .nav-tabs .nav-link {
+    	background: #333;
+        color: #fff;
+        margin-right: 1px;
+    }
+    .nav-tabs .nav-link.active {
+    	background: #fff;
+        color: #333;
+        font-weight: bold;
+/*        border-color: #333;*/
+/*        border-width: 1px 1px 0;*/
+    }
+    
+    
+    
+    
+    
+    /* Footer */
+    #colop .foot-wrap {
+    	width: 95%;
+        margin: auto;
+    }
     .foot-menu {
     	float: none;
         width: 90%;
@@ -434,6 +549,50 @@ for SP
     	float: none;
         width: 88%;
         margin: 10em auto 1em;
+    }
+    
+    
+    
+    /* ******** */
+    #menuButton {
+      display: block;
+      width: 38px;
+      height: 35px;
+      float: left;
+      margin: 0 0 0 3%;
+      position: absolute;
+      top: 11px;
+      left: 1%;
+      text-decoration: none;
+      //border: 1px solid red;
+    }
+    #menuButton span {
+      display: block;
+      background: #333;
+      width: 28px;
+      height: 3px;
+      position: absolute;
+      left: 0;
+/*      transition: all 0.4s;*/
+/*      -webkit-transition: all 0.4s;*/
+/*      -moz-transition: all 0.4s;*/
+    }
+    #menuButton em {
+    	display: block;
+    	font-style: normal;
+        position: absolute;
+        bottom: 3px;
+        left: 2px;
+        font-size: 0.8em;
+    }
+    #menuButton span:first-child {
+    	top: 5px;
+    }
+    #menuButton span:nth-child(2) {
+    	top: 14px;
+    }
+    #menuButton span:last-child {
+    	top: 23px;
     }
 	
 }

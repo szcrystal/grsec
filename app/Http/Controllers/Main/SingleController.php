@@ -15,6 +15,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Cache;
 
 use Auth;
+use Ctm;
 
 class SingleController extends Controller
 {
@@ -78,19 +79,21 @@ class SingleController extends Controller
         
         //同梱包可能商品レコメンド
         $isOnceItems = null;
+        $getNum = Ctm::isAgent('sp') ? 3 : 4;
         if($item->is_once) {
-        	$isOnceItems = $this->item->whereNotIn('id', [$item->id])->where(['dg_id'=>$item->dg_id, 'is_once'=>1, 'open_status'=>1])->skip(2)->take(4)->get();
+        	$isOnceItems = $this->item->whereNotIn('id', [$item->id])->where(['dg_id'=>$item->dg_id, 'is_once'=>1, 'open_status'=>1])->skip(2)->take($getNum)->get();
         }
         
         
         //Cache 最近見た
         $cacheIds = array();
         $cacheItems = null;
+        $getNum = Ctm::isAgent('sp') ? 6 : 7;
         
         if(cache()->has('cacheIds')) {
         	
         	$cacheIds = cache('cacheIds');
-          	$cacheItems = $this->item->whereIn('id', $cacheIds)->take(7)->get();  
+          	$cacheItems = $this->item->whereIn('id', $cacheIds)->take($getNum)->get();  
         }
         
         if(! in_array($item->id, $cacheIds)) {
@@ -107,7 +110,7 @@ class SingleController extends Controller
 //        exit;
 
 		//Recommend
-        $recommends = $this->item->whereNotIn('id',[$item->id])->where(['subcate_id'=>$item->subcate_id, 'open_status'=>1])->skip(3)->take(7)->get();
+        $recommends = $this->item->whereNotIn('id',[$item->id])->where(['subcate_id'=>$item->subcate_id, 'open_status'=>1])->skip(3)->take($getNum)->get();
         
         return view('main.home.single', ['item'=>$item, 'otherItem'=>$otherItem, 'cateObj'=>$cateObj, 'tags'=>$tags, 'imgsPri'=>$imgsPri, 'imgsSec'=>$imgsSec, 'isFav'=>$isFav, 'isOnceItems'=>$isOnceItems, 'cacheItems'=>$cacheItems, 'recommends'=>$recommends]);
     }

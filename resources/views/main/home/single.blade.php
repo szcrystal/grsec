@@ -153,7 +153,7 @@ use App\Prefecture;
                             <input type="hidden" name="item_price" value="{{ $item->price }}">
                             <input type="hidden" name="tax" value="{{ $tax }}"> 
                             --}}     
-                            <button type="submit" class="btn btn-custom px-5">カートに入れる</button>
+                            <button type="submit" class="btn btn-custom text-center col-md-6">カートに入れる</button>
                        </form>  
                 	
                     @else
@@ -180,7 +180,7 @@ use App\Prefecture;
             <div class="col-md-12 panel-body mt-3 pt-1">
 
                 @if(count($isOnceItems) > 0)
-                    <div class="mt-4 mb-3 floar">
+                    <div class="mt-5 pt-2 mb-3 floar">
                         <h4 class="text-small">同梱包が可能な他の商品</h4>
                         <ul class="clearfix">
                             @foreach($isOnceItems as $isOnceItem)
@@ -200,9 +200,10 @@ use App\Prefecture;
 
                 <div class="cont-wrap">
                 	
-
+				
+                @if(! Ctm::isAgent('sp'))
                     <div class="clear contents mt-4">
-                    	<h4>説明</h4>
+                    	<h4>商品説明</h4>
 						{!! nl2br($item->explain) !!}
                     </div>
                     
@@ -223,7 +224,13 @@ use App\Prefecture;
                                 @foreach($dgRels as $dgRel)
                                 	<tr>
                                     	<th class="py-1">{{ Prefecture::find($dgRel->pref_id)->name }}</th>
-                                        <td class="py-1">{{ number_format($dgRel->fee) }} 円</td>
+                                        <td class="py-1">
+                                        	@if($dgRel->fee == 99999 || $dgRel->fee === null)
+                                            	配送不可
+                                            @else
+                                        		{{ number_format($dgRel->fee) }} 円
+                                            @endif
+                                        </td>
                                     </tr>
                                 @endforeach
                                 </table>
@@ -232,64 +239,76 @@ use App\Prefecture;
                         
                     </div>
                     
-                    <div class="clear contents mt-4">
+                    <div class="clearfix contents mt-4">
                         <h4>商品情報</h4>
-                        {!! nl2br($item->detail) !!}
-                        
-                        <div class="clearfix">
-                        @foreach($imgsSec as $sec)
-                        	@if(isset($sec->img_path))
-                        	<img src="{{ Storage::url($sec->img_path) }}" class="img-fluid col-md-3 mr-2 my-4">
-                         	@endif   
-                        @endforeach
+                        <div>
+                        	{!! nl2br($item->detail) !!}
                         </div>
+                        
                     </div>
 
-                    <div class="map-wrap">
-
-                    </div>
-
-                    <div class="table-responsive py-3 mt-4">
-                    	<table class="table table-bordered table-striped">
-                            <colgroup>
-                                <col class="cth">
-                                <col class="ctd">
-                            </colgroup>
+                    
+				
+                @else
+                   <ul class="nav nav-tabs">
+                        <li class="nav-item">
+                          <a href="#tab1" class="nav-link active" data-toggle="tab">商品説明</a>
+                        </li>
+                        <li class="nav-item">
+                          <a href="#tab2" class="nav-link" data-toggle="tab">配送について</a>
+                        </li>
+                        <li class="nav-item">
+                          <a href="#tab3" class="nav-link" data-toggle="tab">商品情報</a>
+                        </li>
+                    </ul> 
+                    
+                    <div class="tab-content mt-2">
+                      
+                      <div id="tab1" class="tab-pane active contents clearfix">
+                        {!! nl2br($item->explain) !!}
+                      </div>
+                      
+                      <div id="tab2" class="tab-pane contents">
+                        <div class="clearfix">
+                        	{!! nl2br($item->about_ship) !!}
+                        </div>
+                        
+                        @if($item->is_delifee_table)
+                        	<div class="btn btn-custom mt-4 slideDeli">
+                            	送料表を見る <i class="fas fa-angle-down"></i>
+                            </div>
+                        	<?php
+                        		$dgRels = DeliveryGroupRelation::where('dg_id', $item->dg_id)->get();
+                            ?>
                             
-                            <tbody>
-
-                                
-							{{--
-                                <tr>
-                                    <th>カテゴリー</th>
-                                    <td>
-                                    @if($cateObj)
-                                    	<span class="rank-tag">
-                                    		{{ $cateObj->find($item->cate_id)->name }}
-                                        </span>
-                                    @endif
-                                    </td>
-                                </tr>
-                                
-                                <tr>
-                                    <th>タグ</th>
-                                    <td>
-                                        @foreach($tags as $tag)
-                                            <span class="rank-tag">
-                                            <i class="fa fa-tag" aria-hidden="true"></i>
-                                            <a href="{{ url('tag/' . $tag->slug) }}">{{ $tag->name }}</a>
-                                            </span>
-                                        @endforeach
-
-                                    </td>
-                                </tr>
-
-                              --}} 
-
-                            </tbody>
-                		</table>
+                            <div class="table-responsive table-custom text-small mt-2">
+                                <table class="table table-bordered bg-white">
+                                @foreach($dgRels as $dgRel)
+                                	<tr>
+                                    	<th class="py-1">{{ Prefecture::find($dgRel->pref_id)->name }}</th>
+                                        <td class="py-1">
+                                        	@if($dgRel->fee == 99999 || $dgRel->fee === null)
+                                            	配送不可
+                                            @else
+                                        		{{ number_format($dgRel->fee) }} 円
+                                            @endif
+                                        </td>
+                                    </tr>
+                                @endforeach
+                                </table>
+                            </div>
+                        @endif
+                      </div>
+                      
+                      <div id="tab3" class="tab-pane contents">
+                            <div class="clearfix">
+                                {!! nl2br($item->detail) !!}
+                            </div>
+                      </div>
+                      
                     </div>
-
+                    
+                @endif
 
 
 					

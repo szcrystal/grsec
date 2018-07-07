@@ -1,3 +1,10 @@
+<?php
+use App\Item;
+use App\User;
+
+?>
+
+
 <div class="fixed-top">
 <header class="site-header clearfix">
 
@@ -27,14 +34,7 @@
 
 
 	<div class="head-navi">
-        <div class="clearfix s-form">
-            <form class="my-1 my-lg-0" role="form" method="GET" action="{{ url('search') }}">
-                {{-- csrf_field() --}}
- 
-                <input type="search" class="" name="s" placeholder="Search...">
- 
-            </form>
-        </div>
+        
             
         <ul class="clearfix">
             <li><span><i class="fa fa-search btn-s"></i></span></li>
@@ -71,11 +71,21 @@
        
     </div>
 
-
 </header>
 
+<div class="clearfix s-form">
+            <form class="my-1 my-lg-0" role="form" method="GET" action="{{ url('search') }}">
+                {{-- csrf_field() --}}
+
+                <input type="search" class="float-right" name="s" placeholder="Search...">
+
+            </form>
+</div>
+
+
+
 <div class="fade-black">
-	<span class="nav-tgl">X</span>	
+	<span class="nav-tgl"><i class="fas fa-times"></i></span>	
 </div>
 
 <nav class="navbar main-navigation">
@@ -91,44 +101,94 @@
             //$subCates = CategorySecond::all();
 //            $fCates = FeatureCategory::where('status', 1)->get();
         ?>
-	<div class="panel-body">
-    
-    	
-    
-        <ul class="state-nav clear">
-            <li class="dropdown nav-item">
+	<div class="navi-body">
 
-                <div class="menu-dropdown-wrap">
-                <div class="menu-dropdown clear" aria-labelledby="dropdown01" role="menu">
+        <ul class="clearfix">
+           
+            @foreach($cates as $cate)
+                <li class="">
                     
+                    {{--
+                    <span>{!! str_replace('/', "<br>", $cate->link_name) !!} <i class="fa fa-caret-down" aria-hidden="true"></i></span>
+                    --}}
 
-                    <div class="col-md-12 mt-4">
-                        <h2>カテゴリー</h2>
-                        <ul class="clear">
-                        @foreach($cates as $cate)
-                            <li>
-                                <span class="rank-tag">
-                                <a href="{{ url('all/' . $cate->slug) }}">{{ $cate->name }}</a>
-                                </span>
+                    <section class="drops clearfix">
+                    	
+                        <div class="clearfix">
+                        	<h3><a href="{{ url('category/' . $cate->slug) }}">
+                                    {{ $cate->name }} <i class="fas fa-angle-double-right"></i>
+                                </a></h3>
+                            <div class="">
                                 
-                                <ul>
-                                	<?php
-                                		$subCates = CategorySecond::where('parent_id', $cate->id)->get();
-                                    ?>
-                                    
-                                	@foreach($subCates as $subCate)
-                                    	<li><a href="">{{ $subCate->name }}</a></li>
-                                    @endforeach
-                                </ul>
-                            </li>
-                        @endforeach
-                        </ul>
-                    </div>
+                                <p>{{ $cate->meta_description }}</p>
+                                
+                            </div>
+                        
+                            <ul class="">
+                                <?php
+                                    $cateSecs = CategorySecond::where('parent_id', $cate->id)->get();
+                                ?>
+                                @foreach($cateSecs as $cateSec)
+                                    <li><a href="{{ url('category/'.$cate->slug.'/'.$cateSec->slug) }}">{{ $cateSec->name }} <i class="fas fa-angle-double-right"></i></a></li>
+                                @endforeach                  
+                            </ul>
+                        </div>
+                        
+                        <div class="clearfix">
+                            <?php
+                            $cateItems = Item::where('cate_id', $cate->id)->orderBy('created_at','desc')->get()->take(3);
+                            ?>
 
-                    
-                </div>
-                </div>
-            </li>
+                            <h3>{{ $cate->name }}の最新の商品</h3>
+                                @foreach($cateItems as $cateItem)
+                                    <div class="float-left">
+                                        <a href="{{ url('item/'.$cateItem->id) }}">
+                                            <img src="{{ Storage::url($cateItem->main_img) }}">
+                                            <b class="d-block">{{ $cateItem->title }}</b>
+                                        </a>
+                                    </div>
+                                @endforeach
+                        </div>
+
+                    </section>
+                </li>
+            @endforeach
+            
+            <li class="">
+                
+                {{--    
+                <span>ページ<i class="fa fa-caret-down" aria-hidden="true"></i></span>
+                --}}    
+
+                    <section class="drops clearfix">
+                    	
+                        <div class="float-left clearfix">
+                        	<h3><a href="#">
+                                    初めての方へ <i class="fas fa-angle-double-right"></i>
+                                </a></h3>
+                            <div class="float-left">
+                                
+                                <p>・・・</p>
+                                
+                            </div>
+                        
+                            <ul class="float-left"> 
+                                <li><a href="{{ url('#') }}">・・ <i class="fas fa-angle-double-right"></i></a></li>
+                                <li><a href="{{ url('#') }}">・・ <i class="fas fa-angle-double-right"></i></a></li>
+                                                  
+                            </ul>
+                        </div>
+                        
+                        <div class="clearfix float-right">
+                            
+                            <h3></h3>
+                                
+                        </div>
+
+                    </section>
+                </li>
+
+
         </ul>
     
     </div>

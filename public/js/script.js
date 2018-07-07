@@ -91,61 +91,65 @@ var exe = (function() {
         
         searchSlide: function() {
         	$input = $('.s-form input');
+            
+            $width = this.isSpTab('sp') ? '65%' : '14em';
            
-           	if(this.isSpTab('sp')) {
-           
-                $('.btn-s').on('click', function(){
-                	var $nav = $('.main-navigation');
-                    
-                    if($nav.is(':visible')) {
-                    	
-                        var top = $nav.data('top');
-                    	$('html,body').css({position:'static'}).scrollTop(top);
-                    	
-                        $nav.slideUp(200, 'linear', function(){
-                            $('.menu-dropdown').hide();
-                            $('.s-form > div').slideToggle(220);
-                        });
-                    }
-                    else {
-                    	$('.s-form > div').slideToggle(220);
-                    }
-                    
-                    
-                });
-           	}
-            else {
+//           	if(this.isSpTab('sp')) {
+//           
+//                $('.btn-s').on('click', function(){
+//                	var $nav = $('.main-navigation');
+//                    
+//                    if($nav.is(':visible')) {
+//                    	
+//                        var top = $nav.data('top');
+//                    	$('html,body').css({position:'static'}).scrollTop(top);
+//                    	
+//                        $nav.slideUp(200, 'linear', function(){
+//                            $('.menu-dropdown').hide();
+//                            $('.s-form > div').slideToggle(220);
+//                        });
+//                    }
+//                    else {
+//                    	$('.s-form > div').slideToggle(220);
+//                    }
+//                    
+//                    
+//                });
+//           	}
+//            else {
                 $('.btn-s').on('click', function(){
                     if($input.is(':hidden')) {
-                        $input.show().animate({width:'14em', opacity:1}, 300, 'linear', function(){
+                        $input.show().animate({width:$width, opacity:1}, 300, 'linear', function(){
                     		//$(this).queue([]).stop();
                         });
                     }
                     else {
+                    	console.log('abc');
                         $input.animate({width:0, opacity:0}, 300, 'linear', function(){
                     		//$(this).queue([]).stop();
+                            
                         }).fadeOut(200);
                     
                     }
                 });
                 
-            }
+            //}
         },
         
         toggleSp: function() {
            
-        	$('.head-navi .fa-search').on('click', function(){
-            	$('.searchform').slideToggle(150);
-            });
+//        	$('.head-navi .fa-search').on('click', function(){
+//            	$('.s-form input').slideToggle(150);
+//            });
            
             var t;
             $('.nav-tgl').on('click', function(){
             	var $leftbar = $('.main-navigation');
                 
                 var h = $(window).height();
-                h = h-60;
+                //h = h-60;
                 
-                $leftbar.find('.panel-body').css({height:h});
+                $leftbar.find('.navi-body').css({height:h});
 
             	if($leftbar.is(':visible')) {
                 	$('.fade-black').css({height:0}).fadeOut(50);
@@ -158,10 +162,10 @@ var exe = (function() {
                 else {
                 	t = $(window).scrollTop();
                     
-                    $('.fade-black').css({height:h}).fadeIn(100);
+                    $('.fade-black').css({height:h}).fadeIn(150);
                     
-            		$leftbar.show(50, function(){
-                    	$(this).stop().animate({left:0}, 100);
+            		$leftbar.fadeIn(20, function(){
+                    	$(this).stop().animate({left:0}, 150);
                         $('html,body').css({position:'fixed', top:-t}); //overflow:'hidden',
                     });
                 }
@@ -228,7 +232,7 @@ var exe = (function() {
         
         
         dropDown: function() {
-        	var $mainNav = $('.main-navi > ul > li');
+        	var $mainNav = $('.main-navi > ul > li'); //this.isSpTab('sp') ? $('.panel-body > ul > li') :
             
         	//var len = $('.state-nav li').length;
             var num = 0;
@@ -280,23 +284,25 @@ var exe = (function() {
 
             });
             
-            $('body').on('click', function(e){
-            	var $dropMenu = $('.drops');
-                
-                if( ! $(e.target).hasClass('drops') ) {
-                	
-                    //console.log("aaa");
+            if(! this.isSpTab('sp')) {
+                $('body').on('click', function(e){
+                    var $dropMenu = $('.drops');
                     
-                    if($dropMenu.is(':visible')) {
+                    if( ! $(e.target).hasClass('drops') ) {
                         
-                        $('.main-navi li').removeClass('nav-active');
+                        //console.log("aaa");
                         
-                        $dropMenu.fadeOut(hideSpeed, easing, function() {
-                            $(this).queue([]).stop();
-                        });
+                        if($dropMenu.is(':visible')) {
+                            
+                            $('.main-navi li').removeClass('nav-active');
+                            
+                            $dropMenu.fadeOut(hideSpeed, easing, function() {
+                                $(this).queue([]).stop();
+                            });
+                        }
                     }
-                }
-            });
+                });
+            }
 
             
             /*
@@ -545,9 +551,9 @@ $(function(e){ //ready
     if(exe.isSpTab('sp')) {
     	exe.toggleSp();
     }
-    else {
-    	exe.searchSlide();
-    }
+    
+    exe.searchSlide();
+
   
     exe.dropDown();
     exe.eventItem();
