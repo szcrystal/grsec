@@ -10,6 +10,8 @@
 
 <div id="main" class="archive">
 
+@include('main.shared.bread')
+
     <div class="panel panel-default top-cont">
 
                 {{-- @include('main.shared.main') --}}

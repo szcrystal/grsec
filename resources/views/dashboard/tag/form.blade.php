@@ -42,6 +42,10 @@
         
     <div class="col-lg-12">
         <form class="form-horizontal" role="form" method="POST" action="/dashboard/tags" enctype="multipart/form-data">
+        	
+            <div class="form-group mt-5">
+                <button type="submit" class="btn btn-primary btn-block w-btn w-25 mx-auto">更　新</button>
+        	</div>
 			
             {{ csrf_field() }}
             
@@ -50,31 +54,33 @@
             @endif
 
 
-            <fieldset class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
+            <fieldset class="form-group">
                 <label for="name" class="control-label">タグ名</label>
 
                 <div class="">
-                    <input id="name" type="text" class="form-control col-md-10" name="name" value="{{ Ctm::isOld() ? old('name') : (isset($tag) ? $tag->name : '') }}">
+                    <input id="name" type="text" class="form-control col-md-10{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ Ctm::isOld() ? old('name') : (isset($tag) ? $tag->name : '') }}">
 
                     @if ($errors->has('name'))
-                        <span class="help-block">
-                            <strong>{{ $errors->first('name') }}</strong>
-                        </span>
+                        <div class="text-danger">
+                            <span class="fa fa-exclamation form-control-feedback"></span>
+                            <span>{{ $errors->first('name') }}</span>
+                        </div>
                     @endif
                 </div>
             </fieldset>
 
 
-            <fieldset class="form-group{{ $errors->has('slug') ? ' has-error' : '' }}">
+            <fieldset class="form-group">
                 <label for="slug" class="control-label">スラッグ</label>
 
                 <div class="">
-                    <input id="slug" type="text" class="form-control col-md-10" name="slug" value="{{ Ctm::isOld() ? old('slug') : (isset($tag) ? $tag->slug : '') }}">
+                    <input id="slug" type="text" class="form-control col-md-10{{ $errors->has('slug') ? ' is-invalid' : '' }}" name="slug" value="{{ Ctm::isOld() ? old('slug') : (isset($tag) ? $tag->slug : '') }}">
 
                     @if ($errors->has('slug'))
-                        <span class="help-block">
-                            <strong>{{ $errors->first('slug') }}</strong>
-                        </span>
+                        <div class="text-danger">
+                            <span class="fa fa-exclamation form-control-feedback"></span>
+                            <span>{{ $errors->first('slug') }}</span>
+                        </div>
                     @endif
                 </div>
             </fieldset>
@@ -90,9 +96,7 @@
 
 
           <div class="form-group mt-5">
-            <div class="">
                 <button type="submit" class="btn btn-primary btn-block w-btn w-25 mx-auto">更　新</button>
-            </div>
         </div>
 
         </form>

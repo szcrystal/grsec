@@ -70,6 +70,9 @@ Route::resource('dashboard/users', 'DashBoard\UserController');
 //Fix
 Route::resource('dashboard/fixes', 'DashBoard\FixController');
 
+//MailMagazine
+Route::resource('dashboard/magazines', 'DashBoard\MailMagazineController');
+
 
 //Main =========================================================
 //Fix Page

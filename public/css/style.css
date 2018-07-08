@@ -356,7 +356,7 @@ body {
 	font-size: 1.5em;
 }
 .head-navi li:last-of-type {
-	margin-left: -6px;
+	margin-left: -2px;
 }
 .head-navi li a,
 .head-navi li span {
@@ -555,7 +555,10 @@ body {
 
 /* Top */
 .wrap-all {
-	margin-top: 14em;
+	margin-top: 12em;
+}
+.wrap-all .home {
+	margin-top: 3em;
 }
 
 .site-content {
@@ -568,7 +571,12 @@ body {
 	text-align: right;
 }
 
-
+/* Bread */
+.breadcrumb {
+	background: none;
+    margin-bottom: 2em;
+    //border: 1px solid red;
+}
 
 
 /* Article */
@@ -852,6 +860,9 @@ body {
 
 
 /* login */
+.login {
+	margin-top: 6em;
+}
 .login h4 {
 	font-weight: bold;
     padding-bottom: 0.2em;

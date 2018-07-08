@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Main;
 
 use App\Item;
 use App\Category;
+use App\CategorySecond;
 use App\Tag;
 use App\TagRelation;
 use App\ItemImage;
@@ -19,12 +20,13 @@ use Ctm;
 
 class SingleController extends Controller
 {
-    public function __construct(Item $item, Category $category, Tag $tag, TagRelation $tagRel, ItemImage $itemImg, Favorite $favorite, User $user)
+    public function __construct(Item $item, Category $category, CategorySecond $subCate, Tag $tag, TagRelation $tagRel, ItemImage $itemImg, Favorite $favorite, User $user)
     {
         //$this->middleware('search');
         
         $this->item = $item;
         $this->category = $category;
+        $this->subCate = $subCate;
         $this->tag = $tag;
         $this->tagRel = $tagRel;
         $this->itemImg = $itemImg;
@@ -48,8 +50,8 @@ class SingleController extends Controller
     {
         $item = $this->item->find($id);
         
-        $cateObj = $this->category->find($item->cate_id);
-        
+        $cate = $this->category->find($item->cate_id);
+        $subCate = $this->subCate->find($item->subcate_id);
         //Other Atcl
         $otherItem = $this->item->where([ 'open_status'=>1])->whereNotIn('id', [$id])->orderBy('created_at','DESC')->take(5)->get();
         
@@ -112,7 +114,7 @@ class SingleController extends Controller
 		//Recommend
         $recommends = $this->item->whereNotIn('id',[$item->id])->where(['subcate_id'=>$item->subcate_id, 'open_status'=>1])->skip(3)->take($getNum)->get();
         
-        return view('main.home.single', ['item'=>$item, 'otherItem'=>$otherItem, 'cateObj'=>$cateObj, 'tags'=>$tags, 'imgsPri'=>$imgsPri, 'imgsSec'=>$imgsSec, 'isFav'=>$isFav, 'isOnceItems'=>$isOnceItems, 'cacheItems'=>$cacheItems, 'recommends'=>$recommends]);
+        return view('main.home.single', ['item'=>$item, 'otherItem'=>$otherItem, 'cate'=>$cate, 'subCate'=>$subCate, 'tags'=>$tags, 'imgsPri'=>$imgsPri, 'imgsSec'=>$imgsSec, 'isFav'=>$isFav, 'isOnceItems'=>$isOnceItems, 'cacheItems'=>$cacheItems, 'recommends'=>$recommends, 'type'=>'single']);
     }
     
     

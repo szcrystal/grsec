@@ -406,15 +406,7 @@ for SP
     }
     
     
-    
-    .login > div {
-        width: 100%;
-        float: none;
-    }
-    .login > div:last-of-type {
-        padding-left: 0;
-        margin-top: 2em;
-    }
+	
     
 	div.tel-sp {
 		display: block;
@@ -458,7 +450,7 @@ for SP
     }
     
     .wrap-all,
-    .top .wrap-all {
+    .wrap-all .home {
     	padding-left: 1.6%;
         padding-right: 1.5%;
         padding-top: 0;
@@ -532,7 +524,18 @@ for SP
     }
     
     
-    
+    /* Login */    
+    .login {
+        margin-top: 0;
+    }
+    .login > div {
+        width: 100%;
+        float: none;
+    }
+    .login > div:last-of-type {
+        padding-left: 0;
+        margin-top: 2em;
+    }
     
     
     /* Footer */

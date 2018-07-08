@@ -85,7 +85,7 @@ class TagController extends Controller
         
         $messages = [
             'name.unique' => '「タグ名」が既に存在します。',
-            'slug.unique' => '「スラッグ」が既に存在します。',
+            //'slug.unique' => '「スラッグ」が既に存在します。',
         ];
         
         $this->validate($request, $rules, $messages);

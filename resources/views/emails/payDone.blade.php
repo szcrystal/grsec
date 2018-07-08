@@ -7,7 +7,9 @@
 
 {{ $user['name'] }} 様
 @if($isUser)
-<br /><br />
+<br>
+<p>※このメールは配信専用メールのため、ご返信いただけません。</p>
+<br>
 {!! nl2br( $header ) !!}
 
 @else

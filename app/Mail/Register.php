@@ -44,7 +44,8 @@ class Register extends Mailable
 //        $data['confirm_token'] = bin2hex($confirm_key);
 
 
-        return $this->from($this->setting->admin_email, $this->setting->admin_name)
+        //return $this->from($this->setting->admin_email, $this->setting->admin_name)
+        return $this->from(env('ADMIN_EMAIL', 'no-reply@green-rocket.jp'), env('ADMIN_NAME', 'GREEN ROCKET'))
                     ->view('emails.register')
                     ->with([
                         'header' => $templ->header,

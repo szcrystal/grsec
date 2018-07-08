@@ -60,7 +60,7 @@ return [
     'regex'                => ':attributeの書式が正しくありません。',
     'required'             => ':attributeは必須です。',
     'required_if'          => ':otherが:valueの時、:attributeは必須です。',
-    'required_with'        => ':valuesが存在する時、:attributeは必須です。',
+    'required_with'        => ':valuesの時、:attributeは必須です。',
     'required_with_all'    => ':valuesが存在する時、:attributeは必須です。',
     'required_without'     => ':attributeは必須です。',
     //'required_without'     => ':valuesが存在しない時、:attributeは必須です。',
@@ -139,14 +139,22 @@ return [
         
         
         
-        'ask_category' => 'お問合わせ内容',
-        'name' => '「ユーザー名」',
+        'ask_category' => '「お問い合わせ種別」',
+        //'name' => '「ユーザー名」',
         'email' => '「メールアドレス」',
         'context' => '「コメント」',
+        'comment' => '「コメント」',
         'title' => '「タイトル」',
+        
+        'number' => '「商品番号」',
         'cate_id' => '「カテゴリー」',
-        'movie_site' => '「動画サイト」',
-        'movie_url' => '「動画URL」',
+        'dg_id' => '「配送区分」',
+        'is_once' => '「同梱包可能」',
+        'factor' => '「係数」',
+        'price' => '「価格」',
+        'cost_price' => '「仕入れ値」',
+        'stock' => '「在庫」',
+        'point_back' => '「ポイント」',
         'slug' => '「スラッグ」',
         'category' => '「カテゴリー」',
         'address' => '「所在地」',
@@ -159,6 +167,8 @@ return [
         'date_d' => '「日付（日）」',
         'birth' => '「生年月日」',
         'set_date' => '「日付」',
+        
+        'capacity' => '「容量」',
     ],
 
 ];

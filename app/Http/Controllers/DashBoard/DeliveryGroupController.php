@@ -85,15 +85,17 @@ class DeliveryGroupController extends Controller
         $editId = $request->has('edit_id') ? $request->input('edit_id') : 0;
         
         $rules = [
-            //'title' => 'required|max:255',
-            //'movie_url' => 'required|max:255',
+        	'name' => 'required|max:255',
+            'capacity' => 'required|max:255',
+            'time_table' => 'required_with:is_time|max:255',
+            
             //'main_img' => 'filenaming',
         ];
         
          $messages = [
-             'title.required' => '「商品名」を入力して下さい。',
-            'cate_id.required' => '「カテゴリー」を選択して下さい。',
-            
+            'time_table.required_with' => '「時間帯」を入力して下さい。',
+            'name.required' => '「配送区分名」を入力して下さい。',
+            'name.max' => '「配送区分名」は255文字以内で入力して下さい。',
             //'post_thumb.filenaming' => '「サムネイル-ファイル名」は半角英数字、及びハイフンとアンダースコアのみにして下さい。',
             //'post_movie.filenaming' => '「動画-ファイル名」は半角英数字、及びハイフンとアンダースコアのみにして下さい。',
             //'slug.unique' => '「スラッグ」が既に存在します。',

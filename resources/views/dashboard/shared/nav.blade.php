@@ -238,7 +238,7 @@
           </a>
           <ul class="sidenav-second-level collapse" id="magazine">
             <li>
-              <a href="#">メルマガ一覧</a>
+              <a href="{{ url('dashboard/magazines') }}">メルマガ一覧</a>
             </li>
             <li>
               <a href="#">メルマガ新規作成</a>

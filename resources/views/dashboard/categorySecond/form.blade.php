@@ -79,10 +79,10 @@
                 
             </fieldset>
 
-            <fieldset class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
+            <fieldset class="form-group">
                 <label for="name" class="control-label">子カテゴリー名</label>
 
-                <input id="name" type="text" class="form-control col-md-10" name="name" value="{{ Ctm::isOld() ? old('name') : (isset($subCate) ? $subCate->name : '') }}">
+                <input id="name" type="text" class="form-control col-md-10{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ Ctm::isOld() ? old('name') : (isset($subCate) ? $subCate->name : '') }}">
 
                 @if ($errors->has('name'))
                 <div class="text-danger">
@@ -93,10 +93,10 @@
             </fieldset>
 
 
-            <fieldset class="form-group{{ $errors->has('slug') ? ' has-error' : '' }}">
+            <fieldset class="form-group">
                 <label for="slug" class="control-label">スラッグ</label>
 
-                <input id="slug" type="text" class="form-control col-md-10" name="slug" value="{{ Ctm::isOld() ? old('slug') : (isset($subCate) ? $subCate->slug : '') }}">
+                <input id="slug" type="text" class="form-control col-md-10{{ $errors->has('slug') ? ' is-invalid' : '' }}" name="slug" value="{{ Ctm::isOld() ? old('slug') : (isset($subCate) ? $subCate->slug : '') }}">
 
                 @if ($errors->has('slug'))
                     <div class="text-danger">

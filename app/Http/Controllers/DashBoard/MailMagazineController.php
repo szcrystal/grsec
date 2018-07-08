@@ -3,41 +3,24 @@
 namespace App\Http\Controllers\DashBoard;
 
 use App\Admin;
-use App\Item;
-use App\Category;
-use App\CategorySecond;
-use App\Tag;
-use App\TagRelation;
-use App\Consignor;
-use App\DeliveryGroup;
-use App\ItemImage;
+use App\MailMagazine;
 use App\Setting;
 
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-use App\Http\Requests;
-
-use Storage;
-
-class ItemController extends Controller
+class MailMagazineController extends Controller
 {
-    public function __construct(Admin $admin, Item $item, Tag $tag, Category $category, CategorySecond $categorySecond, TagRelation $tagRelation, Consignor $consignor, DeliveryGroup $dg, ItemImage $itemImg, Setting $setting)
+    public function __construct(Admin $admin, MailMagazine $mag, Setting $setting)
     {
         
         $this -> middleware('adminauth');
         //$this -> middleware('log', ['only' => ['getIndex']]);
         
         $this -> admin = $admin;
-        $this-> item = $item;
-        $this->category = $category;
-        $this->categorySecond = $categorySecond;
-        $this -> tag = $tag;
-        $this->tagRelation = $tagRelation;
-        $this->consignor = $consignor;
-        $this->dg = $dg;
-        $this->itemImg = $itemImg;
+        $this-> mag = $mag;
+        
         $this->setting = $setting;
         
         $this->perPage = 20;
@@ -55,62 +38,62 @@ class ItemController extends Controller
     {
         
         //$itemObjs = Item::orderBy('id', 'desc')->paginate($this->perPage);
-        $itemObjs = Item::orderBy('id', 'desc')->get();
+        $magObjs = $this->mag->orderBy('id', 'desc')->get();
         
-        $cates= $this->category;
-        $subCates= $this->categorySecond;
-        $dgs = $this->dg;
+//        $cates= $this->category;
+//        $subCates= $this->categorySecond;
+//        $dgs = $this->dg;
         
         
         //$status = $this->articlePost->where(['base_id'=>15])->first()->open_date;
         
-        return view('dashboard.item.index', ['itemObjs'=>$itemObjs, 'cates'=>$cates, 'subCates'=>$subCates, 'dgs'=>$dgs]);
+        return view('dashboard.magazine.index', ['magObjs'=>$magObjs/*, 'cates'=>$cates, 'subCates'=>$subCates, 'dgs'=>$dgs*/]);
     }
 
     public function show($id)
     {
-        $item = $this->item->find($id);
-        $cates = $this->category->all();
-        $subcates = $this->categorySecond->where(['parent_id'=>$item->cate_id])->get();
-        $consignors = $this->consignor->all();
-        $dgs = $this->dg->all();
+        $mag = $this->mag->find($id);
+//        $cates = $this->category->all();
+//        $subcates = $this->categorySecond->where(['parent_id'=>$item->cate_id])->get();
+//        $consignors = $this->consignor->all();
+//        $dgs = $this->dg->all();
+//        
+//        $spares = $this->itemImg->where(['item_id'=>$id, 'type'=>1])->get();
+//        $snaps = $this->itemImg->where(['item_id'=>$id, 'type'=>2])->get();
+//        
+//        //$users = $this->user->where('active',1)->get();
+//        
+//		$tagNames = $this->tagRelation->where(['item_id'=>$id])->get()->map(function($item) {
+//            return $this->tag->find($item->tag_id)->name;
+//        })->all();
+//        
+//        $allTags = $this->tag->get()->map(function($item){
+//            return $item->name;
+//        })->all();
+//        
+//        $setting = $this->setting->get()->first();
+//        $primaryCount = $setting->snap_primary;
+//        $imgCount = $setting->snap_secondary;
         
-        $spares = $this->itemImg->where(['item_id'=>$id, 'type'=>1])->get();
-        $snaps = $this->itemImg->where(['item_id'=>$id, 'type'=>2])->get();
-        
-        //$users = $this->user->where('active',1)->get();
-        
-		$tagNames = $this->tagRelation->where(['item_id'=>$id])->get()->map(function($item) {
-            return $this->tag->find($item->tag_id)->name;
-        })->all();
-        
-        $allTags = $this->tag->get()->map(function($item){
-            return $item->name;
-        })->all();
-        
-        $setting = $this->setting->get()->first();
-        $primaryCount = $setting->snap_primary;
-        $imgCount = $setting->snap_secondary;
-        
-        return view('dashboard.item.form', ['item'=>$item, 'cates'=>$cates, 'subcates'=>$subcates, 'consignors'=>$consignors, 'dgs'=>$dgs, 'tagNames'=>$tagNames, 'allTags'=>$allTags, 'spares'=>$spares, 'snaps'=>$snaps, 'primaryCount'=>$primaryCount, 'imgCount'=>$imgCount, 'id'=>$id, 'edit'=>1]);
+        return view('dashboard.item.form', ['mag'=>$mag, /*'cates'=>$cates, 'subcates'=>$subcates, 'consignors'=>$consignors, 'dgs'=>$dgs, 'tagNames'=>$tagNames, 'allTags'=>$allTags, 'spares'=>$spares, 'snaps'=>$snaps, 'primaryCount'=>$primaryCount, 'imgCount'=>$imgCount,*/ 'id'=>$id, 'edit'=>1]);
     }
    
     public function create()
     {
-        $cates = $this->category->all();
-        $consignors = $this->consignor->all();
-        $dgs = $this->dg->all();
-        
-        $allTags = $this->tag->get()->map(function($item){
-        	return $item->name;
-        })->all();
-        
-        $setting = $this->setting->get()->first();
-        $primaryCount = $setting->snap_primary;
-        $imgCount = $setting->snap_secondary;
+//        $cates = $this->category->all();
+//        $consignors = $this->consignor->all();
+//        $dgs = $this->dg->all();
+//        
+//        $allTags = $this->tag->get()->map(function($item){
+//        	return $item->name;
+//        })->all();
+//        
+//        $setting = $this->setting->get()->first();
+//        $primaryCount = $setting->snap_primary;
+//        $imgCount = $setting->snap_secondary;
         
 //        $users = $this->user->where('active',1)->get();
-        return view('dashboard.item.form', ['cates'=>$cates, 'consignors'=>$consignors, 'dgs'=>$dgs, 'allTags'=>$allTags, 'primaryCount'=>$primaryCount, 'imgCount'=>$imgCount, ]);
+        return view('dashboard.magazine.form', [/*'cates'=>$cates, 'consignors'=>$consignors, 'dgs'=>$dgs, 'allTags'=>$allTags, 'primaryCount'=>$primaryCount, 'imgCount'=>$imgCount, */]);
     }
 
     /**

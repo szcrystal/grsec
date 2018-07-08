@@ -41,15 +41,17 @@
                                 <tr class="form-group">
                                 	<th>お問い合わせ種別<em>必須</em></th>
                                     <td>
-                                        <select class="form-control col-md-8{{ $errors->has('ask_category') ? ' has-error' : '' }}" name="ask_category">
+                                        <select class="form-control col-md-8{{ $errors->has('ask_category') ? ' is-invalid' : '' }}" name="ask_category">
+                                        	<option disabled selected>選択して下さい</option>
                                             @foreach($cate_option as $val)
                                                 <option value="{{ $val }}"{{ old('ask_category') && old('ask_category') == $val ? ' selected' : '' }}>{{ $val }}</option>
                                             @endforeach
                                         </select>
 
                                         @if ($errors->has('ask_category'))
-                                            <span class="help-block">
-                                                <strong>{{ $errors->first('ask_category') }}</strong>
+                                            <span class="text-danger">
+                                            	<span class="fa fa-exclamation form-control-feedback"></span>
+                                                <span>{{ $errors->first('ask_category') }}</span>
                                             </span>
                                         @endif
 
@@ -88,11 +90,12 @@
                                 <tr class="form-group">
                                 	<th><label class="control-label">お問い合わせ内容</label><em>必須</em></th>
                                     <td>
-                                        <textarea id="comment" class="form-control rounded-0 col-md-12{{ $errors->has('comment') ? ' has-error' : '' }}" name="comment" rows="20">{{ old('comment') }}</textarea>
+                                        <textarea id="comment" class="form-control rounded-0 col-md-12{{ $errors->has('comment') ? ' is-invalid' : '' }}" name="comment" rows="20">{{ old('comment') }}</textarea>
 
                                         @if ($errors->has('comment'))
-                                            <span class="help-block">
-                                                <strong>{{ $errors->first('comment') }}</strong>
+                                            <span class="text-danger">
+                                            	<span class="fa fa-exclamation form-control-feedback"></span>
+                                                <span>{{ $errors->first('comment') }}</span>
                                             </span>
                                         @endif
                                     </td>

@@ -53,10 +53,10 @@
                 <input type="hidden" name="edit_id" value="{{$id}}">
             @endif
 
-            <fieldset class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
+            <fieldset class="form-group">
                 <label for="name" class="control-label">カテゴリー名</label>
 
-                    <input id="name" type="text" class="form-control col-md-10" name="name" value="{{ Ctm::isOld() ? old('name') : (isset($cate) ? $cate->name : '') }}">
+                    <input id="name" type="text" class="form-control col-md-10{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ Ctm::isOld() ? old('name') : (isset($cate) ? $cate->name : '') }}">
 
                 @if ($errors->has('name'))
                 <div class="text-danger">
@@ -66,10 +66,10 @@
                 @endif
             </fieldset>
             
-            <fieldset class="form-group{{ $errors->has('link_name') ? ' has-error' : '' }}">
+            <fieldset class="form-group">
                 <label for="link_name" class="control-label">カテゴリーリンク名（メニュー用）</label>
 
-                    <input id="link_name" type="text" class="form-control col-md-10" name="link_name" value="{{ Ctm::isOld() ? old('link_name') : (isset($cate) ? $cate->link_name : '') }}">
+                    <input id="link_name" type="text" class="form-control col-md-10{{ $errors->has('link_name') ? ' is-invalid' : '' }}" name="link_name" value="{{ Ctm::isOld() ? old('link_name') : (isset($cate) ? $cate->link_name : '') }}">
 
                 @if ($errors->has('link_name'))
                 <div class="text-danger">
@@ -80,10 +80,10 @@
             </fieldset>
 
 
-            <fieldset class="form-group{{ $errors->has('slug') ? ' has-error' : '' }}">
+            <fieldset class="form-group">
                 <label for="slug" class="control-label">スラッグ</label>
 
-                    <input id="slug" type="text" class="form-control col-md-10" name="slug" value="{{ Ctm::isOld() ? old('slug') : (isset($cate) ? $cate->slug : '') }}">
+                    <input id="slug" type="text" class="form-control col-md-10{{ $errors->has('slug') ? ' is-invalid' : '' }}" name="slug" value="{{ Ctm::isOld() ? old('slug') : (isset($cate) ? $cate->slug : '') }}">
 
                 @if ($errors->has('slug'))
                     <div class="text-danger">

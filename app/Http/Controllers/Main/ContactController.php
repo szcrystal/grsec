@@ -79,14 +79,15 @@ class ContactController extends Controller
     public function store(Request $request)
     {
         $rules = [
+        	'ask_category' => 'required',
             'name' => 'required|max:255',
             'email' => 'required|email|max:255', /* |unique:admins 注意:unique */
-//            'admin_password' => 'required|min:6',
+			'comment' => 'required',
         ];
         
         $messages = [
-            'name.required' => '「商品名」を入力して下さい。',
-            'email.required' => '「メールアドレス」を入力して下さい。',
+            //'ask_category.required' => '「お名前」を入力して下さい。',
+            //'email.required' => '「メールアドレス」を入力して下さい。',
             
             //'post_thumb.filenaming' => '「サムネイル-ファイル名」は半角英数字、及びハイフンとアンダースコアのみにして下さい。',
             //'post_movie.filenaming' => '「動画-ファイル名」は半角英数字、及びハイフンとアンダースコアのみにして下さい。',
@@ -104,6 +105,7 @@ class ContactController extends Controller
         $contactModel->save(); //モデルからsave
         //$id = $postModel->id;
         
+        $data['id'] = $contactModel->id;
         
         $this->sendMail($data);
         //$this->fakeMail($data);
@@ -134,7 +136,7 @@ class ContactController extends Controller
         Mail::send('emails.contact', $data, function($message) use ($data, $admin_email, $admin_name) //引数について　http://readouble.com/laravel/5/1/ja/mail.html
         {
             //$dataは連想配列としてviewに渡され、その配列のkey名を変数としてview内で取得出来る
-            $message -> from($admin_email, $admin_name)
+            $message -> from(env('ADMIN_EMAIL', 'no-reply@green-rocket.jp'), env('ADMIN_NAME', 'GREEN ROCKET'))
                      -> to($data['email'], $data['name'])
                      -> subject($data['title']);
             //$message->attach($pathToFile);

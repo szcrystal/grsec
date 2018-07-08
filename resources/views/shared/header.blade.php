@@ -27,10 +27,16 @@
     
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
     
+    <?php
+        $getNow = '';
+        if(Ctm::isLocal())
+    		$getNow = '?up=' . time();
+    ?>
+    
     @if(Ctm::isAgent('all'))
-    <link href="{{ asset('css/style-sp.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/style-sp.css' . $getNow) }}" rel="stylesheet">
     @else
-    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/style.css'. $getNow) }}" rel="stylesheet">
 	@endif
 
 	{{-- <script type="text/javascript" src="//code.jquery.com/jquery-2.1.0.min.js"></script> --}}

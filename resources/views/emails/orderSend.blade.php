@@ -16,7 +16,9 @@
 @endif
 
 
-<br /><br />
+<br>
+<p>※このメールは配信専用メールのため、ご返信いただけません。</p>
+<br>
 @if(isset($thisSale->information))
 【グリーンロケットからのお知らせ】<br>
 {!! nl2br($thisSale->information) !!}<br><br>

@@ -10,6 +10,8 @@ use App\Prefecture;
 ?>
 
     <div id="main" class="single">
+    	
+        @include('main.shared.bread')
 		
         <div class="head-frame clearfix">
             
@@ -62,13 +64,17 @@ use App\Prefecture;
                  	<p class="text-big">{{ $item->catchcopy }}</p>   
                  	
                   	<?php
-                   	$per = env('TAX_PER');
-                    $per = $per/100;
-                    
-                    $tax = floor($item->price * $per);
-                    $price = $item->price + $tax;
-                   	
-                   ?>      
+                        $per = env('TAX_PER');
+                        $per = $per/100;
+                        
+                        $tax = floor($item->price * $per);
+                        $price = $item->price + $tax;
+                   ?>
+                   
+                    <div class="mb-3" >
+                    	<span class="text-small">カテゴリー：</span>
+                        <a href="{{ url('category/'.$cate->slug) }}">{{ $cate->link_name }}</a> ＞ <a href="{{ url('category/'.$cate->slug. '/'.$subCate->slug) }}">{{ $subCate->name }}</a>
+                    </div>
                     
                  	<div class="price-meta">
                   	   価格: {{ number_format(Ctm::getPriceWithTax($item->price)) }}円　(税込)
@@ -198,16 +204,16 @@ use App\Prefecture;
                 @endif
                 
 
-                <div class="cont-wrap">
+                <div class="cont-wrap mb-5 pb-2">
                 	
 				
                 @if(! Ctm::isAgent('sp'))
-                    <div class="clear contents mt-4">
+                    <div class="clearfix contents mt-4">
                     	<h4>商品説明</h4>
 						{!! nl2br($item->explain) !!}
                     </div>
                     
-                    <div class="clear contents mt-4">
+                    <div class="clearfix contents mt-4">
                     	<h4>配送について</h4>
                         <div>
                         {!! nl2br($item->about_ship) !!}
@@ -309,7 +315,8 @@ use App\Prefecture;
                     </div>
                     
                 @endif
-
+				
+                </div>
 
 					
 					@if(count($recommends) > 0)
@@ -349,15 +356,9 @@ use App\Prefecture;
                      	</ul>	     
                     </div>
                     @endif
-                    
-                    
-					
 
-
-                	</div>
-
-
-				</div><!-- panelbody -->
-
+            
+        </div><!-- panelbody -->
+		
     </div>
 @endsection

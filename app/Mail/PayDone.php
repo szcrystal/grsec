@@ -68,7 +68,8 @@ class PayDone extends Mailable
 
         $receiver = Receiver::find($saleRel->receiver_id);
 
-        return $this->from($this->setting->admin_email, $this->setting->admin_name)
+        //return $this->from($this->setting->admin_email, $this->setting->admin_name)
+        return $this->from(env('ADMIN_EMAIL', 'no-reply@green-rocket.jp'), env('ADMIN_NAME', 'GREEN ROCKET'))
                     ->view('emails.payDone')
                     ->with([
                         'header' => $templ->header,

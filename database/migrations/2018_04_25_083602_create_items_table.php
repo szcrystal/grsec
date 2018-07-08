@@ -41,7 +41,7 @@ class CreateItemsTable extends Migration
             
             $table->integer('price')->nullable()->default(NULL);
             $table->integer('cost_price')->nullable()->default(NULL);
-            $table->string('consignor_id')->nullable()->default(NULL);
+            $table->integer('consignor_id')->nullable()->default(NULL);
             
             $table->integer('dg_id')->nullable()->default(NULL);
             $table->boolean('is_delifee')->nullable()->default(NULL);
