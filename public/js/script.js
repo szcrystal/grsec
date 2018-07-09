@@ -92,7 +92,7 @@ var exe = (function() {
         searchSlide: function() {
         	$input = $('.s-form input');
             
-            $width = this.isSpTab('sp') ? '65%' : '14em';
+            $width = this.isSpTab('sp') ? '65%' : '13em';
            
 //           	if(this.isSpTab('sp')) {
 //           
