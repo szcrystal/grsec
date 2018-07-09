@@ -120,6 +120,9 @@ for SP
     .wrap-all {
         margin-top: 8em;
     }
+    .wrap-all .home {
+        margin-top: 0;
+    }
     
     
 	.site-header {
@@ -442,11 +445,12 @@ for SP
     
 
 	.img-box {
-        height: 190px;
+        height: 180px;
         overflow: hidden;
     }
     .top .img-box {
-        height: 190px;
+        height: 180px;
+        overflow: hidden;
     }
     
     .wrap-all,
