@@ -89,11 +89,11 @@
             
             <div class="clearfix">
                 <div class="form-group mb-5 col-md-6 float-left">
-                    <button type="submit" class="btn btn-primary btn-block w-50" name="only_up" value="1">送信せずに更新</button>
+                    <button type="submit" class="btn btn-primary btn-block w-50" name="only_up" value="1" disabled>送信せずに更新</button>
                 </div>
                 
                 <div class="form-group col-md-6 float-right">
-                    <button type="submit" class="btn btn-danger btn-block mx-auto w-btn w-50 float-right" name="with_mail" value="1">メール送信する</button>
+                    <button type="submit" class="btn btn-danger btn-block mx-auto w-btn w-50 float-right" name="with_mail" value="1" disabled>メール送信する</button>
                 </div>
             </div>
             

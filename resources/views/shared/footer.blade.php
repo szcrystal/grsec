@@ -26,16 +26,13 @@
 			<ul>
             	<li><a href=""><i class="fa fa-angle-right"></i> 会社概要</a>
                 <li><a href=""><i class="fa fa-angle-right"></i> 会社概要</a>
-                <li><a href=""><i class="fa fa-angle-right"></i> 会社概要</a>
-                <li><a href=""><i class="fa fa-angle-right"></i> 会社概要</a>
-                <li><a href=""><i class="fa fa-angle-right"></i> 会社概要</a>
    			@if($fixes)         
             	@foreach($fixes as $fix)
 				<li><a href="{{ url($fix->slug) }}">
 					@if($fix->sub_title != '')
-                    {{ $fix->sub_title }}
+                    <i class="fa fa-angle-right"></i> {{ $fix->sub_title }}
                     @else
-                    {{ $fix->title }}
+                    <i class="fa fa-angle-right"></i> {{ $fix->title }}
                     @endif
                 </a></li>
 				@endforeach
