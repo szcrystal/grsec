@@ -261,6 +261,7 @@ for SP
         display: block;
         padding: 0.5em;
         margin-bottom: 1.3em;
+        border: 0;
     }
     .drops ul li{
     	margin-left: 1.5em;
@@ -445,11 +446,11 @@ for SP
     
 
 	.img-box {
-        height: 180px;
+        height: 170px;
         overflow: hidden;
     }
     .top .img-box {
-        height: 180px;
+        height: 170px;
         overflow: hidden;
     }
     

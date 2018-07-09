@@ -107,8 +107,9 @@
         <tbody>
         	<tr>
             <td>
+            @if(isset($data['plan_date']))
             {{ $data['plan_date'] }}<br>
-
+            @endif
 			
 			<ul class="px-4 mt-2">
                 @foreach($itemData as $item) 
