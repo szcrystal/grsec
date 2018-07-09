@@ -28,7 +28,9 @@
     </h1>
     
     <div class="head-center">
+    	<a href="{{ url('/') }}">
     	<img src="{{ url('images/logo-symbol.png') }}" alt="{{ config('app.name', 'グリーンロケット') }}-ロゴマーク">
+        </a>
     </div>
     
     <div class="head-navi">
