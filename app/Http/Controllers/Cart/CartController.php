@@ -397,7 +397,7 @@ class CartController extends Controller
                     'charge_loss' => 0,
                     
                     'deli_time' => isset($val['deli_time']) ? $val['deli_time'] : null,
-                    'plan_date' => $allData['plan_date'],
+                    'plan_date' => isset($allData['plan_date']) ? $allData['plan_date'] : null,
                     
                     'deli_done' => 0,
                     'pay_done' => 0,
