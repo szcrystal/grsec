@@ -124,7 +124,7 @@ class ItemController extends Controller
     	$editId = $request->has('edit_id') ? $request->input('edit_id') : 0;
         
     	$rules = [
-        	'number' => 'required|unique:items,number,'.$editId.'|numeric',
+        	'number' => 'required|unique:items,number,'.$editId,
             'title' => 'required|max:255',
             'cate_id' => 'required',
             'dg_id' => 'required',

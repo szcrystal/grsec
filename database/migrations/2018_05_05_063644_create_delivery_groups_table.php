@@ -32,7 +32,7 @@ class CreateDeliveryGroupsTable extends Migration
         
         DB::table('delivery_groups')->insert(
             [ 
-                'name' => '下草(小)',
+                'name' => '下草(小)/府中ガーデン',
                 'open_status' => 1,
                 'capacity' => 20,
                 
@@ -43,7 +43,7 @@ class CreateDeliveryGroupsTable extends Migration
         
         DB::table('delivery_groups')->insert(
             [ 
-                'name' => '下草(大)',
+                'name' => '下草(大)/府中ガーデン',
                 'open_status' => 1,
                 'capacity' => 40,
                 
@@ -54,7 +54,7 @@ class CreateDeliveryGroupsTable extends Migration
         
         DB::table('delivery_groups')->insert(
             [ 
-                'name' => '高木コニファー（小）',
+                'name' => '高木コニファー（小）/千代田プランツ',
                 'open_status' => 1,
                 'capacity' => 3,
                 
@@ -65,7 +65,18 @@ class CreateDeliveryGroupsTable extends Migration
         
         DB::table('delivery_groups')->insert(
             [ 
-                'name' => '高木コニファー（大）',
+                'name' => '高木コニファー（大）/千代田プランツ',
+                'open_status' => 1,
+                'capacity' => 6,
+                
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time()),
+            ]
+        );
+        
+        DB::table('delivery_groups')->insert(
+            [ 
+                'name' => '下草コニファー/千代田プランツ',
                 'open_status' => 1,
                 'capacity' => 6,
                 
