@@ -63,7 +63,7 @@
         
 			<fieldset class="mb-4 form-group">
                 <label>タイトル</label>
-                <input class="form-control{{ $errors->has('title') ? ' is-invalid' : '' }}" name="number" value="{{ Ctm::isOld() ? old('title') : (isset($mag) ? $mag->title : '') }}">
+                <input class="form-control{{ $errors->has('title') ? ' is-invalid' : '' }}" name="title" value="{{ Ctm::isOld() ? old('title') : (isset($mag) ? $mag->title : '') }}">
 
                 @if ($errors->has('title'))
                     <div class="text-danger">
@@ -75,7 +75,7 @@
                
             
             <fieldset class="my-5 form-group">
-                    <label for="explain" class="control-label">コンテンツ</label>
+                    <label for="contents" class="control-label">コンテンツ</label>
 
                     <textarea id="contents" type="text" class="form-control{{ $errors->has('contents') ? ' is-invalid' : '' }}" name="contents" rows="25">{{ Ctm::isOld() ? old('contents') : (isset($mag) ? $mag->contents : '') }}</textarea>
 
@@ -89,11 +89,11 @@
             
             <div class="clearfix">
                 <div class="form-group mb-5 col-md-6 float-left">
-                    <button type="submit" class="btn btn-primary btn-block w-50" name="only_up" value="1" disabled>送信せずに更新</button>
+                    <button type="submit" class="btn btn-primary btn-block w-50" name="only_up" value="1">送信せずに更新</button>
                 </div>
                 
                 <div class="form-group col-md-6 float-right">
-                    <button type="submit" class="btn btn-danger btn-block mx-auto w-btn w-50 float-right" name="with_mail" value="1" disabled>メール送信する</button>
+                    <button type="submit" class="btn btn-danger btn-block mx-auto w-btn w-50 float-right" name="with_mail" value="1">メール送信する</button>
                 </div>
             </div>
             

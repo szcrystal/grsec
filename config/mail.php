@@ -100,6 +100,9 @@ return [
     */
 
     'sendmail' => '/usr/sbin/sendmail -bs',
+    
+    // Mail "Pretend"
+    'pretend' => env('MAIL_PRETEND', false),
 
     /*
     |--------------------------------------------------------------------------

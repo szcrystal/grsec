@@ -5,14 +5,27 @@ namespace App\Http\Controllers\DashBoard;
 use App\Admin;
 use App\MailMagazine;
 use App\Setting;
+use App\User;
+use App\UserNoregist;
+use App\Sale;
 
+
+use App\Jobs\ProcessMagazine;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
+use Illuminate\Support\Facades\Mail;
+
+use App\Mail\Magazine;
+
+use Artisan;
+
+use DateTime;
+
 class MailMagazineController extends Controller
 {
-    public function __construct(Admin $admin, MailMagazine $mag, Setting $setting)
+    public function __construct(Admin $admin, MailMagazine $mag, Setting $setting, User $user, UserNoregist $noReg)
     {
         
         $this -> middleware('adminauth');
@@ -22,6 +35,9 @@ class MailMagazineController extends Controller
         $this-> mag = $mag;
         
         $this->setting = $setting;
+        
+        $this->user = $user;
+        $this->noReg = $noReg;
         
         $this->perPage = 20;
         
@@ -75,7 +91,7 @@ class MailMagazineController extends Controller
 //        $primaryCount = $setting->snap_primary;
 //        $imgCount = $setting->snap_secondary;
         
-        return view('dashboard.item.form', ['mag'=>$mag, /*'cates'=>$cates, 'subcates'=>$subcates, 'consignors'=>$consignors, 'dgs'=>$dgs, 'tagNames'=>$tagNames, 'allTags'=>$allTags, 'spares'=>$spares, 'snaps'=>$snaps, 'primaryCount'=>$primaryCount, 'imgCount'=>$imgCount,*/ 'id'=>$id, 'edit'=>1]);
+        return view('dashboard.magazine.form', ['mag'=>$mag, /*'cates'=>$cates, 'subcates'=>$subcates, 'consignors'=>$consignors, 'dgs'=>$dgs, 'tagNames'=>$tagNames, 'allTags'=>$allTags, 'spares'=>$spares, 'snaps'=>$snaps, 'primaryCount'=>$primaryCount, 'imgCount'=>$imgCount,*/ 'id'=>$id, 'edit'=>1]);
     }
    
     public function create()
@@ -129,10 +145,128 @@ class MailMagazineController extends Controller
             //'slug.unique' => '「スラッグ」が既に存在します。',
         ];
         
-        $this->validate($request, $rules, $messages);
+        //$this->validate($request, $rules, $messages);
         
         $data = $request->all();
         
+/*
+//        $sales = Sale::get();
+//        $sale7 = array();
+//        
+//        $current = new DateTime('now'); 
+//        
+//        foreach($sales as $sale) {
+//        	
+//        	//$d = strtotime($sale->deli_start_date);
+//            $from = new DateTime($sale->deli_start_date);
+//            $diff = $current->diff($from);
+//            
+//            $ensure = Item::find($sale->item_id)->is_ensure;
+//            
+//            if($ensure) {
+//                if($diff->days == 7) {
+//                    $sale7[] = $sale;
+//                }
+//                elseif($diff->days == 33) {
+//                
+//                }
+//                elseif($diff->days == 96) {
+//                
+//                }
+//                elseif($diff->days == 155) {
+//                
+//                }
+//            }
+//            else {
+//            	if($diff->days == 33) {
+//                	
+//                }
+//            }
+//            
+//
+////        $limitDay = new DateTime(date('Y-m-d', $limit));
+////        $current = new DateTime('now');
+////        $diff = $current->diff($limitDay);
+////        
+////        return ['limit'=>date('Y/m/d', $limit), 'diffDay'=>$diff->days];
+//
+//		}
+//        print_r($sale7);
+//        exit;
+*/        
+        
+        
+        //stock_show
+        $data['is_send'] = isset($data['with_mail']) ? 1 : 0;
+        $data['send_date'] = date('Y-m-d H:i:s', time());
+        
+        if($editId) { //update（編集）の時
+            $status = 'メールマガジンが送信されました！';
+            $mag = $this->mag->find($editId);
+        }
+        else { //新規追加の時
+            $status = 'メールマガジンが更新されました！';
+            //$data['model_id'] = 1;
+            
+            $mag = $this->mag;
+        }
+        
+        $mag->fill($data);
+        $mag->save();
+        $magId = $mag->id;
+        
+        
+        if($data['is_send']) {
+        
+            $users = array();
+            $userArr = array();
+            $noUserArr = array();
+            
+            $userMag = $this->user->where('magazine', 1)->get();
+            
+            foreach($userMag as $val) {
+                $users['user'][$val->id] = $val->email;
+            }
+            
+            $noUserMag = $this->noReg->whereNotIn('active', [2])->where('magazine', 1)->get();
+            
+            foreach($noUserMag as $value) {
+                $users['noUser'][$value->id] = $value->email;
+            }
+            
+
+    //        $noUserMag = $this->noReg->where(['magazine'=>1, 'active'=>1])->get()->map(function($obj){
+    //        	return $obj->email;
+    //        })->all();
+    
+//    		print_r($users);
+//            echo count($users);
+//            exit;
+            
+            //****** Dispatchの方法(1dispatchで1データ)　job DBのidは少なく済む　php artisant queue:workの指定でtimeout=600が必要（ローカルのポートブロックが原因で遅くなるためかもしれないので本番では不要かも）
+            ProcessMagazine::dispatch($users['user'], $data, 1); /*->onQueue('magazine')*/
+            ProcessMagazine::dispatch($users['noUser'], $data, 0)->delay(now()->addMinutes(5));
+            //Artisan::call('queue:work', ['timeout'=>600]);
+            
+            //****** 1通ごとに直接キューに入れる方法 こちらの方が少し早いかも 1キュー1データなのでJob DBのidがかなりの数になる artisan queue:workでtimeout指定はなくても進む
+//            foreach($users as $key => $mailArr) {
+//            	$uModel = ($key == 'user') ? $this->user : $this->noReg;
+//                
+//                foreach($mailArr as $userIdKey => $mailVal) {
+//                    $data['name'] = $uModel->find($userIdKey)->name;
+//                    
+//                    //Mail::to($mailVal, $data['name'])->queue(new Magazine($data));
+//                    Mail::to($mailVal, $data['name'])->send(new Magazine($data));
+//                }
+//            }
+            
+        
+        }
+        
+        
+        return redirect('dashboard/magazines/'. $magId)->with('status', $status);
+        
+/*
         //status
         $data['open_status'] = isset($data['open_status']) ? 0 : 1;
         
@@ -171,7 +305,7 @@ class MailMagazineController extends Controller
             
             //$aId = $editId ? $editId : $rand;
             //$pre = time() . '-';
-            $filename = 'item/' . $itemId . '/main/'/* . $pre*/ . $filename;
+            $filename = 'item/' . $itemId . '/main/' . $filename;
             //if (App::environment('local'))
             $path = $data['main_img']->storeAs('public', $filename);
             //else
@@ -181,7 +315,7 @@ class MailMagazineController extends Controller
             $item->main_img = $path;
             $item->save();
         }
-        
+
         
         //SpareImg Save ==================================================
         foreach($data['spare_count'] as $count) {
@@ -214,7 +348,7 @@ class MailMagazineController extends Controller
                     
                     //$aId = $editId ? $editId : $rand;
                     //$pre = time() . '-';
-                    $filename = 'item/' . $itemId . '/spare/'/* . $pre*/ . $filename;
+                    $filename = 'item/' . $itemId . '/spare/' . $filename;
                     //if (App::environment('local'))
                     $path = $data['spare_thumb'][$count]->storeAs('public', $filename);
                     //else
@@ -239,83 +373,12 @@ class MailMagazineController extends Controller
             $spare->save();
             $num++;
         }
-        
+*/        
         //Spare END ===========================================
         
-        //Snap Save ==================================================
-        foreach($data['snap_count'] as $count) {
         
-			/*
-               	type:1->item main
-               	type:2->item spare
-              	type:3->category
-            	type:4->sub category
-            	type:5->tag                              
-           */
- 
-            if(isset($data['del_snap'][$count]) && $data['del_snap'][$count]) { //削除チェックの時
-                //echo $count . '/' .$data['del_snap'][$count];
-                //exit;
-                
-                $snapModel = $this->itemImg->where(['item_id'=>$itemId, 'type'=>2, 'number'=>$count+1])->first();
-                
-                if($snapModel !== null) {
-                	Storage::delete('public/'.$snapModel->img_path); //Storageはpublicフォルダのあるところをルートとしてみる
-                    $snapModel ->delete();
-                }
-            
-            }
-            else {
-            	if(isset($data['snap_thumb'][$count])) {
-                    
-                    $snapImg = $this->itemImg->updateOrCreate(
-                        ['item_id'=>$itemId, 'type'=>2, 'number'=>$count+1],
-                        [
-                            'item_id'=>$itemId,
-                            //'snap_path' =>'',
-                            'type' => 2,
-                            'number'=> $count+1,
-                        ]
-                    );
 
-                    $filename = $data['snap_thumb'][$count]->getClientOriginalName();
-                    $filename = str_replace(' ', '_', $filename);
-                    
-                    //$aId = $editId ? $editId : $rand;
-                    //$pre = time() . '-';
-                    $filename = 'item/' . $itemId . '/snap/'/* . $pre*/ . $filename;
-                    //if (App::environment('local'))
-                    $path = $data['snap_thumb'][$count]->storeAs('public', $filename);
-                    //else
-                    //$path = Storage::disk('s3')->putFileAs($filename, $request->file('thumbnail'), 'public');
-                    //$path = $request->file('thumbnail')->storeAs('', $filename, 's3');
-                
-                    //$data['model_thumb'] = $filename;
-                    
-                    $snapImg->img_path = $filename;
-                    $snapImg->save();
-                }
-            }
-            
-        } //foreach
-        
-        $num = 1;
-        $snaps = $this->itemImg->where(['item_id'=>$itemId, 'type'=>2])->get();
-//            $snaps = $this->modelSnap->where(['model_id'=>$modelId])->get()->map(function($obj) use($num){
-//                
-//                return true;
-//            });
-        
-        //Snapのナンバーを振り直す
-        foreach($snaps as $snap) {
-            $snap->number = $num;
-            $snap->save();
-            $num++;
-        }
-        
-        //Snap END ===========================================
-
-        
+/*        
         //タグのsave動作
         if(isset($data['tags'])) {
             $tagArr = $data['tags'];
@@ -338,15 +401,15 @@ class MailMagazineController extends Controller
                 $tagRel = $this->tagRelation->firstOrCreate(
                     ['tag_id'=>$tagId, 'item_id'=>$itemId]
                 );
-                /*
-                $tagRel = $this->tagRelation->where(['tag_id'=>$tagId, 'item_id'=>$itemId])->get();
-                if($tagRel->isEmpty()) {
-                    $this->tagRelation->create([
-                        'tag_id' => $tagId,
-                        'item_id' => $itemId,
-                    ]);
-                }
-                */
+                
+//                $tagRel = $this->tagRelation->where(['tag_id'=>$tagId, 'item_id'=>$itemId])->get();
+//                if($tagRel->isEmpty()) {
+//                    $this->tagRelation->create([
+//                        'tag_id' => $tagId,
+//                        'item_id' => $itemId,
+//                    ]);
+//                }
+//                
 
                 //tagIdを配列に入れる　削除確認用
                 $tagIds[] = $tagId;
@@ -364,57 +427,10 @@ class MailMagazineController extends Controller
                 }
             }
         }
+*/       
         
         
-        return redirect('dashboard/items/'. $itemId)->with('status', $status);
         
-        
-        //Spare-img ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
-//        if(isset($data['spare_img'])) {
-//            $spares = $data['spare_img'];
-//            
-////            print_r($spares);
-////            exit;
-//            
-//            foreach($spares as $key => $spare) {
-//                if($spare != '') {
-//            
-//                    $filename = $spare->getClientOriginalName();
-//                    $filename = str_replace(' ', '_', $filename);
-//                    
-//                    //$aId = $editId ? $editId : $rand;
-//                    //$pre = time() . '-';
-//                    $filename = 'item/' . $itemId . '/thumbnail/'/* . $pre*/ . $filename;
-//                    //if (App::environment('local'))
-//                    $path = $spare->storeAs('public', $filename);
-//                    //else
-//                    //$path = Storage::disk('s3')->putFileAs($filename, $request->file('thumbnail'), 'public');
-//                    //$path = $request->file('thumbnail')->storeAs('', $filename, 's3');
-//                    
-//                    //$item->spare_img .'_'. $ii = $path;
-//                    $item['spare_img_'. $key] = $path;
-//                    $item->save();
-//                }
-//
-//            }
-//        }
-//        
-//        //spare画像の削除
-//        if(isset($data['del_spareimg'])) {
-//            $dels = $data['del_spareimg'];     
-//             
-//              foreach($dels as $key => $del) {
-//                   if($del) {
-//                     $imgName = $item['spare_img_'. $key];
-//                       if($imgName != '') {
-//                         Storage::delete($imgName);
-//                     }
-//                    
-//                       $item['spare_img_'. $key] = '';
-//                    $item->save();
-//                 }   
-//           }
-//        }
         
     }
 

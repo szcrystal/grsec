@@ -306,6 +306,27 @@
             </fieldset>
             
             
+            <fieldset class="form-group mb-4">
+                    <div class="checkbox">
+                        <label>
+                            <?php
+                                $checked = '';
+                                if(Ctm::isOld()) {
+                                    if(old('is_ensure'))
+                                        $checked = ' checked';
+                                }
+                                else {
+                                    if(isset($item) && $item->is_ensure) {
+                                        $checked = ' checked';
+                                    }
+                                }
+                            ?>
+                            <input type="checkbox" name="is_ensure" value="1"{{ $checked }}> 枯れ保証あり
+                        </label>
+                    </div>
+            </fieldset>
+            
+            
             <fieldset class="mb-4 form-group">
                 <label for="price" class="control-label">価格（本体価格）</label>
                 <input class="form-control col-md-6{{ $errors->has('price') ? ' is-invalid' : '' }}" name="price" value="{{ Ctm::isOld() ? old('price') : (isset($item) ? $item->price : '') }}" placeholder="税抜き金額を入力">

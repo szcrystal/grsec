@@ -22,6 +22,8 @@ class CreateItemsTable extends Migration
             $table->string('catchcopy')->nullable()->default(NULL);
             $table->integer('cate_id')->nullable()->default(NULL);
             $table->integer('subcate_id')->nullable()->default(NULL);
+            $table->boolean('is_ensure')->nullable()->default(NULL);
+            
             
             $table->string('main_img')->nullable()->default(NULL);
             /*

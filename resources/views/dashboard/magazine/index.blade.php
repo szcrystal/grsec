@@ -76,6 +76,7 @@
                   <th>コンテンツ</th>
                   <th>送信</th>
                   <th>作成日</th>
+                  <th></th>
                 </tr>
               </thead>
               
@@ -96,18 +97,19 @@
 
                 
                 <td>
-                  	@if($item->is_send)
+                  	@if($mag->is_send)
                     <span class="text-success">送信済</span><br>
-                    <small>{{ Ctm::changeDate($item->send_date, 1) }}</small><br>
+                    <small>{{ Ctm::changeDate($mag->send_date, 0) }}</small><br>
                     @else
                     <span class="text-warning">未送信（保存済）</span><br>
                     @endif
                   	
                 </td>
+                
+                <td>{{ Ctm::changeDate($mag->created_at, 0) }}</td>
                   
                   <td><a href="{{url('dashboard/magazines/'. $mag->id)}}" class="btn btn-success btn-sm center-block">編集</a></td>
                   
-                  {{-- <td></td> --}}
                 </tr>
             @endforeach
 

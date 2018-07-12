@@ -14,6 +14,7 @@ class Item extends Model
         'catchcopy',
         'cate_id',
         'subcate_id',
+        'is_ensure',
         
         'main_img',
         
