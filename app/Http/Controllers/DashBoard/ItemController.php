@@ -154,6 +154,7 @@ class ItemController extends Controller
         $data['open_status'] = isset($data['open_status']) ? 0 : 1;
         
         //stock_show
+        $data['is_ensure'] = isset($data['is_ensure']) ? 1 : 0;
         $data['is_delifee'] = isset($data['is_delifee']) ? 1 : 0;
         $data['stock_show'] = isset($data['stock_show']) ? 1 : 0;
         $data['farm_direct'] = isset($data['farm_direct']) ? 1 : 0;

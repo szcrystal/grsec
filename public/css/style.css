@@ -189,6 +189,9 @@ body {
 #guide {
 	margin: 1em 0 3em;
 }
+#guide br {
+	display: none;
+}
 #guide > div {
 	width: 25%;
 	color: #cfcfcf;
@@ -211,8 +214,11 @@ body {
 	width: 27%;
 }
 .confirm .table-custom .table tbody th {
-	width: 53%;
+	width: 30%;
     font-size: 0.9em;
+}
+.confirm .table-custom.show-price .table tbody th {
+	width: 53%;
 }
 .table-cart .table {
 	width: 99.7%;

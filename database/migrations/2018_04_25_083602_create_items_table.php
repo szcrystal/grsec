@@ -112,7 +112,7 @@ class CreateItemsTable extends Migration
             		'cod' => 1,
               		'dg_id' =>1,
                 	'is_delifee'=>0,          
-            		'stock' => 20,
+            		'stock' => 200,
                     'stock_show' => 1,
                     'point_back' => 2,
                     

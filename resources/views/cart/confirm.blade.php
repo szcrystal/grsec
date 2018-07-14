@@ -208,7 +208,7 @@
 
 <div class="float-right col-md-4 mt-2">
 <h5 class="">&nbsp;</h5>
-<div class="table-responsive table-custom">
+<div class="table-responsive table-custom show-price">
     <table class="table border table-borderd bg-white">
         
         <tbody>
@@ -246,7 +246,7 @@
 </div>
 
 @if($regist || Auth::check())
-<div class="table-responsive table-custom mt-3">
+<div class="table-responsive table-custom show-price mt-3">
     <table class="table border table-borderd bg-white">
 
         @if(Auth::check())
@@ -263,7 +263,7 @@
 </div>
 @endif
 
-<div class="table-responsive table-custom mt-3">
+<div class="table-responsive table-custom show-price mt-3">
     <table class="table border table-borderd bg-white">
         
         <tr>
@@ -307,8 +307,11 @@
   <small class="col-md-5 mx-auto d-block px-5 mb-3">
   上記ご注文内容で注文を確定します。<br>
 	<b>「注文する」ボタンをクリックすると注文を確定します。</b>
-  </small>                      
-   <button class="btn btn-block btn-custom col-md-4 mb-4 mx-auto py-2" type="submit" name="regist_off" value="1">注文する</button>                 
+  </small>
+  
+  <div class="col-md-12">
+  	<button class="btn btn-block btn-custom col-md-4 mb-4 mx-auto py-2" type="submit" name="regist_off" value="1">注文する</button>
+	</div>                
 </form>
 
 <a href="{{ url('shop/form') }}" class="btn border border-secondary bg-white mt-5"><i class="fas fa-angle-double-left"></i> お客様情報の入力に戻る</a>

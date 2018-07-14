@@ -19,9 +19,13 @@ use Illuminate\Support\Facades\Mail;
 
 use App\Mail\Magazine;
 
-use Artisan;
+//use Artisan;
 
+//use App\Item;
+//use App\Jobs\ProcessFollowMail;
 use DateTime;
+//use App\SaleRelation;
+
 
 class MailMagazineController extends Controller
 {
@@ -149,67 +153,135 @@ class MailMagazineController extends Controller
         
         $data = $request->all();
         
-/*
-//        $sales = Sale::get();
-//        $sale7 = array();
-//        
+  
 //        $current = new DateTime('now'); 
-//        
-//        foreach($sales as $sale) {
-//        	
-//        	//$d = strtotime($sale->deli_start_date);
-//            $from = new DateTime($sale->deli_start_date);
-//            $diff = $current->diff($from);
+//        $from = new DateTime('2018-04-09 04:13:44');
+//        $diff = $current->diff($from);
 //            
-//            $ensure = Item::find($sale->item_id)->is_ensure;
-//            
-//            if($ensure) {
-//                if($diff->days == 7) {
-//                    $sale7[] = $sale;
-//                }
-//                elseif($diff->days == 33) {
-//                
-//                }
-//                elseif($diff->days == 96) {
-//                
-//                }
-//                elseif($diff->days == 155) {
-//                
-//                }
-//            }
-//            else {
-//            	if($diff->days == 33) {
-//                	
-//                }
-//            }
-//            
-//
-////        $limitDay = new DateTime(date('Y-m-d', $limit));
-////        $current = new DateTime('now');
-////        $diff = $current->diff($limitDay);
-////        
-////        return ['limit'=>date('Y/m/d', $limit), 'diffDay'=>$diff->days];
-//
-//		}
-//        print_r($sale7);
+//        echo $diff->days;
 //        exit;
-*/        
         
+/* *******************************************: 
+			$sales = Sale::get();
+            $ensureSales = array();
+            
+            $ensure_7 = array();
+            $ensure_33 = array();
+            $ensure_96 = array();
+            $ensure_155 = array();
+            
+            $noEnsure_33 = array();
+            
+            $current = new DateTime('now'); 
+            
+            foreach($sales as $sale) {
+                
+                //$d = strtotime($sale->deli_start_date);
+                $from = new DateTime($sale->deli_start_date);
+                $diff = $current->diff($from);
+                
+                $ensure = Item::find($sale->item_id)->is_ensure;
+                
+                if($ensure) {
+                    if($diff->days == 7) {
+                        $ensure_7[$sale->salerel_id][] = $sale;
+                    }
+                    elseif($diff->days == 33) {
+                        $ensure_33[$sale->salerel_id][] = $sale;
+                    }
+                    elseif($diff->days == 96) {
+                        $ensure_96[$sale->salerel_id][] = $sale;
+                    }
+                    elseif($diff->days == 155) {
+                        $ensure_155[$sale->salerel_id][] = $sale;
+                    }
+                }
+                else {
+                    if($diff->days == 33) {
+                        $noEnsure_33[$sale->salerel_id][] = $sale;
+                    }
+                }
+                
+
+    //        $limitDay = new DateTime(date('Y-m-d', $limit));
+    //        $current = new DateTime('now');
+    //        $diff = $current->diff($limitDay);       
+    //        return ['limit'=>date('Y/m/d', $limit), 'diffDay'=>$diff->days];
+
+            }
+    //        print_r($saleForMail);
+    //        exit;
+    
+//    		foreach($ensure_33 as $relIdKey => $saleArr) {
+//            
+//                //$data = array();
+//                
+//                foreach($saleArr as $sale) {
+//                    $saleRel = SaleRelation::find($sale->salerel_id);
+//                    
+//                    if($saleRel->is_user) {
+//                        $u = User::find($saleRel->user_id);
+//                    }
+//                    else {
+//                        $u = UserNoregist::find($saleRel->user_id);
+//                    }
+//                    
+//                    $mailAdd = $u->email;
+//                    $name = $u->name;
+//                    
+//                    break;
+//                    
+//                    //$item = Item::find($sale->item_id);
+//                }
+//            }
+//            
+//            echo $mailAdd . $name;
+//            exit;
+
+            if(count($ensure_7) > 0) {
+                ProcessFollowMail::dispatch($ensure_7, 7, true);
+            }
+            
+            if(count($ensure_33) > 0) {
+                ProcessFollowMail::dispatch($ensure_33, 33, true);
+            }
+            
+            if(count($ensure_96) > 0) {
+                ProcessFollowMail::dispatch($ensure_96, 96, true);
+            }
+            
+            if(count($ensure_155) > 0) {
+                ProcessFollowMail::dispatch($ensure_155, 155, true);
+            }
+            
+            if(count($noEnsure_33) > 0) {
+                ProcessFollowMail::dispatch($noEnsure_33, 33, false);
+            }
+            
+            
+            
+        
+        print_r($ensure_33);
+        exit;
+******************************************* 
+*/       
+    
+            
         
         //stock_show
         $data['is_send'] = isset($data['with_mail']) ? 1 : 0;
         $data['send_date'] = date('Y-m-d H:i:s', time());
         
         if($editId) { //update（編集）の時
-            $status = 'メールマガジンが送信されました！';
             $mag = $this->mag->find($editId);
         }
         else { //新規追加の時
-            $status = 'メールマガジンが更新されました！';
             //$data['model_id'] = 1;
             
             $mag = $this->mag;
         }
+        
+        $status = $data['is_send'] ? 'メールマガジンが送信されました！' : 'メールマガジンが更新されました！';
         
         $mag->fill($data);
         $mag->save();
@@ -219,15 +291,17 @@ class MailMagazineController extends Controller
         if($data['is_send']) {
         
             $users = array();
-            $userArr = array();
-            $noUserArr = array();
+//            $userArr = array();
+//            $noUserArr = array();
             
+            //from User
             $userMag = $this->user->where('magazine', 1)->get();
             
             foreach($userMag as $val) {
                 $users['user'][$val->id] = $val->email;
             }
             
+            //from NoUser
             $noUserMag = $this->noReg->whereNotIn('active', [2])->where('magazine', 1)->get();
             
             foreach($noUserMag as $value) {

@@ -41,7 +41,7 @@ class CreateUsersTable extends Migration
             
             $table->boolean('destination')->nullable()->default(NULL);
             
-            $table->boolean('active')->nullable()->default(NULL);
+            $table->boolean('active')->nullable()->default(1);
             
             
             $table->string('password');

@@ -308,6 +308,9 @@ for SP
     
     
     /* Shop */
+    #guide br {
+    	display: block;
+    }
     .table-custom .table {
     	table-layout: fixed;
     }
@@ -327,7 +330,8 @@ for SP
     	width: 60%;
     }
     
-    .confirm .table-custom .table tbody th { /* shop confirm -> Price の部分*/
+    .confirm .table-custom .table tbody th,
+    .confirm .table-custom.show-price .table tbody th { /* shop confirm -> Price の部分*/
     	display: block;
 		width: 100%;
     }
