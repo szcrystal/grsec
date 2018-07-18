@@ -109,6 +109,17 @@ class CreateDeliveryGroupsTable extends Migration
         
         DB::table('delivery_groups')->insert(
             [ 
+                'name' => 'モリヤコニファー（下草）',
+                'open_status' => 1,
+                'capacity' => 10,
+                
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time()),
+            ]
+        );
+        
+        DB::table('delivery_groups')->insert(
+            [ 
                 'name' => 'モリヤコニファー（小）',
                 'open_status' => 1,
                 'capacity' => 5,

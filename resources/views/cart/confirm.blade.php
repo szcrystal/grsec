@@ -109,6 +109,8 @@
             <td>
             @if(isset($data['plan_date']))
             {{ $data['plan_date'] }}<br>
+            @else
+            最短出荷<br>
             @endif
 			
 			<ul class="px-4 mt-2">

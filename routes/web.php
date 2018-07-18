@@ -44,6 +44,7 @@ Route::post('dashboard/dgs/fee/{dgId}', 'DashBoard\DeliveryGroupController@postF
 //Route::resource('dashboard/prefectures', 'DashBoard\PrefectureController');
 
 //Item
+Route::get('dashboard/items/csv', 'DashBoard\ItemController@getCsv');
 Route::post('dashboard/items/script', 'DashBoard\ItemController@postScript');
 Route::resource('dashboard/items', 'DashBoard\ItemController');
 

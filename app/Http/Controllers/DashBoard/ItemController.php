@@ -17,6 +17,8 @@ use App\Setting;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
+use Symfony\Component\HttpFoundation\StreamedResponse;
+
 use App\Http\Requests;
 
 use Storage;
@@ -465,13 +467,54 @@ class ItemController extends Controller
         return redirect('dashboard/items/'.$id);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    
+    public function getCsv()
+    {
+//    	$res = fopen($this->csvFilePath, 'a');
+//        // 文字コード変換
+//        mb_convert_variables('sjis-win', 'UTF-8', $records);
+//        // ファイルに書き出し
+//        fputcsv($res, $records);
+//        fclose($res);
+        
+        //$csv = Item::all(['id', 'title', 'price'])->toArray();
+
+//        $csv = $this->item->all()->toArray();
+//        
+//        $keys = array_keys($csv[0]);
+//        
+//        print_r($keys);
+//        exit;
+        
+        
+        return  new StreamedResponse(
+            function () {
+                //$csv = Item::all(['id', 'title', 'price'])->toArray();
+                
+                $csv = $this->item->all()->toArray();
+                $keys = array_keys($csv[0]);
+
+                $stream = fopen('php://output', 'w');
+                
+                mb_convert_variables('sjis-win', 'UTF-8', $keys);
+                fputcsv($stream, $keys);
+                
+                foreach ($csv as $line) {
+                	mb_convert_variables('sjis-win', 'UTF-8', $line);
+                    fputcsv($stream, $line);
+                }
+                fclose($stream);
+            },
+            200,
+            [
+                'Content-Type' => 'text/csv',
+                'Content-Disposition' => 'attachment; filename="users.csv"',
+            ]
+        );
+        
+    }
+    
+    
     public function update(Request $request, $id)
     {
         //

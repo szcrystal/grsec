@@ -93,7 +93,8 @@ class SaleController extends Controller
         }
         else {
         	//$saleObjs = Sale::orderBy('id', 'desc')->paginate($this->perPage);
-        	$saleObjs = Sale::orderBy('id', 'desc')->get();
+        	//$saleObjs = Sale::orderBy('id', 'desc')->get();
+            $saleObjs = $this->saleRel->orderBy('id', 'desc')->get();
         }
         $saleRels = $this->saleRel;
         

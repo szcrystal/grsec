@@ -89,7 +89,9 @@
          </tr>
          
          <tr class="form-group">
-             <th><label class="control-label">電話番号</label><em>必須</em></th>
+             <th><label class="control-label">電話番号</label><em>必須</em><br>
+             	<small>例）09012345678 ハイフンなし半角数字</small>
+             </th>
                <td>
                 <input type="text" class="form-control col-md-12{{ $errors->has('user.tel_num') ? ' is-invalid' : '' }}" name="user[tel_num]" value="{{ Ctm::isOld() ? old('user.tel_num') : (isset($user) ? $user->tel_num : '') }}" placeholder="例）09012345678 ハイフンなし半角数字">
                 

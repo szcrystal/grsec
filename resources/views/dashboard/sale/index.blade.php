@@ -217,21 +217,21 @@
 
     {{-- $saleObjs->links() --}}
 
-    
+    {{--
 	<style>
     	#dataTable_filter input[type="search"] {
         	margin-right: 30em;
         }
     </style>
+    --}}
 	
     
     
     <!-- Example DataTables Card-->
-    <div style="overflow:scroll;" class="">
     <div class="mb-3">
     	
 
-        <div style="width: 130%;" class="">
+        <div class="">
           <div class="table-responsive">
             <table id="dataTable" class="table table-striped table-bordered table-hover bg-white"{{-- id="dataTable"--}} width="100%" cellspacing="0">
               <thead>
@@ -285,38 +285,30 @@
                 	<?php
                  		$saleRel = $saleRels->find($sale->salerel_id);
                  	?>   
-                	<td><a href="{{url('dashboard/sales/'. $sale->id)}}" class="btn btn-success btn-sm center-block">確認</a></td>
+                	
+                    {{-- <td><a href="{{ url('dashboard/sales/order/'. $sale->order_number) }}" class="btn btn-success btn-sm center-block">確認</a></td> --}}
                   <td>{{ $sale->id }}</td>
-                  <td><a href="{{ url('dashboard/sales/order/'. $saleRel->order_number) }}">{{ $saleRel->order_number }}</td>
+                  
+                  <td>{{ Ctm::changeDate($sale->created_at, 0) }}</td>
+                  
+                  <td>{{ $sale->order_number }}</td>
                   
                   <td>
-                  	<?php $item = $items->find($sale->item_id) ?>
-                  	({{ $sale->item_id }}){{ $item->title }}<br>
-                  	[{{ $cates->find($item->cate_id)->name }}]
-                  </td>
-                  
-                  <td>
-                  	 @if($sale->deli_done)
-                       <span class="text-success">発送済み</span>
-                     @else
-                      <span class="text-danger">未発送</span>
-                    @endif   
-                  </td>
-                  
-                  <td>{{ $sale->item_count }}</td>
-                  
-                  <td>¥{{ number_format($sale->total_price) }}</td>
-                  
-                  <td>¥{{ number_format($sale->deli_fee) }}</td>
-                  
-                  <td>¥{{ number_format($sale->cod_fee) }}</td>
+                  	@if($sale->is_user)
+                		<span class="text-primary">会員</span>:{{ $users->find($sale->user_id)->name }}
+                	@else
+                 		<span class="text-danger">非会員</span>:{{ $userNs->find($sale->user_id)->name }}
+                 	@endif   
+                </td>
+                
+                
                   
                   <td>
                   	@if($sale->pay_method == 6)
-                    <a href="{{ url('dashboard/sales/order/'. $saleRel->order_number) }}">
-                    	{{ $pms->find($sale->pay_method)->name }}
+                    <a href="{{ url('dashboard/sales/order/'. $sale->order_number) }}">
+                    	{{ $pms->find($sale->pay_method)->name }}<br>
                         <?php
-                        	$payDone = $saleRels->find($sale->salerel_id)->pay_done;
+                        	$payDone = $sale->pay_done;
                         ?>
                         @if($payDone)
                         	<span class="text-success"><small>入金済み</small></span>
@@ -329,37 +321,29 @@
                     @endif
                 	</td>
                   
-                  <td>
-                  	<?php 
-                    	$takeCharge = $itemDg->find($item->dg_id)->take_charge;
-                        if(isset($takeCharge)) {
-                        	$arari = ($item->price - $item->cost_price - $takeCharge) * $sale->item_count; 
-                        }
-                        else {
-                        	$arari = ($item->price - $item->cost_price - 0) * $sale->item_count;
-                        }
-                    ?>
-                    ¥{{ number_format($arari) }}
                   
+                  <td>出荷日</td>
+                  
+                  <td>
+                  	 @if($sale->deli_done)
+                       <span class="text-success">発送済み</span>
+                     @else
+                      <span class="text-danger">未発送</span>
+                    @endif   
                   </td>
                   
-                  <td>
-                  	<?php $total = $sale->total_price + $sale->deli_fee + $sale->cod_fee; ?>
-                  	{{ round($arari / $total * 100, 1) }}%
+                  <td>{{ $sale->item_count }}</td>
                   
+                  <td>
+                  	¥{{ number_format($sale->total_price) }}<br>
+                  	¥{{ number_format($sale->deli_fee) }}<br>
+                    ¥{{ number_format($sale->cod_fee) }}<br>
                   </td>
                   
-                  <td>
-                  	@if($saleRel->is_user)
-                		<span class="text-primary">会員</span>:{{ $users->find($saleRel->user_id)->name }}
-                	@else
-                 		<span class="text-danger">非会員</span>:{{ $userNs->find($saleRel->user_id)->name }}
-                 	@endif   
-                </td>
                   
-                  <td>{{ Ctm::changeDate($sale->created_at, 0) }}</td>
                   
-                  <td><a href="{{url('dashboard/sales/'. $sale->id)}}" class="btn btn-success btn-sm center-block">確認</a></td>
+                  
+                  <td><a href="{{ url('dashboard/sales/order/'. $sale->order_number) }}" class="btn btn-success btn-sm center-block">確認</a></td>
                   
                 </tr>
             @endforeach
@@ -371,7 +355,6 @@
 
         <!-- <div class="card-footer small text-muted"></div> -->
 
-    </div><!-- /.card -->
     </div>
     </div>
     

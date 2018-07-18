@@ -525,7 +525,7 @@ class CartController extends Controller
          	'user.password_confirmation' => 'sometimes|required|min:8',      
 			'use_point' => 'numeric|max:'.$pt,
    			        
-			'destination' => 'required_without:receiver.name,receiver.hurigana,receiver.tel_num,receiver.post_num,receiver.prefecture,receiver.address_1,receiver.address_2,receiver.address_3',
+			//'destination' => 'required_without:receiver.name,receiver.hurigana,receiver.tel_num,receiver.post_num,receiver.prefecture,receiver.address_1,receiver.address_2,receiver.address_3',
             'receiver.name' => 'required_without:destination|max:255',
             'receiver.hurigana' => 'required_without:destination|max:255',
             'receiver.tel_num' => 'required_without:destination|nullable|numeric',
@@ -689,10 +689,13 @@ class CartController extends Controller
         
 
         //モリヤコニファー：大の商品が含まれていれば強制的に大となり、なければ小になる
+        //配送区分：モリヤコニファー下草のid
+        $coniferKsId = 8;
         //配送区分：モリヤコニファー小のid
-        $coniferSmId = 8;
+        $coniferSmId = 9;
         //配送区分：モリヤコニファー大のid
-        $coniferBgId = 9;
+        $coniferBgId = 10;
+        
         
         $isOnceItem = array();
         $sitakusaItem = array();
@@ -1034,11 +1037,21 @@ class CartController extends Controller
             $factor = 0;
             
             $isBg = 0;
+            $isSm = 0;
             
             foreach($coniferItem as $ioi) {
             	if($ioi->dg_id == $coniferBgId) {
                 	$isBg = 1;
                     break;
+                }
+            }
+            
+            if(!$isBg) {
+            	foreach($coniferItem as $ioi) {
+                    if($ioi->dg_id == $coniferSmId) {
+                        $isSm = 1;
+                        break;
+                    }
                 }
             }
         
@@ -1067,8 +1080,11 @@ class CartController extends Controller
             if($isBg) {
             	$deliFee += $this->normalCalc($coniferBgId, $prefId, $factor);
             }
-            else {
+            elseif($isSm) {
             	$deliFee += $this->normalCalc($coniferSmId, $prefId, $factor);
+            }
+            else {
+            	$deliFee += $this->normalCalc($coniferKsId, $prefId, $factor);
             }
 
 /*
