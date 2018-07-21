@@ -570,10 +570,7 @@ use App\DeliveryGroup;
                            <td>
                             <select id="pref_2" class="form-control select-first col-md-6{{ $errors->has('receiver.prefecture') ? ' is-invalid' : '' }}" name="receiver[prefecture]">
                                 <option disabled selected>選択して下さい</option>
-                                <?php
-//                                    use App\Prefecture;
-//                                    $prefs = Prefecture::all();  
-                                ?>
+
                                 @foreach($prefs as $pref)
                                     <?php
                                         $selected = '';
@@ -694,22 +691,81 @@ use App\DeliveryGroup;
                 	<h3 class="card-header mt-5">配送希望日時指定</h3>
                     
                     <fieldset class="mb-4 mt-3 col-md-7 form-group{{ $errors->has('plan_date') ? ' has-error' : '' }}">
-                        <label for="plan_date" class="control-label">■配送のご希望日程などございましたら記載下さい。<br><span class="text-small">（ご希望に添えない場合もございます）</span></label>
+                        <label for="plan_date" class="control-label">■ご希望日程<span class="text-small"></span></label>
+                        
+                        <?php
+//                        	//use DateTime;
+//                            $now = date('Y-m-d D', time());
+//                            $plusDay = 2;
+//                        	$limit = strtotime($now." +". $plusDay . " day");
+//                            $limitDay = date('Y/m/d（D）', $limit);
+//                            //$limitDay = new DateTime(date('Y-m-d', $limit));
+//                            
+//                            
+//                            $current = new DateTime('now');
+//                            echo $limitDay;
+//                            exit;
+//
+//        					
+//        
+//        					$diff = $current->diff($limitDay);
+//        					//echo $diff->days;
+//            
+////                    $limit = $limit - strtotime("now");  
+////                     $days = (strtotime('Y-m-d', $limit) - strtotime("1970-01-01")) / 86400;   
+//  
+//    						return ['limit'=>date('Y/m/d', $limit), 'diffDay'=>$diff->days];
+                        ?>
+                        
+                        <select class="form-control col-md-6{{ $errors->has('plan_date') ? ' is-invalid' : '' }}" name="plan_date">
+                            <option value="希望なし（最短出荷）" selected>希望なし（最短出荷）</option>
+                            	<?php 
+                                	$days = array();
+                                    $week = ['日', '月', '火', '水', '木', '金', '土'];
+                                
+                                    for($plusDay = 4; $plusDay < 64; $plusDay++) {
+                                        $now = date('Y-m-d', time());
+                                        $first = strtotime($now." +". $plusDay . " day");
+                                        $days[] = date('Y/m/d', $first) . '（' . $week[date('w', $first)] . '）';
+                                    }
+                                ?>
+                            
 
-                        <textarea id="plan_date" type="text" class="form-control" name="plan_date" rows="2">{{ Ctm::isOld() ? old('plan_date') : (Session::has('all.data.plan_date') ? session('all.data.plan_date') : '') }}</textarea>
-
+                                @foreach($days as $day)
+                                    <?php
+                                        $selected = '';
+                                        if(Ctm::isOld()) {
+                                            if(old('plan_date') == $day)
+                                                $selected = ' selected';
+                                        }
+                                        else {
+                                            if(Session::has('all.data.plan_date') && session('all.data.plan_date') == $day) {
+                                                $selected = ' selected';
+                                            }
+                                        }
+                                    ?>
+                                    <option value="{{ $day }}"{{ $selected }}>{{ $day }}</option>
+                                @endforeach
+                            </select>
+                        
                         @if ($errors->has('plan_date'))
                             <span class="help-block">
                                 <strong>{{ $errors->first('plan_date') }}</strong>
                             </span>
                         @endif
+
+						{{--
+                        <textarea id="plan_date" type="text" class="form-control" name="plan_date" rows="2">{{ Ctm::isOld() ? old('plan_date') : (Session::has('all.data.plan_date') ? session('all.data.plan_date') : '') }}</textarea>
+                        --}}
+
+                        
                 	</fieldset>
 
-                    <fieldset class="form-group my-3 px-3 py-2{{ $errors->has('pay_method') ? ' border border-danger' : '' }}">
-                        @if ($errors->has('deli_time'))
+                    <fieldset class="form-group my-3 px-3 py-2{{ $errors->has('deli_time.*') ? ' border border-danger' : '' }}">
+                        @if ($errors->has('deli_time.*'))
                             <div class="help-block text-danger mb-2">
                                 <span class="fa fa-exclamation form-control-feedback"></span>
-                                <span>{{ $errors->first('deli_time') }}</span>
+                                <span>{{ $errors->first('deli_time.*') }}</span>
                             </div>
                         @endif
                         

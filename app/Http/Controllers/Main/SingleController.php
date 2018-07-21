@@ -112,7 +112,36 @@ class SingleController extends Controller
 //        exit;
 
 		//Recommend
-        $recommends = $this->item->whereNotIn('id',[$item->id])->where(['subcate_id'=>$item->subcate_id, 'open_status'=>1])->skip(3)->take($getNum)->get();
+        $recommends = null;
+        
+        if(isset($tagRels[0])) {
+        	$idWithTag = $this->tagRel/*->whereNotIn('item_id', [$item->id])*/->where('tag_id', $tagRels[0])->get()->map(function($obj){
+            	return $obj->item_id;
+            })->all(); 
+            
+//            $tempIds = $idWithTag;
+//            $tempIds[] = $item->id;
+            
+            $idWithCate = $this->item/*->whereNotIn('id', $tempIds)*/->where('subcate_id', $item->subcate_id)->get()->map(function($obj){
+            	return $obj->id;
+            })->all();
+            
+            $res = array_merge($idWithTag, $idWithCate);
+            $res = array_unique($res); //重複要素を削除
+            
+			//shuffle($res);
+            //$res = array_rand($res, 5);
+//            print_r($res);
+//            exit;
+            
+            $recommends = $this->item->whereNotIn('id', [$item->id])->whereIn('id', $res)->where('open_status', 1)->inRandomOrder()->take($getNum)->get();
+        }
+        else {
+        	$recommends = $this->item->whereNotIn('id', [$item->id])->where(['subcate_id'=>$item->subcate_id, 'open_status'=>1])->inRandomOrder()->take($getNum)->get();
+        }
+        
+//        print_r($recommends);
+//        exit;
         
         return view('main.home.single', ['item'=>$item, 'otherItem'=>$otherItem, 'cate'=>$cate, 'subCate'=>$subCate, 'tags'=>$tags, 'imgsPri'=>$imgsPri, 'imgsSec'=>$imgsSec, 'isFav'=>$isFav, 'isOnceItems'=>$isOnceItems, 'cacheItems'=>$cacheItems, 'recommends'=>$recommends, 'type'=>'single']);
     }

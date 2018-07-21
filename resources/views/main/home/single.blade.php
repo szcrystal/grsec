@@ -125,7 +125,13 @@ use App\Prefecture;
                                 
                                 <select class="form-control col-md-6{{ $errors->has('item_count') ? ' is-invalid' : '' }}" name="item_count">
                                     <option disabled selected>選択して下さい</option>
-                                        @for($i=1; $i <= $item->stock; $i++)
+                                    	<?php
+                                        	$max = 100;
+                                        	if($item->stock < 100) {
+                                            	$max = $item->stock;
+                                            }
+                                        ?>
+                                        @for($i=1; $i <= $max; $i++)
                                             <?php
                                                 $selected = '';
                                                 if(Ctm::isOld()) {

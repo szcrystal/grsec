@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div id="main" class="container clearfix login mb-5">
+<div id="main" class="clearfix login mb-5">
      
         <div class="">
             <h4 class="card-header">会員の方</h4>

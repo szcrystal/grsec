@@ -639,7 +639,7 @@ class CartController extends Controller
             if($prefFee == '99999' || $prefFee === null) {            	
                 foreach($item_ids as $item_id) {
                 	$title = $this->item->find($item_id)->title;
-                    $errorArr[] = '「'. $title .'」の商品の'. $prefName .'への配送は不可です。';
+                    $errorArr['no_delivery'][] = '「'. $title .'」の商品の'. $prefName .'への配送は不可です。';
                 }
                 
                 //$noDeliPref = 0;
