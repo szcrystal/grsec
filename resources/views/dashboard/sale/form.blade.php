@@ -69,7 +69,7 @@ use App\Setting;
             	<div class="table-responsive">
                     <table class="table table-bordered">
                         <colgroup>
-                            <col style="background: #dfdcdb; width: 25%;" class="cth">
+                            <col style="background: #f5dfd5; width: 25%;" class="cth">
                             <col style="background: #fefefe;" class="ctd">
                         </colgroup>
                         
@@ -80,7 +80,7 @@ use App\Setting;
                             </tr>
                         	<tr>
                                 <th>購入日</th>
-                                <td>{{ Ctm::changeDate($sale->created_at, 0) }}</td>
+                                <td><span class="text-big">{{ Ctm::changeDate($sale->created_at, 0) }}</span></td>
                             </tr>
                             <tr>
                                 <th>購入者</th>
@@ -99,7 +99,14 @@ use App\Setting;
                                         ?>   
                                      @endif
                                      （{{ $users->id }}）{{ $users->name }}<br>
-                                     <a href="mailto:{{ $users->email }}">{{ $users->email }}</a>
+                                     <a href="mailto:{{ $users->email }}">{{ $users->email }}</a><br>
+                                     
+                                     〒{{ Ctm::getPostNum($users->post_num) }}<br>
+                                     {{ $users->prefecture }}
+                                     {{ $users->address_1 }}
+                                     {{ $users->address_2 }}
+                                     {{ $users->address_3 }}<br>
+                                     TEL：{{ $users->tel_num }}
                                      
                                      <input type="hidden" name="user_email" value="{{ $users->email }}">
                                      <input type="hidden" name="user_name" value="{{ $users->name }}">
@@ -130,7 +137,7 @@ use App\Setting;
                             
                             <tr>
                                 <th>注文番号</th>
-                                <td>{{ $sale->order_number }}</td>
+                                <td><a href="{{ url('dashboard/sales/order/'. $sale->order_number) }}">{{ $sale->order_number }}</a></td>
                             </tr>
                             <tr>
                                 <th>(ID)商品名</th>
@@ -145,8 +152,7 @@ use App\Setting;
                                  	   	（{{ $item->id }}）{{ $item->title }}
                                      	</a>
                                       	<br>
-                                       	[{{ $cates->find($item->cate_id)->name }}]
-                                       	<br>      
+                                       	      
                                       	¥<b>{{ number_format(Ctm::getPriceWithTax($item->price)) }}</b> （税込）  
                                     </div>
 	
@@ -159,23 +165,7 @@ use App\Setting;
                                 <td>{{ $sale->item_count }}</td>
                             </tr>
                             
-                            <tr>
-                                <th>ご希望配送時間</th>
-                                <td>
-                                	@if(isset($sale->plan_date))
-                                        <p class="mb-2">{{ $sale->plan_date }}</p>
-                                    @endif
-                                    
-                                    @if(isset($sale->deli_time))
-                                        {{ $sale->deli_time }}
-                                    @endif
-                                </td>
-                            </tr>
                             
-                            <tr>
-                                <th>決済方法</th>
-                                <td>{{ $pms->find($sale->pay_method)->name }}</td>
-                            </tr>
                             
                             <tr>
                                 <th>商品合計金額</th>
@@ -190,17 +180,81 @@ use App\Setting;
                             </tr>
                             
                             <tr>
-                                <th>送料区分/送料</th>
+                                <th>決済方法</th>
+                                <td>{{ $pms->find($sale->pay_method)->name }}</td>
+                            </tr>
+                            
+                            <tr>
+                                <th>ご希望配送日時</th>
+                                <td>
+                                	@if(isset($sale->plan_date))
+                                        <p class="mb-2">{{ $sale->plan_date }}</p>
+                                    @endif
+                                    
+                                    @if(isset($sale->deli_time))
+                                        {{ $sale->deli_time }}
+                                    @endif
+                                </td>
+                            </tr>
+                             
+                            <tr>
+                                <th>送料区分<br>送料</th>
                                 <td>
                                 @if($item->deli_fee)
                                 	<span class="text-warning">送料無料商品</span>
                                 @else
                                 	{{ $itemDg->name }}<br>
                                 @endif
-                                ¥{{ number_format($sale->deli_fee) }}<br>
+                                {{-- ¥{{ number_format($sale->deli_fee) }} --}}
+                                
+                                <fieldset class="mb-4 form-group">
+                                    <input class="form-control col-md-5 d-inline{{ $errors->has('deli_fee') ? ' is-invalid' : '' }}" name="deli_fee" value="{{ Ctm::isOld() ? old('deli_fee') : (isset($sale->deli_fee) ? $sale->deli_fee : '') }}">
+                                    
+                                    @if ($errors->has('deli_fee'))
+                                        <div class="text-danger">
+                                            <span class="fa fa-exclamation form-control-feedback"></span>
+                                            <span>{{ $errors->first('deli_fee') }}</span>
+                                        </div>
+                                    @endif
+                                </fieldset>
                                 
                                 </td>
                             </tr>
+                            
+                            <tr>
+                            	<th>配送業者</th>
+                                <td>
+                                	<fieldset class="mb-4 form-group">
+                                    <input class="form-control col-md-5 d-inline{{ $errors->has('deli_company') ? ' is-invalid' : '' }}" name="deli_company" value="{{ Ctm::isOld() ? old('deli_company') : (isset($sale->deli_company) ? $sale->deli_company : '') }}">
+                                    
+                                    @if ($errors->has('deli_company'))
+                                        <div class="text-danger">
+                                            <span class="fa fa-exclamation form-control-feedback"></span>
+                                            <span>{{ $errors->first('deli_company') }}</span>
+                                        </div>
+                                    @endif
+                                </fieldset>
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                            	<th>伝票番号</th>
+                                <td>
+                                <fieldset class="mb-4 form-group">
+                                	
+                                    <input class="form-control col-md-5 d-inline{{ $errors->has('deli_slip_num') ? ' is-invalid' : '' }}" name="deli_slip_num" value="{{ Ctm::isOld() ? old('deli_slip_num') : (isset($sale->deli_slip_num) ? $sale->deli_slip_num : '') }}">
+                                    
+                                    @if ($errors->has('deli_slip_num'))
+                                        <div class="text-danger">
+                                            <span class="fa fa-exclamation form-control-feedback"></span>
+                                            <span>{{ $errors->first('deli_slip_num') }}</span>
+                                        </div>
+                                    @endif
+                                </fieldset>
+                                
+                                </td>
+                            </tr>
+                            
                             @if($sale->pay_method == 5)
                             <tr>
                                 <th>代引手数料</th>

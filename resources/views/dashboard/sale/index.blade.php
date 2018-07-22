@@ -2,6 +2,10 @@
 
 @section('content')
 
+<?php
+use App\SaleRelation;
+?>
+
     <div class="text-left">
 		<h1 class="Title"> 売上一覧</h1>
 		<p class="Description"></p>
@@ -236,20 +240,16 @@
             <table id="dataTable" class="table table-striped table-bordered table-hover bg-white"{{-- id="dataTable"--}} width="100%" cellspacing="0">
               <thead>
                 <tr>
-                	<th></th>
-                  <th>ID</th>
-                  <th>注文番号</th>
-                  <th>(ID)商品名</th>
-                  <th>発送状況</th>
-                  <th>個数</th>
-                  <th>金額（税込）</th>
-                  <th>送料</th>
-                  <th>代引手数料</th>
-                  <th>決済方法</th>
-                  <th>粗利額</th>
-                  <th>粗利率</th>
-                  <th>会員</th>
+                	<th>ID</th>
+                    
                   <th>購入日</th>
+                  <th>注文番号</th>
+                  <th>購入者</th>
+                  <th>決済方法</th>
+                  <th>発送状況/出荷日</th>
+                  <th>一言メモ</th>
+                  <th>金額計（税込）</th>
+                  <th>リピ情報</th>
                   
                   <th></th>
                 </tr>
@@ -262,17 +262,6 @@
                   <th>ID</th>
                   <th>注文番号</th>
                   <th>(ID)商品名</th>
-                  <th>発送状況</th>
-                  <th>個数</th>
-                  <th>{{ $saleObjs->sum('total_price') }}</th>
-                  <th>{{ $saleObjs->sum('deli_fee') }}</th>
-                  <th>代引手数料</th>
-                  <th>決済方法</th>
-                  <th>粗利額</th>
-                  <th>粗利率</th>
-                  <th>会員</th>
-                  <th>購入日</th>
-                  
                   <th></th>
                 
                 </tr>
@@ -280,70 +269,83 @@
               --}}
               
               <tbody>
-              @foreach($saleObjs as $sale)
+              @foreach($saleObjs as $saleRel)
                 <tr>
                 	<?php
-                 		$saleRel = $saleRels->find($sale->salerel_id);
+                 		$sales = $saleSingle->where('salerel_id', $saleRel->id)->get();
                  	?>   
                 	
-                    {{-- <td><a href="{{ url('dashboard/sales/order/'. $sale->order_number) }}" class="btn btn-success btn-sm center-block">確認</a></td> --}}
-                  <td>{{ $sale->id }}</td>
+                    {{-- <td><a href="{{ url('dashboard/sales/order/'. $saleRel->order_number) }}" class="btn btn-success btn-sm center-block">確認</a></td> --}}
+                  <td>{{ $saleRel->id }}</td>
                   
-                  <td>{{ Ctm::changeDate($sale->created_at, 0) }}</td>
+                  <td>{{ Ctm::changeDate($saleRel->created_at, 0) }}</td>
                   
-                  <td>{{ $sale->order_number }}</td>
+                  <td><span class="text-small">{{ $saleRel->order_number }}</span></td>
                   
                   <td>
-                  	@if($sale->is_user)
-                		<span class="text-primary">会員</span>:{{ $users->find($sale->user_id)->name }}
+                  	@if($saleRel->is_user)
+                		<span class="text-primary"><small>会員</small></span><br>{{ $users->find($saleRel->user_id)->name }}
                 	@else
-                 		<span class="text-danger">非会員</span>:{{ $userNs->find($sale->user_id)->name }}
+                 		<span class="text-danger"><small>非会員</small></span><br>{{ $userNs->find($saleRel->user_id)->name }}
                  	@endif   
                 </td>
-                
-                
-                  
+
                   <td>
-                  	@if($sale->pay_method == 6)
-                    <a href="{{ url('dashboard/sales/order/'. $sale->order_number) }}">
-                    	{{ $pms->find($sale->pay_method)->name }}<br>
-                        <?php
-                        	$payDone = $sale->pay_done;
-                        ?>
-                        @if($payDone)
-                        	<span class="text-success"><small>入金済み</small></span>
-                        @else
-                        	<span class="text-danger"><small>未入金</small></span>
-                        @endif
-                    </a>
+                  	@if($saleRel->pay_method == 6)
+                        <a href="{{ url('dashboard/sales/order/'. $saleRel->order_number) }}">
+                            {{ $pms->find($saleRel->pay_method)->sec_name }}<br>
+
+                            @if($saleRel->pay_done)
+                                <span class="text-success"><small>入金済</small></span>
+                            @else
+                                <span class="text-danger"><small>未入金</small></span>
+                            @endif
+                        </a>
                 	@else
-                    	{{ $pms->find($sale->pay_method)->name }}
+                    	{{ $pms->find($saleRel->pay_method)->sec_name }}
                     @endif
                 	</td>
                   
                   
-                  <td>出荷日</td>
-                  
                   <td>
-                  	 @if($sale->deli_done)
-                       <span class="text-success">発送済み</span>
-                     @else
-                      <span class="text-danger">未発送</span>
-                    @endif   
+                  	<small>
+                    商品数：{{ count($sales) }}<br>
+                  	@foreach($sales as $sale)
+                    	@if($sale->deli_done)
+                           <span class="text-success">済</span>
+                           {{ Ctm::changeDate($sale->deli_start_date, 1) }}<br>
+                         @else
+                          <span class="text-danger">未</span><br>
+                        @endif 
+                    @endforeach
+                    </small>
                   </td>
                   
-                  <td>{{ $sale->item_count }}</td>
+                  <td></td>
                   
                   <td>
-                  	¥{{ number_format($sale->total_price) }}<br>
-                  	¥{{ number_format($sale->deli_fee) }}<br>
-                    ¥{{ number_format($sale->cod_fee) }}<br>
+                  	¥{{ number_format($saleRel->all_price + $saleRel->deli_fee + $saleRel->cod_fee) }}<br>
                   </td>
                   
+                  <td>
+                	<?php 
+                    	
+                    	$repes = SaleRelation::whereNotIn('id', [$saleRel->id])->where(['is_user'=>$saleRel->is_user, 'user_id'=>$saleRel->user_id])->get();
+                    	
+                    ?>
+                    @if(count($repes) > 0)
+                    	@foreach($repes as $repe)
+                        	<a href="{{ url('dashboard/sales/order/'. $repe->order_number) }}" class="text-small">{{ Ctm::changeDate($repe->created_at, 1) }}</a>
+                        @endforeach
+                    @else
+                    	<span>無</span>
+                    @endif
+                    
+                    
                   
-                  
-                  
-                  <td><a href="{{ url('dashboard/sales/order/'. $sale->order_number) }}" class="btn btn-success btn-sm center-block">確認</a></td>
+                  </td>
+ 
+                  <td><a href="{{ url('dashboard/sales/order/'. $saleRel->order_number) }}" class="btn btn-success btn-sm center-block">確認</a></td>
                   
                 </tr>
             @endforeach

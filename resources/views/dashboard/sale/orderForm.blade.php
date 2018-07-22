@@ -9,7 +9,7 @@ use App\Item;
 	<div class="text-left">
         <h1 class="Title">
         @if(isset($edit))
-        商品番号情報
+        ご注文情報
         @else
         売上情報
         @endif
@@ -56,9 +56,9 @@ use App\Item;
                  		
                     @if($saleRel->pay_method == 6)
                         @if($saleRel->pay_done)
-                   		<span class="text-success text-big">この商品は入金済みです。</span>
+                   		<span class="text-success text-big">この注文は、銀行振込：入金済みです。</span>
                      	@else
-                      	<span class="text-danger text-big">この商品は未入金です。</span>
+                      	<span class="text-danger text-big">この注文は、銀行振込：未入金です。</span>
                        	@endif  
                      @endif                 
                     </p>
@@ -105,7 +105,15 @@ use App\Item;
                                         ?>   
                                      @endif
                                      （{{ $users->id }}）{{ $users->name }}<br>
-                                     <a href="mailto:{{ $users->email }}">{{ $users->email }}</a>
+                                     <a href="mailto:{{ $users->email }}">{{ $users->email }}</a><br>
+                                     
+                                     〒{{ Ctm::getPostNum($users->post_num) }}<br>
+                                     {{ $users->prefecture }}
+                                     {{ $users->address_1 }}
+                                     {{ $users->address_2 }}
+                                     {{ $users->address_3 }}<br>
+                                     TEL：{{ $users->tel_num }}
+                                     
                                      
                                      <input type="hidden" name="user_email" value="{{ $users->email }}">
                                      <input type="hidden" name="user_name" value="{{ $users->name }}">
@@ -275,7 +283,10 @@ use App\Item;
                 <div class="clearfix my-4">
                 
                     <div class="form-group">
-                        <button type="submit" class="btn btn-danger btn-block mx-auto w-btn col-md-4 text-white" name="with_mail" value="1"><i class="fa fa-envelope"></i> 入金済みメールを送る</button>
+                    	<?php
+                        	$state = $saleRel->pay_done ? ' disabled' : '';
+                        ?>
+                        <button type="submit" class="btn btn-danger btn-block mx-auto w-btn col-md-4 text-white" name="with_mail" value="1" {{ $state }}><i class="fa fa-envelope"></i> 入金済にしてメールを送る</button>
                     </div>
                 </div>
                 @endif

@@ -58,7 +58,7 @@ $planDate = '';
 @endforeach
 
 @if($planDate != '')
-【ご希望の日程など】：
+【ご希望配送日】：
 <div style="margin: 0 0 1.5em 1.0em;">
 {{ $planDate }}
 </div>

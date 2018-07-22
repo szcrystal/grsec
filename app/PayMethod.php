@@ -8,7 +8,8 @@ class PayMethod extends Model
 {
     protected $fillable = [
 
-        'name', 
+        'name',
+        'sec_name', 
         
 
     ];

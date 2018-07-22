@@ -96,7 +96,8 @@ class SaleController extends Controller
         	//$saleObjs = Sale::orderBy('id', 'desc')->get();
             $saleObjs = $this->saleRel->orderBy('id', 'desc')->get();
         }
-        $saleRels = $this->saleRel;
+        
+        $saleSingle = $this->sale;
         
         $items= $this->item;
         $pms = $this->payMethod;
@@ -108,7 +109,7 @@ class SaleController extends Controller
         
         //$status = $this->articlePost->where(['base_id'=>15])->first()->open_date;
         
-        return view('dashboard.sale.index', ['saleObjs'=>$saleObjs, 'saleRels'=>$saleRels, 'items'=>$items, 'pms'=>$pms, 'itemDg'=>$itemDg, 'users'=>$users, 'userNs'=>$userNs, 'cates'=>$cates, 'saleRelForSum'=>$saleRelForSum,]);
+        return view('dashboard.sale.index', ['saleObjs'=>$saleObjs, 'saleSingle'=>$saleSingle, 'items'=>$items, 'pms'=>$pms, 'itemDg'=>$itemDg, 'users'=>$users, 'userNs'=>$userNs, 'cates'=>$cates, 'saleRelForSum'=>$saleRelForSum,]);
     }
     
     public function saleCompare()
