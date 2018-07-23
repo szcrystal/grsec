@@ -29,6 +29,9 @@ class Sale extends Model
         'charge_loss',
         'arari',
         
+        'deli_company',
+        'deli_slip_num',
+        
         'deli_done',
         'deli_start_date',
         
@@ -39,6 +42,7 @@ class Sale extends Model
         
         'plan_date',
         'information',
+        'memo',
         'craim',
         
         /*

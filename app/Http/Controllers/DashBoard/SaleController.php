@@ -60,11 +60,49 @@ class SaleController extends Controller
     	//$saleObjs = $this->sale->whereYear('created_at', '=','2017', 'and')->whereYear('created_at', '2018')->orderBy('id', 'asc')->get();
 //        $saleObjs = $this->sale->whereBetween(DB::raw('DATE(created_at)'), ['2017-01-01', '2018-05-31'])->orderBy('id', 'asc')->get();
 
-		$saleRelForSum = null;
+		$saleForSum = null;
         
     	if($request->has('set')) {
+        	$rules = [
+                'first_y' => 'required',
+                'first_m' => 'required_with:last_y',
+                'last_m' => 'required_with:last_y',
+            ];
+            
+             $messages = [
+                 'first_y.required' => '「最初の年」を選択して下さい。',
+                 'first_m.required_with' => '「最初の月」を選択して下さい。',
+                 'last_m.required_with' => '「最後の月」を選択して下さい。',
+            ];
+            
+            $this->validate($request, $rules, $messages);
+            
             $data = $request->all();
             
+            if(! isset($data['last_y'])) { //only first
+            	if(isset($data['first_m'])) { //firstの月も指定されている時
+            		$saleObjs = $this->saleRel->whereYear('created_at', $data['first_y'])->whereMonth('created_at', $data['first_m'])->orderBy('id', 'desc')->get();
+                }
+                else { //firstの年のみ指定されている時
+                	$saleObjs = $this->saleRel->whereYear('created_at', $data['first_y'])->orderBy('id', 'desc')->get();
+                }
+            }
+            else {
+                $firstDate = $data['first_y'].'-'.$data['first_m']. '-01';
+                $lastDate = $data['last_y'].'-'.$data['last_m']. '-31';
+                
+                $saleObjs = $this->saleRel->whereBetween(DB::raw('DATE(created_at)'), [$firstDate, $lastDate])->orderBy('id', 'desc')->get();
+            }
+            
+            $relIds = $saleObjs->map(function($obj){
+                return $obj->id;
+            })->all();
+            
+            $saleForSum = $this->sale->whereIn('salerel_id', $relIds)->get();
+            
+
+            
+            /*
             if(! isset($data['last_y'])) { //only first
             	if(isset($data['first_m'])) {
             		$saleObjs = $this->sale->whereYear('created_at', $data['first_y'])->whereMonth('created_at', $data['first_m'])->orderBy('id', 'desc')->get();
@@ -89,6 +127,7 @@ class SaleController extends Controller
             $numIds = array_values($numIds); //keyを振り直す
             
             $saleRelForSum = $this->saleRel->whereIn('order_number', $numIds)->get();
+            */
 
         }
         else {
@@ -109,7 +148,7 @@ class SaleController extends Controller
         
         //$status = $this->articlePost->where(['base_id'=>15])->first()->open_date;
         
-        return view('dashboard.sale.index', ['saleObjs'=>$saleObjs, 'saleSingle'=>$saleSingle, 'items'=>$items, 'pms'=>$pms, 'itemDg'=>$itemDg, 'users'=>$users, 'userNs'=>$userNs, 'cates'=>$cates, 'saleRelForSum'=>$saleRelForSum,]);
+        return view('dashboard.sale.index', ['saleObjs'=>$saleObjs, 'saleSingle'=>$saleSingle, 'items'=>$items, 'pms'=>$pms, 'itemDg'=>$itemDg, 'users'=>$users, 'userNs'=>$userNs, 'cates'=>$cates, 'saleForSum'=>$saleForSum,]);
     }
     
     public function saleCompare()

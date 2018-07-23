@@ -22,6 +22,8 @@ use App\Setting;
         <div class="bs-component clearfix">
         <div class="pull-left">
             <a href="{{ url('/dashboard/sales') }}" class="btn bg-white border border-1 border-round border-secondary text-primary"><i class="fa fa-angle-double-left" aria-hidden="true"></i>一覧へ戻る</a>
+            <br>
+            <a href="{{ url('/dashboard/sales/order/' . $sale->order_number) }}" class="btn bg-white border border-1 border-round border-secondary text-primary mt-2"><i class="fa fa-angle-double-left" aria-hidden="true"></i>ご注文情報へ</a>
         </div>
         </div>
     </div>
@@ -69,7 +71,7 @@ use App\Setting;
             	<div class="table-responsive">
                     <table class="table table-bordered">
                         <colgroup>
-                            <col style="background: #f5dfd5; width: 25%;" class="cth">
+                            <col style="background: #f5dfd5; width: 20%;" class="cth">
                             <col style="background: #fefefe;" class="ctd">
                         </colgroup>
                         
@@ -308,20 +310,7 @@ use App\Setting;
                                 </td>
                             </tr>
                             
-                  			<tr>
-                                <th>粗利額</th>
-                                <td>
-                                <?php 
-                                	$arari = ($item->price - $item->cost_price - $itemDg->take_charge) * $sale->item_count;
-                                	
-                                ?>
-                                ¥{{ number_format($arari) }}
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>粗利率</th>
-                                <td>{{ round($arari / $total * 100, 1) }}%</td>
-                            </tr>
+                            
                   
                   			<?php 
                                 $all = 0;
@@ -362,10 +351,10 @@ use App\Setting;
                                     </a>
                                     
                                     ご希望配送時間：
-                                    @if(isset($sameSale->deli_date))
-                                        {{ $sameSale->deli_date }}
+                                    @if(isset($sameSale->plan_date))
+                                        {{ $sameSale->plan_date }}
                                     @endif
-                                    
+                                    &nbsp;&nbsp;
                                     @if(isset($sameSale->deli_time))
                                         {{ $sameSale->deli_time }}
                                     @endif
@@ -378,13 +367,15 @@ use App\Setting;
                                     @endif
                                     <br>
                                     個数：{{ $sameSale->item_count }}<br>
+                                    {{--
                                     商品合計：¥{{ number_format($sameSale->total_price) }}<br>
                                     送料：¥{{ number_format($sameSale->deli_fee) }}<br>
                                     @if($sameSale->pay_method == 5)
                                     	代引手数料：¥{{ number_format($sameSale->cod_fee) }}<br>
                                     @endif
+                                    --}}
                                     <?php $allTotal = $sameSale->total_price + $sameSale->deli_fee +  $sameSale->cod_fee; ?>
-                                    <b>総合計（B）：<span class="text-success">¥{{ number_format($allTotal) }}</span></b>
+                                    <b>商品合計（B）：<span class="text-success">¥{{ number_format($sameSale->total_price) }}</span></b>
                                     
                                     <?php 
                                     	$all += $allTotal;
@@ -427,9 +418,9 @@ use App\Setting;
                     </table>
                 </div>
                 
-                <div>
+                <div class="mt-5">
                 	<fieldset class="mb-4 form-group">
-                        <label for="stock" class="control-label">お届け予定日</label>
+                        <label for="stock" class="control-label text-info">お届け予定日（ユーザー反映）</label>
                         <input class="form-control col-md-6{{ $errors->has('plan_date') ? ' is-invalid' : '' }}" name="plan_date" value="{{ Ctm::isOld() ? old('plan_date') : (isset($sale) ? $sale->plan_date : '') }}">
                         
 
@@ -442,7 +433,7 @@ use App\Setting;
                     </fieldset>
                         
                 	<fieldset class="mb-2 form-group{{ $errors->has('information') ? ' is-invalid' : '' }}">
-                        <label for="detail" class="control-label">ご連絡事項</label>
+                        <label for="detail" class="control-label text-info">ご連絡事項（ユーザー反映）</label>
 
                             <textarea id="information" class="form-control" name="information" rows="8">{{ Ctm::isOld() ? old('information') : (isset($sale) ? $sale->information : '') }}</textarea>
 
@@ -453,8 +444,20 @@ use App\Setting;
                             @endif
                     </fieldset>
                     
+                    <fieldset class="mt-5 mb-2 form-group{{ $errors->has('memo') ? ' is-invalid' : '' }}">
+                        <label for="memo" class="control-label">一言メモ<span class="text-small">（内部のみ）</span></label>
+
+                            <textarea id="memo" class="form-control" name="memo" rows="8">{{ Ctm::isOld() ? old('memo') : (isset($sale) ? $sale->memo : '') }}</textarea>
+
+                            @if ($errors->has('memo'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('memo') }}</strong>
+                                </span>
+                            @endif
+                    </fieldset>
+                    
                     <fieldset class="mb-2 form-group{{ $errors->has('craim') ? ' is-invalid' : '' }}">
-                        <label for="detail" class="control-label">クレーム</label>
+                        <label for="detail" class="control-label">クレーム<span class="text-small">（内部のみ）</span></label>
 
                             <textarea id="detail" class="form-control" name="craim" rows="8">{{ Ctm::isOld() ? old('craim') : (isset($sale) ? $sale->craim : '') }}</textarea>
 

@@ -4,6 +4,7 @@
 
 <?php
 use App\SaleRelation;
+use App\Setting;
 ?>
 
     <div class="text-left">
@@ -13,6 +14,15 @@ use App\SaleRelation;
 
 
     <div class="mb-4 pb-3">
+    	@if (count($errors) > 0)
+            <div class="alert alert-danger py-1">
+                <ul class="px-2">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
 
 		<form class="form-horizontal" role="form" method="GET" action="/dashboard/sales">
         
@@ -44,12 +54,7 @@ use App\SaleRelation;
         </select>
         <span class="mr-2">年</span>
         
-        @if ($errors->has('first_y'))
-            <div class="help-block text-danger">
-                <span class="fa fa-exclamation form-control-feedback"></span>
-                <span>{{ $errors->first('first_y') }}</span>
-            </div>
-        @endif
+       
         
         <select class="form-control col-md-1 d-inline{{ $errors->has('first_m') ? ' is-invalid' : '' }}" name="first_m">
             <option selected disabled>--</option>
@@ -78,12 +83,6 @@ use App\SaleRelation;
         </select>
         <span class="mr-2">月</span>
         
-        @if ($errors->has('first_m'))
-            <div class="help-block text-danger">
-                <span class="fa fa-exclamation form-control-feedback"></span>
-                <span>{{ $errors->first('first_m') }}</span>
-            </div>
-        @endif
         
         <b>〜</b>&nbsp;&nbsp;&nbsp;
         
@@ -97,7 +96,7 @@ use App\SaleRelation;
                 <?php
                     $selected = '';
                     if(Ctm::isOld()) {
-                        if(old('user.birth_year') == $y)
+                        if(old('last_y') == $y)
                             $selected = ' selected';
                     }
                     else {
@@ -115,12 +114,7 @@ use App\SaleRelation;
         </select>
         <span class="mr-2">年</span>
         
-        @if ($errors->has('last_y'))
-            <div class="help-block text-danger">
-                <span class="fa fa-exclamation form-control-feedback"></span>
-                <span>{{ $errors->first('last_y') }}</span>
-            </div>
-        @endif
+
         
         <select class="form-control col-md-1 d-inline{{ $errors->has('last_m') ? ' is-invalid' : '' }}" name="last_m">
             <option selected disabled>--</option>
@@ -149,12 +143,6 @@ use App\SaleRelation;
         </select>
         <span class="mr-2">月</span>
         
-        @if ($errors->has('last_m'))
-            <div class="help-block text-danger">
-                <span class="fa fa-exclamation form-control-feedback"></span>
-                <span>{{ $errors->first('last_m') }}</span>
-            </div>
-        @endif
         
         
         <button type="submit" name="set" value="1" class="btn btn-info ml-2 mr-4">送 信</button>
@@ -163,22 +151,24 @@ use App\SaleRelation;
         
         
         <div class="mt-3 text-big">
-        	@if(isset($saleRelForSum))
+        	@if(Request::has('set'))
             	<?php 
-                	$total = 
-                    	$saleRelForSum->sum('all_price') + 
-                        $saleRelForSum->sum('deli_fee') + 
-                        $saleRelForSum->sum('cod_fee') - 
-                        $saleRelForSum->sum('use_point');
+                	$total = $saleObjs->sum('all_price')
+                        	+ $saleObjs->sum('deli_fee') 
+                        	+ $saleObjs->sum('cod_fee')
+                        	- $saleObjs->sum('use_point');
                 ?>
             	<p class="mb-0">売上 計：¥{{ number_format($total) }}</p>
                 <?php
-                	$tax = $saleRelForSum->sum('all_price') - ($saleRelForSum->sum('all_price') / 1.08);
+                	$taxPer = Setting::get()->first()->tax_per;
+                    $taxPer = $taxPer/100 + 1; //$taxPer ->1.08
+
+                	$tax = $saleObjs->sum('all_price') - ($saleObjs->sum('all_price') / $taxPer); //$taxPer ->1.08
 //                    echo $tax. "<br>";
 //                    echo $saleObjs->sum('cost_price'). "<br>";
 //                    echo $saleRelForSum->sum('take_charge_fee'). "<br>";
 //                    echo $saleRelForSum->sum('all_price') . "<br>";
-                    $arari = $total - $tax - $saleObjs->sum('cost_price') - $saleRelForSum->sum('take_charge_fee');
+                    $arari = $total - $tax - $saleForSum->sum('cost_price') - $saleForSum->sum('charge_loss');
                 ?>
                 <p>粗利 計：¥{{ number_format($arari) }}</p>
                 
@@ -278,7 +268,7 @@ use App\SaleRelation;
                     {{-- <td><a href="{{ url('dashboard/sales/order/'. $saleRel->order_number) }}" class="btn btn-success btn-sm center-block">確認</a></td> --}}
                   <td>{{ $saleRel->id }}</td>
                   
-                  <td>{{ Ctm::changeDate($saleRel->created_at, 0) }}</td>
+                  <td><b>{{ Ctm::changeDate($saleRel->created_at, 0) }}</b></td>
                   
                   <td><span class="text-small">{{ $saleRel->order_number }}</span></td>
                   
@@ -312,10 +302,14 @@ use App\SaleRelation;
                     商品数：{{ count($sales) }}<br>
                   	@foreach($sales as $sale)
                     	@if($sale->deli_done)
-                           <span class="text-success">済</span>
-                           {{ Ctm::changeDate($sale->deli_start_date, 1) }}<br>
+                           <a href="{{ url('dashboard/sales/'.$sale->id) }}">
+                               <span class="text-success">済</span>
+                               {{ Ctm::changeDate($sale->deli_start_date, 1) }}
+                           </a><br>
                          @else
-                          <span class="text-danger">未</span><br>
+                         	<a href="{{ url('dashboard/sales/'.$sale->id) }}">
+                          		<span class="text-danger">未</span>
+                          	</a><br>
                         @endif 
                     @endforeach
                     </small>
@@ -338,7 +332,7 @@ use App\SaleRelation;
                         	<a href="{{ url('dashboard/sales/order/'. $repe->order_number) }}" class="text-small">{{ Ctm::changeDate($repe->created_at, 1) }}</a>
                         @endforeach
                     @else
-                    	<span>無</span>
+                    	<span>--</span>
                     @endif
                     
                     

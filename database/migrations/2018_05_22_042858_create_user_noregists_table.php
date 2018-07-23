@@ -17,6 +17,8 @@ class CreateUserNoregistsTable extends Migration
             $table->increments('id');
             
             $table->string('name');
+            $table->string('email')->nullable()->default(NULL);
+            
             $table->string('hurigana')->nullable()->default(NULL);
             $table->string('gender')->nullable()->default(NULL);
             
@@ -30,7 +32,7 @@ class CreateUserNoregistsTable extends Migration
             $table->string('address_2')->nullable()->default(NULL);
             $table->string('address_3')->nullable()->default(NULL);
             
-            $table->string('email')->nullable()->default(NULL);
+            
             $table->string('tel_num')->nullable()->default(NULL);
             
             $table->boolean('magazine')->nullable()->default(NULL);

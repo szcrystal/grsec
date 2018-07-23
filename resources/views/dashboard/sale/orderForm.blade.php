@@ -3,7 +3,7 @@
 @section('content')
 <?php
 use App\Item;
-
+use App\Setting;
 ?>
 	
 	<div class="text-left">
@@ -72,7 +72,7 @@ use App\Item;
             	<div class="table-responsive">
                     <table class="table table-bordered">
                         <colgroup>
-                            <col style="background: #dfdcdb; width: 25%;" class="cth">
+                            <col style="background: #dfdcdb; width: 20%;" class="cth">
                             <col style="background: #fefefe;" class="ctd">
                         </colgroup>
                         
@@ -86,7 +86,7 @@ use App\Item;
                             </tr>
                         	<tr>
                                 <th>購入日</th>
-                                <td>{{ Ctm::changeDate($saleRel->created_at, 0) }}</td>
+                                <td><span class="text-big"><b>{{ Ctm::changeDate($saleRel->created_at, 0) }}</b></span></td>
                             </tr>
                             <tr>
                                 <th>購入者</th>
@@ -159,8 +159,8 @@ use App\Item;
                                     </a>
                                     
                                     ご希望配送時間：
-                                    @if(isset($sale->deli_date))
-                                        {{ $sale->deli_date }}
+                                    @if(isset($sale->plan_date))
+                                        {{ $sale->plan_date }}
                                     @endif
                                     
                                     @if(isset($sale->deli_time))
@@ -171,7 +171,7 @@ use App\Item;
                                     @if($sale->deli_done)
                                        <span class="text-success">発送済み（{{ date('Y/m/d H:i', time($sale->deli_start_date)) }}）</span>
                                      @else
-                                      <span class="text-danger">未配送</span>
+                                      <span class="text-danger">未発送</span>
                                     @endif
                                     <br>
                                     個数：{{ $sale->item_count }}<br>
@@ -196,36 +196,61 @@ use App\Item;
                             <tr>
                                 <th>送料（B）</th>
                                 <td>
-                                
                                 ¥{{ number_format($saleRel->deli_fee) }}
                                 </td>
                             </tr>
                             
                             <tr>
-                                <th>ポイント利用（C）</th>
+                                <th>代引手数料（C）</th>
+                                <td>¥{{ number_format($saleRel->cod_fee) }}</td>
+                            </tr>
+                            
+                            <tr>
+                                <th>ポイント利用（D）</th>
                                 <td>
 	                                {{ $saleRel->use_point }}
                                 </td>
                             </tr>
                             
                             <tr>
-                                <th>購入総合計（A+B-C）</th>
+                                <th>購入総合計<br>（A+B+C-D）</th>
                                 <?php 
                                 	//$total = $sale->total_price + $sale->deli_fee + $sale->cod_fee;
-                                	$total = $saleRel->all_price + $saleRel->deli_fee;
+                                	$total = $saleRel->all_price + $saleRel->deli_fee + $saleRel->cod_fee - $saleRel->use_point;
                                 ?>
                                 <td>
                                 	<span style="font-size: 1.3em;" class="text-success"><b>¥{{ number_format($total) }}</b></span><br>
                                 
-                                @if($saleRel->pay_method == 6)
-                                	@if($saleRel->pay_done)
-                                        <span class="text-success">入金済み</span>
-                                    @else
-                                    	<span class="text-danger">未入金</span>
+                                    @if($saleRel->pay_method == 6)
+                                        @if($saleRel->pay_done)
+                                            <span class="text-success">入金済み</span>
+                                        @else
+                                            <span class="text-danger">未入金</span>
+                                        @endif
                                     @endif
-                                @endif
                                 </td>
                             </tr>
+                            
+                            <tr>
+                                <th>粗利額</th>
+                                <td>
+                                <?php
+                                    $taxPer = Setting::get()->first()->tax_per;
+                                    $taxPer = $taxPer/100 + 1; //$taxPer ->1.08
+
+                                    $tax = $saleRel->all_price - ($saleRel->all_price / $taxPer); //$taxPer ->1.08
+
+                                    $arari = $total - $tax - $sales->sum('cost_price') - $sales->sum('charge_loss');
+                                ?>
+                                                                
+                                ¥{{ number_format($arari) }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>粗利率</th>
+                                <td>{{ round($arari / $total * 100, 1) }}%</td>
+                            </tr>
+                            
                             
                             @if($saleRel->pay_method == 6)
                             <tr>

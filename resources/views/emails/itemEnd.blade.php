@@ -14,9 +14,7 @@
 
 @else
 よりご注文がありました。<br><br>
-@foreach($sales as $sale)
-{{ url('dashboard/sales/'.$sale->id) }}<br>
-@endforeach
+{{ url('dashboard/sales/order/'. $saleRel->order_number ) }}
 <br><br>
 ご注文内容は下記となります。
 @endif

@@ -17,7 +17,7 @@ class SaleRelation extends Model
         'pay_method',
         'deli_fee',
         'cod_fee',
-        'take_charge_fee',
+        //'take_charge_fee',
         'use_point',
         'all_price',
         
