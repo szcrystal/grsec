@@ -79,14 +79,17 @@ class SettingController extends Controller
         //$editId = $request->has('edit_id') ? $request->input('edit_id') : 0;
         
         $rules = [
-            //'name' => 'required|max:255',
-            //'movie_url' => 'required|max:255',
+            'admin_name' => 'required|max:255',
+            'admin_email' => 'required|max:255',
+            'tax_per' => 'required|numeric',
+            'sale_per' => 'required_with:is_sale|nullable|numeric',
+            'kare_ensure' => 'required|numeric',
             //'main_img' => 'filenaming',
         ];
         
          $messages = [
             // 'name.required' => '「出荷元名」を入力して下さい。',
-            //'cate_id.required' => '「カテゴリー」を選択して下さい。',
+            'sale_per.required_with' => '「割引率」を指定して下さい。',
             
             //'post_thumb.filenaming' => '「サムネイル-ファイル名」は半角英数字、及びハイフンとアンダースコアのみにして下さい。',
             //'post_movie.filenaming' => '「動画-ファイル名」は半角英数字、及びハイフンとアンダースコアのみにして下さい。',

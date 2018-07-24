@@ -254,7 +254,7 @@ class CartController extends Controller
         $destination = isset($allData['destination']) ? 1 : 0;
         $pm = $allData['pay_method'];
         
-        $deliTime = isset($allData['deli_time']) ? $allData['deli_time'] : array();
+        $planTime = isset($allData['plan_time']) ? $allData['plan_time'] : array();
         
         $userData = Auth::check() ? $this->user->find(Auth::id()) : $allData['user']; //session(all.data.user)
       	$receiverData = $allData['receiver']; //session('all.data.receiver');
@@ -262,13 +262,13 @@ class CartController extends Controller
        
        	
         //配送時間指定 itemごとにitemDataの配列内に入れる
-        if(count($deliTime) > 0) {
+        if(count($planTime) > 0) {
             foreach($itemData as $key => $value) {
                 
-                foreach($deliTime as $dgKey => $dgTime ) {
+                foreach($planTime as $dgKey => $dgTime ) {
                     $dgId = $this->item->find($value['item_id'])->dg_id;
                     if($dgKey == $dgId) {
-                        $itemData[$key]['deli_time'] = $dgTime;
+                        $itemData[$key]['plan_time'] = $dgTime;
                     }
                 }
             }
@@ -402,6 +402,7 @@ class CartController extends Controller
         $receiver->save();
     
     	$saleIds = array();
+        $stockNone = array();
         //売上登録処理 Sale create
         foreach($itemData as $key => $val) {
         	
@@ -430,8 +431,8 @@ class CartController extends Controller
                     'cost_price' => $this->item->find($val['item_id'])->cost_price * $val['item_count'],
                     'charge_loss' => 0,
                     
-                    'deli_time' => isset($val['deli_time']) ? $val['deli_time'] : null,
                     'plan_date' => isset($allData['plan_date']) ? $allData['plan_date'] : null,
+                    'plan_time' => isset($val['plan_time']) ? $val['plan_time'] : null,
                     
                     'deli_done' => 0,
                     'pay_done' => 0,
@@ -456,6 +457,10 @@ class CartController extends Controller
             $item = $this->item->find($val['item_id']);
             $item->decrement('stock', $val['item_count']);
             
+            if(! $item->stock) {
+            	$stockNone[] = $item->id;
+            }
+            
             //Sale Count処理
             $item->increment('sale_count', $val['item_count']);
             
@@ -478,11 +483,17 @@ class CartController extends Controller
         
         //Mail送信 ----------------------------------------------
         //Ctm::sendMail($data, 'itemEnd');
-        Mail::to($userData['email'], $userData['name'])->send(new OrderEnd($saleRelId, 1));
-        Mail::to($this->set->admin_email, $this->set->admin_name)->send(new OrderEnd($saleRelId, 0));
+        Mail::to($userData['email'], $userData['name'])->queue(new OrderEnd($saleRelId, 1)); //for User
+        Mail::to($this->set->admin_email, $this->set->admin_name)->queue(new OrderEnd($saleRelId, 0)); //for Admin
         
         if($regist) { 
-        	Mail::to($userData['email'], $userData['name'])->send(new Register($userId));
+        	Mail::to($userData['email'], $userData['name'])->queue(new Register($userId)); //for User New Regist
+        }
+        
+        
+        //在庫確認 -----------------------------------------------
+        if(count($stockNone) > 0) {
+        	
         }
         
         
@@ -617,10 +628,10 @@ class CartController extends Controller
             $obj['point'] = ceil($val['item_total_price'] * ($obj->point_back/100)); //商品金額のみに対してのパーセント 切り上げ 切り捨て->floor()
 			$addPoint += $obj['point'];
             
-            if(isset($data['deli_time'])) {
-                foreach($data['deli_time'] as $dgKey => $timeVal) {
+            if(isset($data['plan_time'])) {
+                foreach($data['plan_time'] as $dgKey => $timeVal) {
                     if($obj->dg_id == $dgKey) {
-                        $obj['deli_time'] = $timeVal;
+                        $obj['plan_time'] = $timeVal;
                     }
                 }
             }
@@ -1207,7 +1218,7 @@ class CartController extends Controller
         $settles['mission_code'] = 1;
         $settles['item_price'] = $totalFee;
         $settles['process_code'] = 1;
-        $settles['memo1'] = 'あいうえお';
+        $settles['memo1'] = '';
         $settles['xml'] = 0;
         $settles['lang_id'] = 'ja';
         //$settles['page_type'] = 12;

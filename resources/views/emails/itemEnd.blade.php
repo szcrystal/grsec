@@ -57,13 +57,13 @@ $planDate = '';
 
 @if($planDate != '')
 【ご希望配送日】：
-<div style="margin: 0 0 1.5em 1.0em;">
+<div style="margin: 0 0 1.0em 1.0em;">
 {{ $planDate }}
 </div>
 @endif
 
 【お買上金額】：
-<div style="margin: 0 0 1.5em 1.0em;">
+<div style="margin: 0 0 1.0em 1.0em;">
 商品金額合計：￥{{ number_format($saleRel->all_price) }} <br>
 送料：￥{{ number_format($saleRel->deli_fee) }} <br>
 @if($saleRel->pay_method == 5)
@@ -75,12 +75,12 @@ $planDate = '';
 <?php
 $allTotal = $saleRel->all_price + $saleRel->deli_fee + $saleRel->cod_fee - $saleRel->use_point;
 ?>
-<b style="display:block; font-size:1.1em; margin-top:0.5em;">ご注文金額合計：￥{{ number_format($allTotal) }} （税込）</b><br>
+<b style="display:block; font-size:1.1em; margin-top:0.5em;">ご注文金額合計：￥{{ number_format($allTotal) }} （税込）</b>
 </div>
 【お支払方法】：{{ $pmModel->find($saleRel->pay_method)->name }} <br>
 @if($saleRel->pay_method == 6)
 <div style="margin: 0 0 1.5em 0.8em;">
-５日以内に下記口座までお振り込み下さい。<br>
+５日以内に下記口座までお振り込み下さい。<br><br>
 {!! nl2br($setting['bank_info']) !!}
 </div>
 @endif

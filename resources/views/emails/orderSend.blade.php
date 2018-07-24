@@ -6,18 +6,16 @@
 
 
 {{ $user['name'] }} 様
-@if($isUser)
-<br /><br />
-{!! nl2br( $header ) !!}
+<br>
+<p>※このメールは配信専用メールのため、ご返信いただけません。</p>
 
+@if($isUser)
+{!! nl2br( $header ) !!}
 @else
 よりご注文がありました。<br>
 ご注文内容は下記となります。
 @endif
-
-
 <br>
-<p>※このメールは配信専用メールのため、ご返信いただけません。</p>
 <br>
 @if(isset($thisSale->information))
 【グリーンロケットからのお知らせ】<br>

@@ -12,6 +12,8 @@ class Setting extends Model
         'admin_email' ,
         'mail_footer',
         'tax_per',
+        'is_sale',
+        'sale_per',
         'kare_ensure',
         'bank_info',
         'cot_per',

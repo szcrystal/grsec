@@ -20,9 +20,9 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 class OrderSend extends Mailable
 {
     use Queueable, SerializesModels;
-
+	
+    public $saleId;
 	public $saleIds;
-    //public $sales;
     
 //    public $user;
 //    public $receiver;
@@ -53,8 +53,8 @@ class OrderSend extends Mailable
           
         
         
-        $this->pmModel = new PayMethod;
-        $this->itemModel = new Item;
+//        $this->pmModel = new PayMethod;
+//        $this->itemModel = new Item;
         
         //$this->isUser = $isUser;
     }
@@ -66,6 +66,9 @@ class OrderSend extends Mailable
      */
     public function build()
     {
+    	$this->pmModel = new PayMethod;
+        $this->itemModel = new Item;
+        
         $templ = MailTemplate::where(['type_code'=>'itemDelivery', ])->get()->first();
         
         $thisSale = Sale::find($this->saleId);

@@ -32,8 +32,9 @@ class CreateSaleRelationsTable extends Migration
             
             $table->boolean('destination')->nullable()->default(NULL);
             
-            $table->boolean('deli_done')->nullable()->default(NULL);
+            //$table->boolean('deli_done')->nullable()->default(NULL);
             $table->boolean('pay_done')->nullable()->default(NULL);
+            $table->timestamp('pay_date')->nullable()->default(NULL);
             
             $table->integer('pay_trans_code')->nullable()->default(NULL);
             $table->integer('pay_user_id')->nullable()->default(NULL);

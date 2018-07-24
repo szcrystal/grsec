@@ -200,7 +200,7 @@ use App\Setting;
                             </tr>
                              
                             <tr>
-                                <th>送料区分<br>送料</th>
+                                <th>送料区分/<br>送料</th>
                                 <td>
                                 @if($item->deli_fee)
                                 	<span class="text-warning">送料無料商品</span>
@@ -209,7 +209,7 @@ use App\Setting;
                                 @endif
                                 {{-- ¥{{ number_format($sale->deli_fee) }} --}}
                                 
-                                <fieldset class="mb-4 form-group">
+                                <fieldset class="mt-2 mb-4 form-group">
                                     <input class="form-control col-md-5 d-inline{{ $errors->has('deli_fee') ? ' is-invalid' : '' }}" name="deli_fee" value="{{ Ctm::isOld() ? old('deli_fee') : (isset($sale->deli_fee) ? $sale->deli_fee : '') }}">
                                     
                                     @if ($errors->has('deli_fee'))
@@ -224,7 +224,7 @@ use App\Setting;
                             </tr>
                             
                             <tr>
-                            	<th>配送業者</th>
+                            	<th>配送業者<br><small class="text-dark">*同時発送する商品に対しても適用されます</small></th>
                                 <td>
                                 	<fieldset class="mb-4 form-group">
                                     <input class="form-control col-md-5 d-inline{{ $errors->has('deli_company') ? ' is-invalid' : '' }}" name="deli_company" value="{{ Ctm::isOld() ? old('deli_company') : (isset($sale->deli_company) ? $sale->deli_company : '') }}">
@@ -240,7 +240,7 @@ use App\Setting;
                             </tr>
                             
                             <tr>
-                            	<th>伝票番号</th>
+                            	<th>伝票番号<br><small class="text-dark">*同時発送する商品に対しても適用されます</small></th>
                                 <td>
                                 <fieldset class="mb-4 form-group">
                                 	
@@ -336,7 +336,7 @@ use App\Setting;
                                                         }
                                                     }
                                                 ?>
-                                                <input type="checkbox" name="sale_ids[]" value="{{ $sameSale->id }}"{{ $checked }}> 同時にメールする
+                                                <input type="checkbox" name="sale_ids[]" value="{{ $sameSale->id }}"{{ $checked }}> 同時に発送済みメールをする
                                             </label>
                                     </fieldset>
                                     @endif
@@ -420,20 +420,47 @@ use App\Setting;
                 
                 <div class="mt-5">
                 	<fieldset class="mb-4 form-group">
-                        <label for="stock" class="control-label text-info">お届け予定日（ユーザー反映）</label>
-                        <input class="form-control col-md-6{{ $errors->has('plan_date') ? ' is-invalid' : '' }}" name="plan_date" value="{{ Ctm::isOld() ? old('plan_date') : (isset($sale) ? $sale->plan_date : '') }}">
-                        
+                    	<label for="detail" class="control-label text-info">お届け予定日（ユーザー反映）<small class="text-dark">*同時発送する商品に対しても適用されます</small></label>
+                        <select class="form-control col-md-6{{ $errors->has('deli_schedule_date') ? ' is-invalid' : '' }}" name="deli_schedule_date">
+                            <option selected disabled>選択して下さい</option>
+                            	<?php 
+                                	$days = array();
+                                    $week = ['日', '月', '火', '水', '木', '金', '土'];
+                                
+                                    for($plusDay = 0; $plusDay < 64; $plusDay++) {
+                                        $now = date('Y-m-d', time());
+                                        $first = strtotime($now." +". $plusDay . " day");
+                                        $days[] = date('Y/m/d', $first) . '（' . $week[date('w', $first)] . '）';
+                                    }
+                                ?>
+                            
 
-                        @if ($errors->has('plan_date'))
-                            <div class="text-danger">
-                                <span class="fa fa-exclamation form-control-feedback"></span>
-                                <span>{{ $errors->first('plan_date') }}</span>
-                            </div>
+                                @foreach($days as $day)
+                                    <?php
+                                        $selected = '';
+                                        if(Ctm::isOld()) {
+                                            if(old('deli_schedule_date') == $day)
+                                                $selected = ' selected';
+                                        }
+                                        else {
+                                            if(isset($sale) && $sale->deli_schedule_date == $day) {
+                                                $selected = ' selected';
+                                            }
+                                        }
+                                    ?>
+                                    <option value="{{ $day }}"{{ $selected }}>{{ $day }}</option>
+                                @endforeach
+                        </select>
+                        
+                        @if ($errors->has('deli_schedule_date'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('deli_schedule_date') }}</strong>
+                            </span>
                         @endif
                     </fieldset>
                         
                 	<fieldset class="mb-2 form-group{{ $errors->has('information') ? ' is-invalid' : '' }}">
-                        <label for="detail" class="control-label text-info">ご連絡事項（ユーザー反映）</label>
+                        <label for="detail" class="control-label text-info">ご連絡事項（ユーザー反映）<small class="text-dark">*同時発送する商品に対しても適用されます</small></label>
 
                             <textarea id="information" class="form-control" name="information" rows="8">{{ Ctm::isOld() ? old('information') : (isset($sale) ? $sale->information : '') }}</textarea>
 
@@ -445,7 +472,7 @@ use App\Setting;
                     </fieldset>
                     
                     <fieldset class="mt-5 mb-2 form-group{{ $errors->has('memo') ? ' is-invalid' : '' }}">
-                        <label for="memo" class="control-label">一言メモ<span class="text-small">（内部のみ）</span></label>
+                        <label for="memo" class="control-label">メモ<span class="text-small">（内部のみ）</span></label>
 
                             <textarea id="memo" class="form-control" name="memo" rows="8">{{ Ctm::isOld() ? old('memo') : (isset($sale) ? $sale->memo : '') }}</textarea>
 

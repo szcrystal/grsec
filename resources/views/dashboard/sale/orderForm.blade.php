@@ -134,7 +134,7 @@ use App\Setting;
                                                         
                             <tr>
                                 <th>決済方法</th>
-                                <td><b>{{ $pms->find($saleRel->pay_method)->name }}</b></td>
+                                <td><span class="text-big"><b>{{ $pms->find($saleRel->pay_method)->name }}</b></span></td>
                             </tr>
 
                   
@@ -163,8 +163,8 @@ use App\Setting;
                                         {{ $sale->plan_date }}
                                     @endif
                                     
-                                    @if(isset($sale->deli_time))
-                                        {{ $sale->deli_time }}
+                                    @if(isset($sale->plan_time))
+                                        {{ $sale->plan_time }}
                                     @endif
                                     <br>
                                     配送状況：
@@ -174,8 +174,15 @@ use App\Setting;
                                       <span class="text-danger">未発送</span>
                                     @endif
                                     <br>
+                                    
+                                    配送業者：{{ $sale->deli_company }} - {{ $sale->deli_slip_num }}
+                                    <br>
+
                                     個数：{{ $sale->item_count }}<br>
-                                    <b>商品合計：¥{{ number_format($sale->total_price) }}</b><br>
+                                    <b>商品合計：¥{{ number_format($sale->total_price) }}</b>
+                                    <br>
+                                    
+                                    メモ：{{ $sale->memo }}
                                     
                                     
                                     
@@ -304,16 +311,16 @@ use App\Setting;
                     </table>
                 </div>
                 
-                @if($saleRel->pay_method == 6)
-                <div class="clearfix my-4">
                 
-                    <div class="form-group">
+                @if($saleRel->pay_method == 6)
+                    <div class="form-group clearfix my-4">
+                    	{{-- <button type="submit" class="btn btn-primary col-md-3 text-white float-left" name="only_up" value="1">更新のみする</button> --}}
+                        
                     	<?php
-                        	$state = $saleRel->pay_done ? ' disabled' : '';
+                        	$state = ( $saleRel->pay_done && !Ctm::isLocal() ) ? ' disabled' : '';
                         ?>
-                        <button type="submit" class="btn btn-danger btn-block mx-auto w-btn col-md-4 text-white" name="with_mail" value="1" {{ $state }}><i class="fa fa-envelope"></i> 入金済にしてメールを送る</button>
+                        <button type="submit" class="btn btn-danger col-md-4 text-white float-right" name="with_mail" value="1" {{ $state }}><i class="fa fa-envelope"></i> 入金済にしてメールを送る</button>
                     </div>
-                </div>
                 @endif
         </form>
         

@@ -22,6 +22,9 @@ class CreateSettingsTable extends Migration
             $table->text('mail_user')->nullable()->default(NULL);
             
             $table->integer('tax_per')->nullable()->default(NULL);
+            $table->boolean('is_sale')->nullable()->default(NULL);
+            $table->integer('sale_per')->nullable()->default(NULL);
+            
             $table->integer('kare_ensure')->nullable()->default(NULL);
             $table->text('bank_info')->nullable()->default(NULL);
             $table->integer('cot_per')->nullable()->default(NULL);

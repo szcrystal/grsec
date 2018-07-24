@@ -115,10 +115,11 @@
 			
 			<ul class="px-4 mt-2">
                 @foreach($itemData as $item) 
-                	@if(isset($item->deli_time))                   
-                    <li>
-                        {{ $item->title }}<br>[ {{ $item->deli_time }} ]
-                    </li>
+                	@if(isset($item->plan_time))                   
+                        <li>
+                            {{ $item->title }}<br>
+                            [ {{ $item->plan_time }} ]
+                        </li>
                     @endif
                 @endforeach
             </ul>

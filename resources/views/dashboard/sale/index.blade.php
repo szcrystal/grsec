@@ -237,7 +237,7 @@ use App\Setting;
                   <th>購入者</th>
                   <th>決済方法</th>
                   <th>発送状況/出荷日</th>
-                  <th>一言メモ</th>
+                  <th>メモ</th>
                   <th>金額計（税込）</th>
                   <th>リピ情報</th>
                   
@@ -315,7 +315,19 @@ use App\Setting;
                     </small>
                   </td>
                   
-                  <td></td>
+                  <td style="line-height: 1em;">
+                  	<small>
+                        @foreach($sales as $sale)
+                        	@if($sale->memo != '')
+                                {{ Ctm::shortStr($sale->memo, 15) }}
+                                <hr class="my-1">
+                            @endif
+                        @endforeach
+                    </small>
+                  
+                  
+                  
+                  </td>
                   
                   <td>
                   	¥{{ number_format($saleRel->all_price + $saleRel->deli_fee + $saleRel->cod_fee) }}<br>
@@ -329,7 +341,7 @@ use App\Setting;
                     ?>
                     @if(count($repes) > 0)
                     	@foreach($repes as $repe)
-                        	<a href="{{ url('dashboard/sales/order/'. $repe->order_number) }}" class="text-small">{{ Ctm::changeDate($repe->created_at, 1) }}</a>
+                        	<a href="{{ url('dashboard/sales/order/'. $repe->order_number) }}" class="text-small">{{ Ctm::changeDate($repe->created_at, 1) }}</a><br>
                         @endforeach
                     @else
                     	<span>--</span>

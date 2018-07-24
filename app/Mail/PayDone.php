@@ -40,8 +40,8 @@ class PayDone extends Mailable
 //        $this->saleRel = SaleRelation::find($saleRelId);
 //        $this->sales = Sale::where(['salerel_id'=>$this->saleRel->id])->get();       
 
-        $this->pmModel = new PayMethod;
-        $this->itemModel = new Item;
+//        $this->pmModel = new PayMethod;
+//        $this->itemModel = new Item;
     }
 
     /**
@@ -51,6 +51,9 @@ class PayDone extends Mailable
      */
     public function build()
     {
+    	$this->pmModel = new PayMethod;
+        $this->itemModel = new Item;
+        
         $templ = MailTemplate::where(['type_code'=>'payDone', ])->get()->first();
         
         $saleRel = SaleRelation::find($this->saleRelId);

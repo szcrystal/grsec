@@ -59,7 +59,7 @@
                 <input type="hidden" name="edit_id" value="{{$id}}">
             @endif
 		
-  			<h4 class="mt-5"><span class="text-secondary">■</span> メール設定</h4>
+  			<h4 class="mt-5"><span class="text-info">■</span> メール設定</h4>
      		<hr>              
 			<fieldset class="mb-4 form-group{{ $errors->has('admin_name') ? ' has-error' : '' }}">
                 <label>管理者名</label>
@@ -91,7 +91,7 @@
             <fieldset class="mb-4 form-group{{ $errors->has('mail_footer') ? ' has-error' : '' }}">
                     <label for="mail_footer" class="control-label">共通メールフッター</label>
 
-                    <textarea id="mail_footer" type="text" class="form-control" name="mail_footer" rows="15">{{ Ctm::isOld() ? old('mail_footer') : (isset($setting) ? $setting->mail_footer : '') }}</textarea>
+                    <textarea id="mail_footer" type="text" class="form-control" name="mail_footer" rows="8">{{ Ctm::isOld() ? old('mail_footer') : (isset($setting) ? $setting->mail_footer : '') }}</textarea>
 
                     @if ($errors->has('mail_footer'))
                         <span class="help-block">
@@ -101,7 +101,7 @@
             </fieldset>
             
             
-            <h4 class="mt-5 pt-3"><span class="text-secondary">■</span> Shop設定</h4>
+            <h4 class="mt-5 pt-4"><span class="text-info">■</span> Shop設定</h4>
             <hr>
             <fieldset class="mb-4 form-group{{ $errors->has('tax_per') ? ' has-error' : '' }}">
                 <label>消費税率</label><br>
@@ -114,6 +114,40 @@
                     </div>
                 @endif
             </fieldset>
+            
+            <fieldset class="form-group mb-0">
+                    <div class="checkbox">
+                        <label>
+                            <?php
+                                $checked = '';
+                                if(Ctm::isOld()) {
+                                    if(old('is_sale'))
+                                        $checked = ' checked';
+                                }
+                                else {
+                                    if(isset($setting) && $setting->is_sale) {
+                                        $checked = ' checked';
+                                    }
+                                }
+                            ?>
+                            <input type="checkbox" name="is_sale" value="1"{{ $checked }}> セール中にする
+                        </label>
+                    </div>
+            </fieldset>
+            
+            <fieldset class="mb-4 form-group{{ $errors->has('sale_per') ? ' has-error' : '' }}">
+                <label>割引率（%）</label>
+                <input class="form-control d-inline-block col-md-3{{ $errors->has('sale_per') ? ' is-invalid' : '' }}" name="sale_per" value="{{ Ctm::isOld() ? old('sale_per') : (isset($setting) ? $setting->sale_per : '') }}"> <span>%</span>
+
+                @if ($errors->has('sale_per'))
+                    <div class="text-danger">
+                        <span class="fa fa-exclamation form-control-feedback"></span>
+                        <span>{{ $errors->first('sale_per') }}</span>
+                    </div>
+                @endif
+            </fieldset>
+            
+            
             
             
             <fieldset class="mb-4 form-group{{ $errors->has('kare_ensure') ? ' has-error' : '' }}">
@@ -142,7 +176,7 @@
             </fieldset>
             
             
-            <h4 class="mt-5 pt-3"><span class="text-secondary">■</span> 画像枚数設定</h4>
+            <h4 class="mt-5 pt-4"><span class="text-info">■</span> 画像枚数設定</h4>
             <hr>
             <fieldset class="mb-4 form-group{{ $errors->has('snap_primary') ? ' has-error' : '' }}">
                 <label>商品サブ画像の枚数</label><br>
@@ -182,7 +216,7 @@
             
             
             
-            <h4 class="mt-5 pt-3"><span class="text-secondary">■</span> TOPページのメタ設定</h4>
+            <h4 class="mt-5 pt-4"><span class="text-info">■</span> TOPページのメタ設定</h4>
             <hr>
             <?php
             	$obj = null;

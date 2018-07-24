@@ -29,6 +29,9 @@ class CreateSalesTable extends Migration
             $table->integer('receiver_id')->nullable()->default(NULL);
             */
             
+            $table->string('plan_date')->nullable()->default(NULL);
+            $table->string('plan_time')->nullable()->default(NULL);
+            
             $table->integer('pay_method')->nullable()->default(NULL);
             $table->integer('deli_fee')->nullable()->default(NULL);
             $table->integer('cod_fee')->nullable()->default(NULL);
@@ -41,17 +44,14 @@ class CreateSalesTable extends Migration
             $table->string('deli_company')->nullable()->default(NULL);
             $table->string('deli_slip_num')->nullable()->default(NULL);
             
-            $table->boolean('deli_done')->nullable()->default(NULL);
+            $table->string('deli_schedule_date')->nullable()->default(NULL);
+            
             $table->timestamp('deli_start_date')->nullable()->default(NULL);
+            $table->boolean('deli_done')->nullable()->default(NULL);
             
-            $table->string('deli_date')->nullable()->default(NULL);
-            $table->string('deli_time')->nullable()->default(NULL);
-            
-            $table->boolean('pay_done')->nullable()->default(NULL);
-            
-            $table->text('plan_date')->nullable()->default(NULL);
+            //$table->boolean('pay_done')->nullable()->default(NULL);
+
             $table->text('information')->nullable()->default(NULL);
-            
             $table->text('memo')->nullable()->default(NULL);
             $table->text('craim')->nullable()->default(NULL);
             

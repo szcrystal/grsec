@@ -746,7 +746,7 @@ use App\DeliveryGroup;
                                     ?>
                                     <option value="{{ $day }}"{{ $selected }}>{{ $day }}</option>
                                 @endforeach
-                            </select>
+                        </select>
                         
                         @if ($errors->has('plan_date'))
                             <span class="help-block">
@@ -786,23 +786,23 @@ use App\DeliveryGroup;
                                     $timeTable = explode(",", $timeTable);
                                 ?>
                                 
-                                <input type="radio" name="deli_time[{{$key}}]" class="payMethodRadio" value="希望しない" checked><span class="mr-3">希望しない</span>
+                                <input type="radio" name="plan_time[{{$key}}]" class="payMethodRadio" value="希望しない" checked><span class="mr-3">希望しない</span>
                                 @foreach($timeTable as $table)
                                     <?php 
                                         $checked = '';
                                         
                                         if( Ctm::isOld()) {
-                                            if( old('deli_time.'.$key) == $table) {
+                                            if( old('plan_time.'.$key) == $table) {
                                                 $checked = ' checked';
                                             }
                                         }
-                                        elseif(Session::has('all.data.deli_time.'.$key)) {
-                                            if(session('all.data.deli_time.'.$key) == $table) {
+                                        elseif(Session::has('all.data.plan_time.'.$key)) {
+                                            if(session('all.data.plan_time.'.$key) == $table) {
                                                 $checked = ' checked';
                                             }
                                         }
                                      ?>
-                                    <input type="radio" name="deli_time[{{$key}}]" class="payMethodRadio" value="{{ $table }}" {{ $checked }}><span class="mr-3">{{ $table }}</span>
+                                    <input type="radio" name="plan_time[{{$key}}]" class="payMethodRadio" value="{{ $table }}" {{ $checked }}><span class="mr-3">{{ $table }}</span>
                                 @endforeach
                                     
                             </label>

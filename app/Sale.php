@@ -19,6 +19,9 @@ class Sale extends Model
         'is_user',
         'receiver_id',
         */
+        
+        'plan_date',
+        'plan_time',
 
         'pay_method',
         'deli_fee',
@@ -32,15 +35,13 @@ class Sale extends Model
         'deli_company',
         'deli_slip_num',
         
-        'deli_done',
+        'deli_schedule_date',
+        
         'deli_start_date',
+        'deli_done',
+
+        //'pay_done',
         
-        'deli_date',
-        'deli_time',
-        
-        'pay_done',
-        
-        'plan_date',
         'information',
         'memo',
         'craim',

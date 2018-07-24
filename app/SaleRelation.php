@@ -23,8 +23,9 @@ class SaleRelation extends Model
         
         'destination',
         
-        'deli_done',
+        //'deli_done',
         'pay_done',
+        'pay_date',
         
         'pay_trans_code',
         'pay_user_id',

@@ -58,8 +58,8 @@ class OrderEnd extends Mailable
         
         $this->receiver = Receiver::find($this->saleRel->receiver_id);
         
-        $this->pmModel = new PayMethod;
-        $this->itemModel = new Item;
+//        $this->pmModel = new PayMethod;
+//        $this->itemModel = new Item;
         
         $this->isUser = $isUser;
     }
@@ -72,6 +72,9 @@ class OrderEnd extends Mailable
     public function build()
     {
     	//$set = Setting::get()->first();
+        
+        $this->pmModel = new PayMethod;
+        $this->itemModel = new Item;
         
      	$templ = MailTemplate::where(['type_code'=>'itemEnd', ])->get()->first();
       

@@ -100,8 +100,6 @@ class SaleController extends Controller
             
             $saleForSum = $this->sale->whereIn('salerel_id', $relIds)->get();
             
-
-            
             /*
             if(! isset($data['last_y'])) { //only first
             	if(isset($data['first_m'])) {
@@ -240,7 +238,7 @@ class SaleController extends Controller
         return view('dashboard.sale.form', ['sale'=>$sale, 'saleRel'=>$saleRel, 'sameSales'=>$sameSales, 'item'=>$item, 'items'=>$items, 'pms'=>$pms, 'users'=>$users, 'userNs'=>$userNs, 'receiver'=>$receiver, 'cates'=>$cates, 'itemDg'=>$itemDg, 'id'=>$id, 'edit'=>1]);
     }
     
-    //銀行振込入金用Get
+    //1注文の詳細 & 銀行振込入金用Get
     public function saleOrder($orderNum) 
     {
     	$saleRel = $this->saleRel->where('order_number', $orderNum)->first();
@@ -275,35 +273,44 @@ class SaleController extends Controller
     //銀行振込入金用Post
     public function postSaleOrder(Request $request) 
     {
-    	$rules = [
-            'pay_done' => 'required',
-            //'cate_id' => 'required',
-        ];
+    	$withMail = $request->has('with_mail') ? 1 : 0;
+    	
+        if($withMail) {
+            $rules = [
+                'pay_done' => 'required',
+                //'cate_id' => 'required',
+            ];
+            
+             $messages = [
+                 'pay_done.required' => '「入金」のチェックがされていません。',
+               // 'cate_id.required' => '「カテゴリー」を選択して下さい。',
+            ];
+            
+            $this->validate($request, $rules, $messages);
+		}
         
-         $messages = [
-             'pay_done.required' => '「入金」のチェックがされていません。',
-           // 'cate_id.required' => '「カテゴリー」を選択して下さい。',
-        ];
-        
-        $this->validate($request, $rules, $messages);
-
     	$data = $request->all();
         
         $saleRel = $this->saleRel->find($data['order_id']);
         $saleRel->pay_done = isset($data['pay_done']) ? $data['pay_done'] : 0;
+        $saleRel->pay_date = date('Y-m-d H:i:s', time());
         $saleRel->save();
         
-        
-        $mail = Mail::to($data['user_email'], $data['user_name'])->send(new PayDone($saleRel->id));
-            
-        if(! $mail) {
-            $status = '入金済みメールが送信されました。';
-    
-            return redirect('dashboard/sales/order/'. $saleRel->order_number)->with('status', $status);
-        } 
+        if($withMail) {
+            $mail = Mail::to($data['user_email'], $data['user_name'])->queue(new PayDone($saleRel->id));
+                
+            if($mail) {
+                $status = '入金済みメールが送信されました。';
+                return redirect('dashboard/sales/order/'. $saleRel->order_number)->with('status', $status);
+            } 
+            else {
+                $errors = array('入金済みメールの送信に失敗しました。');
+                return redirect('dashboard/sales/order/'. $saleRel->order_number)->withErrors($errors)->withInput();
+            }
+        }
         else {
-            $errors = array('入金済みメールの送信に失敗しました。');
-            return redirect('dashboard/sales/order/'. $saleRel->order_number)->withErrors($errors)->withInput();
+        	$status = '更新されました。';
+            return redirect('dashboard/sales/order/'. $saleRel->order_number)->with('status', $status);
         }
         
     }
@@ -355,20 +362,31 @@ class SaleController extends Controller
 //            return redirect('dashboard/sales/'. $data['saleId'])->with('status', $status);
 //        }
 
+//		print_r($data);
+//        exit;
         
         $saleModel = $this->sale->find($data['saleId']); //saleIdとsale_idsの両方あるので注意
-        $saleModel->fill($data);
+        $saleModel->fill($data); //ここでのdeli_feeの更新は不要かも
         $saleModel->cost_price = $data['cost_price'] * $data['this_count'];
         $saleModel->save();
+        
+        $saleRel = $this->saleRel->find($saleModel->salerel_id);
+        $saleRel->deli_fee = $data['deli_fee'];
+        
+        
         
         $item = $this->item->find($saleModel->item_id);
         $item->cost_price = $data['cost_price'];
         $item->save();
         
         $sales = $this->sale->find($data['sale_ids']); //saleIdとsale_idsの両方あるので注意
+                
+        //同時メールを選択した商品に対しての更新
         foreach($sales as $obj) {
         	if($obj->id != $saleModel->id) {
-            	$obj->plan_date = $data['plan_date'];
+            	$obj->deli_company = $data['deli_company'];
+                $obj->deli_slip_num = $data['deli_slip_num'];
+            	$obj->deli_schedule_date = $data['deli_schedule_date'];
                 $obj->information = $data['information'];
                 $obj->save();
             }
@@ -381,10 +399,10 @@ class SaleController extends Controller
             return redirect('dashboard/sales/'. $data['saleId'])->with('status', $status);
 		}
         elseif(isset($data['with_mail'])) { 
-            $mail = Mail::to($data['user_email'], $data['user_name'])->send(new OrderSend($saleModel->id, $data['sale_ids']));
+            $mail = Mail::to($data['user_email'], $data['user_name'])->queue(new OrderSend($saleModel->id, $data['sale_ids']));
             
-            if(! $mail) {
-                $status = 'メールが送信されました。';
+            if($mail) {
+                $status = '発送済みメールが送信されました。';
                 
                 $sales = $this->sale->find($data['sale_ids']);
                 foreach($sales as $sale) {
@@ -396,7 +414,9 @@ class SaleController extends Controller
                 return redirect('dashboard/sales/'. $data['sale_ids'][0])->with('status', $status);
             } 
             else {
-                $errors = array('メールの送信に失敗しました。');
+            	//Mail::toでerror時に返されるのは単なる数字（13や14など）何の数字か不明
+                
+                $errors = array('発送済みメールの送信に失敗しました。('. $mail . ')');
                 return redirect('dashboard/sales/'. $data['sale_ids'][0])->withErrors($errors)->withInput();
             }
         }

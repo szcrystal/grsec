@@ -10,7 +10,6 @@ class PayMethod extends Model
 
         'name',
         'sec_name', 
-        
 
     ];
 }
