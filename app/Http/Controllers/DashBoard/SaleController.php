@@ -392,7 +392,6 @@ class SaleController extends Controller
             }
         }
         
-        //if(isset())
             
         if(isset($data['only_up'])) {  
         	$status = "更新されました。";   

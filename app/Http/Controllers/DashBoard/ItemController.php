@@ -478,39 +478,98 @@ class ItemController extends Controller
 //        fclose($res);
         
         //$csv = Item::all(['id', 'title', 'price'])->toArray();
-
-//        $csv = $this->item->all()->toArray();
-//        
-//        $keys = array_keys($csv[0]);
-//        
-//        print_r($keys);
-//        exit;
         
+        $keys = [
+        	'id'=>'id',
+            'ステータス' =>'open_status',
+            '商品番号' =>'number',
+            '商品名' =>'title',
+            'キャッチコピー' =>'catchcopy',
+            'カテゴリー' =>'cate_id',
+            '子カテゴリー' =>'subcate_id',
+            '枯れ保証' =>'is_ensure',
+            //'main_img',
+            '価格(税抜)' =>'price',
+            //'価格(税込)' =>'price_with_tax',
+            '仕入れ値' =>'cost_price',
+            '出荷元' =>'consignor_id',
+            '配送区分' =>'dg_id',
+            '送料無料' =>'is_delifee',
+            '同梱包' =>'is_once',
+            '係数' =>'factor',
+            '代金引換設定' =>'cod',
+            '産地直送' =>'farm_direct',
+            '在庫数' =>'stock',
+            '在庫数の表示' =>'stock_show',
+            'ポイント還元率(%)' =>'point_back',
+            'キャッチ説明' =>'exp_first',
+            //'explain',
+            //'is_delifee_table',
+            //'about_ship',
+            //'contents',
+            'メタタイトル' =>'meta_title',
+            'メタ詳細' =>'meta_description',
+            'メタキーワード' =>'meta_keyword',
+            //'open_date',
+            'View数' =>'view_count',
+            '売上個数' =>'sale_count',
+            '作成日' =>'created_at',
+            //'updated_at',
         
-        return  new StreamedResponse(
-            function () {
-                //$csv = Item::all(['id', 'title', 'price'])->toArray();
-                
-                $csv = $this->item->all()->toArray();
-                $keys = array_keys($csv[0]);
+        ];
 
-                $stream = fopen('php://output', 'w');
-                
-                mb_convert_variables('sjis-win', 'UTF-8', $keys);
-                fputcsv($stream, $keys);
-                
-                foreach ($csv as $line) {
-                	mb_convert_variables('sjis-win', 'UTF-8', $line);
-                    fputcsv($stream, $line);
-                }
-                fclose($stream);
-            },
-            200,
-            [
-                'Content-Type' => 'text/csv',
-                'Content-Disposition' => 'attachment; filename="users.csv"',
-            ]
-        );
+		$items = $this->item->all($keys);
+        
+        foreach($items as $item) {
+            $item->cate_id = $this->category->find($item->cate_id)->name;
+            $item->subcate_id = $this->categorySecond->find($item->subcate_id)->name;
+            
+            $item->consignor_id = $this->consignor->find($item->consignor_id)->name;
+            $item->dg_id = $this->dg->find($item->dg_id)->name;
+        }
+        
+        $items = $items->toArray();
+        print_r($items);
+        exit;
+        
+        try {
+            return  new StreamedResponse(
+                function () {
+                    //$csv = Item::all(['id', 'title', 'price'])->toArray();
+                    
+                    $items = $this->item->all();
+                    $keys = array_keys($csv[0]);
+                    
+                    foreach($items as $item) {
+                    	$item->cate_id = $this->cate->find($item->cate_id)->name;
+                    }
+                    
+                    print_r($items);
+                    exit;
+
+                    $stream = fopen('php://output', 'w');
+                    
+                    mb_convert_variables('sjis-win', 'UTF-8', $keys);
+                    fputcsv($stream, $keys);
+                    
+                    foreach ($csv as $line) {
+                        mb_convert_variables('sjis-win', 'UTF-8', $line);
+                        fputcsv($stream, $line);
+                    }
+                    fclose($stream);
+                },
+                200,
+                [
+                    'Content-Type' => 'text/csv',
+                    'Content-Disposition' => 'attachment; filename="items.csv"',
+                ]
+            );
+        }
+        catch (Exception  $e) {
+              //DB::rollback();
+              unlink($this->csvFilePath);
+              throw $e;
+        }
         
     }
     

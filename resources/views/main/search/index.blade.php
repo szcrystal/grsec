@@ -6,6 +6,7 @@
 <?php
     use App\Tag;
     use App\TagRelation;
+    use App\Setting;
 ?>
 
 <div id="main" class="archive">
@@ -80,7 +81,16 @@
                                     </div>
                                     
                                     <div class="price">
-                                    	¥{{ number_format(Ctm::getPriceWithTax($item->price)) }}
+                                    	<?php 
+                                            $isSale = Setting::get()->first()->is_sale; 
+                                        ?>
+                                        @if($isSale)
+                                            <strike>{{ number_format(Ctm::getPriceWithTax($item->price)) }}</strike>
+                                            <i class="fas fa-arrow-right text-small"></i>
+                                            ¥{{ number_format(Ctm::getSalePriceWithTax($item->price)) }}
+                                        @else
+                                    		¥{{ number_format(Ctm::getPriceWithTax($item->price)) }}
+                                        @endif
                                     </div>
                                 </div>
                             </article>

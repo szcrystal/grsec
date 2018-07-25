@@ -15,7 +15,7 @@
 <?php
     use App\User;
     use App\Category;
-//    use App\Tag;
+    use App\Setting;
 //    use App\TagRelation;
 
     $path = Request::path();
@@ -61,7 +61,16 @@
                         
                         
                         <div class="price">
-                            ¥{{ number_format(Ctm::getPriceWithTax($item->price)) }}
+                        	<?php 
+                        		$isSale = Setting::get()->first()->is_sale; 
+                            ?>
+                            @if($isSale)
+                                <strike>{{ number_format(Ctm::getPriceWithTax($item->price)) }}</strike>
+                                <i class="fas fa-arrow-right text-small"></i>
+                                ¥{{ number_format(Ctm::getSalePriceWithTax($item->price)) }}
+                            @else
+                            	¥{{ number_format(Ctm::getPriceWithTax($item->price)) }}
+                            @endif
                         </div>
                         
                     </div>

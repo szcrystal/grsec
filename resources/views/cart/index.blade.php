@@ -113,13 +113,10 @@
          	<tr>
           		<td colspan="2" class="text-right"><strong>小計</strong></td>
             	<td class="text-danger text-big">¥{{ number_format($allPrice) }}</td>
-             	<td>
-              			
-                        <input type="hidden" name="calc" value="1" form="re">
-                        <button class="btn border border-secondary bg-white px-2" type="submit" name="re_calc" value="1"><i class="fas fa-redo"></i> 再計算</button>
-                        {{-- <input type="submit" name="re_calc" value="再計算"> --}}
-                       
-                    
+             	<td>	
+                    <input type="hidden" name="calc" value="1" form="re">
+                    <button class="btn border border-secondary bg-white px-2" type="submit" name="re_calc" value="1"><i class="fas fa-redo"></i> 再計算</button>
+                    {{-- <input type="submit" name="re_calc" value="再計算"> --}}
                 </td>
           	</tr>  
            <tr>

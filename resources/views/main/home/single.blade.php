@@ -6,7 +6,7 @@
 use App\User;
 use App\DeliveryGroupRelation;
 use App\Prefecture;
-
+use App\Setting;
 ?>
 
     <div id="main" class="single">
@@ -77,7 +77,18 @@ use App\Prefecture;
                     </div>
                     
                  	<div class="price-meta">
-                  	   価格: {{ number_format(Ctm::getPriceWithTax($item->price)) }}円　(税込)
+                    	価格: 
+                    	<?php 
+                        	$isSale = Setting::get()->first()->is_sale; 
+                        ?>
+                        @if($isSale)
+                        	<strike>{{ number_format(Ctm::getPriceWithTax($item->price)) }}</strike>
+                            <i class="fas fa-arrow-right text-small"></i>
+                        	{{ number_format(Ctm::getSalePriceWithTax($item->price)) }}
+                        @else
+                  	   		{{ number_format(Ctm::getPriceWithTax($item->price)) }}
+                       	@endif
+                        円　(税込)
                     </div>
                     
                     @if(env('APP_ENV') != 'trial') 

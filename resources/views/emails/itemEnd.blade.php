@@ -32,10 +32,16 @@
 {{ $receiver->name }} 様<br>
 </div>
 
-【ご注文商品】： <br>
+@if(isset($sales->first()->plan_date))
+【ご希望配送日】：
+<div style="margin: 0 0 1.0em 1.0em;">
+{{ $sales->first()->plan_date }}
+</div>
+@endif
+
+【ご注文商品】： 
 <?php
 $num = 1;
-$planDate = ''; 
 ?>
 @foreach($sales as $sale)
 <div style="margin: 0 0 1.5em 1.0em;">
@@ -44,25 +50,16 @@ $planDate = '';
 商品名: {{ $itemModel->find($sale->item_id)->title }}<br>
 個数: {{ $sale->item_count}}<br>
 金額：¥{{ number_format($sale->total_price) }}（税込）<br>
-@if(isset($sale->deli_time))
-ご希望配送時間：{{ $sale->deli_time }}<br>
-@endif
-
-@if(isset($sale->plan_date))
-<?php $planDate = $sale->plan_date; ?>
+@if(isset($sale->plan_time))
+ご希望配送時間：{{ $sale->plan_time }}<br>
 @endif
 </div>
 <?php $num++; ?>
 @endforeach
 
-@if($planDate != '')
-【ご希望配送日】：
-<div style="margin: 0 0 1.0em 1.0em;">
-{{ $planDate }}
-</div>
-@endif
 
-【お買上金額】：
+
+【ご注文金額】：
 <div style="margin: 0 0 1.0em 1.0em;">
 商品金額合計：￥{{ number_format($saleRel->all_price) }} <br>
 送料：￥{{ number_format($saleRel->deli_fee) }} <br>

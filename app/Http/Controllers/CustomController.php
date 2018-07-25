@@ -19,6 +19,7 @@ use Illuminate\Http\Request;
 
 class CustomController extends Controller
 {
+	public $setting;
 	
     public function __construct(Setting $setting, Article $article, Category $category, Tag $tag, TotalizeAll $totalizeAll)
     {
@@ -44,7 +45,24 @@ class CustomController extends Controller
     	$tax_per = Setting::get()->first()->tax_per;
      	$tax = floor($price * $tax_per/100);   
      	$price = $price + $tax;
-      	return $price;      
+      	
+        return $price;      
+    }
+    
+    static function getSalePriceWithTax($price)
+    {
+    	//$orgPrice = Self::getPriceWithTax($price);
+        
+        $salePer = Setting::get()->first()->sale_per;
+        $tax_per = Setting::get()->first()->tax_per;
+        
+        $waribiki = $price * ($salePer/100);
+        $price = $price - $waribiki;
+        $tax = floor($price * $tax_per/100);   
+     	$price = $price + $tax;
+                
+        return $price;
+        
     }
     
     
