@@ -13,6 +13,7 @@ use App\Receiver;
 use App\DeliveryGroup;
 use App\Consignor;
 use App\Category;
+use App\Setting;
 
 use App\Mail\OrderSend;
 use App\Mail\PayDone;
@@ -23,9 +24,11 @@ use DB;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
+use Symfony\Component\HttpFoundation\StreamedResponse;
+
 class SaleController extends Controller
 {
-    public function __construct(Admin $admin, Sale $sale, SaleRelation $saleRel, Item $item, User $user, PayMethod $payMethod, UserNoregist $userNoregist, Receiver $receiver, DeliveryGroup $dg, Consignor $consignor, Category $category)
+    public function __construct(Admin $admin, Sale $sale, SaleRelation $saleRel, Item $item, User $user, PayMethod $payMethod, UserNoregist $userNoregist, Receiver $receiver, DeliveryGroup $dg, Consignor $consignor, Category $category, Setting $setting)
     {
         
         $this -> middleware('adminauth');
@@ -41,7 +44,7 @@ class SaleController extends Controller
         $this->receiver = $receiver;
         $this->dg = $dg;
         $this->category = $category;
-//        $this->category = $category;
+        $this->setting = $setting;
 //        $this -> tag = $tag;
 //        $this->tagRelation = $tagRelation;
 //        $this->consignor = $consignor;
@@ -590,13 +593,159 @@ class SaleController extends Controller
         return redirect('dashboard/items/'.$id);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    
+    public function getCsv(Request $request)
+    {
+
+        $vals = [
+        	'id',
+            'order_number',
+            'salerel_id',
+            'deli_start_date',
+            'created_at',
+            'item_id',
+            'item_count',
+            
+//            'hurigana',
+//            'gender',
+//            'birth_year',
+//            'birth_month',
+//            'birth_day',
+//            'post_num',
+//            'prefecture',
+//            'address_1',
+//            'address_2',
+//            'address_3',
+//            'tel_num',
+//            'magazine',
+//            'point',
+//            'created_at',
+            //'updated_at',
+        
+        ];
+        
+        $keys = [
+        	'id',
+            '注文番号',
+            '注文者名',
+            '出荷日',
+            '注文日',
+            '商品名',
+            '数量',
+            '商品番号',
+            '販売価格(税抜)',
+            '販売価格(税込)',
+            
+            '注文者郵便番号',
+            '注文者都道府県',
+            '注文者住所',
+            '注文者電話番号',
+            
+            '配送先氏名',
+            '配送先郵便番号',
+            '配送先都道府県',
+            '配送先住所',
+            '配送先電話番号',  
+        
+        ];
+
+
+        $sales = $this->sale->all($vals)->toArray();
+        
+        //array_splice($keys, 9, 0, '価格(税込)'); //追加項目 keyに追加
+        
+        //$taxPer = $this->setting->get()->first()->tax_per;
+        
+        $alls = array();
+        foreach($sales as $sale) {
+        
+        	$saleRel = $this->saleRel->find($sale['salerel_id']);
+            
+            if($saleRel->is_user) {
+            	$user = $this->user->find($saleRel->user_id);
+            }
+            else {
+            	$user = $this->userNoregist->find($saleRel->user_id);
+            }
+            
+            $sale['salerel_id'] = $user->name;
+            
+            $sale['post_num'] = $user->post_num;
+            $sale['prefecture'] = $user->prefecture;
+            $sale['address'] = $user->address_1 . $user->address_2 . $user->address_3; 
+            $sale['tel_num'] = $user->tel_num;
+            
+            if($saleRel->receiver_id) {
+            	$receiver = $this->receiver->find($saleRel->receiver_id);
+                
+                $sale['r_name'] = $receiver->name;
+                $sale['r_post_num'] = $receiver->post_num;
+                $sale['r_prefecture'] = $receiver->prefecture;
+                $sale['r_address'] = $receiver->address_1 . $receiver->address_2 . $receiver->address_3; 
+                $sale['r_tel_num'] = $receiver->tel_num;
+            }
+            
+            
+            $item = $this->item->find($sale['item_id']);
+            
+            $sale['item_id'] = $this->item->find($sale['item_id'])->title;
+            
+            $itemNum = $item->number;
+            array_splice($sale, 7, 0, $itemNum); //追加項目 key名は0になるが関係ないので
+            
+            array_splice($sale, 8, 0, $item->price); //追加項目 key名は0になるが関係ないので
+            
+            $taxPer = $this->setting->get()->first()->tax_per;
+            $priceWithTax = $item->price + ($item->price * $taxPer/100);
+            array_splice($sale, 9, 0, $priceWithTax); //追加項目 key名は0になるが関係ないので
+
+            
+            $alls[] = $sale;
+//            print_r($item);
+//        	exit;
+        }
+        
+        array_unshift($alls, $keys); //先頭にヘッダー(key)を追加
+        
+        //$items = $items->toArray();
+//        print_r($alls);
+//        exit;
+
+		$fileName = 'gr-sales.csv';
+        
+        try {
+        	return  new StreamedResponse(
+                function () use($alls) {
+            
+
+                    $stream = fopen('php://output', 'w');
+                    
+                    //mb_convert_variables('UTF-8', "ASCII,UTF-8,SJIS-win", $alls);
+                    //fputcsv($stream, $keys);
+                    
+                    foreach ($alls as $line) {
+                        //mb_convert_variables('UTF-8', "ASCII,UTF-8,SJIS-win", $line);
+                        fputcsv($stream, $line);
+                    }
+                    fclose($stream);
+                },
+                200,
+                [
+                    'Content-Type' => 'text/csv',
+                    'Content-Disposition' => 'attachment; filename="'. $fileName .'"',
+                ]
+            );
+        }
+        catch (Exception  $e) {
+              //DB::rollback();
+              unlink($this->csvFilePath);
+              throw $e;
+              print_r($e);
+              exit;
+        }
+        
+    }
+    
     public function update(Request $request, $id)
     {
         //

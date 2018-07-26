@@ -5,7 +5,7 @@
     <div class="text-left">
 		<h1 class="Title">
   		@if($isUser)      
-        <span class="text-primary">会員一覧</span>
+        <span class="">会員一覧</span>
         @else
         <span class="text-warning">非会員一覧</span>
         @endif
@@ -56,11 +56,15 @@
     <div class="col-md-12">
     <div class="mb-3">
     	
-     	{{--   
-        <div class="mb-3 text-right">
-            <a href="{{url('dashboard/items/create')}}" class="btn btn-info">商品新規追加</a>
+     	   
+        <div class="mb-5 text-right">
+        	<?php $noR = ''; ?>
+        	@if(Request::has('no_r'))
+            	<?php $noR = '?no_r=1'; ?>
+            @endif
+            <a href="{{ url('dashboard/users/csv'. $noR) }}" class="btn btn-light border border-secondary px-3">CSV DL</a>
         </div>
-        --}}
+        
         
 
 

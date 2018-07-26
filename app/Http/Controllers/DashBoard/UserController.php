@@ -12,6 +12,8 @@ use App\Item;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
+use Symfony\Component\HttpFoundation\StreamedResponse;
+
 class UserController extends Controller
 {
     public function __construct(Admin $admin, User $user, UserNoregist $un, Sale $sale, SaleRelation $saleRel, Item $item)
@@ -294,35 +296,130 @@ class UserController extends Controller
         return redirect('dashboard/items/'. $itemId)->with('status', $status);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-//    public function show($id)
-//    {
-//        //
-//    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    
     public function edit($id)
     {
         return redirect('dashboard/items/'.$id);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    
+    public function getCsv(Request $request)
+    {
+
+        $vals = [
+        	'id',
+            'name',
+            'email',
+            'hurigana',
+            'gender',
+            'birth_year',
+            'birth_month',
+            'birth_day',
+            'post_num',
+            'prefecture',
+            'address_1',
+            'address_2',
+            'address_3',
+            'tel_num',
+            'magazine',
+            'point',
+            'created_at',
+            //'updated_at',
+        
+        ];
+        
+        $keys = [
+        	'id',
+            'お名前',
+            'メールアドレス',
+            'フリガナ',
+            '性別',
+            '生年月日(年)',
+            '生年月日(月)',
+            '生年月日(日)',
+            '郵便番号',
+            '都道府県',
+            '住所1',
+            '住所2',
+            '住所3',
+            '電話番号',
+            'メルマガ登録',
+            'ポイント',
+            '登録日',  
+        
+        ];
+
+        
+		if($request->has('no_r')) {
+        	$users = $this->un->all($vals)->toArray();
+            $fileName = 'gr-nouser.csv';
+        }
+        else {
+			$users = $this->user->all($vals)->toArray();
+            $fileName = 'gr-user.csv';
+        }
+        //array_splice($keys, 9, 0, '価格(税込)'); //追加項目 keyに追加
+        
+        //$taxPer = $this->setting->get()->first()->tax_per;
+        
+        $alls = array();
+        foreach($users as $user) {
+
+//            $item['cate_id'] = $this->category->find($item['cate_id'])->name;
+//            $item['subcate_id'] = $this->categorySecond->find($item['subcate_id'])->name;
+//            
+//            $item['consignor_id'] = $this->consignor->find($item['consignor_id'])->name;
+//            $item['dg_id'] = $this->dg->find($item['dg_id'])->name;
+            
+//            $priceWithTax = $item['price'] + ($item['price'] * $taxPer/100);
+//            array_splice($item, 9, 0, $priceWithTax); //追加項目 key名は0になるが関係ないので
+            
+            $alls[] = $user;
+//            print_r($item);
+//        	exit;
+        }
+        
+        array_unshift($alls, $keys); //先頭にヘッダー(key)を追加
+        
+        //$items = $items->toArray();
+//        print_r($alls);
+//        exit;
+
+		//$fileName = $request->has('no_r') ? 'gr-nouser.csv' : 'gr-user.csv';
+        
+        try {
+        	return  new StreamedResponse(
+                function () use($alls) {
+            
+
+                    $stream = fopen('php://output', 'w');
+                    
+                    //mb_convert_variables('UTF-8', "ASCII,UTF-8,SJIS-win", $alls);
+                    //fputcsv($stream, $keys);
+                    
+                    foreach ($alls as $line) {
+                        //mb_convert_variables('UTF-8', "ASCII,UTF-8,SJIS-win", $line);
+                        fputcsv($stream, $line);
+                    }
+                    fclose($stream);
+                },
+                200,
+                [
+                    'Content-Type' => 'text/csv',
+                    'Content-Disposition' => 'attachment; filename="'. $fileName .'"',
+                ]
+            );
+        }
+        catch (Exception  $e) {
+              //DB::rollback();
+              unlink($this->csvFilePath);
+              throw $e;
+              print_r($e);
+              exit;
+        }
+        
+    }
+    
     public function update(Request $request, $id)
     {
         //

@@ -470,6 +470,10 @@ class ItemController extends Controller
     
     public function getCsv()
     {
+//    	try {
+//        	return  new StreamedResponse(
+//                function () {
+        
 //    	$res = fopen($this->csvFilePath, 'a');
 //        // 文字コード変換
 //        mb_convert_variables('sjis-win', 'UTF-8', $records);
@@ -479,81 +483,179 @@ class ItemController extends Controller
         
         //$csv = Item::all(['id', 'title', 'price'])->toArray();
         
-        $keys = [
-        	'id'=>'id',
-            'ステータス' =>'open_status',
-            '商品番号' =>'number',
-            '商品名' =>'title',
-            'キャッチコピー' =>'catchcopy',
-            'カテゴリー' =>'cate_id',
-            '子カテゴリー' =>'subcate_id',
-            '枯れ保証' =>'is_ensure',
+//        $keys = [
+//        	'id'=>'id',
+//            'ステータス' =>'open_status',
+//            '商品番号' =>'number',
+//            '商品名' =>'title',
+//            'キャッチコピー' =>'catchcopy',
+//            'カテゴリー' =>'cate_id',
+//            '子カテゴリー' =>'subcate_id',
+//            '枯れ保証' =>'is_ensure',
+//            //'main_img',
+//            '価格(税抜)' =>'price',
+//            '価格(税込)' =>'price_with_tax',
+//            '仕入れ値' =>'cost_price',
+//            '出荷元' =>'consignor_id',
+//            '配送区分' =>'dg_id',
+//            '送料無料' =>'is_delifee',
+//            '同梱包' =>'is_once',
+//            '係数' =>'factor',
+//            '代金引換設定' =>'cod',
+//            '産地直送' =>'farm_direct',
+//            '在庫数' =>'stock',
+//            '在庫数の表示' =>'stock_show',
+//            'ポイント還元率(%)' =>'point_back',
+//            'キャッチ説明' =>'exp_first',
+//            //'explain',
+//            //'is_delifee_table',
+//            //'about_ship',
+//            //'contents',
+//            'メタタイトル' =>'meta_title',
+//            'メタ詳細' =>'meta_description',
+//            'メタキーワード' =>'meta_keyword',
+//            //'open_date',
+//            'View数' =>'view_count',
+//            '売上個数' =>'sale_count',
+//            '作成日' =>'created_at',
+//            //'updated_at',
+//        
+//        ];
+        
+        
+        $vals = [
+        	'id',
+            'open_status',
+            'number',
+            'title',
+            'catchcopy',
+            'cate_id',
+            'subcate_id',
+            'is_ensure',
             //'main_img',
-            '価格(税抜)' =>'price',
+            'price',
             //'価格(税込)' =>'price_with_tax',
-            '仕入れ値' =>'cost_price',
-            '出荷元' =>'consignor_id',
-            '配送区分' =>'dg_id',
-            '送料無料' =>'is_delifee',
-            '同梱包' =>'is_once',
-            '係数' =>'factor',
-            '代金引換設定' =>'cod',
-            '産地直送' =>'farm_direct',
-            '在庫数' =>'stock',
-            '在庫数の表示' =>'stock_show',
-            'ポイント還元率(%)' =>'point_back',
-            'キャッチ説明' =>'exp_first',
+            'cost_price',
+            'consignor_id',
+            'dg_id',
+            'is_delifee',
+            'is_once',
+            'factor',
+            'cod',
+            'farm_direct',
+            'stock',
+            'stock_show',
+            'point_back',
+            'exp_first',
             //'explain',
             //'is_delifee_table',
             //'about_ship',
             //'contents',
-            'メタタイトル' =>'meta_title',
-            'メタ詳細' =>'meta_description',
-            'メタキーワード' =>'meta_keyword',
+            'meta_title',
+            'meta_description',
+            'meta_keyword',
             //'open_date',
-            'View数' =>'view_count',
-            '売上個数' =>'sale_count',
-            '作成日' =>'created_at',
+            'view_count',
+            'sale_count',
+            'created_at',
+            //'updated_at',
+        
+        ];
+        
+        $keys = [
+        	'id',
+            'ステータス',
+            '商品番号',
+            '商品名',
+            'キャッチコピー',
+            'カテゴリー',
+            '子カテゴリー',
+            '枯れ保証',
+            //'main_img',
+            '価格(税抜)',
+            //'価格(税込)' =>'price_with_tax',
+            '仕入れ値',
+            '出荷元',
+            '配送区分',
+            '送料無料',
+            '同梱包',
+            '係数',
+            '代金引換設定',
+            '産地直送',
+            '在庫数',
+            '在庫数の表示',
+            'ポイント還元率(%)',
+            'キャッチ説明',
+            //'explain',
+            //'is_delifee_table',
+            //'about_ship',
+            //'contents',
+            'メタタイトル',
+            'メタ詳細',
+            'メタキーワード',
+            //'open_date',
+            'View数',
+            '売上個数',
+            '作成日',
             //'updated_at',
         
         ];
 
-		$items = $this->item->all($keys);
+		$items = $this->item->all($vals)->toArray();
+        array_splice($keys, 9, 0, '価格(税込)'); //追加項目 keyに追加
         
+        $taxPer = $this->setting->get()->first()->tax_per;
+        
+        $alls = array();
         foreach($items as $item) {
-            $item->cate_id = $this->category->find($item->cate_id)->name;
-            $item->subcate_id = $this->categorySecond->find($item->subcate_id)->name;
+
+            $item['cate_id'] = $this->category->find($item['cate_id'])->name;
+            $item['subcate_id'] = $this->categorySecond->find($item['subcate_id'])->name;
             
-            $item->consignor_id = $this->consignor->find($item->consignor_id)->name;
-            $item->dg_id = $this->dg->find($item->dg_id)->name;
+            $item['consignor_id'] = $this->consignor->find($item['consignor_id'])->name;
+            $item['dg_id'] = $this->dg->find($item['dg_id'])->name;
+            
+            $priceWithTax = $item['price'] + ($item['price'] * $taxPer/100);
+            array_splice($item, 9, 0, $priceWithTax); //追加項目 key名は0になるが関係ないので
+            
+            $alls[] = $item;
+//            print_r($item);
+//        	exit;
         }
         
-        $items = $items->toArray();
-        print_r($items);
-        exit;
+        array_unshift($alls, $keys); //先頭にヘッダー(key)を追加
+        
+//        $ret = mb_convert_variables(mb_internal_encoding(), "ASCII,UTF-8,SJIS-win", $alls);
+//        echo $ret;
+//        exit;
+        
+        //$items = $items->toArray();
+//        print_r($alls);
+//        exit;
         
         try {
-            return  new StreamedResponse(
-                function () {
+        	return  new StreamedResponse(
+                function () use($alls) {
+            
                     //$csv = Item::all(['id', 'title', 'price'])->toArray();
                     
-                    $items = $this->item->all();
-                    $keys = array_keys($csv[0]);
-                    
-                    foreach($items as $item) {
-                    	$item->cate_id = $this->cate->find($item->cate_id)->name;
-                    }
-                    
-                    print_r($items);
-                    exit;
+//                    $items = $this->item->all();
+//                    $keys = array_keys($csv[0]);
+//                    
+//                    foreach($items as $item) {
+//                    	$item->cate_id = $this->cate->find($item->cate_id)->name;
+//                    }
+//                    
+//                    print_r($items);
+//                    exit;
 
                     $stream = fopen('php://output', 'w');
                     
-                    mb_convert_variables('sjis-win', 'UTF-8', $keys);
-                    fputcsv($stream, $keys);
+                    //mb_convert_variables('UTF-8', "ASCII,UTF-8,SJIS-win", $alls); 
+                    //fputcsv($stream, $keys);
                     
-                    foreach ($csv as $line) {
-                        mb_convert_variables('sjis-win', 'UTF-8', $line);
+                    foreach ($alls as $line) {
+                        //mb_convert_variables('UTF-8', "ASCII,UTF-8,SJIS-win", $line);
                         fputcsv($stream, $line);
                     }
                     fclose($stream);
@@ -561,7 +663,7 @@ class ItemController extends Controller
                 200,
                 [
                     'Content-Type' => 'text/csv',
-                    'Content-Disposition' => 'attachment; filename="items.csv"',
+                    'Content-Disposition' => 'attachment; filename="gr-items.csv"',
                 ]
             );
         }
@@ -569,6 +671,8 @@ class ItemController extends Controller
               //DB::rollback();
               unlink($this->csvFilePath);
               throw $e;
+              print_r($e);
+              exit;
         }
         
     }

@@ -51,7 +51,8 @@
     <div class="mb-3">
     	
         <div class="mb-5 text-right">
-            <a href="{{url('dashboard/items/create')}}" class="btn btn-info">新規追加</a>
+            <a href="{{url('dashboard/items/create')}}" class="btn btn-info mr-2 px-3">新規追加</a>
+            <a href="{{ url('dashboard/items/csv') }}" class="btn btn-light border border-secondary px-3">CSV DL</a>
         </div>
         
 		{{--
@@ -172,7 +173,10 @@
         <!-- <div class="card-footer small text-muted"></div> -->
 
     </div><!-- /.card -->
+    
     </div>
+    	
+        
     </div>
     
     {{-- $itemObjs->links() --}}

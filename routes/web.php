@@ -60,12 +60,14 @@ Route::resource('dashboard/tags', 'DashBoard\TagController');
 Route::resource('dashboard/contacts', 'DashBoard\ContactController');
 
 //Sale
+Route::get('dashboard/sales/csv', 'DashBoard\SaleController@getCsv');
 Route::get('dashboard/sales/compare', 'DashBoard\SaleController@saleCompare');
 Route::get('dashboard/sales/order/{orderNum}', 'DashBoard\SaleController@saleOrder');
 Route::post('dashboard/sales/order', 'DashBoard\SaleController@postSaleOrder');
 Route::resource('dashboard/sales', 'DashBoard\SaleController');
 
 //User
+Route::get('dashboard/users/csv', 'DashBoard\UserController@getCsv');
 Route::resource('dashboard/users', 'DashBoard\UserController');
 
 //Fix

@@ -13,7 +13,7 @@ use App\Setting;
     </div>
 
 
-    <div class="mb-4 pb-3">
+    <div class="mb-3">
     	@if (count($errors) > 0)
             <div class="alert alert-danger py-1">
                 <ul class="px-2">
@@ -181,7 +181,9 @@ use App\Setting;
 
     </div>
 
-
+	<div class="mb-4 text-right">
+        <a href="{{ url('dashboard/sales/csv') }}" class="btn btn-light border border-secondary px-3">CSV DL</a>
+    </div>
   
     {{--
     <div class="row -row-compact-sm -row-compact-md -row-compact-lg">
@@ -225,7 +227,7 @@ use App\Setting;
     <div class="mb-3">
     	
 
-        <div class="">
+        <div class="mt-3">
           <div class="table-responsive">
             <table id="dataTable" class="table table-striped table-bordered table-hover bg-white"{{-- id="dataTable"--}} width="100%" cellspacing="0">
               <thead>
