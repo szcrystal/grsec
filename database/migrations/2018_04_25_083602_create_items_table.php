@@ -56,6 +56,9 @@ class CreateItemsTable extends Migration
             
             $table->integer('stock')->nullable()->default(NULL);
             $table->boolean('stock_show')->nullable()->default(NULL);
+            $table->integer('stock_type')->nullable()->default(NULL);
+            $table->integer('stock_reset_month')->nullable()->default(NULL);
+            $table->integer('stock_reset_count')->nullable()->default(NULL);
             
             $table->float('point_back')->nullable()->default(NULL);
             

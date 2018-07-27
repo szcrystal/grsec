@@ -135,6 +135,18 @@ class ItemController extends Controller
             'price' => 'required|numeric',
             'cost_price' => 'nullable|numeric',
             'stock' => 'nullable|numeric',
+            'stock_reset_month' => [
+                function($attribute, $value, $fail) use($request) {
+                    if($value == '') {
+                        if($request->input('stock_type') == 1) {
+                            return $fail('「在庫入荷月」を指定して下さい。');
+                        } 
+                    }
+                    elseif ($value < 1 || $value > 12) {
+                        return $fail('「在庫入荷月」は正しい月を入力して下さい。');
+                    }
+                },
+            ],
             'point_back' => 'nullable|numeric',
             //'main_img' => 'filenaming',
         ];
@@ -482,7 +494,7 @@ class ItemController extends Controller
 //        fclose($res);
         
         //$csv = Item::all(['id', 'title', 'price'])->toArray();
-        
+/*
 //        $keys = [
 //        	'id'=>'id',
 //            'ステータス' =>'open_status',
@@ -521,7 +533,7 @@ class ItemController extends Controller
 //            //'updated_at',
 //        
 //        ];
-        
+*/
         
         $vals = [
         	'id',
@@ -632,6 +644,8 @@ class ItemController extends Controller
         //$items = $items->toArray();
 //        print_r($alls);
 //        exit;
+
+		$fileName = 'gr-items_'. date('Ymd', time()) .'.csv';
         
         try {
         	return  new StreamedResponse(
@@ -663,7 +677,7 @@ class ItemController extends Controller
                 200,
                 [
                     'Content-Type' => 'text/csv',
-                    'Content-Disposition' => 'attachment; filename="gr-items.csv"',
+                    'Content-Disposition' => 'attachment; filename="' . $fileName . '"',
                 ]
             );
         }

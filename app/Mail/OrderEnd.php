@@ -78,7 +78,7 @@ class OrderEnd extends Mailable
         
      	$templ = MailTemplate::where(['type_code'=>'itemEnd', ])->get()->first();
       
-      	$subject = $this->isUser ? $templ->title : 'ご注文がありました。- グリーンロケット -';
+      	$subject = $this->isUser ? $templ->title : 'ご注文がありました。';
 
         //return $this->from($this->setting->admin_email, $this->setting->admin_name)
         return $this->from(env('ADMIN_EMAIL', 'no-reply@green-rocket.jp'), env('ADMIN_NAME', 'GREEN ROCKET'))

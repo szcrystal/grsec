@@ -180,7 +180,16 @@ use App\Setting;
                        </form>  
                 	
                     @else
-                    	<span class="text-warning text-big">在庫がありません</span>
+                    	<span class="text-info text-big">在庫がありません</span>
+                        @if($item->stock_type)
+                        <p>
+                        	@if($item->stock_type == 1)
+                        		次回{{ $item->stock_reset_month }}月頃入荷予定
+                            @else
+                            	次回入荷未定
+                            @endif
+                        </p>
+                        @endif
                  	@endif  
                   	</div> 
                     

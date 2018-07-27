@@ -4,14 +4,18 @@ namespace App\Http\Controllers\DashBoard;
 
 use App\Admin;
 use App\Contact;
+use App\Sale;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 use App\Http\Requests;
+
+use App\Mail\NoStocked;
     
 use Auth;
 use Mail;
+use DateTime;
 
 class MainController extends Controller
 {
@@ -42,11 +46,51 @@ class MainController extends Controller
       	$data['is_user'] = 1;
        	$data['user_name'] = "aaa";
         
+//        $sales = Sale::all();
+//        print_r($sales);
+//		exit;        
+//        $from = new DateTime('2018-07-26 17:40:47');
+//        $current = new DateTime('now');
+//        
+//        $diff = $current->diff($from);
+//        echo $diff->days;
+//        exit;
+        
+//        $stockNone = [1];
+        
+//        if(count($stockNone) > 0) {
+//        	
+//        	$str = '下記商品の在庫がなくなりました。'. "\n\n";
+//            
+//            foreach($stockNone as $itemIdVal) {
+//            	$str .= Item::find($itemIdVal)->number. "\n";
+//            	$str .= Item::find($itemIdVal)->title. "\n";
+//        		$str .= url('dashboard/items/'. $itemIdVal). "\n\n";
+//            }
+//        
+//        	
+//            //Mail::later(now()->addMinutes(1), new NoStocked($str));
+//            Mail::queue(new NoStocked($str));
+//            
+////            Mail::raw($str, function ($message) {
+////            	$setting = Setting::get()->first();
+////                
+////                $message -> from('no-reply@green-rocket.jp', $setting->admin_name)
+////                         -> to($setting->admin_email, $setting->admin_name)
+////                         -> subject('商品の在庫がなくなりました。');
+////                         
+////            })
+////            //-> later(now()->addMinutes(1), new NoStocked());
+////            -> queue(new NoStocked());
+//        }
+        
+        
   
         $str = env('REMOTE_ADDR', '') . "\n" . env('HTTP_USER_AGENT', '');
+        //$str .= "<br>abcde" . '<a href="https://192.168.10.16">abcde</a>';
         
         Mail::raw($str, function ($message) {
-    		$message -> from('info@green-rocket.jp', '送信元の名前')
+    		$message -> from('no-reply@green-rocket.jp', '送信元の名前')
                      -> to('szk.create@gmail.com', 'サンプル')
                      -> subject('お問い合わせの送信が完了しました。');
 		});

@@ -45,6 +45,10 @@ class Item extends Model
         
         'stock',
         'stock_show',
+        'stock_type',
+        'stock_reset_month',
+        'stock_reset_count',
+            
         'point_back',
         
         'exp_first',

@@ -33,7 +33,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-    	$schedule->job(new ProcessFollowMail)->dailyAt('5:00');
+    	$schedule->job(new ProcessFollowMail)
+                ->dailyAt('5:00');
+                //->everyMinute();
         
     	//$schedule->call(function () {
 

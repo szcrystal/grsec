@@ -17,6 +17,7 @@ use App\Favorite;
 
 use App\Mail\OrderEnd;
 use App\Mail\Register;
+use App\Mail\NoStocked;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -457,7 +458,7 @@ class CartController extends Controller
             $item = $this->item->find($val['item_id']);
             $item->decrement('stock', $val['item_count']);
             
-            if(! $item->stock) {
+            if(! $item->stock) { //在庫が0になればitem_idを配列へ
             	$stockNone[] = $item->id;
             }
             
@@ -484,16 +485,33 @@ class CartController extends Controller
         //Mail送信 ----------------------------------------------
         //Ctm::sendMail($data, 'itemEnd');
         Mail::to($userData['email'], $userData['name'])->queue(new OrderEnd($saleRelId, 1)); //for User
-        Mail::to($this->set->admin_email, $this->set->admin_name)->queue(new OrderEnd($saleRelId, 0)); //for Admin
+        Mail::to($this->set->admin_email, $this->set->admin_name)->later(now()->addMinutes(3), new OrderEnd($saleRelId, 0))/*->queue(new OrderEnd($saleRelId, 0))*/; //for Admin
         
         if($regist) { 
-        	Mail::to($userData['email'], $userData['name'])->queue(new Register($userId)); //for User New Regist
+        	Mail::to($userData['email'], $userData['name'])->later(now()->addMinutes(2), new Register($userId))/*->queue(new Register($userId))*/; //for User New Regist
         }
         
         
         //在庫確認 -----------------------------------------------
         if(count($stockNone) > 0) {
         	
+        	$str = '下記商品の在庫がなくなりました。'. "\n\n";
+            
+            foreach($stockNone as $itemIdVal) {
+            	$str .= '●' . $this->item->find($itemIdVal)->number. "\n";
+            	$str .= $this->item->find($itemIdVal)->title. "\n";
+        		$str .= url('dashboard/items/'. $itemIdVal). "\n\n\n";
+            }
+            
+            Mail::later(now()->addMinutes(5), new NoStocked($str)); //queue
+        
+//            Mail::raw($str, function ($message) {
+//            	$setting = $this->setting->get()->first();
+//                
+//                $message -> from('no-reply@green-rocket.jp', $setting->admin_name)
+//                         -> to($setting->admin_email, $setting->admin_name)
+//                         -> subject('商品の在庫がなくなりました。');          
+//            });
         }
         
         

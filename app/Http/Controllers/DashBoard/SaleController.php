@@ -605,22 +605,6 @@ class SaleController extends Controller
             'created_at',
             'item_id',
             'item_count',
-            
-//            'hurigana',
-//            'gender',
-//            'birth_year',
-//            'birth_month',
-//            'birth_day',
-//            'post_num',
-//            'prefecture',
-//            'address_1',
-//            'address_2',
-//            'address_3',
-//            'tel_num',
-//            'magazine',
-//            'point',
-//            'created_at',
-            //'updated_at',
         
         ];
         
@@ -701,8 +685,7 @@ class SaleController extends Controller
 
             
             $alls[] = $sale;
-//            print_r($item);
-//        	exit;
+
         }
         
         array_unshift($alls, $keys); //先頭にヘッダー(key)を追加
@@ -716,7 +699,6 @@ class SaleController extends Controller
         try {
         	return  new StreamedResponse(
                 function () use($alls) {
-            
 
                     $stream = fopen('php://output', 'w');
                     

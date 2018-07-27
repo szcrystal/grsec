@@ -31,10 +31,7 @@ class ProcessFollowMail implements ShouldQueue
     
     public function __construct()
     {
-        //$this->sale = $sale;
-//        $this->dayKey = $dayKey;
-//        
-//        $this->isEnsure = $isEnsure;
+		
     }
 
     /**
@@ -46,8 +43,8 @@ class ProcessFollowMail implements ShouldQueue
     {
 	   	//$ss = $this->sales;
 		
-        $sales = Sale::get();
-            
+        $sales = Sale::all();
+                    
         $ensure_7 = array();
         $ensure_33 = array();
         $ensure_96 = array();
@@ -88,30 +85,30 @@ class ProcessFollowMail implements ShouldQueue
         }    
                 
         if(count($ensure_7) > 0) {
-        	$this->sendFollowMail($ensure_7, 7, true);
+        	$this->sendFollowMail($ensure_7, 'ensure_7');
             //ProcessFollowMail::dispatch($ensure_7, 7, true);
         }
         
         if(count($ensure_33) > 0) {
-            $this->sendFollowMail($ensure_33, 33, true);
+            $this->sendFollowMail($ensure_33, 'ensure_33');
         }
         
         if(count($ensure_96) > 0) {
-            $this->sendFollowMail($ensure_96, 96, true);
+            $this->sendFollowMail($ensure_96, 'ensure_96');
         }
         
         if(count($ensure_155) > 0) {
-            $this->sendFollowMail($ensure_155, 155, true);
+            $this->sendFollowMail($ensure_155, 'ensure_155');
         }
         
         if(count($noEnsure_33) > 0) {
-        	$this->sendFollowMail($noEnsure_33, 33, false);
+        	$this->sendFollowMail($noEnsure_33, 'no_ensure_33');
             //ProcessFollowMail::dispatch($noEnsure_33, 33, false);
         }  
         
     }
     
-    public function sendFollowMail($saleObjs, $dayKey, $isEnsure)
+    public function sendFollowMail($saleObjs, $typeCode)
     {
     	foreach($saleObjs as $relIdKey => $saleArr) {
             
@@ -130,7 +127,7 @@ class ProcessFollowMail implements ShouldQueue
             
             //$message = (new Magazine($data));
             //$when = now()->addMinutes(10);
-            Mail::to($mailAdd, $name)->send(new FollowMail($relIdKey, $saleArr, $dayKey, $isEnsure, $name));
+            Mail::to($mailAdd, $name)->send(new FollowMail($relIdKey, $saleArr, $typeCode, $name));
             //Mail::to($mailVal, $nameKey)->send(new Magazine($data));
         }
     }

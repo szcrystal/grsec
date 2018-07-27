@@ -24,14 +24,14 @@ class FollowMail extends Mailable
     public $itemModel;
     
     
-    public function __construct($relIdKey, $sales, $dayKey, $isEnsure, $name)
+    public function __construct($relIdKey, $sales, $typeCode, $name)
     {
         $this->setting = Setting::get()->first();
         
         $this->relId = $relIdKey;
         $this->sales = $sales;
-        $this->dayKey = $dayKey;
-        $this->isEnsure = $isEnsure;
+        $this->typeCode = $typeCode;
+        $this->isEnsure = 1;
         
         $this->name = $name;
         
@@ -45,23 +45,29 @@ class FollowMail extends Mailable
      */
     public function build()
     {
-    	if($this->dayKey == 7) {
-        	$templ = MailTemplate::where(['type_code'=>'ensure_7', ])->get()->first();
+//    	if($this->dayKey == 7) {
+//        	$templ = MailTemplate::where(['type_code'=>'ensure_7', ])->get()->first();
+//        }
+//    	elseif($this->dayKey == 33) {
+//            if($this->isEnsure) {
+//        		$templ = MailTemplate::where(['type_code'=>'ensure_33', ])->get()->first();
+//            }
+//            else {
+//            	$templ = MailTemplate::where(['type_code'=>'no_ensure_33', ])->get()->first();
+//            }
+//        }
+//        elseif($this->dayKey == 96) {
+//        	$templ = MailTemplate::where(['type_code'=>'ensure_96', ])->get()->first();
+//        }
+//        elseif($this->dayKey == 155) {
+//        	$templ = MailTemplate::where(['type_code'=>'ensure_155', ])->get()->first();
+//        }
+
+		if($this->typeCode == 'no_ensure_33') {
+        	$this->isEnsure = 0;
         }
-    	elseif($this->dayKey == 33) {
-            if($this->isEnsure) {
-        		$templ = MailTemplate::where(['type_code'=>'ensure_33', ])->get()->first();
-            }
-            else {
-            	$templ = MailTemplate::where(['type_code'=>'no_ensure_33', ])->get()->first();
-            }
-        }
-        elseif($this->dayKey == 96) {
-        	$templ = MailTemplate::where(['type_code'=>'ensure_96', ])->get()->first();
-        }
-        elseif($this->dayKey == 155) {
-        	$templ = MailTemplate::where(['type_code'=>'ensure_155', ])->get()->first();
-        }
+        
+        $templ = MailTemplate::where(['type_code'=>$this->typeCode])->get()->first();
         
         $saleRel = SaleRelation::find($this->relId);
       

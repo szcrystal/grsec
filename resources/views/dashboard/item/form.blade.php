@@ -237,6 +237,25 @@
                 @endif
             </fieldset>
             
+            <fieldset class="form-group mb-4">
+                <div class="checkbox">
+                    <label>
+                        <?php
+                            $checked = '';
+                            if(Ctm::isOld()) {
+                                if(old('is_ensure'))
+                                    $checked = ' checked';
+                            }
+                            else {
+                                if(isset($item) && $item->is_ensure) {
+                                    $checked = ' checked';
+                                }
+                            }
+                        ?>
+                        <input type="checkbox" name="is_ensure" value="1"{{ $checked }}> 枯れ保証あり
+                    </label>
+                </div>
+            </fieldset>
             
             
             <fieldset class="mb-4 form-group">
@@ -306,27 +325,6 @@
             </fieldset>
             
             
-            <fieldset class="form-group mb-4">
-                    <div class="checkbox">
-                        <label>
-                            <?php
-                                $checked = '';
-                                if(Ctm::isOld()) {
-                                    if(old('is_ensure'))
-                                        $checked = ' checked';
-                                }
-                                else {
-                                    if(isset($item) && $item->is_ensure) {
-                                        $checked = ' checked';
-                                    }
-                                }
-                            ?>
-                            <input type="checkbox" name="is_ensure" value="1"{{ $checked }}> 枯れ保証あり
-                        </label>
-                    </div>
-            </fieldset>
-            
-            
             <fieldset class="mb-4 form-group">
                 <label for="price" class="control-label">価格（本体価格）</label>
                 <input class="form-control col-md-6{{ $errors->has('price') ? ' is-invalid' : '' }}" name="price" value="{{ Ctm::isOld() ? old('price') : (isset($item) ? $item->price : '') }}" placeholder="税抜き金額を入力">
@@ -352,7 +350,7 @@
                 @endif
             </fieldset>
             
-            <div class="mb-4 form-group">
+            <fieldset class="mt-5 mb-4 form-group">
                 <label>出荷元</label>
                 <select class="form-control col-md-6{{ $errors->has('consignor_id') ? ' is-invalid' : '' }}" name="consignor_id">
                     <option selected>選択して下さい</option>
@@ -379,7 +377,7 @@
                     </span>
                 @endif
                 
-            </div>
+            </fieldset>
             
             <fieldset class="mb-2 form-group">
                 <label>配送区分</label>
@@ -466,7 +464,7 @@
             
             
 
-            <fieldset class="mb-2 form-group">
+            <fieldset class="mt-5 mb-2 form-group">
                 <label>代金引換設定</label>
                 <select class="form-control col-md-6{{ $errors->has('cod') ? ' is-invalid' : '' }}" name="cod">
                     <option disabled selected>選択して下さい</option>
@@ -531,7 +529,7 @@
                 @endif
             </fieldset>
             
-            <fieldset class="form-group mb-4">
+            <fieldset class="form-group mb-2">
                     <div class="checkbox">
                         <label>
                             <?php
@@ -549,6 +547,66 @@
                             <input type="checkbox" name="stock_show" value="1"{{ $checked }}> 在庫数を表示する
                         </label>
                     </div>
+            </fieldset>
+            
+            
+            <fieldset class="mb-3 form-group">
+                <label>在庫表示設定</label>
+                <select class="form-control col-md-6{{ $errors->has('stock_type') ? ' is-invalid' : '' }}" name="stock_type">
+                    <option value="0" selected>選択して下さい</option>
+                        <?php
+                        	$stocks = [ 1 =>'次回[-]月頃入荷予定', 2 =>'次回入荷未定'];
+                        ?>
+                        
+                        @foreach($stocks as $key => $val)
+                            <?php
+                                $selected = '';
+                                if(Ctm::isOld()) {
+                                    if(old('stock_type') == $key)
+                                        $selected = ' selected';
+                                }
+                                else {
+                                    if(isset($item) && $item->stock_type == $key) {
+                                        $selected = ' selected';
+                                    }
+                                }
+                            ?>
+                            <option value="{{ $key }}"{{ $selected }}>{{ $val }}</option>
+                        @endforeach
+                </select>
+                
+                @if ($errors->has('stock_type'))
+                    <span class="help-block text-warning">
+                        <strong>{{ $errors->first('stock_type') }}</strong>
+                    </span>
+                @endif
+                
+            </fieldset>
+            
+            <fieldset class="mb-2 form-group">
+                <label for="stock" class="control-label">在庫入荷月</label>
+                <input class="form-control col-md-6{{ $errors->has('stock_reset_month') ? ' is-invalid' : '' }}" name="stock_reset_month" value="{{ Ctm::isOld() ? old('stock_reset_month') : (isset($item) ? $item->stock_reset_month : '') }}">
+                
+
+                @if ($errors->has('stock_reset_month'))
+                    <div class="text-danger">
+                        <span class="fa fa-exclamation form-control-feedback"></span>
+                        <span>{{ $errors->first('stock_reset_month') }}</span>
+                    </div>
+                @endif
+            </fieldset>
+            
+            <fieldset class="mb-5 form-group">
+                <label for="stock" class="control-label">在庫リセット数</label>
+                <input class="form-control col-md-6{{ $errors->has('stock_reset_count') ? ' is-invalid' : '' }}" name="stock_reset_count" value="{{ Ctm::isOld() ? old('stock_reset_count') : (isset($item) ? $item->stock_reset_count : '') }}">
+                
+
+                @if ($errors->has('stock_reset_count'))
+                    <div class="text-danger">
+                        <span class="fa fa-exclamation form-control-feedback"></span>
+                        <span>{{ $errors->first('stock_reset_count') }}</span>
+                    </div>
+                @endif
             </fieldset>
             
             <fieldset class="mb-4 form-group">

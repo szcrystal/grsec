@@ -16,6 +16,7 @@ class Register extends Mailable
     use Queueable, SerializesModels;
 
 	public $setting;
+    public $userId;
 
     /**
      * Create a new message instance.
