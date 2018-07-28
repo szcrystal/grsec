@@ -352,11 +352,11 @@ class UserController extends Controller
         
 		if($request->has('no_r')) {
         	$users = $this->un->all($vals)->toArray();
-            $fileName = 'gr-nouser.csv';
+            $fileName = 'gr-nouser_'. date('Ymd', time()) .'.csv';
         }
         else {
 			$users = $this->user->all($vals)->toArray();
-            $fileName = 'gr-user.csv';
+            $fileName = 'gr-user_'. date('Ymd', time()) .'.csv';
         }
         //array_splice($keys, 9, 0, '価格(税込)'); //追加項目 keyに追加
         
