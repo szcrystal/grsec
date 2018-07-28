@@ -46,7 +46,7 @@ class Register extends Mailable
 
 
         //return $this->from($this->setting->admin_email, $this->setting->admin_name)
-        return $this->from(env('ADMIN_EMAIL', 'no-reply@green-rocket.jp'), env('ADMIN_NAME', 'GREEN ROCKET'))
+        return $this->from(env('ADMIN_EMAIL', 'no-reply@green-rocket.jp'), $this->setting->admin_name)
                     ->view('emails.register')
                     ->with([
                         'header' => $templ->header,

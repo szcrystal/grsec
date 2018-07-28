@@ -81,7 +81,7 @@ class OrderEnd extends Mailable
       	$subject = $this->isUser ? $templ->title : 'ご注文がありました。';
 
         //return $this->from($this->setting->admin_email, $this->setting->admin_name)
-        return $this->from(env('ADMIN_EMAIL', 'no-reply@green-rocket.jp'), env('ADMIN_NAME', 'GREEN ROCKET'))
+        return $this->from(env('ADMIN_EMAIL', 'no-reply@green-rocket.jp'), $this->setting->admin_name)
         			->view('emails.itemEnd')
            			->with([
               			'header' => $templ->header,

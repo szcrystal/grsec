@@ -87,7 +87,7 @@ class OrderSend extends Mailable
         $receiver = Receiver::find($saleRel->receiver_id);
 
         //return $this->from($this->setting->admin_email, $this->setting->admin_name)
-        return $this->from(env('ADMIN_EMAIL', 'no-reply@green-rocket.jp'), env('ADMIN_NAME', 'GREEN ROCKET'))
+        return $this->from(env('ADMIN_EMAIL', 'no-reply@green-rocket.jp'), $this->setting->admin_name)
                     ->view('emails.orderSend')
                     ->with([
                           'header' => $templ->header,
