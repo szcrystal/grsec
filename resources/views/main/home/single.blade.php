@@ -76,11 +76,11 @@ use App\Setting;
                         <a href="{{ url('category/'.$cate->slug) }}">{{ $cate->link_name }}</a> ＞ <a href="{{ url('category/'.$cate->slug. '/'.$subCate->slug) }}">{{ $subCate->name }}</a>
                     </div>
                     
-                 	<div class="price-meta">
-                    	 
+                 	<div class="price-meta"> 
                     	<?php 
                         	$isSale = Setting::get()->first()->is_sale; 
                         ?>
+                        
                         @if(isset($item->sale_price))
                         	<small class="text-white bg-gray py-1 px-2 mr-1">セール商品</small>
                         	<strike class="text-small">{{ number_format(Ctm::getPriceWithTax($item->price)) }}</strike>
