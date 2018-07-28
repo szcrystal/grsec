@@ -63,7 +63,7 @@ class ProcessFollowMail implements ShouldQueue
             $ensure = Item::find($sale->item_id)->is_ensure;
             
             if($ensure) {
-                if($diff->days == 0) {
+                if($diff->days == 7) {
                     $ensure_7[$sale->salerel_id][] = $sale;
                 }
                 elseif($diff->days == 33) {
@@ -77,7 +77,7 @@ class ProcessFollowMail implements ShouldQueue
                 }
             }
             else {
-                if($diff->days == 0) {
+                if($diff->days == 33) {
                     $noEnsure_33[$sale->salerel_id][] = $sale;
                 }
             }

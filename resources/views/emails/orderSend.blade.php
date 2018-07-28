@@ -34,7 +34,7 @@
 </div>
 【発送日】： {{ date('Y/m/d', time()) }}<br>
 @if(isset($thisSale->plan_date))
-【お届け予定日時】： {{ $thisSale->plan_date }}<br>
+【お届け予定日】： {{ $thisSale->plan_date }}<br>
 @endif
 【発送商品】： <br>
 <?php $num = 1; 
