@@ -43,7 +43,7 @@ class ProcessFollowMail implements ShouldQueue
     {
 	   	//$ss = $this->sales;
 		
-        $sales = Sale::all();
+        $sales = Sale::where('deli_done', 1)->get();
                     
         $ensure_7 = array();
         $ensure_33 = array();
