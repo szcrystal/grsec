@@ -134,6 +134,7 @@ class ItemController extends Controller
             
             'price' => 'required|numeric',
             'cost_price' => 'nullable|numeric',
+            'sale_price' => 'nullable|numeric',
             'stock' => 'nullable|numeric',
             'stock_reset_month' => [
                 function($attribute, $value, $fail) use($request) {
@@ -142,11 +143,15 @@ class ItemController extends Controller
                             return $fail('「在庫入荷月」を指定して下さい。');
                         } 
                     }
+                    elseif(! is_numeric($value)) {
+                    	return $fail('「在庫入荷月」は半角数字を入力して下さい。');
+                    }
                     elseif ($value < 1 || $value > 12) {
                         return $fail('「在庫入荷月」は正しい月を入力して下さい。');
                     }
                 },
             ],
+            'stock_reset_count' => 'nullable|numeric',
             'point_back' => 'nullable|numeric',
             //'main_img' => 'filenaming',
         ];

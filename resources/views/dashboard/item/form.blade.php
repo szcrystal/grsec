@@ -350,6 +350,19 @@
                 @endif
             </fieldset>
             
+            <fieldset class="mb-4 form-group">
+                <label for="sale_price" class="control-label">セール価格</label>
+                <input class="form-control col-md-6{{ $errors->has('sale_price') ? ' is-invalid' : '' }}" name="sale_price" value="{{ Ctm::isOld() ? old('sale_price') : (isset($item) ? $item->sale_price : '') }}">
+                
+
+                @if ($errors->has('sale_price'))
+                    <div class="text-danger">
+                        <span class="fa fa-exclamation form-control-feedback"></span>
+                        <span>{{ $errors->first('sale_price') }}</span>
+                    </div>
+                @endif
+            </fieldset>
+            
             <fieldset class="mt-5 mb-4 form-group">
                 <label>出荷元</label>
                 <select class="form-control col-md-6{{ $errors->has('consignor_id') ? ' is-invalid' : '' }}" name="consignor_id">

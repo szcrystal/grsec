@@ -1284,13 +1284,20 @@ class CartController extends Controller
              	//個数*値段の再計算
               	$itemId = $data['last_item_id'][$key];
                 $isSale = $this->setting->get()->first()->is_sale;
+                $itemObj = $this->item->find($itemId);
                 
-                if($isSale) {
-               		$lastPrice = Ctm::getSalePriceWithTax($this->item->find($itemId)->price); 
+                if(isset($itemObj->sale_price)) {
+                	$lastPrice = Ctm::getPriceWithTax($itemObj->sale_price);
                 }
                 else {
-                	$lastPrice = Ctm::getPriceWithTax($this->item->find($itemId)->price); 
+                    if($isSale) {
+                        $lastPrice = Ctm::getSalePriceWithTax($itemObj->price); 
+                    }
+                    else {
+                        $lastPrice = Ctm::getPriceWithTax($itemObj->price); 
+                    }
                 }
+                
                 $lastPrice = $lastPrice * $val;
             	$request->session()->put('item.data.'.$key.'.item_total_price', $lastPrice); //session入れ
              
@@ -1428,11 +1435,16 @@ class CartController extends Controller
                 //値段 * 個数
                 $isSale = $this->setting->get()->first()->is_sale;
                 
-                if($isSale) {
-                	$total = Ctm::getSalePriceWithTax($obj->price);
+                if(isset($obj->sale_price)) {
+                	$total = Ctm::getPriceWithTax($obj->sale_price);
                 }
                 else {
-                	$total = Ctm::getPriceWithTax($obj->price);
+                    if($isSale) {
+                        $total = Ctm::getSalePriceWithTax($obj->price);
+                    }
+                    else {
+                        $total = Ctm::getPriceWithTax($obj->price);
+                    }
                 }
                 
                 $obj['total_price'] = $total * $obj['count'];

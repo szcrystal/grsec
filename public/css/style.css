@@ -183,6 +183,9 @@ body {
 .text-small {
 	font-size: 0.9em;
 }
+.bg-gray {
+	background: #8f8f8f;
+}
 
 
 /* Shop ******* */

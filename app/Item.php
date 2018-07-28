@@ -33,6 +33,7 @@ class Item extends Model
         
         'price',
         'cost_price',
+        'sale_price',
         
         'consignor_id',
         'cod',
@@ -61,7 +62,7 @@ class Item extends Model
         'meta_description',
         'meta_keyword',
         
-        'open_date',
+        //'open_date',
         'view_count',
         'sale_count',
 

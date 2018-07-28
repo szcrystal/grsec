@@ -43,8 +43,9 @@ class CreateItemsTable extends Migration
             
             $table->integer('price')->nullable()->default(NULL);
             $table->integer('cost_price')->nullable()->default(NULL);
-            $table->integer('consignor_id')->nullable()->default(NULL);
+            $table->integer('sale_price')->nullable()->default(NULL);
             
+            $table->integer('consignor_id')->nullable()->default(NULL);
             $table->integer('dg_id')->nullable()->default(NULL);
             $table->boolean('is_delifee')->nullable()->default(NULL);
             $table->boolean('is_once')->nullable()->default(NULL);
@@ -74,7 +75,7 @@ class CreateItemsTable extends Migration
             $table->text('meta_description')->nullable()->default(NULL);
             $table->string('meta_keyword')->nullable()->default(NULL);
             
-            $table->timestamp('open_date')->nullable()->default(NULL);
+            //$table->timestamp('open_date')->nullable()->default(NULL);
             
             $table->integer('view_count')->nullable()->default(0);
             $table->integer('sale_count')->nullable()->default(0);
@@ -124,7 +125,7 @@ class CreateItemsTable extends Migration
                     'explain' => 'オールマイティな活躍をしてくれるシマトネリコだけに、当店のシマトネリコの特徴は、端正で素直な樹形のものだけを厳選している点です。',
                     
                     
-                    'open_date' => '2018-05-10 11:11:11',
+                    //'open_date' => '2018-05-10 11:11:11',
                     'view_count' => 3,
                     
                     'created_at' => date('Y-m-d H:i:s', time()),
