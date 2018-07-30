@@ -6,7 +6,7 @@
 <br>
 <p>※このメールは配信専用メールのため、ご返信いただけません。</p>
 <br>
-{{ $header }}
+{!! nl2br($header) !!}
 
 <br><br><br>
 <hr>
@@ -20,10 +20,8 @@
 <br><br>
 ＊ご利用するにはログインが必要です。<br>
 <hr>
-
 <br>
-<br>
-{{ $footer }}
+{!! nl2br($footer) !!}
 
 
 <br><br><br><br>

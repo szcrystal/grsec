@@ -16,8 +16,8 @@
 
                     @if (count($errors) > 0)
                         <div class="alert alert-danger">
-                            <strong>Error!!</strong> 追加できません<br>
-                            <ul>
+                            <strong>Error!!</strong> 確認して下さい。<br>
+                            <ul class="mt-2">
                                 @foreach ($errors->all() as $error)
                                     <li>{{ $error }}</li>
                                 @endforeach
@@ -33,7 +33,7 @@
 
                         <table class="table table-bordered table-custom">
                             <colgroup>
-                                <col style="width:28%;" class="cth">
+                                <col class="cth">
                                 <col class="ctd">
                             </colgroup>
                             
@@ -44,7 +44,19 @@
                                         <select class="form-control col-md-8{{ $errors->has('ask_category') ? ' is-invalid' : '' }}" name="ask_category">
                                         	<option disabled selected>選択して下さい</option>
                                             @foreach($cate_option as $val)
-                                                <option value="{{ $val }}"{{ old('ask_category') && old('ask_category') == $val ? ' selected' : '' }}>{{ $val }}</option>
+                                            	<?php
+                                                    $selected = '';
+                                                    if(Ctm::isOld()) {
+                                                        if(old('ask_category') == $val)
+                                                            $selected = ' selected';
+                                                    }
+                                                    else {
+                                                        if(Session::has('contact') && session('contact.ask_category') == $val) {
+                                                            $selected = ' selected';
+                                                        }
+                                                    }
+                                                ?>
+                                                <option value="{{ $val }}"{{ $selected }}>{{ $val }}</option>
                                             @endforeach
                                         </select>
 
@@ -62,7 +74,7 @@
                                 <tr class="form-group">
                                 	<th><label class="control-label">お名前</label><em>必須</em></th>
                                    	<td>
-                                    	<input class="form-control rounded-0 col-md-12{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ old('name') }}" placeholder="例）山田太郎">
+                                    	<input class="form-control rounded-0 col-md-12{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ Ctm::isOld() ? old('name') : (Session::has('contact') ? session('contact.name') : '') }}" placeholder="例）山田太郎">
                                    
                                         @if ($errors->has('name'))
                                             <div class="text-danger">
@@ -76,7 +88,7 @@
                                 <tr class="form-group">
                                 	<th><label class="control-label">メールアドレス</label><em>必須</em></th>
                                     <td>
-                                    	<input class="form-control rounded-0 col-md-12{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" placeholder="例）info@example.com">
+                                    	<input class="form-control rounded-0 col-md-12{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ Ctm::isOld() ? old('email') : (Session::has('contact') ? session('contact.email') : '') }}" placeholder="例）info@example.com">
                                    
                                         @if ($errors->has('email'))
                                             <div class="text-danger">
@@ -90,7 +102,7 @@
                                 <tr class="form-group">
                                 	<th><label class="control-label">お問い合わせ内容</label><em>必須</em></th>
                                     <td>
-                                        <textarea id="comment" class="form-control rounded-0 col-md-12{{ $errors->has('comment') ? ' is-invalid' : '' }}" name="comment" rows="20">{{ old('comment') }}</textarea>
+                                        <textarea id="comment" class="form-control rounded-0 col-md-12{{ $errors->has('comment') ? ' is-invalid' : '' }}" name="comment" rows="20">{{ Ctm::isOld() ? old('comment') : (Session::has('contact') ? session('contact.comment') : '') }}</textarea>
 
                                         @if ($errors->has('comment'))
                                             <span class="text-danger">
@@ -107,8 +119,8 @@
                 		</table>
                         
                         <div class="form-group mt-5">
-                            <div class="col-md-4 mx-auto">
-                                <button type="submit" class="btn btn-custom px-5 w-100">送信</button>
+                            <div class="col-md-12">
+                                <button type="submit"  class="btn btn-block btn-custom col-md-4 mb-4 mx-auto py-2">確認する</button>
                             </div>
                         </div>
                     </form>

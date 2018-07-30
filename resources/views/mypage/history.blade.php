@@ -56,8 +56,9 @@
              	[{{ $pm->find($sale->pay_method)->name }}]
             </td>
              <td>
+             	@if($sale->deli_done && $i->is_ensure)
              	<?php 
-              	   $days = Ctm::getKareHosyou($sale->created_at);   
+              	   $days = Ctm::getKareHosyou($sale->deli_start_date);   
                 ?>
                 {{ $days['limit'] }}まで<br>
                <b>残{{ $days['diffDay'] }}日</b>
@@ -74,6 +75,8 @@
                 	//echo $days;
                  	//exit;         
               	?> 
+                
+                @endif
                   
              </td>
              <td>

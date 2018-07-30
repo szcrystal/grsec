@@ -30,7 +30,7 @@
 <?php $num++; ?>
 @endforeach
 <hr>
-<br><br>
+<br>
 @endif
 {!! nl2br( $footer ) !!}
 

@@ -302,14 +302,14 @@ class SaleController extends Controller
         if($withMail) {
             $mail = Mail::to($data['user_email'], $data['user_name'])->queue(new PayDone($saleRel->id));
                 
-            if(! $mail) {
-                $status = '入金済みメールが送信されました。';
+            //if(! $mail) {
+                $status = '入金済みメールが送信されました。('. $mail . ')';
                 return redirect('dashboard/sales/order/'. $saleRel->order_number)->with('status', $status);
-            } 
-            else {
-                $errors = array('入金済みメールの送信に失敗しました。('. $mail . ')');
-                return redirect('dashboard/sales/order/'. $saleRel->order_number)->withErrors($errors)->withInput();
-            }
+//            } 
+//            else {
+//                $errors = array('入金済みメールの送信に失敗しました。('. $mail . ')');
+//                return redirect('dashboard/sales/order/'. $saleRel->order_number)->withErrors($errors)->withInput();
+//            }
         }
         else {
         	$status = '更新されました。';
@@ -403,8 +403,8 @@ class SaleController extends Controller
         elseif(isset($data['with_mail'])) { 
             $mail = Mail::to($data['user_email'], $data['user_name'])->queue(new OrderSend($saleModel->id, $data['sale_ids']));
             
-            if(! $mail) {
-                $status = '発送済みメールが送信されました。';
+            //if(! $mail) {
+                $status = '発送済みメールが送信されました。('. $mail . ')';
                 
                 $sales = $this->sale->find($data['sale_ids']);
                 foreach($sales as $sale) {
@@ -414,13 +414,13 @@ class SaleController extends Controller
                 }   
         
                 return redirect('dashboard/sales/'. $data['sale_ids'][0])->with('status', $status);
-            } 
-            else {
-            	//Mail::toでerror時に返されるのは単なる数字（13や14など）何の数字か不明
-                
-                $errors = array('発送済みメールの送信に失敗しました。('. $mail . ')');
-                return redirect('dashboard/sales/'. $data['sale_ids'][0])->withErrors($errors)->withInput();
-            }
+//            } 
+//            else {
+//            	//Mail::toでerror時に返されるのは単なる数字（13や14など）何の数字か不明
+//                
+//                $errors = array('発送済みメールの送信に失敗しました。('. $mail . ')');
+//                return redirect('dashboard/sales/'. $data['sale_ids'][0])->withErrors($errors)->withInput();
+//            }
         }
         
         //status

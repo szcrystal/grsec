@@ -74,8 +74,7 @@ $allTotal = $saleRel->all_price + $saleRel->deli_fee - $saleRel->use_point;
 【ご入金確認日】：{{ Ctm::changeDate($saleRel->pay_date, 1) }} <br>
 <br>
 <hr>
-<br><br>
-
+<br>
 @if($isUser)
 {!! nl2br( $footer ) !!}
 @endif

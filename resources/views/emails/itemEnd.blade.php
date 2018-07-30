@@ -83,8 +83,7 @@ $allTotal = $saleRel->all_price + $saleRel->deli_fee + $saleRel->cod_fee - $sale
 @endif
 <br>
 <hr>
-<br><br>
-
+<br>
 @if($isUser)
 {!! nl2br( $footer ) !!}
 @endif

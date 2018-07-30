@@ -52,8 +52,7 @@
 @endforeach
 <br>
 <hr>
-<br><br>
-
+<br>
 @if($isUser)
 {!! nl2br( $footer ) !!}
 @endif

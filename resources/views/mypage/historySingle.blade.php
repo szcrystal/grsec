@@ -30,13 +30,13 @@
         </tr>
         <tr>
              <th>ご注文日</th>
-            <td>{{ Ctm::changeDate($sale->created_at, 0) }}</td>      
+            <td>{{ Ctm::changeDate($sale->created_at, 1) }}</td>      
         </tr>
         <tr>
              <th>発送日</th>
             <td>
             @if($sale->deli_done)
-            {{ Ctm::changeDate($sale->deli_date, 0) }}
+            {{ Ctm::changeDate($sale->deli_start_date, 1) }}
             @else
             <span class="text-info">発送準備中です。</span>
             @endif
@@ -45,9 +45,11 @@
         <tr>
              <th>枯れ保証期間</th>
             <td>
-            	<?php $days = Ctm::getKareHosyou($sale->created_at); ?>
-            	{{ $days['limit'] }}まで<br>
-             	<b class="text-big">残{{ $days['diffDay'] }}日</b>   
+            	@if($sale->deli_done && $item->is_ensure)
+                    <?php $days = Ctm::getKareHosyou($sale->deli_start_date); ?>
+                    {{ $days['limit'] }}まで<br>
+                    <b class="text-big">残{{ $days['diffDay'] }}日</b>
+                @endif
             </td>      
         </tr>
         </tbody>

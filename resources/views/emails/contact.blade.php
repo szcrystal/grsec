@@ -4,45 +4,42 @@
 
 <?php //$info = DB::table('siteinfos')->first(); ?>
 
-@if($is_user)
-{{$name}} 様
+@if($isUser)
+{{ $data['name'] }} 様
 <br>
 <p>※このメールは配信専用メールのため、ご返信いただけません。</p>
 <br>
 {!! nl2br($header) !!}
 @else
-{{$name}}様より、お問い合わせがありました。<br />
+{{ $data['name'] }}様より、お問い合わせがありました。<br />
 頂きました内容は下記となります。<br><br>
-<a href="{{ url('dashboard/contacts/'. $id) }}">{{ url('dashboard/contacts/'. $id) }}</a>
+<a href="{{ url('dashboard/contacts/'. $data['id']) }}">{{ url('dashboard/contacts/'. $data['id']) }}</a>
 @endif
 
 <br /><br />
-………………………………………………………………………………………
-<br /><br />
-
-◆お問い合わせカテゴリー<br />
-{{$ask_category}}<br /><br />
+<hr>
+<br>
+◆お問い合わせ種別<br />
+{{ $data['ask_category'] }}<br /><br />
 
 ◆お名前<br />
-{{$name}}<br /><br />
+{{ $data['name'] }}<br /><br />
 
 ◆メールアドレス<br />
-{{$email}}<br /><br />
+{{ $data['email'] }}<br /><br />
 
 ◆お問い合わせ内容<br />
-{!! nl2br($comment) !!}
+{!! nl2br($data['comment']) !!}
 
-<br /><br />
-………………………………………………………………………………………
-<br /><br />
-
-@if($is_user)
+<br><br>
+<hr>
+<br>
+@if($isUser)
 {!! nl2br($footer) !!}
 @endif
 
-<br /><br /><br />
+<br><br>
+{!! nl2br($setting->mail_footer) !!}
 
-{!! nl2br($mail_footer) !!}
-
-<br /><br />
+<br><br>
 

@@ -987,6 +987,13 @@ body {
 }
 
 
+/* Contact */
+.contact .cth {
+	width: 27%;
+}
+.contact td p {
+	min-height: 20em;
+}
 
 
 /* Footer */

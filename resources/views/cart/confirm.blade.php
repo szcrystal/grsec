@@ -101,7 +101,7 @@
 <div class="table-responsive table-custom mt-3">
     <table class="table table-borderd border bg-white">
     	<thead>
-     	   <tr><th>ご希望日時</th></tr>
+     	   <tr><th>ご希望配送日時</th></tr>
         </thead>
         
         <tbody>
@@ -118,7 +118,7 @@
                 	@if(isset($item->plan_time))                   
                         <li>
                             {{ $item->title }}<br>
-                            [ {{ $item->plan_time }} ]
+                            ご希望時間：<b>[ {{ $item->plan_time }} ]</b>
                         </li>
                     @endif
                 @endforeach

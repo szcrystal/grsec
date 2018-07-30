@@ -6,10 +6,14 @@ use App\Contact;
 use App\Setting;
 use App\MailTemplate;
 
+use App\Mail\ContactSend;
+
 use Mail;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+
+use Ctm;
 
 class ContactController extends Controller
 {
@@ -98,21 +102,63 @@ class ContactController extends Controller
         
         $data = $request->all();
         
+        
+        $request->session()->put('contact', $data);
+        
+        return view('main.contact.confirm', ['data'=>$data]);
+        
+        
+//        $contactModel = $this->contact;
+//        
+//        $contactModel -> status = 0;
+//        $contactModel->fill($data); //モデルにセット
+//        $contactModel->save(); //モデルからsave
+//        //$id = $postModel->id;
+//        
+//        $data['id'] = $contactModel->id;
+//        
+//        $this->sendMail($data);
+//        //$this->fakeMail($data);
+//        
+//
+//        return view('main.contact.done')->with('status', '送信されました！');
+        //return redirect('mypage/'.$id.'/edit')->with('status', '記事が追加されました！');
+        
+    }
+    
+    public function postEnd(Request $request)
+    {
+    	if(! $request->session()->has('contact')) {
+        	about(404);
+        }
+        
+        $data = session('contact');
+        
         $contactModel = $this->contact;
         
         $contactModel -> status = 0;
         $contactModel->fill($data); //モデルにセット
         $contactModel->save(); //モデルからsave
-        //$id = $postModel->id;
         
         $data['id'] = $contactModel->id;
         
-        $this->sendMail($data);
-        //$this->fakeMail($data);
+        $setting = $this->setting->get()->first();
         
-
+        //for User
+        Mail::to($data['email'], $data['name'])->queue(new ContactSend($data, 1));
+        //for Admin
+        Mail::to($setting->admin_email, $setting->admin_name)->later(now()->addMinutes(1), new ContactSend($data, 0));
+        
+        //$this->sendMail($data);
+//        //$this->fakeMail($data);
+		
+        if(! Ctm::isLocal()) {
+        	$request->session()->forget('contact');
+        }
+        
         return view('main.contact.done')->with('status', '送信されました！');
         //return redirect('mypage/'.$id.'/edit')->with('status', '記事が追加されました！');
+        
         
     }
     

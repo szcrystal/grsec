@@ -98,6 +98,7 @@ Route::get('tag/{slug}', 'Main\HomeController@tag');
 Route::get('search', 'Main\SearchController@index');
 
 //Contact
+Route::post('contact/end', 'Main\ContactController@postEnd');
 Route::resource('contact', 'Main\ContactController');
 
 //Single
