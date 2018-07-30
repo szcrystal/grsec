@@ -6,7 +6,7 @@
             <div class="panel panel-default">
 
                 <div class="panel-heading">
-                	<h2 class="card-header">お問い合わせ 確認</h2>
+                	<h2 class="card-header">お問い合わせ内容の確認</h2>
                 </div>
 
                 <div class="panel-body mt-5">
