@@ -484,8 +484,10 @@ class CartController extends Controller
         
         //Mail送信 ----------------------------------------------
         //Ctm::sendMail($data, 'itemEnd');
-        Mail::to($userData['email'], $userData['name'])->queue(new OrderEnd($saleRelId, 1)); //for User
-        Mail::to($this->set->admin_email, $this->set->admin_name)->later(now()->addMinutes(3), new OrderEnd($saleRelId, 0))/*->queue(new OrderEnd($saleRelId, 0))*/; //for Admin
+        //for User
+        Mail::to($userData['email'], $userData['name'])->queue(new OrderEnd($saleRelId, 1));
+        //for Admin
+        Mail::to($this->set->admin_email, $this->set->admin_name)->later(now()->addMinutes(3), new OrderEnd($saleRelId, 0))/*->queue(new OrderEnd($saleRelId, 0))*/;
         
         if($regist) { 
         	Mail::to($userData['email'], $userData['name'])->later(now()->addMinutes(2), new Register($userId))/*->queue(new Register($userId))*/; //for User New Regist
@@ -524,9 +526,9 @@ class CartController extends Controller
      	return view('cart.end', ['data'=>$data, 'pm'=>$pm, 'pmModel'=>$pmModel, 'paymentCode'=>$payPaymentCode, 'active'=>4]);
       
       
-      //クレカURL
+      //クレカからの戻りサンプルURL
       //https://192.168.10.16/shop/thankyou?trans_code=718296&user_id=9999&result=1&order_number=679294540
-      //後払い戻りURL
+      //後払い戻りサンプルURL
       //https://192.168.10.16/shop/thankyou?trans_code=718177&order_number=1449574270&state=5&payment_code=18&user_id=9999    
     }
 
@@ -1189,11 +1191,13 @@ class CartController extends Controller
         $orderNum = Ctm::getOrderNum(10);
         
         //UserInfo
-        if(isset($data['user'])) { 
+        if(isset($data['user'])) { //Authでなければ$data['user']にデータが入る
+        	$user_id = '99999';
         	$user_name = $data['user']['name'];
          	$user_email = $data['user']['email'];   
         }
         else {
+        	$user_id = '88' . Auth::id();
         	$user_name = $this->user->find(Auth::id())->name;
             $user_email = $this->user->find(Auth::id())->email;
         }
@@ -1204,8 +1208,15 @@ class CartController extends Controller
         	$settles['url'] = url('shop/thankyou');
         }
         else {
-            $settles['url'] = "https://beta.epsilon.jp/cgi-bin/order/receive_order3.cgi"; //テスト環境
-            //$settles['url'] = "https://secure.epsilon.jp/cgi-bin/order/receive_order3.cgi"; //本番(完了通知書：contract_66254480.pdf内にあり)
+        	$isProduct = $this->setting->get()->first()->is_product;
+            
+            if($isProduct) { //本番環境
+            	$settles['url'] = "https://secure.epsilon.jp/cgi-bin/order/receive_order3.cgi"; //本番(完了通知書：contract_66254480.pdf内にあり)
+            }
+            else { //テスト環境
+            	$settles['url'] = "https://beta.epsilon.jp/cgi-bin/order/receive_order3.cgi"; //テスト環境
+            }
+            
         }
         
         $payCode = 0;
@@ -1226,7 +1237,7 @@ class CartController extends Controller
 //        }
         //User識別
         $settles['contract_code'] = '66254480';
-        $settles['user_id'] = '9999';
+        $settles['user_id'] = $user_id;
         $settles['user_name'] = $user_name;
         $settles['user_mail_add'] = $user_email;
         $settles['item_code'] = $number;

@@ -21,6 +21,7 @@ class CreateSettingsTable extends Migration
             $table->text('mail_footer')->nullable()->default(NULL);
             $table->text('mail_user')->nullable()->default(NULL);
             
+            $table->boolean('is_product')->nullable()->default(NULL);
             $table->integer('tax_per')->nullable()->default(NULL);
             $table->boolean('is_sale')->nullable()->default(NULL);
             $table->integer('sale_per')->nullable()->default(NULL);
@@ -45,6 +46,7 @@ class CreateSettingsTable extends Migration
                 'admin_name' => 'GREEN ROCKET',
                 'admin_email' => 'bonjour@frank.fam.cx',
 
+				'is_product' => 0,
                 'tax_per' => 8,
                 'kare_ensure' => 90,
                 'bank_info' => "【振込先１】楽天銀行　ジャズ支店（普）7039167\n八進緑産株式会社　※カタカナ表記：ハッシンリョクサンカブシキガイシャ",

@@ -11,6 +11,8 @@ class Setting extends Model
         'admin_name',
         'admin_email' ,
         'mail_footer',
+        
+        'is_product',
         'tax_per',
         'is_sale',
         'sale_per',

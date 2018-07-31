@@ -101,7 +101,8 @@ class SettingController extends Controller
         $data = $request->all();
         
         //status
-//        if(isset($data['open_status'])) { //非公開On
+		$data['is_product'] = isset($data['is_product']) ? $data['is_product'] : 0;
+        $data['is_sale'] = isset($data['is_sale']) ? $data['is_sale'] : 0;
 //            $data['open_status'] = 0;
 //        }
 //        else {

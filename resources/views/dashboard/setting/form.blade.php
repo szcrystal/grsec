@@ -103,6 +103,30 @@
             
             <h4 class="mt-5 pt-4"><span class="text-info">■</span> Shop設定</h4>
             <hr>
+            {{--
+            <fieldset class="form-group mb-4">
+                <div class="checkbox">
+                    <label>
+            --}}
+                        <?php
+                            $checked = '';
+                            if(Ctm::isOld()) {
+                                if(old('is_product'))
+                                    $checked = ' checked';
+                            }
+                            else {
+                                if(isset($setting) && $setting->is_product) {
+                                    $checked = ' checked';
+                                }
+                            }
+                        ?>
+            {{--
+                        <input type="checkbox" name="is_product" value="1"{{ $checked }}> 本番環境（イプシロン）に接続する
+                    </label>
+                </div>
+            </fieldset>
+            --}}
+            
             <fieldset class="mb-4 form-group{{ $errors->has('tax_per') ? ' has-error' : '' }}">
                 <label>消費税率</label><br>
                 <input class="form-control d-inline-block col-md-4{{ $errors->has('tax_per') ? ' is-invalid' : '' }}" name="tax_per" value="{{ Ctm::isOld() ? old('tax_per') : (isset($setting) ? $setting->tax_per : '') }}"> <span>%</span>
