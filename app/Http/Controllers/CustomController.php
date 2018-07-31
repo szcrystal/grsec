@@ -238,12 +238,16 @@ class CustomController extends Controller
     }
     
     //枯れ保証期間の書き出し
-    static function getKareHosyou($createDate)
+    static function getKareHosyou($deliDate)
     {
-        $limit = strtotime($createDate." +91 day");
+    	$kareDay = Setting::get()->first()->kare_ensure; 
+        //$kareDay += 1;
+        
+        $limit = strtotime($deliDate." +" . $kareDay . " day");
 
         $limitDay = new DateTime(date('Y-m-d', $limit));
-        $current = new DateTime('now');
+        $current = new DateTime(date('Y-m-d', time())); //DateTime('now')
+        
         $diff = $current->diff($limitDay);
         //echo $diff->days;
             

@@ -45,10 +45,21 @@
         <tr>
              <th>枯れ保証期間</th>
             <td>
-            	@if($sale->deli_done && $item->is_ensure)
-                    <?php $days = Ctm::getKareHosyou($sale->deli_start_date); ?>
-                    {{ $days['limit'] }}まで<br>
-                    <b class="text-big">残{{ $days['diffDay'] }}日</b>
+            	@if($item->is_ensure)
+                    @if($sale->deli_done)
+                        <?php $days = Ctm::getKareHosyou($sale->deli_start_date); ?>
+                        @if($days['diffDay'])
+                            {{ $days['limit'] }}まで<br>
+                            <b class="text-big">残{{ $days['diffDay'] }}日</b>
+                        @else
+                        	{{ $days['limit'] }}にて<br>
+                            <b class="text-big">枯れ保証期間終了</b>
+                        @endif
+                    @else
+                    	未発送
+                    @endif
+                @else
+                	枯れ保証なし
                 @endif
             </td>      
         </tr>

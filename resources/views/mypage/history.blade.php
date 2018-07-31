@@ -56,28 +56,38 @@
              	[{{ $pm->find($sale->pay_method)->name }}]
             </td>
              <td>
-             	@if($sale->deli_done && $i->is_ensure)
-             	<?php 
-              	   $days = Ctm::getKareHosyou($sale->deli_start_date);   
-                ?>
-                {{ $days['limit'] }}まで<br>
-               <b>残{{ $days['diffDay'] }}日</b>
-             	<?php
-//                      $limit = strtotime($sale->created_at." +91 day");
-//                    $limitDay = new DateTime(date('Y-m-d', $limit));
-//                     $current = new DateTime('now');
-//                    $diff = $current->diff($limitDay);
-          			//echo $diff->days;
-                	
-//                    $limit = $limit - strtotime("now");  
-//                     $days = (strtotime('Y-m-d', $limit) - strtotime("1970-01-01")) / 86400;   
-          
-                	//echo $days;
-                 	//exit;         
-              	?> 
-                
-                @endif
-                  
+             	@if($i->is_ensure)
+                    @if($sale->deli_done)
+                    <?php 
+                       $days = Ctm::getKareHosyou($sale->deli_start_date);   
+                    ?>
+                    @if($days['diffDay'])
+                		{{ $days['limit'] }}まで<br>
+                   		<b>残{{ $days['diffDay'] }}日</b>
+                    @else
+                    	{{ $days['limit'] }}にて<br>
+                    	<b>枯れ保証期間終了</b>
+                    @endif
+                    
+                    <?php
+    //                      $limit = strtotime($sale->created_at." +91 day");
+    //                    $limitDay = new DateTime(date('Y-m-d', $limit));
+    //                     $current = new DateTime('now');
+    //                    $diff = $current->diff($limitDay);
+                        //echo $diff->days;
+                        
+    //                    $limit = $limit - strtotime("now");  
+    //                     $days = (strtotime('Y-m-d', $limit) - strtotime("1970-01-01")) / 86400;   
+              
+                        //echo $days;
+                        //exit;         
+                    ?> 
+                    @else
+                    未発送
+                    @endif
+                  @else
+                  枯れ保証なし
+                  @endif
              </td>
              <td>
              	<a href="{{ url('mypage/history/'.$sale->id) }}" class="btn btn-block border-secondary bg-white text-small mb-3 w-100 rounded-0">

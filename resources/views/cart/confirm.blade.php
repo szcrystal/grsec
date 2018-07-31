@@ -107,16 +107,17 @@
         <tbody>
         	<tr>
             <td>
+            ご希望日：
             @if(isset($data['plan_date']))
-            {{ $data['plan_date'] }}<br>
+            <b>{{ $data['plan_date'] }}</b><br>
             @else
-            最短出荷<br>
+            <b>最短出荷</b><br>
             @endif
 			
-			<ul class="px-4 mt-2">
+			<ul class="px-4 mt-3">
                 @foreach($itemData as $item) 
                 	@if(isset($item->plan_time))                   
-                        <li>
+                        <li class="mb-3">
                             {{ $item->title }}<br>
                             ご希望時間：<b>[ {{ $item->plan_time }} ]</b>
                         </li>
