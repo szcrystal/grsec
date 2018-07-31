@@ -686,36 +686,12 @@ use App\DeliveryGroup;
                 </div>
                 
                 
-                @if(count($dgGroup) > 0)
-                <div class="mb-3">
+                
+                <div class="mb-5 pb-3">
                 	<h3 class="card-header mt-5">配送希望日時指定</h3>
                     
                     <fieldset class="mb-4 mt-3 col-md-7 form-group{{ $errors->has('plan_date') ? ' has-error' : '' }}">
                         <label for="plan_date" class="control-label">■ご希望日程<span class="text-small"></span></label>
-                        
-                        <?php
-//                        	//use DateTime;
-//                            $now = date('Y-m-d D', time());
-//                            $plusDay = 2;
-//                        	$limit = strtotime($now." +". $plusDay . " day");
-//                            $limitDay = date('Y/m/d（D）', $limit);
-//                            //$limitDay = new DateTime(date('Y-m-d', $limit));
-//                            
-//                            
-//                            $current = new DateTime('now');
-//                            echo $limitDay;
-//                            exit;
-//
-//        					
-//        
-//        					$diff = $current->diff($limitDay);
-//        					//echo $diff->days;
-//            
-////                    $limit = $limit - strtotime("now");  
-////                     $days = (strtotime('Y-m-d', $limit) - strtotime("1970-01-01")) / 86400;   
-//  
-//    						return ['limit'=>date('Y/m/d', $limit), 'diffDay'=>$diff->days];
-                        ?>
                         
                         <select class="form-control col-md-6{{ $errors->has('plan_date') ? ' is-invalid' : '' }}" name="plan_date">
                             <option value="希望なし（最短出荷）" selected>希望なし（最短出荷）</option>
@@ -729,7 +705,6 @@ use App\DeliveryGroup;
                                         $days[] = date('Y/m/d', $first) . '（' . $week[date('w', $first)] . '）';
                                     }
                                 ?>
-                            
 
                                 @foreach($days as $day)
                                     <?php
@@ -760,7 +735,8 @@ use App\DeliveryGroup;
 
                         
                 	</fieldset>
-
+				
+                @if(count($dgGroup) > 0)
                     <fieldset class="form-group my-3 px-3 py-2{{ $errors->has('deli_time.*') ? ' border border-danger' : '' }}">
                         @if ($errors->has('deli_time.*'))
                             <div class="help-block text-danger mb-2">
@@ -770,7 +746,7 @@ use App\DeliveryGroup;
                         @endif
                         
                         @foreach($dgGroup as $key => $val)
-                            <div class="mb-3 pb-3">
+                            <div class="mb-3 pb-2">
                             
                             @if(session()->has('item.data') && count(session('item.data')) > 0)
                                 <p>■下記の商品につきまして、ご希望配送時間の指定ができます。</p>
@@ -780,7 +756,7 @@ use App\DeliveryGroup;
                             @endif
                              
                             
-                            <label class="d-block mt-3 mb-3">
+                            <label class="d-block mt-2 mb-3 ml-1">
                                 <?php
                                     $timeTable = DeliveryGroup::find($key)->time_table;
                                     $timeTable = explode(",", $timeTable);
@@ -810,15 +786,14 @@ use App\DeliveryGroup;
                             
                          @endforeach
                     
-                </fieldset>
-                </div>
+                	</fieldset>
                 @endif
                 
+                </div>
                 
-                
-        
+
         <input type="hidden" name="regist" value="{{ $regist }}">
-       <button class="btn btn-block btn-custom col-md-3 mb-4 mx-auto py-2 mt-4" type="submit" name="recognize" value="1">確認する</button>                 
+       <button class="btn btn-block btn-custom col-md-3 mb-4 mx-auto py-2 mt-5" type="submit" name="recognize" value="1">確認する</button>                 
     </form>
     
 </div>

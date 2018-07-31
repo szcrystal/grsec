@@ -55,6 +55,14 @@
             <a href="{{ url('dashboard/items/csv') }}" class="btn btn-light border border-secondary px-3">CSV DL</a>
         </div>
         
+        <div class="mb-5">
+        	<p class="mb-1">■ 最近の更新（5件）</p>
+        	@foreach($recentObjs as $recent)
+            	<a href="{{ url('dashboard/items/'. $recent->id) }}">（{{ $recent->id }}）[{{ $recent->number }}] {{ $recent->title }}</a><br>
+            @endforeach
+        
+        </div>
+        
 		{{--
 		<div>
         	<span class="changeSearch">SEARCH</span>

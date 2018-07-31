@@ -63,10 +63,11 @@ class ItemController extends Controller
         $subCates= $this->categorySecond;
         $dgs = $this->dg;
         
+        $recentObjs = $this->item->orderBy('updated_at', 'desc')->get()->take(5);
         
         //$status = $this->articlePost->where(['base_id'=>15])->first()->open_date;
         
-        return view('dashboard.item.index', ['itemObjs'=>$itemObjs, 'cates'=>$cates, 'subCates'=>$subCates, 'dgs'=>$dgs]);
+        return view('dashboard.item.index', ['itemObjs'=>$itemObjs, 'cates'=>$cates, 'subCates'=>$subCates, 'dgs'=>$dgs, 'recentObjs'=>$recentObjs]);
     }
 
     public function show($id)
