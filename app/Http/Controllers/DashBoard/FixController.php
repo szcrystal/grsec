@@ -150,6 +150,17 @@ class FixController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $fix = $this->fix->find($id);
+        
+//        $atcls = $this->item->where('cate_id', $id)->get()->map(function($item){
+//            $item->cate_id = 0;
+//            $item->save();
+//        });
+        
+        $fixDel = $this->fix->destroy($id);
+        
+        $status = $fixDel ? '「'.$fix->title.'」ページが削除されました' : '「'.$fix->title.'」ページが削除出来ませんでした';
+        
+        return redirect('dashboard/fixes')->with('status', $status);
     }
 }

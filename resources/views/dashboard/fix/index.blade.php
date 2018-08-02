@@ -69,14 +69,12 @@
                 	<a href="{{url('dashboard/fixes/'.$obj->id)}}" class="btn btn-success btn-sm center-block">編集</a>
                 </td>
                 <td>
-                	{{--
                 	<form role="form" method="POST" action="{{ url('/dashboard/fixes/'.$obj->id) }}">
                     {{ csrf_field() }}
                     {{ method_field('DELETE') }}
 
                 	<input type="submit" class="btn btn-danger btn-sm center-block" value="削除">
                     </form>
-                    --}}
                 </td>
         	</tr>
         @endforeach

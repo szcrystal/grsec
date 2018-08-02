@@ -103,11 +103,10 @@
             
             <h4 class="mt-5 pt-4"><span class="text-info">■</span> Shop設定</h4>
             <hr>
-            {{--
+            
             <fieldset class="form-group mb-4">
                 <div class="checkbox">
                     <label>
-            --}}
                         <?php
                             $checked = '';
                             if(Ctm::isOld()) {
@@ -120,12 +119,12 @@
                                 }
                             }
                         ?>
-            {{--
+            
                         <input type="checkbox" name="is_product" value="1"{{ $checked }}> 本番環境（イプシロン）に接続する
                     </label>
                 </div>
             </fieldset>
-            --}}
+            
             
             <fieldset class="mb-4 form-group{{ $errors->has('tax_per') ? ' has-error' : '' }}">
                 <label>消費税率</label><br>

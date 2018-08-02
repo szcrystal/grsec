@@ -16,5 +16,7 @@ class Category extends Model
         'meta_keyword',
             
         'contents',
+        
+        'view_count',
     ];
 }

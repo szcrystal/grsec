@@ -8,8 +8,8 @@
                 </a>
                 
                 <span style="font-size: 2em;">
-                	<a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-facebook"></i></a>
+                	<a href="https://twitter.com/shop8463" target="_brank"><i class="fab fa-twitter"></i></a>
+                    <a href="https://www.facebook.com/8463andgreenrocket/" target="_brank"><i class="fab fa-facebook"></i></a>
                 </span>
                 
                 @if(Ctm::isLocal())
@@ -24,8 +24,7 @@
             ?>
             
 			<ul>
-            	<li><a href=""><i class="fa fa-angle-right"></i> 会社概要</a>
-                <li><a href=""><i class="fa fa-angle-right"></i> 会社概要</a>
+            	
    			@if($fixes)         
             	@foreach($fixes as $fix)
 				<li><a href="{{ url($fix->slug) }}">

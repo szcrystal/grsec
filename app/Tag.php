@@ -15,5 +15,7 @@ class Tag extends Model
         'meta_keyword',
             
         'contents',
+        
+        'view_count',
     ];
 }

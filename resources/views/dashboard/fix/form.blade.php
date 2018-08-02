@@ -41,6 +41,9 @@
     <div class="col-lg-11">
         <form class="form-horizontal" role="form" method="POST" action="/dashboard/fixes">
 			
+            <div class="form-group mt-5">
+                <button type="submit" class="btn btn-primary btn-block mx-auto w-25"><span class="octicon octicon-sync"></span>更　新</button>
+            </div>
 
             {{ csrf_field() }}
             

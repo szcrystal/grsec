@@ -19,7 +19,7 @@
                 <div class="py-4 {{ $className }}"><!-- offset-md-1-->
                     @yield('content')
                     @yield('leftbar')
-                    @yield('rightbar')
+                    {{-- @yield('rightbar') --}}
                 </div>
 
         </div>

@@ -64,7 +64,7 @@ class SearchController extends Controller
         
         $allResults = $this->item->whereIn('id', $allResIds)->where([
             ['open_status', '=', 1]/*, ['del_status', '=', 0], ['owner_id', '>', 0]*/
-        ])->orderBy('open_date','DESC')->paginate($this->perPage);
+        ])->orderBy('created_at','DESC')->paginate($this->perPage);
         
         //Sidebar
 //        $rankName = '全体';
@@ -73,7 +73,7 @@ class SearchController extends Controller
         
         //$groupModel = $this->tagGroup;
         
-        return view('main.search.index', ['items'=>$allResults, 'searchStr' => $search, 'type'=>'search'/*, 'rightRanks'=>$rightRanks, 'rankName'=>$rankName*/]);
+        return view('main.archive.index', ['items'=>$allResults, 'searchStr' => $search, 'type'=>'search'/*, 'rightRanks'=>$rightRanks, 'rankName'=>$rankName*/]);
     }
     
     

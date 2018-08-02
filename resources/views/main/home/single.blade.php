@@ -93,7 +93,7 @@ use App\Setting;
                                 <i class="fas fa-arrow-right text-small"></i>
                                 {{ number_format(Ctm::getSalePriceWithTax($item->price)) }}
                             @else
-                                {{ number_format(Ctm::getPriceWithTax($item->price)) }}
+                                価格：{{ number_format(Ctm::getPriceWithTax($item->price)) }}
                             @endif
                         @endif
                         円&nbsp;<span class="text-small">(税込)</span>

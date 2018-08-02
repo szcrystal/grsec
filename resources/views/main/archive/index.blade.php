@@ -1,73 +1,123 @@
 @extends('layouts.app')
 
+
 @section('content')
 
-<div id="main" class="archive-index">
-
-    <div class="panel panel-default">
-    	@if($type == 'cate')
-        	<h2>{{ $archiveObj->name }}</h2>
-        @elseif($type == 'tag')
-			<h2>{{ $archiveObj->name }}</h2>
-		@elseif($type == 'search')
-			<h2>Search: {{ $searchStr }}</h2>
-        @endif
-
-
-        <div class="panel-body">
-
-			<div class="main-list clear">
 <?php
-    use App\User;
-//    use App\Category;
-//    use App\FeatureCategory;
+    use App\Tag;
+    use App\TagRelation;
+    use App\Setting;
 ?>
 
-<div class="top-cont archive clear">
+<div id="main" class="archive">
 
-    @if(count($atcls) > 0)
+@include('main.shared.bread')
 
-    @foreach($atcls as $atcl)
-    	<article style="background-image:url({{Storage::url($atcl->thumb_path)}})" class="float-left">
+    <div class="panel panel-default top-cont">
 
-            <a href="{{ url(Ctm::getAtclUrl($atcl->id)) }}">
-				<?php $model = User::find($atcl->model_id); ?>
-                <div class="meta">
-                    <h3>{{ $atcl->title }}</h3>
-                    <p>{{ $model->name }}
-						@if($model->school != '')
-                            ＠{{ $model->school }}
+                {{-- @include('main.shared.main') --}}
+
+
+				<div class="panel-heading">
+                    <h2 class="h2 mb-3 card-header">
+                    @if($type == 'category')
+                    	{{ $cate->name }}
+                    @elseif($type == 'subcategory')
+                    	<small class="d-block pb-2">{{ $cate->name }}</small>{{ $subcate->name }}
+                    @elseif($type == 'tag')
+                    	{{ $tag->name }}
+                    @elseif($type=='search')
+                        @if(!count($items))
+                        検索ワード：{{ $searchStr }}の記事がありません
+                        @else
+                        検索ワード：{{ $searchStr }}
                         @endif
-                    </p>
+                    @endif
+                    </h2>
                 </div>
+                
+                <div class="panel-body">
+                	
+                    @if($type == 'category' && isset($cate->contents))
+                        <div class="my-4">
+                        	{!! $cate->contents !!}
+                        </div>
+                    @elseif($type == 'subcategory' && isset($subcate->contents))
+                        <div class="my-4">
+                        	{!! $subcate->contents !!}
+                        </div>
+                    @elseif($type == 'tag' && isset($tag->contents))
+                        <div class="my-4">{!! $tag->contents !!}</div>
+                    
+                    @endif
 
-                <span><i class="fa fa-caret-right" aria-hidden="true"></i></span>
-        	</a>
-    	</article>
-    @endforeach
-
-    @else
-		<p class="mt-3">まだ記事がありません</p>
-    @endif
+				<div class="pagination-wrap">
+                {{ $items->links() }}
+                </div>
+                	
+                    <?php $itemArr = array_chunk($items->all(), 3); ?>
+                    
+                    @foreach($itemArr as $itemVal)
+                    	<div class="clearfix">
+            
+                		@foreach($itemVal as $item)
+                            <article class="main-atcl">
+                            	<div class="img-box">
+                                <a href="{{ url('/item/'.$item->id) }}">
+                                    <img src="{{ Storage::url($item->main_img) }}" alt="{{ $item->title }}">
+                                </a>
+                                </div>
+                                
+                                <div class="meta">
+                                    <h3><a href="{{ url('/item/'.$item->id) }}">{{ $item->title }}</a></h3>
+                                    <p>{{ $item->catchcopy }}</p>
+                                    
+                                    <div class="tags">
+                                        <?php
+                                            $num = 5;
+                                        ?>
+                                        @include('main.shared.tag')
+                                        
+                                    </div>
+                                    
+                                    <div class="price">
+                                    	<?php 
+                                            $isSale = Setting::get()->first()->is_sale; 
+                                        ?>
+                                        @if($isSale)
+                                            <strike>{{ number_format(Ctm::getPriceWithTax($item->price)) }}</strike>
+                                            <i class="fas fa-arrow-right text-small"></i>
+                                            ¥{{ number_format(Ctm::getSalePriceWithTax($item->price)) }}
+                                        @else
+                                    		¥{{ number_format(Ctm::getPriceWithTax($item->price)) }}
+                                        @endif
+                                    </div>
+                                </div>
+                            </article>
+                        @endforeach
+                        
+                        </div>
+                    @endforeach
+                
+                </div>
+            
+        <div class="pagination-wrap">
+        {{ $items->links() }}
+        </div>
+            
 </div>
-
-
-</div>
-
-    </div>
-
-	<div class="pagination-wrap">
-        {{ $atcls->links() }}
-    </div>
-
-    </div>
-
 </div>
 
 @endsection
 
 
+@section('leftbar')
+    @include('main.shared.leftbar')
+@endsection
 
 
-
-
+{{--
+@section('rightbar')
+	@include('main.shared.rightbar')
+@endsection
+--}}

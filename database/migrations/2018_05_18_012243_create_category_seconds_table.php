@@ -26,6 +26,8 @@ class CreateCategorySecondsTable extends Migration
             
             $table->text('contents')->nullable()->default(NULL);
             
+            $table->integer('view_count')->nullable()->default(0);
+            
             $table->timestamps();
         });
         
