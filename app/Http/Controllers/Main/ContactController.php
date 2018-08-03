@@ -59,7 +59,11 @@ class ContactController extends Controller
 //            $select = '削除依頼';
 //        }
 
-        return view('main.contact.index', ['cate_option'=>$cate_option/*, 'atclObj'=>$atclObj, 'select'=>$select*/]);
+        $metaTitle = 'お問い合わせ';
+//        $metaDesc = $setting->meta_description;
+//        $metaKeyword = $setting->meta_keyword;
+
+        return view('main.contact.index', ['cate_option'=>$cate_option, 'metaTitle'=>$metaTitle,]);
     }
     
 
@@ -105,7 +109,11 @@ class ContactController extends Controller
         
         $request->session()->put('contact', $data);
         
-        return view('main.contact.confirm', ['data'=>$data]);
+        $metaTitle = 'お問い合わせ 確認';
+//        $metaDesc = $setting->meta_description;
+//        $metaKeyword = $setting->meta_keyword;
+        
+        return view('main.contact.confirm', ['data'=>$data, 'metaTitle'=>$metaTitle]);
         
         
 //        $contactModel = $this->contact;
@@ -156,7 +164,11 @@ class ContactController extends Controller
         	$request->session()->forget('contact');
         }
         
-        return view('main.contact.done')->with('status', '送信されました！');
+        $metaTitle = 'お問い合わせ 完了';
+//        $metaDesc = $setting->meta_description;
+//        $metaKeyword = $setting->meta_keyword;
+        
+        return view('main.contact.done', ['metaTitle'=>$metaTitle])->with('status', '送信されました！');
         //return redirect('mypage/'.$id.'/edit')->with('status', '記事が追加されました！');
         
         

@@ -65,6 +65,26 @@ class CustomController extends Controller
         
     }
     
+//    static function getHeaderTitle($type)
+//    {
+//    	$title = '';
+//        
+//    	@if($type == 'category') {
+//        	$title = Category::->name;
+//        }
+//                    @elseif($type == 'subcategory')
+//                    	<small class="d-block pb-2">{{ $cate->name }}</small>{{ $subcate->name }}
+//                    @elseif($type == 'tag')
+//                    	タグ：{{ $tag->name }}
+//                    @elseif($type=='search')
+//                        @if(!count($items))
+//                        検索ワード：{{ $searchStr }}の記事がありません
+//                        @else
+//                        検索ワード：{{ $searchStr }}
+//                        @endif
+//                    @endif
+//    }
+    
     
     static function getArgForView($slug, $type)
     {

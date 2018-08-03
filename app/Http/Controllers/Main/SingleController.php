@@ -142,8 +142,12 @@ class SingleController extends Controller
         
 //        print_r($recommends);
 //        exit;
+		
+        $metaTitle = isset($item->meta_title) ? $item->meta_title : $item->title;
+        $metaDesc = $item->meta_description;
+        $metaKeyword = $item->meta_keyword;
         
-        return view('main.home.single', ['item'=>$item, 'otherItem'=>$otherItem, 'cate'=>$cate, 'subCate'=>$subCate, 'tags'=>$tags, 'imgsPri'=>$imgsPri, 'imgsSec'=>$imgsSec, 'isFav'=>$isFav, 'isOnceItems'=>$isOnceItems, 'cacheItems'=>$cacheItems, 'recommends'=>$recommends, 'type'=>'single']);
+        return view('main.home.single', ['item'=>$item, 'otherItem'=>$otherItem, 'cate'=>$cate, 'subCate'=>$subCate, 'tags'=>$tags, 'imgsPri'=>$imgsPri, 'imgsSec'=>$imgsSec, 'isFav'=>$isFav, 'isOnceItems'=>$isOnceItems, 'cacheItems'=>$cacheItems, 'recommends'=>$recommends, 'metaTitle'=>$metaTitle, 'metaDesc'=>$metaDesc, 'metaKeyword'=>$metaKeyword, 'type'=>'single']);
     }
     
     

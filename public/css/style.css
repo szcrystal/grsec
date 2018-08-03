@@ -149,14 +149,15 @@ body {
 	//border: 2px solid red;
 }
 
-.archive {
+.archive,
+.fix-page {
 	float: right;
     width: 75%;
     //border: 1px solid red;
 }
 #left-bar {
 	float: left;
-    width: 23%;
+    width: 22%;
     //border: 1px solid orange;
 }
 
@@ -673,13 +674,17 @@ body {
 }
 
 .main-atcl h3 {
-	font-size: 1.3em;
+	font-size: 1.1em;
 	font-weight: normal;
-	margin: 0.1em 0 0.2em;
+	margin: 0.4em 0 0.2em;
 	padding: 0;
+    //border: 1px solid red;
 }
 .top .main-atcl h3 {
-	font-size: 1.05em;
+	font-size: 1.1em;
+}
+.archive .main-atcl h3 {
+	margin-top: 0.2em;
 }
 
 .main-atcl .meta p {
@@ -852,7 +857,7 @@ ul.side-rank {
 }
 
 .cate-list .fa {
-	color: #E6D6CB;
+	color: #bdbdbd/*#E6D6CB*/;
 }
 
 

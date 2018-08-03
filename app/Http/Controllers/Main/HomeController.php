@@ -73,7 +73,7 @@ class HomeController extends Controller
             $as = $this->item->where($whereArr)->orderBy('created_at','DESC')->take(8)->get()->all();
             
             if(count($as) > 0) {
-                $itemCates[$cate->name] = $as;
+                $itemCates[$cate->id] = $as;
             }
         }
 //        print_r($itemCates);
@@ -96,7 +96,11 @@ class HomeController extends Controller
         $path = $request->path();
         $fix = $this->fix->where('slug', $path)->first();
         
-        return view('main.home.fix', ['fix'=>$fix]);
+        $metaTitle = isset($fix->meta_title) ? $fix->meta_title : $fix->title;
+//        $metaDesc = $item->meta_description;
+//        $metaKeyword = $item->meta_keyword;
+        
+        return view('main.home.fix', ['fix'=>$fix, 'metaTitle'=>$metaTitle,]);
     }
     
     public function category($slug)
@@ -105,7 +109,7 @@ class HomeController extends Controller
         
         $items = $this->item->where(['cate_id'=>$cate->id, 'open_status'=>1])->orderBy('id', 'desc')->paginate($this->perPage);
         
-        $metaTitle = $cate->meta_title;
+        $metaTitle = isset($cate->meta_title) ? $cate->meta_title : $cate->name;
         $metaDesc = $cate->meta_description;
         $metaKeyword = $cate->meta_keyword;
         
@@ -122,7 +126,7 @@ class HomeController extends Controller
         
         $items = $this->item->where(['subcate_id'=>$subcate->id, 'open_status'=>1])->orderBy('id', 'desc')->paginate($this->perPage);
         
-        $metaTitle = $subcate->meta_title;
+        $metaTitle = isset($subcate->meta_title) ? $subcate->meta_title : $subcate->name;
         $metaDesc = $subcate->meta_description;
         $metaKeyword = $subcate->meta_keyword;
         
@@ -141,7 +145,7 @@ class HomeController extends Controller
         
         $items = $this->item->whereIn('id',$itemIds)->where(['open_status'=>1])->orderBy('id', 'desc')->paginate($this->perPage);
         
-        $metaTitle = $tag->meta_title;
+        $metaTitle = isset($tag->meta_title) ? $tag->meta_title : $tag->name;
         $metaDesc = $tag->meta_description;
         $metaKeyword = $tag->meta_keyword;
         

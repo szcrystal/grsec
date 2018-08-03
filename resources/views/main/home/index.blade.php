@@ -28,11 +28,14 @@
 
 <div class="top-cont">
 
-    @foreach($itemCates as $key => $items)
+    @foreach($itemCates as $cateId => $items)
     <div class="wrap-atcl">
     	<div class="clearfix head-atcl">
-    		<h2>{{ $key }}</h2>
-      		
+        	<?php $cate = Category::find($cateId); ?>
+    		<h2>{{ $cate->name }}</h2>
+			<div class="mt-2">
+            	{!! $cate->contents !!}
+            </div>      		
         </div>
     
     	<div class="clearfix">
@@ -81,7 +84,7 @@
     	@endforeach
      	</div> 
       
-      	<?php $slug = Category::where('name', $key)->first()->slug; ?>
+      	<?php $slug = $cate->slug; ?>
       	<a href="{{ url('category/'.$slug) }}" class="btn btn-block mx-auto btn-custom bg-white border-secondary text-dark rounded-0">VIEW MORE <i class="fa fa-caret-right" aria-hidden="true"></i></a>
            
      </div>   

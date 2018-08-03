@@ -25,7 +25,7 @@
                     @elseif($type == 'subcategory')
                     	<small class="d-block pb-2">{{ $cate->name }}</small>{{ $subcate->name }}
                     @elseif($type == 'tag')
-                    	{{ $tag->name }}
+                    	タグ：{{ $tag->name }}
                     @elseif($type=='search')
                         @if(!count($items))
                         検索ワード：{{ $searchStr }}の記事がありません

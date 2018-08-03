@@ -4,7 +4,7 @@
 
 <div id="main" class="clearfix login mb-5">
      
-        <div class="">
+        <div style="min-height: 600px;">
             <h4 class="card-header">会員の方</h4>
 
             <div class="card-body">

@@ -101,7 +101,10 @@
                         @else
                         <span class="rank-n">{{ $n }}</span>
                         @endif
-                        <a href="{{url('item/'.$item->id)}}">{{ $item->title }}</a>
+                        
+                        <a href="{{url('item/'.$item->id)}}">
+                        	{{ $item->title }}
+                        </a>
                     </li>
                     <?php $n++; ?>
                 @endforeach
