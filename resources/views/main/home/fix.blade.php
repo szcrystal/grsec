@@ -13,6 +13,10 @@
 
 
 
+
+
+
+
                 {!! $fix->contents !!}
             </div>
 

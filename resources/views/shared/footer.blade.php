@@ -2,12 +2,12 @@
 	<div class="clearfix foot-wrap">
 
         <div class="foot-menu">
-        	<div>
+        	<div class="mb-2">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    <b>{{ config('app.name', 'グリーンロケット') }}</b>
+                    <b style="font-size: 1.1em;">{{ config('app.name', 'グリーンロケット') }}</b>
                 </a>
                 
-                <span style="font-size: 2em;">
+                <span style="font-size: 2em; vertical-align:-3px">
                 	<a href="https://twitter.com/shop8463" target="_brank"><i class="fab fa-twitter"></i></a>
                     <a href="https://www.facebook.com/8463andgreenrocket/" target="_brank"><i class="fab fa-facebook"></i></a>
                 </span>
@@ -40,11 +40,13 @@
             </ul>
             
             <aside>
-            <h5>初めての方へ</h5>
             <ul>
-            	<li><a href=""><i class="fa fa-angle-right"></i> ・・・</a>
-                <li><a href=""><i class="fa fa-angle-right"></i> ・・・</a>
-                <li><a href=""><i class="fa fa-angle-right"></i> ・・・</a>
+            	<li><a href="{{ url('first-guide') }}"><i class="fa fa-angle-right"></i>初めての方へ</a>
+                <li><a href="{{ url('faq') }}"><i class="fa fa-angle-right"></i>よくある質問</a>
+                <li><a href="{{ url('about-ensure') }}"><i class="fa fa-angle-right"></i>枯れ保証について</a>
+                <li><a href="{{ url('faq') }}"><i class="fa fa-angle-right"></i>植木の植え付け方</a>
+                <li><a href="{{ url('about-ensure') }}"><i class="fa fa-angle-right"></i>水やりの仕方</a>
+                <li><a href="{{ url('about-ensure') }}"><i class="fa fa-angle-right"></i>植木の選び方</a>
             </ul>
             </aside>
         </div>
