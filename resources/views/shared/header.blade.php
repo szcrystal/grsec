@@ -29,7 +29,7 @@
     
     <?php
         $getNow = '';
-        if(Ctm::isLocal())
+        //if(Ctm::isLocal())
     		$getNow = '?up=' . time();
     ?>
     

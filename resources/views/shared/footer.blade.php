@@ -98,7 +98,8 @@
 
 <?php
     $getNow = '';
-    if(Ctm::isLocal()) $getNow = '?up=' . time();
+    //if(Ctm::isLocal())
+    	$getNow = '?up=' . time();
 ?>
 
 <!-- Scripts -->
