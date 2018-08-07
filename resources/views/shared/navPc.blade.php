@@ -91,7 +91,7 @@
                             
                             <?php
                                 use App\Fix;  
-                                $fixes = Fix::where('open_status', 1)->orderBy('id', 'asc')->get();
+                                $fixes = Fix::whereIn('id',[1,2])->where('open_status', 1)->orderBy('id', 'asc')->get();
                             ?>
                             
                             <ul class="mt-4">
