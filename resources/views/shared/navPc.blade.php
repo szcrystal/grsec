@@ -72,7 +72,7 @@
                                     <a href="{{ url('first-guide') }}">初めての方へ <i class="fas fa-angle-double-right"></i></a>
                                 </a></h3>
                             <div class="float-left">  
-                                <p>グリーンロケットは、初めての植木づくりを応援します。・・・など</p>
+                                <p>グリーンロケットは、初めての植木づくりを全力で応援します。</p>
                             </div>
                         
                             <ul class="float-left"> 
@@ -81,8 +81,7 @@
                                 <li><a href="{{ url('about-ensure') }}">枯れ保証について <i class="fas fa-angle-double-right"></i></a>
                                 <li><a href="{{ url('faq') }}">植木の植え付け方 <i class="fas fa-angle-double-right"></i></a>
                                 <li><a href="{{ url('about-ensure') }}">水やりの仕方 <i class="fas fa-angle-double-right"></i></a>
-                                <li><a href="{{ url('about-ensure') }}">植木の選び方 <i class="fas fa-angle-double-right"></i></a>
-                                                  
+                                <li><a href="{{ url('about-ensure') }}">植木の選び方 <i class="fas fa-angle-double-right"></i></a>                      
                             </ul>
                         </div>
                         
