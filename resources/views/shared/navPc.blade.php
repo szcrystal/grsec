@@ -79,9 +79,9 @@
                                 <li><a href="{{ url('first-guide') }}">初めての方へ <i class="fas fa-angle-double-right"></i></a>
                                 <li><a href="{{ url('faq') }}">よくある質問 <i class="fas fa-angle-double-right"></i></a>
                                 <li><a href="{{ url('about-ensure') }}">枯れ保証について <i class="fas fa-angle-double-right"></i></a>
-                                <li><a href="{{ url('faq') }}">植木の植え付け方 <i class="fas fa-angle-double-right"></i></a>
-                                <li><a href="{{ url('about-ensure') }}">水やりの仕方 <i class="fas fa-angle-double-right"></i></a>
-                                <li><a href="{{ url('about-ensure') }}">植木の選び方 <i class="fas fa-angle-double-right"></i></a>                      
+                                <li><a href="{{ url('howto-uetuke') }}">植木の植え付け方 <i class="fas fa-angle-double-right"></i></a>
+                                <li><a href="{{ url('howto-water') }}">水やりの仕方 <i class="fas fa-angle-double-right"></i></a>
+                                <li><a href="{{ url('howto-select') }}">植木の選び方 <i class="fas fa-angle-double-right"></i></a>                      
                             </ul>
                         </div>
                         
