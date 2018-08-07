@@ -1078,14 +1078,23 @@ ul.side-rank {
 
 /* Fix */
 .fix-page h3 {
-	padding: 0 0 0 0.3em;
+	padding: 0 0 0 0;
     margin-bottom: 0.4em;
     //padding-left: 0.3em;
-	border-left: 1.2em solid #aaa;
+	//border-left: 1.2em solid #aaa;
+    border-bottom: 1px solid #aaa;
     //border-width: 0 0 1px 5px;
 }
+.fix-page h3:before {
+	content: "■";
+    color: #aaa;
+    margin-right: 0.2em;
+}
 .fix-page h3.no-left {
-	border: 0;
+	border: none;
+}
+.fix-page h3.no-left:before {
+	content: none;
 }
 
 .fix-page section {
@@ -1095,14 +1104,18 @@ ul.side-rank {
 .fix-page section > div {
 	margin: 2em 0 3em;
 }
+.fix-page section p {
+	margin-left: 0.1em;
+}
+
 .fix-page h4 .fas {
 	color: #FD9940;
 }
 .fix-page h4 {
 	border: 1px solid #FD9940;
-    border-width: 0 0 0 7px;
+    border-width: 0 0 0 10px;
     padding-left: 0.3em;
-    background: #FFF5EC;
+    //background: #FFF5EC;
     margin-bottom: 0.5em;
 }
 .fix-page ul.triangle {

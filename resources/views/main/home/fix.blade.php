@@ -12,11 +12,6 @@
             <div class="top-cont clearfix">
 
 
-
-
-
-
-
                 {!! $fix->contents !!}
             </div>
 

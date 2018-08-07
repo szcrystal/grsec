@@ -20,7 +20,7 @@
         
         	<?php
             	use App\Fix;  
-            	$fixes = Fix::where('open_status', 1)->orderBy('id', 'asc')->get();
+            	$fixes = Fix::whereIn('id', [1, 2])->where('open_status', 1)->orderBy('id', 'asc')->get();
             ?>
             
 			<ul>
@@ -41,12 +41,12 @@
             
             <aside>
             <ul>
-            	<li><a href="{{ url('first-guide') }}"><i class="fa fa-angle-right"></i>初めての方へ</a>
-                <li><a href="{{ url('faq') }}"><i class="fa fa-angle-right"></i>よくある質問</a>
-                <li><a href="{{ url('about-ensure') }}"><i class="fa fa-angle-right"></i>枯れ保証について</a>
-                <li><a href="{{ url('faq') }}"><i class="fa fa-angle-right"></i>植木の植え付け方</a>
-                <li><a href="{{ url('about-ensure') }}"><i class="fa fa-angle-right"></i>水やりの仕方</a>
-                <li><a href="{{ url('about-ensure') }}"><i class="fa fa-angle-right"></i>植木の選び方</a>
+            	<li><a href="{{ url('first-guide') }}"><i class="fa fa-angle-right"></i> 初めての方へ</a>
+                <li><a href="{{ url('faq') }}"><i class="fa fa-angle-right"></i> よくある質問</a>
+                <li><a href="{{ url('about-ensure') }}"><i class="fa fa-angle-right"></i> 枯れ保証について</a>
+                <li><a href="{{ url('faq') }}"><i class="fa fa-angle-right"></i> 植木の植え付け方</a>
+                <li><a href="{{ url('howto-water') }}"><i class="fa fa-angle-right"></i> 水やりの仕方</a>
+                <li><a href="{{ url('howto-select') }}"><i class="fa fa-angle-right"></i> 植木の選び方</a>
             </ul>
             </aside>
         </div>
