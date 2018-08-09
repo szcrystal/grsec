@@ -1078,7 +1078,7 @@ ul.side-rank {
 
 /* Fix */
 .fix-page h3 {
-	padding: 0 0 0 0;
+	padding: 0;
     margin-bottom: 0.4em;
     //padding-left: 0.3em;
 	//border-left: 1.2em solid #aaa;
@@ -1134,17 +1134,30 @@ ul.side-rank {
 .fix-page ul.triangle li {
 	margin-bottom: 0.2em;
 }
+
+div[id*="accordion-"] {
+	margin-top: 1.5em !important;
+    //border: 1px solid red;
+}
 div[id*="accordion-"] .card {
-	margin: 0.3em 0;
+	margin: 0.4em 0;
 }
 div[id*="accordion-"] .card-header {
 	border: 0;
+    padding: 0;
     background: #F8F8F8;
     cursor: pointer;
 }
 div[id*="accordion-"] h5 {
 	font-size: 1.0em;
     line-height: 1.4em;
+    padding: 0.7em 0.5em;
+}
+div[id*="accordion-"] h5:before {
+	content: "\f059"; /* ? */
+    font-weight: 900; /*白抜きの時にこの指定が必要 */
+    font-family: "Font Awesome 5 Free";
+    margin-right: 0.2em;
 }
 div[id*="accordion-"] .card-header:hover {
 	opacity: 0.7;
@@ -1152,6 +1165,25 @@ div[id*="accordion-"] .card-header:hover {
 }
 
 
+.faq-cate {
+	margin-top: 0.7em;
+    list-style: none;
+}
+.faq-cate li {
+	float: left;
+    margin: 0 2em 0.5em 0;
+    padding: 0;
+    cursor: pointer;
+}
+.faq-cate li:before {
+    content: "\f101"; /* >> */
+    font-family: "Font Awesome 5 Free";
+    margin-right: 0.2em;
+}
+.faq-cate li:hover {
+	opacity: 0.65;
+    text-decoration: underline;
+}
 
 
 

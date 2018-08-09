@@ -372,8 +372,7 @@ var exe = (function() {
             });
             */
             
-           
-           
+  
         },
         
         
@@ -535,6 +534,20 @@ var exe = (function() {
             });
         },
         
+        faqCate: function() {
+        	$('.faq-cate li').on('click', function(e){
+            	$index = $('.faq-cate li').index(this);
+                
+                $fixHeight = $('.fixed-top').height();
+                $fixHeight = $fixHeight + 30;
+                
+                $posi = $('.faq section').eq($index).offset().top - $fixHeight;
+                
+                $("html,body").animate({scrollTop:$posi});
+                                                
+            });
+        },
+        
         
         
     } //return
@@ -565,6 +578,8 @@ $(function(e){ //ready
   	exe.postNumSet();
     
     exe.slideDeliFee();
+    
+    exe.faqCate();
 });
 
 

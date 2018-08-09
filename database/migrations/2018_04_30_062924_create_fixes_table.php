@@ -15,11 +15,11 @@ class CreateFixesTable extends Migration
     {
         Schema::create('fixes', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('title');
+            $table->string('title')->nullable()->default(NULL);
             $table->string('sub_title')->nullable()->default(NULL);
-            $table->string('slug')->unique();
-            $table->text('contents')->nullable()->default(NULL);
-            $table->boolean('open_status');
+            $table->string('slug')->nullable()->default(NULL)->unique();
+            $table->longText('contents')->nullable()->default(NULL);
+            $table->boolean('open_status')->nullable()->default(NULL);
             $table->timestamps();
         });
     }
