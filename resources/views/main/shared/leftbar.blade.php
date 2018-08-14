@@ -72,7 +72,7 @@
                 <h5>人気タグ</h5>
                 <ul class="no-list">
                 <?php 
-                    $tagLeftRanks = Tag::where('view_count','>',0)->orderBy('view_count', 'desc')->take(10)->get();
+                    $tagLeftRanks = Tag::where('view_count','>',0)->orderBy('view_count', 'desc')->take(20)->get();
                     //$tagLeftRanks = Tag::orderBy('id', 'desc')->take(10)->get(); 
                 ?>
                 @foreach($tagLeftRanks as $val)
@@ -118,7 +118,7 @@
                     <li><a href="{{ url('first-guide') }}"><i class="fa fa-angle-right"></i> 初めての方へ</a>
                     <li><a href="{{ url('faq') }}"><i class="fa fa-angle-right"></i> よくある質問</a>
                     <li><a href="{{ url('about-ensure') }}"><i class="fa fa-angle-right"></i> 枯れ保証について</a>
-                    <li><a href="{{ url('faq') }}"><i class="fa fa-angle-right"></i> 植木の植え付け方</a>
+                    <li><a href="{{ url('howto-uetuke') }}"><i class="fa fa-angle-right"></i> 植木の植え付け方</a>
                     <li><a href="{{ url('howto-water') }}"><i class="fa fa-angle-right"></i> 水やりの仕方</a>
                     <li><a href="{{ url('howto-select') }}"><i class="fa fa-angle-right"></i> 植木の選び方</a>
                 </ul>

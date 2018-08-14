@@ -68,7 +68,7 @@ button {
 ## Links
 --------------------------------------------------------------*/
 a {
-	color: #333;
+	color: #313131;
 	text-decoration: none;
 	-webkit-transition: none !important;
     transition: none !important;
@@ -197,6 +197,9 @@ body {
 }
 .bg-gray {
 	background: #8f8f8f;
+}
+.text-brown {
+	color: sienna;
 }
 
 
@@ -606,7 +609,7 @@ body {
 	font-weight: bold;
     background: none;
     border-bottom: 1px solid #222;
-    padding-left: 0.4em;
+    padding-left: 0.3em;
 }
 .wrap-atcl {
 	margin-bottom: 8em;
@@ -767,10 +770,11 @@ body {
 }
 #left-bar h5 {
 	//border-bottom: 1px solid #aaa;
-    font-size: 1.1em;
-    padding: 0.15em 0.3em;
-    background: #484848;
-    color: #fff;
+    font-size: 1.0em;
+    font-weight: bold;
+    padding: 0.3em 0.5em;
+    background: #eae8e8;
+    color: #5a5a5a;
 }
 
 .no-list {
@@ -1078,7 +1082,8 @@ ul.side-rank {
 
 /* Fix */
 .fix-page h3 {
-	padding: 0;
+	font-size: 1.9em;
+	padding: 0 0 0.2em;
     margin-bottom: 0.4em;
     //padding-left: 0.3em;
 	//border-left: 1.2em solid #aaa;
@@ -1087,7 +1092,7 @@ ul.side-rank {
 }
 .fix-page h3:before {
 	content: "■";
-    color: #aaa;
+    color: #555;
     margin-right: 0.2em;
 }
 .fix-page h3.no-left {
@@ -1121,24 +1126,40 @@ ul.side-rank {
 	color: #FD9940;
 }
 .fix-page h4 {
-	border: 1px solid #FD9940;
+	border: 1px solid #bfbfbf/*#FD9940*/;
     border-width: 0 0 0 10px;
-    padding-left: 0.3em;
+    background: #efefef;
+    padding: 0.2em 0 0.2em 0.3em;
     //background: #FFF5EC;
     margin-bottom: 0.6em;
-    margin-left: 0.2em;
+    //margin-left: 0.2em;
 }
-.fix-page ul.triangle {
-	margin-left: 2em;
+.fix-page ul.triangle,
+.fix-page ol.triangle {
+	margin-left: 0.5em;
 }
-.fix-page ul.triangle li {
-	margin-bottom: 0.2em;
+.fix-page ul.triangle li,
+.fix-page ol.triangle li {
+	margin-bottom: 0.7em;
 }
+.fix-page h5 {
+	font-weight: bold;
+    font-size: 1.4em;
+    margin-top: 1.2em;
+}
+
 
 div[id*="accordion-"] {
 	margin-top: 1.5em !important;
-    //border: 1px solid red;
 }
+
+div[id*="accordion-"]:before {
+	content: "";
+	padding-top: 300px;
+    margin-top: -300px;
+    display: block;
+}
+
 div[id*="accordion-"] .card {
 	margin: 0.4em 0;
 }
@@ -1149,14 +1170,17 @@ div[id*="accordion-"] .card-header {
     cursor: pointer;
 }
 div[id*="accordion-"] h5 {
-	font-size: 1.0em;
+	font-size: 1.05em;
     line-height: 1.4em;
     padding: 0.7em 0.5em;
+    margin-top: 0;
+    font-weight: normal;
 }
 div[id*="accordion-"] h5:before {
-	content: "\f059"; /* ? */
+	content: "\f059"; /* ?マーク */
     font-weight: 900; /*白抜きの時にこの指定が必要 */
     font-family: "Font Awesome 5 Free";
+    font-size: 1.1em;
     margin-right: 0.2em;
 }
 div[id*="accordion-"] .card-header:hover {

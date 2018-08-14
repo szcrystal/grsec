@@ -5,6 +5,7 @@ namespace App\Http\Controllers\DashBoard;
 use App\Admin;
 use App\Contact;
 use App\Sale;
+use App\Item;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -83,6 +84,21 @@ class MainController extends Controller
 ////            //-> later(now()->addMinutes(1), new NoStocked());
 ////            -> queue(new NoStocked());
 //        }
+        
+        
+//        $now = new DateTime('now');
+//        $nowMonth = $now->format('n');
+//        
+//        $items = Item::get();
+//        
+//        foreach($items as $item) {
+//        	if($nowMonth == $item->stock_reset_month) {
+//            	$item->stock = $item->stock_reset_count;
+//                $item->save();
+//            }
+//        }
+//   
+//        exit;       
         
         
   

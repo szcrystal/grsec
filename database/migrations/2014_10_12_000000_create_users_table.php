@@ -107,7 +107,7 @@ class CreateUsersTable extends Migration
 //                
 //                'tel_num'
 //                
-//                'magazine'
+                'magazine' => 1,
 //                'user_register'
 //                
 //                'destination'

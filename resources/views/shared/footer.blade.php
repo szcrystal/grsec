@@ -20,7 +20,7 @@
         
         	<?php
             	use App\Fix;  
-            	$fixes = Fix::whereIn('id', [1, 2])->where('open_status', 1)->orderBy('id', 'asc')->get();
+            	$fixes = Fix::whereIn('id', [1, 2, 5, 6])->where('open_status', 1)->orderBy('id', 'asc')->get();
             ?>
             
 			<ul>

@@ -302,24 +302,20 @@ class MailMagazineController extends Controller
             }
             
             //from NoUser
-            $noUserMag = $this->noReg->whereNotIn('active', [2])->where('magazine', 1)->get();
+//            $noUserMag = $this->noReg->whereNotIn('active', [2])->where('magazine', 1)->get(); //active:2 -> 退会者
+//            
+//            foreach($noUserMag as $value) {
+//                $users['noUser'][$value->id] = $value->email;
+//            }
             
-            foreach($noUserMag as $value) {
-                $users['noUser'][$value->id] = $value->email;
-            }
-            
-
-    //        $noUserMag = $this->noReg->where(['magazine'=>1, 'active'=>1])->get()->map(function($obj){
-    //        	return $obj->email;
-    //        })->all();
     
 //    		print_r($users);
 //            echo count($users);
 //            exit;
             
-            //****** Dispatchの方法(1dispatchで1データ)　job DBのidは少なく済む　php artisant queue:workの指定でtimeout=600が必要（ローカルのポートブロックが原因で遅くなるためかもしれないので本番では不要かも）
+            //****** Dispatchの方法(1dispatchで1データ)　job DBのidは少なく済む　php artisant queue:workの指定でtimeout=600が必要（ローカルのポートブロックが原因で遅くなるためなので本番では不要）
             ProcessMagazine::dispatch($users['user'], $data, 1); /*->onQueue('magazine')*/
-            ProcessMagazine::dispatch($users['noUser'], $data, 0)->delay(now()->addMinutes(5));
+            //ProcessMagazine::dispatch($users['noUser'], $data, 0)->delay(now()->addMinutes(5));
             //Artisan::call('queue:work', ['timeout'=>600]);
             
             //****** 1通ごとに直接キューに入れる方法 こちらの方が少し早いかも 1キュー1データなのでJob DBのidがかなりの数になる artisan queue:workでtimeout指定はなくても進む

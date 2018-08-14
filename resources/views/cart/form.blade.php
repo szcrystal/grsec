@@ -398,40 +398,41 @@ use App\DeliveryGroup;
         </table>
         </div>
          
-         
-         <div id="magazine" class="table-responsive table-custom">
-        <p class="mt-3 text-small">当店からのお知らせを希望しますか？</p>
+        
+        @if($regist)
+        <div id="magazine" class="table-responsive table-custom">
+        	<p class="mt-3 text-small">当店からのお知らせを希望しますか？</p>
             <table class="table table-borderd border">
  
-         <tr class="form-group">
-             <th><label class="control-label">メールマガジンの登録</label></th>
-               <td>
-                <?php
-                    $checked = '';
-                    if(Ctm::isOld()) {
-                        if(old('user.magazine'))
-                            $checked = ' checked';
-                    }
-                    else {
-                        if(Session::has('all.data.user')  && session('all.data.user.magazine')) {
-                            $checked = ' checked';
+             <tr class="form-group">
+                 <th><label class="control-label">メールマガジンの登録</label></th>
+                   <td>
+                    <?php
+                        $checked = '';
+                        if(Ctm::isOld()) {
+                            if(old('user.magazine'))
+                                $checked = ' checked';
                         }
-                    }
-                ?>
-                <input type="checkbox" name="user[magazine]" value="1"{{ $checked }}> 登録する
-                
-                @if ($errors->has('user.magazine'))
-                    <div class="help-block text-danger">
-                        <span class="fa fa-exclamation form-control-feedback"></span>
-                        <span>{{ $errors->first('user.magazine') }}</span>
-                    </div>
-                @endif
-            </td>
-         </tr>
-        </table>
+                        else {
+                            if(Session::has('all.data.user')  && session('all.data.user.magazine')) {
+                                $checked = ' checked';
+                            }
+                        }
+                    ?>
+                    <input type="checkbox" name="user[magazine]" value="1"{{ $checked }}> 登録する
+                    
+                    @if ($errors->has('user.magazine'))
+                        <div class="help-block text-danger">
+                            <span class="fa fa-exclamation form-control-feedback"></span>
+                            <span>{{ $errors->first('user.magazine') }}</span>
+                        </div>
+                    @endif
+                </td>
+             </tr>
+            </table>
         </div>
          
-         @if($regist)
+ 
          <div class="table-responsive table-custom">
             <p class="mt-3 text-small">8文字以上（半角）で、忘れないものを入力して下さい。<br>メールアドレスとパスワードは当店をご利用の際に必要となります。</p>
             <table class="table table-borderd border">

@@ -12,6 +12,7 @@ use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 //use DateTime;
 
 use App\Jobs\ProcessFollowMail;
+use App\Jobs\ProcessStockReset;
 
 
 class Kernel extends ConsoleKernel
@@ -33,13 +34,18 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
+    	//フォローメールの送信(毎日6時に該当する日数の商品（ユーザー）にメール)
     	$schedule->job(new ProcessFollowMail)
                 ->dailyAt('6:00');
                 //->everyMinute();
         
+        //在庫のリセットを各月の1日に
+    	$schedule->job(new ProcessStockReset)
+                ->monthlyOn(1, '3:00'); //毎月1日の午前3時に
+        		//->everyMinute();
+        
     	//$schedule->call(function () {
 
- 
 /*
             $sales = Sale::get();
             $ensureSales = array();
@@ -146,6 +152,25 @@ class Kernel extends ConsoleKernel
         //})->dailyAt('1:00');
         //})->everyMinute();
         
+/*        
+        //在庫のリセットを各月の1日にする
+        $schedule->call(function () {
+            $now = new DateTime('now');
+            $nowMonth = $now->format('n');
+            
+            $items = Item::get();
+            
+            foreach($items as $item) {
+                if($nowMonth == $item->stock_reset_month) {
+                    $item->stock = $item->stock_reset_count;
+                    $item->save();
+                }
+            }
+
+        })
+        //->monthlyOn(1, '3:00'); //毎月1日の午前3時に
+        ->everyMinute();
+*/
         
         // $schedule->command('inspire')
         //          ->hourly();
