@@ -19,19 +19,27 @@
             </div>
         
         	<?php
-            	use App\Fix;  
-            	$fixes = Fix::whereIn('id', [1, 2, 5, 6])->where('open_status', 1)->orderBy('id', 'asc')->get();
+            	use App\Fix;
+                use App\Setting;
+                
+                $set = Setting::get()->first();
+                
+                $needIds = explode(',', $set->fix_need);
+                $otherIds = explode(',', $set->fix_other);
+                
+            	$fixNeeds = Fix::whereIn('id', $needIds)->where('open_status', 1)->orderByRaw("FIELD(id, $set->fix_need)")->get();
+                $fixOthers = Fix::whereIn('id', $otherIds)->where('open_status', 1)->orderByRaw("FIELD(id, $set->fix_other)")->get();
             ?>
             
 			<ul>
             	
-   			@if($fixes)         
-            	@foreach($fixes as $fix)
-				<li><a href="{{ url($fix->slug) }}">
-					@if($fix->sub_title != '')
-                    <i class="fa fa-angle-right"></i> {{ $fix->sub_title }}
+   			@if($fixNeeds)         
+            	@foreach($fixNeeds as $fixNeed)
+				<li><a href="{{ url($fixNeed->slug) }}">
+					@if($fixNeed->sub_title != '')
+                    <i class="fa fa-angle-right"></i> {{ $fixNeed->sub_title }}
                     @else
-                    <i class="fa fa-angle-right"></i> {{ $fix->title }}
+                    <i class="fa fa-angle-right"></i> {{ $fixNeed->title }}
                     @endif
                 </a></li>
 				@endforeach
@@ -39,16 +47,21 @@
       			<li><a href="{{ url('contact') }}"><i class="fa fa-angle-right"></i> お問い合わせ</a></li>                 
             </ul>
             
+            @if($fixOthers) 
             <aside>
             <ul>
-            	<li><a href="{{ url('first-guide') }}"><i class="fa fa-angle-right"></i> 初めての方へ</a>
-                <li><a href="{{ url('faq') }}"><i class="fa fa-angle-right"></i> よくある質問</a>
-                <li><a href="{{ url('about-ensure') }}"><i class="fa fa-angle-right"></i> 枯れ保証について</a>
-                <li><a href="{{ url('howto-uetuke') }}"><i class="fa fa-angle-right"></i> 植木の植え付け方</a>
-                <li><a href="{{ url('howto-water') }}"><i class="fa fa-angle-right"></i> 水やりの仕方</a>
-                <li><a href="{{ url('howto-select') }}"><i class="fa fa-angle-right"></i> 植木の選び方</a>
+            	@foreach($fixOthers as $fixOther)
+				<li><a href="{{ url($fixOther->slug) }}">
+					@if($fixOther->sub_title != '')
+                    <i class="fa fa-angle-right"></i> {{ $fixOther->sub_title }}
+                    @else
+                    <i class="fa fa-angle-right"></i> {{ $fixOther->title }}
+                    @endif
+                </a></li>
+				@endforeach
             </ul>
             </aside>
+            @endif
         </div>
 
         <div class="foot-company">                

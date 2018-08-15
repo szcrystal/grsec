@@ -162,38 +162,69 @@ use App\User;
 
                     <section class="drops clearfix">
                     	
-                        <div class="float-left clearfix">
-                        	<h3><a href="#">
+                        <div class="clearfix">
+                        	<h3><a href="{{ url('first-guide') }}">
                                     初めての方へ <i class="fas fa-angle-double-right"></i>
                                 </a></h3>
-                            <div class="float-left">
-                                
-                                <p>・・・</p>
-                                
+                            <div class="">
+                                <p>グリーンロケットは、初めての植木づくりを全力で応援します。</p>
                             </div>
+                            
+                            <?php
+                                use App\Fix;
+                                use App\Setting;
+                                
+                                $set = Setting::get()->first();
+                                
+                                $needIds = explode(',', $set->fix_need);
+                                $otherIds = explode(',', $set->fix_other);
+                                
+                                $fixNeeds = Fix::whereIn('id', $needIds)->where('open_status', 1)->orderByRaw("FIELD(id, $set->fix_need)")->get();
+                                $fixOthers = Fix::whereIn('id', $otherIds)->where('open_status', 1)->orderByRaw("FIELD(id, $set->fix_other)")->get();
+                            ?>
                         
-                            <ul class="float-left"> 
-                                <li><a href="{{ url('#') }}">・・ <i class="fas fa-angle-double-right"></i></a></li>
-                                <li><a href="{{ url('#') }}">・・ <i class="fas fa-angle-double-right"></i></a></li>
-                                                  
+                            @if($fixOthers) 
+                            <ul class="list-unstyled"> 
+                                @foreach($fixOthers as $fixOther)
+                                    <li><a href="{{ url($fixOther->slug) }}">
+                                        @if($fixOther->sub_title != '')
+                                        {{ $fixOther->sub_title }} <i class="fas fa-angle-double-right"></i>
+                                        @else
+                                        {{ $fixOther->title }} <i class="fas fa-angle-double-right"></i>
+                                        @endif
+                                    </a></li>
+                                @endforeach                     
                             </ul>
+                            @endif
                         </div>
                         
-                        <div class="clearfix float-right">
+                        <div class="clearfix">
                             
-                            <h3></h3>
-                                
+                            <h3>グリーンロケットについて</h3>
+                            
+                            <ul class="mt-3 list-unstyled">
+                            @if($fixNeeds)         
+                                @foreach($fixNeeds as $fixNeed)
+                                <li><a href="{{ url($fixNeed->slug) }}">
+                                    @if($fixNeed->sub_title != '')
+                                    {{ $fixNeed->sub_title }} <i class="fas fa-angle-double-right"></i>
+                                    @else
+                                    {{ $fixNeed->title }} <i class="fas fa-angle-double-right"></i>
+                                    @endif
+                                </a></li>
+                                @endforeach
+                            @endif 
+                                <li><a href="{{ url('contact') }}">お問い合わせ <i class="fas fa-angle-double-right"></i></a></li>
+                            </ul>
+                            
                         </div>
 
                     </section>
                 </li>
 
-
         </ul>
     
     </div>
-    
-    
 
 </nav>
 

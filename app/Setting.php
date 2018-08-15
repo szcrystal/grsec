@@ -26,6 +26,9 @@ class Setting extends Model
         'meta_title',
         'meta_description',
         'meta_keyword',
+        
+        'fix_need',
+        'fix_other',
 
     ];
 }

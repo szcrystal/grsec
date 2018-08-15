@@ -249,6 +249,33 @@
             @include('dashboard.shared.meta')
         
             
+            <h4 class="mt-5 pt-4"><span class="text-info">■</span> 固定ページID</h4>
+            <hr>
+            <fieldset class="mb-4 form-group{{ $errors->has('fix_need') ? ' has-error' : '' }}">
+                <label>会社関連など必ず必要なページのID（半角数字、カンマで区切り、順番通りに表示されます。）</label><br>
+                <input class="form-control d-inline-block col-md-6{{ $errors->has('fix_need') ? ' is-invalid' : '' }}" name="fix_need" value="{{ Ctm::isOld() ? old('fix_need') : (isset($setting) ? $setting->fix_need : '') }}">
+
+                @if ($errors->has('fix_need'))
+                    <div class="text-danger">
+                        <span class="fa fa-exclamation form-control-feedback"></span>
+                        <span>{{ $errors->first('fix_need') }}</span>
+                    </div>
+                @endif
+            </fieldset>
+
+			<fieldset class="mb-4 form-group{{ $errors->has('fix_other') ? ' has-error' : '' }}">
+                <label>その他のページ（半角数字、カンマで区切り、順番通りに表示されます。）</label><br>
+                <input class="form-control d-inline-block col-md-6{{ $errors->has('fix_other') ? ' is-invalid' : '' }}" name="fix_other" value="{{ Ctm::isOld() ? old('fix_other') : (isset($setting) ? $setting->fix_other : '') }}">
+
+                @if ($errors->has('fix_other'))
+                    <div class="text-danger">
+                        <span class="fa fa-exclamation form-control-feedback"></span>
+                        <span>{{ $errors->first('fix_other') }}</span>
+                    </div>
+                @endif
+            </fieldset>
+
+            
             <div class="form-group mt-3">
                 <button type="submit" class="btn btn-primary d-block w-25 mt-5 mx-auto"><span class="octicon octicon-sync"></span>更　新</button>
             </div>

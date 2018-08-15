@@ -74,34 +74,47 @@
                             <div class="float-left">  
                                 <p>グリーンロケットは、初めての植木づくりを全力で応援します。</p>
                             </div>
-                        
-                            <ul class="float-left"> 
-                                <li><a href="{{ url('first-guide') }}">初めての方へ <i class="fas fa-angle-double-right"></i></a>
-                                <li><a href="{{ url('faq') }}">よくある質問 <i class="fas fa-angle-double-right"></i></a>
-                                <li><a href="{{ url('about-ensure') }}">枯れ保証について <i class="fas fa-angle-double-right"></i></a>
-                                <li><a href="{{ url('howto-uetuke') }}">植木の植え付け方 <i class="fas fa-angle-double-right"></i></a>
-                                <li><a href="{{ url('howto-water') }}">水やりの仕方 <i class="fas fa-angle-double-right"></i></a>
-                                <li><a href="{{ url('howto-select') }}">植木の選び方 <i class="fas fa-angle-double-right"></i></a>                      
-                            </ul>
-                        </div>
-                        
-                        <div class="clearfix float-right">
-                            
-                            <h3></h3>
                             
                             <?php
-                                use App\Fix;  
-                                $fixes = Fix::whereIn('id',[1, 2, 5, 6])->where('open_status', 1)->orderBy('id', 'asc')->get();
+                                use App\Fix;
+                                use App\Setting;
+                                
+                                $set = Setting::get()->first();
+                                
+                                $needIds = explode(',', $set->fix_need);
+                                $otherIds = explode(',', $set->fix_other);
+                                
+                                $fixNeeds = Fix::whereIn('id', $needIds)->where('open_status', 1)->orderByRaw("FIELD(id, $set->fix_need)")->get();
+                                $fixOthers = Fix::whereIn('id', $otherIds)->where('open_status', 1)->orderByRaw("FIELD(id, $set->fix_other)")->get();
                             ?>
+                        
+                        	@if($fixOthers) 
+                            <ul class="float-left list-unstyled"> 
+                                @foreach($fixOthers as $fixOther)
+                                    <li><a href="{{ url($fixOther->slug) }}">
+                                        @if($fixOther->sub_title != '')
+                                        {{ $fixOther->sub_title }} <i class="fas fa-angle-double-right"></i>
+                                        @else
+                                        {{ $fixOther->title }} <i class="fas fa-angle-double-right"></i>
+                                        @endif
+                                    </a></li>
+                                @endforeach                     
+                            </ul>
+                            @endif
+                        </div>
+                        
+                        <div class="clearfix float-right pl-5">
                             
-                            <ul class="mt-4">
-                            @if($fixes)         
-                                @foreach($fixes as $fix)
-                                <li><a href="{{ url($fix->slug) }}">
-                                    @if($fix->sub_title != '')
-                                    {{ $fix->sub_title }} <i class="fas fa-angle-double-right"></i>
+                            <h3>グリーンロケットについて</h3>
+                            
+                            <ul class="mt-3 list-unstyled">
+                            @if($fixNeeds)         
+                                @foreach($fixNeeds as $fixNeed)
+                                <li><a href="{{ url($fixNeed->slug) }}">
+                                    @if($fixNeed->sub_title != '')
+                                    {{ $fixNeed->sub_title }} <i class="fas fa-angle-double-right"></i>
                                     @else
-                                    {{ $fix->title }} <i class="fas fa-angle-double-right"></i>
+                                    {{ $fixNeed->title }} <i class="fas fa-angle-double-right"></i>
                                     @endif
                                 </a></li>
                                 @endforeach

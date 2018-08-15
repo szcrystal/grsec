@@ -115,10 +115,23 @@ for SP
         //border: 3px solid blue;
       	padding: 0;
     }
+    .archive,
+    .fix-page {
+        float: none;
+        width: 100%;
+        //border: 1px solid red;
+    }
+    #left-bar {
+        float: none;
+        width: 92%;
+        margin: 5em auto 0;
+        //border: 1px solid orange;
+    }
     
     
     .wrap-all {
-        margin-top: 8em;
+        margin-top: 7em;
+        //border: 1px solid orange;
     }
     .wrap-all .home {
         margin-top: 0;
@@ -453,7 +466,8 @@ for SP
         height: 170px;
         overflow: hidden;
     }
-    .top .img-box {
+    .top .img-box,
+    .archive .img-box {
         height: 170px;
         overflow: hidden;
     }
@@ -519,17 +533,43 @@ for SP
     .tab-content {
     	min-height: 300px;
     }
+    .nav-tabs {
+    	border-bottom: 0;
+    }
     .nav-tabs .nav-link {
     	background: #333;
         color: #fff;
         margin-right: 1px;
     }
     .nav-tabs .nav-link.active {
-    	background: #fff;
+    	background: none;
         color: #333;
         font-weight: bold;
+        border-bottom-color: none;
 /*        border-color: #333;*/
 /*        border-width: 1px 1px 0;*/
+    }
+    
+    /* Fix page */
+    .fix-page ul.triangle,
+    .fix-page ol.triangle {
+        margin-left: 0;
+        padding-left: 1.4em;
+    }
+    .fix-page h3 {
+		font-size: 1.6em;
+    }
+    .fix-page h4 {
+		font-size: 1.3em;
+    }
+    .faq-cate li {
+        float: none;
+        margin: 0 1em 0.4em 0;
+        padding: 0;
+        cursor: pointer;
+    }
+    div[id*="accordion-"] h5 {
+    	font-size: 0.75em;
     }
     
     
@@ -556,11 +596,20 @@ for SP
     	float: none;
         width: 90%;
         margin: auto;
+        font-size: 0.95em;
+    }
+    .foot-menu ul {
+    	float: none;
+        width: 100%;
+        margin-left: 3%;
+    }
+    .foot-menu ul:last-of-type {
+    	margin-top: 1em;
     }
     .foot-company {
     	float: none;
         width: 88%;
-        margin: 10em auto 1em;
+        margin: 2em auto 1em;
     }
     
     

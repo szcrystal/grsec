@@ -11,12 +11,8 @@
 
                 <div class="panel-body mt-5">
 
-					<div class="table-responsive">
-                        <table class="table table-bordered table-custom">
-                            <colgroup>
-                                <col style="width:28%;" class="cth">
-                                <col class="ctd bg-white">
-                            </colgroup>
+					<div class="table-responsive table-custom">
+                        <table class="table table-bordered bg-white">
                             
                             <tbody>
                                 <tr class="form-group">
@@ -64,9 +60,9 @@
                             <input type="hidden" name="done_status" value="0">
                             
                             
-                          <small class="col-md-5 mx-auto d-block px-5 mb-3">
-                          <b>上記内容でよろしければ送信ボタンを押して下さい。</b>
-                          </small>
+                          <p class="col-md-5 mx-auto d-block px-5 mb-3">
+                          	<b class="text-small">上記内容でよろしければ送信ボタンを押して下さい。</b>
+                          </p>
                           
                           <div class="col-md-12">
                             <button class="btn btn-block btn-custom col-md-4 mb-4 mx-auto py-2" type="submit" name="regist_off" value="1">送信する</button>

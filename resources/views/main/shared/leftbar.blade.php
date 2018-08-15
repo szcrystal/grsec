@@ -10,39 +10,7 @@
     ?>
 
         <div class="panel-body">
-            @if(Ctm::isAgent('sp'))
-                <div>
-                    <ul class="navbar-nav mr-auto">
-                        <!-- Authentication Links -->
-                        @if (Auth::guest())
-                            <li class="nav-link"><a href="{{ url('/login') }}"><i class="fa fa-angle-double-right" aria-hidden="true"></i> Login</a></li>
-                            <li class="nav-link"><a href="{{ url('/register') }}"><i class="fa fa-angle-double-right" aria-hidden="true"></i> Register</a></li>
-                        @else
-                            <li class="dropdown nav-item">
-                                <a href="#" class="nav-link dropdown-toggle" id="dropdown01" data-toggle="dropdown" role="button" aria-expanded="false">
-                                    {{ Auth::user()->name }} <span class="caret"></span>
-                                </a>
-
-                                <div class="dropdown-menu" aria-labelledby="dropdown01" role="menu">
-                                    <a href="{{ url('/mypage') }}" class="dropdown-item"><i class="fa fa-angle-double-right" aria-hidden="true"></i> My Page</a>
-
-                                    <a href="{{ url('/logout') }}" class="dropdown-item"
-                                        onclick="event.preventDefault();
-                                                 document.getElementById('logout-form').submit();">
-                                        <i class="fa fa-angle-double-right" aria-hidden="true"></i> Logout
-                                    </a>
-
-                                    <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
-                                        {{ csrf_field() }}
-                                    </form>
-                                </div>
-                            </li>
-                        @endif
-                        <li class="nav-link"><a href="{{ url('/contact') }}"><i class="fa fa-angle-double-right" aria-hidden="true"></i> Contact</a></li>
-                    </ul>
-                </div>
-            @endif
-
+            
             <div>
                 <h5>カテゴリー</h5>
                 <ul class="no-list">
@@ -114,14 +82,39 @@
             
             <div>
                 <h5>初めての方</h5>
-                <ul class="no-list ml-1">
-                    <li><a href="{{ url('first-guide') }}"><i class="fa fa-angle-right"></i> 初めての方へ</a>
-                    <li><a href="{{ url('faq') }}"><i class="fa fa-angle-right"></i> よくある質問</a>
-                    <li><a href="{{ url('about-ensure') }}"><i class="fa fa-angle-right"></i> 枯れ保証について</a>
-                    <li><a href="{{ url('howto-uetuke') }}"><i class="fa fa-angle-right"></i> 植木の植え付け方</a>
-                    <li><a href="{{ url('howto-water') }}"><i class="fa fa-angle-right"></i> 水やりの仕方</a>
-                    <li><a href="{{ url('howto-select') }}"><i class="fa fa-angle-right"></i> 植木の選び方</a>
+                
+                <?php
+                    use App\Fix;
+                    use App\Setting;
+                    
+                    $set = Setting::get()->first();
+                    
+                    $needIds = explode(',', $set->fix_need);
+                    $otherIds = explode(',', $set->fix_other);
+                    
+                    $fixNeeds = Fix::whereIn('id', $needIds)->where('open_status', 1)->orderByRaw("FIELD(id, $set->fix_need)")->get();
+                    $fixOthers = Fix::whereIn('id', $otherIds)->where('open_status', 1)->orderByRaw("FIELD(id, $set->fix_other)")->get();
+                ?>
+            
+                @if($fixOthers) 
+                <ul class="float-left list-unstyled"> 
+                                         
                 </ul>
+                @endif
+                
+                @if($fixOthers)
+                <ul class="no-list ml-1">
+                	@foreach($fixOthers as $fixOther)
+                        <li><a href="{{ url($fixOther->slug) }}">
+                            @if($fixOther->sub_title != '')
+                            <i class="fa fa-angle-right"></i> {{ $fixOther->sub_title }}
+                            @else
+                            <i class="fa fa-angle-right"></i> {{ $fixOther->title }}
+                            @endif
+                        </a></li>
+                    @endforeach
+                </ul>
+                @endif
             </div>
 
         </div><!-- panel-body -->

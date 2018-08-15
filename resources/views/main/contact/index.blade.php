@@ -25,23 +25,19 @@
                         </div>
                     @endif
 
-					<div class="table-responsive">
+					<div class="table-responsive table-custom">
                     	<form class="form-horizontal" role="form" method="POST" action="/contact">
                             {{ csrf_field() }}
 
                             <input type="hidden" name="done_status" value="0">
 
-                        <table class="table table-bordered table-custom">
-                            <colgroup>
-                                <col class="cth">
-                                <col class="ctd">
-                            </colgroup>
+                        <table class="table table-bordered">
                             
                             <tbody>
                                 <tr class="form-group">
                                 	<th>お問い合わせ種別<em>必須</em></th>
                                     <td>
-                                        <select class="form-control col-md-8{{ $errors->has('ask_category') ? ' is-invalid' : '' }}" name="ask_category">
+                                        <select class="form-control col-md-9{{ $errors->has('ask_category') ? ' is-invalid' : '' }}" name="ask_category">
                                         	<option disabled selected>選択して下さい</option>
                                             @foreach($cate_option as $val)
                                             	<?php

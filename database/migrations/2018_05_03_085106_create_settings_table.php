@@ -38,6 +38,9 @@ class CreateSettingsTable extends Migration
             $table->text('meta_description')->nullable()->default(NULL);
             $table->string('meta_keyword')->nullable()->default(NULL);
             
+            $table->string('fix_need')->nullable()->default(NULL);
+            $table->string('fix_other')->nullable()->default(NULL);
+            
             
             $table->timestamps();
         });
@@ -54,6 +57,8 @@ class CreateSettingsTable extends Migration
                 'snap_primary'=> 10,
                 'snap_secondary'=> 5,
                 'snap_category'=> 3,
+                
+                'fix_need' => '1,2,3,4',
                 
                 'created_at' => date('Y-m-d H:i:s', time()),
                 'updated_at' => date('Y-m-d H:i:s', time()),
