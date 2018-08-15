@@ -287,8 +287,7 @@ use App\Setting;
                         
                     </div>
 
-                    
-				
+
                 @else
                    <ul class="nav nav-tabs">
                         <li class="nav-item">
@@ -342,7 +341,7 @@ use App\Setting;
                       
                       <div id="tab3" class="tab-pane contents">
                             <div class="clearfix">
-                                {!! nl2br($item->detail) !!}
+                                {!! nl2br($item->contents) !!}
                             </div>
                       </div>
                       
