@@ -282,7 +282,7 @@ use App\Setting;
                     <div class="clearfix contents mt-4">
                         <h4>商品情報</h4>
                         <div>
-                        	{!! nl2br($item->detail) !!}
+                        	{!! nl2br($item->contents) !!}
                         </div>
                         
                     </div>

@@ -26,12 +26,11 @@
           <thead>
             <tr>
               <th>ID</th>
-              <th>問合わせ日</th>
+              <th>お問合せ日</th>
               <th>種別</th>
               <th>名前</th>
-              <th>メール</th>
+              <th>メルアド</th>
               <th>内容</th>
-              <th></th>
               <th></th>
             </tr>
           </thead>
@@ -76,16 +75,18 @@
                  	--}}   
                  	   
                 </td>
+                
+                {{--
                 <td>
-                	{{--
+                	
 					<form role="form" method="POST" action="{{ url('/dashboard/contacts/'.$obj->id) }}">
                         {{ csrf_field() }}
                         {{ method_field('DELETE') }}
 
                         <input type="submit" class="btn btn-danger btn-sm center-block" value="削除">
                     </form>
-                    --}}
                 </td>
+                --}}
         	</tr>
         @endforeach
         
