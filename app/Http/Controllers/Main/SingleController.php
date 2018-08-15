@@ -82,8 +82,10 @@ class SingleController extends Controller
         //同梱包可能商品レコメンド
         $isOnceItems = null;
         $getNum = Ctm::isAgent('sp') ? 3 : 4;
+        
         if($item->is_once) {
         	$isOnceItems = $this->item->whereNotIn('id', [$item->id])->where(['dg_id'=>$item->dg_id, 'is_once'=>1, 'open_status'=>1])->skip(2)->take($getNum)->get();
+            //->inRandomOrder()->take()->get() もあり クエリビルダに記載あり
         }
         
         
@@ -111,7 +113,7 @@ class SingleController extends Controller
 //        print_r(cache('cacheIds'));
 //        exit;
 
-		//Recommend
+		//Recommend レコメンド
         $recommends = null;
         
         if(isset($tagRels[0])) {
@@ -135,9 +137,11 @@ class SingleController extends Controller
 //            exit;
             
             $recommends = $this->item->whereNotIn('id', [$item->id])->whereIn('id', $res)->where('open_status', 1)->inRandomOrder()->take($getNum)->get();
+            //->inRandomOrder()->take()->get() もあり クエリビルダに記載あり
         }
         else {
         	$recommends = $this->item->whereNotIn('id', [$item->id])->where(['subcate_id'=>$item->subcate_id, 'open_status'=>1])->inRandomOrder()->take($getNum)->get();
+            //->inRandomOrder()->take()->get() もあり クエリビルダに記載あり
         }
         
 //        print_r($recommends);

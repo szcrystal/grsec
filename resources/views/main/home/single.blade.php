@@ -244,47 +244,50 @@ use App\Setting;
                 @if(! Ctm::isAgent('sp'))
                     <div class="clearfix contents mt-4">
                     	<h4>商品説明</h4>
-						{!! nl2br($item->explain) !!}
+                        <div>
+							{!! nl2br($item->explain) !!}
+                        </div>
                     </div>
                     
-                    <div class="clearfix contents mt-4">
+                    <div class="clearfix contents mt-5">
                     	<h4>配送について</h4>
                         <div>
-                        {!! nl2br($item->about_ship) !!}
+                        	{!! nl2br($item->about_ship) !!}
                         </div>
                         
                         @if($item->is_delifee_table)
-                        	<div class="btn btn-custom mt-4 slideDeli">送料表を見る <i class="fas fa-angle-down"></i></div>
-                        	<?php
-                        		$dgRels = DeliveryGroupRelation::where('dg_id', $item->dg_id)->get();
-                            ?>
-                            
-                            <div class="table-responsive table-custom text-small mt-3 col-md-8">
-                                <table class="table table-bordered bg-white">
-                                @foreach($dgRels as $dgRel)
-                                	<tr>
-                                    	<th class="py-1">{{ Prefecture::find($dgRel->pref_id)->name }}</th>
-                                        <td class="py-1">
-                                        	@if($dgRel->fee == 99999 || $dgRel->fee === null)
-                                            	配送不可
-                                            @else
-                                        		{{ number_format($dgRel->fee) }} 円
-                                            @endif
-                                        </td>
-                                    </tr>
-                                @endforeach
-                                </table>
+                        	<div class="mb-5 pb-5">
+                                <div class="btn btn-custom mt-2 slideDeli">送料表を見る <i class="fas fa-angle-down"></i></div>
+                                <?php
+                                    $dgRels = DeliveryGroupRelation::where('dg_id', $item->dg_id)->get();
+                                ?>
+                                
+                                <div class="table-responsive table-custom text-small mt-3 col-md-8">
+                                    <table class="table table-bordered bg-white">
+                                    @foreach($dgRels as $dgRel)
+                                        <tr>
+                                            <th class="py-1">{{ Prefecture::find($dgRel->pref_id)->name }}</th>
+                                            <td class="py-1">
+                                                @if($dgRel->fee == 99999 || $dgRel->fee === null)
+                                                    配送不可
+                                                @else
+                                                    {{ number_format($dgRel->fee) }} 円
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                    </table>
+                                </div>
                             </div>
                         @endif
                         
                     </div>
                     
-                    <div class="clearfix contents mt-4">
+                    <div class="clearfix contents mt-5">
                         <h4>商品情報</h4>
                         <div>
                         	{!! nl2br($item->contents) !!}
-                        </div>
-                        
+                        </div>     
                     </div>
 
 
@@ -353,7 +356,7 @@ use App\Setting;
 
 					
 					@if(count($recommends) > 0)
-                    <div class="mt-4 floar">
+                    <div class="mt-5 floar">
                     	<h4>あなたにおすすめの商品</h4>
                         
                         	<ul class="clearfix">

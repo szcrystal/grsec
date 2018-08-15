@@ -81,6 +81,7 @@
                                 
                                 $set = Setting::get()->first();
                                 
+                                
                                 $needIds = explode(',', $set->fix_need);
                                 $otherIds = explode(',', $set->fix_other);
                                 
