@@ -24,7 +24,7 @@
               <th>サブタイトル</th>
               <th>スラッグ</th>
               <th>ステータス</th>
-              <th>更新日</th>
+              {{-- <th>更新日</th> --}}
               <th></th>
               <th></th>
               
@@ -60,11 +60,12 @@
                     @endif
                 </td>
 
-
+				{{--
                 <td>
                 	{{ $obj->updated_at }}
                 </td>
-
+				--}}
+                
                 <td>
                 	<a href="{{url('dashboard/fixes/'.$obj->id)}}" class="btn btn-success btn-sm center-block">編集</a>
                 </td>
