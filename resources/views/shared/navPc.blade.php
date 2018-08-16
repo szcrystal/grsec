@@ -68,39 +68,28 @@
                     <section class="drops clearfix">
                     	
                         <div class="float-left clearfix">
-                        	<h3><a href="#">
-                                    <a href="{{ url('first-guide') }}">初めての方へ <i class="fas fa-angle-double-right"></i></a>
-                                </a></h3>
+                        	<h3><a href="{{ url('first-guide') }}">初めての方へ <i class="fas fa-angle-double-right"></i></a></h3>
+                            
                             <div class="float-left">  
                                 <p>グリーンロケットは、初めての植木づくりを全力で応援します。</p>
                             </div>
                             
-                            <?php
-                                use App\Fix;
-                                use App\Setting;
-                                
-                                $set = Setting::get()->first();
-                                
-                                
-                                $needIds = explode(',', $set->fix_need);
-                                $otherIds = explode(',', $set->fix_other);
-                                
-                                $fixNeeds = Fix::whereIn('id', $needIds)->where('open_status', 1)->orderByRaw("FIELD(id, $set->fix_need)")->get();
-                                $fixOthers = Fix::whereIn('id', $otherIds)->where('open_status', 1)->orderByRaw("FIELD(id, $set->fix_other)")->get();
+                            <?php								
+                                extract(Ctm::getFixPage());
                             ?>
                         
-                        	@if($fixOthers) 
-                            <ul class="float-left list-unstyled"> 
-                                @foreach($fixOthers as $fixOther)
-                                    <li><a href="{{ url($fixOther->slug) }}">
-                                        @if($fixOther->sub_title != '')
-                                        {{ $fixOther->sub_title }} <i class="fas fa-angle-double-right"></i>
-                                        @else
-                                        {{ $fixOther->title }} <i class="fas fa-angle-double-right"></i>
-                                        @endif
-                                    </a></li>
-                                @endforeach                     
-                            </ul>
+                        	@if(count($fixOthers) > 0) 
+                                <ul class="float-left list-unstyled"> 
+                                    @foreach($fixOthers as $fixOther)
+                                        <li><a href="{{ url($fixOther->slug) }}">
+                                            @if($fixOther->sub_title != '')
+                                            {{ $fixOther->sub_title }} <i class="fas fa-angle-double-right"></i>
+                                            @else
+                                            {{ $fixOther->title }} <i class="fas fa-angle-double-right"></i>
+                                            @endif
+                                        </a></li>
+                                    @endforeach                     
+                                </ul>
                             @endif
                         </div>
                         
@@ -109,7 +98,7 @@
                             <h3>グリーンロケットについて</h3>
                             
                             <ul class="mt-3 list-unstyled">
-                            @if($fixNeeds)         
+                            @if(count($fixNeeds) > 0)         
                                 @foreach($fixNeeds as $fixNeed)
                                 <li><a href="{{ url($fixNeed->slug) }}">
                                     @if($fixNeed->sub_title != '')

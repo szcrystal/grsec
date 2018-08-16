@@ -171,19 +171,10 @@ use App\User;
                             </div>
                             
                             <?php
-                                use App\Fix;
-                                use App\Setting;
-                                
-                                $set = Setting::get()->first();
-                                
-                                $needIds = explode(',', $set->fix_need);
-                                $otherIds = explode(',', $set->fix_other);
-                                
-                                $fixNeeds = Fix::whereIn('id', $needIds)->where('open_status', 1)->orderByRaw("FIELD(id, $set->fix_need)")->get();
-                                $fixOthers = Fix::whereIn('id', $otherIds)->where('open_status', 1)->orderByRaw("FIELD(id, $set->fix_other)")->get();
+                                extract(Ctm::getFixPage());
                             ?>
                         
-                            @if($fixOthers) 
+                            @if(count($fixOthers) > 0) 
                             <ul class="list-unstyled"> 
                                 @foreach($fixOthers as $fixOther)
                                     <li><a href="{{ url($fixOther->slug) }}">
@@ -203,7 +194,7 @@ use App\User;
                             <h3>グリーンロケットについて</h3>
                             
                             <ul class="mt-3 list-unstyled">
-                            @if($fixNeeds)         
+                            @if(count($fixNeeds) > 0)         
                                 @foreach($fixNeeds as $fixNeed)
                                 <li><a href="{{ url($fixNeed->slug) }}">
                                     @if($fixNeed->sub_title != '')

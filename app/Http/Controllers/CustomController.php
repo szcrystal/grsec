@@ -65,6 +65,29 @@ class CustomController extends Controller
         
     }
     
+    static function getFixPage()
+    {
+        $set = Setting::get()->first();
+        
+        $fixArr['fixNeeds'] = array();
+        $fixArr['fixOthers'] = array();
+        
+        $needIds = array();
+        $otherIds = array();
+        
+        if(isset($set->fix_need)) {
+        	$needIds = explode(',', $set->fix_need);
+            $fixArr['fixNeeds'] = Fix::whereIn('id', $needIds)->where('open_status', 1)->orderByRaw("FIELD(id, $set->fix_need)")->get(); //orderByRowで配列の順番通りにする
+        }
+        
+        if(isset($set->fix_other)) {
+        	$otherIds = explode(',', $set->fix_other);
+            $fixArr['fixOthers'] = Fix::whereIn('id', $otherIds)->where('open_status', 1)->orderByRaw("FIELD(id, $set->fix_other)")->get();
+        }
+
+        return $fixArr;
+    }
+    
 //    static function getHeaderTitle($type)
 //    {
 //    	$title = '';

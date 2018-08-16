@@ -18,33 +18,25 @@
                 @endif
             </div>
         
+        
         	<?php
-            	use App\Fix;
-                use App\Setting;
-                
-                $set = Setting::get()->first();
-                
-                $needIds = explode(',', $set->fix_need);
-                $otherIds = explode(',', $set->fix_other);
-                
-            	$fixNeeds = Fix::whereIn('id', $needIds)->where('open_status', 1)->orderByRaw("FIELD(id, $set->fix_need)")->get();
-                $fixOthers = Fix::whereIn('id', $otherIds)->where('open_status', 1)->orderByRaw("FIELD(id, $set->fix_other)")->get();
+            	extract(Ctm::getFixPage());
             ?>
             
 			<ul>
-            	
-   			@if($fixNeeds)         
-            	@foreach($fixNeeds as $fixNeed)
-				<li><a href="{{ url($fixNeed->slug) }}">
-					@if($fixNeed->sub_title != '')
-                    <i class="fa fa-angle-right"></i> {{ $fixNeed->sub_title }}
-                    @else
-                    <i class="fa fa-angle-right"></i> {{ $fixNeed->title }}
-                    @endif
-                </a></li>
-				@endforeach
-    		@endif 
-      			<li><a href="{{ url('contact') }}"><i class="fa fa-angle-right"></i> お問い合わせ</a></li>                 
+                @if($fixNeeds)         
+                    @foreach($fixNeeds as $fixNeed)
+                    <li><a href="{{ url($fixNeed->slug) }}">
+                        @if($fixNeed->sub_title != '')
+                        <i class="fa fa-angle-right"></i> {{ $fixNeed->sub_title }}
+                        @else
+                        <i class="fa fa-angle-right"></i> {{ $fixNeed->title }}
+                        @endif
+                    </a></li>
+                    @endforeach
+                @endif 
+                
+                <li><a href="{{ url('contact') }}"><i class="fa fa-angle-right"></i> お問い合わせ</a></li>                 
             </ul>
             
             @if($fixOthers) 

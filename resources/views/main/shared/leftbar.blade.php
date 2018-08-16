@@ -80,29 +80,15 @@
                 </ul>
             </div>
             
-            <div>
-                <h5>初めての方</h5>
-                
-                <?php
-                    use App\Fix;
-                    use App\Setting;
-                    
-                    $set = Setting::get()->first();
-                    
-                    $needIds = explode(',', $set->fix_need);
-                    $otherIds = explode(',', $set->fix_other);
-                    
-                    $fixNeeds = Fix::whereIn('id', $needIds)->where('open_status', 1)->orderByRaw("FIELD(id, $set->fix_need)")->get();
-                    $fixOthers = Fix::whereIn('id', $otherIds)->where('open_status', 1)->orderByRaw("FIELD(id, $set->fix_other)")->get();
-                ?>
             
-                @if($fixOthers) 
-                <ul class="float-left list-unstyled"> 
-                                         
-                </ul>
-                @endif
-                
-                @if($fixOthers)
+            <?php
+                extract(Ctm::getFixPage());
+            ?>
+            
+            @if(count($fixOthers) > 0)
+            <div>
+                <h5>初めての方へ</h5>
+  
                 <ul class="no-list ml-1">
                 	@foreach($fixOthers as $fixOther)
                         <li><a href="{{ url($fixOther->slug) }}">
@@ -114,8 +100,8 @@
                         </a></li>
                     @endforeach
                 </ul>
-                @endif
             </div>
+            @endif
 
         </div><!-- panel-body -->
     </div><!-- panel -->
