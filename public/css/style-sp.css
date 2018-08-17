@@ -130,19 +130,38 @@ for SP
     
     
     .wrap-all {
-        margin-top: 7em;
+        margin-top: 9em;
         //border: 1px solid orange;
     }
     .wrap-all .home {
         margin-top: 0;
     }
     
-    
+    .telephone {
+    	background: #2a2a2a;
+        font-size: 1.2em;
+        color: #fff;
+        text-align: center;
+        padding: 0.35em 0;
+    }
+    .telephone a {
+    	display: block;
+        width: 100%;
+        height: 100%;
+    }
+    .telephone a,
+    .telephone .fas {
+    	color: #fff;
+    }
+    .telephone .fas {
+    	font-size: 1.3em;
+        vertical-align: -1px;
+    }
 	.site-header {
 		position: relative;
         padding: 0.5em 0.2em 2.7em;
         border-bottom: 1px solid #bbb;
-        
+        border-top: 0;
 	}
 	
 
@@ -309,7 +328,7 @@ for SP
     }
     .drops > div:last-of-type img {
         width: 100%;
-        height: 90px;
+        height: 120px;
     }
     
     
@@ -463,12 +482,13 @@ for SP
     
 
 	.img-box {
-        height: 170px;
+        height: 275px;
+        //height: calc(100% * 1.2);
         overflow: hidden;
     }
     .top .img-box,
     .archive .img-box {
-        height: 170px;
+        height: 275px;
         overflow: hidden;
     }
     
@@ -516,17 +536,23 @@ for SP
     
     /* Single */
     .carousel-item {
-        height: 350px;
+        height: 545px;
         //border: 1px solid red;
     }
-    .head-frame > div:last-of-type {
-    	margin-top: 3em;
+    .single .head-frame > div:first-of-type {
+        padding-right: 1em;
+        float: none;
+    }
+    .single .head-frame > div:last-of-type {
+        padding-left: 1em;
+        float: none;
+        margin-top: 3em;
     }
     .floar ul li {
     	width: 32%;
     }
     .floar .img-box {
-    	height: 100px;
+    	height: 175px;
         //border: 1px solid red;
     }
     
@@ -548,6 +574,14 @@ for SP
         border-bottom-color: none;
 /*        border-color: #333;*/
 /*        border-width: 1px 1px 0;*/
+    }
+    #spCartBtn {
+    	position: fixed;
+        left: 0;
+        bottom: 0;
+        z-index: 10001;
+        font-size: 1.2em;
+        padding: 0.4em 0;
     }
     
     /* Fix page */

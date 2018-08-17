@@ -2,10 +2,18 @@
 use App\Item;
 use App\User;
 
+//This is For SP. 
+//PC -> headNav.php
+
 ?>
 
 
 <div class="fixed-top">
+
+<div class="telephone">
+	<a href="tel:0299530030"><i class="fas fa-phone-square"></i> 電話をかける<span class="text-small">（月〜土 8:00〜17:00）</span></a>
+</div>
+
 <header class="site-header clearfix">
 
 	<div class="logos">

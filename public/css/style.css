@@ -458,7 +458,8 @@ body {
 	float: none;
 	width: 100%;
 	//margin-top: 7.8em;
-	background: #eae8e8;
+    background: #ececec;
+/*	background: #eae8e8;*/
 }
 
 .main-navi > ul {
@@ -481,7 +482,6 @@ body {
     padding: 0;
     width: 12.5%;
     height: 100%;
-    
     text-align: center;
     border-right: 1px solid #d8d8d8;    
 }
@@ -497,6 +497,7 @@ body {
     font-weight: bold;
     font-size: 0.95em;
     cursor: pointer;
+    color: #5a5a5a;
 }
 .main-navi > ul > li:first-of-type {
 	border-left: 1px solid #d8d8d8;
@@ -507,7 +508,6 @@ body {
 .main-navi > ul >li > a {
     display: block;
     text-decoration: none;
-    
     //border: 1px solid red;
 }
 
@@ -569,7 +569,8 @@ body {
 }
 .drops > div:last-of-type img {
 	width: 100%;
-    height: 150px;
+    height: 180px;
+    margin-bottom: 0.2em;
 }
 
 .menu-title {
@@ -645,10 +646,10 @@ body {
     overflow: hidden;
 }
 .top .img-box {
-    height: 265px;
+    height: 320px;
 }
 .archive .img-box {
-	height: 270px;
+	height: 320px;
 }
 
 .main-atcl:nth-of-type(3n) {
@@ -687,7 +688,7 @@ body {
 	font-size: 1.1em;
 }
 .archive .main-atcl h3 {
-	margin-top: 0.2em;
+	margin-top: 0.4em;
 }
 
 .main-atcl .meta p {
@@ -773,7 +774,8 @@ body {
     font-size: 1.0em;
     font-weight: bold;
     padding: 0.3em 0.5em;
-    background: #eae8e8;
+    background: #ececec;
+/*    background: #eae8e8;*/
     color: #5a5a5a;
 }
 
@@ -866,7 +868,6 @@ ul.side-rank {
 
 
 /* Single */
-
 .carousel-indicators {
 	//border: 1px solid red;
     bottom: -2em;
@@ -902,11 +903,17 @@ ul.side-rank {
 }
 
 .carousel-item {
-	height: 630px;
+	height: 630px; /* 1:1.22 */
     overflow: hidden;
     //border: 1px solid red;
 }
 
+.single .head-frame > div:first-of-type {
+    padding-right: 2em;
+}
+.single .head-frame > div:last-of-type {
+    padding-left: 2em;
+}
 .single .head-frame h2 {
 	font-weight: bold;
 	font-size: 1.6em;
@@ -950,7 +957,7 @@ ul.side-rank {
     margin-top: 0.2em;
 }
 .floar .img-box {
-	height: 145px;
+	height: 180px;
 }
 .floar li a:hover img {
 	opacity: 0.7;
@@ -1182,6 +1189,7 @@ div[id*="accordion-"] h5:before {
     font-family: "Font Awesome 5 Free";
     font-size: 1.1em;
     margin-right: 0.2em;
+    color: darkseagreen;
 }
 div[id*="accordion-"] .card-header:hover {
 	opacity: 0.7;
@@ -1226,7 +1234,8 @@ div[id*="accordion-"] .card-header:hover {
 
 /* Footer */
 #colop {
-	background: #eceaea;
+	background: #ececec;
+/*	background: #eceaea;*/
 	height: auto;
 	padding: 2em 0 0;
 	margin-top: 4em;

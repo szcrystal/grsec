@@ -9,7 +9,10 @@
         $path = Request::path();
         $path = explode('/', $path);        
 
+		//This is For PC. 
+        //Sp -> headNavSp.php
     ?>
+    
 
     @if(Ctm::isAgent('sp'))
         <div id="menuButton" class="nav-tgl">

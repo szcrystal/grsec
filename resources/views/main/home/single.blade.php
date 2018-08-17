@@ -15,7 +15,7 @@ use App\Setting;
 		
         <div class="head-frame clearfix">
             
-            <div class="float-left col-md-7 pr-3">
+            <div class="float-left col-md-6">
                 @if($item -> main_img)
                 <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" data-interval="7500">
                       <ol class="carousel-indicators">
@@ -59,7 +59,7 @@ use App\Setting;
                 @endif   
             </div>
                 
-            <div class="float-right col-md-5">
+            <div class="float-right col-md-6">
                 	<h2 class="single-title">{{ $item -> title }}</h2>
                  	<p class="text-big">{{ $item->catchcopy }}</p>   
                  	
@@ -185,6 +185,10 @@ use App\Setting;
                             <input type="hidden" name="tax" value="{{ $tax }}"> 
                             --}}     
                             <button type="submit" class="btn btn-custom text-center col-md-6">カートに入れる</button>
+                            
+                            @if(Ctm::isAgent('sp'))
+                            	<button id="spCartBtn" type="submit" class="btn btn-custom text-center col-md-6">この商品をカートに入れる</button>
+                            @endif
                        </form>  
                 	
                     @else
@@ -205,8 +209,8 @@ use App\Setting;
                     <div class="mt-5">
                     	@foreach($tags as $tag)
                         	<span class="rank-tag">
-                            <i class="fa fa-tag" aria-hidden="true"></i>
-                            <a href="{{ url('tag/' . $tag->slug) }}">{{ $tag->name }}</a>
+                            
+                            <a href="{{ url('tag/' . $tag->slug) }}">#{{ $tag->name }}</a>
                             </span>
                         @endforeach
                     
@@ -239,8 +243,7 @@ use App\Setting;
                 
 
                 <div class="cont-wrap mb-5 pb-2">
-                	
-				
+                
                 @if(! Ctm::isAgent('sp'))
                     <div class="clearfix contents mt-4">
                     	<h4>商品説明</h4>
@@ -342,10 +345,8 @@ use App\Setting;
                         @endif
                       </div>
                       
-                      <div id="tab3" class="tab-pane contents">
-                            <div class="clearfix">
-                                {!! nl2br($item->contents) !!}
-                            </div>
+                      <div id="tab3" class="tab-pane contents clearfix">
+                        {!! nl2br($item->contents) !!}
                       </div>
                       
                     </div>

@@ -692,7 +692,7 @@
             <fieldset class="my-5 form-group{{ $errors->has('explain') ? ' is-invalid' : '' }}">
                     <label for="explain" class="control-label">メイン説明</label>
 
-                    <textarea id="explain" type="text" class="form-control" name="explain" rows="12">{{ Ctm::isOld() ? old('explain') : (isset($item) ? $item->explain : '') }}</textarea>
+                    <textarea id="explain" type="text" class="form-control" name="explain" rows="16">{{ Ctm::isOld() ? old('explain') : (isset($item) ? $item->explain : '') }}</textarea>
 
                     @if ($errors->has('explain'))
                         <span class="help-block">
@@ -705,7 +705,7 @@
             <fieldset class="mt-3 mb-2 form-group{{ $errors->has('about_ship') ? ' is-invalid' : '' }}">
                     <label for="detail" class="control-label">配送について</label>
 
-                        <textarea id="detail" type="text" class="form-control" name="about_ship" rows="12">{{ Ctm::isOld() ? old('about_ship') : (isset($item) ? $item->about_ship : '') }}</textarea>
+                        <textarea id="detail" type="text" class="form-control" name="about_ship" rows="16">{{ Ctm::isOld() ? old('about_ship') : (isset($item) ? $item->about_ship : '') }}</textarea>
 
                         @if ($errors->has('about_ship'))
                             <span class="help-block">

@@ -548,6 +548,14 @@ var exe = (function() {
             });
         },
         
+        getWH: function() {
+        	$target = $('.img-box');
+        	var w = $target.width();
+            var h = $target.height();
+            
+            console.log(w +'/'+ h);
+        },
+        
         
         
     } //return
@@ -558,6 +566,7 @@ var exe = (function() {
 $(function(e){ //ready
     
     //exe.autoComplete();
+    exe.getWH();
     
     exe.scrollFunc();
     

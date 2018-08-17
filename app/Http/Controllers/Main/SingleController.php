@@ -56,11 +56,13 @@ class SingleController extends Controller
         $otherItem = $this->item->where([ 'open_status'=>1])->whereNotIn('id', [$id])->orderBy('created_at','DESC')->take(5)->get();
         
         //Tag
-        $tagRels = $this->tagRel->where('item_id', $item->id)->get()->map(function($obj){
+        $tagRels = $this->tagRel->where('item_id', $item->id)->orderBy('id','asc')->get()->map(function($obj){
             return $obj->tag_id;
         })->all();
         
-        $tags = $this->tag->whereIn('id', $tagRels)->orderBy('created_at', 'desc')->get();
+		$sortIDs = implode(',', $tagRels);
+        
+        $tags = $this->tag->whereIn('id', $tagRels)->orderByRaw("FIELD(id, $sortIDs)")->get();
         
         //サブ画像
         $imgsPri = $this->itemImg->where(['item_id'=>$id, 'type'=>1])->orderBy('number', 'asc')->get();

@@ -58,7 +58,7 @@
                         <p>{{ $item->catchcopy }}</p>
                         
                         <div class="tags">
-                            <?php $num = 3; ?>
+                            <?php $num = 2; ?>
                             @include('main.shared.tag')
                         </div>
                         
