@@ -51,11 +51,11 @@ class ProcessFollowMail implements ShouldQueue
         $ensure_155 = array();
         $noEnsure_33 = array();
         
-        $day_7 = 7;
-        $day_33 = 33;
-        $day_96 = 96;
-        $day_155 = 155;
-        $dayNo_33 = 33;
+        $day_7 = 1;
+        $day_33 = 1;
+        $day_96 = 1;
+        $day_155 = 1;
+        $dayNo_33 = 1;
         
         $current = new DateTime('now'); 
             
