@@ -49,8 +49,13 @@ class ProcessFollowMail implements ShouldQueue
         $ensure_33 = array();
         $ensure_96 = array();
         $ensure_155 = array();
-        
         $noEnsure_33 = array();
+        
+        $day_7 = 7;
+        $day_33 = 33;
+        $day_96 = 96;
+        $day_155 = 155;
+        $dayNo_33 = 33;
         
         $current = new DateTime('now'); 
             
@@ -63,21 +68,21 @@ class ProcessFollowMail implements ShouldQueue
             $ensure = Item::find($sale->item_id)->is_ensure;
             
             if($ensure) {
-                if($diff->days == 7) {
+                if($diff->days == $day_7) {
                     $ensure_7[$sale->salerel_id][] = $sale;
                 }
-                elseif($diff->days == 33) {
+                elseif($diff->days == $day_33) {
                     $ensure_33[$sale->salerel_id][] = $sale;
                 }
-                elseif($diff->days == 96) {
+                elseif($diff->days == $day_96) {
                     $ensure_96[$sale->salerel_id][] = $sale;
                 }
-                elseif($diff->days == 155) {
+                elseif($diff->days == $day_155) {
                     $ensure_155[$sale->salerel_id][] = $sale;
                 }
             }
             else {
-                if($diff->days == 33) {
+                if($diff->days == $dayNo_33) {
                     $noEnsure_33[$sale->salerel_id][] = $sale;
                 }
             }

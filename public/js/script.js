@@ -535,17 +535,21 @@ var exe = (function() {
         },
         
         faqCate: function() {
+        	
+            var fixHeight = $('.fixed-top').height();
+            
+            
         	$('.faq-cate li').on('click', function(e){
             	$index = $('.faq-cate li').index(this);
                 
-                $fixHeight = $('.fixed-top').height();
-                $fixHeight = $fixHeight + 30;
-                
-                $posi = $('.faq section').eq($index).offset().top - $fixHeight;
+                fixHeight = fixHeight + 20;
+
+                $posi = $('.faq section').eq($index).offset().top - fixHeight;
                 
                 $("html,body").animate({scrollTop:$posi});
                                                 
             });
+               
         },
         
         getWH: function() {
@@ -554,6 +558,26 @@ var exe = (function() {
             var h = $target.height();
             
             console.log(w +'/'+ h);
+            
+                               
+        	//アンカーリンクのfix headerのずれを直す
+            var fixH = $('.fixed-top').height();
+           	var url = $(location).attr('href');
+            
+            if(url.indexOf("#") != -1) {
+                var anchor = url.split("#");
+                var target = $('#' + anchor[anchor.length - 1]);
+                
+                fixH = fixH + 67;
+                
+                if(target.length){
+                    //var pos = Math.floor(target.offset().top) - fixHeight;
+                    var pos = target.offset().top - fixH;
+                    $("html, body").scrollTop(pos);
+                    //$("html, body").animate({scrollTop:pos}, 500);
+                }
+            }
+                
         },
         
         

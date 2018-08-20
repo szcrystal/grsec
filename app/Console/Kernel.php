@@ -34,14 +34,20 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-    	//フォローメールの送信(毎日6時に該当する日数の商品（ユーザー）にメール)
+        
+    	//フォローメールの送信(毎日6時に該当する日数の商品（ユーザー）にメール) ========
     	$schedule->job(new ProcessFollowMail)
-                ->dailyAt('6:00');
+                ->dailyAt('7:00');
                 //->everyMinute();
         
-        //在庫のリセットを各月の1日に
+        //在庫のリセットを各月の1日に ====================
+//        $now = new DateTime('now');
+//        $nowDay = $now->format('d');
+//        $nowDay = $nowDay + 1;
+        
     	$schedule->job(new ProcessStockReset)
-                ->monthlyOn(1, '3:00'); //毎月1日の午前3時に
+                //->monthlyOn(1, '3:00'); //毎月1日の午前3時に
+                ->dailyAt('3:00'); 
         		//->everyMinute();
         
     	//$schedule->call(function () {

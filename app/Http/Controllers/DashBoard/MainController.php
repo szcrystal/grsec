@@ -85,6 +85,10 @@ class MainController extends Controller
 ////            -> queue(new NoStocked());
 //        }
         
+//        $now = new DateTime('now');
+//        $nowDay = $now->format('d');
+//        echo $nowDay + 1;
+//        exit;
         
 //        $now = new DateTime('now');
 //        $nowMonth = $now->format('n');

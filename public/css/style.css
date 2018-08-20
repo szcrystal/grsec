@@ -916,7 +916,7 @@ ul.side-rank {
 }
 .single .head-frame h2 {
 	font-weight: bold;
-	font-size: 1.6em;
+	font-size: 1.4em;
 	border-bottom: 1px solid #222;
 	margin-bottom: 0.3em;
     padding-bottom: 0.3em;
@@ -1160,12 +1160,13 @@ div[id*="accordion-"] {
 	margin-top: 1.5em !important;
 }
 
-div[id*="accordion-"]:before {
-	content: "";
-	padding-top: 300px;
-    margin-top: -300px;
-    display: block;
-}
+/* アンカーリンクのfix分のずれを直す jsに入れたので不要 */
+/*div[id*="accordion-"]:before {*/
+/*	content: "";*/
+/*	padding-top: 300px;*/
+/*    margin-top: -300px;*/
+/*    display: block;*/
+/*}*/
 
 div[id*="accordion-"] .card {
 	margin: 0.4em 0;

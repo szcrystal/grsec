@@ -576,6 +576,7 @@ for SP
 /*        border-width: 1px 1px 0;*/
     }
     #spCartBtn {
+    	display: none;
     	position: fixed;
         left: 0;
         bottom: 0;
