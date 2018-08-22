@@ -56,16 +56,16 @@ class SingleController extends Controller
         $otherItem = $this->item->where([ 'open_status'=>1])->whereNotIn('id', [$id])->orderBy('created_at','DESC')->take(5)->get();
         
         //Tag
+        $tags = null;
+        $tagRels = array();
+        $sortIDs = array();
+        
         $tagRels = $this->tagRel->where('item_id', $item->id)->orderBy('id','asc')->get()->map(function($obj){
             return $obj->tag_id;
         })->all();
         
-        $tags = null;
-        $sortIDs = array();
-        
         if(count($tagRels) > 0) {
 			$sortIDs = implode(',', $tagRels);
-        
         	$tags = $this->tag->whereIn('id', $tagRels)->orderByRaw("FIELD(id, $sortIDs)")->get();
         }
         

@@ -73,7 +73,12 @@ use App\Setting;
                    
                     <div class="mb-3" >
                     	<span class="text-small">カテゴリー：</span>
-                        <a href="{{ url('category/'.$cate->slug) }}">{{ $cate->link_name }}</a> ＞ <a href="{{ url('category/'.$cate->slug. '/'.$subCate->slug) }}">{{ $subCate->name }}</a>
+                        @if(isset($cate))
+                        <a href="{{ url('category/'.$cate->slug) }}">{{ $cate->link_name }}</a>
+                        @endif
+                        @if(isset($subCate))
+                          ＞ <a href="{{ url('category/'.$cate->slug. '/'.$subCate->slug) }}">{{ $subCate->name }}</a>
+                        @endif
                     </div>
                     
                  	<div class="price-meta"> 

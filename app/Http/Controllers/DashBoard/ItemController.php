@@ -402,7 +402,16 @@ class ItemController extends Controller
                 }
             }
         }
-        
+        else { 
+        	if(isset($editId)) {
+        		$tagRels = $this->tagRelation->where('item_id', $itemId)->delete();
+            }
+            
+//            if(isset($tagRels)) {
+//            	$tagRels
+//            }
+        }
+                
         
         return redirect('dashboard/items/'. $itemId)->with('status', $status);
         
