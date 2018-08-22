@@ -205,16 +205,16 @@ use App\Setting;
                  	@endif  
                   	</div> 
                     
-                       
+                    
+                    @if(isset($tags))
                     <div class="mt-5">
                     	@foreach($tags as $tag)
                         	<span class="rank-tag">
-                            
-                            <a href="{{ url('tag/' . $tag->slug) }}">#{{ $tag->name }}</a>
+                            	<a href="{{ url('tag/' . $tag->slug) }}">#{{ $tag->name }}</a>
                             </span>
                         @endforeach
-                    
                     </div>
+                    @endif
             	
                 </div>
                 

@@ -60,9 +60,14 @@ class SingleController extends Controller
             return $obj->tag_id;
         })->all();
         
-		$sortIDs = implode(',', $tagRels);
+        $tags = null;
+        $sortIDs = array();
         
-        $tags = $this->tag->whereIn('id', $tagRels)->orderByRaw("FIELD(id, $sortIDs)")->get();
+        if(count($tagRels) > 0) {
+			$sortIDs = implode(',', $tagRels);
+        
+        	$tags = $this->tag->whereIn('id', $tagRels)->orderByRaw("FIELD(id, $sortIDs)")->get();
+        }
         
         //サブ画像
         $imgsPri = $this->itemImg->where(['item_id'=>$id, 'type'=>1])->orderBy('number', 'asc')->get();
