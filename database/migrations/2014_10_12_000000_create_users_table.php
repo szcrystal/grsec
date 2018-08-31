@@ -73,7 +73,7 @@ class CreateUsersTable extends Migration
                 
                 'tel_num' => '0311112222',
                 
-                'magazine' => 1,
+                'magazine' => 0,
                 'user_register' =>1,
                 'point' => 150,
                 

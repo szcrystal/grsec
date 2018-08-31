@@ -98,6 +98,10 @@
             	if(isset($cate)) $obj = $cate;
             ?>
             
+            @include('dashboard.shared.topRecommend')
+            
+            <hr class="mb-5">
+            
             @include('dashboard.shared.meta')
             
             @include('dashboard.shared.contents')

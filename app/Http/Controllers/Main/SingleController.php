@@ -91,7 +91,7 @@ class SingleController extends Controller
         $getNum = Ctm::isAgent('sp') ? 3 : 4;
         
         if($item->is_once) {
-        	$isOnceItems = $this->item->whereNotIn('id', [$item->id])->where(['dg_id'=>$item->dg_id, 'is_once'=>1, 'open_status'=>1])->skip(2)->take($getNum)->get();
+        	$isOnceItems = $this->item->whereNotIn('id', [$item->id])->where(['dg_id'=>$item->dg_id, 'is_once'=>1, 'is_once_recom'=>0, 'open_status'=>1, ])->skip(2)->take($getNum)->get();
             //->inRandomOrder()->take()->get() もあり クエリビルダに記載あり
         }
         
@@ -101,21 +101,43 @@ class SingleController extends Controller
         $cacheItems = null;
         $getNum = Ctm::isAgent('sp') ? 6 : 7;
         
+        //cache()->forget('cacheIds');
+        
         if(cache()->has('cacheIds')) {
         	
-        	$cacheIds = cache('cacheIds');
-          	$cacheItems = $this->item->whereIn('id', $cacheIds)->take($getNum)->get();  
+        	$cacheIds = cache('cacheIds'); //pullで元キャッシュを一旦削除する必要がある
+            $caches = implode(',', $cacheIds); //順を逆にする
+          	$cacheItems = $this->item->whereIn('id', $cacheIds)->whereNotIn('id', [$item->id])->orderByRaw("FIELD(id, $caches)")->take($getNum)->get();  
         }
         
-        if(! in_array($item->id, $cacheIds)) {
-        	$count = array_unshift($cacheIds, $item->id);
+        if(! in_array($item->id, $cacheIds)) { //配列にidがない時 or cachIdsが空の時
+        	$count = array_unshift($cacheIds, $item->id); //配列の最初に追加
          	
-          	if($count > 7) {
-            	$cacheIds = array_slice($cacheIds, 0, 6); 
+          	if($count > 16) {
+            	$cacheIds = array_slice($cacheIds, 0, 15); 
         	}      
         }
+        else { //配列にidがある時  
+        	//print_r($cacheIds);   
+                   
+        	$index = array_search($item->id, $cacheIds); //key取得
+            
+            //$split = array_splice($cacheIds, $index, 1); //keyからその要素を削除
+            unset($cacheIds[$index]);
+            $cacheIds = array_values($cacheIds);
+//            print_r($cacheIds);
+//            
+//            cache()->forget('cacheIds');
+//            cache(['cacheIds'=>$cacheIds], env('CACHE_TIME', 360));
+//            print_r(cache('cacheIds'));
 
-        cache(['cacheIds'=>$cacheIds], env('CACHE_TIME', 360));
+            //exit;
+            
+        	$count = array_unshift($cacheIds, $item->id); //配列の最初に追加
+        }
+
+		cache()->forget('cacheIds');
+        cache(['cacheIds'=>$cacheIds], env('CACHE_TIME', 360)); //putのはず? 上書きではなく後ろに追加されている
         
 //        print_r(cache('cacheIds'));
 //        exit;
@@ -212,7 +234,7 @@ class SingleController extends Controller
                     $favModel ->delete();
                 }
                 
-                $str = "お気に入りから削除されました";
+                $str = "削除されました";
             }
             else {
                     
@@ -226,7 +248,7 @@ class SingleController extends Controller
                     ]
                 );
 				
-    			$str = "お気に入りに登録されました";       
+    			$str = "登録されました";       
             }
             
         //} //foreach

@@ -19,6 +19,8 @@ class Setting extends Model
         'kare_ensure',
         'bank_info',
         'cot_per',
+        
+        'snap_top',
         'snap_primary',
         'snap_secondary',
         'snap_category',

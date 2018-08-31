@@ -11,6 +11,11 @@ class Category extends Model
         'link_name',
         'slug',
         
+        'is_top',
+    	'top_img_path',
+    	'top_title',
+        'top_text',
+        
         'meta_title',
         'meta_description',
         'meta_keyword',

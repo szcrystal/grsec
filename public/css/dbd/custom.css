@@ -46,6 +46,11 @@ label {
 	color: #555;
 	font-size: 1.05em;
 }
+label em {
+	color: red;
+    font-style: none;
+    font-size: 1.1em;
+}
 .no-img {
     display: block;
     width: 85px;

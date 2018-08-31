@@ -91,9 +91,11 @@ class TagController extends Controller
         $this->validate($request, $rules, $messages);
         
         $data = $request->all();
+        
+        $data['is_top'] = isset($data['is_top']) ? 1 : 0;
 
-        if($request->input('edit_id') !== NULL ) { //update（編集）の時
-            $tagModel = $this->tag->find($request->input('edit_id'));
+        if($editId) { //update（編集）の時
+            $tagModel = $this->tag->find($editId);
             $upText = 'タグが更新されました';
         }
         else { //新規追加の時
@@ -106,6 +108,28 @@ class TagController extends Controller
         $tagModel->save(); //モデルからsave
         
         $tagId = $tagModel->id;
+        
+        
+        //for top-img
+        if(isset($data['top_img_path'])) {
+                
+            //$filename = $request->file('main_img')->getClientOriginalName();
+            $filename = $data['top_img_path']->getClientOriginalName();
+            $filename = str_replace(' ', '_', $filename);
+            
+            //$aId = $editId ? $editId : $rand;
+            //$pre = time() . '-';
+            $filename = 'tag/' . $tagId . '/top/'/* . $pre*/ . $filename;
+            //if (App::environment('local'))
+            $path = $data['top_img_path']->storeAs('public', $filename);
+            //else
+            //$path = Storage::disk('s3')->putFileAs($filename, $request->file('thumbnail'), 'public');
+            //$path = $request->file('thumbnail')->storeAs('', $filename, 's3');
+            
+            $tagModel->top_img_path = $path;
+            $tagModel->save();
+        }
+        
         
         //Snap Save ==================================================
         foreach($data['snap_count'] as $count) {

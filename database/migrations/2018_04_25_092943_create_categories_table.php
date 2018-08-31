@@ -19,11 +19,16 @@ class CreateCategoriesTable extends Migration
             $table->string('link_name')->nullable()->default(NULL);
             $table->string('slug')->unique()->nullable()->default(NULL);
             
+            $table->boolean('is_top')->nullable()->default(0);
+            $table->string('top_img_path')->nullable()->default(NULL);
+            $table->string('top_title')->nullable()->default(NULL);
+            $table->text('top_text')->nullable()->default(NULL);
+            
             $table->string('meta_title')->nullable()->default(NULL);
             $table->text('meta_description')->nullable()->default(NULL);
             $table->string('meta_keyword')->nullable()->default(NULL);
             
-            $table->text('contents')->nullable()->default(NULL);
+            $table->longText('contents')->nullable()->default(NULL);
             
             $table->integer('view_count')->nullable()->default(0);
             

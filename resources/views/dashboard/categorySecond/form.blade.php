@@ -42,6 +42,10 @@
         
     <div class="col-lg-12">
         <form class="form-horizontal" role="form" method="POST" action="/dashboard/categories/sub" enctype="multipart/form-data">
+        	
+            <div class="form-group mt-5">
+                <button type="submit" class="btn btn-primary btn-block w-btn w-25 mx-auto">更　新</button>
+        	</div>
 
             {{ csrf_field() }}
             
@@ -111,14 +115,16 @@
                 if(isset($subCate)) $obj = $subCate;
             ?>
             
+            @include('dashboard.shared.topRecommend')
+            
+            <hr class="mb-5">
+            
             @include('dashboard.shared.meta')
             
             @include('dashboard.shared.contents')
 
           <div class="form-group mt-5">
-            <div class="">
                 <button type="submit" class="btn btn-primary btn-block w-btn w-25 mx-auto">更　新</button>
-            </div>
         </div>
 
         </form>

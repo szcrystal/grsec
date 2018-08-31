@@ -449,20 +449,24 @@ var exe = (function() {
 //            //console.log(url);     
          
              $fav.on('click', function(e){
-             	var $th = $(this);
+             	
+                var $th = $(this);
+                var $loader = $th.siblings('.fav-str').find('.loader');
+                
                 var _itemId = $(this).data('id');
                 var _tokenVal = $('input[name=_token]').val();
                 var _isOn = 0;
                 
-                if($th.hasClass('fav-on')) {
-                	_isOn = 1;
-//                     console.log(_isOn);
-//                      exit;     
+                if($th.hasClass('fav-on')) { //登録削除の時
+                	_isOn = 1; 
+                    $sibFav = $th.siblings('.fav-off');
+                }
+                else { //登録時
+                	$sibFav = $th.siblings('.fav-on');
                 }
                 
-				//$th.removeClass('d-inline').fadeOut(100, function(){
-    				$('.loader').fadeIn(10);
-                //});
+                //loader表示
+                $loader.fadeIn(10);
                 
 
                 //controllerでajax処理する場合、_tokenも送る必要がある
@@ -481,19 +485,24 @@ var exe = (function() {
                         var str = resData.str;
                         //console.log(str);
                         
-                        if(_isOn) {
-                            $favOn.removeClass('d-inline').fadeOut(100, function(){
-                            	$('.loader').fadeOut(10);
-                                $favOff.removeClass('d-none').fadeIn(50); 
+                        if(_isOn) { //お気に入り登録削除の時
+                        	//$th -> hasClass:.favOn
+                            $th.removeClass('d-inline').fadeOut(100, function(){
+                            	$loader.fadeOut(10);
+                                $sibFav.removeClass('d-none').fadeIn(50); 
+                                //$favOff.removeClass('d-none').fadeIn(50); 
                             });
                         } 
-                        else {
-                            $favOff.removeClass('d-inline').fadeOut(100, function(){
-                            	$('.loader').fadeOut(50);
-                                $favOn.removeClass('d-none').fadeIn(50);
+                        else { //お気に入り登録の時
+                        	//$th -> hasClass:.favOff
+                            $th.removeClass('d-inline').fadeOut(100, function(){
+                            	$loader.fadeOut(50);
+                                $sibFav.removeClass('d-none').fadeIn(50);
+                                //$favOn.removeClass('d-none').fadeIn(50);
                             });
                         }
                         
+                        //text表示 strはphpから取得
                         $th.siblings('small').text(str);
                         
                         //exit();

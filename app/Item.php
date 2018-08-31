@@ -43,6 +43,7 @@ class Item extends Model
         'is_delifee',
         'is_once',
         'factor',
+        'is_once_recom',
         
         'stock',
         'stock_show',

@@ -76,10 +76,12 @@ class CategoryController extends Controller
         $this->validate($request, $rules, $messages);
         
         $data = $request->all(); //requestから配列として$dataにする
+        
+        $data['is_top'] = isset($data['is_top']) ? 1 : 0;
 
-        if($request->input('edit_id') !== NULL ) { //update（編集）の時
+        if($editId) { //update（編集）の時
             $status = 'カテゴリーが更新されました！';
-            $cateModel = $this->category->find($request->input('edit_id'));
+            $cateModel = $this->category->find($editId);
         }
         else { //新規追加の時
             $status = 'カテゴリーが追加されました！';
@@ -91,6 +93,27 @@ class CategoryController extends Controller
         $cateModel->save(); //モデルからsave
         
         $cateId = $cateModel->id;
+        
+        //for top-img =========================================
+        if(isset($data['top_img_path'])) {
+                
+            //$filename = $request->file('main_img')->getClientOriginalName();
+            $filename = $data['top_img_path']->getClientOriginalName();
+            $filename = str_replace(' ', '_', $filename);
+            
+            //$aId = $editId ? $editId : $rand;
+            //$pre = time() . '-';
+            $filename = 'category/' . $cateId . '/top/'/* . $pre*/ . $filename;
+            //if (App::environment('local'))
+            $path = $data['top_img_path']->storeAs('public', $filename);
+            //else
+            //$path = Storage::disk('s3')->putFileAs($filename, $request->file('thumbnail'), 'public');
+            //$path = $request->file('thumbnail')->storeAs('', $filename, 's3');
+            
+            $cateModel->top_img_path = $path;
+            $cateModel->save();
+        }
+
         
         //Snap Save ==================================================
         foreach($data['snap_count'] as $count) {

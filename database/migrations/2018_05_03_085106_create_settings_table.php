@@ -24,12 +24,15 @@ class CreateSettingsTable extends Migration
             $table->boolean('is_product')->nullable()->default(NULL);
             $table->integer('tax_per')->nullable()->default(NULL);
             $table->boolean('is_sale')->nullable()->default(NULL);
-            $table->integer('sale_per')->nullable()->default(NULL);
+            $table->float('sale_per')->nullable()->default(NULL);
             
             $table->integer('kare_ensure')->nullable()->default(NULL);
             $table->text('bank_info')->nullable()->default(NULL);
             $table->integer('cot_per')->nullable()->default(NULL);
             
+            $table->longText('contents')->nullable()->default(NULL);
+            
+            $table->integer('snap_top')->nullable()->default(NULL);
             $table->integer('snap_primary')->nullable()->default(NULL);
             $table->integer('snap_secondary')->nullable()->default(NULL);
             $table->integer('snap_category')->nullable()->default(NULL);
@@ -54,6 +57,7 @@ class CreateSettingsTable extends Migration
                 'kare_ensure' => 90,
                 'bank_info' => "【振込先１】楽天銀行　ジャズ支店（普）7039167\n八進緑産株式会社　※カタカナ表記：ハッシンリョクサンカブシキガイシャ",
                 
+                'snap_top'=> 5,
                 'snap_primary'=> 10,
                 'snap_secondary'=> 5,
                 'snap_category'=> 3,

@@ -16,7 +16,14 @@
             @foreach($cates as $cate)
                 <li class="">
                     
-                    <span>{!! str_replace('/', "<br>", $cate->link_name) !!} <i class="fa fa-caret-down" aria-hidden="true"></i></span>
+                    <span>
+                    @if(isset($cate->link_name))
+                    	{{ $cate->link_name }}
+                    @else
+                    	{{ $cate->name }}
+                    @endif
+                    </span>
+                    {{-- str_replace('/', "<br>", $cate->link_name) --}}
                     
 
                     <section class="drops clearfix">
@@ -61,61 +68,7 @@
                 </li>
             @endforeach
             
-            	<li class="">
-                    
-                    <span>初めての方 <i class="fa fa-caret-down" aria-hidden="true"></i></span>
 
-                    <section class="drops clearfix">
-                    	
-                        <div class="float-left clearfix">
-                        	<h3><a href="{{ url('first-guide') }}">初めての方へ <i class="fas fa-angle-double-right"></i></a></h3>
-                            
-                            <div class="float-left">  
-                                <p>グリーンロケットは、初めての植木づくりを全力で応援します。</p>
-                            </div>
-                            
-                            <?php								
-                                extract(Ctm::getFixPage());
-                            ?>
-                        
-                        	@if(count($fixOthers) > 0) 
-                                <ul class="float-left list-unstyled"> 
-                                    @foreach($fixOthers as $fixOther)
-                                        <li><a href="{{ url($fixOther->slug) }}">
-                                            @if($fixOther->sub_title != '')
-                                            {{ $fixOther->sub_title }} <i class="fas fa-angle-double-right"></i>
-                                            @else
-                                            {{ $fixOther->title }} <i class="fas fa-angle-double-right"></i>
-                                            @endif
-                                        </a></li>
-                                    @endforeach                     
-                                </ul>
-                            @endif
-                        </div>
-                        
-                        <div class="clearfix float-right pl-5">
-                            
-                            <h3>グリーンロケットについて</h3>
-                            
-                            <ul class="mt-3 list-unstyled">
-                            @if(count($fixNeeds) > 0)         
-                                @foreach($fixNeeds as $fixNeed)
-                                <li><a href="{{ url($fixNeed->slug) }}">
-                                    @if($fixNeed->sub_title != '')
-                                    {{ $fixNeed->sub_title }} <i class="fas fa-angle-double-right"></i>
-                                    @else
-                                    {{ $fixNeed->title }} <i class="fas fa-angle-double-right"></i>
-                                    @endif
-                                </a></li>
-                                @endforeach
-                            @endif 
-                                <li><a href="{{ url('contact') }}">お問い合わせ <i class="fas fa-angle-double-right"></i></a></li>
-                            </ul>
-                                
-                        </div>
-
-                    </section>
-                </li>
              
             </ul>
             

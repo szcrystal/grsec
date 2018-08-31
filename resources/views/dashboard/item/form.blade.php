@@ -202,7 +202,7 @@
             
         
 			<fieldset class="mb-4 form-group">
-                <label>商品番号</label>
+                <label>商品番号 <span class="text-danger text-big">*</span></label>
                 <input class="form-control{{ $errors->has('number') ? ' is-invalid' : '' }}" name="number" value="{{ Ctm::isOld() ? old('number') : (isset($item) ? $item->number : '') }}">
 
                 @if ($errors->has('number'))
@@ -214,7 +214,7 @@
             </fieldset>
             
             <fieldset class="mb-4 form-group">
-                <label>商品名</label>
+                <label>商品名 <span class="text-danger text-big">*</span></label>
                 <input class="form-control{{ $errors->has('title') ? ' is-invalid' : '' }}" name="title" value="{{ Ctm::isOld() ? old('title') : (isset($item) ? $item->title : '') }}">
 
                 @if ($errors->has('title'))
@@ -259,7 +259,7 @@
             
             
             <fieldset class="mb-4 form-group">
-                <label>親カテゴリー</label>
+                <label>親カテゴリー <span class="text-danger text-big">*</span></label>
                 <select class="form-control select-first col-md-6{{ $errors->has('cate_id') ? ' is-invalid' : '' }}" name="cate_id">
                     <option disabled selected>選択して下さい</option>
                     @foreach($cates as $cate)
@@ -326,7 +326,7 @@
             
             
             <fieldset class="mb-4 form-group">
-                <label for="price" class="control-label">価格（本体価格）</label>
+                <label for="price" class="control-label">価格（本体価格）<span class="text-danger text-big">*</span></label>
                 <input class="form-control col-md-6{{ $errors->has('price') ? ' is-invalid' : '' }}" name="price" value="{{ Ctm::isOld() ? old('price') : (isset($item) ? $item->price : '') }}" placeholder="税抜き金額を入力">
                 
                 @if ($errors->has('price'))
@@ -393,7 +393,7 @@
             </fieldset>
             
             <fieldset class="mb-2 form-group">
-                <label>配送区分</label>
+                <label>配送区分 <span class="text-danger text-big">*</span></label>
                 <select class="form-control col-md-6{{ $errors->has('dg_id') ? ' is-invalid' : '' }}" name="dg_id">
                     <option disabled selected>選択して下さい</option>
                     @foreach($dgs as $dg)
@@ -464,7 +464,7 @@
             </fieldset>
             
             <fieldset class="mb-4 form-group">
-                <label for="factor" class="control-label d-inline">係数</label>
+                <label for="factor" class="control-label d-inline">係数 <span class="text-danger text-big">*</span></label>
                 <input class="form-control d-inline col-md-4{{ $errors->has('factor') ? ' is-invalid' : '' }}" name="factor" value="{{ Ctm::isOld() ? old('factor') : (isset($item) ? $item->factor : '') }}" placeholder="">
                 
                 @if ($errors->has('factor'))
@@ -473,6 +473,26 @@
                         <span>{{ $errors->first('factor') }}</span>
                     </div>
                 @endif
+            </fieldset>
+            
+            <fieldset class="form-group mb-2">
+                    <div class="checkbox">
+                        <label>
+                            <?php
+                                $checked = '';
+                                if(Ctm::isOld()) {
+                                    if(old('is_once_recom'))
+                                        $checked = ' checked';
+                                }
+                                else {
+                                    if(isset($item) && $item->is_once_recom) {
+                                        $checked = ' checked';
+                                    }
+                                }
+                            ?>
+                            <input type="checkbox" name="is_once_recom" value="1"{{ $checked }}> 同梱包可能おすすめに表示させない
+                        </label>
+                    </div>
             </fieldset>
             
             
@@ -564,7 +584,7 @@
             
             
             <fieldset class="mb-3 form-group">
-                <label>在庫表示設定</label>
+                <label>売り切れ表示設定</label>
                 <select class="form-control col-md-6{{ $errors->has('stock_type') ? ' is-invalid' : '' }}" name="stock_type">
                     <option value="0" selected>選択して下さい</option>
                         <?php
@@ -597,7 +617,7 @@
             </fieldset>
             
             <fieldset class="mb-2 form-group">
-                <label for="stock" class="control-label">在庫入荷月</label>
+                <label for="stock" class="control-label">在庫入荷月 {{--<span class="text-danger text-big">*</span><small>（売り切れ表示で「[-]月頃入荷予定」の選択時のみ）</small>--}}</label>
                 <input class="form-control col-md-6{{ $errors->has('stock_reset_month') ? ' is-invalid' : '' }}" name="stock_reset_month" value="{{ Ctm::isOld() ? old('stock_reset_month') : (isset($item) ? $item->stock_reset_month : '') }}">
                 
 

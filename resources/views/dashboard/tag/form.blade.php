@@ -70,7 +70,7 @@
             </fieldset>
 
 
-            <fieldset class="form-group">
+            <fieldset class="form-group mb-4">
                 <label for="slug" class="control-label">スラッグ</label>
 
                 <div class="">
@@ -85,18 +85,24 @@
                 </div>
             </fieldset>
             
+            
             <?php
                 $obj = null;
                 if(isset($tag)) $obj = $tag;
             ?>
+            
+            
+            @include('dashboard.shared.topRecommend')
+            
+            <hr class="mb-5">
             
             @include('dashboard.shared.meta')
             
             @include('dashboard.shared.contents')
 
 
-          <div class="form-group mt-5">
-                <button type="submit" class="btn btn-primary btn-block w-btn w-25 mx-auto">更　新</button>
+        <div class="form-group mt-5">
+            <button type="submit" class="btn btn-primary btn-block w-btn w-25 mx-auto">更　新</button>
         </div>
 
         </form>

@@ -1,29 +1,43 @@
 <?php
-use App\User;
+//use App\User;
 ?>
 
 <div id="carouselIndicators" class="carousel slide" data-ride="carousel" data-interval="10000">
   <ol class="carousel-indicators">
-    <li data-target="#carouselIndicators" data-slide-to="0" class="active"></li>
-    <li data-target="#carouselIndicators" data-slide-to="1"></li>
-    <li data-target="#carouselIndicators" data-slide-to="2"></li>
+  	<?php
+    	$i = 0; 
+    ?>
+  	@foreach($caros as $caro)
+    	@if($i)
+        	<?php $active = ''; ?>
+        @else
+        	<?php $active = ' class="active"'; ?>
+        @endif
+        
+        <li data-target="#carouselIndicators" data-slide-to="{{ $i }}"{!! $active !!}>
+            {{-- <img class="d-block img-fluid" src="{{ Storage::url($caro->img_path) }}" alt="indicator"> --}}
+        </li>
+        	
+        
+        <?php $i++; ?>
+    @endforeach
   </ol>
   <div class="carousel-inner" role="listbox">
 
     <?php $n = 0; ?>
 
-	@if(isset($modelSlide))
-    	@foreach($newModel as $obj)
+	@if(isset($caros))
+    	@foreach($caros as $caro)
 
             @if($n > 0)
                 <div class="carousel-item">
             @else
                 <div class="carousel-item active">
             @endif
-            	<a href="{{ url(Ctm::getModelUrl($obj->id)) }}">
-              	<img class="d-block img-fluid" src="{{ Storage::url($obj->model_thumb) }}" alt="slide">
+            	
+              	<img class="d-block img-fluid w-100" src="{{ Storage::url($caro->img_path) }}" alt="slide">
               	<div class="carousel-caption d-none d-md-block">
-                	<h3>{{ $obj->name}}＠{{ $obj->school }}</h3>
+                	<h3></h3>
                 </div>
               </a>
             </div>

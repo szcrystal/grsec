@@ -9,14 +9,18 @@ use App\Tag;
 use App\TagRelation;
 use App\Fix;
 use App\Setting;
+use App\ItemImage;
+use App\Favorite;
 
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
+use Auth;
+
 class HomeController extends Controller
 {
-    public function __construct(Item $item, Category $category, CategorySecond $cateSec, Tag $tag, TagRelation $tagRel, Fix $fix, Setting $setting)
+    public function __construct(Item $item, Category $category, CategorySecond $cateSec, Tag $tag, TagRelation $tagRel, Fix $fix, Setting $setting, ItemImage $itemImg, Favorite $favorite)
     {
         //$this->middleware('search');
         
@@ -28,6 +32,8 @@ class HomeController extends Controller
         $this->fix = $fix;
         $this->tag = $tag;
         $this->setting = $setting;
+        $this->itemImg = $itemImg;
+        $this->favorite = $favorite;
 //        $this->tagRelation = $tagRelation;
 //        $this->tagGroup = $tagGroup;
 //        $this->category = $category;
@@ -62,9 +68,71 @@ class HomeController extends Controller
 //            $whereArrSec['state_id'] = $stateObj->id;
 //            //$stateName = $stateObj->name;
 //        }
+
+		//Carousel
+        $caros = $this->itemImg->where(['item_id'=>9999, 'type'=>6])->get();
+
+		//FirstItem =======================
+        $getNum = 4;
+		//New
+        $newItems = $this->item->where($whereArr)->orderBy('created_at','DESC')->take($getNum)->get()->all();
         
-        //新着3件 carousel
-        //$items = $this->item->where($whereArr)->orderBy('created_at','DESC')->take(21)->get();
+        
+        //Ranking
+        $rankItems = $this->item->where($whereArr)->orderBy('sale_count', 'desc')->take($getNum)->get()->all();
+        
+        //Recent 最近見た
+        $cacheIds = array();
+        $cacheItems = null;
+        //$getNum = Ctm::isAgent('sp') ? 6 : 7;
+        
+        if(cache()->has('cacheIds')) {
+        	
+        	$cacheIds = cache('cacheIds');
+            
+//            print_r($cacheIds);
+//            exit;
+            
+            $caches = implode(',', $cacheIds); //orderByRowに渡すものはString
+//            echo $caches;
+//            exit;
+            
+          	$cacheItems = $this->item->whereIn('id', $cacheIds)->where($whereArr)->orderByRaw("FIELD(id, $caches)")->take($getNum)->get()->all();  
+        }
+        
+        //array
+        $firstItems = [
+        	'新着情報'=> $newItems,
+            '人気ランキング'=> $rankItems,
+            '最近チェックしたアイテム'=> $cacheItems,
+        ];
+        //FirstItem END ================================
+        
+        
+        //おすすめ情報(cate & cateSecond & tag)
+        $tagRecoms = $this->tag->where(['is_top'=>1])->orderBy('updated_at', 'desc')->get()->all();
+        $cateRecoms = $this->category->where(['is_top'=>1])->orderBy('updated_at', 'desc')->get()->all();
+        $subCateRecoms = $this->cateSec->where(['is_top'=>1])->orderBy('updated_at', 'desc')->get()->all();
+        
+        $res = array_merge($tagRecoms, $cateRecoms, $subCateRecoms);
+        
+//        $books = array(
+//        	$tagRecoms,
+//            $cateRecoms,
+//            $subCateRecoms
+//        );
+        
+        $collection = collect($res);
+        $allRecoms = $collection->sortByDesc('updated_at');
+        
+//        print_r($allRecoms);
+//        exit;
+
+        //$allRecoms = $this->item->where($whereArr)->orderBy('created_at', 'desc')->take(10)->get(); 
+        
+
+
+		//category
         $itemCates = array();
         foreach($cates as $cate) { //カテゴリー名をkeyとしてatclのかたまりを配列に入れる
         
@@ -76,19 +144,25 @@ class HomeController extends Controller
                 $itemCates[$cate->id] = $as;
             }
         }
-//        print_r($itemCates);
-//        exit;
         
-//        $items = $this->item->where(['open_status'=>1¥])->orderBy('created_at','DESC')->get();
+//        $items = $this->item->where(['open_status'=>1])->orderBy('created_at','DESC')->get();
 //        $items = $items->groupBy('cate_id')->toArray();
+
+		//head news
+		$newsCont = $this->setting->get()->first()->contents;
 
 		$setting = $this->setting->get()->first();
         $metaTitle = $setting->meta_title;
         $metaDesc = $setting->meta_description;
         $metaKeyword = $setting->meta_keyword;
         
+        //For this is top
+        $isTop = 1;
         
-        return view('main.home.index', ['itemCates'=>$itemCates, 'cates'=>$cates, 'metaTitle'=>$metaTitle, 'metaDesc'=>$metaDesc, 'metaKeyword'=>$metaKeyword, ]);
+        
+        
+        
+        return view('main.home.index', ['firstItems'=>$firstItems, 'allRecoms'=>$allRecoms, 'itemCates'=>$itemCates, 'cates'=>$cates, 'newsCont'=>$newsCont, 'metaTitle'=>$metaTitle, 'caros'=>$caros, 'metaDesc'=>$metaDesc, 'metaKeyword'=>$metaKeyword, 'isTop'=>$isTop,]);
     }
 
     public function getFix(Request $request)

@@ -4,13 +4,16 @@ namespace App\Http\Controllers\DashBoard;
 
 use App\Admin;
 use App\Setting;
+use App\ItemImage;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
+use Storage;
+
 class SettingController extends Controller
 {
-    public function __construct(Admin $admin, Setting $setting/*, Item $item, Tag $tag, Category $category, TagRelation $tagRelation*/)
+    public function __construct(Admin $admin, Setting $setting, ItemImage $itemImg/*, Item $item, Tag $tag, Category $category, TagRelation $tagRelation*/)
     {
         
         $this -> middleware('adminauth');
@@ -18,6 +21,7 @@ class SettingController extends Controller
         
         $this -> admin = $admin;
         $this -> setting = $setting;
+        $this->itemImg = $itemImg;
 //        $this-> item = $item;
 //        $this->category = $category;
 //        $this -> tag = $tag;
@@ -44,8 +48,10 @@ class SettingController extends Controller
         
         //$cates= $this->category;
         //$status = $this->articlePost->where(['base_id'=>15])->first()->open_date;
+        $snaps = $this->itemImg->where(['item_id'=>9999, 'type'=>6])->get();
+        $imgCount = $this->setting->get()->first()->snap_top;
         
-        return view('dashboard.setting.form', ['setting'=>$setting, 'edit_id'=>1]);
+        return view('dashboard.setting.form', ['setting'=>$setting, 'imgCount'=>$imgCount, 'snaps'=>$snaps, 'edit_id'=>1]);
     }
 
 //    public function show($id)
@@ -124,6 +130,77 @@ class SettingController extends Controller
         $setting->fill($data);
         $setting->save();
         //$settingId = $setting->id;
+        
+        
+        //Snap Save ==================================================
+        foreach($data['snap_count'] as $count) {
+        
+            /*
+                type:1->item main
+                type:2->item spare
+                type:3->category
+                type:4->sub category
+                type:5->tag
+                type:6->top carousel                            
+            */         
+ 
+            if(isset($data['del_snap'][$count]) && $data['del_snap'][$count]) { //削除チェックの時
+                
+                $snapModel = $this->itemImg->where(['item_id'=>9999, 'type'=>6, 'number'=>$count+1])->first();
+                
+                if($snapModel !== null) {
+                    Storage::delete('public/'.$snapModel->img_path); //Storageはpublicフォルダのあるところをルートとしてみる
+                    $snapModel ->delete();
+                }
+            
+            }
+            else {
+                if(isset($data['snap_thumb'][$count])) {
+                    
+                    $snapImg = $this->itemImg->updateOrCreate(
+                        ['item_id'=>9999, 'type'=>6, 'number'=>$count+1],
+                        [
+                            'item_id'=>9999,
+                            //'snap_path' =>'',
+                            'type' => 6,
+                            'number'=> $count+1,
+                        ]
+                    );
+
+                    $filename = $data['snap_thumb'][$count]->getClientOriginalName();
+                    $filename = str_replace(' ', '_', $filename);
+                    
+                    //$aId = $editId ? $editId : $rand;
+                    //$pre = time() . '-';
+                    $filename = 'top/' . 9999 . '/snap/'/* . $pre*/ . $filename;
+                    //if (App::environment('local'))
+                    $path = $data['snap_thumb'][$count]->storeAs('public', $filename);
+                    //else
+                    //$path = Storage::disk('s3')->putFileAs($filename, $request->file('thumbnail'), 'public');
+                    //$path = $request->file('thumbnail')->storeAs('', $filename, 's3');
+                
+                    //$data['model_thumb'] = $filename;
+                    
+                    $snapImg->img_path = $filename;
+                    $snapImg->save();
+                }
+            }
+            
+        } //foreach
+        
+        $num = 1;
+        $snaps = $this->itemImg->where(['item_id'=>9999, 'type'=>6])->get();
+//            $snaps = $this->modelSnap->where(['model_id'=>$modelId])->get()->map(function($obj) use($num){
+//                
+//                return true;
+//            });
+        
+        //Snapのナンバーを振り直す
+        foreach($snaps as $snap) {
+            $snap->number = $num;
+            $snap->save();
+            $num++;
+        }
         
         return redirect('dashboard/settings/')->with('status', $status);
     }

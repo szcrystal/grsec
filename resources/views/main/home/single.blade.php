@@ -74,10 +74,10 @@ use App\Setting;
                     <div class="mb-3" >
                     	<span class="text-small">カテゴリー：</span>
                         @if(isset($cate))
-                        <a href="{{ url('category/'.$cate->slug) }}">{{ $cate->link_name }}</a>
+                        	<a href="{{ url('category/'.$cate->slug) }}">{{ $cate->link_name }}</a>
                         @endif
                         @if(isset($subCate))
-                          ＞ <a href="{{ url('category/'.$cate->slug. '/'.$subCate->slug) }}">{{ $subCate->name }}</a>
+                        	&nbsp;<i class="fas fa-angle-right"></i>&nbsp;<a href="{{ url('category/'.$cate->slug. '/'.$subCate->slug) }}">{{ $subCate->name }}</a>
                         @endif
                     </div>
                     
@@ -104,32 +104,32 @@ use App\Setting;
                         円&nbsp;<span class="text-small">(税込)</span>
                     </div>
                     
-                    @if(env('APP_ENV') != 'trial') 
-                    <div class="favorite my-2">
-                    @if(Auth::check())
-                    	<?php
-                     		if($isFav) {
-                       			$on = ' d-none';
-                          		$off = ' d-inline'; 
-                            	$str = 'お気に入りの商品です';              
-                       		}
-                         	else {
-                          		$on = ' d-inline';
-                                $off = ' d-none';
-                                $str = 'お気に入りに登録';
-                          	}               
-                     	?>
 
-                        <span class="fav fav-on{{ $on }}" data-id="{{ $item->id }}"><i class="far fa-heart"></i></span>
-                        <span class="fav fav-off{{ $off }}" data-id="{{ $item->id }}"><i class="fas fa-heart"></i></span>
-                        <small class="fav-str"><span class="loader"><i class="fas fa-square"></i></span>{{ $str }}</small>    
-                        
-                    @else
-                    	<span class="fav-temp"><i class="far fa-heart"></i></span>
-                     	<small class="fav-str"><a href="{{ url('login') }}"><b>ログイン</b></a>するとお気に入りに登録できます</small>   
-                    @endif 	   
+                    <div class="favorite my-2" data-type='single'>
+                        @if(Auth::check())
+                            <?php
+                                if($isFav) {
+                                    $on = ' d-none';
+                                    $off = ' d-inline'; 
+                                    $str = 'お気に入りの商品です';              
+                                }
+                                else {
+                                    $on = ' d-inline';
+                                    $off = ' d-none';
+                                    $str = 'お気に入りに登録';
+                                }               
+                            ?>
+
+                            <span class="fav fav-on{{ $on }}" data-id="{{ $item->id }}"><i class="far fa-heart"></i></span>
+                            <span class="fav fav-off{{ $off }}" data-id="{{ $item->id }}"><i class="fas fa-heart"></i></span>
+                            <small class="fav-str"><span class="loader"><i class="fas fa-square"></i></span>{{ $str }}</small>    
+                            
+                        @else
+                            <span class="fav-temp"><i class="far fa-heart"></i></span>
+                            <small class="fav-str"><a href="{{ url('login') }}"><b>ログイン</b></a>するとお気に入りに登録できます</small>   
+                        @endif 	   
                     </div>
-                    @endif
+                    
                     
                     <div class="mt-3">
                     	<p>{!! nl2br($item->exp_first) !!}</p>

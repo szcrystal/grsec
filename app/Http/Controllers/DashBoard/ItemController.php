@@ -179,6 +179,7 @@ class ItemController extends Controller
         $data['stock_show'] = isset($data['stock_show']) ? 1 : 0;
         $data['farm_direct'] = isset($data['farm_direct']) ? 1 : 0;
         $data['is_once'] = isset($data['is_once']) ? 1 : 0;
+        $data['is_once_recom'] = isset($data['is_once_recom']) ? 1 : 0;
         $data['is_delifee_table'] = isset($data['is_delifee_table']) ? 1 : 0;
         
         
