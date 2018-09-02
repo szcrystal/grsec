@@ -562,7 +562,7 @@ var exe = (function() {
         },
         
         getWH: function() {
-        	$target = $('.img-box');
+        	$target = $('.top-second .img-box');
         	var w = $target.width();
             var h = $target.height();
             

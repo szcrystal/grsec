@@ -12,28 +12,29 @@
         <div class="panel-body">
             
             <div>
-                <h5>カテゴリー</h5>
-                <ul class="no-list">
-                <?php
+            	<?php
                     $cates = Category::get();
                 ?>
                 @foreach($cates as $cate)
+                	<h5><a href="{{url('/category/'. $cate->slug)}}">
+                    @if(isset($cate->link_name))
+                    {{ $cate->link_name }}
+                    @else
+                    {{ $cate->name }}
+                    @endif
+                    </a></h5>
+                	
+                    <ul class="no-list pl-3">
+                    
                     <?php $subcates = CategorySecond::where('parent_id', $cate->id)->get(); ?>
-                    <li class="cate-list">
-                        <i class="fa fa-circle" aria-hidden="true"></i>
-                        <a href="{{url('/category/'. $cate->slug)}}">{{ $cate->link_name }}</a>
-                        
-                        <ul>
-                            @foreach($subcates as $subcate)
-                                <li>
-                                    <a href="{{url('category/'. $cate->slug.'/'.$subcate->slug) }}">{{ $subcate->name }}</a>
-                                </li>
-                            @endforeach
-                        </ul>
-                    </li>
+                    @foreach($subcates as $subcate)
+                        <li>
+                            <a href="{{url('category/'. $cate->slug.'/'.$subcate->slug) }}">{{ $subcate->name }}</a>
+                        </li>
+                    @endforeach
+                	</ul>
                 @endforeach
 
-                </ul>
             </div>
 
             <div>
@@ -46,7 +47,7 @@
                 @foreach($tagLeftRanks as $val)
                     <li class="rank-tag">
                         {{-- <i class="fas fa-hashtag text-small"></i> --}}
-                        #<a href="{{url('tag/' . $val->slug)}}">{{$val->name}}</a>
+                        <a href="{{url('tag/' . $val->slug)}}">{{$val->name}}</a>
                     </li>
                 @endforeach
 

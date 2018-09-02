@@ -87,6 +87,18 @@ if(Schema::hasTable('fixes')) {
     }
 }
 
+//New Item
+Route::get('new-items', 'Main\HomeController@uniqueArchive');
+
+//Ranking
+Route::get('ranking', 'Main\HomeController@uniqueArchive');
+
+//Recent Check
+Route::get('recent-items', 'Main\HomeController@uniqueArchive');
+
+//Recommend Info
+Route::get('recommend-info', 'Main\HomeController@recomInfo');
+
 //Category
 Route::get('category/{slug}', 'Main\HomeController@category');
 Route::get('category/{slug}/{subSlug}', 'Main\HomeController@subCategory');

@@ -88,6 +88,26 @@ class CustomController extends Controller
         return $fixArr;
     }
     
+    static function getTags($itemId, $num=0)
+    {
+        $tagIds = TagRelation::where('item_id', $itemId)->get()->map(function($obj){
+            return $obj->tag_id;
+        })->all();
+        
+        $strs = '"'. implode('","', $tagIds) .'"';
+
+        
+        if($num)
+        	$tags = Tag::whereIn('id', $tagIds)->orderByRaw("FIELD(id, $strs)")->take($num)->get();
+        else
+        	$tags = Tag::whereIn('id', $tagIds)->orderByRaw("FIELD(id, $strs)")->get();
+
+		
+        return $tags;
+
+    }
+    
+    
 //    static function getHeaderTitle($type)
 //    {
 //    	$title = '';

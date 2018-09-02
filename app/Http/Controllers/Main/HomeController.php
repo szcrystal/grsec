@@ -11,16 +11,18 @@ use App\Fix;
 use App\Setting;
 use App\ItemImage;
 use App\Favorite;
+use App\ItemStockChange;
 
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 use Auth;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class HomeController extends Controller
 {
-    public function __construct(Item $item, Category $category, CategorySecond $cateSec, Tag $tag, TagRelation $tagRel, Fix $fix, Setting $setting, ItemImage $itemImg, Favorite $favorite)
+    public function __construct(Item $item, Category $category, CategorySecond $cateSec, Tag $tag, TagRelation $tagRel, Fix $fix, Setting $setting, ItemImage $itemImg, Favorite $favorite, ItemStockChange $itemSc)
     {
         //$this->middleware('search');
         
@@ -34,6 +36,7 @@ class HomeController extends Controller
         $this->setting = $setting;
         $this->itemImg = $itemImg;
         $this->favorite = $favorite;
+        $this->itemSc = $itemSc;
 //        $this->tagRelation = $tagRelation;
 //        $this->tagGroup = $tagGroup;
 //        $this->category = $category;
@@ -42,7 +45,7 @@ class HomeController extends Controller
 //        $this->totalize = $totalize;
 //        $this->totalizeAll = $totalizeAll;
         
-        $this->perPage = env('PER_PAGE', 21);
+        $this->perPage = env('PER_PAGE', 20);
         $this->itemPerPage = 15;
         
     }
@@ -59,6 +62,27 @@ class HomeController extends Controller
         $whereArrSec = ['open_status'=>1/*,'feature'=>1*/];
         
         
+//        $tagIds = TagRelation::where('item_id', 1)->get()->map(function($obj){
+//            return $obj->tag_id;
+//        })->all();
+//        
+//        $strs = implode(',', $tagIds);
+        
+//        $placeholder = '';
+//        foreach ($tagIds as $key => $value) {
+//           $placeholder .= ($key == 0) ? $value : ','.$value;
+//        }
+//        //exit;
+//        
+//    //    $strs = "FIELD(id, $strs)";
+//    //    echo $strs;
+//        //exit;
+//        
+//        //->orderByRaw("FIELD(id, $sortIDs)"
+//        $tags = Tag::whereIn('id', $tagIds)->orderByRaw("FIELD(id, $placeholder)")->take(2)->get();
+//        print_r($tags);
+//        exit;
+        
 //        $stateObj = null;
 //        //$stateName = '';
 //        
@@ -74,9 +98,18 @@ class HomeController extends Controller
 
 		//FirstItem =======================
         $getNum = 4;
-		//New
-        $newItems = $this->item->where($whereArr)->orderBy('created_at','DESC')->take($getNum)->get()->all();
+		
+        //New
+        $newItems = null;
         
+        $scIds = $this->itemSc->orderBy('updated_at','desc')->get()->map(function($isc){
+        	return $isc->item_id;
+        })->all();
+        
+        if(count($scIds) > 0) {
+            $scIdStr = implode(',', $scIds);
+            $newItems = $this->item->whereIn('id', $scIds)->where($whereArr)->orderByRaw("FIELD(id, $scIdStr)")->take($getNum)->get()->all();
+        }
         
         //Ranking
         $rankItems = $this->item->where($whereArr)->orderBy('sale_count', 'desc')->take($getNum)->get()->all();
@@ -109,7 +142,7 @@ class HomeController extends Controller
         //FirstItem END ================================
         
         
-        //おすすめ情報(cate & cateSecond & tag)
+        //おすすめ情報 RecommendInfo (cate & cateSecond & tag)
         $tagRecoms = $this->tag->where(['is_top'=>1])->orderBy('updated_at', 'desc')->get()->all();
         $cateRecoms = $this->category->where(['is_top'=>1])->orderBy('updated_at', 'desc')->get()->all();
         $subCateRecoms = $this->cateSec->where(['is_top'=>1])->orderBy('updated_at', 'desc')->get()->all();
@@ -159,12 +192,117 @@ class HomeController extends Controller
         //For this is top
         $isTop = 1;
         
-        
-        
-        
+
         return view('main.home.index', ['firstItems'=>$firstItems, 'allRecoms'=>$allRecoms, 'itemCates'=>$itemCates, 'cates'=>$cates, 'newsCont'=>$newsCont, 'metaTitle'=>$metaTitle, 'caros'=>$caros, 'metaDesc'=>$metaDesc, 'metaKeyword'=>$metaKeyword, 'isTop'=>$isTop,]);
     }
+    
+    
+    //NewItem Ranking RecentCheck
+    public function uniqueArchive(Request $request)
+    {
+    	$path = $request->path();
+        
+        $whereArr = ['open_status'=>1];
+        
+        $items = null;
+        $title = '';
+        
+        if($path == 'new-items') {
+        
+            $scIds = $this->itemSc->orderBy('updated_at','desc')->get()->map(function($isc){
+                return $isc->item_id;
+            })->all();
+            
+            if(count($scIds) > 0) {
+                $scIdStr = implode(',', $scIds);
+                $items = $this->item->whereIn('id', $scIds)->where($whereArr)->orderByRaw("FIELD(id, $scIdStr)")->take(100)->paginate($this->perPage);
+            }
+            
+            $title = '新着情報';
+        }
+        elseif($path == 'ranking') {
+        	$items = $this->item->where($whereArr)->orderBy('sale_count', 'desc')->paginate($this->perPage);
+            $title = '人気ランキング';
+        }
+        elseif($path == 'recent-items') {
+        	$cacheIds = array();
+            
+            if(cache()->has('cacheIds')) {
+                
+                $cacheIds = cache('cacheIds');
+                
+                $caches = implode(',', $cacheIds); //orderByRowに渡すものはString
+                
+                $items = $this->item->whereIn('id', $cacheIds)->where($whereArr)->orderByRaw("FIELD(id, $caches)")->paginate($this->perPage);  
+            }
+            
+            $title = '最近チェックしたアイテム';               
+        }
+        
+        $metaTitle = $title;
+        $metaDesc = '';
+        $metaKeyword = '';
+        
+        return view('main.archive.index', ['items'=>$items, 'type'=>'unique', 'title'=>$title, 'metaTitle'=>$metaTitle, 'metaDesc'=>$metaDesc, 'metaKeyword'=>$metaKeyword,]);
+ 
+    }
+    
+    
+    //RecommendInfo
+    public function recomInfo(Request $request)
+    {
+    	$items = null;
+        
+        $path = $request->path();
+        
+    	if($path == 'recommend-info') {
 
+        	$tagRecoms = $this->tag->where(['is_top'=>1])->orderBy('updated_at', 'desc')->get()->all();
+            $cateRecoms = $this->category->where(['is_top'=>1])->orderBy('updated_at', 'desc')->get()->all();
+            $subCateRecoms = $this->cateSec->where(['is_top'=>1])->orderBy('updated_at', 'desc')->get()->all();
+            
+//            $aaa = $tagRecoms->merge($cateRecoms);
+//            $b = $aaa->paginate($this->perPage);
+            
+            
+            $res = array_merge($tagRecoms, $cateRecoms, $subCateRecoms);
+            
+            $collection = collect($res);
+            $sorts = $collection->sortByDesc('updated_at')->toArray();
+            
+            //Custom Pagination
+            $perPage = $this->perPage;
+            $total = count($sorts);
+            $chunked = array();
+            
+            if($total) {
+                $chunked = array_chunk($sorts, $perPage);
+                $current_page = $request->page ? $request->page : 1;
+                $chunked = $chunked[$current_page - 1]; //現在のページに該当する配列を$chunkedに入れる
+            }
+            
+            $items = new LengthAwarePaginator($chunked, $total, $perPage); //pagination インスタンス作成
+            $items -> setPath($path); //url pathセット
+            //$allResults -> appends(['s' => $search]); //get url set
+            //Custom pagination END
+            
+//            print_r($items);
+//            exit;
+            
+            $title = 'おすすめ情報';
+        }
+        
+        $metaTitle = $title;
+        $metaDesc = '';
+        $metaKeyword = '';
+        
+        return view('main.archive.recomInfo', ['items'=>$items, 'type'=>'unique', 'title'=>$title, 'metaTitle'=>$metaTitle, 'metaDesc'=>$metaDesc, 'metaKeyword'=>$metaKeyword,]);
+    }
+    
+    
+    
+    
+	//FIx Page =====================
     public function getFix(Request $request)
     {
         $path = $request->path();
@@ -177,6 +315,7 @@ class HomeController extends Controller
         return view('main.home.fix', ['fix'=>$fix, 'metaTitle'=>$metaTitle,]);
     }
     
+    //Category ==============================
     public function category($slug)
     {
     	$cate = $this->category->where('slug', $slug)->first();

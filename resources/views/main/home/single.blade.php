@@ -211,15 +211,12 @@ use App\Setting;
                   	</div> 
                     
                     
-                    @if(isset($tags))
-                    <div class="mt-5">
-                    	@foreach($tags as $tag)
-                        	<span class="rank-tag">
-                            	<a href="{{ url('tag/' . $tag->slug) }}">#{{ $tag->name }}</a>
-                            </span>
-                        @endforeach
+                    
+                    <div class="tags mt-5">
+                        <?php $num = 0; ?>
+                        @include('main.shared.tag')
                     </div>
-                    @endif
+                    
             	
                 </div>
                 

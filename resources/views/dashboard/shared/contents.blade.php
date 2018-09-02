@@ -1,14 +1,14 @@
 
-    <fieldset class="mb-4 form-group{{ $errors->has('detail') ? ' is-invalid' : '' }}">
-            <label for="detail" class="control-label">
+    <fieldset class="mb-4 form-group{{ $errors->has('contents') ? ' is-invalid' : '' }}">
+            <label for="contents" class="control-label">
             	@if(isset($type) && $type == 'top')
-                お知らせ枠(HTML)
+                TOPお知らせ枠(HTML)
             	@else
                 コンテンツ
                 @endif
             </label>
 
-            <textarea id="contents" type="text" class="form-control" name="contents" rows="22">{{ Ctm::isOld() ? old('contents') : (isset($obj) ? $obj->contents : '') }}</textarea>
+            <textarea id="contents" class="form-control" name="contents" rows="22">{{ Ctm::isOld() ? old('contents') : (isset($obj) ? $obj->contents : '') }}</textarea>
 
             @if ($errors->has('contents'))
                 <span class="help-block">

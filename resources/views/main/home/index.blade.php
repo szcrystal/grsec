@@ -18,18 +18,16 @@ use App\Favorite;
 
 @foreach($firstItems as $key => $firstItem)
 	
-    @if(strpos($key, '新着情報') !== false)
-    	<?php $type = 1; ?>
-    @elseif(strpos($key, 'ランキング') !== false)
-        <?php 
-        	$type = 2; 
-        	$rankNum = 1;
-        ?>
-    @elseif(strpos($key, 'チェック') !== false)
-        <?php 
-        	$type = 3;
-        ?>
-    @endif
+    <?php 
+        if(strpos($key, '新着情報') !== false)
+            $lineType = 1;
+        elseif(strpos($key, 'ランキング') !== false) {
+            $lineType = 2; 
+            $rankNum = 1;
+        }
+        elseif(strpos($key, 'チェック') !== false)
+            $lineType = 3;
+    ?>
 
 @if(isset($firstItem) && count($firstItem) > 0)
 
@@ -45,96 +43,35 @@ use App\Favorite;
 
                 <div class="clearfix">
                     @foreach($itemVal as $item)
-                        <?php $cate = $cates->find($item->cate_id); ?>
                     
                         <article class="main-atcl">
-                            @if($type == 1)
+                            @if($lineType == 1)
                                 <span class="top-new">NEW！</span>
-                            @elseif($type == 2)
+                            @elseif($lineType == 2)
                                 <span class="top-rank"><i class="fas fa-crown"></i><em>{{ $rankNum }}</em></span>
                             @endif
-                            
-                            <div class="img-box">
-                                <a href="{{ url('/item/'.$item->id) }}">
-                                <img src="{{ Storage::url($item->main_img) }}" alt="{{ $item->title }}">
-                                </a>
-                            </div>
-                            
-                            <div class="meta">
-                            	
-                                <h3><a href="{{ url('/item/'.$item->id) }}">{{ $item->title }}</a></h3>
-                                <p><a href="{{ url('category/'.$cate->slug) }}">
-                                	@if(isset($cate->link_name))
-                                    {{ $cate->link_name }}
-                                    @else
-                                    {{ $cate->name }}
-                                    @endif
-                                </a></p>
+                                                            
                                 
-                                <div class="tags">
-                                    <?php $num = 2; ?>
-                                    @include('main.shared.tag')
-                                </div>
-                                
-                                
-                                <div class="price">
-                                    <?php 
-                                        $isSale = Setting::get()->first()->is_sale; 
-                                    ?>
-                                    @if($isSale || isset($item->sale_price))
-                                    	<strike>{{ number_format(Ctm::getPriceWithTax($item->price)) }}</strike>
-                                        <i class="fas fa-arrow-right text-small"></i>
-                                    @endif
-                                    
-                                    @if(isset($item->sale_price))
-                                    	<span>{{ number_format(Ctm::getPriceWithTax($item->sale_price)) }}</span>
-                                    @else
-                                        @if($isSale)
-                                            <span>{{ number_format(Ctm::getSalePriceWithTax($item->price)) }}</span>
-                                        @else
-                                            <span>{{ number_format(Ctm::getPriceWithTax($item->price)) }}</span>
-                                        @endif
-                                    @endif
-                                    円(税込)
-                                </div>
-                                
-                                
-                                @if(Auth::check())
-                                	<div class="favorite">
-
-                                        <?php
-                                            if(Favorite::where(['user_id'=>Auth::id(), 'item_id'=>$item->id])->first()) {
-                                                $on = ' d-none';
-                                                $off = ' d-inline'; 
-                                                $str = 'お気に入りの商品です';              
-                                            }
-                                            else {
-                                                $on = ' d-inline';
-                                                $off = ' d-none';
-                                                $str = 'お気に入りに登録';
-                                            }               
-                                        ?>
-
-                                        <span class="fav fav-on{{ $on }}" data-id="{{ $item->id }}"><i class="far fa-heart"></i></span>
-                                        <span class="fav fav-off{{ $off }}" data-id="{{ $item->id }}"><i class="fas fa-heart"></i></span>
-                                        <small class="fav-str"><span class="loader"><i class="fas fa-square"></i></span>{{-- $str --}}</small>    
-                                	</div>
-                                @else
-                                    {{-- <span class="fav-temp"><a href="{{ url('login') }}"><i class="far fa-heart"></i></a></span> --}}
-                                @endif 
-                                
-                            </div>
-
+                            @include('main.shared.favorite')
+     
                         </article>
                         
-                        @if($type == 2)
+                        @if($lineType == 2)
                             <?php $rankNum++; ?>
                         @endif
                     @endforeach
                 </div>
           
-                <?php $slug = $cate->slug; ?>
-                <a href="{{ url('category/'.$slug) }}" class="btn btn-block mx-auto btn-custom bg-white border-secondary text-dark rounded-0">もっと見る</a>
+                <?php 
+                	if($lineType == 1)
+                	    $slug = 'new-items';
+                    elseif($lineType == 2)
+                	    $slug = 'ranking';
+                    elseif($lineType == 3)
+                	    $slug = 'recent-items';
+                ?>
+                
+                <a href="{{ url($slug) }}" class="btn btn-block mx-auto btn-custom bg-white border-secondary text-dark rounded-0">もっと見る</a>
 
             @endforeach
 
@@ -152,7 +89,8 @@ use App\Favorite;
     
 	<div class="clearfix">
     	@foreach($allRecoms as $recom)
-        	
+        	<article class="main-atcl clearfix"> 
+            
             <?php
             	if(strpos($recom->top_img_path, 'category') !== false) {
             		$slugType = 'category';
@@ -165,7 +103,7 @@ use App\Favorite;
                 }
             ?>
         
-            <article class="main-atcl clearfix">     
+                
                 <div class="img-box">
                     <a href="{{ url($slugType . '/'. $recom->slug) }}">
                     <img src="{{ Storage::url($recom->top_img_path) }}" alt="{{ $recom->top_title }}">
@@ -181,7 +119,10 @@ use App\Favorite;
                 
             </article>
         @endforeach
+        
     </div>
+    
+    <a href="{{ url('recommend-info') }}" class="btn btn-block mx-auto btn-custom bg-white border-secondary text-dark rounded-0">もっと見る</a>
     
 </div>
 @endif

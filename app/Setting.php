@@ -20,6 +20,7 @@ class Setting extends Model
         'bank_info',
         'cot_per',
         
+        'contents',
         'snap_top',
         'snap_primary',
         'snap_secondary',

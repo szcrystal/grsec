@@ -12,6 +12,7 @@ use App\Consignor;
 use App\DeliveryGroup;
 use App\ItemImage;
 use App\Setting;
+use App\ItemStockChange;
 
 
 use Illuminate\Http\Request;
@@ -25,7 +26,7 @@ use Storage;
 
 class ItemController extends Controller
 {
-    public function __construct(Admin $admin, Item $item, Tag $tag, Category $category, CategorySecond $categorySecond, TagRelation $tagRelation, Consignor $consignor, DeliveryGroup $dg, ItemImage $itemImg, Setting $setting)
+    public function __construct(Admin $admin, Item $item, Tag $tag, Category $category, CategorySecond $categorySecond, TagRelation $tagRelation, Consignor $consignor, DeliveryGroup $dg, ItemImage $itemImg, Setting $setting, ItemStockChange $itemSc)
     {
         
         $this -> middleware('adminauth');
@@ -41,6 +42,7 @@ class ItemController extends Controller
         $this->dg = $dg;
         $this->itemImg = $itemImg;
         $this->setting = $setting;
+        $this->itemSc = $itemSc;
         
         $this->perPage = 20;
         
@@ -186,17 +188,39 @@ class ItemController extends Controller
         if($editId) { //update（編集）の時
             $status = '商品が更新されました！';
             $item = $this->item->find($editId);
+            
+            //echo date('Y-m-d H:i:s', time());
+
+            
+            //stockChange save
+            if($item->stock < $data['stock']) { //在庫が増えた時のみにしている 増えた時のみitemStockChangeにsave
+//            	$this->itemSc->updateOrCreate( //データがなければ各種設定して作成
+//                	['item_id'=>$item->id], 
+//                    ['is_auto'=>0]
+//                );
+                
+            	$itemSc = $this->itemSc->firstOrCreate( ['item_id'=>$item->id], ['is_auto'=>0]); //あれば取得、なければ作成
+                $itemSc->updated_at = date('Y-m-d H:i:s', time()); 
+                $itemSc->save();
+            }
+            
+            $item->update($data); //Item更新
+            
         }
         else { //新規追加の時
-            $status = '商品が追加されました！';
-            //$data['model_id'] = 1;
+            $status = '商品が追加されました！';            
+            //$item = $this->item;
+            $item = $this->item->create($data); //Item作成
             
-            $item = $this->item;
+            //stockChange save
+            $this->itemSc->create(['item_id'=>$item->id, 'is_auto'=>0]);
         }
         
-        $item->fill($data);
-        $item->save();
+//        $item->fill($data);
+//        $item->save();
         $itemId = $item->id;
+        
+        
         
 //        print_r($data['main_img']);
 //        exit;
