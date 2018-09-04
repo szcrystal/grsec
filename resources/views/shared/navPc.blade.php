@@ -5,7 +5,7 @@
                 use App\Category;
                 use App\CategorySecond;
                 use App\Item;
-                $cates = Category::all();
+                $cates = Category::take(7)->get();
             ?>
 
 

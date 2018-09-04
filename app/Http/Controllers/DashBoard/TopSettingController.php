@@ -5,16 +5,16 @@ namespace App\Http\Controllers\DashBoard;
 use App\Admin;
 use App\Setting;
 use App\ItemImage;
-use App\Icon;
+use App\TopSetting;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 use Storage;
 
-class SettingController extends Controller
+class TopSettingController extends Controller
 {
-    public function __construct(Admin $admin, Setting $setting, ItemImage $itemImg, Icon $icon/*, Item $item, Tag $tag, Category $category, TagRelation $tagRelation*/)
+    public function __construct(Admin $admin, Setting $setting, ItemImage $itemImg, TopSetting $topSet/*, Item $item, Tag $tag, Category $category, TagRelation $tagRelation*/)
     {
         
         $this -> middleware('adminauth');
@@ -23,7 +23,7 @@ class SettingController extends Controller
         $this -> admin = $admin;
         $this -> setting = $setting;
         $this->itemImg = $itemImg;
-        $this->icon = $icon;
+        $this->topSet = $topSet;
 //        $this-> item = $item;
 //        $this->category = $category;
 //        $this -> tag = $tag;
@@ -43,7 +43,7 @@ class SettingController extends Controller
     public function index()
     {
         
-        $setting = $this->setting->first(); //->paginate($this->perPage);
+        $setting = $this->topSet->first(); //->paginate($this->perPage);
         
 //        print_r($setting);
 //        exit;
@@ -53,9 +53,7 @@ class SettingController extends Controller
         $snaps = $this->itemImg->where(['item_id'=>9999, 'type'=>6])->get();
         $imgCount = $this->setting->get()->first()->snap_top;
         
-        $icons = $this->icon->all();
-        
-        return view('dashboard.setting.form', ['setting'=>$setting, 'imgCount'=>$imgCount, 'snaps'=>$snaps, 'icons'=>$icons, 'edit_id'=>1]);
+        return view('dashboard.topSetting.form', ['setting'=>$setting, 'imgCount'=>$imgCount, 'snaps'=>$snaps, 'edit_id'=>1]);
     }
 
 //    public function show($id)
@@ -89,17 +87,17 @@ class SettingController extends Controller
         //$editId = $request->has('edit_id') ? $request->input('edit_id') : 0;
         
         $rules = [
-            'admin_name' => 'required|max:255',
-            'admin_email' => 'required|max:255',
-            'tax_per' => 'required|numeric',
-            'sale_per' => 'required_with:is_sale|nullable|numeric',
-            'kare_ensure' => 'required|numeric',
+//            'admin_name' => 'required|max:255',
+//            'admin_email' => 'required|max:255',
+//            'tax_per' => 'required|numeric',
+//            'sale_per' => 'required_with:is_sale|nullable|numeric',
+//            'kare_ensure' => 'required|numeric',
             //'main_img' => 'filenaming',
         ];
         
          $messages = [
             // 'name.required' => '「出荷元名」を入力して下さい。',
-            'sale_per.required_with' => '「割引率」を指定して下さい。',
+            //'sale_per.required_with' => '「割引率」を指定して下さい。',
             
             //'post_thumb.filenaming' => '「サムネイル-ファイル名」は半角英数字、及びハイフンとアンダースコアのみにして下さい。',
             //'post_movie.filenaming' => '「動画-ファイル名」は半角英数字、及びハイフンとアンダースコアのみにして下さい。',
@@ -111,8 +109,8 @@ class SettingController extends Controller
         $data = $request->all();
         
         //status
-		$data['is_product'] = isset($data['is_product']) ? $data['is_product'] : 0;
-        $data['is_sale'] = isset($data['is_sale']) ? $data['is_sale'] : 0;
+//		$data['is_product'] = isset($data['is_product']) ? $data['is_product'] : 0;
+//        $data['is_sale'] = isset($data['is_sale']) ? $data['is_sale'] : 0;
 //            $data['open_status'] = 0;
 //        }
 //        else {
@@ -120,9 +118,9 @@ class SettingController extends Controller
 //        }
         
         //if($editId) { //update（編集）の時
-            $status = 'サイト設定が更新されました！';
+            $status = 'TOP設定が更新されました！';
             //$setting = $this->setting->first();
-            $setting = $this->setting->firstOrCreate(['id'=>1]);
+            $setting = $this->topSet->firstOrCreate(['id'=>1]);
 //        }
 //        else { //新規追加の時
 //            $status = '出荷元が追加されました！';
@@ -135,33 +133,78 @@ class SettingController extends Controller
         $setting->save();
         //$settingId = $setting->id;
         
-        //Icon画像 Save =======================
-        $icons = $this->icon->all();
         
-        foreach($icons as $icon) {
-            if(isset($data[$icon->name])) {
+        //Snap Save ==================================================
+        foreach($data['snap_count'] as $count) {
+        
+            /*
+                type:1->item main
+                type:2->item spare
+                type:3->category
+                type:4->sub category
+                type:5->tag
+                type:6->top carousel                            
+            */         
+ 
+            if(isset($data['del_snap'][$count]) && $data['del_snap'][$count]) { //削除チェックの時
                 
-                $filename = $data[$icon->name]->getClientOriginalName();
-                $filename = str_replace(' ', '_', $filename);
+                $snapModel = $this->itemImg->where(['item_id'=>9999, 'type'=>6, 'number'=>$count+1])->first();
                 
-                //$aId = $editId ? $editId : $rand;
-                //$pre = time() . '-';
-                $filename = 'icon/'.  $icon->name .'/'/* . $pre*/ . $filename;
-                //if (App::environment('local'))
-                $path = $data[$icon->name]->storeAs('public', $filename);
-                //else
-                //$path = Storage::disk('s3')->putFileAs($filename, $request->file('thumbnail'), 'public');
-                //$path = $request->file('thumbnail')->storeAs('', $filename, 's3');
+                if($snapModel !== null) {
+                    Storage::delete('public/'.$snapModel->img_path); //Storageはpublicフォルダのあるところをルートとしてみる
+                    $snapModel ->delete();
+                }
             
-                //$data['model_thumb'] = $filename;
-                
-                $icon->img_path = $filename;
-                $icon->save();
             }
-        }
-         
+            else {
+                if(isset($data['snap_thumb'][$count])) {
+                    
+                    $snapImg = $this->itemImg->updateOrCreate(
+                        ['item_id'=>9999, 'type'=>6, 'number'=>$count+1],
+                        [
+                            'item_id'=>9999,
+                            //'snap_path' =>'',
+                            'type' => 6,
+                            'number'=> $count+1,
+                        ]
+                    );
+
+                    $filename = $data['snap_thumb'][$count]->getClientOriginalName();
+                    $filename = str_replace(' ', '_', $filename);
+                    
+                    //$aId = $editId ? $editId : $rand;
+                    //$pre = time() . '-';
+                    $filename = 'top/' . 9999 . '/snap/'/* . $pre*/ . $filename;
+                    //if (App::environment('local'))
+                    $path = $data['snap_thumb'][$count]->storeAs('public', $filename);
+                    //else
+                    //$path = Storage::disk('s3')->putFileAs($filename, $request->file('thumbnail'), 'public');
+                    //$path = $request->file('thumbnail')->storeAs('', $filename, 's3');
+                
+                    //$data['model_thumb'] = $filename;
+                    
+                    $snapImg->img_path = $filename;
+                    $snapImg->save();
+                }
+            }
+            
+        } //foreach
         
-        return redirect('dashboard/settings/')->with('status', $status);
+        $num = 1;
+        $snaps = $this->itemImg->where(['item_id'=>9999, 'type'=>6])->get();
+//            $snaps = $this->modelSnap->where(['model_id'=>$modelId])->get()->map(function($obj) use($num){
+//                
+//                return true;
+//            });
+        
+        //Snapのナンバーを振り直す
+        foreach($snaps as $snap) {
+            $snap->number = $num;
+            $snap->save();
+            $num++;
+        }
+        
+        return redirect('dashboard/top-settings')->with('status', $status);
     }
 
     /**

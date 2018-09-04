@@ -12,6 +12,7 @@ use App\Setting;
 use App\ItemImage;
 use App\Favorite;
 use App\ItemStockChange;
+use App\TopSetting;
 
 
 use Illuminate\Http\Request;
@@ -22,7 +23,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class HomeController extends Controller
 {
-    public function __construct(Item $item, Category $category, CategorySecond $cateSec, Tag $tag, TagRelation $tagRel, Fix $fix, Setting $setting, ItemImage $itemImg, Favorite $favorite, ItemStockChange $itemSc)
+    public function __construct(Item $item, Category $category, CategorySecond $cateSec, Tag $tag, TagRelation $tagRel, Fix $fix, Setting $setting, ItemImage $itemImg, Favorite $favorite, ItemStockChange $itemSc, TopSetting $topSet)
     {
         //$this->middleware('search');
         
@@ -37,6 +38,7 @@ class HomeController extends Controller
         $this->itemImg = $itemImg;
         $this->favorite = $favorite;
         $this->itemSc = $itemSc;
+        $this->topSet = $topSet;
 //        $this->tagRelation = $tagRelation;
 //        $this->tagGroup = $tagGroup;
 //        $this->category = $category;
@@ -182,7 +184,7 @@ class HomeController extends Controller
 //        $items = $items->groupBy('cate_id')->toArray();
 
 		//head news
-		$newsCont = $this->setting->get()->first()->contents;
+		$newsCont = $this->topSet->get()->first()->contents;
 
 		$setting = $this->setting->get()->first();
         $metaTitle = $setting->meta_title;

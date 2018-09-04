@@ -59,6 +59,8 @@ class Item extends Model
         'about_ship',
         'is_delifee_table',
         
+        'icon_id',
+        
         'contents',
                 
         'meta_title',

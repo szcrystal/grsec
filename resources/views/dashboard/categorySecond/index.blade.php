@@ -33,6 +33,7 @@
                         <th>子カテゴリー</th>
                         <th>スラッグ</th>
                         <th>親カテゴリー</th>
+                        <th>おすすめ</th>
                         <th></th>
                         <th></th>
                     </tr>
@@ -55,6 +56,15 @@
                             
                             <td>
                                 {{ $cates->find($subCate->parent_id)->name }}
+                            </td>
+                            
+                            <td>
+                                @if($subCate->is_top)
+                                    <span class="text-success">おすすめ</span><br>
+                                    {{ $subCate->top_title }}
+                                @else
+                                    --
+                                @endif
                             </td>
 
                             {{--

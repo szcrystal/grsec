@@ -120,7 +120,14 @@
                   @else
                   <span class="no-img">No Image</span>
                   @endif
-                  <td>{{ $item->title }}</td>
+                  <td>
+                  	{{ $item->title }}<br>
+                  	@if($item->open_status)
+                    <span class="text-success">公開中</span><br>
+                    @else
+                    <span class="text-warning">未公開（保存済）</span><br>
+                    @endif
+                  </td>
                   <td>
                   	@if(isset($item->cate_id))
                     	{{ $cates->find($item->cate_id)->link_name }}
@@ -159,11 +166,7 @@
 
                 
                 <td>
-                  	@if($item->open_status)
-                    <span class="text-success">公開中</span><br>
-                    @else
-                    <span class="text-warning">未公開（保存済）</span><br>
-                    @endif
+                  	
                   	<small>{{ Ctm::changeDate($item->created_at, 1) }}</small>
                 </td>
                   

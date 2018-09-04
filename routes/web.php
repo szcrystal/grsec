@@ -29,6 +29,9 @@ Route::get('dashboard/logout', 'DashBoard\MainController@getLogout');
 //setting
 Route::resource('dashboard/settings', 'DashBoard\SettingController');
 
+//top Setting
+Route::resource('dashboard/top-settings', 'DashBoard\TopSettingController');
+
 //Consignor
 Route::resource('dashboard/consignors', 'DashBoard\ConsignorController');
 

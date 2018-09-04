@@ -642,7 +642,7 @@
                 @endif
             </fieldset>
             
-            <fieldset class="mb-4 form-group">
+            <fieldset class="mb-5 form-group">
                 <label for="point_back" class="control-label">ポイント還元率（%）</label>
                 <input class="form-control col-md-6{{ $errors->has('point_back') ? ' is-invalid' : '' }}" name="point_back" value="{{ Ctm::isOld() ? old('point_back') : (isset($item) ? $item->point_back : '') }}">
                 
@@ -654,6 +654,39 @@
                     </div>
                 @endif
             </fieldset>
+            
+            
+            <label>アイコンを表示</label>
+            <?php
+                $ii = 0;
+            ?>
+            @foreach($icons as $icon)
+                <fieldset class="form-group mb-2 pl-3">
+                    <div class="checkbox">
+                        
+                        <label>
+                            <?php
+                                $checked = '';
+                                if(Ctm::isOld()) {
+                                    if(in_array($icon->id, old('icons')))
+                                        $checked = ' checked';
+                                }
+                                else {
+                                    if(isset($item) && in_array($icon->id, explode(',', $item->icon_id))) {
+                                        $checked = ' checked';
+                                    }
+                                }
+                            ?>
+                            
+                            <input type="checkbox" name="icons[]" value="{{ $icon->id }}"{{ $checked }}> {{ $icon->title }}
+                        </label>
+                    </div>
+                </fieldset>
+                
+                <?php $ii++; ?>
+            @endforeach
+            
+            
             
             
             <div class="clearfix tag-wrap">

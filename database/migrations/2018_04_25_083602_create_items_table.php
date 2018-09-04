@@ -69,6 +69,8 @@ class CreateItemsTable extends Migration
             $table->longText('about_ship')->nullable()->default(NULL);
             $table->boolean('is_delifee_table')->nullable()->default(NULL);
             
+            $table->string('icon_id')->nullable()->default(NULL);
+            
             $table->longText('contents')->nullable()->default(NULL);
             
             $table->string('meta_title')->nullable()->default(NULL);

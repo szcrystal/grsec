@@ -13,6 +13,7 @@ use App\DeliveryGroup;
 use App\ItemImage;
 use App\Setting;
 use App\ItemStockChange;
+use App\Icon;
 
 
 use Illuminate\Http\Request;
@@ -26,7 +27,7 @@ use Storage;
 
 class ItemController extends Controller
 {
-    public function __construct(Admin $admin, Item $item, Tag $tag, Category $category, CategorySecond $categorySecond, TagRelation $tagRelation, Consignor $consignor, DeliveryGroup $dg, ItemImage $itemImg, Setting $setting, ItemStockChange $itemSc)
+    public function __construct(Admin $admin, Item $item, Tag $tag, Category $category, CategorySecond $categorySecond, TagRelation $tagRelation, Consignor $consignor, DeliveryGroup $dg, ItemImage $itemImg, Setting $setting, ItemStockChange $itemSc, Icon $icon)
     {
         
         $this -> middleware('adminauth');
@@ -43,6 +44,7 @@ class ItemController extends Controller
         $this->itemImg = $itemImg;
         $this->setting = $setting;
         $this->itemSc = $itemSc;
+        $this->icon = $icon;
         
         $this->perPage = 20;
         
@@ -69,7 +71,8 @@ class ItemController extends Controller
         
         //$status = $this->articlePost->where(['base_id'=>15])->first()->open_date;
         
-        return view('dashboard.item.index', ['itemObjs'=>$itemObjs, 'cates'=>$cates, 'subCates'=>$subCates, 'dgs'=>$dgs, 'recentObjs'=>$recentObjs]);
+        
+        return view('dashboard.item.index', ['itemObjs'=>$itemObjs, 'cates'=>$cates, 'subCates'=>$subCates, 'dgs'=>$dgs, 'recentObjs'=>$recentObjs, ]);
     }
 
     public function show($id)
@@ -97,7 +100,9 @@ class ItemController extends Controller
         $primaryCount = $setting->snap_primary;
         $imgCount = $setting->snap_secondary;
         
-        return view('dashboard.item.form', ['item'=>$item, 'cates'=>$cates, 'subcates'=>$subcates, 'consignors'=>$consignors, 'dgs'=>$dgs, 'tagNames'=>$tagNames, 'allTags'=>$allTags, 'spares'=>$spares, 'snaps'=>$snaps, 'primaryCount'=>$primaryCount, 'imgCount'=>$imgCount, 'id'=>$id, 'edit'=>1]);
+        $icons = $this->icon->all();
+        
+        return view('dashboard.item.form', ['item'=>$item, 'cates'=>$cates, 'subcates'=>$subcates, 'consignors'=>$consignors, 'dgs'=>$dgs, 'tagNames'=>$tagNames, 'allTags'=>$allTags, 'spares'=>$spares, 'snaps'=>$snaps, 'primaryCount'=>$primaryCount, 'imgCount'=>$imgCount, 'icons'=>$icons, 'id'=>$id, 'edit'=>1]);
     }
    
     public function create()
@@ -114,8 +119,10 @@ class ItemController extends Controller
         $primaryCount = $setting->snap_primary;
         $imgCount = $setting->snap_secondary;
         
+        $icons = $this->icon->all();
+        
 //        $users = $this->user->where('active',1)->get();
-        return view('dashboard.item.form', ['cates'=>$cates, 'consignors'=>$consignors, 'dgs'=>$dgs, 'allTags'=>$allTags, 'primaryCount'=>$primaryCount, 'imgCount'=>$imgCount, ]);
+        return view('dashboard.item.form', ['cates'=>$cates, 'consignors'=>$consignors, 'dgs'=>$dgs, 'allTags'=>$allTags, 'primaryCount'=>$primaryCount, 'imgCount'=>$imgCount, 'icons'=>$icons, ]);
     }
 
     /**
@@ -172,6 +179,10 @@ class ItemController extends Controller
         
         $data = $request->all();
         
+//        print_r($data['icons']);
+//		echo implode(',', $data['icons']);
+//        exit;
+        
         //status
         $data['open_status'] = isset($data['open_status']) ? 0 : 1;
         
@@ -184,6 +195,7 @@ class ItemController extends Controller
         $data['is_once_recom'] = isset($data['is_once_recom']) ? 1 : 0;
         $data['is_delifee_table'] = isset($data['is_delifee_table']) ? 1 : 0;
         
+        $data['icon_id'] = isset($data['icons']) ? implode(',', $data['icons']) : '';
         
         if($editId) { //update（編集）の時
             $status = '商品が更新されました！';
@@ -192,7 +204,7 @@ class ItemController extends Controller
             //echo date('Y-m-d H:i:s', time());
 
             
-            //stockChange save
+            //stockChange save 新着情報用
             if($item->stock < $data['stock']) { //在庫が増えた時のみにしている 増えた時のみitemStockChangeにsave
 //            	$this->itemSc->updateOrCreate( //データがなければ各種設定して作成
 //                	['item_id'=>$item->id], 
@@ -212,7 +224,7 @@ class ItemController extends Controller
             //$item = $this->item;
             $item = $this->item->create($data); //Item作成
             
-            //stockChange save
+            //stockChange save 新着情報用
             $this->itemSc->create(['item_id'=>$item->id, 'is_auto'=>0]);
         }
         

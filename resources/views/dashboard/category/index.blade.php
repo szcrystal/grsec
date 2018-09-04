@@ -33,6 +33,7 @@
                             <th>ID</th>
                             <th>カテゴリー名</th>
                             <th>スラッグ</th>
+                            <th>おすすめ</th>
                             <th></th>
                             <th></th>
                         </tr>
@@ -50,6 +51,15 @@
                                                     
                                 <td>
                                     {{ $cate->slug }}
+                                </td>
+                                
+                                <td>
+                                    @if($cate->is_top)
+                                    	<span class="text-success">おすすめ</span><br>
+                                    	{{ $cate->top_title }}
+                                    @else
+                                    	--
+                                    @endif
                                 </td>
 
                                 {{--

@@ -199,10 +199,45 @@
             </fieldset>
             
             
-            <h4 class="mt-5 pt-4"><span class="text-info">■</span> 画像枚数設定</h4>
+            <h4 class="mt-5 pt-4"><span class="text-info">■</span> 画像設定</h4>
             <hr>
             
-            <fieldset class="mb-4 form-group{{ $errors->has('snap_top') ? ' has-error' : '' }}">
+            <label>アイコン設定</label><br>
+            
+            @foreach($icons as $icon)
+                <div class="clearfix spare-img thumb-wrap mb-4">
+                    <fieldset class="clearfix col-md-8">
+
+                        <div class="w-50 float-left thumb-prev pr-3">
+                            @if(isset($icon) && $icon->img_path)
+                                <img src="{{ Storage::url($icon->img_path) }}" class="img-fluid">
+                            @else
+                                <span class="no-img">No Image</span>
+                            @endif
+                        </div>
+                         
+                        <div class="w-50 float-left text-left form-group{{ $errors->has($icon->name) ? ' has-error' : '' }}">
+                            <label for="model_thumb" class="text-left">{{ $icon->title }} アイコン</label>
+                            
+                            <div class="w-100">
+                                <input id="{{ $icon->name }}" class="thumb-file" type="file" name="{{ $icon->name }}">
+                                
+                                @if ($errors->has($icon->name))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first($icon->name) }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            @endforeach
+            
+            
+            
+            
+            
+            <fieldset class="pt-4 mb-4 form-group{{ $errors->has('snap_top') ? ' has-error' : '' }}">
                 <label>TOPヘッダー画像の枚数</label><br>
                 <input class="form-control d-inline-block col-md-4{{ $errors->has('snap_top') ? ' is-invalid' : '' }}" name="snap_top" value="{{ Ctm::isOld() ? old('snap_top') : (isset($setting) ? $setting->snap_top : '') }}"> <span>枚</span>
 
@@ -252,25 +287,6 @@
             
             
             
-            <h4 class="mt-5 pt-4"><span class="text-info">■</span> TOPページ設定</h4>
-            <hr>
-            
-            <div class="form-group mt-3 clearfix">
-                <button type="submit" class="btn btn-primary d-block w-25 mt-3 float-right"><span class="octicon octicon-sync"></span>更　新</button>
-            </div>
-            
-            <?php
-            	$obj = null;
-            	if(isset($setting)) $obj = $setting;
-                
-                $type = 'top';  
-            ?>
-            
-            
-            @include('dashboard.shared.contents')
-            
-            <label>メタ設定</label>
-            @include('dashboard.shared.meta')
             
             
             <h4 class="mt-5 pt-4"><span class="text-info">■</span> 固定ページID</h4>

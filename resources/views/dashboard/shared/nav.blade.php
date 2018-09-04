@@ -33,6 +33,13 @@
               </a>
         </li>
         
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="TOP設定">
+            <a class="nav-link" href="{{ url('dashboard/top-settings') }}" id="topSettings">
+            	<i class="fa fa-dashboard"></i>
+                <span class="nav-link-text">TOP設定</span>
+              </a>
+        </li>
+        
             
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="メールテンプレ">
               <a class="nav-link" href="{{ url('dashboard/mails') }}" id="mails">

@@ -30,16 +30,23 @@ class CreateSettingsTable extends Migration
             $table->text('bank_info')->nullable()->default(NULL);
             $table->integer('cot_per')->nullable()->default(NULL);
             
-            $table->longText('contents')->nullable()->default(NULL);
+            //$table->longText('contents')->nullable()->default(NULL);
+            
+//            $table->string('icon_daibiki')->nullable()->default(NULL);
+//            $table->string('icon_delifee')->nullable()->default(NULL);
+//            $table->string('icon_genpin')->nullable()->default(NULL);
+//            $table->string('icon_kare_ensure')->nullable()->default(NULL);
             
             $table->integer('snap_top')->nullable()->default(NULL);
             $table->integer('snap_primary')->nullable()->default(NULL);
             $table->integer('snap_secondary')->nullable()->default(NULL);
             $table->integer('snap_category')->nullable()->default(NULL);
             
-            $table->string('meta_title')->nullable()->default(NULL);
-            $table->text('meta_description')->nullable()->default(NULL);
-            $table->string('meta_keyword')->nullable()->default(NULL);
+            
+            
+//            $table->string('meta_title')->nullable()->default(NULL);
+//            $table->text('meta_description')->nullable()->default(NULL);
+//            $table->string('meta_keyword')->nullable()->default(NULL);
             
             $table->string('fix_need')->nullable()->default(NULL);
             $table->string('fix_other')->nullable()->default(NULL);

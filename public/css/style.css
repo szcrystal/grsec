@@ -514,8 +514,8 @@ body {
 	display: block;
 	float: none;
 	width: 100%;
-    border: 1px solid #d8d8d8;
-    border-width: 1px 0;
+/*    border: 1px solid #d8d8d8;*/
+/*    border-width: 1px 0 0;*/
 	//margin-top: 7.8em;
     /*background: #FDFBFC;*//*#ececec*/
 /*	background: #eae8e8;*/
@@ -542,10 +542,13 @@ body {
     width: calc(100% / 7);
     height: 100%;
     text-align: center;
-    border-right: 1px solid #d8d8d8;    
+    border: 1px solid #d8d8d8;
+    border-width: 1px 1px 1px 0;
+    //border-right: 1px solid #d8d8d8;    
 }
 .main-navi > ul > li:hover {
 	background: #53575A/*#faf9fa*/;
+    border-color: #53575A;
 }
 .main-navi > ul > li > a {
 	display: inline-block;
@@ -866,7 +869,7 @@ body {
 .top-second .meta {
 	width: 58%;
     float: right;
-    border: 1px solid red;
+    //border: 1px solid red;
 }
 
 

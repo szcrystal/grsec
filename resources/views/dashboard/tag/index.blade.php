@@ -37,6 +37,7 @@
                         <th>ID</th>
                         <th>タグ名</th>
                         <th>スラッグ</th>
+                        <th>おすすめ</th>
                         <th></th>
                         <th></th>
                     </tr>
@@ -54,6 +55,15 @@
                                                 
                             <td>
                                 {{ $tag->slug }}
+                            </td>
+                            
+                            <td>
+                                @if($tag->is_top)
+                                    <span class="text-success">おすすめ</span><br>
+                                    {{ $tag->top_title }}
+                                @else
+                                    --
+                                @endif
                             </td>
 
                             {{--
