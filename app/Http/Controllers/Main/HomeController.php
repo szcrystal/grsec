@@ -57,7 +57,6 @@ class HomeController extends Controller
 //        $request->session()->forget('item.data');
 //        $request->session()->forget('all');
 
-
         $cates = $this->category->all();
         
         $whereArr = ['open_status'=>1];

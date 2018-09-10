@@ -17,7 +17,7 @@ class CreateItemStockChangesTable extends Migration
 
             $table->increments('id');
                         
-            $table->integer('item_id');
+            $table->integer('item_id')->nullable()->default(NULL);
             $table->boolean('is_auto')->nullable()->default(0);
             
 //            $table->string('top_title')->nullable()->default(NULL);

@@ -1,16 +1,11 @@
 /*!
-Theme Name: _gr
-Theme URI: https://underscores.me/
-Author: Automattic
-Author URI: https://automattic.com/
-Description: Hi. I'm a starter theme called
+
+Author: GreenRocket
 Version: 1.0.0
-License: GNU General Public License v2 or later
-License URI: LICENSE
-Text Domain: _gr
-Tags: custom-background, custom-logo, custom-menu, featured-images, threaded-comments, translation-ready
 
 */
+
+@import url('https://fonts.googleapis.com/css?family=Courgette|Gentium+Book+Basic');
 
 
 html {
@@ -330,6 +325,17 @@ body {
 }
 .site-header h1 a:hover {
 	text-decoration: none;
+}
+.site-header .aniv {
+	display: inline-block;
+	font-family: 'Gentium Book Basic', serif;
+    color: #C15360;
+    font-weight: normal;
+    font-size: 1.6em;
+    font-style: italic;
+    margin-left: 0.5em;
+    padding-top: 0.2em;
+    //border: 1px solid red;
 }
 
 .head-navi {
@@ -684,7 +690,7 @@ body {
 /* Article */
 .card-header {
 	font-weight: bold;
-    font-size: 1.8em;
+    font-size: 1.6em;
     background: none;
     border-bottom: 1px solid #222;
     padding-left: 0.3em;

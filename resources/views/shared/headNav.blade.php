@@ -34,6 +34,7 @@
             <img src="{{ url('images/logo-symbol.png') }}" alt="{{ config('app.name', 'グリーンロケット') }}-ロゴマーク">
             </a>
         </h1>
+        <span class="aniv">10th Anniversary</span>
         
         <div class="head-navi">      
             <ul class="clearfix">
@@ -42,7 +43,7 @@
                 </li>
 
                 @if(! Auth::check())
-                    <li><a href="{{ url('mypage') }}">ログイン</a></li>
+                    <li><a href="{{ url('login') }}">ログイン</a></li>
                 @else
                 	<li><a href="{{ url('mypage') }}">マイページ</a></li>
                     

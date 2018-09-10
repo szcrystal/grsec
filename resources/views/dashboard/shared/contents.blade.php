@@ -17,10 +17,12 @@
             @endif
     </fieldset>
     
+    <hr class="mt-0 mb-2 py-0">
     
     @if(isset($type) && $type == 'top')
-        <label class="mt-3">TOPヘッダー画像</label>
-        <hr class="mt-0 mb-2 py-0">
+        <label class="mt-3 mb-4">TOPヘッダー画像&nbsp;&nbsp;<span class="text-small p-0 m-0">*（縦横サイズは任意、全ての画像を同じサイズで揃えて下さい。）</span></label>
+        
+        
     @endif
     
     <div class="clearfix mb-3">

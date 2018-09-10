@@ -202,36 +202,39 @@
             <h4 class="mt-5 pt-4"><span class="text-info">■</span> 画像設定</h4>
             <hr>
             
-            <label>アイコン設定</label><br>
             
-            @foreach($icons as $icon)
-                <div class="clearfix spare-img thumb-wrap mb-4">
-                    <fieldset class="clearfix col-md-8">
+            @if(Auth::guard('admin')->id() == 2)
+                <label>アイコン設定</label><br>
+                
+                @foreach($icons as $icon)
+                    <div class="clearfix spare-img thumb-wrap mb-4">
+                        <fieldset class="clearfix col-md-8">
 
-                        <div class="w-50 float-left thumb-prev pr-3">
-                            @if(isset($icon) && $icon->img_path)
-                                <img src="{{ Storage::url($icon->img_path) }}" class="img-fluid">
-                            @else
-                                <span class="no-img">No Image</span>
-                            @endif
-                        </div>
-                         
-                        <div class="w-50 float-left text-left form-group{{ $errors->has($icon->name) ? ' has-error' : '' }}">
-                            <label for="model_thumb" class="text-left">{{ $icon->title }} アイコン</label>
-                            
-                            <div class="w-100">
-                                <input id="{{ $icon->name }}" class="thumb-file" type="file" name="{{ $icon->name }}">
-                                
-                                @if ($errors->has($icon->name))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first($icon->name) }}</strong>
-                                    </span>
+                            <div class="w-50 float-left thumb-prev pr-3">
+                                @if(isset($icon) && $icon->img_path)
+                                    <img src="{{ Storage::url($icon->img_path) }}" class="img-fluid">
+                                @else
+                                    <span class="no-img">No Image</span>
                                 @endif
                             </div>
-                        </div>
-                    </fieldset>
-                </div>
-            @endforeach
+                             
+                            <div class="w-50 float-left text-left form-group{{ $errors->has($icon->name) ? ' has-error' : '' }}">
+                                <label for="model_thumb" class="text-left">{{ $icon->title }} アイコン</label>
+                                
+                                <div class="w-100">
+                                    <input id="{{ $icon->name }}" class="thumb-file" type="file" name="{{ $icon->name }}">
+                                    
+                                    @if ($errors->has($icon->name))
+                                        <span class="help-block">
+                                            <strong>{{ $errors->first($icon->name) }}</strong>
+                                        </span>
+                                    @endif
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                @endforeach
+            @endif
             
             
             

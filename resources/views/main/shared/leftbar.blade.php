@@ -72,7 +72,7 @@
                         @endif
                         
                         <a href="{{url('item/'.$item->id)}}">
-                        	{{ $item->title }}
+                        	{{ Ctm::shortStr($item->title, 11) }}
                         </a>
                     </li>
                     <?php $n++; ?>
