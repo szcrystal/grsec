@@ -1,13 +1,29 @@
 @extends('layouts.app')
 
-@section('content')
-
 <?php
 use App\User;
 use App\DeliveryGroupRelation;
 use App\Prefecture;
 use App\Setting;
+use App\TopSetting;
 ?>
+
+
+@section('belt')
+<div class="tophead-wrap">
+    <div class="clearfix">
+        {!! nl2br(TopSetting::get()->first()->contents) !!}
+    </div>
+    
+    @if(isset($isTop) && $isTop)
+        @include('main.shared.carousel')
+    @endif
+</div>
+@endsection
+
+
+
+@section('content')
 
     <div id="main" class="single">
     	
@@ -15,7 +31,7 @@ use App\Setting;
 		
         <div class="head-frame clearfix">
             
-            <div class="float-left col-md-6">
+            <div class="single-left">
                 @if($item -> main_img)
                 <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" data-interval="7500">
                       <ol class="carousel-indicators">
@@ -59,8 +75,11 @@ use App\Setting;
                 @endif   
             </div>
                 
-            <div class="float-right col-md-6">
+            <div class="single-right">
+            		<span>{{ $item->title_addition }}</span>
                 	<h2 class="single-title">{{ $item -> title }}</h2>
+                    <span class="">商品番号 {{ $item->number }}</span>
+                    
                  	<p class="text-big">{{ $item->catchcopy }}</p>   
                  	
                   	<?php
@@ -71,6 +90,7 @@ use App\Setting;
                         $price = $item->price + $tax;
                    ?>
                    
+                   {{--
                     <div class="mb-3" >
                     	<span class="text-small">カテゴリー：</span>
                         @if(isset($cate))
@@ -80,6 +100,7 @@ use App\Setting;
                         	&nbsp;<i class="fas fa-angle-right"></i>&nbsp;<a href="{{ url('category/'.$cate->slug. '/'.$subCate->slug) }}">{{ $subCate->name }}</a>
                         @endif
                     </div>
+                    --}}
                     
                  	<div class="price-meta"> 
                     	<?php 
@@ -217,6 +238,110 @@ use App\Setting;
                         @include('main.shared.tag')
                     </div>
                     
+                    
+                    <div class="cont-wrap mb-5 pb-2">
+                
+                       <ul class="nav nav-tabs">
+                            <li class="nav-item">
+                              <a href="#tab1" class="nav-link active" data-toggle="tab">商品説明</a>
+                            </li>
+                            <li class="nav-item">
+                              <a href="#tab2" class="nav-link" data-toggle="tab">配送について</a>
+                            </li>
+                            <li class="nav-item">
+                              <a href="#tab3" class="nav-link" data-toggle="tab">商品情報</a>
+                            </li>
+                        </ul> 
+                        
+                        <div class="tab-content mt-2">
+                          
+                          <div id="tab1" class="tab-pane active contents clearfix">
+                            {!! nl2br($item->explain) !!}
+                          </div>
+                          
+                          <div id="tab2" class="tab-pane contents">
+                            <div class="clearfix">
+                                {!! nl2br($item->about_ship) !!}
+                            </div>
+                            
+                            @if($item->is_delifee_table)
+                                <div class="btn btn-custom mt-4 slideDeli">
+                                    送料表を見る <i class="fas fa-angle-down"></i>
+                                </div>
+                                <?php
+                                    $dgRels = DeliveryGroupRelation::where('dg_id', $item->dg_id)->get();
+                                ?>
+                                
+                                
+                                <div class="table-responsive table-custom text-small mt-2">
+                                    <table class="table table-bordered bg-white">
+                                    	<thead class=" bg-dark">
+                                        	<tr>
+                                            	<td class="text-center" colspan="2">地域</td>
+                                                <td class="text-center">送料</td>
+                                            </tr>
+                                        </thead>
+                                        
+                                        <tbody>
+                                            @foreach($dgRels as $dgRel)
+                                                <tr>
+                                                	<?php
+                                                    	$format = '<td class="bg-light" rowspan="%d">'. Prefecture::find($dgRel->pref_id)->rural . '</td>';
+                                                    ?>
+                                                        
+                                                    @if($dgRel->pref_id == 1)
+                                                        <?php printf($format, 1); ?>
+                                                    
+                                                    @elseif($dgRel->pref_id == 2)
+                                                        <?php printf($format, 7); ?>
+                                                    
+                                                    @elseif($dgRel->pref_id == 9)
+                                                        <?php printf($format, 6); ?>
+                                                    
+                                                    @elseif($dgRel->pref_id == 15)
+                                                        <?php printf($format, 9); ?>
+                                                    
+                                                    @elseif($dgRel->pref_id == 24)
+                                                        <?php printf($format, 7); ?>
+                                                    
+                                                    @elseif($dgRel->pref_id == 31)
+                                                        <?php printf($format, 5); ?>
+                                                    
+                                                    @elseif($dgRel->pref_id == 36)
+                                                        <?php printf($format, 4); ?>
+                                                    
+                                                    @elseif($dgRel->pref_id == 40)
+                                                        <?php printf($format, 7); ?>
+                                                    
+                                                    @elseif($dgRel->pref_id == 47)
+                                                        <?php printf($format, 1); ?>
+                                                    @endif
+ 
+                                                    
+                                                    <td>{{ Prefecture::find($dgRel->pref_id)->name }}</td>
+                                                    <td class="bg-light">
+                                                        @if($dgRel->fee == 99999 || $dgRel->fee === null)
+                                                            配送不可
+                                                        @else
+                                                            {{ number_format($dgRel->fee) }} 円
+                                                        @endif
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            @endif
+                          </div>
+                          
+                          <div id="tab3" class="tab-pane contents clearfix">
+                            {!! nl2br($item->contents) !!}
+                          </div>
+                          
+                        </div>
+                        
+                    </div>
+                    
             	
                 </div>
                 
@@ -244,118 +369,7 @@ use App\Setting;
                 @endif
                 
 
-                <div class="cont-wrap mb-5 pb-2">
                 
-                @if(! Ctm::isAgent('sp'))
-                    <div class="clearfix contents mt-4">
-                    	<h4>商品説明</h4>
-                        <div>
-							{!! nl2br($item->explain) !!}
-                        </div>
-                    </div>
-                    
-                    <div class="clearfix contents mt-5">
-                    	<h4>配送について</h4>
-                        <div>
-                        	{!! nl2br($item->about_ship) !!}
-                        </div>
-                        
-                        @if($item->is_delifee_table)
-                        	<div class="mb-5 pb-5">
-                                <div class="btn btn-custom mt-2 slideDeli">送料表を見る <i class="fas fa-angle-down"></i></div>
-                                <?php
-                                    $dgRels = DeliveryGroupRelation::where('dg_id', $item->dg_id)->get();
-                                ?>
-                                
-                                <div class="table-responsive table-custom text-small mt-3 col-md-8">
-                                    <table class="table table-bordered bg-white">
-                                    @foreach($dgRels as $dgRel)
-                                        <tr>
-                                            <th class="py-1">{{ Prefecture::find($dgRel->pref_id)->name }}</th>
-                                            <td class="py-1">
-                                                @if($dgRel->fee == 99999 || $dgRel->fee === null)
-                                                    配送不可
-                                                @else
-                                                    {{ number_format($dgRel->fee) }} 円
-                                                @endif
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                    </table>
-                                </div>
-                            </div>
-                        @endif
-                        
-                    </div>
-                    
-                    <div class="clearfix contents mt-5">
-                        <h4>商品情報</h4>
-                        <div>
-                        	{!! nl2br($item->contents) !!}
-                        </div>     
-                    </div>
-
-
-                @else
-                   <ul class="nav nav-tabs">
-                        <li class="nav-item">
-                          <a href="#tab1" class="nav-link active" data-toggle="tab">商品説明</a>
-                        </li>
-                        <li class="nav-item">
-                          <a href="#tab2" class="nav-link" data-toggle="tab">配送について</a>
-                        </li>
-                        <li class="nav-item">
-                          <a href="#tab3" class="nav-link" data-toggle="tab">商品情報</a>
-                        </li>
-                    </ul> 
-                    
-                    <div class="tab-content mt-2">
-                      
-                      <div id="tab1" class="tab-pane active contents clearfix">
-                        {!! nl2br($item->explain) !!}
-                      </div>
-                      
-                      <div id="tab2" class="tab-pane contents">
-                        <div class="clearfix">
-                        	{!! nl2br($item->about_ship) !!}
-                        </div>
-                        
-                        @if($item->is_delifee_table)
-                        	<div class="btn btn-custom mt-4 slideDeli">
-                            	送料表を見る <i class="fas fa-angle-down"></i>
-                            </div>
-                        	<?php
-                        		$dgRels = DeliveryGroupRelation::where('dg_id', $item->dg_id)->get();
-                            ?>
-                            
-                            <div class="table-responsive table-custom text-small mt-2">
-                                <table class="table table-bordered bg-white">
-                                @foreach($dgRels as $dgRel)
-                                	<tr>
-                                    	<th class="py-1">{{ Prefecture::find($dgRel->pref_id)->name }}</th>
-                                        <td class="py-1">
-                                        	@if($dgRel->fee == 99999 || $dgRel->fee === null)
-                                            	配送不可
-                                            @else
-                                        		{{ number_format($dgRel->fee) }} 円
-                                            @endif
-                                        </td>
-                                    </tr>
-                                @endforeach
-                                </table>
-                            </div>
-                        @endif
-                      </div>
-                      
-                      <div id="tab3" class="tab-pane contents clearfix">
-                        {!! nl2br($item->contents) !!}
-                      </div>
-                      
-                    </div>
-                    
-                @endif
-				
-                </div>
 
 					
 					@if(count($recommends) > 0)

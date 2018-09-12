@@ -10,7 +10,8 @@ class Item extends Model
         'open_status',
                     
         'number',
-        'title' ,
+        'title',
+        'title_addition',
         'catchcopy',
         'cate_id',
         'subcate_id',

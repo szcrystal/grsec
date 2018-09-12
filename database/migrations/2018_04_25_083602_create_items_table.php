@@ -18,7 +18,8 @@ class CreateItemsTable extends Migration
             $table->boolean('open_status');
             
             $table->string('number')->nullable()->default(NULL);
-            $table->string('title');
+            $table->string('title')->nullable()->default(NULL);
+            $table->string('title_addition')->nullable()->default(NULL);
             $table->string('catchcopy')->nullable()->default(NULL);
             $table->integer('cate_id')->nullable()->default(NULL);
             $table->integer('subcate_id')->nullable()->default(NULL);

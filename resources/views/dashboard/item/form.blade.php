@@ -226,8 +226,20 @@
             </fieldset>
             
             <fieldset class="mb-4 form-group">
+                <label>商品名補足</label>
+                <input class="form-control{{ $errors->has('title_addition') ? ' is-invalid' : '' }}" name="title_addition" value="{{ Ctm::isOld() ? old('title_addition') : (isset($item) ? $item->title_addition : '') }}" placeholder="常緑 つる性 など">
+
+                @if ($errors->has('title_addition'))
+                    <div class="text-danger">
+                        <span class="fa fa-exclamation form-control-feedback"></span>
+                        <span>{{ $errors->first('title_addition') }}</span>
+                    </div>
+                @endif
+            </fieldset>
+            
+            <fieldset class="mb-4 form-group">
                 <label>キャッチコピー</label>
-                <input class="form-control{{ $errors->has('catchcopy') ? ' is-invalid' : '' }}" name="catchcopy" value="{{ Ctm::isOld() ? old('catchcopy') : (isset($item) ? $item->catchcopy : '') }}">
+                <input class="form-control{{ $errors->has('catchcopy') ? ' is-invalid' : '' }}" name="catchcopy" value="{{ Ctm::isOld() ? old('catchcopy') : (isset($item) ? $item->catchcopy : '') }}" placeholder="お気に入りボタンの下に表示される">
 
                 @if ($errors->has('catchcopy'))
                     <div class="text-danger">

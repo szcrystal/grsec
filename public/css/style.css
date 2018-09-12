@@ -741,16 +741,16 @@ body {
 }
 .top .img-box,
 .archive .img-box {
-    height: 264px;
-    border: 1px solid #bbb;
+    height: 276px;
+    //border: 1px solid #bbb;
 }
 .top-second .img-box {
 	width: 40%;
-	height: 216px;
+	height: 226px;
     float: left;
 }
 .floar .img-box { /* Single 小img */
-	height: 183px;
+	height: 190px;
 }
 
 
@@ -1082,6 +1082,16 @@ ul.side-rank {
 
 
 /* Single */
+.single-left {
+	float: left;
+	width: 49%;
+}
+.single-right {
+	float: right;
+	width: 47%;
+    //border: 1px solid orange;
+}
+
 .carousel-indicators {
 	//border: 1px solid red;
     bottom: -2.3em;
@@ -1128,7 +1138,7 @@ ul.side-rank {
 }
 
 .single .carousel-item {
-	height: 643px; /* 1:1.22 */
+	height: 705px; /* 1:1.22 */
     overflow: hidden;
     //border: 1px solid red;
 }
@@ -1136,16 +1146,11 @@ ul.side-rank {
 	width: 100%;
 }
 
-.single .head-frame > div:first-of-type {
-    padding-right: 2em;
-}
-.single .head-frame > div:last-of-type {
-    padding-left: 2em;
-}
+
 .single .head-frame h2 {
 	font-weight: bold;
 	font-size: 1.4em;
-	border-bottom: 1px solid #222;
+	//border-bottom: 1px solid #222;
 	margin-bottom: 0.3em;
     padding-bottom: 0.3em;
 }

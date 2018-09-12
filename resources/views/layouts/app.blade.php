@@ -15,15 +15,9 @@
         @endif
         
         
-        @if(isset($isTop) && $isTop)
-            <div class="tophead-wrap">
-                <div class="clearfix">
-                    {!! nl2br($newsCont) !!}
-                </div>
-
-                @include('main.shared.carousel')
-            </div>
-        @endif
+        
+        @yield('belt')
+        
 
 		<div class="container">
 
