@@ -52,6 +52,7 @@ class CreateItemsTable extends Migration
             $table->boolean('is_once')->nullable()->default(NULL);
             $table->float('factor')->nullable()->default(NULL);
             $table->boolean('is_once_recom')->nullable()->default(0);
+            $table->string('deli_plan_text')->nullable()->default(NULL);
             
             $table->integer('cod')->nullable()->default(NULL);
             $table->boolean('farm_direct')->nullable()->default(NULL);

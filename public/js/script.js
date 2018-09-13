@@ -562,7 +562,7 @@ var exe = (function() {
         },
         
         getWH: function() {
-        	$target = $('.single .carousel-item');
+        	$target = $('.carousel-indicators li');
         	var w = $target.width();
             var h = $target.height();
             

@@ -3,25 +3,7 @@
 ?>
 
 <div id="carouselIndicators" class="carousel slide" data-ride="carousel" data-interval="10000">
-  <ol class="carousel-indicators">
-  	<?php
-    	$i = 0; 
-    ?>
-  	@foreach($caros as $caro)
-    	@if($i)
-        	<?php $active = ''; ?>
-        @else
-        	<?php $active = ' class="active"'; ?>
-        @endif
-        
-        <li data-target="#carouselIndicators" data-slide-to="{{ $i }}"{!! $active !!}>
-            {{-- <img class="d-block img-fluid" src="{{ Storage::url($caro->img_path) }}" alt="indicator"> --}}
-        </li>
-        	
-        
-        <?php $i++; ?>
-    @endforeach
-  </ol>
+  
   <div class="carousel-inner" role="listbox">
 
     <?php $n = 0; ?>
@@ -75,30 +57,28 @@
     @endif
 
     </div>
+    
+    <ol class="carousel-indicators">
+  	<?php
+    	$i = 0; 
+    ?>
+  	@foreach($caros as $caro)
+    	@if($i)
+        	<?php $active = ''; ?>
+        @else
+        	<?php $active = ' class="active"'; ?>
+        @endif
+        
+        <li data-target="#carouselIndicators" data-slide-to="{{ $i }}"{!! $active !!}>
+            <img class="img-fluid" src="{{ Storage::url($caro->img_path) }}" alt="indicator">
+        </li>
+        	
+        
+        <?php $i++; ?>
+    @endforeach
+  </ol>
 
-<!--
-    <div class="carousel-item active">
-      <img class="d-block img-fluid" src="/storage/article/1/thumbnail/items_1.jpg" alt="slide">
-      <div class="carousel-caption d-none d-md-block">
-        <h3>松山で一番美味しいランチはこれだ！</h3>
-        <p>みいたけ＠松山大学</p>
-      </div>
-    </div>
-    <div class="carousel-item">
-      <img class="d-block img-fluid" src="/storage/article/1/thumbnail/items_1.jpg" alt="slide">
-      <div class="carousel-caption d-none d-md-block">
-        <h3>松山で一番美味しいランチはこれだ！</h3>
-        <p>みいたけ＠松山大学</p>
-      </div>
-    </div>
-    <div class="carousel-item">
-      <img class="d-block img-fluid" src="/storage/article/1/thumbnail/items_1.jpg" alt="slide">
-      <div class="carousel-caption d-none d-md-block">
-        <h3>松山で一番美味しいランチはこれだ！</h3>
-        <p>みいたけ＠松山大学</p>
-      </div>
-    </div>
--->
+
 
 <!--
   <a class="carousel-control-prev" href="#carouselIndicators" role="button" data-slide="prev">

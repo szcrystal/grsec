@@ -20,10 +20,6 @@ use App\TopSetting;
 
 
 @section('content')
-
-
-
-
 <div id="main" class="top home">
 
     <div class="panel panel-default">

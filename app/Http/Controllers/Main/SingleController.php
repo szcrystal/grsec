@@ -88,7 +88,7 @@ class SingleController extends Controller
         
         //同梱包可能商品レコメンド
         $isOnceItems = null;
-        $getNum = Ctm::isAgent('sp') ? 3 : 4;
+        $getNum = Ctm::isAgent('sp') ? 3 : 3;
         
         if($item->is_once) {
         	$isOnceItems = $this->item->whereNotIn('id', [$item->id])->where(['dg_id'=>$item->dg_id, 'is_once'=>1, 'is_once_recom'=>0, 'open_status'=>1, ])->skip(2)->take($getNum)->get();
@@ -96,10 +96,10 @@ class SingleController extends Controller
         }
         
         
-        //Cache 最近見た
+        //Cache 最近見た ===================
         $cacheIds = array();
         $cacheItems = null;
-        $getNum = Ctm::isAgent('sp') ? 6 : 7;
+        $getNum = Ctm::isAgent('sp') ? 6 : 8;
         
         //cache()->forget('cacheIds');
         
@@ -142,8 +142,10 @@ class SingleController extends Controller
 //        print_r(cache('cacheIds'));
 //        exit;
 
-		//Recommend レコメンド
+		
+        //Recommend レコメンド ==============
         $recommends = null;
+        $getNum = Ctm::isAgent('sp') ? 3 : 3;
         
         if(isset($tagRels[0])) {
         	$idWithTag = $this->tagRel/*->whereNotIn('item_id', [$item->id])*/->where('tag_id', $tagRels[0])->get()->map(function($obj){

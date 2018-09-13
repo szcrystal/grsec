@@ -2,6 +2,7 @@
 
 <?php
 use App\User;
+use App\Category;
 use App\DeliveryGroupRelation;
 use App\Prefecture;
 use App\Setting;
@@ -34,16 +35,7 @@ use App\TopSetting;
             <div class="single-left">
                 @if($item -> main_img)
                 <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" data-interval="7500">
-                      <ol class="carousel-indicators">
-                        <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-                        
-                        <?php 
-                        	$count = count($imgsPri);
-                        ?>
-                        @for($n=1; $n<=$count; $n++)
-                        	<li data-target="#carouselExampleIndicators" data-slide-to="{{$n}}"></li>
-                        @endfor
-                      </ol>
+                      
                       
                       <div class="carousel-inner">
                         <div class="carousel-item active">
@@ -68,18 +60,123 @@ use App\TopSetting;
                         <span class="carousel-control-next-icon" aria-hidden="true"><i class="fa fa-angle-right"></i></span>
                         <span class="sr-only">Next</span>
                       </a>
+                      
+                      
+                      <ol class="carousel-indicators clearfix">
+                        <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active">
+                        	<img class="img-fluid" src="{{ Storage::url($item->main_img) }}" alt="slide">
+                        </li>
+                        
+                        <?php 
+                        	$count = count($imgsPri);
+                            $n = 1;
+                        ?>
+                        
+                        	
+                            @foreach($imgsPri as $img)
+                                @if($img->img_path !== null )
+                                	<li data-target="#carouselExampleIndicators" data-slide-to="{{$n}}">
+                                        <img class="img-fluid" src="{{ Storage::url($img->img_path)}}" alt="slide">
+                                    </li>
+                                    
+                                    <?php $n++; ?>
+                                @endif
+                            @endforeach
+                      </ol>
                 </div>
                     
                 @else
                     <span class="no-img">No Image</span>
-                @endif   
+                @endif
+                
+                   
+                      
+                         
+                
+                <div class="panel-body mt-3 pt-1">
+
+                    @if(count($isOnceItems) > 0)
+                        <div class="mt-5 pt-2 mb-3 floar">
+                            <h4 class="text-small">同梱包が可能な他の商品</h4>
+                            <ul class="clearfix">
+                                @foreach($isOnceItems as $isOnceItem)
+                                	<?php
+                                        $category = Category::find($isOnceItem->cate_id);
+                                    ?>
+                                    
+                                    <li>
+                                        <a href="{{ url('item/'. $isOnceItem->id) }}"> 
+                                            <div class="img-box">         
+                                                <img src="{{ Storage::url($isOnceItem->main_img) }}" class="img-fluid">
+                                            </div>
+                                            
+                                            <p class="mb-1">{{ Ctm::shortStr($isOnceItem->title, 25) }}</p>
+                                            
+                                            {{--
+                                            <p>
+                                                <a href="{{ url('category/'. $category->slug) }}">
+                                                    @if(isset($category->link_name))
+                                                        {{ $category->link_name }}
+                                                    @else
+                                                        {{ $category->name }}
+                                                    @endif
+                                                </a>
+                                            </p>
+                                            --}}
+
+                                            <div class="price text-right">
+                                                <?php 
+                                                    $isSale = Setting::get()->first()->is_sale; 
+                                                ?>
+                                                
+                                                @if(isset($isOnceItem->sale_price))
+                                                    <span>{{ number_format(Ctm::getPriceWithTax($isOnceItem->sale_price)) }}</span>
+                                                @else
+                                                    @if($isSale)
+                                                        <span>{{ number_format(Ctm::getSalePriceWithTax($isOnceItem->price)) }}</span>
+                                                    @else
+                                                        <span>{{ number_format(Ctm::getPriceWithTax($isOnceItem->price)) }}</span>
+                                                    @endif
+                                                @endif
+                                                円(税込)
+                                            </div>
+      
+                                        </a>
+                                    </li>
+                                @endforeach
+                            </ul> 
+                        </div>
+                    @endif
+                
+
+                    @if(count($recommends) > 0)
+                        <div class="mt-5 floar">
+                            <h4>あなたにおすすめの商品</h4>
+                            
+                                <ul class="clearfix">
+                                    @foreach($recommends as $recommend)
+                                        <li>
+                                            <a href="{{ url('item/'. $recommend->id) }}"> 
+                                                <div class="img-box">         
+                                                    <img src="{{ Storage::url($recommend->main_img) }}" class="img-fluid">
+                                                </div>
+                                                <p>{{ Ctm::shortStr($recommend->title, 25) }}</p>
+                                            </a>
+                                        </li>         
+                                    @endforeach      
+                                </ul>   
+                        </div>
+                    @endif
+
+            </div>
+                
+                
             </div>
                 
             <div class="single-right">
             		<span>{{ $item->title_addition }}</span>
-                	<h2 class="single-title">{{ $item -> title }}</h2>
-                    <span class="">商品番号 {{ $item->number }}</span>
-                    
+                	<h2 class="single-title">{{ $item -> title }}<br><span>商品番号 {{ $item->number }}</span></h2>
+
                  	<p class="text-big">{{ $item->catchcopy }}</p>   
                  	
                   	<?php
@@ -119,14 +216,18 @@ use App\TopSetting;
                                 <i class="fas fa-arrow-right text-small"></i>
                                 {{ number_format(Ctm::getSalePriceWithTax($item->price)) }}
                             @else
-                                価格：{{ number_format(Ctm::getPriceWithTax($item->price)) }}
+                                {{ number_format(Ctm::getPriceWithTax($item->price)) }}
                             @endif
                         @endif
                         円&nbsp;<span class="text-small">(税込)</span>
                     </div>
                     
+                    <div class="my-3 text-small">
+                    	<p>{!! nl2br($item->exp_first) !!}</p>
+                    </div>
+                    
 
-                    <div class="favorite my-2" data-type='single'>
+                    <div class="favorite my-4" data-type='single'>
                         @if(Auth::check())
                             <?php
                                 if($isFav) {
@@ -152,23 +253,22 @@ use App\TopSetting;
                     </div>
                     
                     
-                    <div class="mt-3">
-                    	<p>{!! nl2br($item->exp_first) !!}</p>
-                    </div>
+                    
                   
-                  	<div>
+                  	<div class="form-wrap">
                   	@if($item->stock > 0)
                     	
                            <form method="post" action="{{ url('shop/cart') }}">
                             {{ csrf_field() }}
                             
-                            <fieldset class="mb-4 form-group">
-                                <label>数量</label>
+                            <fieldset class="mb-4 form-group clearfix text-right">
+                                <label>数量
                                 @if($item->stock_show)
                                     <span><b>（在庫数：{{ $item->stock }}）</b></span>
                                 @endif
+                                </label>
                                 
-                                <select class="form-control col-md-6{{ $errors->has('item_count') ? ' is-invalid' : '' }}" name="item_count">
+                                <select class="form-control col-md-6 d-inline{{ $errors->has('item_count') ? ' is-invalid' : '' }}" name="item_count">
                                     <option disabled selected>選択して下さい</option>
                                     	<?php
                                         	$max = 100;
@@ -210,15 +310,18 @@ use App\TopSetting;
                             <input type="hidden" name="item_price" value="{{ $item->price }}">
                             <input type="hidden" name="tax" value="{{ $tax }}"> 
                             --}}     
-                            <button type="submit" class="btn btn-custom text-center col-md-6">カートに入れる</button>
+                            
+                            <button type="submit" class="btn btn-custom text-center col-md-12">カートに入れる</button>
                             
                             @if(Ctm::isAgent('sp'))
                             	<button id="spCartBtn" type="submit" class="btn btn-custom text-center col-md-6">この商品をカートに入れる</button>
                             @endif
-                       </form>  
+                       </form>
+                       
+                       <span class="text-danger text-big">{{ $item->deli_plan_text }}</span>
                 	
                     @else
-                    	<span class="text-info text-big">在庫がありません</span>
+                    	<span class="text-danger text-big">在庫がありません</span>
                         @if($item->stock_type)
                         <p>
                         	@if($item->stock_type == 1)
@@ -233,13 +336,13 @@ use App\TopSetting;
                     
                     
                     
-                    <div class="tags mt-5">
+                    <div class="tags mt-4 mb-1">
                         <?php $num = 0; ?>
                         @include('main.shared.tag')
                     </div>
                     
                     
-                    <div class="cont-wrap mb-5 pb-2">
+                    <div class="cont-wrap mt-5 mb-5 pb-2">
                 
                        <ul class="nav nav-tabs">
                             <li class="nav-item">
@@ -275,7 +378,7 @@ use App\TopSetting;
                                 
                                 <div class="table-responsive table-custom text-small mt-2">
                                     <table class="table table-bordered bg-white">
-                                    	<thead class=" bg-dark">
+                                    	<thead class="bg-light">
                                         	<tr>
                                             	<td class="text-center" colspan="2">地域</td>
                                                 <td class="text-center">送料</td>
@@ -346,72 +449,32 @@ use App\TopSetting;
                 </div>
                 
         </div><!-- head-frame -->
-
-
-            <div class="col-md-12 panel-body mt-3 pt-1">
-
-                @if(count($isOnceItems) > 0)
-                    <div class="mt-5 pt-2 mb-3 floar">
-                        <h4 class="text-small">同梱包が可能な他の商品</h4>
-                        <ul class="clearfix">
-                            @foreach($isOnceItems as $isOnceItem)
-                                <li class="">
-                                    <a href="{{ url('item/'. $isOnceItem->id) }}"> 
-                                        <div class="img-box">         
-                                            <img src="{{ Storage::url($isOnceItem->main_img) }}" class="img-fluid">
-                                        </div>
-                                        <p>{{ $isOnceItem->title }}</p>
-                                    </a>
-                                </li>
-                            @endforeach
-                    	</ul> 
-                	</div>
-                @endif
-                
-
-                
-
-					
-					@if(count($recommends) > 0)
-                    <div class="mt-5 floar">
-                    	<h4>あなたにおすすめの商品</h4>
-                        
-                        	<ul class="clearfix">
-                                @foreach($recommends as $recommend)
-                                    <li class="">
-                                        <a href="{{ url('item/'. $recommend->id) }}"> 
-                                        	<div class="img-box">         
-                                        		<img src="{{ Storage::url($recommend->main_img) }}" class="img-fluid">
-                                            </div>
-                                        	<p>{{ $recommend->title }}</p>
-                                        </a>
-                                    </li>         
-                                @endforeach      
-                            </ul>   
-                    </div>
-                    @endif
+        
+        
+        
+        <div class="aaa panel-body mt-3 pt-1">
+            @if(isset($cacheItems))
+                <div class="mt-4 floar">
                     
-                    @if(isset($cacheItems))
-                    <div class="mt-4 floar">
-                    	
-                    	<h4>最近見た商品</h4>
-                    	<ul class="clearfix">
-                     		@foreach($cacheItems as $cacheItem)
-                       			<li>
-                          			<a href="{{ url('item/'. $cacheItem->id) }}"> 
-                                        <div class="img-box">        
-                                        	<img src="{{ Storage::url($cacheItem->main_img) }}" class="img-fluid">
-                                        </div>
-                                    	<p>{{ $cacheItem->title }}</p>
-                                    </a>
-                          		</li>         
-                       		@endforeach      
-                     	</ul>	     
-                    </div>
-                    @endif
+                    <h4>最近見た商品</h4>
+                    <ul class="clearfix">
+                        @foreach($cacheItems as $cacheItem)
+                            <li>
+                                <a href="{{ url('item/'. $cacheItem->id) }}"> 
+                                    <div class="img-box">        
+                                        <img src="{{ Storage::url($cacheItem->main_img) }}" class="img-fluid">
+                                    </div>
+                                    <p>{{ Ctm::shortStr($cacheItem->title, 20) }}</p>
+                                </a>
+                            </li>         
+                        @endforeach      
+                    </ul>	     
+                </div>
+            @endif
+        </div>
+
 
             
-        </div><!-- panelbody -->
 		
     </div>
 @endsection

@@ -45,6 +45,7 @@ class Item extends Model
         'is_once',
         'factor',
         'is_once_recom',
+        'deli_plan_text',
         
         'stock',
         'stock_show',
