@@ -7,7 +7,9 @@ use App\CategorySecond;
 
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">
+    
     <li class="breadcrumb-item"><a href="{{ url('/') }}"><i class="fas fa-home"></i></a></li>
+    
     @if($type == 'single')
     	<?php $cate = Category::find($item->cate_id); ?>
     	<li class="breadcrumb-item">
@@ -19,7 +21,7 @@ use App\CategorySecond;
     			<a href="{{ url('category/'. $cate->slug.'/'. $subcate->slug) }}">{{ $subcate->name }}</a>
         	</li>
         @endif
-    	<li class="breadcrumb-item active">
+    	<li class="breadcrumb-item active" aria-current="page">
         	{{ $item->title }}
         </li>
     @elseif($type == 'category')

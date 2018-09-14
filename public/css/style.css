@@ -1113,9 +1113,7 @@ ul.side-rank {
 	width: 48%;
     //border: 1px solid orange;
 }
-.carousel-indicators {
-	
-}
+
 
 /* Single Carousel */
 .single .carousel-item {
@@ -1196,8 +1194,10 @@ ul.side-rank {
 .carousel-control-next {
 	width: 2em;
     opacity: 0.55;
-    top: -10%;
+    height: 1.4em;
+    top: 42%;
     margin: 0 2px;
+    //border: 1px solid red;
 }
 .carousel-control-prev-icon,
 .carousel-control-next-icon {
@@ -1290,6 +1290,12 @@ ul.side-rank {
     padding: 0;
     margin: 0;
     border-bottom: 0;
+    //border: 1px solid red;
+}
+.nav-item {
+	width: calc(100% / 3);
+    text-align: center;
+    //border: 1px solid blue;
 }
 .nav-tabs .nav-link,
 .nav-tabs .nav-link:hover {
@@ -1539,7 +1545,7 @@ div[id*="accordion-"] .card-header {
     cursor: pointer;
 }
 div[id*="accordion-"] h5 {
-	font-size: 1.05em;
+	font-size: 0.7em;
     line-height: 1.4em;
     padding: 0.7em 0.5em;
     margin-top: 0;
@@ -1555,7 +1561,7 @@ div[id*="accordion-"] h5:before {
 }
 div[id*="accordion-"] .card-header:hover {
 	opacity: 0.7;
-    text-decoration: underline;
+    text-decoration: none;
 }
 
 

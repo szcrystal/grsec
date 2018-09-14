@@ -161,6 +161,23 @@ use App\TopSetting;
                                                     <img src="{{ Storage::url($recommend->main_img) }}" class="img-fluid">
                                                 </div>
                                                 <p>{{ Ctm::shortStr($recommend->title, 25) }}</p>
+                                                
+                                                <div class="price text-right">
+                                                    <?php 
+                                                        $isSale = Setting::get()->first()->is_sale; 
+                                                    ?>
+                                                    
+                                                    @if(isset($isOnceItem->sale_price))
+                                                        <span>{{ number_format(Ctm::getPriceWithTax($isOnceItem->sale_price)) }}</span>
+                                                    @else
+                                                        @if($isSale)
+                                                            <span>{{ number_format(Ctm::getSalePriceWithTax($isOnceItem->price)) }}</span>
+                                                        @else
+                                                            <span>{{ number_format(Ctm::getPriceWithTax($isOnceItem->price)) }}</span>
+                                                        @endif
+                                                    @endif
+                                                    円(税込)
+                                                </div>
                                             </a>
                                         </li>         
                                     @endforeach      
