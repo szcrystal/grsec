@@ -46,12 +46,12 @@ use App\CategorySecond;
         
     @elseif($type == 'user')
     	<li class="breadcrumb-item active" aria-current="page">
-        	<a href="{{ url('mypage') }}">マイページ</a>
+        	マイページ
         </li>
     
     @else
     	<li class="breadcrumb-item active" aria-current="page">
-        	<a href="{{ url('mypage') }}">{{ $title }}</a>
+        	{{ $title }}
         </li>
         
     @endif
