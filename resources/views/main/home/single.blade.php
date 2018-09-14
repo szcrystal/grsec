@@ -473,7 +473,7 @@ use App\TopSetting;
             @if(isset($cacheItems))
                 <div class="mt-4 floar">
                     
-                    <h4>最近見た商品</h4>
+                    <h4>最近チェックしたアイテム</h4>
                     <ul class="clearfix">
                         @foreach($cacheItems as $cacheItem)
                             <li>
