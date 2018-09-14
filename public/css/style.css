@@ -662,10 +662,16 @@ body {
 
 /* Top */
 .wrap-all {
-	margin-top: 1.3em;
+	padding-top: 2em;
     padding-left: 1em;
     padding-right: 1em;
     //border: 1px solid red;
+}
+.wrap-all:after {
+	display: block;
+    clear: both;
+    content: "";
+    height: 0;
 }
 .wrap-all .home {
 	margin-top: 0.8em;
@@ -685,11 +691,11 @@ body {
 .breadcrumb {
 	//display: none;
 	background: none;
-    margin: 0 0 1.3em;
+    margin: -1em 0 1em;
     //border: 1px solid red;
 }
 .single .breadcrumb {
-	margin-bottom: 1.6em;
+	margin-bottom: 1.2em;
 }
 .breadcrumb-item + .breadcrumb-item::before {
   content: ">";
@@ -730,10 +736,10 @@ body {
 .top-first .main-atcl,
 .archive .main-atcl {
 	position: relative;
-	width: 24.0%;
+	width: 24.1%;
     //min-height: 30em;
     margin-right: 1.2%;
-    margin-bottom: 1.0em;
+    margin-bottom: 1.5em;
 	//border: 1px solid red;
 }
 .top-second .main-atcl {
@@ -1338,6 +1344,9 @@ ul.side-rank {
 	width: 100%;
     text-align: right;
 }
+.pagination-wrap:last-of-type {
+	margin-top: 2.5em;
+}
 .pagination {
   display: inline-block;
   padding-left: 0;
@@ -1345,7 +1354,7 @@ ul.side-rank {
   border-radius: 0;
   font-size: 0.95em;
     width: auto;
-    margin: 0 0 0.3em;
+    margin: 0 0 0.5em;
 }
 .pagination:after {
 	display: block;

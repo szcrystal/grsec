@@ -43,11 +43,13 @@ use App\CategorySecond;
        <li class="breadcrumb-item active" aria-current="page">検索結果</li>
         
     @elseif($type == 'user')
-    	<li class="breadcrumb-item">
+    	<li class="breadcrumb-item active" aria-current="page">
         	<a href="{{ url('mypage') }}">マイページ</a>
         </li>
+    
+    @else
     	<li class="breadcrumb-item active" aria-current="page">
-        	タグ:{{ $tag->name }}
+        	<a href="{{ url('mypage') }}">{{ $title }}</a>
         </li>
         
     @endif
