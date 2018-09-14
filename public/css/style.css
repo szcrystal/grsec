@@ -453,7 +453,7 @@ body {
 /*    z-index: 10;*/
 /*    border-radius: 0;*/
     //border: 1px solid #A1DBDD;
-    color: #5a5a5a/*#b5b5b5*/;
+    color: #b5b5b5;
     cursor: pointer;
     margin-left: -1.8em;
 }
@@ -662,7 +662,10 @@ body {
 
 /* Top */
 .wrap-all {
-	margin-top: 2.5em;
+	margin-top: 1.3em;
+    padding-left: 1em;
+    padding-right: 1em;
+    //border: 1px solid red;
 }
 .wrap-all .home {
 	margin-top: 0.8em;
@@ -680,11 +683,18 @@ body {
 
 /* Bread */
 .breadcrumb {
-	display: none;
+	//display: none;
 	background: none;
-    margin-bottom: 2em;
+    margin: 0 0 1.3em;
     //border: 1px solid red;
 }
+.single .breadcrumb {
+	margin-bottom: 1.6em;
+}
+.breadcrumb-item + .breadcrumb-item::before {
+  content: ">";
+}
+
 
 
 /* Article */

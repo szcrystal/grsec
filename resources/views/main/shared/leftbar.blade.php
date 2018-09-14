@@ -47,7 +47,7 @@
                 @foreach($tagLeftRanks as $val)
                     <li class="rank-tag">
                         {{-- <i class="fas fa-hashtag text-small"></i> --}}
-                        <a href="{{url('tag/' . $val->slug)}}">{{$val->name}}</a>
+                        <a href="{{url('tag/' . $val->slug)}}">#{{$val->name}}</a>
                     </li>
                 @endforeach
 
