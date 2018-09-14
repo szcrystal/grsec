@@ -42,7 +42,7 @@ use App\Setting;
                                     $slugType = 'category';
                                 }
                                 elseif(strpos($item['top_img_path'], 'subcate') !== false) {
-                                    $slugType = 'category/' . Category::find($recom->parent_id)->slug;
+                                    $slugType = 'category/' . Category::find($item['parent_id'])->slug;
                                 }
                                 elseif(strpos($item['top_img_path'], 'tag') !== false) {
                                     $slugType = 'tag';
