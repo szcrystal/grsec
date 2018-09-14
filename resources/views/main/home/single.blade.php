@@ -167,13 +167,13 @@ use App\TopSetting;
                                                         $isSale = Setting::get()->first()->is_sale; 
                                                     ?>
                                                     
-                                                    @if(isset($isOnceItem->sale_price))
-                                                        <span>{{ number_format(Ctm::getPriceWithTax($isOnceItem->sale_price)) }}</span>
+                                                    @if(isset($recommend->sale_price))
+                                                        <span>{{ number_format(Ctm::getPriceWithTax($recommend->sale_price)) }}</span>
                                                     @else
                                                         @if($isSale)
-                                                            <span>{{ number_format(Ctm::getSalePriceWithTax($isOnceItem->price)) }}</span>
+                                                            <span>{{ number_format(Ctm::getSalePriceWithTax($recommend->price)) }}</span>
                                                         @else
-                                                            <span>{{ number_format(Ctm::getPriceWithTax($isOnceItem->price)) }}</span>
+                                                            <span>{{ number_format(Ctm::getPriceWithTax($recommend->price)) }}</span>
                                                         @endif
                                                     @endif
                                                     円(税込)
