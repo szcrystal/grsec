@@ -14,13 +14,21 @@ for SP
         //border: 2px solid orange;     
     }
     
+    .container,
+    .fixed-top {
+        max-width: 100% !important;
+        //border: 1px solid green;
+    }
+
+    .site-description p,
+    .head-first,
+    .head-second,
     .wrap-all,
-	.fixed-top,	
-	.site-content,
-	#colop {
-    	min-width: 100% !important;
-        //border: 1px solid blue;
-      	padding: 0;
+    .site-content,
+    .foot-wrap {
+        width: 100%;
+        margin: auto;
+        //border: 1px solid red;
     }
     
     .container {
@@ -28,19 +36,32 @@ for SP
     }
     
     .site-header h1 {
-        margin: 0.1em 0 0 0.4em;
+        //margin: 0.1em 0 0 0.4em;
     }
-    .site-header h1 img {
-        width: 200px;
+    .site-header h1 img:first-of-type {
+        width: 180px;
     }
-    .head-center {
-        width: 70px;
-        margin: auto;
+    .site-header h1 img:last-of-type {
+        width: 35px;
+        margin-left: -10px;
     }
-	.head-navi {
-        top: 1.7em;
-		right: 1.0em;
+    .site-header .aniv {
+    	font-size: 1.3em;
+        margin-top: 0.5em;
     }
+    .head-second {
+    	margin-top: 6.3em;
+    }
+    .head-second > p {
+    	font-size: 1.5em;
+    }
+    
+    .main-navi > ul > li > a {
+    	font-size: 0.75em;
+        line-height: 3.3em;
+    }
+    
+    
 	.s-form {
     	top: 2.4em;
     	right: 8%;
@@ -80,12 +101,20 @@ for SP
     	padding-top: 2em;
     }
     .foot-menu {
-    	width: 48%;
+    	width: 58%;
         margin-left: 1.5%;
     }
     .foot-company {
-        width: 47%;
+        width: 39%;
         margin-right: 1%;
+    }
+    .foot-logo img:first-of-type {
+        width: 200px;
+        margin-bottom: 1.6em;
+    }
+    .foot-logo img:last-of-type {
+        width: 57px;
+        vertical-align: -10px;
     }
     
 }	
