@@ -1456,7 +1456,7 @@ ul.side-rank {
 
 /* Fix */
 .fix-page h3 {
-	font-size: 1.9em;
+	font-size: 1.6em;
 	padding: 0 0 0.2em;
     margin-bottom: 0.4em;
     //padding-left: 0.3em;
@@ -1545,7 +1545,7 @@ div[id*="accordion-"] .card-header {
     cursor: pointer;
 }
 div[id*="accordion-"] h5 {
-	font-size: 0.7em;
+	font-size: 0.65em;
     line-height: 1.4em;
     padding: 0.7em 0.5em;
     margin-top: 0;
