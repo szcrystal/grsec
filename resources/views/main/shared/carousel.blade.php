@@ -21,17 +21,14 @@
               	<div class="carousel-caption d-none d-md-block">
                 	<h3></h3>
                 </div>
-              </a>
             </div>
             
             <?php $n++; ?>
-
 
         @endforeach
 
 	@else
         @foreach($newAtcl as $obj)
-
 
             @if($n > 0)
                 <div class="carousel-item">

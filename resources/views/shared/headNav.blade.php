@@ -88,8 +88,8 @@
                 <li><a href="{{ url('contact') }}"><i class="fas fa-envelope"></i></a></li>
                 
            </ul> 
-           
         </div>
+        
     </div>
     
     </div><!-- fix -->

@@ -16,13 +16,14 @@ use App\User;
 
 <header class="site-header clearfix">
 
-	<div class="logos">
+	<div class="logos clearfix">
         <h1>
             <a href="{{ url('/') }}">
                 <img src="{{ url('images/logo-name.png') }}" alt="{{ config('app.name', 'グリーンロケット') }}">
                 <img src="{{ url('images/logo-symbol.png') }}" alt="{{ config('app.name', 'グリーンロケット') }}-ロゴマーク">
             </a>
-        </h1>	
+        </h1>
+        <span class="aniv">10th Anniversary</span>
     </div>
 
 	{{--
@@ -41,53 +42,69 @@ use App\User;
 	</div>
 
 
-	<div class="head-navi">
-        
-            
-        <ul class="clearfix">
-            <li><span><i class="fa fa-search btn-s"></i></span></li>
-            <li><a href="{{ url('shop/cart') }}"><i class="fas fa-shopping-basket"></i></a></li>
-            @if(! Auth::check())
-                <li><a href="{{ url('login') }}"><i class="fas fa-user"></i></a></li>
-            @else
-                <li><a href="{{ url('mypage/favorite') }}"><i class="fas fa-heart"></i></a></li>
-                <li class="dropdown show">
-                  <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user"></i></a>
-
-                      <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                        <span class="ml-3"><b>{{ User::find(Auth::id())->name }}</b> 様</span>
-                        <a class="dropdown-item mt-1" href="{{ url('mypage') }}">マイページ <i class="fa fa-angle-right"></i></a>
-                        <a class="dropdown-item mt-1" href="{{ url('mypage/history') }}">購入履歴 <i class="fa fa-angle-right"></i></a>
-                        <a class="dropdown-item mt-1" href="{{ url('mypage/favorite') }}">お気に入り <i class="fa fa-angle-right"></i></a>
-                        <a href="{{ url('/logout') }}" class="dropdown-item mt-1"
-                                onclick="event.preventDefault();
-                                         document.getElementById('logout-form').submit();">
-                                ログアウト <i class="fa fa-angle-right"></i>
-                        </a>
-
-                        <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
-                            {{ csrf_field() }}
-                        </form>
-                      </div>
+	<div class="head-navi">      
+            <ul class="clearfix">
+            	<li>
+                	<a href="{{ url('first-guide') }}">初めての方へ</a>
                 </li>
-            @endif
-            
-            <li><a href="{{ url('contact') }}"><i class="fas fa-envelope"></i></a></li>
-            
-            
-       </ul> 
-       
-    </div>
+
+                @if(! Auth::check())
+                    <li><a href="{{ url('login') }}">ログイン</a></li>
+                @else
+                	<li><a href="{{ url('mypage') }}">マイページ</a></li>
+                    
+                	<li><a href="{{ url('/logout') }}"
+                                    onclick="event.preventDefault();
+                                             document.getElementById('logout-form').submit();">
+                                    ログアウト
+                            </a>
+
+                            <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
+                                {{ csrf_field() }}
+                            </form>
+                    </li>
+                    
+                    <li><a href="{{ url('mypage/favorite') }}"><i class="fas fa-heart"></i></a></li>
+                	
+                    {{--
+                    <li class="dropdown show">
+                      <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user"></i></a>
+
+                          <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <span class="ml-3"><b>{{ User::find(Auth::id())->name }}</b> 様</span>
+                            <a class="dropdown-item mt-1" href="{{ url('mypage') }}">マイページ <i class="fa fa-angle-right"></i></a>
+                            <a class="dropdown-item mt-1" href="{{ url('mypage/history') }}">購入履歴 <i class="fa fa-angle-right"></i></a>
+                            <a class="dropdown-item mt-1" href="{{ url('mypage/favorite') }}">お気に入り <i class="fa fa-angle-right"></i></a>
+                            <a href="{{ url('/logout') }}" class="dropdown-item mt-1"
+                                    onclick="event.preventDefault();
+                                             document.getElementById('logout-form').submit();">
+                                    ログアウト <i class="fa fa-angle-right"></i>
+                            </a>
+
+                            <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
+                                {{ csrf_field() }}
+                            </form>
+                          </div>
+                    </li>
+                    --}}
+                @endif
+                
+                
+                <li><a href="{{ url('shop/cart') }}"><i class="fas fa-shopping-basket"></i></a></li>
+                <li><a href="{{ url('contact') }}"><i class="fas fa-envelope"></i></a></li>
+                
+           </ul> 
+        </div>
 
 </header>
 
 <div class="clearfix s-form">
-            <form class="my-1 my-lg-0" role="form" method="GET" action="{{ url('search') }}">
-                {{-- csrf_field() --}}
+    <form class="my-1 my-lg-0" role="form" method="GET" action="{{ url('search') }}">
+        {{-- csrf_field() --}}
 
-                <input type="search" class="float-right" name="s" placeholder="Search...">
+        <input type="search" class="float-right" name="s" placeholder="Search...">
 
-            </form>
+    </form>
 </div>
 
 
