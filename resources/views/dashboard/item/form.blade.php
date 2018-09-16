@@ -226,7 +226,7 @@
             </fieldset>
             
             <fieldset class="mb-4 form-group">
-                <label>商品名補足</label>
+                <label>商品名補足（商品名の上部に表示）</label>
                 <input class="form-control{{ $errors->has('title_addition') ? ' is-invalid' : '' }}" name="title_addition" value="{{ Ctm::isOld() ? old('title_addition') : (isset($item) ? $item->title_addition : '') }}" placeholder="常緑 つる性 など">
 
                 @if ($errors->has('title_addition'))
@@ -237,7 +237,7 @@
                 @endif
             </fieldset>
             
-            <fieldset class="mb-4 form-group">
+            <fieldset class="mb-5 form-group">
                 <label>キャッチコピー</label>
                 <input class="form-control{{ $errors->has('catchcopy') ? ' is-invalid' : '' }}" name="catchcopy" value="{{ Ctm::isOld() ? old('catchcopy') : (isset($item) ? $item->catchcopy : '') }}" placeholder="お気に入りボタンの下に表示される">
 
@@ -249,7 +249,7 @@
                 @endif
             </fieldset>
             
-            <fieldset class="form-group mb-4">
+            <fieldset class="form-group mb-4 pb-1">
                 <div class="checkbox">
                     <label>
                         <?php
@@ -268,6 +268,54 @@
                     </label>
                 </div>
             </fieldset>
+            
+            
+            <fieldset class="form-group mb-2 mt-3">
+                    <div class="checkbox">
+                        <label>
+                            <?php
+                                $checked = '';
+                                if(Ctm::isOld()) {
+                                    if(old('is_potset'))
+                                        $checked = ' checked';
+                                }
+                                else {
+                                    if(isset($item) && $item->is_potset) {
+                                        $checked = ' checked';
+                                    }
+                                }
+                            ?>
+                            <input type="checkbox" name="is_potset" value="1"{{ $checked }}> ポットセットにする
+                        </label>
+                    </div>
+            </fieldset>
+            
+            <fieldset class="mb-2 form-group">
+                <label for="pot_parent_id" class="control-label">ポットセット親ID</label>
+                <input class="form-control col-md-6{{ $errors->has('pot_parent_id') ? ' is-invalid' : '' }}" name="pot_parent_id" value="{{ Ctm::isOld() ? old('pot_parent_id') : (isset($item) ? $item->pot_parent_id : '') }}">
+                
+
+                @if ($errors->has('pot_parent_id'))
+                    <div class="text-danger">
+                        <span class="fa fa-exclamation form-control-feedback"></span>
+                        <span>{{ $errors->first('pot_parent_id') }}</span>
+                    </div>
+                @endif
+            </fieldset>
+            
+            <fieldset class="mb-5 form-group">
+                <label for="pot_count" class="control-label">ポット数</label>
+                <input class="form-control col-md-6{{ $errors->has('pot_count') ? ' is-invalid' : '' }}" name="pot_count" value="{{ Ctm::isOld() ? old('pot_count') : (isset($item) ? $item->pot_count : '') }}">
+                
+
+                @if ($errors->has('pot_count'))
+                    <div class="text-danger">
+                        <span class="fa fa-exclamation form-control-feedback"></span>
+                        <span>{{ $errors->first('pot_count') }}</span>
+                    </div>
+                @endif
+            </fieldset>
+
             
             
             <fieldset class="mb-4 form-group">
@@ -375,6 +423,8 @@
                 @endif
             </fieldset>
             
+            
+            
             <fieldset class="mt-5 mb-4 form-group">
                 <label>出荷元</label>
                 <select class="form-control col-md-6{{ $errors->has('consignor_id') ? ' is-invalid' : '' }}" name="consignor_id">
@@ -404,7 +454,7 @@
                 
             </fieldset>
             
-            <fieldset class="mb-2 form-group">
+            <fieldset class="mb-3 form-group">
                 <label>配送区分 <span class="text-danger text-big">*</span></label>
                 <select class="form-control col-md-6{{ $errors->has('dg_id') ? ' is-invalid' : '' }}" name="dg_id">
                     <option disabled selected>選択して下さい</option>
@@ -434,6 +484,19 @@
                 @endif
                 
             </fieldset>
+            
+            <fieldset class="mb-4 form-group">
+                <label for="factor" class="control-label">係数 <span class="text-danger text-big">*</span></label>
+                <input class="form-control col-md-6{{ $errors->has('factor') ? ' is-invalid' : '' }}" name="factor" value="{{ Ctm::isOld() ? old('factor') : (isset($item) ? $item->factor : '') }}" placeholder="">
+                
+                @if ($errors->has('factor'))
+                    <div class="text-danger">
+                        <span class="fa fa-exclamation form-control-feedback"></span>
+                        <span>{{ $errors->first('factor') }}</span>
+                    </div>
+                @endif
+            </fieldset>
+            
             
             <fieldset class="form-group mb-2">
                     <div class="checkbox">
@@ -475,19 +538,7 @@
                     </div>
             </fieldset>
             
-            <fieldset class="mb-4 form-group">
-                <label for="factor" class="control-label d-inline">係数 <span class="text-danger text-big">*</span></label>
-                <input class="form-control d-inline col-md-4{{ $errors->has('factor') ? ' is-invalid' : '' }}" name="factor" value="{{ Ctm::isOld() ? old('factor') : (isset($item) ? $item->factor : '') }}" placeholder="">
-                
-                @if ($errors->has('factor'))
-                    <div class="text-danger">
-                        <span class="fa fa-exclamation form-control-feedback"></span>
-                        <span>{{ $errors->first('factor') }}</span>
-                    </div>
-                @endif
-            </fieldset>
-            
-            <fieldset class="form-group mb-2">
+            <fieldset class="form-group mb-3">
                     <div class="checkbox">
                         <label>
                             <?php
@@ -506,6 +557,21 @@
                         </label>
                     </div>
             </fieldset>
+            
+            <fieldset class="mb-5 form-group">
+                <label for="deli_plan_text" class="control-label">発送目安テキスト</label>
+                <input class="form-control col-md-12{{ $errors->has('deli_plan_text') ? ' is-invalid' : '' }}" name="deli_plan_text" value="{{ Ctm::isOld() ? old('deli_plan_text') : (isset($item) ? $item->deli_plan_text : '') }}">
+                
+
+                @if ($errors->has('deli_plan_text'))
+                    <div class="text-danger">
+                        <span class="fa fa-exclamation form-control-feedback"></span>
+                        <span>{{ $errors->first('deli_plan_text') }}</span>
+                    </div>
+                @endif
+            </fieldset>
+            
+            
             
             
 
@@ -755,9 +821,9 @@
             </fieldset>
             
             <fieldset class="my-5 form-group{{ $errors->has('explain') ? ' is-invalid' : '' }}">
-                    <label for="explain" class="control-label">メイン説明</label>
+                    <label for="explain" class="control-label">商品詳細</label>
 
-                    <textarea id="explain" type="text" class="form-control" name="explain" rows="16">{{ Ctm::isOld() ? old('explain') : (isset($item) ? $item->explain : '') }}</textarea>
+                    <textarea id="explain" type="text" class="form-control" name="explain" rows="18">{{ Ctm::isOld() ? old('explain') : (isset($item) ? $item->explain : '') }}</textarea>
 
                     @if ($errors->has('explain'))
                         <span class="help-block">
@@ -770,7 +836,7 @@
             <fieldset class="mt-3 mb-2 form-group{{ $errors->has('about_ship') ? ' is-invalid' : '' }}">
                     <label for="detail" class="control-label">配送について</label>
 
-                        <textarea id="detail" type="text" class="form-control" name="about_ship" rows="16">{{ Ctm::isOld() ? old('about_ship') : (isset($item) ? $item->about_ship : '') }}</textarea>
+                        <textarea id="detail" type="text" class="form-control" name="about_ship" rows="18">{{ Ctm::isOld() ? old('about_ship') : (isset($item) ? $item->about_ship : '') }}</textarea>
 
                         @if ($errors->has('about_ship'))
                             <span class="help-block">

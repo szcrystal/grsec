@@ -1383,27 +1383,39 @@ class CartController extends Controller
 //        $request->session()->forget('item.data');
 //        $request->session()->forget('all');
         
-        if($request->has('from_item')) { //postの時、request dataをsessionに入れる
-            $data = $request->all();
+        if($request->has('from_item')) { //singleからのpostの時、request dataをsessionに入れる
+            $datas = $request->all();
             
-            if($request->session()->has('item.data')) {
+            foreach($datas['item_id'] as $k => $v) {
+            	$data = array();
                 
-                if(! in_array($data, session('item.data'))) {
-//                    echo "abc";
-//                     print_r($data);   
-//                     print_r(session('item.data'));   
-//                    exit;
+            	$data['_token'] = $datas['_token'];
+                $data['item_count'] = $datas['item_count'][$k];
+                $data['from_item'] = $datas['from_item'];
+            	$data['item_id'] = $v;
+                $data['uri'] = $datas['uri'];
+            
+            
+                if($request->session()->has('item.data')) { //一度カートに入れ、別商品を再度カートに入れた時
+                    
+                    if(! in_array($data, session('item.data'))) {
+    //                    echo "abc";
+    //                     print_r($data);   
+    //                     print_r(session('item.data'));   
+    //                    exit;
+                        $request->session()->push('item.data', $data);
+                     }   
+                }
+                else { //初カートの時
+    //                echo "bbb";
+    //                print_r(session('item.data'));
+    //                exit;
                     $request->session()->push('item.data', $data);
-                 }   
-            }
-            else {
-//                echo "bbb";
-//                print_r(session('item.data'));
-//                exit;
-                $request->session()->push('item.data', $data);
+                }
+            
             }
             
-            $request->session()->put('org_url', $data['uri']);
+            $request->session()->put('org_url', $datas['uri']);
         }
 
         
@@ -1426,7 +1438,7 @@ class CartController extends Controller
             $request->session()->put('item.data', $reData);
         }
         
-        //itemのsessionがある時　なければスルーして$itemDataを空で渡す
+        //itemのsessionがある時　なければスルーして$itemDataを空で渡す ない時->カートが空の時だったか？？
         if( $request->session()->has('item.data') ) {
             $itemSes = session('item.data');
 //            print_r($itemSes);
@@ -1438,6 +1450,7 @@ class CartController extends Controller
                 
                 if($submit) { //再計算の時
                 	$obj['count'] = $data['last_item_count'][$key];
+                    $request->session()->put('item.data.'.$key.'.item_count', $obj['count']);
                 }
                 else {
                 	$obj['count'] = $val['item_count'];	

@@ -216,28 +216,113 @@ use App\TopSetting;
                     </div>
                     --}}
                     
-                 	<div class="price-meta"> 
-                    	<?php 
-                        	$isSale = Setting::get()->first()->is_sale; 
-                        ?>
+                    
+                    @if(count($potSets) > 0)
+                    	
+                        <?php $potSets->prepend($item); //$itemを最初に追加 ?>
+						
+                        <form method="post" action="{{ url('shop/cart') }}">
+                            {{ csrf_field() }}
                         
-                        @if(isset($item->sale_price))
-                        	<small class="text-white bg-gray py-1 px-2 mr-1">セール商品</small>
-                        	<strike class="text-small">{{ number_format(Ctm::getPriceWithTax($item->price)) }}</strike>
-                            <i class="fas fa-arrow-right text-small"></i>
-                        	{{ number_format(Ctm::getPriceWithTax($item->sale_price)) }}
-                        @else
-                            @if($isSale)
-                            	<small class="text-white bg-gray py-1 px-2 mr-1">セール{{ Setting::get()->first()->sale_per }}%引</small>
-                                <strike class="text-small">{{ number_format(Ctm::getPriceWithTax($item->price)) }}</strike>
-                                <i class="fas fa-arrow-right text-small"></i>
-                                {{ number_format(Ctm::getSalePriceWithTax($item->price)) }}
-                            @else
-                                {{ number_format(Ctm::getPriceWithTax($item->price)) }}
-                            @endif
-                        @endif
-                        円&nbsp;<span class="text-small">(税込)</span>
-                    </div>
+                        <div class="potset-wrap">
+                        	
+                            
+                            @foreach($potSets as $potSet)
+                            <div class="potset clearfix">
+                                <div class="img-box">
+                                    <img src="{{ Storage::url($potSet->main_img) }}" class="">
+                                </div>
+                                
+                                <div class="">
+                                    <h3>
+                                    	@if(! $potSet->pot_count)
+                                        	1ポット
+                                        @else
+                                    	{{ $potSet->pot_count }}ポット
+                                        @endif
+                                    </h3>
+                                    
+                                    <div class="price-meta">
+                                        <?php $obj = $potSet; ?>
+                                        @include('main.shared.priceMeta')
+                                    </div>
+                                    
+                                    <div>
+                                        <span class="text-small">
+                                        @if($potSet->is_once)
+                                            同梱包可能
+                                        @else
+                                            同梱包不可
+                                        @endif
+                                        </span>
+                                    </div>
+                                    
+                                    <div class="clearfix">
+                                        @if($potSet->stock_show)
+                                            <span><b>在庫：{{ $potSet->stock }}</b></span>
+                                        @endif
+                                        
+                                        <div class="w-50 float-right">
+                                            <fieldset class="mb-4 form-group clearfix text-right">
+                                            <label>数量</label>
+                                            
+                                            <select class="form-control col-md-6 d-inline{{ $errors->has('item_count') ? ' is-invalid' : '' }}" name="item_count[]">
+                                                <option selected>選択</option>
+                                                    <?php
+                                                        $max = 100;
+                                                        if($potSet->stock < 100) {
+                                                            $max = $item->stock;
+                                                        }
+                                                    ?>
+                                                    @for($i=1; $i <= $max; $i++)
+                                                        <?php
+                                                            $selected = '';
+                                                            if(Ctm::isOld()) {
+                                                                if(old('item_count') == $i)
+                                                                    $selected = ' selected';
+                                                            }
+                                                            else {
+                                                                if($i == 1) {
+                                                                    $selected = ' selected';
+                                                                }
+                                                            }
+                                                        ?>
+                                                        <option value="{{ $i }}"{{ $selected }}>{{ $i }}</option>
+                                                    @endfor
+                                            </select>
+                                            <span class="text-warning"></span>
+                                            
+                                            @if ($errors->has('item_count'))
+                                                <div class="help-block text-danger">
+                                                    <span class="fa fa-exclamation form-control-feedback"></span>
+                                                    <span>{{ $errors->first('item_count') }}</span>
+                                                </div>
+                                            @endif
+                                            
+                                            <input type="hidden" name="item_id[]" value="{{ $potSet->id }}">
+                                            
+                                        	</fieldset>
+                                    	</div>
+                                	</div>
+                                
+                                </div>
+                            </div>
+                            @endforeach
+ 
+                    	</div>
+                        
+                        	<input type="hidden" name="from_item" value="1">
+                            <input type="hidden" name="uri" value="{{ Request::path() }}">
+                        	<button type="submit" class="btn btn-custom text-center col-md-12">カートに入れる</button>
+                       	</form>
+                    
+                    @else
+                        <div class="price-meta">
+                        	<?php $obj = $item; ?>
+                            @include('main.shared.priceMeta') 
+                            
+                        </div>
+                    @endif
                     
                     <div class="my-3 text-small">
                     	<p>{!! nl2br($item->exp_first) !!}</p>
@@ -285,7 +370,7 @@ use App\TopSetting;
                                 @endif
                                 </label>
                                 
-                                <select class="form-control col-md-6 d-inline{{ $errors->has('item_count') ? ' is-invalid' : '' }}" name="item_count">
+                                <select class="form-control col-md-6 d-inline{{ $errors->has('item_count') ? ' is-invalid' : '' }}" name="item_count[]">
                                     <option disabled selected>選択して下さい</option>
                                     	<?php
                                         	$max = 100;
@@ -321,12 +406,9 @@ use App\TopSetting;
                             </fieldset>
                             
                             <input type="hidden" name="from_item" value="1">
-                            <input type="hidden" name="item_id" value="{{ $item->id }}">
+                            <input type="hidden" name="item_id[]" value="{{ $item->id }}">
                             <input type="hidden" name="uri" value="{{ Request::path() }}">     
-                            {{--
-                            <input type="hidden" name="item_price" value="{{ $item->price }}">
-                            <input type="hidden" name="tax" value="{{ $tax }}"> 
-                            --}}     
+                                
                             
                             <button type="submit" class="btn btn-custom text-center col-md-12">カートに入れる</button>
                             

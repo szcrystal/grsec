@@ -692,6 +692,7 @@ body {
 	//display: none;
 	background: none;
     margin: -1em 0 1em;
+    padding-left: 0;
     //border: 1px solid red;
 }
 .single .breadcrumb {
@@ -699,6 +700,9 @@ body {
 }
 .breadcrumb-item + .breadcrumb-item::before {
   content: ">";
+}
+.breadcrumb-item.active {
+  color: #838383;
 }
 
 
@@ -765,11 +769,15 @@ body {
 	height: 226px;
     float: left;
 }
-.floar .img-box { /* Single 小img */
+.floar .img-box { /* Single 小img Recent Check */
 	height: 158px;
 }
-.single-left .floar .img-box { /* Single 小img */
+.single-left .floar .img-box { /* Single 3つ並び小img */
 	height: 228px;
+}
+.potset .img-box {
+	height: 125px;
+    border: 1px solid red;
 }
 
 
@@ -1000,7 +1008,6 @@ body {
     //background: #ececec;
 /*    background: #eae8e8;*/
     color: #4a4a4a;
-    
 }
 #left-bar h5 a {
 	color: #4a4a4a;
@@ -1105,12 +1112,12 @@ ul.side-rank {
 /* Single */
 .single-left {
 	float: left;
-	width: 49%;
+	width: 48.5%;
     //border: 1px solid red;
 }
 .single-right {
 	float: right;
-	width: 48%;
+	width: 48.5%;
     //border: 1px solid orange;
 }
 
@@ -1196,7 +1203,7 @@ ul.side-rank {
     opacity: 0.55;
     height: 1.4em;
     top: 42%;
-    margin: 0 2px;
+    margin: 0 1px;
     //border: 1px solid red;
 }
 .carousel-control-prev-icon,
@@ -1251,6 +1258,36 @@ ul.side-rank {
 .slideDeli + .table-custom {
 	display: none;
 }
+.potset {
+	margin-bottom: 0.5em;
+	//border: 1px solid red;
+}
+.potset h3 {
+	font-size: 1.4em;
+    margin: 0;
+    padding: 0;
+    font-weight: bold;
+}
+.potset > div {
+	float: left;
+    padding: 0;
+    margin: 0;
+}
+.potset > div:first-of-type { /* img-box */
+	width: 18%;
+    margin-right: 1%;
+}
+.potset > div:nth-of-type(2) {
+	width: 78%;
+    margin-right: 0;
+    //border: 1px solid orange;
+}
+
+.potset .price-meta {
+	font-size: 1.2em;
+}
+
+
 
 .floar ul {
 	list-style: none;

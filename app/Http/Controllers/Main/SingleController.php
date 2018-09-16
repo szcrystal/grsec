@@ -52,8 +52,14 @@ class SingleController extends Controller
         
         $cate = $this->category->find($item->cate_id);
         $subCate = $this->subCate->find($item->subcate_id);
+        
+        
+        //ポットセットがある場合
+        $potSets = $this->item->where(['open_status'=>1, 'pot_parent_id'=>$item->id])->get();
+        
+        
         //Other Atcl
-        $otherItem = $this->item->where([ 'open_status'=>1])->whereNotIn('id', [$id])->orderBy('created_at','DESC')->take(5)->get();
+        $otherItem = $this->item->where(['open_status'=>1])->whereNotIn('id', [$id])->orderBy('created_at','DESC')->take(5)->get();
         
         //Tag
         $tags = null;
@@ -69,9 +75,9 @@ class SingleController extends Controller
         	$tags = $this->tag->whereIn('id', $tagRels)->orderByRaw("FIELD(id, $sortIDs)")->get();
         }
         
-        //サブ画像
-        $imgsPri = $this->itemImg->where(['item_id'=>$id, 'type'=>1])->orderBy('number', 'asc')->get();
         //商品画像
+        $imgsPri = $this->itemImg->where(['item_id'=>$id, 'type'=>1])->orderBy('number', 'asc')->get();
+        //セカンド画像
         $imgsSec = $this->itemImg->where(['item_id'=>$id, 'type'=>2])->orderBy('number', 'asc')->get();
         
         
@@ -182,7 +188,7 @@ class SingleController extends Controller
         $metaDesc = $item->meta_description;
         $metaKeyword = $item->meta_keyword;
         
-        return view('main.home.single', ['item'=>$item, 'otherItem'=>$otherItem, 'cate'=>$cate, 'subCate'=>$subCate, 'tags'=>$tags, 'imgsPri'=>$imgsPri, 'imgsSec'=>$imgsSec, 'isFav'=>$isFav, 'isOnceItems'=>$isOnceItems, 'cacheItems'=>$cacheItems, 'recommends'=>$recommends, 'metaTitle'=>$metaTitle, 'metaDesc'=>$metaDesc, 'metaKeyword'=>$metaKeyword, 'type'=>'single']);
+        return view('main.home.single', ['item'=>$item, 'potSets'=>$potSets, 'otherItem'=>$otherItem, 'cate'=>$cate, 'subCate'=>$subCate, 'tags'=>$tags, 'imgsPri'=>$imgsPri, 'imgsSec'=>$imgsSec, 'isFav'=>$isFav, 'isOnceItems'=>$isOnceItems, 'cacheItems'=>$cacheItems, 'recommends'=>$recommends, 'metaTitle'=>$metaTitle, 'metaDesc'=>$metaDesc, 'metaKeyword'=>$metaKeyword, 'type'=>'single']);
     }
     
     

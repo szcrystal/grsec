@@ -21,6 +21,11 @@ class CreateItemsTable extends Migration
             $table->string('title')->nullable()->default(NULL);
             $table->string('title_addition')->nullable()->default(NULL);
             $table->string('catchcopy')->nullable()->default(NULL);
+            
+            $table->boolean('is_potset')->nullable()->default(0);
+            $table->integer('pot_parent_id')->nullable()->default(NULL);
+            $table->integer('pot_count')->nullable()->default(NULL);
+            
             $table->integer('cate_id')->nullable()->default(NULL);
             $table->integer('subcate_id')->nullable()->default(NULL);
             $table->boolean('is_ensure')->nullable()->default(NULL);

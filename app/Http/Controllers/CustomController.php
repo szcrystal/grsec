@@ -21,13 +21,13 @@ class CustomController extends Controller
 {
 	public $setting;
 	
-    public function __construct(Setting $setting, Article $article, Category $category, Tag $tag, TotalizeAll $totalizeAll)
+    public function __construct(Setting $setting, Article $article, Category $category, Tag $tag)
     {
     	$this->setting = $setting;
     	$this->article = $article;
         $this->category = $category;
         $this->tag = $tag;
-        $this->totalizeAll = $totalizeAll;
+        //$this->totalizeAll = $totalizeAll;
         
 	}
     
@@ -63,6 +63,25 @@ class CustomController extends Controller
                 
         return $price;
         
+    }
+    
+    static function getItemPrice($obj)
+    {
+    	$isSale = Setting::get()->first()->is_sale; 
+
+                                                    
+        if(isset($obj->sale_price)) {
+            $price = number_format(CustomController::getPriceWithTax($obj->sale_price));
+        }
+        else {
+            if($isSale)
+                $price = number_format(CustomController::getSalePriceWithTax($obj->price));
+            else
+                $price = number_format(CustomController::getPriceWithTax($obj->price));
+        }
+        
+        
+        return "<span>" . $price . "</span>円(税込)";
     }
     
     static function getFixPage()
