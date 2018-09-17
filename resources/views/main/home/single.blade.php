@@ -221,10 +221,11 @@ use App\TopSetting;
                     	
                         <?php $potSets->prepend($item); //$itemを最初に追加 ?>
 						
-                        <form method="post" action="{{ url('shop/cart') }}">
-                            {{ csrf_field() }}
                         
-                        <div class="potset-wrap">
+                        
+                        <div class="potset-wrap form-wrap">
+                        	<form method="post" action="{{ url('shop/cart') }}">
+                            {{ csrf_field() }}
                         	
                             
                             @foreach($potSets as $potSet)
@@ -238,7 +239,7 @@ use App\TopSetting;
                                     	@if(! $potSet->pot_count)
                                         	1ポット
                                         @else
-                                    	{{ $potSet->pot_count }}ポット
+                                    		{{ $potSet->pot_count }}ポット({{ $potSet->title_addition }})
                                         @endif
                                     </h3>
                                     
@@ -263,7 +264,7 @@ use App\TopSetting;
                                         @endif
                                         
                                         <div class="w-50 float-right">
-                                            <fieldset class="mb-4 form-group clearfix text-right">
+                                            <fieldset class="clearfix text-right">
                                             <label>数量</label>
                                             
                                             <select class="form-control col-md-6 d-inline{{ $errors->has('item_count') ? ' is-invalid' : '' }}" name="item_count[]">
@@ -308,13 +309,16 @@ use App\TopSetting;
                                 </div>
                             </div>
                             @endforeach
- 
-                    	</div>
-                        
-                        	<input type="hidden" name="from_item" value="1">
+ 							
+                            <input type="hidden" name="from_item" value="1">
                             <input type="hidden" name="uri" value="{{ Request::path() }}">
                         	<button type="submit" class="btn btn-custom text-center col-md-12">カートに入れる</button>
+                            <p class="">{{ $item->deli_plan_text }}</p>
                        	</form>
+                        
+                    	</div>
+                        
+                        	
                     
                     @else
                         <div class="price-meta">
@@ -411,13 +415,14 @@ use App\TopSetting;
                                 
                             
                             <button type="submit" class="btn btn-custom text-center col-md-12">カートに入れる</button>
+                            <p class="">{{ $item->deli_plan_text }}</p>
                             
                             @if(Ctm::isAgent('sp'))
                             	<button id="spCartBtn" type="submit" class="btn btn-custom text-center col-md-6">この商品をカートに入れる</button>
                             @endif
                        </form>
                        
-                       <span class="text-danger text-big">{{ $item->deli_plan_text }}</span>
+                       
                 	
                     @else
                     	<span class="text-danger text-big">在庫がありません</span>
@@ -445,13 +450,13 @@ use App\TopSetting;
                 
                        <ul class="nav nav-tabs">
                             <li class="nav-item">
-                              <a href="#tab1" class="nav-link active" data-toggle="tab">商品説明</a>
+                              <a href="#tab1" class="nav-link active" data-toggle="tab">商品詳細</a>
                             </li>
                             <li class="nav-item">
                               <a href="#tab2" class="nav-link" data-toggle="tab">配送について</a>
                             </li>
                             <li class="nav-item">
-                              <a href="#tab3" class="nav-link" data-toggle="tab">商品情報</a>
+                              <a href="#tab3" class="nav-link" data-toggle="tab">育て方</a>
                             </li>
                         </ul> 
                         
@@ -551,7 +556,7 @@ use App\TopSetting;
         
         
         
-        <div class="aaa panel-body mt-3 pt-1">
+        <div class="recent-check mt-3 pt-1">
             @if(isset($cacheItems))
                 <div class="mt-4 floar">
                     
@@ -563,7 +568,7 @@ use App\TopSetting;
                                     <div class="img-box">        
                                         <img src="{{ Storage::url($cacheItem->main_img) }}" class="img-fluid">
                                     </div>
-                                    <p>{{ Ctm::shortStr($cacheItem->title, 20) }}</p>
+                                    <p>{{ Ctm::shortStr($cacheItem->title, 18) }}</p>
                                 </a>
                             </li>         
                         @endforeach      

@@ -4,7 +4,7 @@
 
 <div id="main" class="clearfix login mb-5">
      
-        <div style="min-height: 600px;">
+        <div class="">
             <h4 class="card-header">会員の方</h4>
 
             <div class="card-body">
@@ -12,7 +12,7 @@
             
             @if (count($errors) > 0)
                 <div class="alert alert-danger">
-                    <strong><i class="fas fa-exclamation-triangle"></i> Error</strong> 以下の入力を確認して下さい。<br><br>
+                    <strong><i class="fas fa-exclamation-triangle"></i> Error</strong>
                     <ul>
                         @foreach ($errors->all() as $error)
                             <li>{{ $error }}</li>
@@ -30,9 +30,9 @@
                     @csrf
 
                     <fieldset class="form-group row">
-                        <label for="email" class="col-sm-4 col-form-label text-md-right">メールアドレス</label>
+                        <label for="email" class="col-md-3 col-form-label text-md-right">メールアドレス</label>
 
-                        <div class="col-md-7">
+                        <div class="col-md-8">
                             <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" autofocus>
 
                             @if ($errors->has('email'))
@@ -45,9 +45,9 @@
                     </fieldset>
 
                     <fieldset class="form-group row">
-                        <label for="password" class="col-md-4 col-form-label text-md-right">パスワード</label>
+                        <label for="password" class="col-md-3 col-form-label text-md-right">パスワード</label>
 
-                        <div class="col-md-7">
+                        <div class="col-md-8">
                             <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password">
 
                             @if ($errors->has('password'))
@@ -60,7 +60,7 @@
                     </fieldset>
 
                     <fieldset class="form-group row">
-                        <div class="col-md-7 offset-md-4">
+                        <div class="col-md-8 offset-md-3">
                             <div class="checkbox">
                                 <label>
                                     <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> ログイン状態を保存する

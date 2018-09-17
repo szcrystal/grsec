@@ -562,10 +562,11 @@ var exe = (function() {
         },
         
         getWH: function() {
-        	$target = $('.carousel-indicators li');
+        	$target = $('.potset .img-box');
         	var w = $target.width();
             var h = $target.height();
             
+            //$('h2').text(w +'/'+ h);
             console.log(w +'/'+ h);
             
                                
