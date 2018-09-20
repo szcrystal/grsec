@@ -5,8 +5,8 @@ Version: 1.0.0
 
 */
 
-/*@import url('https://fonts.googleapis.com/css?family=Courgette|Gentium+Book+Basic');*/
-@import url('https://fonts.googleapis.com/css?family=Cormorant+Infant:400,600');
+@import url('https://fonts.googleapis.com/css?family=Courgette|Gentium+Book+Basic');
+/*@import url('https://fonts.googleapis.com/css?family=Cormorant+Infant:400,600');*/
 
 html {
 	line-height: 1.15; /* 1 */
@@ -296,10 +296,10 @@ body {
     border-bottom: 1px solid #d8d8d8;
 }
 .site-description {
-	font-size: 1.0em;
+	font-size: 0.95em;
 	background: #3a3b3c/*#2a2a2a*/;
 	margin: 0;
-	padding: 0.1em 0;
+	padding: 0.2em 0;
 	//border-bottom: 1px solid #dedfdf/*#abacad*/;
 	color: #fff;
 }
@@ -326,14 +326,15 @@ body {
 }
 .site-header h1 img:last-of-type {
 	width: 55px;
+    margin-left: -5px;
 }
 .site-header h1 a:hover {
 	text-decoration: none;
 }
 .site-header .aniv {
 	display: inline-block;
-/*	font-family: 'Gentium Book Basic', serif;*/
-	font-family: 'Cormorant Infant', serif;
+	font-family: 'Gentium Book Basic', serif;
+/*	font-family: 'Cormorant Infant', serif;*/
     color: #C15360;
     font-weight: 400;
     font-size: 1.7em;
@@ -421,9 +422,10 @@ body {
 }
 .head-second address ul li {
 	float: left;
+    font-size: 1em;
 }
 .head-second address ul li:first-of-type {
-	margin-right: 1.0em;
+	margin-right: 1.1em;
 	font-weight: bold;
 }
 .head-second address .fas {
@@ -567,7 +569,7 @@ body {
     width: 100%;
     height: 100%;
     font-weight: bold;
-    font-size: 0.95em;
+    font-size: 0.9em;
     text-decoration: none;
     line-height: 2.8em;
     color: #5a5a5a;
@@ -1209,7 +1211,7 @@ ul.side-rank {
     opacity: 0.55;
     height: 1.4em;
     top: 35%;
-    margin: 0 1px;
+    margin: 0;
     //border: 1px solid red;
 }
 .carousel-control-prev-icon,

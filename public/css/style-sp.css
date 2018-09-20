@@ -245,7 +245,7 @@ for SP
     }
 	.site-header {
 		position: relative;
-        padding: 0.5em 0.5em 1em 0.2em;
+        padding: 0.2em 0.2em;
         border-bottom: 1px solid #bbb;
         border-top: 0;
 	}
@@ -259,8 +259,8 @@ for SP
 	}
     .site-header h1 {
     	width: 60%;
-        float: left;
-    	margin: 0 0 3px 1%;
+        float: none;
+    	margin: 0 auto 3px;
         padding: 0;
         line-height: 0;
         //border: 1px solid red;
@@ -277,26 +277,49 @@ for SP
 	}
     .site-header .logos h1 img:last-of-type {
 		float: none;
-  		width: 14%;
+  		width: 14.5%;
         margin-top: 0;
         margin-left: -0.2em;
     	//border: 1px solid red;          
 	}
     .site-header .aniv {
-    	font-size: 1.2em;
+    	font-size: 0.9em;
+        font-weight: bold;
+        font-style: normal;
+        font-family: sans-serif;
+        text-align: center;
+        width: 100%;
+        margin: 0;
+        padding: 0;
     }
     
     .nav-tgl {
-    	width: 1.9em;
-        padding: 0.2em 0.2em 0.2em 0.3em;
+    	//width: 2.0em;
+        padding: 0 0.2em 0.2em 0.3em;
         //border: 1px solid red;
 		position: absolute;
-        top: 44.5%;
+        top: 0;
         left: 1.0%;
         font-size: 1.7em;
         color: #333;
     }
+    .s-tgl {
+    	//width: 2.0em;
+        padding: 0 0.2em 0.2em 0.3em;
+        //border: 1px solid red;
+		position: absolute;
+        top: 0;
+        right: 1.0%;
+        font-size: 1.7em;
+        color: #333;
+    }
     
+    .head-navi {
+    	width: 100%;
+        float: none;
+    	//border: 1px solid red;
+        margin: 0;
+    }
     .head-navi li {
         list-style: none;
         float: left;
@@ -307,11 +330,44 @@ for SP
     	padding: 0.1em 0.6em;
         margin-top: 0;
     }
-    .head-navi li .fas {
-        font-size: 1.5em;
-        margin-right: 0.2em;
+    
+    .head-navi li a {
+    	color: #3f3f3f;
     }
     
+    .icon-belt {
+    	width: 100%;
+    	background: beige;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        z-index: 999;
+        padding: 0.3em 0.2em 0;
+        text-align: center;
+        background: #3a3b3b;
+    }
+    .icon-belt ul {
+    	display: inline-block;
+    	list-style: none;
+        margin: 0;
+        padding: 0;
+        border: 1px solid red;
+    }
+    .icon-belt li {
+    	float: left;
+        //line-height: 2em;
+        margin-right: 1.2em;
+    }
+    .icon-belt li:last-of-type {
+    	margin-right: 0;
+    }
+    .icon-belt li a {
+    	color: #fff;
+    }
+    .icon-belt li .fas {
+        font-size: 2.1em;
+        margin-right: 0.5em;
+    }
     
     .s-form {
         position: static;
@@ -333,17 +389,8 @@ for SP
     
     
     
-    .head-navi {
-    	top: 53%;
-        right: 1em;
-        //color: #231815;
-    }
-    .head-navi li:last-of-type {
-    	margin-right: 0;
-    }
-    .head-navi li a {
-    	color: #3f3f3f;
-    }
+    
+    
     
     .fade-black {
     	width: 100%;
@@ -781,6 +828,10 @@ for SP
     	float: none;
         width: 88%;
         margin: 2em auto 1em;
+    }
+    
+    .top_btn {
+    	display: none;
     }
     
     

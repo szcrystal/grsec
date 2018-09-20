@@ -23,7 +23,7 @@ use App\User;
                 <img src="{{ url('images/logo-symbol.png') }}" alt="{{ config('app.name', 'グリーンロケット') }}-ロゴマーク">
             </a>
         </h1>
-        <span class="aniv">10th Anniversary</span>
+        
     </div>
 
 	{{--
@@ -40,61 +40,16 @@ use App\User;
     <div class="nav-tgl">
     	<i class="fa fa-bars"></i>
 	</div>
+    
+    <div class="s-tgl">
+    	<i class="fas fa-search"></i>
+	</div>
 
 
-	<div class="head-navi">      
-            <ul class="clearfix">
-            	<li>
-                	<a href="{{ url('first-guide') }}">初めての方へ</a>
-                </li>
-
-                @if(! Auth::check())
-                    <li><a href="{{ url('login') }}">ログイン</a></li>
-                @else
-                	<li><a href="{{ url('mypage') }}">マイページ</a></li>
-                    
-                	<li><a href="{{ url('/logout') }}"
-                                    onclick="event.preventDefault();
-                                             document.getElementById('logout-form').submit();">
-                                    ログアウト
-                            </a>
-
-                            <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
-                                {{ csrf_field() }}
-                            </form>
-                    </li>
-                    
-                    <li><a href="{{ url('mypage/favorite') }}"><i class="fas fa-heart"></i></a></li>
-                	
-                    {{--
-                    <li class="dropdown show">
-                      <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user"></i></a>
-
-                          <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <span class="ml-3"><b>{{ User::find(Auth::id())->name }}</b> 様</span>
-                            <a class="dropdown-item mt-1" href="{{ url('mypage') }}">マイページ <i class="fa fa-angle-right"></i></a>
-                            <a class="dropdown-item mt-1" href="{{ url('mypage/history') }}">購入履歴 <i class="fa fa-angle-right"></i></a>
-                            <a class="dropdown-item mt-1" href="{{ url('mypage/favorite') }}">お気に入り <i class="fa fa-angle-right"></i></a>
-                            <a href="{{ url('/logout') }}" class="dropdown-item mt-1"
-                                    onclick="event.preventDefault();
-                                             document.getElementById('logout-form').submit();">
-                                    ログアウト <i class="fa fa-angle-right"></i>
-                            </a>
-
-                            <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
-                                {{ csrf_field() }}
-                            </form>
-                          </div>
-                    </li>
-                    --}}
-                @endif
-                
-                
-                <li><a href="{{ url('shop/cart') }}"><i class="fas fa-shopping-basket"></i></a></li>
-                <li><a href="{{ url('contact') }}"><i class="fas fa-envelope"></i></a></li>
-                
-           </ul> 
-        </div>
+	<div class="head-navi">
+    	<p class="aniv">初めてでも安心！全品6ヶ月枯れ保証！3ヶ月取り置き可能！</p>
+    </div>
+    
 
 </header>
 
@@ -106,7 +61,6 @@ use App\User;
 
     </form>
 </div>
-
 
 
 <div class="fade-black">
@@ -129,6 +83,65 @@ use App\User;
 	<div class="navi-body">
 
         <ul class="clearfix">
+        	
+            <li class="">
+                
+            {{--    
+            <span>ページ<i class="fa fa-caret-down" aria-hidden="true"></i></span>
+            --}}    
+
+                <section class="drops clearfix">
+                    
+                    <div class="clearfix">
+                        <h3><a href="{{ url('first-guide') }}">
+                                初めての方へ <i class="fas fa-angle-double-right"></i>
+                            </a></h3>
+                        <div class="">
+                            <p>植木買うならグリーンロケット：グリーンロケットは初めての植木、お庭づくりを全力で応援します。</p>
+                        </div>
+                        
+                        <?php
+                            extract(Ctm::getFixPage());
+                        ?>
+                    
+                        @if(count($fixOthers) > 0) 
+                        <ul class="list-unstyled"> 
+                            @foreach($fixOthers as $fixOther)
+                                <li><a href="{{ url($fixOther->slug) }}">
+                                    @if($fixOther->sub_title != '')
+                                    {{ $fixOther->sub_title }} <i class="fas fa-angle-double-right"></i>
+                                    @else
+                                    {{ $fixOther->title }} <i class="fas fa-angle-double-right"></i>
+                                    @endif
+                                </a></li>
+                            @endforeach                     
+                        </ul>
+                        @endif
+                    </div>
+                    
+                    <div class="clearfix">
+                        
+                        <h3>グリーンロケットについて</h3>
+                        
+                        <ul class="mt-3 list-unstyled">
+                            @if(count($fixNeeds) > 0)         
+                                @foreach($fixNeeds as $fixNeed)
+                                <li><a href="{{ url($fixNeed->slug) }}">
+                                    @if($fixNeed->sub_title != '')
+                                    {{ $fixNeed->sub_title }} <i class="fas fa-angle-double-right"></i>
+                                    @else
+                                    {{ $fixNeed->title }} <i class="fas fa-angle-double-right"></i>
+                                    @endif
+                                </a></li>
+                                @endforeach
+                        	@endif 
+                            <li><a href="{{ url('contact') }}">お問い合わせ <i class="fas fa-angle-double-right"></i></a></li>
+                        </ul>
+                        
+                    </div>
+
+                </section>
+            </li>
            
             @foreach($cates as $cate)
                 <li class="">
@@ -179,64 +192,7 @@ use App\User;
                 </li>
             @endforeach
             
-            <li class="">
-                
-                {{--    
-                <span>ページ<i class="fa fa-caret-down" aria-hidden="true"></i></span>
-                --}}    
-
-                    <section class="drops clearfix">
-                    	
-                        <div class="clearfix">
-                        	<h3><a href="{{ url('first-guide') }}">
-                                    初めての方へ <i class="fas fa-angle-double-right"></i>
-                                </a></h3>
-                            <div class="">
-                                <p>グリーンロケットは、初めての植木づくりを全力で応援します。</p>
-                            </div>
-                            
-                            <?php
-                                extract(Ctm::getFixPage());
-                            ?>
-                        
-                            @if(count($fixOthers) > 0) 
-                            <ul class="list-unstyled"> 
-                                @foreach($fixOthers as $fixOther)
-                                    <li><a href="{{ url($fixOther->slug) }}">
-                                        @if($fixOther->sub_title != '')
-                                        {{ $fixOther->sub_title }} <i class="fas fa-angle-double-right"></i>
-                                        @else
-                                        {{ $fixOther->title }} <i class="fas fa-angle-double-right"></i>
-                                        @endif
-                                    </a></li>
-                                @endforeach                     
-                            </ul>
-                            @endif
-                        </div>
-                        
-                        <div class="clearfix">
-                            
-                            <h3>グリーンロケットについて</h3>
-                            
-                            <ul class="mt-3 list-unstyled">
-                            @if(count($fixNeeds) > 0)         
-                                @foreach($fixNeeds as $fixNeed)
-                                <li><a href="{{ url($fixNeed->slug) }}">
-                                    @if($fixNeed->sub_title != '')
-                                    {{ $fixNeed->sub_title }} <i class="fas fa-angle-double-right"></i>
-                                    @else
-                                    {{ $fixNeed->title }} <i class="fas fa-angle-double-right"></i>
-                                    @endif
-                                </a></li>
-                                @endforeach
-                            @endif 
-                                <li><a href="{{ url('contact') }}">お問い合わせ <i class="fas fa-angle-double-right"></i></a></li>
-                            </ul>
-                            
-                        </div>
-
-                    </section>
-                </li>
+            
 
         </ul>
     
@@ -244,7 +200,57 @@ use App\User;
 
 </nav>
 
+</div><!-- fixed-top -->
 
+<div class="icon-belt">
+    <ul class="clearfix">
+
+        @if(! Auth::check())
+            <li class="pt-1"><a href="{{ url('login') }}">ログイン</a></li>
+        @else
+            <li class="pt-1"><a href="{{ url('mypage') }}">マイページ</a></li>
+            
+            <li class="pt-1"><a href="{{ url('/logout') }}"
+                            onclick="event.preventDefault();
+                                     document.getElementById('logout-form').submit();">
+                            ログアウト
+                    </a>
+
+                    <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
+                        {{ csrf_field() }}
+                    </form>
+            </li>
+            
+            <li><a href="{{ url('mypage/favorite') }}"><i class="fas fa-heart"></i></a></li>
+            
+            {{--
+            <li class="dropdown show">
+              <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user"></i></a>
+
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    <span class="ml-3"><b>{{ User::find(Auth::id())->name }}</b> 様</span>
+                    <a class="dropdown-item mt-1" href="{{ url('mypage') }}">マイページ <i class="fa fa-angle-right"></i></a>
+                    <a class="dropdown-item mt-1" href="{{ url('mypage/history') }}">購入履歴 <i class="fa fa-angle-right"></i></a>
+                    <a class="dropdown-item mt-1" href="{{ url('mypage/favorite') }}">お気に入り <i class="fa fa-angle-right"></i></a>
+                    <a href="{{ url('/logout') }}" class="dropdown-item mt-1"
+                            onclick="event.preventDefault();
+                                     document.getElementById('logout-form').submit();">
+                            ログアウト <i class="fa fa-angle-right"></i>
+                    </a>
+
+                    <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
+                        {{ csrf_field() }}
+                    </form>
+                  </div>
+            </li>
+            --}}
+        @endif
+        
+        
+        <li><a href="{{ url('shop/cart') }}"><i class="fas fa-shopping-cart"></i></a></li>
+        <li><a href="{{ url('contact') }}"><i class="fas fa-envelope"></i></a></li>
+        
+   </ul> 
 </div>
 
 

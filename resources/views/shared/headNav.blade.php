@@ -84,7 +84,7 @@
                 @endif
                 
                 
-                <li><a href="{{ url('shop/cart') }}"><i class="fas fa-shopping-basket"></i></a></li>
+                <li><a href="{{ url('shop/cart') }}"><i class="fas fa-shopping-cart"></i></a></li>
                 <li><a href="{{ url('contact') }}"><i class="fas fa-envelope"></i></a></li>
                 
            </ul> 
