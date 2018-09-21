@@ -561,6 +561,35 @@ var exe = (function() {
                
         },
         
+        potSetSelect: function() {
+        	
+            var $btn = $('.btn[type="submit"]');
+            
+        	$('.potSetSelect').on('change', function(e) {
+            	
+                var arr = [];
+                var let = true; //true:disabledになる false:disabled解除  0/1では不可
+                
+            	$('.potSetSelect').each(function() {
+                	var value = $(this).find('option:selected').val();
+                    arr.push(value);
+                    //console.log(arr);
+                });
+                
+                
+                $.each(arr, function(index, val){
+                	if(val > 0) { //1以上の個数がある時
+                    	let = false;
+                        return false; //ループから出る
+                    }
+                });
+                
+                
+                $btn.attr('disabled', let);
+
+            });
+        },
+        
         getWH: function() {
         	$target = $('.potset .img-box');
         	var w = $target.width();
@@ -623,6 +652,8 @@ $(function(e){ //ready
     exe.slideDeliFee();
     
     exe.faqCate();
+    
+    exe.potSetSelect();
 });
 
 

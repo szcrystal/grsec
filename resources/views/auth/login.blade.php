@@ -2,13 +2,15 @@
 
 @section('content')
 
-<div id="main" class="clearfix login mb-5">
+<div id="main" class="clearfix login top-cont">
      
         <div class="">
             <h4 class="card-header">会員の方</h4>
-
+			
+            <p class="my-3 pb-2 mx-2">メールアドレスとパスワードを入力してログインして下さい。</p>
+            
             <div class="card-body">
-                <p>メールアドレスとパスワードを入力してログインして下さい。</p>
+                
             
             @if (count($errors) > 0)
                 <div class="alert alert-danger">
@@ -30,7 +32,7 @@
                     @csrf
 
                     <fieldset class="form-group row">
-                        <label for="email" class="col-md-3 col-form-label text-md-right">メールアドレス</label>
+                        <label for="email" class="col-md-3 col-form-label">メールアドレス</label>
 
                         <div class="col-md-8">
                             <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" autofocus>
@@ -45,7 +47,7 @@
                     </fieldset>
 
                     <fieldset class="form-group row">
-                        <label for="password" class="col-md-3 col-form-label text-md-right">パスワード</label>
+                        <label for="password" class="col-md-3 col-form-label">パスワード</label><!-- text-md-right -->
 
                         <div class="col-md-8">
                             <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password">
@@ -99,9 +101,10 @@
             
         <div class="">
             <h4 class="card-header">会員登録がお済みでない方</h4>
-
+			
+            <p class="my-3 pb-2 mx-2">初めての方はこちらより会員登録をして下さい。<br>あらかじめ会員登録を済ませておくと、お買い物が便利になります。</p>
+            
             <div class="card-body">
-                <p class="mb-5">初めての方はこちらより会員登録をして下さい。<br>あらかじめ会員登録を済ませておくと、お買い物が便利になります。</p>
 
                 <a href="{{ url('register') }}" class="col-md-6 btn btn-custom rounded-0 btn-block m-auto">新規会員登録</a>
             </div>

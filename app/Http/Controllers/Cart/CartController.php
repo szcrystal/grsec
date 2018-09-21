@@ -1386,7 +1386,15 @@ class CartController extends Controller
         if($request->has('from_item')) { //singleからのpostの時、request dataをsessionに入れる
             $datas = $request->all();
             
+//            print_r($datas);
+//            exit;
+            
             foreach($datas['item_id'] as $k => $v) {
+            	
+                if($datas['item_count'][$k] == 0) {
+                	continue;
+                }
+                
             	$data = array();
                 
             	$data['_token'] = $datas['_token'];
