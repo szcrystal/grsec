@@ -745,7 +745,7 @@
                         <label>
                             <?php
                                 $checked = '';
-                                if(Ctm::isOld()) {
+                                if(Ctm::isOld() && old('icons')) {
                                     if(in_array($icon->id, old('icons')))
                                         $checked = ' checked';
                                 }

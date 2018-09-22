@@ -45,23 +45,23 @@ use App\User;
     	<i class="fas fa-search"></i>
 	</div>
 
-
-	<div class="head-navi">
-    	<p class="aniv">初めてでも安心！全品6ヶ月枯れ保証！3ヶ月取り置き可能！</p>
-    </div>
     
+    <div class="clearfix s-form">
+        <form class="my-1 my-lg-0" role="form" method="GET" action="{{ url('search') }}">
+            {{-- csrf_field() --}}
+
+            <input type="search" class="float-right" name="s" placeholder="Search...">
+
+        </form>
+    </div>
 
 </header>
 
-<div class="clearfix s-form">
-    <form class="my-1 my-lg-0" role="form" method="GET" action="{{ url('search') }}">
-        {{-- csrf_field() --}}
+</div><!-- fixed-top -->
 
-        <input type="search" class="float-right" name="s" placeholder="Search...">
-
-    </form>
+<div class="head-navi">
+    <p class="aniv">初めてでも安心！全品6ヶ月枯れ保証！3ヶ月取置き可能！</p>
 </div>
-
 
 <div class="fade-black">
 	<span class="nav-tgl"><i class="fas fa-times"></i></span>	
@@ -97,7 +97,7 @@ use App\User;
                                 初めての方へ <i class="fas fa-angle-double-right"></i>
                             </a></h3>
                         <div class="">
-                            <p>植木買うならグリーンロケット：グリーンロケットは初めての植木、お庭づくりを全力で応援します。</p>
+                            <p>グリーンロケットは初めての植木、お庭づくりを全力で応援します。</p>
                         </div>
                         
                         <?php
@@ -174,7 +174,7 @@ use App\User;
                         
                         <div class="clearfix">
                             <?php
-                            $cateItems = Item::where('cate_id', $cate->id)->orderBy('created_at','desc')->get()->take(3);
+                            	$cateItems = Item::where(['cate_id'=>$cate->id, 'open_status'=>1, 'is_potset'=>0])->orderBy('created_at','desc')->get()->take(3);
                             ?>
 
                             <h3>{{ $cate->name }}の最新の商品</h3>
@@ -182,7 +182,7 @@ use App\User;
                                     <div class="float-left">
                                         <a href="{{ url('item/'.$cateItem->id) }}">
                                             <img src="{{ Storage::url($cateItem->main_img) }}">
-                                            <b class="d-block">{{ $cateItem->title }}</b>
+                                            <p>{{ $cateItem->title }}</p>
                                         </a>
                                     </div>
                                 @endforeach
@@ -190,9 +190,7 @@ use App\User;
 
                     </section>
                 </li>
-            @endforeach
-            
-            
+            @endforeach     
 
         </ul>
     
@@ -200,7 +198,7 @@ use App\User;
 
 </nav>
 
-</div><!-- fixed-top -->
+
 
 <div class="icon-belt">
     <ul class="clearfix">

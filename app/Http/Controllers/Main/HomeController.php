@@ -59,7 +59,7 @@ class HomeController extends Controller
 
         $cates = $this->category->all();
         
-        $whereArr = ['open_status'=>1];
+        $whereArr = ['open_status'=>1, 'is_potset'=>0];
         $whereArrSec = ['open_status'=>1/*,'feature'=>1*/];
         
         
@@ -203,7 +203,7 @@ class HomeController extends Controller
     {
     	$path = $request->path();
         
-        $whereArr = ['open_status'=>1];
+        $whereArr = ['open_status'=>1, 'is_potset'=>0];
         
         $items = null;
         $title = '';
@@ -249,7 +249,7 @@ class HomeController extends Controller
     }
     
     
-    //RecommendInfo
+    //RecommendInfo : Cate/SubCate/Tag
     public function recomInfo(Request $request)
     {
     	$items = null;
@@ -321,7 +321,7 @@ class HomeController extends Controller
     {
     	$cate = $this->category->where('slug', $slug)->first();
         
-        $items = $this->item->where(['cate_id'=>$cate->id, 'open_status'=>1])->orderBy('id', 'desc')->paginate($this->perPage);
+        $items = $this->item->where(['cate_id'=>$cate->id, 'open_status'=>1, 'is_potset'=>0])->orderBy('id', 'desc')->paginate($this->perPage);
         
         $metaTitle = isset($cate->meta_title) ? $cate->meta_title : $cate->name;
         $metaDesc = $cate->meta_description;
@@ -338,7 +338,7 @@ class HomeController extends Controller
         
         $subcate = $this->cateSec->where('slug',$subSlug)->first();
         
-        $items = $this->item->where(['subcate_id'=>$subcate->id, 'open_status'=>1])->orderBy('id', 'desc')->paginate($this->perPage);
+        $items = $this->item->where(['subcate_id'=>$subcate->id, 'open_status'=>1, 'is_potset'=>0])->orderBy('id', 'desc')->paginate($this->perPage);
         
         $metaTitle = isset($subcate->meta_title) ? $subcate->meta_title : $subcate->name;
         $metaDesc = $subcate->meta_description;
@@ -357,7 +357,7 @@ class HomeController extends Controller
         	return $obj -> item_id;
         })->all();
         
-        $items = $this->item->whereIn('id',$itemIds)->where(['open_status'=>1])->orderBy('id', 'desc')->paginate($this->perPage);
+        $items = $this->item->whereIn('id',$itemIds)->where(['open_status'=>1, 'is_potset'=>0])->orderBy('id', 'desc')->paginate($this->perPage);
         
         $metaTitle = isset($tag->meta_title) ? $tag->meta_title : $tag->name;
         $metaDesc = $tag->meta_description;

@@ -10,7 +10,7 @@ for SP
 	body {
     	min-width: 100% !important;
      	//background: red;
-      	font-size: 80%;
+      	font-size: 78%;
         //border: 2px solid orange;     
     }
     
@@ -53,12 +53,21 @@ for SP
     	font-size: 0.85em;
         margin-top: 1.5em;
     }
+    .head-navi li {
+    	margin-right: 1.5em;
+    }
+    .head-navi li .fas {
+    	font-size: 1.7em;
+    }
     
     .head-second {
     	margin-top: 6.3em;
     }
     .head-second > p {
     	font-size: 1.5em;
+    }
+    .head-second address ul li {
+    	font-size: 0.9em;
     }
     
     .main-navi > ul > li > a {
@@ -80,7 +89,14 @@ for SP
     
     
     .main-atcl {
-    	font-size: 80%;
+    	font-size: 85%;
+    }
+    .wrap-atcl .btn-custom { /*もっと見る */
+    	font-size: 1em;
+    }
+    .top .main-atcl > span.top-rank em {
+    	font-size: 0.95em;
+        //left: 42%;
     }
     
     .card-header {
@@ -95,11 +111,11 @@ for SP
     }
     .top .img-box,
     .archive .img-box {
-        height: 195px;
+        height: 172px;
     }
     .top-second .img-box {
         width: 40%;
-        height: 226px;
+        height: 140px;
         float: left;
     }
     .floar .img-box { /* Single 小img Recent Check */
@@ -126,6 +142,14 @@ for SP
     .single .head-frame h2 {
     	font-size: 1.4em;
     }
+    .potset h3 {
+    	font-size: 1.2em;
+        margin-bottom: 0.2em;
+    }
+    .potset .price-meta {
+        font-size: 1.1em;
+        margin-bottom: 0.2em;
+    }
     
     .breadcrumb {
     	font-size: 85%;
@@ -142,6 +166,14 @@ for SP
     }
     .login > div:last-of-type {
         padding-left: 0;
+    }
+    
+    /* Fix */
+    .fix-page h4 {
+    	font-size: 1.3em;
+    }
+    .fix-page h5 {
+    	font-size: 1.2em;
     }
     
     #colop {
@@ -217,19 +249,22 @@ for SP
         margin-top: 1em;
         //border: 1px solid orange;
     }
+    .head-navi { /* kare text */
+    	margin-top: 6.5em;
+    }
     .tophead-wrap {
-    	margin-top: 9.4em;
+    	margin-top: 0.5em;
     }
     .tophead-wrap + .container {
     	margin-top: 1.0em;
     }
     
     .telephone {
-    	background: #2a2a2a;
-        font-size: 1.2em;
+    	background: #3a3b3c;
+        font-size: 1.1em;
         color: #fff;
         text-align: center;
-        padding: 0.35em 0;
+        padding: 0.3em 0 0.35em;
     }
     .telephone a {
     	display: block;
@@ -246,24 +281,25 @@ for SP
     }
 	.site-header {
 		position: relative;
-        padding: 0.2em 0.2em;
-        border-bottom: 1px solid #bbb;
+        padding: 0.2em 0.2em 0;
+        border-bottom: 1px solid #ccc;
         border-top: 0;
 	}
 	
 
-	.site-header .logos {
-  		width: 100%;
-        margin: 0 auto 0.3em;
-        padding: 0 0 0 0.2em;
-        //border: 1px solid red;
-	}
+/*	.site-header .logos {*/
+/*  		width: 100%;*/
+/*        margin: 0 auto 0.3em;*/
+/*        padding: 0 0 0 0.2em;*/
+/*        //border: 1px solid red;*/
+/*	}*/
     .site-header h1 {
     	width: 60%;
         float: none;
-    	margin: 0 auto 3px;
+    	margin: 2px auto 2px;
         padding: 0;
         line-height: 0;
+        text-align: center;
         //border: 1px solid red;
     }
     .site-header h1 a {
@@ -271,20 +307,21 @@ for SP
     }
     .site-header .logos h1 img:first-of-type {
 		float: none;
-  		width: 80%;
+  		width: 70%;
         margin-top: 1px;
         margin-left: 0;
     	//border: 1px solid red;          
 	}
     .site-header .logos h1 img:last-of-type {
 		float: none;
-  		width: 14.5%;
+  		width: 12.0%;
         margin-top: 0;
         margin-left: -0.2em;
     	//border: 1px solid red;          
 	}
-    .site-header .aniv {
-    	font-size: 0.9em;
+    .aniv {
+    	color: #C15360;
+    	font-size: 1em;
         font-weight: bold;
         font-style: normal;
         font-family: sans-serif;
@@ -299,7 +336,7 @@ for SP
         padding: 0 0.2em 0.2em 0.3em;
         //border: 1px solid red;
 		position: absolute;
-        top: 0;
+        top: -2px;
         left: 1.0%;
         font-size: 1.7em;
         color: #333;
@@ -311,7 +348,7 @@ for SP
 		position: absolute;
         top: 0;
         right: 1.0%;
-        font-size: 1.7em;
+        font-size: 1.5em;
         color: #333;
     }
     
@@ -319,7 +356,7 @@ for SP
     	width: 100%;
         float: none;
     	//border: 1px solid red;
-        margin: 0;
+        //margin: 0;
     }
     .head-navi li {
         list-style: none;
@@ -352,7 +389,7 @@ for SP
     	list-style: none;
         margin: 0;
         padding: 0;
-        border: 1px solid red;
+        //border: 1px solid red;
     }
     .icon-belt li {
     	float: left;
@@ -366,7 +403,7 @@ for SP
     	color: #fff;
     }
     .icon-belt li .fas {
-        font-size: 2.1em;
+        font-size: 1.8em;
         margin-right: 0.5em;
     }
     
@@ -396,7 +433,7 @@ for SP
     .fade-black {
     	width: 100%;
         height: 100%;
-        position: absolute;
+        position: fixed;
         top: 0;
         left: 0;
         z-index: 9998;
@@ -416,7 +453,7 @@ for SP
     	display: none;
         padding: 1em 0.3em;
         margin: 0;
-        position: absolute;
+        position: fixed;
         top: 0;
         left: -200px;
         z-index: 9999;
@@ -426,7 +463,7 @@ for SP
     .main-navigation .navi-body {
 		overflow-y: scroll;
         overflow-x: hidden;
-        padding: 0;
+        padding: 0 0 2em;
         margin: 0;
     }
    
@@ -451,8 +488,11 @@ for SP
         margin-bottom: 1.3em;
         border: 0;
     }
-    .drops ul li{
+    .drops ul li {
     	margin-left: 1.5em;
+    }
+    .main-navigation .fas {
+    	color: #9a9a9a;
     }
     .drops > div:first-of-type,
     .drops > div:last-of-type {
@@ -475,6 +515,7 @@ for SP
     }
     .drops > div:last-of-type > h3 {
     	font-size: 1em;
+        
     }
     .drops > div:last-of-type > div {
         width: 30%;
@@ -485,6 +526,9 @@ for SP
     .drops > div:last-of-type img {
         width: 100%;
         height: 120px;
+    }
+    .drops > div:last-of-type p {
+    	font-weight: normal;
     }
     
     
@@ -603,7 +647,7 @@ for SP
     
     
 	
-    
+    /* 未使用？？ */
 	div.tel-sp {
 		display: block;
 		float: right;
@@ -637,7 +681,7 @@ for SP
     }
     
 
-	/* SP img-box */
+	/* SP img-box ******************** */
 	.img-box {
         height: 275px;
         //height: calc(100% * 1.2);
@@ -645,7 +689,7 @@ for SP
     }
     .top .img-box,
     .archive .img-box {
-        height: 275px;
+        height: 212px;
         overflow: hidden;
     }
     .top-second .img-box {
@@ -653,12 +697,15 @@ for SP
     	//border: 1px solid orange;
     }
     .floar .img-box {
-    	height: 175px;
+    	height: 107px;
         //border: 1px solid red;
     }
     .single-recom .floar .img-box {
-    	height: 150px;
+    	height: 142px;
         //border: 1px solid red;
+    }
+    .potset .img-box {
+		height: 78.5px;
     }
     
     
@@ -732,6 +779,7 @@ for SP
     .single-left {
         float: none;
         width: 100%;
+        //border: 1px solid orange;
     }
     .single-right {
         float: none;
@@ -741,20 +789,34 @@ for SP
         float: none;
         width: 100%;
     }
-    
+
     .single .carousel-item {
-        height: 545px;
+        height: 436px;
         //border: 1px solid red;
     }
-    .single .head-frame > div:first-of-type {
-        padding-right: 1em;
-        float: none;
+    .single .carousel-indicators li {
+    	height: 85px;
     }
-    .single .head-frame > div:last-of-type {
-        padding-left: 1em;
-        float: none;
-        margin-top: 3em;
+    .single .carousel-indicators li img {
+		height: 77px;
     }
+    
+    .single .price-meta {
+		font-size: 1.2em;
+    }
+    
+    .potSetSelect-wrap {
+        width: 60%;
+    }
+    select.potSetSelect {
+        width: 80%;
+    }
+    
+    .nav-tabs .nav-link {
+    	font-size: 0.9em;
+    }
+    
+    
     .floar ul li {
     	width: 32%;
     }
@@ -762,26 +824,37 @@ for SP
     	margin-top: 0.4em;
     }
     
+    .recent-check .floar ul li {
+    	width: 24.5%;
+        margin-right: 0.5%;
+        margin-bottom: 0.5em;
+        //border: 1px solid red;
+    }
+    .recent-check .floar ul li:nth-of-type(4n) {
+    	margin-right: 0;
+    }
+    
     
     .tab-content {
     	min-height: 300px;
     }
-    .nav-tabs {
-    	border-bottom: 0;
-    }
-    .nav-tabs .nav-link {
-    	background: #333;
-        color: #fff;
-        margin-right: 1px;
-    }
-    .nav-tabs .nav-link.active {
-    	background: none;
-        color: #333;
-        font-weight: bold;
-        border-bottom-color: none;
-/*        border-color: #333;*/
-/*        border-width: 1px 1px 0;*/
-    }
+/*    .nav-tabs {*/
+/*    	border-bottom: 0;*/
+/*    }*/
+/*    .nav-tabs .nav-link {*/
+/*    	background: #333;*/
+/*        color: #fff;*/
+/*        margin-right: 1px;*/
+/*    }*/
+/*    .nav-tabs .nav-link.active {*/
+/*    	background: none;*/
+/*        color: #333;*/
+/*        font-weight: bold;*/
+/*        border-bottom-color: none;*/
+/*        //border-color: #333;*/
+/*        //border-width: 1px 1px 0;*/
+/*    }*/
+    
     #spCartBtn {
     	display: block;
     	position: fixed;
@@ -830,6 +903,9 @@ for SP
     
     
     /* Footer */
+    #colop {
+    	margin-bottom: 2.5em;
+    }
     #colop .foot-wrap {
     	width: 95%;
         margin: auto;
@@ -922,6 +998,10 @@ for SP
     }
     .site-branding h1 img {
 		width: 85%;
+    }
+    
+    .aniv {
+    	font-size: 0.85em;
     }
 
 }

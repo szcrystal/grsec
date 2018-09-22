@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div id="main" class="mt-5 col-md-8 top-cont mx-auto">
+<div id="main" class="mt-5 col-md-9 top-cont mx-auto">
 
         <h4 class="card-header">パスワードのリセット</h4>
 
@@ -19,7 +19,7 @@
                     @csrf
 
                     <fieldset class="form-group row">
-                        <label for="email" class="col-md-3 col-form-label text-md-right"><b>メールアドレス</b></label>
+                        <label for="email" class="col-md-3 col-form-label"><b>メールアドレス</b></label>
 
                         <div class="col-md-8">
                             <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" autofocus>

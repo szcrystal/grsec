@@ -150,11 +150,10 @@
             <li>
               <a href="{{ url('dashboard/items/create') }}">商品新規登録</a>
             </li>
-            {{--
             <li>
-              <a href="{{ url('dashboard/items/pot-set') }}">ポットセット登録</a>
+              <a href="{{ url('dashboard/items/pot-set') }}">ポットセット一覧</a>
             </li>
-            --}}
+            
             
             {{--
             <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Example Pages">

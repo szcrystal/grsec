@@ -55,7 +55,7 @@ class SingleController extends Controller
         
         
         //ポットセットがある場合
-        $potSets = $this->item->where(['open_status'=>1, 'pot_parent_id'=>$item->id])->get();
+        $potSets = $this->item->where(['open_status'=>1, 'pot_parent_id'=>$item->id])->orderBy('pot_count', 'asc')->get();
         
         
         //Other Atcl
@@ -97,7 +97,7 @@ class SingleController extends Controller
         $getNum = Ctm::isAgent('sp') ? 3 : 3;
         
         if($item->is_once) {
-        	$isOnceItems = $this->item->whereNotIn('id', [$item->id])->where(['dg_id'=>$item->dg_id, 'is_once'=>1, 'is_once_recom'=>0, 'open_status'=>1, ])->skip(2)->take($getNum)->get();
+        	$isOnceItems = $this->item->whereNotIn('id', [$item->id])->where(['dg_id'=>$item->dg_id, 'is_once'=>1, 'is_once_recom'=>0, 'open_status'=>1, 'is_potset'=>0])->skip(2)->take($getNum)->get();
             //->inRandomOrder()->take()->get() もあり クエリビルダに記載あり
         }
         
@@ -173,11 +173,11 @@ class SingleController extends Controller
 //            print_r($res);
 //            exit;
             
-            $recommends = $this->item->whereNotIn('id', [$item->id])->whereIn('id', $res)->where('open_status', 1)->inRandomOrder()->take($getNum)->get();
+            $recommends = $this->item->whereNotIn('id', [$item->id])->whereIn('id', $res)->where(['open_status'=>1, 'is_potset'=>0])->inRandomOrder()->take($getNum)->get();
             //->inRandomOrder()->take()->get() もあり クエリビルダに記載あり
         }
         else {
-        	$recommends = $this->item->whereNotIn('id', [$item->id])->where(['subcate_id'=>$item->subcate_id, 'open_status'=>1])->inRandomOrder()->take($getNum)->get();
+        	$recommends = $this->item->whereNotIn('id', [$item->id])->where(['subcate_id'=>$item->subcate_id, 'open_status'=>1, 'is_potset'=>0])->inRandomOrder()->take($getNum)->get();
             //->inRandomOrder()->take()->get() もあり クエリビルダに記載あり
         }
         

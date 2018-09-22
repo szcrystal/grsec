@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div id="main" class="mt-5 col-md-8 top-cont mx-auto">
+<div id="main" class="mt-5 col-md-9 top-cont mx-auto">
     <h4 class="card-header">パスワードのリセット</h4>
     
     <p class="my-3 pb-2 mx-2">新しいパスワードを入力してリセットして下さい。</p>

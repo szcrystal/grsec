@@ -151,7 +151,7 @@ use App\Setting;
                                 	<div>
                                  		商品番号: {{ $item->number }}<br>   
                                  		<a href="{{ url('dashboard/items/'. $item->id) }}">   
-                                 	   	（{{ $item->id }}）{{ $item->title }}
+                                 	   	（{{ $item->id }}）{{ Ctm::getItemTitle($item) }}
                                      	</a>
                                       	<br>
                                        	      
@@ -346,8 +346,8 @@ use App\Setting;
                                     商品番号: {{ $items->find($sameSale->item_id)->number }}<br>
                                 	<a href="{{ url('dashboard/items/'. $sameSale->item_id) }}">
                                  	   
-                                    （{{ $sameSale->item_id }}）
-                                    {{ $items->find($sameSale->item_id)->title }}<br>
+                                    	（{{ $sameSale->item_id }}）
+                                    	{{ Ctm::getItemTitle($items->find($sameSale->item_id)) }}<br>
                                     </a>
                                     
                                     ご希望配送時間：

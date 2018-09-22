@@ -154,8 +154,8 @@ use App\Setting;
                                     商品番号: {{ $items->find($sale->item_id)->number }}<br>
                                 	<a href="{{ url('dashboard/items/'. $sale->item_id) }}">
                                  	   
-                                    （{{ $sale->item_id }}）
-                                    {{ $items->find($sale->item_id)->title }}<br>
+                                		（{{ $sale->item_id }}）
+                                    	{{ Ctm::getItemTitle($items->find($sale->item_id)) }}<br>
                                     </a>
                                     
                                     ご希望配送時間：

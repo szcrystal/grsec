@@ -726,7 +726,7 @@ body {
 .wrap-atcl {
 	margin-bottom: 4.5em;
 }
-.wrap-atcl .btn-custom {
+.wrap-atcl .btn-custom { /*もっと見る */
 	font-weight: bold;
     margin-top: 1.5em;
 }
@@ -838,7 +838,7 @@ body {
     left: 0;
     font-size: 0.9em;
     padding: 0 0.3em 0 0.4em;
-    z-index: 999;
+    z-index: 99;
 }
 .top .main-atcl > span.top-new {
 	background: #C9353F;
@@ -854,7 +854,7 @@ body {
     font-style: normal;
     position: absolute;
     top: 9px;
-    left: 22px;
+    left: 42%;
     font-weight: bold;
     color: #000;
 }
@@ -1293,8 +1293,8 @@ ul.side-rank {
 	border-bottom: 1px dotted #ccc;
 }
 .potset h3 {
-	font-size: 1.4em;
-    margin: 0;
+	font-size: 1.3em;
+    margin: 0 0 0.1em;
     padding: 0;
     font-weight: bold;
 }
@@ -1315,6 +1315,13 @@ ul.side-rank {
 
 .potset .price-meta {
 	font-size: 1.2em;
+    margin-bottom: 0.1em;
+}
+.potSetSelect-wrap {
+	width: 65%;
+}
+select.potSetSelect {
+	width: 45%;
 }
 
 
@@ -1326,8 +1333,8 @@ ul.side-rank {
 }
 .floar ul li {
     float: left;
-    margin-right: 0.6%;
-    width: 11.9%;
+    margin-right: 0.55%;
+    width: 12%;
 }
 .single-recom .floar ul li {
 	width: 32.5%;
@@ -1372,7 +1379,7 @@ ul.side-rank {
 
 
 .tab-content {
-    min-height: 200px;
+    min-height: 600px;
 }
 .nav-tabs {
     padding: 0;
@@ -1384,6 +1391,7 @@ ul.side-rank {
 	width: calc(100% / 3);
     text-align: center;
     font-size: 0.95em;
+    padding: 0;
     //border: 1px solid blue;
 }
 .nav-tabs .nav-link,
@@ -1393,7 +1401,7 @@ ul.side-rank {
     border: 1px solid #aaa;
     border-right: 0;
     border-radius: 0;
-    padding: 0.5em 1.8em;
+    padding: 0.5em 0;
     //margin-right: 1px;
 }
 .nav-tabs .nav-link.active,
@@ -1704,7 +1712,7 @@ div[id*="accordion-"] .card-header:hover {
 	padding: 0.4em 0;
 	margin: 2em 0 0;
 	text-align: center;
-	background: #2a2a2a;
+	background: #3a3b3c;
 	color: #fff;
 }
 .foot-menu {

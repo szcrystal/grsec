@@ -2,9 +2,6 @@
 
 @section('content')
 
-
-	{{-- @include('main.shared.carousel') --}}
-
 <div id="main" class="top">
 
         <div class="panel panel-default">
@@ -48,8 +45,9 @@
                 	<img src="{{ Storage::url($item->main_img) }}" alt="{{ $item->title }}" class="img-fluid" width=80 height=80>
                 
                 	<a href="{{ url('item/'.$item->id) }}">
-                	{{ $item->title }}<br>
-                	[ {{ $item->number }} ]
+                        {{ Ctm::getItemTitle($item) }}
+                        <br>
+                        [ {{ $item->number }} ]
                  	</a>   
                 	<span class="d-block mt-2">¥{{ number_format(Ctm::getPriceWithTax($item->price)) }}（税込）</span>
                 </td>

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Article;
+use App\Item;
 use App\Category;
 use App\Tag;
 use App\TagGroup;
@@ -21,10 +21,10 @@ class CustomController extends Controller
 {
 	public $setting;
 	
-    public function __construct(Setting $setting, Article $article, Category $category, Tag $tag)
+    public function __construct(Setting $setting, Item $item, Category $category, Tag $tag)
     {
     	$this->setting = $setting;
-    	$this->article = $article;
+    	$this->item = $item;
         $this->category = $category;
         $this->tag = $tag;
         //$this->totalizeAll = $totalizeAll;
@@ -124,6 +124,21 @@ class CustomController extends Controller
 		
         return $tags;
 
+    }
+    
+    static function getItemTitle($item)
+    {
+    	$itemTitle = '';
+        
+    	if($item->is_potset && $item->pot_parent_id) {
+            $itemTitle = Item::find($item->pot_parent_id)->title . '／' . $item->title;
+        }
+        else {
+            $itemTitle = $item->title;
+        }
+        
+        return $itemTitle;
+        
     }
     
     

@@ -591,7 +591,7 @@ var exe = (function() {
         },
         
         getWH: function() {
-        	$target = $('.potset .img-box');
+        	$target = $('.recent-check .floar .img-box');
         	var w = $target.width();
             var h = $target.height();
             
@@ -631,9 +631,10 @@ $(function(e){ //ready
     //exe.autoComplete();
     exe.getWH();
     
-    exe.scrollFunc();
-    
-    if(exe.isSpTab('sp')) {
+    if(! exe.isSpTab('sp')) {
+    	exe.scrollFunc();
+    }
+    else {
     	exe.toggleSp();
     }
     

@@ -74,6 +74,24 @@ class ItemController extends Controller
         
         return view('dashboard.item.index', ['itemObjs'=>$itemObjs, 'cates'=>$cates, 'subCates'=>$subCates, 'dgs'=>$dgs, 'recentObjs'=>$recentObjs, ]);
     }
+    
+    public function potSetIndex()
+    {
+    	//$itemObjs = Item::orderBy('id', 'desc')->paginate($this->perPage);
+        $itemObjs = $this->item->where('is_potset', 1)->orderBy('id', 'desc')->get();
+        
+        $items = $this->item;
+        $cates= $this->category;
+        $subCates= $this->categorySecond;
+        $dgs = $this->dg;
+        
+        $recentObjs = $this->item->where('is_potset', 1)->orderBy('updated_at', 'desc')->get()->take(5);
+        
+        //$status = $this->articlePost->where(['base_id'=>15])->first()->open_date;
+        
+        
+        return view('dashboard.item.indexPotSet', ['itemObjs'=>$itemObjs, 'items'=>$items, 'cates'=>$cates, 'subCates'=>$subCates, 'dgs'=>$dgs, 'recentObjs'=>$recentObjs, ]);
+    }
 
     public function show($id)
     {

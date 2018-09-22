@@ -3,8 +3,6 @@
 @section('content')
 
 
-	{{-- @include('main.shared.carousel') --}}
-
 <div id="main" class="top confirm">
 
         <div class="panel panel-default">
@@ -37,7 +35,9 @@
                 
                 <td>
                 	<img src="{{ Storage::url($item->main_img) }}" alt="{{ $item->title }}" class="img-fluid" width=80 height=80>
-                	{{ $item->title }}<br>[ {{ $item->number }} ]
+                		{{ Ctm::getItemTitle($item) }}
+	                    <br>
+                        [ {{ $item->number }} ]
                 </td>
                 
                 <td>{{ $item->count }}</td>
@@ -118,7 +118,7 @@
                 @foreach($itemData as $item) 
                 	@if(isset($item->plan_time))                   
                         <li class="mb-3">
-                            {{ $item->title }}<br>
+                            {{ Ctm::getItemTitle($item) }}<br>
                             ご希望時間：<b>[ {{ $item->plan_time }} ]</b>
                         </li>
                     @endif

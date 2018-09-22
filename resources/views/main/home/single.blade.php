@@ -37,8 +37,7 @@ use App\TopSetting;
             	<?php //================================================================= ?>
                 @if($item -> main_img)
                 <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" data-interval="7500">
-                      
-                      
+
                       <div class="carousel-inner">
                         <div class="carousel-item active">
                           <img class="d-block w-100" src="{{ Storage::url($item->main_img) }}" alt="First slide">
@@ -74,7 +73,6 @@ use App\TopSetting;
                             $n = 1;
                         ?>
                         
-                        	
                             @foreach($imgsPri as $img)
                                 @if($img->img_path !== null )
                                 	<li data-target="#carouselExampleIndicators" data-slide-to="{{$n}}">
@@ -91,7 +89,7 @@ use App\TopSetting;
                     <span class="no-img">No Image</span>
                 @endif
             
-            <?php //END ================================================================= ?>    
+            	<?php //END ================================================================= ?>    
 
 			</div><!-- left -->
 
@@ -133,23 +131,26 @@ use App\TopSetting;
                     
                     @if($isPotSet)
                     	
-                        <?php $potSets->prepend($item); //$itemを最初に追加 ?>
+                        <?php 
+                            //$itemを最初に追加
+                            //$potSets->prepend($item);
+                        ?>
 						
                         <div class="potset-wrap form-wrap">
                         	 
                             @foreach($potSets as $potSet)
                             <div class="potset clearfix">
                                 <div class="img-box">
-                                    <img src="{{ Storage::url($potSet->main_img) }}" class="">
+                                	@if(isset($potSet->main_img))
+                                    	<img src="{{ Storage::url($potSet->main_img) }}" class="img-fluid">
+                                    @else
+                                    	<img src="{{ Storage::url($item->main_img) }}" class="img-fluid">
+                                    @endif
                                 </div>
                                 
                                 <div class="">
                                     <h3>
-                                    	@if(! $potSet->pot_count)
-                                        	1ポット
-                                        @else
-                                    		{{ $potSet->pot_count }}ポット({{ $potSet->title_addition }})
-                                        @endif
+                                    	{{ $potSet->title }}
                                     </h3>
                                     
                                     <div class="price-meta">
@@ -160,7 +161,7 @@ use App\TopSetting;
                                     <div>
                                         <span class="text-small">
                                         @if($potSet->is_once)
-                                            同梱包可能
+                                            同梱包可能アイコン
                                         @else
                                             同梱包不可
                                         @endif
@@ -174,11 +175,11 @@ use App\TopSetting;
                                                 <span><b>在庫：{{ $potSet->stock }}</b></span>
                                             @endif
                                             
-                                            <div class="w-50 float-right">
+                                            <div class="potSetSelect-wrap float-right">
                                                 <fieldset class="clearfix text-right">
                                                 <label>数量</label>
                                                 
-                                                <select class="potSetSelect form-control col-md-6 d-inline{{ $errors->has('item_count') ? ' is-invalid' : '' }}" name="item_count[]">
+                                                <select class="potSetSelect form-control d-inline{{ $errors->has('item_count') ? ' is-invalid' : '' }}" name="item_count[]">
                                                     <option value="0" selected>選択</option>
                                                         <?php
                                                             $max = 100;
@@ -484,7 +485,7 @@ use App\TopSetting;
 
 
 			<?php //================================================================= ?> 
-                <div class="single-recom mt-3 pt-1">
+                <div class="single-recom">
 
                     @if(count($isOnceItems) > 0)
                         <div class="mt-5 pt-2 mb-3 floar">

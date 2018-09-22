@@ -47,7 +47,7 @@ $num = 1;
 <div style="margin: 0 0 1.5em 1.0em;">
 <div>{{ $num }}.</div>
 商品番号: {{ $itemModel->find($sale->item_id)->number }}<br>
-商品名: {{ $itemModel->find($sale->item_id)->title }}<br>
+商品名: {{ Ctm::getItemTitle($itemModel->find($sale->item_id)) }}<br>
 個数: {{ $sale->item_count}}<br>
 金額：¥{{ number_format($sale->total_price) }}（税込）<br>
 @if(isset($sale->plan_time))

@@ -49,8 +49,9 @@ Route::post('dashboard/dgs/fee/{dgId}', 'DashBoard\DeliveryGroupController@postF
 //Item
 Route::get('dashboard/items/csv', 'DashBoard\ItemController@getCsv');
 Route::post('dashboard/items/script', 'DashBoard\ItemController@postScript');
+Route::get('dashboard/items/pot-set', 'DashBoard\ItemController@potSetIndex');
 Route::resource('dashboard/items', 'DashBoard\ItemController');
-//Route::resource('dashboard/items/pot-set', 'DashBoard\PotSetController');
+
 
 //Category
 Route::resource('dashboard/categories/sub', 'DashBoard\CategorySecondController');
