@@ -89,7 +89,8 @@ class SingleController extends Controller
             if(isset($fav)) $isFav = 1;   
         }
         
-        //count
+        //View Count
+        $item->timestamps = false;
         $item->increment('view_count');
         
         //同梱包可能商品レコメンド
@@ -149,7 +150,7 @@ class SingleController extends Controller
 //        exit;
 
 		
-        //Recommend レコメンド ==============
+        //Recommend レコメンド 先頭タグと同じものをレコメンド ==============
         $recommends = null;
         $getNum = Ctm::isAgent('sp') ? 3 : 3;
         

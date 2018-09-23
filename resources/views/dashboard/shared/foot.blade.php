@@ -53,7 +53,11 @@
     <!-- これを入れるとテーブルの並べ替えなどがjsで動くようになる -->
     <script src="{{ asset('/js/dbd/sb-admin-datatables.min.js') }}"></script>
 
-	<script src="{{ asset('/js/dbd/custom.js') }}"></script>
+	<?php
+        $getNow = '' . time();
+    ?>
+    
+	<script src="{{ asset('/js/dbd/custom.js?up=' . time()) }}"></script>
 
 
 

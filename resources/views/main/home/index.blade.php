@@ -63,8 +63,8 @@ use App\TopSetting;
                                 <span class="top-rank"><i class="fas fa-crown"></i><em>{{ $rankNum }}</em></span>
                             @endif
                                                             
-                                
-                            @include('main.shared.favorite')
+                            <?php $strNum = 25; ?>
+                            @include('main.shared.atcl')
      
                         </article>
                         

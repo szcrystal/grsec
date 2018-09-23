@@ -184,7 +184,11 @@ class ItemController extends Controller
             //'main_img' => 'filenaming',
         ];
         
-         $messages = [
+        if($request->has('is_potset')) {
+        	unset($rules['cate_id']);
+        }
+        
+        $messages = [
          	'title.required' => '「商品名」を入力して下さい。',
             'cate_id.required' => '「カテゴリー」を選択して下さい。',
             
@@ -212,6 +216,7 @@ class ItemController extends Controller
         $data['is_once'] = isset($data['is_once']) ? 1 : 0;
         $data['is_once_recom'] = isset($data['is_once_recom']) ? 1 : 0;
         $data['is_delifee_table'] = isset($data['is_delifee_table']) ? 1 : 0;
+        $data['is_potset'] = isset($data['is_potset']) ? 1 : 0;
         
         $data['icon_id'] = isset($data['icons']) ? implode(',', $data['icons']) : '';
         

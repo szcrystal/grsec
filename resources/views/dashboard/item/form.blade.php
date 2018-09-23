@@ -5,7 +5,7 @@
 	<div class="text-left">
         <h1 class="Title">
         @if(isset($edit))
-        商品編集
+        商品編集&nbsp;&nbsp;<span>ID：{{ $id }}</span>
         @else
         商品新規追加
         @endif
@@ -56,12 +56,15 @@
                 <div class="clearfix">
                     <button type="submit" class="btn btn-primary btn-block mx-auto w-btn w-25">更　新</button>
                 </div>
+                @if(isset($item))
+                	<b class="text-big">ID：{{ $item->id }}</b>
+                @endif
             </div>
 
             {{ csrf_field() }}
             
             @if(isset($edit))
-                <input type="hidden" name="edit_id" value="{{$id}}">
+                <input type="hidden" name="edit_id" value="{{ $id }}">
             @endif
 
 			<div class="form-group">
@@ -319,7 +322,8 @@
             
             
             <fieldset class="mb-4 form-group">
-                <label>親カテゴリー <span class="text-danger text-big">*</span></label>
+            	
+                <label>親カテゴリー <span class="text-danger text-big cate-require">*</span></label>
                 <select class="form-control select-first col-md-6{{ $errors->has('cate_id') ? ' is-invalid' : '' }}" name="cate_id">
                     <option disabled selected>選択して下さい</option>
                     @foreach($cates as $cate)

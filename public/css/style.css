@@ -951,13 +951,19 @@ body {
 }
 .fav,
 .fav-temp {
-	height: 2em;
+	height: 1.7em;
     line-height: 0;
-	width: 2em;
-	font-size: 1.8em;
+	width: 1.7em;
+	font-size: 1.3em;
 	color: #888;
     vertical-align: middle;
     cursor: pointer;
+}
+.single .fav,
+.single .fav-temp {
+	height: 2.2em;
+	width: 2.2em;
+	font-size: 1.8em;
 }
 .fav-temp {
 	cursor: default;
@@ -980,7 +986,7 @@ body {
 }
 
 .loader {
-	font-size: 0.8em;
+	font-size: 0.75em;
 	display: none;
 	color: #777;
     position: absolute;
@@ -988,7 +994,7 @@ body {
     left: 0;
 }
 .single .loader {
-	left: -1.5px;
+	left: -1.7px;
 }
 .loader .fas {
 	-webkit-animation: rt 0.8s infinite linear alternate;
@@ -1263,6 +1269,11 @@ ul.side-rank {
 
 .single .favorite {
 	text-align: center;
+}
+.single .floar .favorite {
+	display: none;
+	text-align: left;
+    font-size: 0.8em;
 }
 .single .form-wrap .btn-custom {
 	font-size: 1.3em;

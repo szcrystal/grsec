@@ -82,6 +82,7 @@
                 <tr>
                   <th>ID</th>
                   <th style="width: 5%;">商品番号</th>
+                  <th>親商品名</th>
                   <th>画像</th>
                   
                   <th>ポット名</th>
@@ -117,6 +118,10 @@
                   
                   <td class="text-small">{{ $item->number }}</td>
                   
+                  <td>
+                  	<?php $parent = $items->find($item->pot_parent_id); ?>
+                  	<a href="{{ url('dashboard/items/'. $parent->id) }}" class="text-small">（{{ $parent->id }}）{{ $parent->title }}</a>
+                  </td>
                   
                   <td>
                       @if($item->main_img != '')
@@ -127,8 +132,6 @@
                   </td>
                   
                   <td>
-                  	<?php $parent = $items->find($item->pot_parent_id); ?>
-                    <a href="{{ url('dashboard/items/'. $parent->id) }}">（{{ $parent->id }}）{{ $parent->title }}</a><br>
                   	<b class="text-big">{{ $item->title }}</b>
                     
                     <br>

@@ -81,7 +81,8 @@ use App\TopSetting;
                 @foreach($itemVal as $item)
                     <article class="main-atcl">
                             
-                        @include('main.shared.favorite')
+                       	<?php $strNum = 25; ?>
+                    	@include('main.shared.atcl')
                             
                     </article>
                 @endforeach

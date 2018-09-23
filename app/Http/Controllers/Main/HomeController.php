@@ -163,8 +163,6 @@ class HomeController extends Controller
 //        exit;
 
         //$allRecoms = $this->item->where($whereArr)->orderBy('created_at', 'desc')->take(10)->get(); 
-        
-
 
 		//category
         $itemCates = array();
@@ -327,6 +325,7 @@ class HomeController extends Controller
         $metaDesc = $cate->meta_description;
         $metaKeyword = $cate->meta_keyword;
         
+        $cate->timestamps = false;
         $cate->increment('view_count');
         
         return view('main.archive.index', ['items'=>$items, 'cate'=>$cate, 'type'=>'category', 'metaTitle'=>$metaTitle, 'metaDesc'=>$metaDesc, 'metaKeyword'=>$metaKeyword,]);
@@ -344,6 +343,7 @@ class HomeController extends Controller
         $metaDesc = $subcate->meta_description;
         $metaKeyword = $subcate->meta_keyword;
         
+        $subcate->timestamps = false;
         $subcate->increment('view_count');
         
         return view('main.archive.index', ['items'=>$items, 'cate'=>$cate, 'subcate'=>$subcate, 'type'=>'subcategory', 'metaTitle'=>$metaTitle, 'metaDesc'=>$metaDesc, 'metaKeyword'=>$metaKeyword,]);
@@ -363,6 +363,7 @@ class HomeController extends Controller
         $metaDesc = $tag->meta_description;
         $metaKeyword = $tag->meta_keyword;
         
+        $tag->timestamps = false;
         $tag->increment('view_count');
         
         return view('main.archive.index', ['items'=>$items, 'tag'=>$tag, 'type'=>'tag', 'metaTitle'=>$metaTitle, 'metaDesc'=>$metaDesc, 'metaKeyword'=>$metaKeyword,]);

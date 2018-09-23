@@ -454,11 +454,13 @@ class CartController extends Controller
             
             $saleIds[] = $sale->id; 
             
+
             //在庫引く処理
             $item = $this->item->find($val['item_id']);
+            $item->timestamps = false; //在庫引く時とsale Countでタイムスタンプを上書きしない
             $item->decrement('stock', $val['item_count']);
             
-            if(! $item->stock) { //在庫が0になればitem_idを配列へ
+            if(! $item->stock) { //在庫が0になればitem_idを配列へ メールで知らせるため
             	$stockNone[] = $item->id;
             }
             

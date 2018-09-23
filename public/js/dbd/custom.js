@@ -614,6 +614,28 @@ var exe = (function() {
                 });
             
             });
+            
+            
+            
+            //is_potset ONの時
+            var $isPotSet = $('input[name="is_potset"]');
+            var $cateRequire = $('.cate-require');
+            
+            if($isPotSet.is(':checked')) {
+            	$cateRequire.hide();
+            }
+            
+            $isPotSet.on('change', function() {
+            	if($(this).is(':checked')) {
+                	$cateRequire.hide();
+                }
+                else {
+                	$cateRequire.show();
+                }
+                
+                //console.log($(this).val());
+           });
+            
         },
         
         openNav: function() {

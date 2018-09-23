@@ -289,7 +289,7 @@ use App\TopSetting;
                                     @endif
                                     </label>
                                     
-                                    <select class="form-control col-md-6 d-inline{{ $errors->has('item_count') ? ' is-invalid' : '' }}" name="item_count[]">
+                                    <select class="form-control w-50 d-inline{{ $errors->has('item_count') ? ' is-invalid' : '' }}" name="item_count[]">
                                         <option disabled selected>選択して下さい</option>
                                             <?php
                                                 $max = 100;
@@ -493,7 +493,8 @@ use App\TopSetting;
                             <ul class="clearfix">
                                 @foreach($isOnceItems as $item)
                                     <li>
-                                        @include('main.shared.favorite')
+                                        <?php $strNum = 23; ?>
+                            			@include('main.shared.atcl')
                                     </li>
                                 @endforeach
                             </ul> 
@@ -508,8 +509,8 @@ use App\TopSetting;
                                 <ul class="clearfix">
                                     @foreach($recommends as $item)
                                         <li>
-                                        	@include('main.shared.favorite')
-                                            
+                                        	<?php $strNum = 23; ?>
+                            				@include('main.shared.atcl')  
                                         </li>         
                                     @endforeach      
                                 </ul>   
@@ -532,7 +533,8 @@ use App\TopSetting;
                     <ul class="clearfix">
                         @foreach($cacheItems as $item)
                             <li>
-                                @include('main.shared.favorite')
+                                <?php $strNum = 18; ?>
+                                @include('main.shared.atcl')
                             </li>         
                         @endforeach      
                     </ul>	     

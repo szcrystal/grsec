@@ -15,7 +15,7 @@ use App\Favorite;
     <?php
     	$category = Category::find($item->cate_id);
     ?>
-    <h3><a href="{{ url('/item/'.$item->id) }}">{{ Ctm::shortStr($item->title, 25) }}</a></h3>
+    <h3><a href="{{ url('/item/'.$item->id) }}">{{ Ctm::shortStr($item->title, $strNum) }}</a></h3>
     <p>
     	@if(isset($type) && $type == 'category')
         	@if(isset($item->subcate_id))
