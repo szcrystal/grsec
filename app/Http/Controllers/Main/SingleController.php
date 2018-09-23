@@ -53,13 +53,14 @@ class SingleController extends Controller
         $cate = $this->category->find($item->cate_id);
         $subCate = $this->subCate->find($item->subcate_id);
         
+        $whereArr = ['open_status'=>1, 'is_potset'=>0];
         
         //ポットセットがある場合
         $potSets = $this->item->where(['open_status'=>1, 'pot_parent_id'=>$item->id])->orderBy('pot_count', 'asc')->get();
         
         
         //Other Atcl
-        $otherItem = $this->item->where(['open_status'=>1])->whereNotIn('id', [$id])->orderBy('created_at','DESC')->take(5)->get();
+        $otherItem = $this->item->where($whereArr)->whereNotIn('id', [$id])->orderBy('created_at','DESC')->take(5)->get();
         
         //Tag
         $tags = null;
@@ -114,7 +115,7 @@ class SingleController extends Controller
         	
         	$cacheIds = cache('cacheIds'); //pullで元キャッシュを一旦削除する必要がある
             $caches = implode(',', $cacheIds); //順を逆にする
-          	$cacheItems = $this->item->whereIn('id', $cacheIds)->whereNotIn('id', [$item->id])->orderByRaw("FIELD(id, $caches)")->take($getNum)->get();  
+          	$cacheItems = $this->item->whereIn('id', $cacheIds)->whereNotIn('id', [$item->id])->where($whereArr)->orderByRaw("FIELD(id, $caches)")->take($getNum)->get();  
         }
         
         if(! in_array($item->id, $cacheIds)) { //配列にidがない時 or cachIdsが空の時
@@ -174,11 +175,11 @@ class SingleController extends Controller
 //            print_r($res);
 //            exit;
             
-            $recommends = $this->item->whereNotIn('id', [$item->id])->whereIn('id', $res)->where(['open_status'=>1, 'is_potset'=>0])->inRandomOrder()->take($getNum)->get();
+            $recommends = $this->item->whereNotIn('id', [$item->id])->whereIn('id', $res)->where($whereArr)->inRandomOrder()->take($getNum)->get();
             //->inRandomOrder()->take()->get() もあり クエリビルダに記載あり
         }
         else {
-        	$recommends = $this->item->whereNotIn('id', [$item->id])->where(['subcate_id'=>$item->subcate_id, 'open_status'=>1, 'is_potset'=>0])->inRandomOrder()->take($getNum)->get();
+        	$recommends = $this->item->whereNotIn('id', [$item->id])->where(['cate_id'=>$item->cate_id, 'open_status'=>1, 'is_potset'=>0])->inRandomOrder()->take($getNum)->get();
             //->inRandomOrder()->take()->get() もあり クエリビルダに記載あり
         }
         

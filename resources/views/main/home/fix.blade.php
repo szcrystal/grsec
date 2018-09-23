@@ -1,5 +1,18 @@
 @extends('layouts.app')
 
+<?php
+use App\TopSetting;
+?>
+
+@section('belt')
+<div class="tophead-wrap">
+    <div class="clearfix">
+        {!! nl2br(TopSetting::get()->first()->contents) !!}
+    </div>
+</div>
+@endsection
+
+
 @section('content')
 
 <div id="main" class="fix-page col-md-12 {{ $fix->slug }}">
