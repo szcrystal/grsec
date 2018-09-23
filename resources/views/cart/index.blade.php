@@ -131,39 +131,38 @@
 	</table>
 </div>
 
-<div class="clearfix mt-3">
+<div class="clearfix mt-3 cart-btn-wrap">
 	
-	<div class="float-right">
-			<input type="hidden" name="from_cart" value="1">
-   
-   			@if(Auth::check())
-      			<button class="btn btn-block btn-custom mb-4 py-2 px-5" type="submit" name="regist_off" value="1" formaction="{{ url('shop/form') }}"><i class="fas fa-shopping-basket"></i> 購入手続きへ</button>
-      		@else
-        	<div class="table-responsibe">
-         		<table class="table">
-           			<tr>
-              			<th rowspan="2" class="border-0">会員登録がまだの方</th>
-                 		<td class="border-0"><button class="btn btn-block btn-custom mb-1 py-2" type="submit" name="regist_on" value="1" formaction="{{ url('shop/form') }}">会員登録をして購入手続きへ</button></td>
+	<div class="">
+        <input type="hidden" name="from_cart" value="1">
+
+        @if(Auth::check())
+            <button class="btn btn-block btn-custom mb-4 py-2 px-5" type="submit" name="regist_off" value="1" formaction="{{ url('shop/form') }}">購入手続きへ</button>
+        @else
+            <div class="table-responsive">
+                <table class="table">
+                    <tr>
+                        <th rowspan="2" class="border-0">会員登録がまだの方</th>
+                        <td class="border-0"><button class="btn btn-block btn-custom mb-1 py-2 px-5" type="submit" name="regist_on" value="1" formaction="{{ url('shop/form') }}">会員登録をして購入手続きへ</button></td>
                    </tr>
                    <tr class="border-0">
-                   		<td class="border-0"><button class="btn btn-block btn-custom mb-4 py-2" type="submit" name="regist_off" value="1" formaction="{{ url('shop/form') }}">会員登録せずに購入手続きへ</button></td>               
-              		</tr>
-                	<tr class="pt-2">
+                        <td class="border-0"><button class="btn btn-block btn-custom mb-4 py-2 px-5" type="submit" name="regist_off" value="1" formaction="{{ url('shop/form') }}">会員登録せずに購入手続きへ</button></td>               
+                    </tr>
+                    <tr class="pt-2">
                         <th class="border-0">会員登録がお済みの方</th>      
                         <td class="border-0">	
-                        <a href="{{ url('login?to_cart=1') }}" class="btn btn-block btn-custom mb-4 py-2">ログインする</a>
+                        <a href="{{ url('login?to_cart=1') }}" class="btn btn-block btn-custom mb-4 py-2 px-5">ログインする</a>
                         {{--
                         <button class="btn btn-block btn-custom mb-3 py-2" type="submit" name="to_cart" value="shop/cart" formaction="{{ url('login') }}">ログインする</button>
                         --}}
                         </td>               
                     </tr>	      
-            	</table>
+                </table>
             </div>
-            
-			@endif
+        @endif
 	</div>
     
-    <div class="float-left">
+    <div class="">
 		<input type="hidden" name="uri" value="{{ $uri }}">
         
 		<a href="{{ url($uri)}}" class="btn border border-secondary bg-white"><i class="fas fa-angle-double-left"></i> 元に戻って買い物を続ける</a>

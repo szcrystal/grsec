@@ -267,6 +267,19 @@ body {
     //border: 1px solid red;
 }
 
+.cart-btn-wrap > div:first-of-type{ /* カゴページの購入するボタンのwrap */
+	float: right;
+    width: auto;
+    //border: 1px solid red;
+}
+.cart-btn-wrap > div:first-of-type > .btn-custom { /* login後の購入手続きへボタン */
+    width: 22em;
+}
+.cart-btn-wrap > div:last-of-type{
+	float: left;
+    width: auto;
+    //border: 1px solid red;
+}
 
 
 
@@ -1249,7 +1262,7 @@ ul.side-rank {
 	font-size: 1.4em;
     line-height: 1.4em;
 	//border-bottom: 1px solid #222;
-	margin-bottom: 0.7em;
+	margin: 0.1em 0 0.7em;
     padding-bottom: 0em;
 }
 .single .head-frame h2 span {

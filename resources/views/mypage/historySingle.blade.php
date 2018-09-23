@@ -83,7 +83,7 @@
                 <td class="clearfix">
                 	<img src="{{ Storage::url($item->main_img) }}" alt="{{ $item->title }}" class="img-fluid float-left d-block" width=80 height=80>
                     <div>
-                    {{ $item->title }}<br>[ {{ $item->number }} ]
+                    {{ Ctm::getItemTitle($item) }}<br>[ {{ $item->number }} ]
                     </div>
                 </td>
                 
@@ -212,13 +212,13 @@
 <form class="form-horizontal" role="form" method="POST" action="{{ url('shop/cart') }}">
     {{ csrf_field() }}
                                                            
-    <input type="hidden" name="item_count" value="1">
+    <input type="hidden" name="item_count[]" value="1">
     <input type="hidden" name="from_item" value="1">
-    <input type="hidden" name="item_id" value="{{ $item->id }}">
+    <input type="hidden" name="item_id[]" value="{{ $item->id }}">
     <input type="hidden" name="uri" value="{{ Request::path() }}"> 
     
                          
-   <button class="btn btn-block btn-custom col-md-4 mb-4 mx-auto py-2" type="submit" name="regist_off" value="1"><i class="fas fa-shopping-basket"></i> もう一度購入する</button>                 
+   <button class="btn btn-block btn-custom col-md-4 mb-4 mx-auto py-2" type="submit" name="regist_off" value="1">もう一度購入する</button>                 
 </form>
 
 <a href="{{ url('mypage/history') }}" class="btn border border-secondary bg-white"><i class="fas fa-angle-double-left"></i> 購入履歴一覧に戻る</a>

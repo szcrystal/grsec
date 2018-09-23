@@ -45,7 +45,7 @@
             	<img src="{{ Storage::url($i->main_img) }}" width="80" height="80" class="d-block img-fluid float-left">
             
             	<div class="text-small">
-             	{{ $i->title }}&nbsp;
+             	{{ Ctm::getItemTitle($i) }}&nbsp;
               	[{{ $i->number }}]
                <span class="d-block mt-1">¥{{ number_format(Ctm::getPriceWithTax($i->price)) }}</span> 
                </div>
@@ -97,9 +97,9 @@
                 <form class="form-horizontal" role="form" method="POST" action="{{ url('shop/cart') }}">
                     {{ csrf_field() }}
                                                                            
-                    <input type="hidden" name="item_count" value="1">
+                    <input type="hidden" name="item_count[]" value="1">
                     <input type="hidden" name="from_item" value="1">
-                    <input type="hidden" name="item_id" value="{{ $i->id }}">
+                    <input type="hidden" name="item_id[]" value="{{ $i->id }}">
                     <input type="hidden" name="uri" value="{{ Request::path() }}"> 
                                       
                    <button class="btn btn-custom text-small text-center w-100" type="submit" name="regist_off" value="1">もう一度購入</button>                 

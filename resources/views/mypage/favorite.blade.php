@@ -2,8 +2,9 @@
 
 @section('content')
 
-
-	{{-- @include('main.shared.carousel') --}}
+<?php
+use App\Item;
+?>
 
 <div id="main" class="mypage">
 
@@ -49,32 +50,37 @@
              <td>
                 <a href="{{ url('item/'.$item->id) }}" class="btn border-secondary bg-white text-small w-100 rounded-0">
                 商品ページへ <i class="fas fa-angle-double-right"></i>
-                </a> 
+                </a>
+                
+                <?php 
+                	$pots = Item::where('pot_parent_id', $item->id)->get();
+                ?>
              
-             	<form class="form-horizontal" role="form" method="POST" action="{{ url('shop/cart') }}">
-                    {{ csrf_field() }}
-                                                                           
-                    <input type="hidden" name="item_count" value="1">
-                    <input type="hidden" name="from_item" value="1">
-                    <input type="hidden" name="item_id" value="{{ $item->id }}">
-                    <input type="hidden" name="uri" value="{{ Request::path() }}"> 
-                        
-             	@if($item->saleDate)
-              		<small class="d-block mb-2 mt-4">この商品は{{ Ctm::changeDate($item->saleDate, 1) }}<br>に購入しています</small>                   
-                    <button class="btn btn-custom text-small w-100 text-center" type="submit" name="regist_off" value="1">もう一度購入</button>         
-              	@else   
-             		<button type="submit" class="btn btn-custom text-small text-center w-100 mt-3">カートに入れる</button>
-              	@endif  
-                </form> 
+             	@if($pots->isEmpty())
+                    <form class="form-horizontal" role="form" method="POST" action="{{ url('shop/cart') }}">
+                        {{ csrf_field() }}
+                                                                               
+                        <input type="hidden" name="item_count[]" value="1">
+                        <input type="hidden" name="from_item" value="1">
+                        <input type="hidden" name="item_id[]" value="{{ $item->id }}">
+                        <input type="hidden" name="uri" value="{{ Request::path() }}"> 
+                            
+                    @if($item->saleDate)
+                        <small class="d-block mb-2 mt-4">この商品は{{ Ctm::changeDate($item->saleDate, 1) }}<br>に購入しています</small>                   
+                        <button class="btn btn-custom text-small w-100 text-center" type="submit" name="regist_off" value="1">もう一度購入</button>         
+                    @else   
+                        <button type="submit" class="btn btn-custom text-small text-center w-100 mt-3">カートに入れる</button>
+                    @endif  
+                    </form>
+                @endif 
              </td>
         </tr>
         @endforeach
         
         </tbody>
- 	@else
-    
-    	
-        
+ 	
+    @else
+     
         <tbody>
         @foreach($items as $item)
         <tr>
@@ -97,23 +103,29 @@
             <div class="w-50 float-right">
                 <a href="{{ url('item/'.$item->id) }}" class="btn border-secondary bg-white text-small w-100 rounded-0">
                 商品ページへ <i class="fas fa-angle-double-right"></i>
-                </a> 
+                </a>
+                
+                <?php 
+                	$pots = Item::where('pot_parent_id', $item->id)->get();
+                ?>
              
-             	<form class="form-horizontal" role="form" method="POST" action="{{ url('shop/cart') }}">
-                    {{ csrf_field() }}
-                                                                           
-                    <input type="hidden" name="item_count" value="1">
-                    <input type="hidden" name="from_item" value="1">
-                    <input type="hidden" name="item_id" value="{{ $item->id }}">
-                    <input type="hidden" name="uri" value="{{ Request::path() }}"> 
-             	
-                @if($item->saleDate)
-              		<small class="d-block mb-2 mt-2">この商品は{{ Ctm::changeDate($item->saleDate, 1) }}<br>に購入しています</small>
-                    <button class="btn btn-custom text-small text-center w-100" type="submit" name="regist_off" value="1">もう一度購入</button>      
-              	@else   
-             		<button type="submit" class="btn btn-custom text-small text-center w-100 mt-3">カートに入れる</button>
-              	@endif 
-                </form>   
+             	@if($pots->isEmpty())
+                    <form class="form-horizontal" role="form" method="POST" action="{{ url('shop/cart') }}">
+                        {{ csrf_field() }}
+                                                                               
+                        <input type="hidden" name="item_count[]" value="1">
+                        <input type="hidden" name="from_item" value="1">
+                        <input type="hidden" name="item_id[]" value="{{ $item->id }}">
+                        <input type="hidden" name="uri" value="{{ Request::path() }}"> 
+                    
+                    @if($item->saleDate)
+                        <small class="d-block mb-2 mt-2">この商品は{{ Ctm::changeDate($item->saleDate, 1) }}<br>に購入しています</small>
+                        <button class="btn btn-custom text-small text-center w-100" type="submit" name="regist_off" value="1">もう一度購入</button>      
+                    @else   
+                        <button type="submit" class="btn btn-custom text-small text-center w-100 mt-3">カートに入れる</button>
+                    @endif 
+                    </form> 
+                @endif
              </div>
         </tr>
         @endforeach
