@@ -308,6 +308,11 @@ class HomeController extends Controller
         $path = $request->path();
         $fix = $this->fix->where('slug', $path)->first();
         
+        if(!isset($fix)) {
+            abort(404);
+        }
+        
+        
         $title = $fix->title;
         $type = 'fix';
         
@@ -322,6 +327,10 @@ class HomeController extends Controller
     public function category($slug)
     {
     	$cate = $this->category->where('slug', $slug)->first();
+        
+        if(!isset($cate)) {
+            abort(404);
+        }
         
         $items = $this->item->where(['cate_id'=>$cate->id, 'open_status'=>1, 'is_potset'=>0])->orderBy('id', 'desc')->paginate($this->perPage);
         
@@ -339,7 +348,15 @@ class HomeController extends Controller
     {
     	$cate = $this->category->where('slug', $slug)->first();
         
+        if(!isset($cate)) {
+            abort(404);
+        }
+        
         $subcate = $this->cateSec->where('slug',$subSlug)->first();
+        
+        if(!isset($subcate)) {
+            abort(404);
+        }
         
         $items = $this->item->where(['subcate_id'=>$subcate->id, 'open_status'=>1, 'is_potset'=>0])->orderBy('id', 'desc')->paginate($this->perPage);
         
@@ -356,6 +373,10 @@ class HomeController extends Controller
     public function tag($slug)
     {
     	$tag = $this->tag->where('slug', $slug)->first();
+        
+        if(!isset($tag)) {
+            abort(404);
+        }
         
         $itemIds = $this->tagRel->where('tag_id',$tag->id)->get()->map(function($obj){
         	return $obj -> item_id;
