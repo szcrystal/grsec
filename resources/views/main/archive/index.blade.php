@@ -17,6 +17,11 @@ use App\TopSetting;
 @endsection
 
 
+@section('bread')
+@include('main.shared.bread')
+@endsection
+
+
 @section('content')
 
 <?php
@@ -26,8 +31,6 @@ use App\TopSetting;
 ?>
 
 <div id="main" class="archive">
-
-@include('main.shared.bread')
 
 <div class="panel panel-default top-cont">
 

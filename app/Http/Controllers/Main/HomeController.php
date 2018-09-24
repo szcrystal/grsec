@@ -181,9 +181,10 @@ class HomeController extends Controller
 //        $items = $items->groupBy('cate_id')->toArray();
 
 		//head news
-		$newsCont = $this->topSet->get()->first()->contents;
-
-		$setting = $this->setting->get()->first();
+        $setting = $this->topSet->get()->first();
+        
+		$newsCont = $setting->contents;
+		
         $metaTitle = $setting->meta_title;
         $metaDesc = $setting->meta_description;
         $metaKeyword = $setting->meta_keyword;
@@ -307,11 +308,14 @@ class HomeController extends Controller
         $path = $request->path();
         $fix = $this->fix->where('slug', $path)->first();
         
-        $metaTitle = isset($fix->meta_title) ? $fix->meta_title : $fix->title;
+        $title = $fix->title;
+        $type = 'fix';
+        
+        $metaTitle = isset($fix->meta_title) ? $fix->meta_title : $title;
 //        $metaDesc = $item->meta_description;
 //        $metaKeyword = $item->meta_keyword;
         
-        return view('main.home.fix', ['fix'=>$fix, 'metaTitle'=>$metaTitle,]);
+        return view('main.home.fix', ['fix'=>$fix, 'metaTitle'=>$metaTitle, 'title'=>$title, 'type'=>$type]);
     }
     
     //Category ==============================

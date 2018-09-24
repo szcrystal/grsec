@@ -18,12 +18,16 @@
         
         @yield('belt')
         
+        
 
 		<div class="container">
+        	
+            
 
             <?php $className = isset($className) ? $className : ''; ?>
             
             <div class="pb-4 wrap-all clearfix {{ $className }}"><!-- offset-md-1-->
+            	@yield('bread')
                 @yield('content')
                 @yield('leftbar')
             </div>

@@ -72,7 +72,7 @@
                         @endif
                         
                         <a href="{{url('item/'.$item->id)}}">
-                        	{{ Ctm::shortStr($item->title, 11) }}
+                        	{{ Ctm::shortStr($item->title, 10) }}
                         </a>
                     </li>
                     <?php $n++; ?>
@@ -83,7 +83,7 @@
             
             
             <?php
-                extract(Ctm::getFixPage());
+                extract(Ctm::getFixPage()); //Key->変数へ
             ?>
             
             @if(count($fixOthers) > 0)

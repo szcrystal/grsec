@@ -276,8 +276,7 @@ use App\TopSetting;
                     </div>
                     
                     
-                    
-                  
+
                   	<div class="form-wrap">
                   		@if($item->stock > 0)
  

@@ -13,6 +13,11 @@ use App\TopSetting;
 @endsection
 
 
+@section('bread')
+@include('main.shared.bread')
+@endsection
+
+
 @section('content')
 
 <div id="main" class="fix-page col-md-12 {{ $fix->slug }}">
@@ -23,9 +28,9 @@ use App\TopSetting;
         <div class="panel-body">
 
             <div class="top-cont clearfix">
-
-
+            
                 {!! $fix->contents !!}
+            
             </div>
 
 		</div>

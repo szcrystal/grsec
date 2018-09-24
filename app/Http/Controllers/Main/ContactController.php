@@ -59,11 +59,14 @@ class ContactController extends Controller
 //            $select = '削除依頼';
 //        }
 
-        $metaTitle = 'お問い合わせ';
+		$title = 'お問い合わせ';
+        $type = 'contact';
+        
+        $metaTitle = $title;
 //        $metaDesc = $setting->meta_description;
 //        $metaKeyword = $setting->meta_keyword;
 
-        return view('main.contact.index', ['cate_option'=>$cate_option, 'metaTitle'=>$metaTitle,]);
+        return view('main.contact.index', ['cate_option'=>$cate_option, 'metaTitle'=>$metaTitle, 'title'=>$title, 'type'=>$type]);
     }
     
 

@@ -21,9 +21,10 @@
         </div>
         
         @if(isset($edit))
-        <div class="mt-4 text-right">
-            <a href="{{ url('/item/'. $id) }}" class="btn btn-warning border border-1 border-round text-white" target="_brank">この商品のページを見る <i class="fa fa-angle-double-right" aria-hidden="true"></i></a>
-        </div>
+        	<?php $linkId = $item->is_potset ? $item->pot_parent_id : $id; ?>
+            <div class="mt-4 text-right">
+                <a href="{{ url('/item/'. $linkId) }}" class="btn btn-warning border border-1 border-round text-white" target="_brank">この商品のページを見る <i class="fa fa-angle-double-right" aria-hidden="true"></i></a>
+            </div>
         @endif
         
     	</div>
