@@ -143,6 +143,10 @@ var exe = (function() {
 //            });
            
             var t;
+            var ease = 'linear';
+            
+            //$('.fade-black').css({height:'100%'})
+            
             $('.nav-tgl').on('click', function(){
             	var $leftbar = $('.main-navigation');
                 
@@ -152,21 +156,28 @@ var exe = (function() {
                 $leftbar.find('.navi-body').css({height:h});
 
             	if($leftbar.is(':visible')) {
-                	$('.fade-black').css({height:0}).fadeOut(50);
+                	$('.fade-black').fadeOut(50);
                     
-                	$leftbar.stop().animate({left:'-200px'}, 80, 'linear', function(){
-                    	$(this).hide(0);
+                	$leftbar.animate({left:'-100px'}, 50, ease, function(){
+                    	$(this).queue([]).stop().hide(0);
+                        //$(this).hide(0);
                         $('html,body').css({position:'static'}).scrollTop(t);
+                        
                     });
                 }
                 else {
                 	t = $(window).scrollTop();
-                    
-                    $('.fade-black').css({height:h}).fadeIn(150);
-                    
-            		$leftbar.fadeIn(20, function(){
-                    	$(this).stop().animate({left:0}, 150);
-                        $('html,body').css({position:'fixed', top:-t}); //overflow:'hidden',
+
+            		$leftbar.fadeIn(10, ease, function(){
+                        
+                    	$(this).animate({left:0}, 50, ease, function(){
+                        	$('.fade-black').fadeIn(10, ease, function(){
+                            	$(this).queue([]).stop();
+                            });
+                            
+                        	$('html,body').css({position:'fixed', top:-t}); //overflow:'hidden',    
+                        });
+    
                     });
                 }
                 //$('.navbar-brand').text(t);

@@ -1309,6 +1309,9 @@ ul.side-rank {
     //background: #aaa;
 }
 
+.slideDeli {
+	width: 100%;
+}
 .slideDeli + .table-custom {
 	display: none;
 }
