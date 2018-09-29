@@ -67,25 +67,26 @@ class ProcessFollowMail implements ShouldQueue
             
             $ensure = Item::find($sale->item_id)->is_ensure;
             
-            if($ensure) {
-                if($diff->days == 0 && $diff->h == 0 && $diff->i == 3) {
-                    $ensure_7[$sale->salerel_id][] = $sale;
-                
-                //elseif($diff->days == $day_33) 
-                    $ensure_33[$sale->salerel_id][] = $sale;
-                
-                //elseif($diff->days == $day_96) 
-                    $ensure_96[$sale->salerel_id][] = $sale;
-                
-                //elseif($diff->days == $day_155) 
-                    $ensure_155[$sale->salerel_id][] = $sale;
+            if($diff->days == 0 && $diff->h == 0 && $diff->i == 3) {
+                if($ensure) {
+                    //if($diff->days == $day_7) {
+                        $ensure_7[$sale->salerel_id][] = $sale;
+                    
+                    //elseif($diff->days == $day_33) 
+                        $ensure_33[$sale->salerel_id][] = $sale;
+                    
+                    //elseif($diff->days == $day_96) 
+                        $ensure_96[$sale->salerel_id][] = $sale;
+                    
+                    //elseif($diff->days == $day_155) 
+                        $ensure_155[$sale->salerel_id][] = $sale;
+                    
                 }
-                
-            }
-            else {
-                //if($diff->days == $dayNo_33) 
-                    $noEnsure_33[$sale->salerel_id][] = $sale;
-                
+                else {
+                    //if($diff->days == $dayNo_33) 
+                        $noEnsure_33[$sale->salerel_id][] = $sale;
+                    
+                }
             }
         
         }
