@@ -462,88 +462,97 @@ var exe = (function() {
              $fav.on('click', function(e){
              	
                 var $th = $(this);
-                var $loader = $th.siblings('.fav-str').find('.loader');
+                var $loader = $('.favorite .loader');
                 
                 var _itemId = $(this).data('id');
                 var _tokenVal = $('input[name=_token]').val();
                 var _isOn = 0;
                 
-                if($th.hasClass('fav-on')) { //登録削除の時
-                	_isOn = 1; 
-                    $sibFav = $th.siblings('.fav-off');
-                }
-                else { //登録時
-                	$sibFav = $th.siblings('.fav-on');
-                }
-                
-                //loader表示
-                $loader.fadeIn(10);
-                
-
-                //controllerでajax処理する場合、_tokenも送る必要がある
-                $.ajax({
-                    url: '/item/script',
-                    type: "POST",
-                    cache: false,
-                    data: {
-                        _token: _tokenVal,
-                        itemId: _itemId,
-                        isOn: _isOn,
-                    },
-                    //dataType: "json",
-                    success: function(resData){
-                        
-                        var str = resData.str;
-                        //console.log(str);
-                        
-                        if(_isOn) { //お気に入り登録削除の時
-                        	//$th -> hasClass:.favOn
-                            $th.removeClass('d-inline').fadeOut(100, function(){
-                            	$loader.fadeOut(10);
-                                $sibFav.removeClass('d-none').fadeIn(50); 
-                                //$favOff.removeClass('d-none').fadeIn(50); 
-                            });
-                        } 
-                        else { //お気に入り登録の時
-                        	//$th -> hasClass:.favOff
-                            $th.removeClass('d-inline').fadeOut(100, function(){
-                            	$loader.fadeOut(50);
-                                $sibFav.removeClass('d-none').fadeIn(50);
-                                //$favOn.removeClass('d-none').fadeIn(50);
-                            });
-                        }
-                        
-                        //text表示 strはphpから取得
-                        $th.siblings('small').text(str);
-                        
-                        //exit();
-                        
-//                        $select2.empty().append(
-//                            $('<option>'+ '選択して下さい' + '</option>').attr({
-//                                  disabled: 1,
-//                                  selected: 1,
-//                            })
-//                        );
-//                        
-//                        $.each(selectArr, function(index, val){
-//                            console.log(Object.keys(val));
-//                            
-//                            $select2.append(
-//                                $('<option>' + Object.values(val) + '</option>').attr({
-//                                  value: Object.keys(val),
-//                                  
-//                                })
-//                            );
-//                        }); //each
-                        
-                        //$frame.html(resData).slideDown(100);
-                    },
-                    error: function(xhr, ts, err){
-                        //resp(['']);
+                $th.removeClass('d-inline').fadeOut(180, function(){
+                    //loader表示
+//                	$loader.fadeIn(30);
+                    //$(this).queue([]).stop();
+                    
+                    //});
+                    
+                    if($th.hasClass('fav-on')) { //登録削除の時
+                        _isOn = 1;
+                        $sibFav = $th.siblings('.fav-off');
                     }
-                });
-            
-            });
+                    else { //登録時
+                        $sibFav = $th.siblings('.fav-on');
+                    }
+
+
+                    //controllerでajax処理する場合、_tokenも送る必要がある
+                    $.ajax({
+                        url: '/item/script',
+                        type: "POST",
+                        cache: false,
+                        data: {
+                            _token: _tokenVal,
+                            itemId: _itemId,
+                            isOn: _isOn,
+                        },
+                        //dataType: "json",
+                        success: function(resData){
+                            
+                            var str = resData.str;
+                            //console.log(str);
+                            
+                            if(_isOn) { //お気に入り登録削除の時
+                                //$th -> hasClass:.favOn
+                                //$th.removeClass('d-inline').fadeOut(100, function(){
+                                    //$loader.fadeOut(30, function(){
+                                        $sibFav.removeClass('d-none').fadeIn(80);
+                                    //});
+                                     
+                                    //$favOff.removeClass('d-none').fadeIn(50); 
+                                //});
+                            } 
+                            else { //お気に入り登録の時
+                                //$th -> hasClass:.favOff
+                                //$th.removeClass('d-inline').fadeOut(100, function(){
+                                    //$loader.fadeOut(30, function(){
+                                        $sibFav.removeClass('d-none').fadeIn(80);
+                                    //});
+                                    //$favOn.removeClass('d-none').fadeIn(50);
+                                //});
+                            }
+                            
+                            //text表示 strはphpから取得
+                            $th.siblings('small').text(str);
+                            
+                            //exit();
+                            
+    //                        $select2.empty().append(
+    //                            $('<option>'+ '選択して下さい' + '</option>').attr({
+    //                                  disabled: 1,
+    //                                  selected: 1,
+    //                            })
+    //                        );
+    //                        
+    //                        $.each(selectArr, function(index, val){
+    //                            console.log(Object.keys(val));
+    //                            
+    //                            $select2.append(
+    //                                $('<option>' + Object.values(val) + '</option>').attr({
+    //                                  value: Object.keys(val),
+    //                                  
+    //                                })
+    //                            );
+    //                        }); //each
+                            
+                            //$frame.html(resData).slideDown(100);
+                        },
+                        error: function(xhr, ts, err){
+                            //resp(['']);
+                        }
+                    }); //ajax
+            	
+                }); //fadeOut
+                
+            });// on
         },
         
         slideDeliFee: function() {

@@ -63,7 +63,7 @@ use App\TopSetting;
                                 <span class="top-rank"><i class="fas fa-crown"></i><em>{{ $rankNum }}</em></span>
                             @endif
                                                             
-                            <?php $strNum = 25; ?>
+                            <?php $strNum = Ctm::isAgent('sp') ? 17 : 25; ?>
                             @include('main.shared.atcl')
      
                         </article>
@@ -125,8 +125,7 @@ use App\TopSetting;
                 <div class="meta">
                     <h3><a href="{{ url($slugType . '/'. $recom->slug) }}">{{ $recom->top_title }}</a></h3>
                     
-                    <p>{!! nl2br($recom->top_text) !!}</p>
-                    
+                    <p>{!! nl2br($recom->top_text) !!}</p>    
                 </div>
                 
             </article>
@@ -156,10 +155,5 @@ use App\TopSetting;
 @endsection
 
 
-{{--
-@section('rightbar')
-	@include('main.shared.rightbar')
-@endsection
---}}
 
 

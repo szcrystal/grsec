@@ -394,8 +394,6 @@ $url = $isMypage ? url('mypage/register') : url('register');
 	<p class="mt-4 text-small">8文字以上（半角）で、忘れないものを入力して下さい。<br>メールアドレスとパスワードは当店をご利用の際に必要となります。</p>
 	@endif
     <table class="table table-borderd border">
-        <col style="width:27%;"></col>
-        <col></col>
          
 			@if(! $isMypage)
              <tr class="form-group">

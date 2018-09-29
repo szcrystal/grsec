@@ -3,7 +3,17 @@ use App\Setting;
 use App\Category;
 use App\CategorySecond;
 use App\Favorite;
+use App\Icon;
 ?>
+
+<?php 
+    $isSp = Ctm::isAgent('sp');
+    $isSale = Setting::get()->first()->is_sale; 
+?>
+
+@if($isSale || isset($item->sale_price))
+<span class="sale-belt">SALE</span>
+@endif
 
 <div class="img-box">
     <a href="{{ url('/item/'.$item->id) }}">
@@ -36,6 +46,20 @@ use App\Favorite;
             </a>
         @endif
     </p>
+    
+    @if(isset($item->icon_id) && $item->icon_id != '')
+        <div class="icons">
+            <?php $icons = explode(',', $item->icon_id); ?>
+            
+            @foreach($icons as $iconId)
+                <?php $iconObj = Icon::find($iconId); ?>
+                
+                <span class="{{ $iconObj->name }}">{{ $iconObj->title }}</span>
+
+            @endforeach
+            
+        </div>
+    @endif
 
 
     <div class="tags">
@@ -45,24 +69,24 @@ use App\Favorite;
 
 
     <div class="price">
-        <?php 
-            $isSale = Setting::get()->first()->is_sale; 
-        ?>
+        
         @if($isSale || isset($item->sale_price))
-            <strike>{{ number_format(Ctm::getPriceWithTax($item->price)) }}</strike>
-            <i class="fas fa-arrow-right text-small"></i>
+        	@if(! $isSp)
+            	<strike>{{ number_format(Ctm::getPriceWithTax($item->price)) }}</strike>
+            	<i class="fas fa-arrow-right text-small"></i>
+            @endif
         @endif
         
         @if(isset($item->sale_price))
-            <span>{{ number_format(Ctm::getPriceWithTax($item->sale_price)) }}</span>
+            <span class="show-price">{{ number_format(Ctm::getPriceWithTax($item->sale_price)) }}</span>
         @else
             @if($isSale)
-                <span>{{ number_format(Ctm::getSalePriceWithTax($item->price)) }}</span>
+                <span class="show-price">{{ number_format(Ctm::getSalePriceWithTax($item->price)) }}</span>
             @else
-                <span>{{ number_format(Ctm::getPriceWithTax($item->price)) }}</span>
+                <span class="show-price">{{ number_format(Ctm::getPriceWithTax($item->price)) }}</span>
             @endif
         @endif
-        円(税込)
+        <span class="show-yen">円(税込)</span>
     </div>
 
 
@@ -83,7 +107,8 @@ use App\Favorite;
 
             <span class="fav fav-on{{ $on }}" data-id="{{ $item->id }}"><i class="far fa-heart"></i></span>
             <span class="fav fav-off{{ $off }}" data-id="{{ $item->id }}"><i class="fas fa-heart"></i></span>
-            <small class="fav-str"><span class="loader"><i class="fas fa-square"></i></span>{{-- $str --}}</small>    
+            <span class="loader"><i class="fas fa-square"></i></span>
+            <small class="fav-str">{{-- $str --}}</small>    
         </div>
     @else
         {{-- <span class="fav-temp"><a href="{{ url('login') }}"><i class="far fa-heart"></i></a></span> --}}

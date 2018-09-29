@@ -774,6 +774,21 @@ for SP
 /*        margin-right: 0;*/
 /*    }*/
     
+    .main-atcl .tags,
+    .main-atcl .icons {
+    	display: none;
+    }
+    .main-atcl .meta .price {
+    	//text-align: left;
+    }
+    
+/*    .main-atcl .meta .price span.show-price {*/
+/*        font-size: 1.25em;*/
+/*    }*/
+/*    .main-atcl .meta .price span.show-yen {*/
+/*        font-size: 0.85em;*/
+/*    }*/
+    
     .wrap-atcl > a.btn {
         width: 100%;
     }

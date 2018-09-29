@@ -12,3 +12,5 @@ class Icon extends Model
         'img_path',
     ];
 }
+
+
