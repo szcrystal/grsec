@@ -102,7 +102,34 @@ class MainController extends Controller
 //            }
 //        }
 //   
-//        exit;       
+//        exit;
+        
+        $current = new DateTime('now'); 
+   
+        //$d = strtotime($sale->deli_start_date);
+        $from = new DateTime('2018-09-29 14:44:23');
+        $diff = $current->diff($from);
+        
+        echo date('Y-m-d H:i:s', time());
+        print_r($diff);
+        exit;
+        echo $diff->time;
+        exit;
+            
+            
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         
         
   

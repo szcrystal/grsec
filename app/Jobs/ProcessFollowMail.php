@@ -51,11 +51,53 @@ class ProcessFollowMail implements ShouldQueue
         $ensure_155 = array();
         $noEnsure_33 = array();
         
-        $day_7 = 1;
-        $day_33 = 1;
-        $day_96 = 1;
-        $day_155 = 1;
-        $dayNo_33 = 1;
+        // For Test ==================================================================
+        $day_7 = 7;
+        $day_33 = 33;
+        $day_96 = 96;
+        $day_155 = 155;
+        $dayNo_33 = 33;
+        
+        $current = new DateTime('now'); 
+            
+        foreach($sales as $sale) {
+            
+            $from = new DateTime($sale->deli_start_date);
+            $diff = $current->diff($from);
+            
+            $ensure = Item::find($sale->item_id)->is_ensure;
+            
+            if($ensure) {
+                if($diff->days == 0 && $diff->h == 0 && $diff->i == 3) {
+                    $ensure_7[$sale->salerel_id][] = $sale;
+                
+                //elseif($diff->days == $day_33) 
+                    $ensure_33[$sale->salerel_id][] = $sale;
+                
+                //elseif($diff->days == $day_96) 
+                    $ensure_96[$sale->salerel_id][] = $sale;
+                
+                //elseif($diff->days == $day_155) 
+                    $ensure_155[$sale->salerel_id][] = $sale;
+                }
+                
+            }
+            else {
+                //if($diff->days == $dayNo_33) 
+                    $noEnsure_33[$sale->salerel_id][] = $sale;
+                
+            }
+        
+        }
+        // For Test END ==================================================================
+        
+        
+        /* For 本番 ========================================================== 
+        $day_7 = 7;
+        $day_33 = 33;
+        $day_96 = 96;
+        $day_155 = 155;
+        $dayNo_33 = 33;
         
         $current = new DateTime('now'); 
             
@@ -87,10 +129,11 @@ class ProcessFollowMail implements ShouldQueue
                 }
             }
         
-        }    
+        }
+        For 本番 END ==========================================================  */   
                 
         if(count($ensure_7) > 0) {
-        	$this->sendFollowMail($ensure_7, 'ensure_7');
+        	$this->sendFollowMail($ensure_7, 'ensure_7'); //Obj, typeCode
             //ProcessFollowMail::dispatch($ensure_7, 7, true);
         }
         

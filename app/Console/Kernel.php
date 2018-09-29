@@ -14,6 +14,7 @@ use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use App\Jobs\ProcessFollowMail;
 use App\Jobs\ProcessStockReset;
 
+use Ctm;
 
 class Kernel extends ConsoleKernel
 {
@@ -34,21 +35,24 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        
-    	//フォローメールの送信(毎日6時に該当する日数の商品（ユーザー）にメール) ========
-    	$schedule->job(new ProcessFollowMail)
-                ->dailyAt('7:00');
-                //->everyMinute();
-        
-        //在庫のリセットを各月の1日に ====================
+        if(! Ctm::isLocal()) {
+            //枯れ保証：フォローメールの送信(毎日6時に該当する日数の商品（ユーザー）にメール) ==============
+            $schedule->job(new ProcessFollowMail)
+                    //->dailyAt('7:00'); //This is for product
+                    ->everyMinute(); //This is for Test
+            
+            
+            //在庫のリセットを各月の1日に ==================================================
+            $schedule->job(new ProcessStockReset)
+                    ->monthlyOn(1, '3:00'); //For Product 毎月1日の午前3時に
+                    //->everyMinute(); //For Test
+                    //->dailyAt('3:00'); //For Test
+ 		}
+               
 //        $now = new DateTime('now');
 //        $nowDay = $now->format('d');
 //        $nowDay = $nowDay + 1;
-        
-    	$schedule->job(new ProcessStockReset)
-                //->monthlyOn(1, '3:00'); //毎月1日の午前3時に
-                ->dailyAt('3:00'); 
-        		//->everyMinute();
+        		
         
     	//$schedule->call(function () {
 
