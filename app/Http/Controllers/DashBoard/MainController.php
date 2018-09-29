@@ -104,34 +104,19 @@ class MainController extends Controller
 //   
 //        exit;
         
-        $current = new DateTime('now'); 
-   
-        //$d = strtotime($sale->deli_start_date);
-        $from = new DateTime('2018-09-29 14:44:23');
-        $diff = $current->diff($from);
-        
-        echo date('Y-m-d H:i:s', time());
-        print_r($diff);
-        exit;
-        echo $diff->time;
-        exit;
+//        $current = new DateTime('now'); 
+//   
+//        //$d = strtotime($sale->deli_start_date);
+//        $from = new DateTime('2018-09-29 14:44:23');
+//        $diff = $current->diff($from);
+//        
+//        echo date('Y-m-d H:i:s', time());
+//        print_r($diff);
+//        exit;
+//        echo $diff->time;
+//        exit;
             
-            
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+
   
         $str = env('REMOTE_ADDR', '') . "\n" . env('HTTP_USER_AGENT', '');
         //$str .= "<br>abcde" . '<a href="https://192.168.10.16">abcde</a>';
