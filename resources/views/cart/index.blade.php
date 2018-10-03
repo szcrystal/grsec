@@ -199,7 +199,11 @@
             
             <tr>
            		<td colspan="5" class="text-right">
+                	@if(Ctm::isLocal())
            			<small>数量変更後の小計を確認する場合は「再計算」を、事前に送料を確認する場合は「配送先都道府県」を選択して「送料計算」を押して下さい</small>
+                    @else
+                    <small>数量変更後の小計を確認する場合は「再計算」を押して下さい。</small>
+                    @endif
                 </td>
            </tr>
            
