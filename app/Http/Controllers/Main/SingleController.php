@@ -167,7 +167,7 @@ class SingleController extends Controller
         	'同梱包可能なおすすめ商品' => $isOnceItems,
             'この商品を見た人におすすめの商品' => $recomCateItems,
             'カテゴリーランキング' => $recomCateRankItems,
-            '合わせ買いにおすすめの商品' => $recommends,
+            '他にもこんな商品が買われています' => $recommends,
         ];
         
         
