@@ -611,12 +611,12 @@ var exe = (function() {
         },
         
         getWH: function() {
-        	$target = $('.recent-check .floar .img-box');
+        	$target = $('.top-first .img-box');
         	var w = $target.width();
             var h = $target.height();
             
             //$('h2').text(w +'/'+ h);
-            console.log(w +'/'+ h);
+            //console.log(w +'/'+ h);
             
                                
         	//アンカーリンクのfix headerのずれを直す

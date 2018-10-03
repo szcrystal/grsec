@@ -3,20 +3,18 @@
 @section('content')
 
 
-<div id="main" class="top confirm">
+<div id="main" class="confirm">
 
         <div class="panel panel-default">
 
             <div class="panel-body">
                 {{-- @include('main.shared.main') --}}
 
-				<div class="main-list clearfix">
-
 
 <div class="clearfix">
 @include('cart.guide')
 
-<div class="float-left col-md-8">
+<div class="confirm-left">
 	<h5 class="card-header mb-3 py-2">ご注文の商品</h5>
 	<div class="table-responsive table-cart">
     <table class="table table-bordered bg-white">
@@ -43,7 +41,7 @@
                 <td>{{ $item->count }}</td>
 
                 <td>
-                	<b>¥{{ number_format( $item->item_total_price ) }}</b>
+                	¥{{ number_format( $item->item_total_price ) }}
                 
                 	{{--
                 	@if(isset($item->deli_time))
@@ -109,9 +107,9 @@
             <td>
             ご希望日：
             @if(isset($data['plan_date']))
-            <b>{{ $data['plan_date'] }}</b><br>
+            {{ $data['plan_date'] }}<br>
             @else
-            <b>最短出荷</b><br>
+            最短出荷<br>
             @endif
 			
 			<ul class="px-4 mt-3">
@@ -119,7 +117,7 @@
                 	@if(isset($item->plan_time))                   
                         <li class="mb-3">
                             {{ Ctm::getItemTitle($item) }}<br>
-                            ご希望時間：<b>[ {{ $item->plan_time }} ]</b>
+                            ご希望時間：[ {{ $item->plan_time }} ]
                         </li>
                     @endif
                 @endforeach
@@ -210,7 +208,7 @@
 </div> 
 
 
-<div class="float-right col-md-4 mt-2">
+<div class="confirm-right mt-3">
 <h5 class="">&nbsp;</h5>
 <div class="table-responsive table-custom show-price">
     <table class="table border table-borderd bg-white">
@@ -242,7 +240,7 @@
         <tr>
             <th><label class="control-label">注文金額合計（税込）</label></th>
              <td class="text-danger text-big">
-                  ¥{{ number_format($allPrice + $deliFee + $codFee - $usePoint) }}  
+                  ¥{{ number_format($allPrice + $deliFee + $codFee - $usePoint) }}
             </td>
         </tr>
         </tbody>
@@ -313,7 +311,7 @@
 	<b>「注文する」ボタンをクリックすると注文を確定します。</b>
   </small>
   
-  <div class="col-md-12">
+  <div class="">
   	<button class="btn btn-block btn-custom col-md-4 mb-4 mx-auto py-2" type="submit" name="regist_off" value="1">注文する</button>
 	</div>                
 </form>
@@ -324,7 +322,7 @@
 
 
 
-</div>
+
 </div>
 </div>
 </div>

@@ -2,26 +2,39 @@
 
 @section('content')
 
-<div id="main" class="top">
+<div id="main" class="">
 
         <div class="panel panel-default">
 
             <div class="panel-body">
-                {{-- @include('main.shared.main') --}}
 
-				<div class="main-list clearfix">
-
-
-<div class="top-cont feature clear">
+<div class="top-cont clearfix">
 
 @include('cart.guide')
 
 @if(! count($itemData))
 	<div class="col-md-8 mx-auto text-center">
 	<p class="">カートに商品が入っていません</p>
-	<a href="{{ url('/') }}">TOPへ戻る</a>
+	<a href="{{ url('/') }}">HOMEへ戻る <i class="fas fa-angle-double-right"></i></a>
 	</div>
 @else
+
+<?php
+//	print_r($errors->get('no_delivery.*'));
+//    echo $errors->has('no_delivery.*');
+    //exit;
+?>
+
+@if ($errors->has('no_delivery.*'))
+    <div class="alert alert-danger">
+        <strong><i class="fas fa-exclamation-triangle"></i></strong> 配送不可の商品があります<br>
+        <ul>
+            @foreach ($errors->get('no_delivery.*') as $error)
+                <li>{{ $error[0] }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
 
 <form id="with1" class="form-horizontal" role="form" method="POST" action="{{ url('shop/cart') }}">
       {{ csrf_field() }}
@@ -40,7 +53,7 @@
     	<tbody>
      		
      		@foreach($itemData as $key => $item)    
-     		<tr>
+     		<tr class="{{ $errors->has('no_delivery.'. $key) ? 'tr-danger-border' : '' }}">
                 <td class="clearfix">
                 	<img src="{{ Storage::url($item->main_img) }}" alt="{{ $item->title }}" class="img-fluid" width=80 height=80>
                 
@@ -57,9 +70,6 @@
                         {{-- <label>数量</label> --}}
                         
                         <input type="hidden" name="last_item_id[]" value="{{ $item->id }}">
-                        {{--
-                        <input type="hidden" name="last_item_total_price[]" value="{{ $item->total_price }}">
-                        --}}
                         
                         <select class="form-control col-md-11{{ $errors->has('last_item_count') ? ' is-invalid' : '' }}" name="last_item_count[]">
                             	
@@ -74,7 +84,7 @@
                                     <?php
                                         $selected = '';
                                         if(Ctm::isOld()) {
-                                            if(old('item_count') == $i)
+                                            if(old('last_item_count.'. $key) == $i)
                                                 $selected = ' selected';
                                         }
                                         else {
@@ -91,7 +101,7 @@
                         @if ($errors->has('last_item_count'))
                             <div class="help-block text-danger">
                                 <span class="fa fa-exclamation form-control-feedback"></span>
-                                <span>{{ $errors->first('last_item_count') }}</span>
+                                <span>{{ $errors->first('last_item_count.'. $key) }}</span>
                             </div>
                         @endif
                         
@@ -116,17 +126,84 @@
          
          <tfoot>
          	<tr>
-          		<td colspan="2" class="text-right"><strong>小計</strong></td>
-            	<td class="text-danger text-big">¥{{ number_format($allPrice) }}</td>
+          		<td colspan="2" class="text-right">
+                	<strong>小計</strong>
+                </td>
+            	<td class="text-big"><b>¥{{ number_format($allPrice) }}</b></td>
              	<td>	
                     <input type="hidden" name="calc" value="1" form="re">
                     <button class="btn border border-secondary bg-white px-2" type="submit" name="re_calc" value="1"><i class="fas fa-redo"></i> 再計算</button>
                     {{-- <input type="submit" name="re_calc" value="再計算"> --}}
                 </td>
-          	</tr>  
+          	</tr>
+            
+            @if(isset($deliFee))
+                <tr>
+                    <td colspan="2" class="text-right"><strong>送料</strong></td>
+                    <td class="text-big"><b>¥{{ number_format($deliFee) }}</b></td>
+                    <td></td>
+                </tr>
+                
+                <tr>
+                    <td colspan="2" class="text-right"><strong>合計 <small>（小計+送料）</small></strong></td>
+                    <td class="text-big"><b>¥{{ number_format($allPrice + $deliFee) }}</b></td>
+                    <td></td>
+                </tr>
+            @endif
+           
+           
            <tr>
-           		<td colspan="5" class="text-right"><small>数量変更後の小計を確認する場合は再計算を押して下さい</small></td>
-           </tr>    
+           		<td colspan="3" class="clearfix">
+                                    
+                	<div class="float-right col-md-2 p-0 m-0">
+                        {{-- <label class="control-label mb-0 text-small d-inline col-md-6"><b>配送先都道府県</b></label> --}}
+                    
+                        <select id="pref" class="form-control rounded-0 d-inline{{ $errors->has('pref_id') ? ' is-invalid' : '' }}" name="pref_id">
+                            <option selected value="0">配送先都道府県</option>
+                            <?php
+    //                            use App\Prefecture;
+    //                            $prefs = Prefecture::all();  
+                            ?>
+                            @foreach($prefs as $pref)
+                                <?php
+                                    $selected = '';
+                                    if(Ctm::isOld()) {
+                                        if(old('pref_id') == $pref->id)
+                                            $selected = ' selected';
+                                    }
+                                    else {
+                                        if(isset($prefId) && $prefId == $pref->id) {
+                                        //if(Session::has('all.data.user')  && session('all.data.user.prefecture') == $pref->name) {
+                                            $selected = ' selected';
+                                        }
+                                    }
+                                ?>
+                                <option value="{{ $pref->id }}"{{ $selected }}>{{ $pref->name }}</option>
+                            @endforeach
+                        </select>
+                    
+                        @if ($errors->has('pref_id'))
+                            <div class="help-block text-danger">
+                                <span class="fa fa-exclamation form-control-feedback"></span>
+                                <span>{{ $errors->first('pref_id') }}</span>
+                            </div>
+                        @endif
+                    </div>
+                </td>
+             	<td>
+                	<?php
+                    	$d = Ctm::isLocal() ? '' : ' disabled';
+                    ?>
+                    <button class="btn border border-secondary bg-white px-2" type="submit" name="delifee_calc" value="1"{{ $d }}><i class="fas fa-redo"></i> 送料計算</button>
+                </td>
+        	</tr>
+            
+            <tr>
+           		<td colspan="5" class="text-right">
+           			<small>数量変更後の小計を確認する場合は「再計算」を、事前に送料を確認する場合は「配送先都道府県」を選択して「送料計算」を押して下さい</small>
+                </td>
+           </tr>
+           
          </tfoot>        
 	</table>
 </div>
@@ -204,7 +281,7 @@
 
 
 </div>
-</div>
+
 
 </div>
 </div>

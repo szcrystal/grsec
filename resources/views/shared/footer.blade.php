@@ -1,4 +1,11 @@
-<footer id="colop">
+<?php
+	$class = '';
+	if(isset($type) && $type == 'single') {
+    	$class = ' class="single-colop"';
+    }
+?>
+
+<footer id="colop"{!! $class !!}>
 	<div class="clearfix foot-wrap">
 
         <div class="foot-menu">

@@ -373,16 +373,26 @@ for SP
     	color: #3f3f3f;
     }
     
+    #spCartBtn {
+    	display: block;
+    	position: fixed;
+        left: 0;
+        bottom: 45px;
+        z-index: 10001;
+        font-size: 1.3em;
+        padding: 0.6em 0;
+    }
+    
     .icon-belt {
     	width: 100%;
-    	background: beige;
+    	background: #3a3b3b;
+        height: 45px;
         position: fixed;
         bottom: 0;
         left: 0;
         z-index: 999;
-        padding: 0.3em 0.2em 0;
+        padding: 0.5em 0.2em 0;
         text-align: center;
-        background: #3a3b3b;
     }
     .icon-belt ul {
     	display: inline-block;
@@ -405,6 +415,7 @@ for SP
     .icon-belt li .fas {
         font-size: 1.8em;
         margin-right: 0.5em;
+        //vertical-align: top;
     }
     
     .s-form {
@@ -577,7 +588,8 @@ for SP
     }
     
     .table-cart .table {
-        width: 100%;
+        width: 99%;
+        margin: auto;
         font-size: 0.9em;
         table-layout: fixed;
     }
@@ -602,7 +614,21 @@ for SP
     	width: 25%;
     }
     .table-cart .btn {
-    	font-size: 0.9em;
+    	font-size: 0.85em;
+        width: 100%;
+    }
+    .table-cart .btn .fas {
+    	//display: none;
+    	font-size: 0.6em;
+        margin: 0;
+        vertical-align: 1px;
+    }
+    .table-cart td {
+    	padding-left: 0.3em;
+        padding-right: 0.3em;
+    }
+    .table-cart .text-right { /* cart index 数量変更後は、、の文言部分 */
+    	text-align: left !important;
     }
     
     .cart-btn-wrap > div:first-of-type{ /* カゴページの購入するボタンのwrap */
@@ -624,6 +650,13 @@ for SP
     	width: 100%;
         
 	}
+    
+    .confirm .confirm-left,
+    .confirm .confirm-right {
+        float: none;
+        width: 100%;
+    }
+    
     
 /*    .cart-btn-wrap > div:last-of-type{*/
 /*        float: right;*/
@@ -716,7 +749,7 @@ for SP
     }
     .top .img-box,
     .archive .img-box {
-        height: 170px;
+        height: 142px;
         overflow: hidden;
     }
     .top-second .img-box {
@@ -779,7 +812,7 @@ for SP
     	display: none;
     }
     .main-atcl .meta .price {
-    	//text-align: left;
+    	font-size: 0.8em;
     }
     
 /*    .main-atcl .meta .price span.show-price {*/
@@ -794,7 +827,7 @@ for SP
     }
     
     .main-atcl h3 {
-		font-size: 1.05em;
+		font-size: 1.0em;
     }
     
     .top-second .main-atcl {
@@ -900,15 +933,7 @@ for SP
 /*        //border-width: 1px 1px 0;*/
 /*    }*/
     
-    #spCartBtn {
-    	display: block;
-    	position: fixed;
-        left: 0;
-        bottom: 0;
-        z-index: 10001;
-        font-size: 1.2em;
-        padding: 0.4em 0;
-    }
+    
     
     /* Fix page */
     .fix-page ul.triangle,
@@ -949,7 +974,10 @@ for SP
     
     /* Footer */
     #colop {
-    	margin-bottom: 2.5em;
+    	margin-bottom: 45px;
+    }
+    #colop.single-colop {
+    	margin-bottom: 90px;
     }
     #colop .foot-wrap {
     	width: 95%;

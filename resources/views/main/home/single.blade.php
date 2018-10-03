@@ -101,7 +101,14 @@ use App\TopSetting;
             		<span>{{ $item->title_addition }}</span>
                 	<h2 class="single-title">{{ $item -> title }}<br><span>商品番号 {{ $item->number }}</span></h2>
 
-                 	<p class="text-big">{{ $item->catchcopy }}</p>   
+                 	<p class="text-big">{{ $item->catchcopy }}</p>
+                    
+                    @if(isset($item->icon_id) && $item->icon_id != '')
+                        <div class="icons">
+                        	<?php $obj = $item; ?>
+                            @include('main.shared.icon')
+                        </div>
+                    @endif
                  	
                   	<?php
                         $per = env('TAX_PER');
@@ -109,7 +116,7 @@ use App\TopSetting;
                         
                         $tax = floor($item->price * $per);
                         $price = $item->price + $tax;
-                   ?>
+                   	?>
                    
                    {{--
                     <div class="mb-3" >
@@ -140,15 +147,13 @@ use App\TopSetting;
                         	 
                             @foreach($potSets as $potSet)
                             <div class="potset clearfix">
+                            	@if(isset($potSet->main_img))
                                 <div class="img-box">
-                                	@if(isset($potSet->main_img))
-                                    	<img src="{{ Storage::url($potSet->main_img) }}" class="img-fluid">
-                                    @else
-                                    	<img src="{{ Storage::url($item->main_img) }}" class="img-fluid">
-                                    @endif
+                                	<img src="{{ Storage::url($potSet->main_img) }}" class="img-fluid">
                                 </div>
+                                @endif
                                 
-                                <div class="">
+                                <div class="potset-text">
                                     <h3>
                                     	{{ $potSet->title }}
                                     </h3>
@@ -158,15 +163,12 @@ use App\TopSetting;
                                         @include('main.shared.priceMeta')
                                     </div>
                                     
-                                    <div>
-                                        <span class="text-small">
-                                        @if($potSet->is_once)
-                                            同梱包可能アイコン
-                                        @else
-                                            同梱包不可
-                                        @endif
-                                        </span>
-                                    </div>
+                                    @if(isset($potSet->icon_id) && $potSet->icon_id != '')
+                                        <div class="icons">
+                                        	<?php //$obj = $potSet; ?>
+                                            @include('main.shared.icon')
+                                        </div>
+                                    @endif
                                     
                                     <div class="clearfix">
                                         
@@ -482,41 +484,24 @@ use App\TopSetting;
                 </div><!-- right -->
 
 
-
-
-
 			<?php //================================================================= ?> 
                 <div class="single-recom">
 
-                    @if(count($isOnceItems) > 0)
-                        <div class="mt-5 pt-2 mb-3 floar">
-                            <h4 class="text-small">同梱包が可能な他の商品</h4>
-                            <ul class="clearfix">
-                                @foreach($isOnceItems as $item)
-                                    <li>
-                                        <?php $strNum = 23; ?>
-                            			@include('main.shared.atcl')
-                                    </li>
-                                @endforeach
-                            </ul> 
-                        </div>
-                    @endif
-                
-
-                    @if(count($recommends) > 0)
-                        <div class="mt-5 floar">
-                            <h4>あなたにおすすめの商品</h4>
-                            
+					@foreach($recomArr as $key => $recoms)
+                        @if(count($recoms) > 0)
+                            <div class="mt-5 floar">
+                                <h4 class="text-small">{{ $key }}</h4>
                                 <ul class="clearfix">
-                                    @foreach($recommends as $item)
-                                        <li>
-                                        	<?php $strNum = 23; ?>
-                            				@include('main.shared.atcl')  
-                                        </li>         
-                                    @endforeach      
-                                </ul>   
-                        </div>
-                    @endif
+                                    @foreach($recoms as $item)
+                                        <li class="main-atcl">
+                                            <?php $strNum = Ctm::isAgent('sp') ? 16 : 23; ?>
+                                            @include('main.shared.atcl')
+                                        </li>
+                                    @endforeach
+                                </ul> 
+                            </div>
+                        @endif
+                    @endforeach   
 
             	</div><!-- single-recom -->
             <?php //================================================================= ?>
@@ -524,8 +509,7 @@ use App\TopSetting;
 
         </div><!-- head-frame -->
         
-        
-        
+
         <div class="recent-check mt-3 pt-1">
             @if(isset($cacheItems))
                 <div class="mt-4 floar">
@@ -533,8 +517,8 @@ use App\TopSetting;
                     <h4>最近チェックしたアイテム</h4>
                     <ul class="clearfix">
                         @foreach($cacheItems as $item)
-                            <li>
-                                <?php $strNum = 18; ?>
+                            <li class="main-atcl">
+                                <?php $strNum = Ctm::isAgent('sp') ? 12 : 18; ?>
                                 @include('main.shared.atcl')
                             </li>         
                         @endforeach      

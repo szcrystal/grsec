@@ -9,14 +9,15 @@ use App\DeliveryGroup;
 
 	{{-- @include('main.shared.carousel') --}}
 
-<div id="main" class="top">
+<div id="main" class="">
 
         <div class="panel panel-default">
 
             <div class="panel-body">
                 {{-- @include('main.shared.main') --}}
 
-				<div class="main-list clearfix">
+<div class="clearfix">
+
 @include('cart.guide')
 
 @if (count($errors) > 0)

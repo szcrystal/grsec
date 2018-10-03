@@ -26,6 +26,7 @@ use Ctm;
 use Mail;
 use Auth;
 use DB;
+use Delifee;
 
 class CartController extends Controller
 {
@@ -1294,7 +1295,7 @@ class CartController extends Controller
            	foreach($data['last_item_count'] as $key => $val) {   
             	$request->session()->put('item.data.'.$key.'.item_count', $val); //session入れ 
              
-             	//個数*値段の再計算
+             	//個数 * 値段の再計算（再計算を押さずに購入手続きした時）
               	$itemId = $data['last_item_id'][$key];
                 $isSale = $this->setting->get()->first()->is_sale;
                 $itemObj = $this->item->find($itemId);
@@ -1379,6 +1380,23 @@ class CartController extends Controller
     {        
         $itemData = array();
         $allPrice = 0;
+        $prefs = $this->prefecture->all();
+        
+        if($request->has('delifee_calc')/* && ! $request->input('pref_id')*/) {
+        	//return redirect('shop/cart')->withErrors(['pref_id'=>'選択して下さい'])->withInput();
+        	$rules = [
+                'pref_id' => [
+                    function($attribute, $value, $fail) use($request) {
+                        if(! $value) {
+                            return $fail('選択して下さい');
+                        }
+                    },
+                ],
+            ];
+        
+        	$this->validate($request, $rules);
+        }
+
         
 //        echo date('Y/m/d', '2018-04-01 12:57:30');
 //        exit;
@@ -1430,17 +1448,24 @@ class CartController extends Controller
 
         
         $submit = 0;
+        $deliFee = null;
+        $prefId = null;
+            
         //再計算の時
-        if($request->has('re_calc')) {
+        if($request->has('re_calc') || $request->has('delifee_calc') || $request->has('del_item_key')) {
             $data = $request->all();
             $submit = 1;
-//            print_r($secData);
-//            exit;
+            $prefId = $data['pref_id'];
+            //print_r($secData);
+            //exit;
         }
         
         //削除の時
         if($request->has('del_item_key')) {
-        	$data = $request->all();
+        	unset($data['last_item_count'][$data['del_item_key']]);
+            $data['last_item_count'] = array_values($data['last_item_count']);
+            
+            //sesionから消す
             $request->session()->forget('item.data.'.$data['del_item_key']);
             
             //Keyの連番を振り直してsessionに入れ直す session入れ
@@ -1448,7 +1473,7 @@ class CartController extends Controller
             $request->session()->put('item.data', $reData);
         }
         
-        //itemのsessionがある時　なければスルーして$itemDataを空で渡す ない時->カートが空の時だったか？？
+        //itemのsessionがある時　なければスルーして$itemDataを空で渡す sessionがない時->カートが空の時だったか
         if( $request->session()->has('item.data') ) {
             $itemSes = session('item.data');
 //            print_r($itemSes);
@@ -1491,6 +1516,27 @@ class CartController extends Controller
             /************
             $request->session()->put('all.all_price', $allPrice);
             *************/
+
+			// 送料計算 ===========================
+            if(isset($data['delifee_calc']) && $data['delifee_calc']) {
+
+//                print_r($itemData);
+//                exit;
+                
+                $df = new Delifee($itemData, $prefId);
+                
+                //配送先都道府県への配送が可能かどうかを確認 -------------------------
+                $errorArr = $df->checkIsDelivery();
+               
+                if(count($errorArr) > 0) { //配送不可ならリダイレクト
+                    return redirect('shop/cart')->withErrors($errorArr)->withInput();
+                }
+                
+                
+                $deliFee = $df->getDelifee();
+            }
+            
+            
             
             //合計金額を算出
 //            $priceArr = collect($itemData)->map(function($item) use($allPrice) {
@@ -1501,7 +1547,7 @@ class CartController extends Controller
         }
         
         
-        return view('cart.index', ['itemData'=>$itemData, 'allPrice'=>$allPrice, 'uri'=>session('org_url'), 'active'=>1 ]);
+        return view('cart.index', ['itemData'=>$itemData, 'allPrice'=>$allPrice, 'uri'=>session('org_url'), 'prefs'=>$prefs, 'prefId'=>$prefId, 'deliFee'=>$deliFee, 'active'=>1 ]);
         
         //$tax_per = $this->set->tax_per;
 //        print_r($itemSes);

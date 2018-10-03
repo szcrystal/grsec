@@ -210,6 +210,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         
         'Ctm' => App\Http\Controllers\CustomController::class,
+        'Delifee' => App\Http\Controllers\CalcDelifeeController::class,
 
     ],
 

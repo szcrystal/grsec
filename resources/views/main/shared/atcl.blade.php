@@ -49,15 +49,8 @@ use App\Icon;
     
     @if(isset($item->icon_id) && $item->icon_id != '')
         <div class="icons">
-            <?php $icons = explode(',', $item->icon_id); ?>
-            
-            @foreach($icons as $iconId)
-                <?php $iconObj = Icon::find($iconId); ?>
-                
-                <span class="{{ $iconObj->name }}">{{ $iconObj->title }}</span>
-
-            @endforeach
-            
+        	<?php $obj = $item; ?>
+            @include('main.shared.icon')
         </div>
     @endif
 
@@ -78,15 +71,16 @@ use App\Icon;
         @endif
         
         @if(isset($item->sale_price))
-            <span class="show-price">{{ number_format(Ctm::getPriceWithTax($item->sale_price)) }}</span>
+            <span class="show-price text-enji">{{ number_format(Ctm::getPriceWithTax($item->sale_price)) }}
         @else
             @if($isSale)
-                <span class="show-price">{{ number_format(Ctm::getSalePriceWithTax($item->price)) }}</span>
+                <span class="show-price text-enji">{{ number_format(Ctm::getSalePriceWithTax($item->price)) }}
             @else
-                <span class="show-price">{{ number_format(Ctm::getPriceWithTax($item->price)) }}</span>
+                <span class="show-price">{{ number_format(Ctm::getPriceWithTax($item->price)) }}
             @endif
         @endif
         <span class="show-yen">円(税込)</span>
+        </span>
     </div>
 
 

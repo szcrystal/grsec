@@ -101,14 +101,74 @@ class SingleController extends Controller
         $item->timestamps = false;
         $item->increment('view_count');
         
-        //同梱包可能商品レコメンド
+        //レコメンド ===========================
+        //同梱包可能商品レコメンド -> 同じ出荷元で同梱包可能なもの
         $isOnceItems = null;
         $getNum = Ctm::isAgent('sp') ? 3 : 3;
         
         if($item->is_once) {
-        	$isOnceItems = $this->item->whereNotIn('id', [$item->id])->where(['dg_id'=>$item->dg_id, 'is_once'=>1, 'is_once_recom'=>0, 'open_status'=>1, 'is_potset'=>0])->skip(2)->take($getNum)->get();
+        	$isOnceItems = $this->item->whereNotIn('id', [$item->id])->where(['consignor_id'=>$item->consignor_id, 'is_once'=>1, 'is_once_recom'=>0, 'open_status'=>1, 'is_potset'=>0])->skip(2)->take($getNum)->get();
             //->inRandomOrder()->take()->get() もあり クエリビルダに記載あり
         }
+        
+        // レコメンド：同カテゴリー
+        $recomCateItems = $this->item->whereNotIn('id', [$item->id])->where(['cate_id'=>$item->cate_id, 'open_status'=>1, 'is_potset'=>0])->inRandomOrder()->take($getNum)->get();
+        
+        // レコメンド：同カテゴリーのランキング
+        $recomCateRankItems = $this->item->whereNotIn('id', [$item->id])->where(['cate_id'=>$item->cate_id, 'open_status'=>1, 'is_potset'=>0])->orderBy('view_count', 'desc')->take($getNum)->get();
+        
+        
+        //Recommend レコメンド 先頭タグと同じものをレコメンド ==============
+        $recommends = null;
+        $getNum = Ctm::isAgent('sp') ? 3 : 3;
+        
+        if(isset($tagRels[1])) {
+        	$ar = [$tagRels[1]];
+            
+            if(isset($tagRels[2])) {
+            	$ar[] = $tagRels[2];
+            }
+            
+            if(isset($tagRels[3])) {
+            	$ar[] = $tagRels[3];
+            }
+            
+        	$idWithTag = $this->tagRel->whereIn('tag_id', $ar)->get()->map(function($obj){
+            	return $obj->item_id;
+            })->all(); 
+            
+//            $tempIds = $idWithTag;
+//            $tempIds[] = $item->id;
+            
+            $idWithCate = $this->item/*->whereNotIn('id', $tempIds)*/->where('subcate_id', $item->subcate_id)->get()->map(function($obj){
+            	return $obj->id;
+            })->all();
+            
+            $res = array_merge($idWithTag, $idWithCate);
+            $res = array_unique($res); //重複要素を削除
+            
+			//shuffle($res);
+            //$res = array_rand($res, 5);
+//            print_r($res);
+//            exit;
+            
+            $recommends = $this->item->whereNotIn('id', [$item->id])->whereIn('id', $res)->where($whereArr)->inRandomOrder()->take($getNum)->get();
+            //->inRandomOrder()->take()->get() もあり クエリビルダに記載あり
+        }
+        else {
+        	$recommends = $this->item->whereNotIn('id', [$item->id])->where(['subcate_id'=>$item->subcate_id, 'open_status'=>1, 'is_potset'=>0])->inRandomOrder()->take($getNum)->get();
+            //->inRandomOrder()->take()->get() もあり クエリビルダに記載あり
+        }
+        
+//        print_r($recommends);
+//        exit;
+
+		$recomArr = [
+        	'同梱包可能なおすすめ商品' => $isOnceItems,
+            'この商品を見た人におすすめの商品' => $recomCateItems,
+            'カテゴリーランキング' => $recomCateRankItems,
+            '合わせ買いにおすすめの商品' => $recommends,
+        ];
         
         
         //Cache 最近見た ===================
@@ -156,48 +216,13 @@ class SingleController extends Controller
         
 //        print_r(cache('cacheIds'));
 //        exit;
-
-		
-        //Recommend レコメンド 先頭タグと同じものをレコメンド ==============
-        $recommends = null;
-        $getNum = Ctm::isAgent('sp') ? 3 : 3;
-        
-        if(isset($tagRels[0])) {
-        	$idWithTag = $this->tagRel/*->whereNotIn('item_id', [$item->id])*/->where('tag_id', $tagRels[0])->get()->map(function($obj){
-            	return $obj->item_id;
-            })->all(); 
-            
-//            $tempIds = $idWithTag;
-//            $tempIds[] = $item->id;
-            
-            $idWithCate = $this->item/*->whereNotIn('id', $tempIds)*/->where('subcate_id', $item->subcate_id)->get()->map(function($obj){
-            	return $obj->id;
-            })->all();
-            
-            $res = array_merge($idWithTag, $idWithCate);
-            $res = array_unique($res); //重複要素を削除
-            
-			//shuffle($res);
-            //$res = array_rand($res, 5);
-//            print_r($res);
-//            exit;
-            
-            $recommends = $this->item->whereNotIn('id', [$item->id])->whereIn('id', $res)->where($whereArr)->inRandomOrder()->take($getNum)->get();
-            //->inRandomOrder()->take()->get() もあり クエリビルダに記載あり
-        }
-        else {
-        	$recommends = $this->item->whereNotIn('id', [$item->id])->where(['cate_id'=>$item->cate_id, 'open_status'=>1, 'is_potset'=>0])->inRandomOrder()->take($getNum)->get();
-            //->inRandomOrder()->take()->get() もあり クエリビルダに記載あり
-        }
-        
-//        print_r($recommends);
-//        exit;
 		
         $metaTitle = isset($item->meta_title) ? $item->meta_title : $item->title;
         $metaDesc = $item->meta_description;
         $metaKeyword = $item->meta_keyword;
         
-        return view('main.home.single', ['item'=>$item, 'potSets'=>$potSets, 'otherItem'=>$otherItem, 'cate'=>$cate, 'subCate'=>$subCate, 'tags'=>$tags, 'imgsPri'=>$imgsPri, 'imgsSec'=>$imgsSec, 'isFav'=>$isFav, 'isOnceItems'=>$isOnceItems, 'cacheItems'=>$cacheItems, 'recommends'=>$recommends, 'metaTitle'=>$metaTitle, 'metaDesc'=>$metaDesc, 'metaKeyword'=>$metaKeyword, 'type'=>'single']);
+        
+        return view('main.home.single', ['item'=>$item, 'potSets'=>$potSets, 'otherItem'=>$otherItem, 'cate'=>$cate, 'subCate'=>$subCate, 'tags'=>$tags, 'imgsPri'=>$imgsPri, 'imgsSec'=>$imgsSec, 'isFav'=>$isFav, 'recomArr'=>$recomArr, 'cacheItems'=>$cacheItems, 'recommends'=>$recommends, 'metaTitle'=>$metaTitle, 'metaDesc'=>$metaDesc, 'metaKeyword'=>$metaKeyword, 'type'=>'single']);
     }
     
     

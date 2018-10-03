@@ -76,7 +76,10 @@ use App\TopSetting;
             	{{ $items->links() }}
             </div>
             
-            <?php $itemArr = array_chunk($items->all(), 4); ?>
+            <?php 
+            	$n = Ctm::isAgent('sp') ? 3 : 4;
+                $itemArr = array_chunk($items->all(), $n); 
+            ?>
             
             @foreach($itemArr as $itemVal)
                 <div class="clearfix">
@@ -84,7 +87,7 @@ use App\TopSetting;
                 @foreach($itemVal as $item)
                     <article class="main-atcl">
                             
-                       	<?php $strNum = 25; ?>
+                       	<?php $strNum = Ctm::isAgent('sp') ? 16 : 25; ?>
                     	@include('main.shared.atcl')
                             
                     </article>
@@ -110,8 +113,3 @@ use App\TopSetting;
 @endsection
 
 
-{{--
-@section('rightbar')
-	@include('main.shared.rightbar')
-@endsection
---}}

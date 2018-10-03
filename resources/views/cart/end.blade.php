@@ -14,7 +14,7 @@
             </div>
 
 
-            <div class="col-md-12 panel-body">
+            <div class="panel-body">
 @include('cart.guide')
                 <div class="cont-wrap">
                 	
@@ -84,7 +84,7 @@
                         
                         
                         <div class="text-center mt-5 pb-3">
-                        	<a href="{{ url('/') }}">HOMEへ</a>   
+                        	<a href="{{ url('/') }}">HOMEへ <i class="fas fa-angle-double-right"></i></a>   
                         </div>    
                         
                         {{--

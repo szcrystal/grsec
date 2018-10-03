@@ -19,6 +19,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 use Auth;
+use Ctm;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class HomeController extends Controller
@@ -98,7 +99,7 @@ class HomeController extends Controller
         $caros = $this->itemImg->where(['item_id'=>9999, 'type'=>6])->get();
 
 		//FirstItem =======================
-        $getNum = 4;
+        $getNum = Ctm::isAgent('sp') ? 3 : 4;
 		
         //New
         $newItems = null;

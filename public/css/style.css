@@ -217,6 +217,12 @@ body {
 .bg-gray {
 	background: #8f8f8f;
 }
+.bg-enji {
+	background: #C15360;
+}
+.text-enji {
+	color: #C15360;
+}
 .text-brown {
 	color: sienna;
 }
@@ -249,6 +255,15 @@ body {
 
 .table-custom .table tbody th {
 	width: 27%;
+}
+
+.confirm .confirm-left {
+	float: left;
+	width: 63%;
+}
+.confirm .confirm-right {
+	float: right;
+	width: 35%;
 }
 .confirm .table-custom .table tbody th {
 	width: 30%;
@@ -802,7 +817,9 @@ body {
 }
 
 
-
+.tr-danger-border {
+    background: #FCE9E8;
+}
 
 
 
@@ -825,7 +842,6 @@ body {
 }
 
 
-
 .head-atcl h2 {
 	//font-weight: bold;
 	font-size: 1.5em;
@@ -841,6 +857,7 @@ body {
     line-height: 1.4em;
 	margin: 0.2em 0 0.2em;
 	padding: 0;
+    //height: 3em;
     //border: 1px solid red;
 }
 
@@ -876,26 +893,25 @@ body {
 /*.main-atcl {*/
 /*	overflow: hidden;*/
 /*}*/
-.main-atcl > span.sale-belt,
-.top .main-atcl > span.sale-belt {
+.main-atcl span.sale-belt,
+.top .main-atcl span.sale-belt {
 	position: absolute;
     font-size: 0.9em;
-    
-    //display: inline;
-    //width: 100%;
+    display: inline-block;
     //padding: 1.9em 2.5em 0.2em 2.8em;
     padding: 0 0.7em;
-    top: 0.2em;
+    top: 0;
     right: 0;
     //font-weight: bold;
     color: #fff;
     background: orange;
-    -webkit-transform: rotate(15deg);
-    transform: rotate(15deg);
+    z-index: 99;
+/*    -webkit-transform: rotate(15deg);*/
+/*    transform: rotate(15deg);*/
 }
 .main-atcl:hover > span {
 	opacity: 1;
-} 
+}
 
 
 .main-atcl .meta,
@@ -911,13 +927,19 @@ body {
     //border: 1px solid red;
 }
 /* icons ***** */
-.main-atcl .meta .icons {
+.icons {
+	margin-bottom: 0.7em;
+}
+.main-atcl .icons {
 	margin-bottom: 0.5em;
+}
+.single .recent-check .icons {
+	display: none;
 }
 .icons span {
 	display: inline-block;
-	font-size: 0.7em;
-    padding: 0.1em 0.4em;
+	font-size: 0.65em;
+    padding: 0.1em 0.7em;
     border-radius: 0.3em;
     color: #fff;
 }
@@ -943,20 +965,20 @@ body {
     //border: 1px solid red;
 }
 .main-atcl .meta .price {
-	//font-size: 1.0em;
+	font-size: 0.9em;
     text-align: left;
 	margin: 0;
     padding: 0;
-    font-size: 0.9em;
     font-weight: bold;
     //border: 1px solid red;
 }
 
-.main-atcl .meta .price span.show-price {
+.meta .price span.show-price {
 	font-size: 1.15em;
 }
-.main-atcl .meta .price span.show-yen {
-	font-size: 0.85em;
+.meta .price span.show-yen {
+	font-size: 0.7em;
+    //color: #000;
 }
 /*.main-atcl img {*/
 /*	width: 100%;*/
@@ -1412,19 +1434,24 @@ ul.side-rank {
     padding: 0;
     margin: 0;
 }
-.potset > div:first-of-type { /* img-box */
+.potset div.img-box { /* img-box */
 	width: 18%;
     margin-right: 1.5%;
 }
-.potset > div:nth-of-type(2) {
-	width: 78%;
+.potset div.potset-text {
+	width: 97.5%;
     margin-right: 0;
     //border: 1px solid orange;
 }
+.potset div.img-box + div.potset-text {
+	width: 78%;
+}
+
 
 .potset .price-meta {
 	font-size: 1.2em;
-    margin-bottom: 0.1em;
+    margin-bottom: 0.3em;
+    //border: 1px solid red;
 }
 .potSetSelect-wrap {
 	width: 65%;
@@ -1444,6 +1471,7 @@ select.potSetSelect {
     float: left;
     margin-right: 0.55%;
     width: 12%;
+    position: relative;
 }
 .single-recom .floar ul li {
 	width: 32.5%;
@@ -1469,7 +1497,7 @@ select.potSetSelect {
     margin: 0.1em 0 0;
 }
 .floar .meta .price {
-	text-align: right;
+	text-align: left;
     font-weight: bold;
     //color: #3a3b3b;
 }
@@ -1479,6 +1507,9 @@ select.potSetSelect {
 .recent-check .floar .meta p,
 .recent-check .floar .meta .price {
 	display: none;
+}
+.recent-check span.sale-belt {
+	font-size: 0.8em;
 }
 
 /* img-boxは上段へ(Line:740 辺) */

@@ -41,56 +41,50 @@ use App\TopSetting;
             $lineType = 3;
     ?>
 
-@if(isset($firstItem) && count($firstItem) > 0)
+    @if(isset($firstItem) && count($firstItem) > 0)
 
-	<div class="wrap-atcl top-first">
-    	<div class="head-atcl">
-    		<h2>{{ $key }}</h2>
-        </div>
-    
-    	<div class="clearfix">
-        	<?php $items = array_chunk($firstItem, 4); ?>
-	
-            @foreach($items as $itemVal)
+        <div class="wrap-atcl top-first">
+            <div class="head-atcl">
+                <h2>{{ $key }}</h2>
+            </div>
+        
+            <div class="clearfix">
+                @foreach($firstItem as $item)
 
-                <div class="clearfix">
-                    @foreach($itemVal as $item)
-                    
-                        <article class="main-atcl">
-                            @if($lineType == 1)
-                                <span class="top-new">NEW！</span>
-                            @elseif($lineType == 2)
-                                <span class="top-rank"><i class="fas fa-crown"></i><em>{{ $rankNum }}</em></span>
-                            @endif
-                                                            
-                            <?php $strNum = Ctm::isAgent('sp') ? 17 : 25; ?>
-                            @include('main.shared.atcl')
-     
-                        </article>
-                        
-                        @if($lineType == 2)
-                            <?php $rankNum++; ?>
+                   <article class="main-atcl">
+                        @if($lineType == 1)
+                            <span class="top-new">NEW！</span>
+                        @elseif($lineType == 2)
+                            <span class="top-rank"><i class="fas fa-crown"></i><em>{{ $rankNum }}</em></span>
                         @endif
-                    @endforeach
-                </div>
-          
-                <?php 
-                	if($lineType == 1)
-                	    $slug = 'new-items';
-                    elseif($lineType == 2)
-                	    $slug = 'ranking';
-                    elseif($lineType == 3)
-                	    $slug = 'recent-items';
-                ?>
-                
-                <a href="{{ url($slug) }}" class="btn btn-block mx-auto btn-custom bg-white border-secondary text-dark rounded-0">もっと見る</a>
+                                                        
+                        <?php $strNum = Ctm::isAgent('sp') ? 16 : 25; ?>
+                        @include('main.shared.atcl')
+ 
+                    </article>
+                    
+                    @if($lineType == 2)
+                        <?php $rankNum++; ?>
+                    @endif
+                        
+              
+                    <?php 
+                        if($lineType == 1)
+                            $slug = 'new-items';
+                        elseif($lineType == 2)
+                            $slug = 'ranking';
+                        elseif($lineType == 3)
+                            $slug = 'recent-items';
+                    ?>    
 
-            @endforeach
-
+                @endforeach
+            </div>
+            
+            <a href="{{ url($slug) }}" class="btn btn-block mx-auto btn-custom bg-white border-secondary text-dark rounded-0">もっと見る</a>
+            
         </div>
-    </div>
-    
-@endif
+        
+    @endif
 @endforeach
 
 @if(isset($allRecoms) && count($allRecoms) > 0)
