@@ -1455,7 +1455,7 @@ class CartController extends Controller
         if($request->has('re_calc') || $request->has('delifee_calc') || $request->has('del_item_key')) {
             $data = $request->all();
             $submit = 1;
-            $prefId = $data['pref_id'];
+            $prefId = isset($data['pref_id']) ? $data['pref_id'] : 0;
             //print_r($secData);
             //exit;
         }
