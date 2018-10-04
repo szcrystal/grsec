@@ -276,7 +276,7 @@ class SingleController extends Controller
                     $favModel ->delete();
                 }
                 
-                $str = "削除されました";
+                $str = "お気に入りから削除されました";
             }
             else {
                     
@@ -290,7 +290,7 @@ class SingleController extends Controller
                     ]
                 );
 				
-    			$str = "登録されました";       
+    			$str = "お気に入りに登録されました";       
             }
             
         //} //foreach

@@ -468,7 +468,7 @@ var exe = (function() {
                 var _tokenVal = $('input[name=_token]').val();
                 var _isOn = 0;
                 
-                $th.removeClass('d-inline').fadeOut(180, function(){
+                $th.removeClass('d-inline').fadeOut(160, function(){
                     //loader表示
 //                	$loader.fadeIn(30);
                     //$(this).queue([]).stop();
@@ -504,7 +504,7 @@ var exe = (function() {
                                 //$th -> hasClass:.favOn
                                 //$th.removeClass('d-inline').fadeOut(100, function(){
                                     //$loader.fadeOut(30, function(){
-                                        $sibFav.removeClass('d-none').fadeIn(80);
+                                        $sibFav.removeClass('d-none').fadeIn(20);
                                     //});
                                      
                                     //$favOff.removeClass('d-none').fadeIn(50); 
@@ -514,7 +514,7 @@ var exe = (function() {
                                 //$th -> hasClass:.favOff
                                 //$th.removeClass('d-inline').fadeOut(100, function(){
                                     //$loader.fadeOut(30, function(){
-                                        $sibFav.removeClass('d-none').fadeIn(80);
+                                        $sibFav.removeClass('d-none').fadeIn(20);
                                     //});
                                     //$favOn.removeClass('d-none').fadeIn(50);
                                 //});
