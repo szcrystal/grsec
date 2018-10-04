@@ -645,7 +645,7 @@
                 @endif
             </fieldset>
             
-            <fieldset class="form-group mb-2">
+            <fieldset class="form-group mb-4">
                     <div class="checkbox">
                         <label>
                             <?php

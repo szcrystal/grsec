@@ -112,7 +112,7 @@ class CalcDelifeeController extends Controller
         return $deliveryFee;
     }
     
-    /* 下草・シモツケ・高木コニファー　特別計算の関数 ************************************************** */ 
+    /* 下草・シモツケ・高木コニファー　小の容量を超えれば大の送料になる特別計算の関数 ************************************************** */ 
     public function specialCalc($smId, $bgId, $factor)
     {
         $deliveryFee = 0;

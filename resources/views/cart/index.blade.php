@@ -151,59 +151,57 @@
                 </tr>
             @endif
            
-           @if(Ctm::isLocal())
-               <tr>
-                    <td colspan="3" class="clearfix">
-                                        
-                        <div class="float-right col-md-2 p-0 m-0">
-                            {{-- <label class="control-label mb-0 text-small d-inline col-md-6"><b>配送先都道府県</b></label> --}}
-                        
-                            <select id="pref" class="form-control rounded-0 d-inline{{ $errors->has('pref_id') ? ' is-invalid' : '' }}" name="pref_id">
-                                <option selected value="0">配送先都道府県</option>
+           
+            <tr>
+                <td colspan="3" class="clearfix">
+                                    
+                    <div class="float-right col-md-2 p-0 m-0">
+                        {{-- <label class="control-label mb-0 text-small d-inline col-md-6"><b>配送先都道府県</b></label> --}}
+                    
+                        <select id="pref" class="form-control rounded-0 d-inline{{ $errors->has('pref_id') ? ' is-invalid' : '' }}" name="pref_id">
+                            <option selected value="0">配送先都道府県</option>
+                            <?php
+    //                            use App\Prefecture;
+    //                            $prefs = Prefecture::all();  
+                            ?>
+                            @foreach($prefs as $pref)
                                 <?php
-        //                            use App\Prefecture;
-        //                            $prefs = Prefecture::all();  
+                                    $selected = '';
+                                    if(Ctm::isOld()) {
+                                        if(old('pref_id') == $pref->id)
+                                            $selected = ' selected';
+                                    }
+                                    else {
+                                        if(isset($prefId) && $prefId == $pref->id) {
+                                        //if(Session::has('all.data.user')  && session('all.data.user.prefecture') == $pref->name) {
+                                            $selected = ' selected';
+                                        }
+                                    }
                                 ?>
-                                @foreach($prefs as $pref)
-                                    <?php
-                                        $selected = '';
-                                        if(Ctm::isOld()) {
-                                            if(old('pref_id') == $pref->id)
-                                                $selected = ' selected';
-                                        }
-                                        else {
-                                            if(isset($prefId) && $prefId == $pref->id) {
-                                            //if(Session::has('all.data.user')  && session('all.data.user.prefecture') == $pref->name) {
-                                                $selected = ' selected';
-                                            }
-                                        }
-                                    ?>
-                                    <option value="{{ $pref->id }}"{{ $selected }}>{{ $pref->name }}</option>
-                                @endforeach
-                            </select>
-                        
-                            @if ($errors->has('pref_id'))
-                                <div class="help-block text-danger">
-                                    <span class="fa fa-exclamation form-control-feedback"></span>
-                                    <span>{{ $errors->first('pref_id') }}</span>
-                                </div>
-                            @endif
-                        </div>
-                    </td>
-                    <td>
-                        
-                        <button class="btn border border-secondary bg-white px-2" type="submit" name="delifee_calc" value="1"><i class="fas fa-redo"></i> 送料計算</button>
-                    </td>
-                </tr>
-            @endif
+                                <option value="{{ $pref->id }}"{{ $selected }}>{{ $pref->name }}</option>
+                            @endforeach
+                        </select>
+                    
+                        @if ($errors->has('pref_id'))
+                            <div class="help-block text-danger">
+                                <span class="fa fa-exclamation form-control-feedback"></span>
+                                <span>{{ $errors->first('pref_id') }}</span>
+                            </div>
+                        @endif
+                    </div>
+                </td>
+                <td>
+                    @if(! Ctm::isLocal())
+                    <button class="btn border border-secondary bg-white px-2" type="submit" name="delifee_calc" value="1" disabled><i class="fas fa-redo"></i> 送料計算</button>
+                    @else
+                    <button class="btn border border-secondary bg-white px-2" type="submit" name="delifee_calc" value="1"><i class="fas fa-redo"></i> 送料計算</button>
+                    @endif
+                </td>
+            </tr>
             
             <tr>
            		<td colspan="5" class="text-right">
-                	@if(Ctm::isLocal())
            			<small>数量変更後の小計を確認する場合は「再計算」を、事前に送料を確認する場合は「配送先都道府県」を選択して「送料計算」を押して下さい</small>
-                    @else
-                    <small>数量変更後の小計を確認する場合は「再計算」を押して下さい。</small>
-                    @endif
                 </td>
            </tr>
            

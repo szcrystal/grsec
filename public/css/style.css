@@ -818,7 +818,7 @@ body {
 
 
 .tr-danger-border {
-    background: #FCE9E8;
+    background: #fcf2f2;
 }
 
 
@@ -929,6 +929,7 @@ body {
 /* icons ***** */
 .icons {
 	margin-bottom: 0.7em;
+    line-height: 1.4em;
 }
 .main-atcl .icons {
 	margin-bottom: 0.5em;
@@ -938,6 +939,7 @@ body {
 }
 .icons span {
 	display: inline-block;
+    line-height: 1.7em;
 	font-size: 0.65em;
     padding: 0.1em 0.7em;
     border-radius: 0.3em;

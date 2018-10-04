@@ -112,7 +112,7 @@
               <tbody>
               @foreach($itemObjs as $item)
                 <tr>
-                  <td>{{ $item->id }}</td>
+                  <td>ID{{ $item->id }}</td>
                   <td class="text-small">{{ $item->number }}</td>
                   <td>
                   @if($item->main_img != '')
