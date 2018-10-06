@@ -664,11 +664,20 @@ class CartController extends Controller
         
         
         //配送先都道府県への配送が可能かどうかを確認 -------------------------
+        $df = new Delifee($itemData, $prefId);
+                
+        $errorArr = $df->checkIsDelivery();
+               
+//                if(count($errorArr) > 0) { //配送不可ならリダイレクト リダイレクトを別クラスに入れるとおかしくなるのでここに
+//                    return redirect('shop/cart')->withErrors($errorArr)->withInput();
+//                }
+        
+        /*
         $errorArr = array();
         
-        foreach($prefDeli as $prefKey => $item_ids) {
+        foreach($prefDeli as $dgKey => $item_ids) {
             
-            $prefFee = $this->dgRel->where(['dg_id'=>$prefKey, 'pref_id'=>$prefId])->first()->fee;
+            $prefFee = $this->dgRel->where(['dg_id'=>$dgKey, 'pref_id'=>$prefId])->first()->fee;
 	
             if($prefFee == '99999' || $prefFee === null) {            	
                 foreach($item_ids as $item_id) {
@@ -679,8 +688,9 @@ class CartController extends Controller
                 //$noDeliPref = 0;
             }
         }
+        */
         
-        if(count($errorArr) > 0) { //配送不可ならリダイレクト
+        if(count($errorArr) > 0) { //配送不可ならリダイレクト リダイレクトを別クラスに入れるとおかしくなるのでここに
         	return redirect('shop/form')->withErrors($errorArr)->withInput();
         }
         
@@ -1528,10 +1538,9 @@ class CartController extends Controller
                 //配送先都道府県への配送が可能かどうかを確認 -------------------------
                 $errorArr = $df->checkIsDelivery();
                
-                if(count($errorArr) > 0) { //配送不可ならリダイレクト
+                if(count($errorArr) > 0) { //配送不可ならリダイレクト リダイレクトを別クラスに入れるとおかしくなるのでここに
                     return redirect('shop/cart')->withErrors($errorArr)->withInput();
                 }
-                
                 
                 $deliFee = $df->getDelifee();
             }

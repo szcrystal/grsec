@@ -191,7 +191,22 @@ class CalcDelifeeController extends Controller
     /* 下草　特別計算の関数 END ************************************************** */
     
     
+    /* 特殊計算：無料分の余った容量を埋める関数 ************************************* */
+    public function freeFillCalc()
+    {
+    	
+        
+        
+        
+        
+        
+        
+    }
+    /* 特殊計算：無料分の余った容量を埋める関数 END ************************************* */
     
+    
+    
+    /* Main *************************************************** */
     public function getDelifee()
     {
     	//送料 ---------------------------------
@@ -211,9 +226,9 @@ class CalcDelifeeController extends Controller
         $koubokuSmId = 3;
         //配送区分：高木コニファー大のid
         $koubokuBgId = 4;
-        
         //下草コニファー(千代田プランツ)： ->高木が含まれていれば高木として計算（下草と同じ計算方法　商品個数x係数の合計に応じて容量と送料区分が決まる）
         $sitakoniId = 5;
+        
         
         //シモツケ(千代田プランツ)
         //配送区分：シモツケ小のid -> 下草と同じ計算方法
@@ -222,7 +237,7 @@ class CalcDelifeeController extends Controller
         $simotukeBgId = 7;
         
 
-        //モリヤコニファー：大の商品が含まれていれば強制的に大となり、なければ小になる
+        //モリヤコニファー：大の商品が含まれていれば強制的に大となり、なければ小になる （下草は関係しない？？->現在、別途の計算としている）
         //配送区分：モリヤコニファー下草のid
         $coniferKsId = 8;
         //配送区分：モリヤコニファー小のid
@@ -242,22 +257,29 @@ class CalcDelifeeController extends Controller
         //同梱包可能で、配送区分も同じ場合を区別する必要がある
         //同梱包可能なもので配送区分の同じものと異なるものを分けて送料を出す
         foreach($this->itemData as $item) {
-        	if(! $item->is_delifee) { //送料が無料でないもの
-                if(! $item->is_once) { //同梱包不可のものはそれぞれ単独で
-                    //ORG ---
-                    //$fee = $this->dgRel->where(['dg_id'=>$item->dg_id, 'pref_id'=>$this->prefId])->first()->fee;
-                    
+        	
+            if($item->dg_id == $sitakusaSmId || $item->dg_id == $sitakusaBgId) { //下草 府中ガーデンの時
+            	if(! $item->is_once) { //下草府中ガーデンで同梱包不可のものはそれぞれ単独で -> ほとんどなさそうだが
                     $factor = $item->factor * $item->count;
-                    $fee = $this->normalCalc($item->dg_id, $factor);
+                    $deliFee += $this->specialCalc($sitakusaSmId, $sitakusaBgId, $factor);                    
+                }
+                else {
+            		$sitakusaItem[] = $item;
+                }
+        	}
+            elseif(! $item->is_delifee) { //送料が無料でないもの
+                if(! $item->is_once) { //同梱包不可のものはそれぞれ単独で
+                    $factor = $item->factor * $item->count;
+                    $deliFee += $this->normalCalc($item->dg_id, $factor);
                     
-                    $deliFee += $fee;
-                    //$takeChargeFee += $this->dg->find($item->dg_id)->take_charge; //送料負担分を加算
+                    //ORG ---
+                    //$deliFee += $this->dgRel->where(['dg_id'=>$item->dg_id, 'pref_id'=>$this->prefId])->first()->fee;
                 } 
                 else { //同梱包可能なものは別配列へ入れて下記へ
-                    if($item->dg_id == $sitakusaSmId || $item->dg_id == $sitakusaBgId) { //下草 and 高木コニファーの時 下草・高木用の配列に入れる　下草・高木は特別なので別計算で
-                        $sitakusaItem[] = $item;
-                    }
-                    elseif($item->dg_id == $koubokuSmId || $item->dg_id == $koubokuBgId || $item->dg_id == $sitakoniId) {
+//                    if($item->dg_id == $sitakusaSmId || $item->dg_id == $sitakusaBgId) { //下草の時 下草用の配列に入れる　下草特別なので別計算で
+//                        $sitakusaItem[] = $item;
+//                    }
+                    if($item->dg_id == $koubokuSmId || $item->dg_id == $koubokuBgId || $item->dg_id == $sitakoniId) { //高木コニファーの時 高木用の配列に入れる　高木は特別なので別計算で
                     	$tiyodaItem[] = $item;
                     }
                     elseif($item->dg_id == $simotukeSmId || $item->dg_id == $simotukeBgId) { //シモツケの時 シモツケ用の配列に入れる　シモツケは特別なので別計算で
@@ -271,7 +293,9 @@ class CalcDelifeeController extends Controller
                         //$keyIsDgId[] = $item->id; //itemIdをkeyとしてdeliveryGroupIdを別配列へ
                     }
                 }
-            }      
+            }
+            
+            
         }
   		
         
@@ -299,12 +323,17 @@ class CalcDelifeeController extends Controller
         
 
         
-        
-        
         //下草(府中ガーデン)の時 特別なので別計算で ================
         if(count($sitakusaItem) > 0) {
-        	//$count = 0;
+        	$countSm = 0;
+            $countBg = 0;
+            
             $factor = 0;
+            $factorFreeSm = 0;
+            $factorFreeBg = 0;
+            
+            $freeCapaSm = 0;
+            $freeCapaBg = 0;
  
 /*
             //下草小の容量: 20
@@ -316,18 +345,46 @@ class CalcDelifeeController extends Controller
 			$smFee = $this->dgRel->where(['dg_id'=>$sitakusaSmId, 'pref_id'=>$prefId])->first()->fee;
             $bgFee = $this->dgRel->where(['dg_id'=>$sitakusaBgId, 'pref_id'=>$prefId])->first()->fee;
 */            
+
             //下草商品の係数の合計を算出
         	foreach($sitakusaItem as $ioi) { 
-                //$count += $ioi->count;
-                $factor += $ioi->factor * $ioi->count;   
+                if($ioi->is_delifee) { //送料無料のもの この場合、余る容量を計算するための準備をここでする
+                	if($ioi->dg_id == $sitakusaSmId) {
+                    	$factorFreeSm += $ioi->factor * $ioi->count;
+                        $countSm++;
+                    }
+                    else {
+                		$factorFreeBg += $ioi->factor * $ioi->count;
+                        $countBg++;
+                    }
+                }
+                else { //送料有料のもの
+                	$factor += $ioi->factor * $ioi->count;
+                } 
         	}
             
-//            echo $factor . '/'. $switch . '/' . $prefId;
+            if($countSm > 0) {
+            	$sitakusaSmCapa = $this->dg->find($sitakusaSmId)->capacity;
+                $sitakusaSmCapa = $sitakusaSmCapa * $countSm;
+                $freeCapaSm = $sitakusaSmCapa - $factorFreeSm;
+            }
+            
+            if($countBg > 0) {
+            	$sitakusaBgCapa = $this->dg->find($sitakusaBgId)->capacity;
+                $sitakusaBgCapa = $sitakusaBgCapa * $countBg;
+                $freeCapaBg = $sitakusaBgCapa - $factorFreeBg;
+            }
+            
+			//最終のFactorを算出 最終Factorが0以上ならその分が送料となるので最終計算をさせる。0以下なら全て無料容量に収まっていることになるので計算不要（送料0）となる。
+			$factor = $factor - ($freeCapaSm + $freeCapaBg);
+            
+//            echo $factorFreeSm . '/' . $countSm. '/' . $factorFreeBg . '/' . $countBg . '/' . $factor . '/' . $freeCapaSm . '/' . $freeCapaBg;
 //            exit;
             
-            
-            $deliFee += $this->specialCalc($sitakusaSmId, $sitakusaBgId, $factor); //下記の特別関数で計算
-            
+            if($factor > 0) {
+                $deliFee += $this->specialCalc($sitakusaSmId, $sitakusaBgId, $factor); //特別関数で計算
+            }
+
         }
         
         //高木コニファー・下草コニファー（千代田プランツ）の時  特別なので別計算で ================
@@ -355,7 +412,7 @@ class CalcDelifeeController extends Controller
             if($switch) {
             	$deliFee += $this->specialCalc($koubokuSmId, $koubokuBgId, $factor); //下記の特別関数で計算
             }
-            else { //下草コニファーは大小の区別がないので通常計算で可能
+            else { //下草コニファー（千代田プランツ）は大小の区別がないので通常計算で可能
             	$deliFee += $this->normalCalc($sitakoniId, $factor);
             	
 			}
@@ -363,7 +420,7 @@ class CalcDelifeeController extends Controller
         }
         
         
-        //シモツケの時 係数x個数の合計に対して容量を決める特別計算 下草（府中ガーデン）================
+        //シモツケの時 係数x個数の合計に対して容量を決める特別計算 下草（府中ガーデン）と同じ================
         if(count($simotukeItem) > 0) {
         	//$count = 0;
             $factor = 0;

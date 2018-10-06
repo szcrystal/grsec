@@ -22,7 +22,13 @@ use App\DeliveryGroup;
 
 @if (count($errors) > 0)
     <div class="alert alert-danger">
-        <strong><i class="fas fa-exclamation-triangle"></i> Error!!</strong> 確認して下さい。<br><br>
+        <strong><i class="fas fa-exclamation-triangle"></i>
+        @if ($errors->has('no_delivery.*'))
+        	</strong> 配送不可の商品があります
+        @else
+        	Error!!</strong> 確認して下さい
+        @endif
+        <br>
         <ul>
             @foreach ($errors->all() as $error)
                 <li>{{ $error }}</li>
@@ -30,6 +36,7 @@ use App\DeliveryGroup;
         </ul>
     </div>
 @endif
+
 
 <div class="">
 <form id="with1" class="form-horizontal" role="form" method="POST" action="{{ url('shop/confirm') }}">
