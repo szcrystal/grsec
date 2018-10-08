@@ -1,5 +1,10 @@
 <!-- Navigation-->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
+	
+    @if(env('APP_ENV') == 'alpha')
+		<div style="background:red; color:#fff;" class="px-3">This Is Alpha !</div>
+    @endif
+    
     <a class="navbar-brand" href="{{ url('dashboard') }}">グリーンロケット</a>
     
     <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
