@@ -421,4 +421,9 @@ class CustomController extends Controller
     	return env('APP_ENV') == 'local';
     }
     
+    static function isEnv($envName)
+    {
+    	return env('APP_ENV') == $envName;
+    }
+    
 }

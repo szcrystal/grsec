@@ -70,13 +70,13 @@ class CreateItemsTable extends Migration
             
             $table->float('point_back')->nullable()->default(NULL);
             
+            $table->string('icon_id')->nullable()->default(NULL);
+            
             $table->text('exp_first')->nullable()->default(NULL);
             $table->longText('explain')->nullable()->default(NULL);
             
             $table->longText('about_ship')->nullable()->default(NULL);
             $table->boolean('is_delifee_table')->nullable()->default(NULL);
-            
-            $table->string('icon_id')->nullable()->default(NULL);
             
             $table->longText('contents')->nullable()->default(NULL);
             

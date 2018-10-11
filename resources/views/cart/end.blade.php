@@ -84,7 +84,7 @@
                         
                         
                         <div class="text-center mt-5 pb-3">
-                        	<a href="{{ url('/') }}">HOMEへ <i class="fas fa-angle-double-right"></i></a>   
+                        	<a href="{{ url('/') }}">HOMEへ <i class="fal fa-angle-double-right"></i></a>   
                         </div>    
                         
                         {{--

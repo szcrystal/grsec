@@ -337,7 +337,8 @@ body {
 }
 
 .head-first {
-	padding: 0.2em 1.2em 0.2em 1em;
+	padding: 0.2em 1.2em 0.2em 0.9em;
+    //border: 1px solid red;
 }
 .site-header {
 	//background: #fefffe;
@@ -388,7 +389,7 @@ body {
 .head-navi li {
 	list-style: none;
 	float: left;
-	margin-right: 1.7em;
+	margin-right: 1.2em;
 	font-size: 1.0em;
 }
 .head-navi li:first-of-type a {
@@ -401,20 +402,27 @@ body {
     font-weight: bold;
 }
 .head-navi li:first-of-type a:hover {
-	color: #999;
-    border-color: #aaa;
+/*	color: #6a6a6a;*/
+    border-color: #636363;
+    opacity: 0.7;
+    font-weight: normal;
 	text-decoration: none;   
 }
-.head-navi li .fas {
+.head-navi li .fal {
 	font-size: 1.5em;
+    margin-right: 0.2em;
+    //color: red;
 }
 .head-navi li:last-of-type {
-	margin-top: 1px;
+	margin-top: 0;
     margin-right: 0;
+    font-size: 1.05em;
 }
 .head-navi li a,
 .head-navi li span {
 	color: #333;
+    padding-left: 0.1em;
+    
 }
 .head-navi li span:hover {
 	opacity: 0.7;
@@ -453,15 +461,16 @@ body {
     font-size: 1em;
 }
 .head-second address ul li:first-of-type {
-	margin-right: 1.1em;
+	margin-right: 0.9em;
 	font-weight: bold;
 }
-.head-second address .fas {
-	font-weight: normal;
+.head-second address ul li:first-of-type .fal {
+	font-size: 1.1em;
+    vertical-align: 0;
 }
-.head-second address .far {
+.head-second address .fal {
 	font-size: 1.2em;
-    vertical-align: -2px;
+    vertical-align: -1px;
 }
 .s-form {
 	margin-top: 0.4em;
@@ -748,7 +757,7 @@ body {
     font-size: 1.6em;
     background: none;
     border-bottom: 1px solid #222;
-    padding-left: 0.3em;
+    padding-left: 0.1em;
     padding-bottom: 0.2em;
 }
 .wrap-atcl {
@@ -855,7 +864,7 @@ body {
 	font-size: 1.05em;
 	font-weight: normal;
     line-height: 1.4em;
-	margin: 0.2em 0 0.2em;
+	margin: 0.1em 0 0.2em;
 	padding: 0;
     //height: 3em;
     //border: 1px solid red;
@@ -1695,9 +1704,9 @@ select.potSetSelect {
 
 /* Fix */
 .fix-page h3 {
-	font-size: 1.6em;
-	padding: 0 0 0.2em;
-    margin-bottom: 0.4em;
+	font-size: 1.5em;
+	padding: 0 0 0.1em;
+    margin-bottom: 0.3em;
     //padding-left: 0.3em;
 	//border-left: 1.2em solid #aaa;
     border-bottom: 1px solid #aaa;
@@ -1705,7 +1714,7 @@ select.potSetSelect {
 }
 .fix-page h3:before {
 	content: "■";
-    color: #555;
+    color: #5a5a5a;
     margin-right: 0.2em;
 }
 .fix-page h3.no-left {
@@ -1739,13 +1748,12 @@ select.potSetSelect {
 	color: #FD9940;
 }
 .fix-page h4 {
+	font-size: 1.3em;
 	border: 1px solid #bfbfbf/*#FD9940*/;
     border-width: 0 0 0 10px;
     background: #efefef;
     padding: 0.1em 0 0.1em 0.3em;
-    //background: #FFF5EC;
     margin-bottom: 0.6em;
-    //margin-left: 0.2em;
 }
 .fix-page ul.triangle,
 .fix-page ol.triangle {
@@ -1757,13 +1765,14 @@ select.potSetSelect {
 }
 .fix-page h5 {
 	font-weight: bold;
-    font-size: 1.4em;
+    font-size: 1.2em;
     margin-top: 1.2em;
 }
 
 /* FAQ */
 div[id*="accordion-"] {
 	margin-top: 1.5em !important;
+    //border: 1px solid red;
 }
 
 /* アンカーリンクのfix分のずれを直す jsに入れたので不要 */
@@ -1793,7 +1802,7 @@ div[id*="accordion-"] h5 {
 div[id*="accordion-"] h5:before {
 	content: "\f059"; /* ?マーク fontawsome*/
     font-weight: 900; /*白抜きの時にこの指定が必要 */
-    font-family: "Font Awesome 5 Free";
+    font-family: "Font Awesome 5 Pro";
     font-size: 1.1em;
     margin-right: 0.2em;
     color: darkseagreen;
@@ -1816,7 +1825,8 @@ div[id*="accordion-"] .card-header:hover {
 }
 .faq-cate li:before {
     content: "\f101"; /* >> */
-    font-family: "Font Awesome 5 Free";
+    font-family: "Font Awesome 5 Pro";
+    font-weight: 200;
     margin-right: 0.2em;
 }
 .faq-cate li:hover {
@@ -1824,10 +1834,21 @@ div[id*="accordion-"] .card-header:hover {
     text-decoration: underline;
 }
 
-
-
 .transactions-law h3 {
 	margin-top: 2em;
+}
+
+
+/* MyPage */
+.mypage .fal {
+	font-weight: 400;
+    font-size: 1.1em;
+    margin-right: 0.2em;
+}
+.mypage li > p {
+	margin: 0.5em 0 0 0.1em;
+    padding: 0;
+    font-size: 0.95em;
 }
 
 /* Contact */

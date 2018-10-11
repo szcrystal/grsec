@@ -807,7 +807,7 @@ use App\DeliveryGroup;
     
 </div>
 <a href="{{ url('shop/cart') }}" class="btn border-secondary bg-white mt-5">
-<i class="fas fa-angle-double-left"></i> カートに戻る
+<i class="fal fa-angle-double-left"></i> カートに戻る
 </a>
 </div>
 </div>

@@ -115,7 +115,7 @@
                  		<input type="hidden" name="item_id" value="{{ $item->id }}">
                    		<input type="hidden" name="delete_item" value="1">  
                      	--}}             
-                		<button class="btn bg-white border-secondary btn-normal" type="submit" name="del_item_key" value="{{ $key }}"><i class="fas fa-times"></i> 削除</button>
+                		<button class="btn bg-white border-secondary btn-normal" type="submit" name="del_item_key" value="{{ $key }}"><i class="fal fa-times"></i> 削除</button>
 
                 </td>        
 
@@ -132,7 +132,7 @@
             	<td class="text-big"><b>¥{{ number_format($allPrice) }}</b></td>
              	<td>	
                     <input type="hidden" name="calc" value="1" form="re">
-                    <button class="btn border border-secondary bg-white px-2" type="submit" name="re_calc" value="1"><i class="fas fa-redo"></i> 再計算</button>
+                    <button class="btn border border-secondary bg-white px-2" type="submit" name="re_calc" value="1"><i class="fal fa-redo"></i> 再計算</button>
                     {{-- <input type="submit" name="re_calc" value="再計算"> --}}
                 </td>
           	</tr>
@@ -192,9 +192,9 @@
                 </td>
                 <td>
                     @if(! Ctm::isLocal())
-                    <button class="btn border border-secondary bg-white px-2" type="submit" name="delifee_calc" value="1" disabled><i class="fas fa-redo"></i> 送料計算</button>
+                    <button class="btn border border-secondary bg-white px-2" type="submit" name="delifee_calc" value="1" disabled><i class="fal fa-redo"></i> 送料計算</button>
                     @else
-                    <button class="btn border border-secondary bg-white px-2" type="submit" name="delifee_calc" value="1"><i class="fas fa-redo"></i> 送料計算</button>
+                    <button class="btn border border-secondary bg-white px-2" type="submit" name="delifee_calc" value="1"><i class="fal fa-redo"></i> 送料計算</button>
                     @endif
                 </td>
             </tr>
@@ -243,7 +243,7 @@
     <div class="">
 		<input type="hidden" name="uri" value="{{ $uri }}">
         
-		<a href="{{ url($uri)}}" class="btn border border-secondary bg-white"><i class="fas fa-angle-double-left"></i> 元に戻って買い物を続ける</a>
+		<a href="{{ url($uri)}}" class="btn border border-secondary bg-white"><i class="fal fa-angle-double-left"></i> 元に戻って買い物を続ける</a>
 	</div>
     
 </div>

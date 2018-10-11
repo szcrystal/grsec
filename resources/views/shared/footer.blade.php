@@ -35,15 +35,15 @@
                     @foreach($fixNeeds as $fixNeed)
                     <li><a href="{{ url($fixNeed->slug) }}">
                         @if($fixNeed->sub_title != '')
-                        <i class="fa fa-angle-right"></i> {{ $fixNeed->sub_title }}
+                        <i class="fal fa-angle-right"></i> {{ $fixNeed->sub_title }}
                         @else
-                        <i class="fa fa-angle-right"></i> {{ $fixNeed->title }}
+                        <i class="fal fa-angle-right"></i> {{ $fixNeed->title }}
                         @endif
                     </a></li>
                     @endforeach
                 @endif 
                 
-                <li><a href="{{ url('contact') }}"><i class="fa fa-angle-right"></i> お問い合わせ</a></li>                 
+                <li><a href="{{ url('contact') }}"><i class="fal fa-angle-right"></i> お問い合わせ</a></li>                 
             </ul>
             
             @if($fixOthers) 
@@ -52,9 +52,9 @@
             	@foreach($fixOthers as $fixOther)
 				<li><a href="{{ url($fixOther->slug) }}">
 					@if($fixOther->sub_title != '')
-                    <i class="fa fa-angle-right"></i> {{ $fixOther->sub_title }}
+                    <i class="fal fa-angle-right"></i> {{ $fixOther->sub_title }}
                     @else
-                    <i class="fa fa-angle-right"></i> {{ $fixOther->title }}
+                    <i class="fal fa-angle-right"></i> {{ $fixOther->title }}
                     @endif
                 </a></li>
 				@endforeach

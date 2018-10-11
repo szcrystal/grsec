@@ -66,7 +66,7 @@ use App\Icon;
         @if($isSale || isset($item->sale_price))
         	@if(! $isSp)
             	<strike>{{ number_format(Ctm::getPriceWithTax($item->price)) }}</strike>
-            	<i class="fas fa-arrow-right text-small"></i>
+            	<i class="fal fa-arrow-right text-small"></i>
             @endif
         @endif
         
@@ -99,7 +99,7 @@ use App\Icon;
                 }               
             ?>
 
-            <span class="fav fav-on{{ $on }}" data-id="{{ $item->id }}"><i class="far fa-heart"></i></span>
+            <span class="fav fav-on{{ $on }}" data-id="{{ $item->id }}"><i class="fal fa-heart"></i></span>
             <span class="fav fav-off{{ $off }}" data-id="{{ $item->id }}"><i class="fas fa-heart"></i></span>
             <span class="loader"><i class="fas fa-square"></i></span>
             <small class="fav-str">{{-- $str --}}</small>    

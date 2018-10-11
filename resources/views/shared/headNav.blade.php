@@ -58,7 +58,7 @@
                             </form>
                     </li>
                     
-                    <li><a href="{{ url('mypage/favorite') }}"><i class="fas fa-heart"></i></a></li>
+                    <li><a href="{{ url('mypage/favorite') }}"><i class="fal fa-heart"></i></a></li>
                 	
                     {{--
                     <li class="dropdown show">
@@ -84,8 +84,8 @@
                 @endif
                 
                 
-                <li><a href="{{ url('shop/cart') }}"><i class="fas fa-shopping-cart"></i></a></li>
-                <li><a href="{{ url('contact') }}"><i class="fas fa-envelope"></i></a></li>
+                <li><a href="{{ url('shop/cart') }}"><i class="fal fa-shopping-cart"></i></a></li>
+                <li><a href="{{ url('contact') }}"><i class="fal fa-envelope"></i></a></li>
                 
            </ul> 
         </div>
@@ -110,8 +110,8 @@
             <address class="float-right">
                 <p>営業時間：月曜日〜土曜日/定休日：日曜日・祝日</p>
                 <ul class="list-unstyled clearfix">
-                    <li><i class="fas fa-phone"></i> 0299-53-0030</li>
-                    <li><i class="far fa-envelope"></i> <a href="mailto:info@green-rocket.jp">info@green-rocket.jp</a></li>
+                    <li><i class="fal fa-phone"></i> 0299-53-0030</li>
+                    <li><i class="fal fa-envelope"></i> <a href="mailto:info@green-rocket.jp">info@green-rocket.jp</a></li>
                 </ul>
             </address>
         </div>

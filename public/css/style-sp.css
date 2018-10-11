@@ -56,7 +56,7 @@ for SP
     .head-navi li {
     	margin-right: 1.5em;
     }
-    .head-navi li .fas {
+    .head-navi li .fal {
     	font-size: 1.7em;
     }
     
@@ -272,10 +272,10 @@ for SP
         height: 100%;
     }
     .telephone a,
-    .telephone .fas {
+    .telephone .fal {
     	color: #fff;
     }
-    .telephone .fas {
+    .telephone .fal {
     	font-size: 1.3em;
         vertical-align: -1px;
     }
@@ -412,7 +412,7 @@ for SP
     .icon-belt li a {
     	color: #fff;
     }
-    .icon-belt li .fas {
+    .icon-belt li .fal {
         font-size: 1.8em;
         margin-right: 0.5em;
         //vertical-align: top;
@@ -499,7 +499,7 @@ for SP
     .drops ul li {
     	margin-left: 1.5em;
     }
-    .main-navigation .fas {
+    .main-navigation .fal {
     	color: #9a9a9a;
     }
     .drops > div:first-of-type,
@@ -617,7 +617,7 @@ for SP
     	font-size: 0.85em;
         width: 100%;
     }
-    .table-cart .btn .fas {
+    .table-cart .btn .fal {
     	//display: none;
     	font-size: 0.6em;
         margin: 0;

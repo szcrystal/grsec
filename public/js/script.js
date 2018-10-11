@@ -627,7 +627,7 @@ var exe = (function() {
                 var anchor = url.split("#");
                 var target = $('#' + anchor[anchor.length - 1]);
                 
-                fixH = fixH + 67;
+                fixH = fixH + 10;
                 
                 if(target.length){
                     //var pos = Math.floor(target.offset().top) - fixHeight;

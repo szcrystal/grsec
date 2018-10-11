@@ -23,6 +23,7 @@ class CreateConsignorsTable extends Migration
             $table->timestamps();
         });
         
+        /*
         DB::table('consignors')->insert(
             [ 
                 'name' => 'ABC社',
@@ -33,6 +34,7 @@ class CreateConsignorsTable extends Migration
                 'updated_at' => date('Y-m-d H:i:s', time()),
             ]
         );
+        */
     }
 
     /**

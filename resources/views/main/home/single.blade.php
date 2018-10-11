@@ -460,6 +460,8 @@ use App\TopSetting;
                                                     <td class="bg-light">
                                                         @if($dgRel->fee == 99999 || $dgRel->fee === null)
                                                             配送不可
+                                                        @elseif(! $dgRel->fee)
+                                                        	無料
                                                         @else
                                                             {{ number_format($dgRel->fee) }} 円
                                                         @endif

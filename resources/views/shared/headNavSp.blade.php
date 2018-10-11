@@ -38,11 +38,11 @@ use App\User;
     
     
     <div class="nav-tgl">
-    	<i class="fa fa-bars"></i>
+    	<i class="fal fa-bars"></i>
 	</div>
     
     <div class="s-tgl">
-    	<i class="fas fa-search"></i>
+    	<i class="fal fa-search"></i>
 	</div>
 
     
@@ -219,7 +219,7 @@ use App\User;
                     </form>
             </li>
             
-            <li><a href="{{ url('mypage/favorite') }}"><i class="fas fa-heart"></i></a></li>
+            <li><a href="{{ url('mypage/favorite') }}"><i class="fal fa-heart"></i></a></li>
             
             {{--
             <li class="dropdown show">
@@ -245,8 +245,8 @@ use App\User;
         @endif
         
         
-        <li><a href="{{ url('shop/cart') }}"><i class="fas fa-shopping-cart"></i></a></li>
-        <li><a href="{{ url('contact') }}"><i class="fas fa-envelope"></i></a></li>
+        <li><a href="{{ url('shop/cart') }}"><i class="fal fa-shopping-cart"></i></a></li>
+        <li><a href="{{ url('contact') }}"><i class="fal fa-envelope"></i></a></li>
         
    </ul> 
 </div>

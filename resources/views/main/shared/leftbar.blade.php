@@ -94,9 +94,9 @@
                 	@foreach($fixOthers as $fixOther)
                         <li><a href="{{ url($fixOther->slug) }}">
                             @if($fixOther->sub_title != '')
-                            <i class="fa fa-angle-right"></i> {{ $fixOther->sub_title }}
+                            <i class="fal fa-angle-right"></i> {{ $fixOther->sub_title }}
                             @else
-                            <i class="fa fa-angle-right"></i> {{ $fixOther->title }}
+                            <i class="fal fa-angle-right"></i> {{ $fixOther->title }}
                             @endif
                         </a></li>
                     @endforeach
