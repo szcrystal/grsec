@@ -232,12 +232,13 @@ for SP
     }
     #left-bar {
         float: none;
-        width: 92%;
+        width: 100%;
         margin: 5em auto 0;
         font-size: 1.1em;
         //border: 1px solid orange;
     }
     
+    /* 先頭 margin */
     .container {
     	margin-top: 1em;
     }
@@ -250,7 +251,7 @@ for SP
         //border: 1px solid orange;
     }
     .head-navi { /* kare text */
-    	margin-top: 6.5em;
+    	margin-top: 5.7em;
     }
     .tophead-wrap {
     	margin-top: 0.5em;
@@ -258,13 +259,14 @@ for SP
     .tophead-wrap + .container {
     	margin-top: 1.0em;
     }
+    /* 先頭 Margin END */
     
     .telephone {
     	background: #3a3b3c;
         font-size: 1.1em;
         color: #fff;
         text-align: center;
-        padding: 0.3em 0 0.35em;
+        padding: 0.2em 0 0.25em;
     }
     .telephone a {
     	display: block;
@@ -276,15 +278,20 @@ for SP
     	color: #fff;
     }
     .telephone .fal {
-    	font-size: 1.3em;
-        vertical-align: -1px;
+    	font-size: 1.1em;
+        margin-right: 0.2em;
+        //vertical-align: -1px;
     }
 	.site-header {
 		position: relative;
-        padding: 0.2em 0.2em 0;
-        border-bottom: 1px solid #ccc;
+        box-sizing: content-box;
+        padding: 0.2em 0.2em 0.2em;
+        border-bottom: 1px solid #eaeaea;
         border-top: 0;
 	}
+    .fixed-top {
+    	border: 0;
+    }
 	
 
 /*	.site-header .logos {*/
@@ -296,7 +303,7 @@ for SP
     .site-header h1 {
     	width: 60%;
         float: none;
-    	margin: 2px auto 2px;
+    	margin: 1px auto 2px;
         padding: 0;
         line-height: 0;
         text-align: center;
@@ -331,25 +338,24 @@ for SP
         padding: 0;
     }
     
-    .nav-tgl {
-    	//width: 2.0em;
-        padding: 0 0.2em 0.2em 0.3em;
+    .nav-tgl,
+    .s-tgl {
+    	line-height: 0;
+        position: absolute;
+        color: #333;
         //border: 1px solid red;
-		position: absolute;
-        top: -2px;
+    }
+    .nav-tgl {
+        padding: 0.15em 0.2em 0.2em 0.2em;
+        top: 0;
         left: 1.0%;
         font-size: 1.7em;
-        color: #333;
     }
     .s-tgl {
-    	//width: 2.0em;
-        padding: 0 0.2em 0.2em 0.3em;
-        //border: 1px solid red;
-		position: absolute;
+        padding: 0.4em 0.3em 0.2em 0.3em;
         top: 0;
         right: 1.0%;
-        font-size: 1.5em;
-        color: #333;
+        font-size: 1.3em;
     }
     
     .head-navi {
@@ -358,40 +364,35 @@ for SP
     	//border: 1px solid red;
         //margin: 0;
     }
-    .head-navi li {
-        list-style: none;
-        float: left;
-        margin-right: 0.7em;
-        font-size: 0.85em;
-    }
-    .head-navi li:first-of-type a {
-    	padding: 0.1em 0.6em;
-        margin-top: 0;
-    }
     
-    .head-navi li a {
-    	color: #3f3f3f;
-    }
     
     #spCartBtn {
     	display: block;
     	position: fixed;
         left: 0;
-        bottom: 45px;
+        bottom: 32px;
+        height: 32px;
+        line-height: 0;
         z-index: 10001;
-        font-size: 1.3em;
-        padding: 0.6em 0;
+        font-size: 1.2em;
+        //padding-bottom: 0.6em;
+        //background: red;
     }
-    
+    #colop {
+    	margin-bottom: 32px;
+    }
+    #colop.single-colop {
+    	margin-bottom: 63px;
+    }
     .icon-belt {
     	width: 100%;
     	background: #3a3b3b;
-        height: 45px;
+        height: 32px;
         position: fixed;
         bottom: 0;
         left: 0;
         z-index: 999;
-        padding: 0.5em 0.2em 0;
+        padding: 0.4em 0.2em 0.15em;
         text-align: center;
     }
     .icon-belt ul {
@@ -413,27 +414,32 @@ for SP
     	color: #fff;
     }
     .icon-belt li .fal {
-        font-size: 1.8em;
+        font-size: 1.5em;
         margin-right: 0.5em;
+        font-weight: 0;
         //vertical-align: top;
     }
     
     .s-form {
-        position: static;
-        margin-right: 0.5em;
+    	display: none;
+        width: 93%;
+        float: none;
+        margin: 0.7em auto 0.5em;
+        //position: relative;
         //border: 1px solid red;
     }
-    .s-form input {
-        background: #3a3a3a;
-        color: #fff;
-        border-radius: 1.5em;
-        border: none;
-        width: 0;
-        //position: relative;
-        //z-index: 9;
-        display: none;
-        opacity: 0;
+    .s-form input.form-control {
+        border-radius: 0;
+        width: 100%;
+        //display: block;
+        opacity: 1;
         padding: 0.3em 0.8em;
+    }
+    .btn-s {
+/*    	position: absolute;*/
+/*        top: 0;*/
+/*        right: 0;*/
+    	margin-left: -2em;
     }
     
     
@@ -767,7 +773,7 @@ for SP
     .potset .img-box {
 		height: 78.5px;
     }
-    
+    /* img-box END ******************* */
     
     
     
@@ -828,6 +834,11 @@ for SP
     
     .main-atcl h3 {
 		font-size: 1.0em;
+    }
+    
+    .top .main-atcl > span,
+	.archive .main-atcl > span {
+    	font-size: 0.7em;
     }
     
     .top-second .main-atcl {
@@ -942,10 +953,10 @@ for SP
         padding-left: 1.4em;
     }
     .fix-page h3 {
-		font-size: 1.6em;
+		font-size: 1.3em;
     }
     .fix-page h4 {
-		font-size: 1.3em;
+		font-size: 1.1em;
     }
     .faq-cate li {
         float: none;
@@ -973,36 +984,34 @@ for SP
     
     
     /* Footer */
-    #colop {
-    	margin-bottom: 45px;
-    }
-    #colop.single-colop {
-    	margin-bottom: 90px;
-    }
+    
     #colop .foot-wrap {
-    	width: 95%;
+    	width: 100%;
         margin: auto;
+        //border: 1px solid red;
     }
     .foot-menu {
     	float: none;
-        width: 90%;
+        width: 98%;
         margin: auto;
         font-size: 1em;
     }
     .foot-menu ul {
-    	float: none;
+    	float: left;
         width: 100%;
-        margin-left: 3%;
+        margin-left: 1%;
+        margin-bottom: 1.3em;
+        //border: 1px solid orange;
     }
     .foot-menu ul:last-of-type {
-    	margin-top: 1em;
+    	//margin-top: 1.3em;
     }
     .foot-menu li {
     	margin-bottom: 0.6em;
     }
     .foot-company {
     	float: none;
-        width: 88%;
+        width: 95%;
         margin: 2em auto 1em;
     }
     

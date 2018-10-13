@@ -20,10 +20,10 @@ use App\TopSetting;
 
 @section('content')
 
-<div id="main" class="fix-page col-md-12 {{ $fix->slug }}">
+<div id="main" class="fix-page {{ $fix->slug }}">
 
     <div class="panel panel-default">
-        <h2 class="h2 mb-3 card-header">{{ $fix->title }}</h2>
+        <h2 class="mb-3 card-header">{{ $fix->title }}</h2>
 
         <div class="panel-body">
 

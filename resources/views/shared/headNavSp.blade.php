@@ -11,7 +11,7 @@ use App\User;
 <div class="fixed-top">
 
 <div class="telephone">
-	<a href="tel:0299530030"><i class="fas fa-phone-square"></i> 電話をかける<span class="text-small">（月〜土 8:00〜17:00）</span></a>
+	<a href="tel:0299530030"><i class="fal fa-phone"></i> 電話をかける<span class="text-small">（月〜土 8:00〜17:00）</span></a>
 </div>
 
 <header class="site-header clearfix">
@@ -24,18 +24,7 @@ use App\User;
             </a>
         </h1>
         
-    </div>
-
-	{{--
-	<div id="menuButton" class="nav-tgl float-left"> 
-        <div>
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
-    </div>
-    --}}
-    
+    </div>    
     
     <div class="nav-tgl">
     	<i class="fal fa-bars"></i>
@@ -50,7 +39,8 @@ use App\User;
         <form class="my-1 my-lg-0" role="form" method="GET" action="{{ url('search') }}">
             {{-- csrf_field() --}}
 
-            <input type="search" class="float-right" name="s" placeholder="Search...">
+            <input type="search" class="form-control rounded-0" name="s" placeholder="何かお探しですか？">
+            <i class="fa fa-search btn-s"></i>
 
         </form>
     </div>
@@ -64,7 +54,7 @@ use App\User;
 </div>
 
 <div class="fade-black">
-	<span class="nav-tgl"><i class="fas fa-times"></i></span>	
+	<span class="nav-tgl"><i class="fal fa-times"></i></span>	
 </div>
 
 <nav class="navbar main-navigation">
@@ -94,7 +84,7 @@ use App\User;
                     
                     <div class="clearfix">
                         <h3><a href="{{ url('first-guide') }}">
-                                初めての方へ <i class="fas fa-angle-double-right"></i>
+                                初めての方へ <i class="fal fa-angle-double-right"></i>
                             </a></h3>
                         <div class="">
                             <p>グリーンロケットは初めての植木、お庭づくりを全力で応援します。</p>
@@ -109,9 +99,9 @@ use App\User;
                             @foreach($fixOthers as $fixOther)
                                 <li><a href="{{ url($fixOther->slug) }}">
                                     @if($fixOther->sub_title != '')
-                                    {{ $fixOther->sub_title }} <i class="fas fa-angle-double-right"></i>
+                                    {{ $fixOther->sub_title }} <i class="fal fa-angle-double-right"></i>
                                     @else
-                                    {{ $fixOther->title }} <i class="fas fa-angle-double-right"></i>
+                                    {{ $fixOther->title }} <i class="fal fa-angle-double-right"></i>
                                     @endif
                                 </a></li>
                             @endforeach                     
@@ -128,14 +118,14 @@ use App\User;
                                 @foreach($fixNeeds as $fixNeed)
                                 <li><a href="{{ url($fixNeed->slug) }}">
                                     @if($fixNeed->sub_title != '')
-                                    {{ $fixNeed->sub_title }} <i class="fas fa-angle-double-right"></i>
+                                    {{ $fixNeed->sub_title }} <i class="fal fa-angle-double-right"></i>
                                     @else
-                                    {{ $fixNeed->title }} <i class="fas fa-angle-double-right"></i>
+                                    {{ $fixNeed->title }} <i class="fal fa-angle-double-right"></i>
                                     @endif
                                 </a></li>
                                 @endforeach
                         	@endif 
-                            <li><a href="{{ url('contact') }}">お問い合わせ <i class="fas fa-angle-double-right"></i></a></li>
+                            <li><a href="{{ url('contact') }}">お問い合わせ <i class="fal fa-angle-double-right"></i></a></li>
                         </ul>
                         
                     </div>
@@ -154,7 +144,7 @@ use App\User;
                     	
                         <div class="clearfix">
                         	<h3><a href="{{ url('category/' . $cate->slug) }}">
-                                    {{ $cate->name }} <i class="fas fa-angle-double-right"></i>
+                                    {{ $cate->name }} <i class="fal fa-angle-double-right"></i>
                                 </a></h3>
                             <div class="">
                                 
@@ -167,7 +157,7 @@ use App\User;
                                     $cateSecs = CategorySecond::where('parent_id', $cate->id)->get();
                                 ?>
                                 @foreach($cateSecs as $cateSec)
-                                    <li><a href="{{ url('category/'.$cate->slug.'/'.$cateSec->slug) }}">{{ $cateSec->name }} <i class="fas fa-angle-double-right"></i></a></li>
+                                    <li><a href="{{ url('category/'.$cate->slug.'/'.$cateSec->slug) }}">{{ $cateSec->name }} <i class="fal fa-angle-double-right"></i></a></li>
                                 @endforeach                  
                             </ul>
                         </div>
@@ -204,11 +194,11 @@ use App\User;
     <ul class="clearfix">
 
         @if(! Auth::check())
-            <li class="pt-1"><a href="{{ url('login') }}">ログイン</a></li>
+            <li><a href="{{ url('login') }}">ログイン</a></li>
         @else
-            <li class="pt-1"><a href="{{ url('mypage') }}">マイページ</a></li>
+            <li><a href="{{ url('mypage') }}">マイページ</a></li>
             
-            <li class="pt-1"><a href="{{ url('/logout') }}"
+            <li><a href="{{ url('/logout') }}"
                             onclick="event.preventDefault();
                                      document.getElementById('logout-form').submit();">
                             ログアウト

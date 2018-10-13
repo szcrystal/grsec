@@ -97,7 +97,7 @@
     <div class="head-second-wrap">
         <div class="head-second clearfix">
             <p>初めての方も安心の植物全品6ヶ月枯れ保証！3ヶ月取り置き可能！</p>
-            <div class="clearfix s-form float-left">
+            <div class="clearfix s-form">
                 <form class="my-1 my-lg-0" role="form" method="GET" action="{{ url('search') }}">
                     {{-- csrf_field() --}}
      

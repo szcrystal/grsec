@@ -90,50 +90,27 @@ var exe = (function() {
         },
         
         searchSlide: function() {
-        	$input = $('.s-form input');
+        	var $input = $('.s-form');
             
-            $width = this.isSpTab('sp') ? '65%' : '13em';
+            //var $width = this.isSpTab('sp') ? '65%' : '13em';
+            var speed = 180;
+            var ease = 'linear';
            
-//           	if(this.isSpTab('sp')) {
-//           
-//                $('.btn-s').on('click', function(){
-//                	var $nav = $('.main-navigation');
-//                    
-//                    if($nav.is(':visible')) {
-//                    	
-//                        var top = $nav.data('top');
-//                    	$('html,body').css({position:'static'}).scrollTop(top);
-//                    	
-//                        $nav.slideUp(200, 'linear', function(){
-//                            $('.menu-dropdown').hide();
-//                            $('.s-form > div').slideToggle(220);
-//                        });
-//                    }
-//                    else {
-//                    	$('.s-form > div').slideToggle(220);
-//                    }
-//                    
-//                    
-//                });
-//           	}
-//            else {
-                $('.btn-s').on('click', function(){
-                    if($input.is(':hidden')) {
-                        $input.show().animate({width:$width, opacity:1}, 300, 'linear', function(){
-                    		//$(this).queue([]).stop();
-                        });
-                    }
-                    else {
-                    	console.log('abc');
-                        $input.animate({width:0, opacity:0}, 300, 'linear', function(){
-                    		//$(this).queue([]).stop();
-                            
-                        }).fadeOut(200);
-                    
-                    }
-                });
+            $('.s-tgl').on('click', function(){
+                if($input.is(':hidden')) {
+                    $input.slideDown(speed, ease, function(){
+                        //$(this).queue([]).stop();
+                    });
+                }
+                else {
+                    $input.slideUp(speed, ease, function(){
+                        //$(this).queue([]).stop();
+                        
+                    });
                 
-            //}
+                }
+            });
+
         },
         
         toggleSp: function() {
@@ -152,31 +129,31 @@ var exe = (function() {
                 
                 var h = $(window).height();
                 //h = h-60;
+                var speed = 50;
                 
                 $leftbar.find('.navi-body').css({height:h});
 
             	if($leftbar.is(':visible')) {
-                	$('.fade-black').fadeOut(50);
-                    
-                	$leftbar.animate({left:'-100px'}, 50, ease, function(){
-                    	$(this).queue([]).stop().hide(0);
-                        //$(this).hide(0);
-                        $('html,body').css({position:'static'}).scrollTop(t);
-                        
+                 
+                 	$('.fade-black').fadeOut(30, function() {
+                        $leftbar.animate({left:'-100px'}, speed, ease, function(){
+                            $(this).queue([]).stop().hide(0);
+                            
+                            $('html,body').css({position:'static'}).scrollTop(t);
+                        });
                     });
                 }
                 else {
                 	t = $(window).scrollTop();
 
-            		$leftbar.fadeIn(10, ease, function(){
-                        
-                    	$(this).animate({left:0}, 50, ease, function(){
-                        	$('.fade-black').fadeIn(10, ease, function(){
+                    $('.fade-black').fadeIn(10, ease, function(){
+                        //$leftbar.fadeIn(10, ease, function(){
+                    		$leftbar.show(0).animate({left:0}, speed, ease, function(){
                             	$(this).queue([]).stop();
+                                $('html, body').css({position:'fixed', top:-t}); //overflow:'hidden',
                             });
-                            
-                        	$('html,body').css({position:'fixed', top:-t}); //overflow:'hidden',    
-                        });
+                                
+                        //});
     
                     });
                 }
@@ -660,8 +637,7 @@ $(function(e){ //ready
     
     exe.searchSlide();
 
-  
-    exe.dropDown();
+    //exe.dropDown();
     exe.eventItem();
     
     

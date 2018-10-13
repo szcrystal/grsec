@@ -72,7 +72,11 @@
                         @endif
                         
                         <a href="{{url('item/'.$item->id)}}">
-                        	{{ Ctm::shortStr($item->title, 10) }}
+                        	@if(Ctm::isAgent('sp'))
+                            	{{ Ctm::shortStr($item->title, 23) }}
+                            @else
+                        		{{ Ctm::shortStr($item->title, 10) }}
+                            @endif
                         </a>
                     </li>
                     <?php $n++; ?>

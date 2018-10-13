@@ -82,7 +82,13 @@
                     </tr>
                     <tr>
                         <th>TEL</th>
-                        <td>0299-53-0030</td>
+                        <td>
+                        @if(Ctm::isAgent('sp'))
+                        	<a href="tel:0299530030">0299-53-0030</a>
+                        @else
+                        	0299-53-0030
+                        @endif
+                        </td>
                     </tr>
                     <tr>
                         <th>MAIL</th>
@@ -106,7 +112,7 @@
 
 </footer>
 
-<span class="top_btn"><i class="fa fa-angle-up"></i></span>
+<span class="top_btn"><i class="fal fa-angle-up"></i></span>
 
 <?php
     $getNow = '';
