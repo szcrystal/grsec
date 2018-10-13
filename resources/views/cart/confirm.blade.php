@@ -32,10 +32,11 @@
              <tr>
                 
                 <td>
-                	<img src="{{ Storage::url($item->main_img) }}" alt="{{ $item->title }}" class="img-fluid" width=80 height=80>
+                	<img src="{{ Storage::url($item->main_img) }}" alt="{{ $item->title }}" class="img-fluid" width="80">
                 		{{ Ctm::getItemTitle($item) }}
 	                    <br>
                         [ {{ $item->number }} ]
+                        <span class="d-block mt-1">¥{{ Ctm::getItemPrice($item) }}（税込）</span>
                 </td>
                 
                 <td>{{ $item->count }}</td>

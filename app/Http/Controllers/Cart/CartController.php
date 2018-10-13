@@ -232,7 +232,7 @@ class CartController extends Controller
     
     
     /* 値段 商品金額 算出 Sale or Normal Price **************************************************************** */
-    public function getItemPrice($item) {
+    private function getItemPrice($item) {
         
         $isSale = $this->setting->get()->first()->is_sale;
         $price = 0;
@@ -430,8 +430,7 @@ class CartController extends Controller
         //売上登録処理 Sale create
         foreach($itemData as $key => $val) {
         	
-//            ($item->price - $item->cost_price - $itemDg->take_charge) * $sale->item_count;
-//        	$arari = $val['item_total_price']
+			$i = $this->item->find($val['item_id']);
         
             $sale = $this->sale->create(
                 [
@@ -450,9 +449,10 @@ class CartController extends Controller
                     'deli_fee' => $deliFee,
                     'cod_fee' => 0,
                     'use_point' => 0,
+                    'single_price' => $this->getItemPrice($i),
                     'total_price' => $val['item_total_price'],
                     
-                    'cost_price' => $this->item->find($val['item_id'])->cost_price * $val['item_count'],
+                    'cost_price' => $i->cost_price * $val['item_count'],
                     'charge_loss' => 0,
                     
                     'plan_date' => isset($allData['plan_date']) ? $allData['plan_date'] : null,

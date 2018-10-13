@@ -5,7 +5,7 @@
 
 	{{-- @include('main.shared.carousel') --}}
 
-<div id="main" class="top mypage">
+<div id="main" class="history">
 
         <div class="panel panel-default">
 
@@ -16,7 +16,7 @@
 <h3 class="mb-3 card-header">購入履歴一覧</h3>
 @if(! count($sales) > 0)
 <div>
-	<p style="min-height: 300px;">まだ購入した商品がありません。</p>
+	<p style="min-height: 350px;">まだ購入した商品がありません。</p>
 </div>
 @else
 <div class="table-responsive table-cart">
@@ -28,7 +28,7 @@
           	 
           	<th>個数</th>
            	<th>金額合計（税込）</th>
-			<th>残 枯れ保証期間</th>
+			<th>枯れ保証期間 残</th>
    			<th></th>         
         </tr>
         </thead>
@@ -38,16 +38,16 @@
         <tr>
              <td>
              	{{ Ctm::changeDate($sale->created_at, 1) }}
-            	<p class="mt-2"><small>ご注文番号</small><br><b>{{ $sale->order_number }}</b></p>
+            	<p class="mt-2"><small>ご注文番号</small><br>{{ $sale->order_number }}</p>
             </td>
             <td class="clearfix">
             	<?php $i = $item->find($sale->item_id); ?>
-            	<img src="{{ Storage::url($i->main_img) }}" width="80" height="80" class="d-block img-fluid float-left">
+            	<img src="{{ Storage::url($i->main_img) }}" width="80" class="d-block img-fluid float-left">
             
-            	<div class="text-small">
+            	<div class="">
              	{{ Ctm::getItemTitle($i) }}&nbsp;
               	[{{ $i->number }}]
-               <span class="d-block mt-1">¥{{ number_format(Ctm::getPriceWithTax($i->price)) }}</span> 
+               <span class="d-block mt-1">¥{{ number_format($sale->single_price) }}（税込）</span> 
                </div>
             </td>
              <td>{{ $sale->item_count }}</td>
@@ -91,7 +91,7 @@
              </td>
              <td>
              	<a href="{{ url('mypage/history/'.$sale->id) }}" class="btn btn-block border-secondary bg-white text-small mb-3 w-100 rounded-0">
-                詳細を確認 <i class="fas fa-angle-double-right"></i>
+                詳細を確認
                 </a>
                 
                 <form class="form-horizontal" role="form" method="POST" action="{{ url('shop/cart') }}">
@@ -119,8 +119,8 @@
 @endif
 
 
-<a href="{{ url('mypage') }}" class="btn border-secondary bg-white mt-5">
-<i class="fas fa-angle-double-left"></i> マイページに戻る
+<a href="{{ url('mypage') }}" class="btn border border-secondary bg-white mt-5">
+<i class="fal fa-angle-double-left"></i> マイページに戻る
 </a>                  
 
 

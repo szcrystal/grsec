@@ -100,7 +100,7 @@ for SP
     }
     
     .card-header {
-    	font-size: 1.5em;
+    	font-size: 1.3em;
     }
     
     /* Tablet img-box */
@@ -251,7 +251,7 @@ for SP
         //border: 1px solid orange;
     }
     .head-navi { /* kare text */
-    	margin-top: 5.7em;
+    	margin-top: 5.8em;
     }
     .tophead-wrap {
     	margin-top: 0.5em;
@@ -301,7 +301,7 @@ for SP
 /*        //border: 1px solid red;*/
 /*	}*/
     .site-header h1 {
-    	width: 60%;
+    	width: 5.5em;
         float: none;
     	margin: 1px auto 2px;
         padding: 0;
@@ -554,9 +554,16 @@ for SP
     
     
     /* Shop */
+    #guide {
+    	margin: 1.4em 0 1.6em;
+    }
     #guide br {
     	display: block;
     }
+    #guide > div {
+    	font-size: 0.9em;
+    }
+    
     .table-custom .table {
     	table-layout: fixed;
     }
@@ -596,7 +603,7 @@ for SP
     .table-cart .table {
         width: 99%;
         margin: auto;
-        font-size: 0.9em;
+        font-size: 0.85em;
         table-layout: fixed;
     }
     .table-cart .table td img.img-fluid {
@@ -632,6 +639,9 @@ for SP
     .table-cart td {
     	padding-left: 0.3em;
         padding-right: 0.3em;
+    }
+    .table-cart td:first-of-type {
+    	font-size: 85%;
     }
     .table-cart .text-right { /* cart index 数量変更後は、、の文言部分 */
     	text-align: left !important;

@@ -55,14 +55,14 @@
      		@foreach($itemData as $key => $item)    
      		<tr class="{{ $errors->has('no_delivery.'. $key) ? 'tr-danger-border' : '' }}">
                 <td class="clearfix">
-                	<img src="{{ Storage::url($item->main_img) }}" alt="{{ $item->title }}" class="img-fluid" width=80 height=80>
+                	<img src="{{ Storage::url($item->main_img) }}" alt="{{ $item->title }}" class="img-fluid" width="80">
                 
                 	<a href="{{ url('item/'.$item->id) }}">
                         {{ Ctm::getItemTitle($item) }}
                         <br>
                         [ {{ $item->number }} ]
                  	</a>   
-                	<span class="d-block mt-2">¥{{ number_format(Ctm::getPriceWithTax($item->price)) }}（税込）</span>
+                	<span class="d-block mt-1">¥{{ Ctm::getItemPrice($item) }}（税込）</span>
                 </td>
                 	
                 <td>

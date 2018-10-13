@@ -5,7 +5,7 @@
 
 	{{-- @include('main.shared.carousel') --}}
 
-<div id="main" class="top">
+<div id="main" class="history-single">
 
         <div class="panel panel-default">
 
@@ -81,9 +81,10 @@
              
              <tr>
                 <td class="clearfix">
-                	<img src="{{ Storage::url($item->main_img) }}" alt="{{ $item->title }}" class="img-fluid float-left d-block" width=80 height=80>
+                	<img src="{{ Storage::url($item->main_img) }}" alt="{{ $item->title }}" class="img-fluid float-left d-block" width="80">
                     <div>
                     {{ Ctm::getItemTitle($item) }}<br>[ {{ $item->number }} ]
+                    <span class="d-block mt-1">¥{{ number_format($sale->single_price) }}（税込）</span>
                     </div>
                 </td>
                 
@@ -91,6 +92,7 @@
 
                 <td>
                 <?php
+                	//各所で使用する
                      $price = $sale->total_price;
                  ?>
                 ¥{{ number_format($price) }}
@@ -221,7 +223,10 @@
    <button class="btn btn-block btn-custom col-md-4 mb-4 mx-auto py-2" type="submit" name="regist_off" value="1">もう一度購入する</button>                 
 </form>
 
-<a href="{{ url('mypage/history') }}" class="btn border border-secondary bg-white"><i class="fas fa-angle-double-left"></i> 購入履歴一覧に戻る</a>
+<a href="{{ url('mypage/history') }}" class="btn border border-secondary bg-white mt-5">
+<i class="fal fa-angle-double-left"></i> 購入履歴一覧に戻る
+</a>
+
 </div>
 
 

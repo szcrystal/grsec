@@ -81,7 +81,7 @@ class CustomController extends Controller
         }
         
         
-        return "<span>" . $price . "</span>円(税込)";
+        return $price;
     }
     
     static function getFixPage()

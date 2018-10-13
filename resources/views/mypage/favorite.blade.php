@@ -6,7 +6,7 @@
 use App\Item;
 ?>
 
-<div id="main" class="mypage">
+<div id="main" class="mp-favorite">
 
         <div class="panel panel-default">
 
@@ -17,7 +17,7 @@ use App\Item;
 
 <h3 class="mb-3 card-header">お気に入り一覧</h3>
 @if(! count($items) > 0)
-<p style="min-height: 300px;">まだお気に入りに登録された商品がありません。</p>
+<p style="min-height: 350px;">まだお気に入りに登録された商品がありません。</p>
 
 @else
 <div class="table-responsive table-custom">
@@ -40,16 +40,16 @@ use App\Item;
              <td>{{ Ctm::changeDate($item->created_at, 1) }}</td>
              <td class="clearfix">
              	<a href="{{ url('item/'.$item->id) }}">
-              	<img src="{{ Storage::url($item->main_img) }}" width="85" height="85" class="img-fluid float-left mr-3">  
+              	<img src="{{ Storage::url($item->main_img) }}" width="80" class="img-fluid float-left mr-3">  
              	{{ $item->title }}<br>
               	[{{ $item->number }}]
                </a>      
             </td>
              <td><a href="{{ url('category/'. $item->cate_id) }}">{{ $cates->find($item->cate_id)->name }}</a></td>
-             <td>¥{{ number_format(Ctm::getPriceWithTax($item->price)) }}</td>
+             <td>¥{{ Ctm::getItemPrice($item) }}</td>
              <td>
                 <a href="{{ url('item/'.$item->id) }}" class="btn border-secondary bg-white text-small w-100 rounded-0">
-                商品ページへ <i class="fas fa-angle-double-right"></i>
+                商品ページへ
                 </a>
                 
                 <?php 
@@ -144,7 +144,7 @@ use App\Item;
 @endif
 
 <a href="{{ url('mypage') }}" class="btn border-secondary bg-white mt-5">
-<i class="fas fa-angle-double-left"></i> マイページに戻る
+<i class="fal fa-angle-double-left"></i> マイページに戻る
 </a>                  
 
 
