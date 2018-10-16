@@ -699,7 +699,7 @@ use App\DeliveryGroup;
                 <div class="mb-5 pb-3">
                 	<h3 class="card-header mt-5">配送希望日時指定</h3>
                     
-                    <fieldset class="mb-4 mt-3 col-md-7 form-group{{ $errors->has('plan_date') ? ' has-error' : '' }}">
+                    <fieldset class="mb-5 mt-3 col-md-7 form-group{{ $errors->has('plan_date') ? ' has-error' : '' }}">
                         <label for="plan_date" class="control-label">■ご希望日程<span class="text-small"></span></label>
                         
                         <select class="form-control col-md-6{{ $errors->has('plan_date') ? ' is-invalid' : '' }}" name="plan_date">
@@ -755,10 +755,10 @@ use App\DeliveryGroup;
                         @endif
                         
                         @foreach($dgGroup as $key => $val)
-                            <div class="mb-3 pb-2">
+                            <div class="mb-2 py-2">
                             
                             @if(session()->has('item.data') && count(session('item.data')) > 0)
-                                <p>■下記の商品につきまして、ご希望配送時間の指定ができます。</p>
+                                <p class="mb-1 pb-1">■下記の商品につきまして、ご希望配送時間の指定ができます。</p>
                                  @foreach($val as $itemId)
                                     ・<b>{{ Item::find($itemId)->title }}</b><br>
                                  @endforeach
@@ -802,7 +802,11 @@ use App\DeliveryGroup;
                 
 
         <input type="hidden" name="regist" value="{{ $regist }}">
-       <button class="btn btn-block btn-custom col-md-3 mb-4 mx-auto py-2 mt-5" type="submit" name="recognize" value="1">確認する</button>                 
+        
+        <div>
+        	<button class="btn btn-block btn-custom col-md-4 mb-4 mx-auto py-2 mt-4" type="submit" name="recognize" value="1">確認する</button>
+        </div>
+       
     </form>
     
 </div>

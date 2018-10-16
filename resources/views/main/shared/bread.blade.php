@@ -8,7 +8,7 @@ use App\CategorySecond;
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">
     
-    <li class="breadcrumb-item"><a href="{{ url('/') }}"><i class="fas fa-home"></i></a></li>
+    <li class="breadcrumb-item"><a href="{{ url('/') }}"><i class="fal fa-home"></i></a></li>
     
     @if($type == 'single')
     	<?php $cate = Category::find($item->cate_id); ?>

@@ -79,8 +79,9 @@ use App\Icon;
                 <span class="show-price">{{ number_format(Ctm::getPriceWithTax($item->price)) }}
             @endif
         @endif
-        <span class="show-yen">円(税込)</span>
         </span>
+        <span class="show-yen">円(税込)</span>
+        
     </div>
 
 

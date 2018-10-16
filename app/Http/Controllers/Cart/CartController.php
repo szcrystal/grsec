@@ -657,13 +657,13 @@ class CartController extends Controller
         //都道府県ID
         $prefId = $this->prefecture->where('name', $prefName)->first()->id;
 		
-        $prefDeli = array();
+        //$prefDeli = array();
         
         foreach( $itemSes as $key => $val) {
         	$obj = $this->item->find($val['item_id']);
             
             // 配送先が配送可能かどうかを確認するための配列をここで作る
-			$prefDeli[$obj->dg_id][] = $val['item_id'];
+			//$prefDeli[$obj->dg_id][] = $val['item_id'];
             
          	//カウント 個数  
          	$obj['count'] = $val['item_count'];
@@ -686,13 +686,9 @@ class CartController extends Controller
         
         
         //配送先都道府県への配送が可能かどうかを確認 -------------------------
-        $df = new Delifee($itemData, $prefId);
+        $df = new Delifee($itemData, $prefId); //CalcDelifeeController Init 
                 
         $errorArr = $df->checkIsDelivery();
-               
-//                if(count($errorArr) > 0) { //配送不可ならリダイレクト リダイレクトを別クラスに入れるとおかしくなるのでここに
-//                    return redirect('shop/cart')->withErrors($errorArr)->withInput();
-//                }
         
         /*
         $errorArr = array();
@@ -717,470 +713,16 @@ class CartController extends Controller
         }
         
         
-        
         //手数料、送料、ポイントをここで合計する -------------------------
         $totalFee = 0;
         
         //ポイント -----------
         $usePoint = $data['use_point'];
         $totalFee = $allPrice - $usePoint;
+        //ポイント END-----------
         
-        
-        //送料 ---------------------------------
-        $deliFee = 0;
-        $takeChargeFee = 0;
-        
-        //$prefId/$prefNameは上記で既に取得している
-        
-        //下草：小の容量を越えれば大の送料になる
-        //配送区分：下草小のid
-        $sitakusaSmId = 1;
-        //配送区分：下草大のid
-        $sitakusaBgId = 2;
-        
-        //高木コニファー(千代田プランツ)： ->高木が含まれていれば高木として計算（下草と同じ計算方法　商品個数x係数の合計に応じて容量と送料区分が決まる）
-        //配送区分：高木コニファー小のid
-        $koubokuSmId = 3;
-        //配送区分：高木コニファー大のid
-        $koubokuBgId = 4;
-        
-        //下草コニファー(千代田プランツ)： ->高木が含まれていれば高木として計算（下草と同じ計算方法　商品個数x係数の合計に応じて容量と送料区分が決まる）
-        $sitakoniId = 5;
-        
-        //シモツケ(千代田プランツ)
-        //配送区分：シモツケ小のid -> 下草と同じ計算方法
-        $simotukeSmId = 6;
-        //配送区分：シモツケ大のid
-        $simotukeBgId = 7;
-        
-
-        //モリヤコニファー：大の商品が含まれていれば強制的に大となり、なければ小になる
-        //配送区分：モリヤコニファー下草のid
-        $coniferKsId = 8;
-        //配送区分：モリヤコニファー小のid
-        $coniferSmId = 9;
-        //配送区分：モリヤコニファー大のid
-        $coniferBgId = 10;
-        
-        
-        $isOnceItem = array();
-        $sitakusaItem = array();
-        $tiyodaItem = array();
-        $simotukeItem = array();
-        $coniferItem = array();
-        //$keyIsDgId = array();
-        
-
-        //同梱包可能で、配送区分も同じ場合を区別する必要がある
-        //同梱包可能なもので配送区分の同じものと異なるものを分けて送料を出す
-        foreach($itemData as $item) {
-        	if(! $item->is_delifee) { //送料が無料でないもの
-                if(! $item->is_once) { //同梱包不可のものはそれぞれ単独で
-                    $fee = $this->dgRel->where(['dg_id'=>$item->dg_id, 'pref_id'=>$prefId])->first()->fee;
-                    $deliFee += $fee;
-                    //$takeChargeFee += $this->dg->find($item->dg_id)->take_charge; //送料負担分を加算
-                } 
-                else { //同梱包可能なものは別配列へ入れて下記へ
-                    if($item->dg_id == $sitakusaSmId || $item->dg_id == $sitakusaBgId) { //下草 and 高木コニファーの時 下草・高木用の配列に入れる　下草・高木は特別なので別計算で
-                        $sitakusaItem[] = $item;
-                    }
-                    elseif($item->dg_id == $koubokuSmId || $item->dg_id == $koubokuBgId || $item->dg_id == $sitakoniId) {
-                    	$tiyodaItem[] = $item;
-                    }
-                    elseif($item->dg_id == $simotukeSmId || $item->dg_id == $simotukeBgId) { //シモツケの時 シモツケ用の配列に入れる　シモツケは特別なので別計算で
-                    	$simotukeItem[] = $item;
-                    }
-                    elseif($item->dg_id == $coniferSmId || $item->dg_id == $coniferBgId) { //コニファーの時 コニファー用の配列に入れる　コニファーだけ特別なので別計算で
-                    	$coniferItem[] = $item;
-                    }
-                    else { //下草・コニファー以外の同梱包商品
-                        $isOnceItem[$item->dg_id][] = $item; //dgIdをKeyとして、itemを入れる dgIdが同じitemはdgIdのkeyに対しての配列としてpushされる
-                        //$keyIsDgId[] = $item->id; //itemIdをkeyとしてdeliveryGroupIdを別配列へ
-                    }
-                }
-            }      
-        }
-  		
-        
-        //下草・コニファー以外の同梱包商品 係数 x 個数の合計が容量を越えれば都道府県送料の倍数となる ============     
-        if(count($isOnceItem) > 0) {
-        
-        	foreach($isOnceItem as $dgIdKey => $itemArrs) {
-            	//$count = 0;
-            	$factor = 0;
-                
-                //同じ配送区分のItemに対して 係数 x 個数を出す
-                foreach($itemArrs as $ioi) {
-                	//$count += $obj->count; //買い物個数
-                    $factor += $ioi->factor * $ioi->count;
-                }
-                
-                //dgの容量を取り、係数に対して割り、余りも出す。余りが0なら割ったanswerの倍数送料、余りがあればanswer１以上で少数切り上げをしてその整数値を送料に掛ける
-                //通常計算関数にて
-                $deliFee += $this->normalCalc($dgIdKey, $prefId, $factor);
-                
-/*
-                $dg = $this->dg->find($dgIdKey);
-                
-                $capacity = $dg->capacity;
-                $answer = $factor / $capacity;
-                $amari = $factor % $capacity;
-                
-                $fee = $this->dgRel->where(['dg_id'=>$dgIdKey, 'pref_id'=>$prefId])->first()->fee;
-            
-                if($amari > 0) { //割り切れない時
-                    if($answer <= 1) {
-                        $deliFee += $fee;
-                    }
-                    else {
-                        $answer = ceil($answer); //切り上げ
-                        $deliFee += $fee * $answer;
-                    }
-                }
-                else { //割り切れる時
-                	if(is_float($answer)) { //割り切れる時で、なおかつ小数点の余がある時。12.3 / 6 の時amariは0だが、0.3の端数が出る
-                    	$deliFee += $fee * ceil($answer); //切り上げ
-                    }
-                    else {
-                    	$deliFee += $fee * $answer;
-                    }
-                }
-*/
-            
-            } //foreach first
-        
-        } // if(count($isOnceItem) > 0)
-        
-/*        
-        //下草でない時 ============     
-        if(count($isOnceItem) > 0) {
-        	foreach($isOnceItem as $ioi) {
-         		if(isset($dgIds[$ioi->id])) { //ここでsetされていなければ519行目のarray_diffで削除されているので送料算出の必要なし
-           			unset($dgIds[$ioi->id]); //自身の要素を削除
-             	
-                    if(in_array($ioi->dg_id, $dgIds)) { //同じ配送区分があるかどうか                        
-                        //容量を超えていないかの確認
-                        $out = array_count_values($dgIds); //要素がkeyになって個数がvalとして配列になる
-                        //$count = $out[$ioi->dg_id] + 1;
-                        
-                        $count = 0;
-                        $factor = 0;
-                        
-                        //他の同じ配送区分の商品の個数を取り出す
-                        $itemIdKeys = array_keys($dgIds, $ioi->dg_id);
-                        if(count($itemIdKeys) > 0) {
-                        	foreach($itemIdKeys as $itemIdKey) {
-                                foreach($isOnceItem as $obj) {
-                                	if($obj->id == $itemIdKey) {
-                                 		$count += $obj->count; //買い物個数
-                                        $factor += $obj->factor * $obj->count;
-                                 	}   
-                                }
-                         		
-                         	}   
-                        }
-                        
-
-                        //このループの商品の個数
-                        $count += $ioi->count;
-                        $factor += $ioi->factor * $ioi->count;
-                        
-                            
-                        $dg = $this->dg->find($ioi->dg_id);
-                        
-                        //dgの容量を取り、係数に対して割り、余りも出す。余りが0なら割ったanswerの倍数送料、余りがあればanswer１以上で少数切り上げをしてその整数値を送料に掛ける
-                        $capacity = $dg->capacity;
-                        $answer = $factor / $capacity;
-                        $amari = $factor % $capacity;
-                        
-                        $fee = $this->dgRel->where(['dg_id'=>$ioi->dg_id, 'pref_id'=>$prefId])->first()->fee;
-                    
-                    	if($amari > 0) { //割り切れない時
-                            if($answer <= 1) {
-                                $deliFee += $fee;
-                            }
-                            else {
-                                $answer = ceil($answer); //切り上げ
-                                $deliFee += $fee * $answer;
-                            }
-                        }
-                        else { //割り切れる時
-                        	$deliFee += $fee * $answer;
-                        }
-                        
-                        
-                        $dgIds = array_diff($dgIds, array($ioi->dg_id)); //同じ配送区分のdg_idを削除
-                                                     
-                    }
-                    else { //同じ配送区分がない時
-                    	$fee = $this->dgRel->where(['dg_id'=>$ioi->dg_id, 'pref_id'=>$prefId])->first()->fee;
-                    	$deliFee += $fee;  
-                    }
-                    
-                    //$takeChargeFee += $this->dg->find($ioi->dg_id)->take_charge; //送料負担分を加算
-                }
-         	}   
-        }
-*/
-        
-        
-        
-        //下草(府中ガーデン)の時 特別なので別計算で ================
-        if(count($sitakusaItem) > 0) {
-        	//$count = 0;
-            $factor = 0;
- 
-/*
-            //下草小の容量: 20
-            $sitakusaSmCapa = $this->dg->find($sitakusaSmId)->capacity;
-            //下草大の容量: 40
-            $sitakusaBgCapa = $this->dg->find($sitakusaBgId)->capacity;
-            
-            //下草小と大のそれぞれの送料
-			$smFee = $this->dgRel->where(['dg_id'=>$sitakusaSmId, 'pref_id'=>$prefId])->first()->fee;
-            $bgFee = $this->dgRel->where(['dg_id'=>$sitakusaBgId, 'pref_id'=>$prefId])->first()->fee;
-*/            
-            //下草商品の係数の合計を算出
-        	foreach($sitakusaItem as $ioi) { 
-                //$count += $ioi->count;
-                $factor += $ioi->factor * $ioi->count;   
-        	}
-            
-//            echo $factor . '/'. $switch . '/' . $prefId;
-//            exit;
-            
-            
-            $deliFee += $this->specialCalc($sitakusaSmId, $sitakusaBgId, $prefId, $factor); //下記の特別関数で計算
-            
-/*
-            if($factor <= $sitakusaSmCapa) { //個数x係数が20以下なら下草小
-//                $answer = $factor / $sitakusaSmCapa;
-//                $fee = $this->dgRel->where(['dg_id'=>$sitakusaSmId, 'pref_id'=>$prefId])->first()->fee;
-                $deliFee += $smFee;        
-            }
-            else {  //個数x係数が20以上なら各種計算が必要
-                $amari = $factor % $sitakusaBgCapa;
-                $answer = $factor / $sitakusaBgCapa;
-                
-                if($amari > 0) { //amariがある時 0以上の時
-
-                    if($answer <= 1) {
-                        $deliFee += $bgFee;
-                    }
-                    else {
-                    	if($amari <= $sitakusaSmCapa) { //40で割ったamariが下草小で可能の時 下草小のcapacity以下の時 合計係数が95なら40で割ると余は15となり下草小で可能
-                        	$deliFee += $smFee;
-                            $deliFee += $bgFee * floor($answer); //切り捨て
-                        }
-                        else {
-                    		$deliFee += $bgFee * ceil($answer); //切り上げ
-                        }
-                    }
-                }
-                else { //amari 0 割り切れる時
-                	//$fee = $this->dgRel->where(['dg_id'=>$sitakusaBgId, 'pref_id'=>$prefId])->first()->fee;
-                    
-                    if($answer <= 1) {   
-                        $deliFee += $bgFee;
-                    }
-                    else {
-                    	$deliFee += $bgFee * $answer; //割り切れるので切り上げ切り捨てなし
-                    }
-                }
-            }
-*/
-        }
-        
-        //高木コニファー・下草コニファー（千代田プランツ）の時  特別なので別計算で ================
-        if(count($tiyodaItem) > 0) {
-        	//$count = 0;
-            $factor = 0;
-            
-            $switch = 0; //高木コニファーがない時False 高木コニファーがある時True
-            foreach($tiyodaItem as $itemObject) {
-                if($koubokuSmId == $itemObject->dg_id || $koubokuBgId == $itemObject->dg_id) {
-                	$switch = 1;
-                    break;
-                }
-            }
-             
-            //下草商品の係数の合計を算出
-        	foreach($tiyodaItem as $ioi) {  //★★★ 高木コニファーがあってもなくても、係数はその商品に指定されている係数にて計算している★★★
-                //$count += $ioi->count;
-                $factor += $ioi->factor * $ioi->count;   
-        	}
-            
-//            echo $factor . '/'. $switch . '/' . $prefId;
-//            exit;
-            
-            if($switch) {
-            	$deliFee += $this->specialCalc($koubokuSmId, $koubokuBgId, $prefId, $factor); //下記の特別関数で計算
-            }
-            else { //下草コニファーは大小の区別がないので通常計算で可能
-            	$deliFee += $this->normalCalc($sitakoniId, $prefId, $factor);
-            	
-			}
-            
-        }
-        
-        
-        //シモツケの時 係数x個数の合計に対して容量を決める特別計算 下草（府中ガーデン）================
-        if(count($simotukeItem) > 0) {
-        	//$count = 0;
-            $factor = 0;
-            
-            //下草商品の係数の合計を算出
-        	foreach($simotukeItem as $ioi) {
-                //$count += $ioi->count;
-                $factor += $ioi->factor * $ioi->count;   
-        	}
-            
-            $deliFee += $this->specialCalc($simotukeSmId, $simotukeBgId, $prefId, $factor); //下記の特別関数で計算
-			
-        }
-        
-       	/* 下草・シモツケ・高木コニファー　特別計算の関数 ************************************************** */ 
-/*
-        function specialCalc($smId, $bgId, $prefId, $factor) {
-        	
-            $deliveryFee = 0;
-            
-            //下草小の容量: 20
-            $smCapa = $this->dg->find($smId)->capacity;
-            //下草大の容量: 40
-            $bgCapa = $this->dg->find($bgId)->capacity;
-            
-            //下草小と大のそれぞれの送料
-			$smFee = $this->dgRel->where(['dg_id'=>$smId, 'pref_id'=>$prefId])->first()->fee;
-            $bgFee = $this->dgRel->where(['dg_id'=>$bgId, 'pref_id'=>$prefId])->first()->fee;
-            
-        
-        	if($factor <= $smCapa) { //個数x係数が20以下なら下草小
-//                $answer = $factor / $sitakusaSmCapa;
-//                $fee = $this->dgRel->where(['dg_id'=>$sitakusaSmId, 'pref_id'=>$prefId])->first()->fee;
-                $deliveryFee += $smFee;        
-            }
-            else {  //個数x係数が20以上なら容量で割る各種計算が必要
-                $amari = $factor % $bgCapa;
-                $answer = $factor / $bgCapa;
-                
-                if($amari > 0) { //amariがある時 0以上の時
-
-                    if($answer <= 1) {
-                        $deliveryFee += $bgFee;
-                    }
-                    else {
-                    	if($amari <= $smCapa) { //40で割ったamariが下草小で可能の時 下草小のcapacity以下の時 合計係数が95なら40で割ると余は15となり下草小で可能
-                        	$deliveryFee += $smFee;
-                            $deliveryFee += $bgFee * floor($answer); //切り捨て
-                        }
-                        else {
-                    		$deliveryFee += $bgFee * ceil($answer); //切り上げ
-                        }
-                    }
-                }
-                else { //amari 0 割り切れる時
-                	//$fee = $this->dgRel->where(['dg_id'=>$sitakusaBgId, 'pref_id'=>$prefId])->first()->fee;
-                    
-                    if($answer <= 1) {   
-                        $deliveryFee += $bgFee;
-                    }
-                    else {
-                    	$deliveryFee += $bgFee * $answer; //割り切れるので切り上げ切り捨てなし
-                    }
-                }
-            }
-            
-            return $deliveryFee;
-        }
-*/
-        /* 下草　特別計算の関数 END ************************************************** */
-        
-        
-        //モリヤコニファーの時 モリヤコニファーは大商品が含まれているかどうかを確認する必要があるので　大or小を判別できればあとは通常計算で ========
-        if(count($coniferItem) > 0) {
-        	//$count = 0;
-            $factor = 0;
-            
-            $isBg = 0;
-            $isSm = 0;
-            
-            foreach($coniferItem as $ioi) {
-            	if($ioi->dg_id == $coniferBgId) {
-                	$isBg = 1;
-                    break;
-                }
-            }
-            
-            if(!$isBg) {
-            	foreach($coniferItem as $ioi) {
-                    if($ioi->dg_id == $coniferSmId) {
-                        $isSm = 1;
-                        break;
-                    }
-                }
-            }
-        
-        	//コニファーの容量と送料を取得
-/*
-            if($isBg) { //コニファー大の時
-            	$coniferCapa = $this->dg->find($coniferBgId)->capacity;
-                $coniFee = $this->dgRel->where(['dg_id'=>$coniferBgId, 'pref_id'=>$prefId])->first()->fee;
-                
-                //$takeChargeFee += $this->dg->find($coniferBgId)->take_charge; //送料負担分を加算
-            }
-            else { //コニファー小の時
-            	$coniferCapa = $this->dg->find($coniferSmId)->capacity;
-                $coniFee = $this->dgRel->where(['dg_id'=>$coniferSmId, 'pref_id'=>$prefId])->first()->fee;
-                
-                //$takeChargeFee += $this->dg->find($coniferSmId)->take_charge; //送料負担分を加算
-            }
-*/
-            
-            //コニファー商品の係数の合計を算出
-        	foreach($coniferItem as $ioi) {	
-                //$count += $ioi->count;
-                $factor += $ioi->factor * $ioi->count;   
-        	}
-            
-            if($isBg) {
-            	$deliFee += $this->normalCalc($coniferBgId, $prefId, $factor);
-            }
-            elseif($isSm) {
-            	$deliFee += $this->normalCalc($coniferSmId, $prefId, $factor);
-            }
-            else {
-            	$deliFee += $this->normalCalc($coniferKsId, $prefId, $factor);
-            }
-
-/*
-            //余りと割り算の解を計算
-            $amari = $factor % $coniferCapa;
-            $answer = $factor / $coniferCapa;
-            
-            //余りと割算の答えがあれば、あとは普通の計算と同じ
-            if($amari > 0) { //割り切れない時
-                if($answer <= 1) {
-                    $deliFee += $coniFee;
-                }
-                else {
-                    $answer = ceil($answer); //切り上げ
-                    $deliFee += $coniFee * $answer;
-                }
-            }
-            else { //割り切れる時
-            	if(is_float($answer)) { //割り切れる時で、なおかつ小数点の余がある時。12.3 / 6 の時amariは0だが、0.3の端数が出る
-                    $deliFee += $fee * ceil($answer); //切り上げ
-                }
-                else {
-                	$deliFee += $coniFee * $answer;
-                }
-            }
-*/
-          
-        }
-        
-         
+        //送料 --------------
+        $deliFee = $df->getDelifee();
         $totalFee = $totalFee + $deliFee;
         //送料END -----------------
         
@@ -1212,6 +754,7 @@ class CartController extends Controller
         }
         
         $totalFee = $totalFee + $codFee;
+        //代引き END ---------------------
         
         //送料、手数料、ポイントのsession入れ *********************
         session(['all.deli_fee'=>$deliFee, 'all.cod_fee'=>$codFee, /*'all.take_charge_fee'=>$takeChargeFee,*/ 'all.use_point'=>$usePoint, 'all.add_point'=>$addPoint]);
@@ -1270,8 +813,9 @@ class CartController extends Controller
 //        elseif($data['pay_method'] == 4) { //代引き
 //            $payCode = '10000-0000-00000-00000-00000-00000-00000'; // ???
 //        }
+        
         //User識別
-        $settles['contract_code'] = '66254480';
+        $settles['contract_code'] = '66254480'; //イプシロンID
         $settles['user_id'] = $user_id;
         $settles['user_name'] = $user_name;
         $settles['user_mail_add'] = $user_email;

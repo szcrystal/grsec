@@ -20,6 +20,7 @@ $isSale = Setting::get()->first()->is_sale;
         <span>{{ number_format(Ctm::getPriceWithTax($obj->price)) }}
     @endif
 @endif
-<span class="text-small">円&nbsp;(税込)</span>
 </span>
+<span class="text-small">円&nbsp;(税込)</span>
+
 

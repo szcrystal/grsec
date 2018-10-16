@@ -234,7 +234,11 @@
         @if(Auth::check())
         <tr>
             <th><label class="control-label">利用ポイント</label></th>
-             <td>-{{ $usePoint }}</td>
+             <td>
+             @if($usePoint)
+             -
+             @endif
+             {{ $usePoint }}</td>
         </tr>
         @endif
         

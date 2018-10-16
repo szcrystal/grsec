@@ -5,27 +5,16 @@
         use App\User;
 //        use App\Setting;
         
-        $path = Request::path();
-        $path = explode('/', $path);        
+//        $path = Request::path();
+//        $path = explode('/', $path);        
 
 		//This is For PC. 
         //Sp -> headNavSp.php
     ?>
     <div class="fixed-top">
-    <div class="site-description">
+    <div class="site-description {{ Ctm::isEnv('alpha') ? 'text-danger' : '' }}">
     	<p>植木買うならグリーンロケット：グリーンロケットは初めての植木、お庭づくりを全力で応援します。</p>
     </div>
-
-    @if(Ctm::isAgent('sp'))
-        <div id="menuButton" class="nav-tgl">
-            <div>
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-        </div>
-    @endif
-    
 
 	<div class="head-first clearfix">
         <h1 class="float-left">
