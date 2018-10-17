@@ -44,149 +44,84 @@ use App\User;
 
         </form>
     </div>
+    
+    
+    <nav class="">
+
+        <?php
+            use App\Category;
+            use App\CategorySecond;
+            $cates = Category::all();
+        ?>
+        
+        <div class="nav-sp">
+        	<p>グリーンロケットは初めての植木、お庭づくりを全力で応援します</p>
+            
+            <ul class="clearfix list-unstyled">
+                <li class="has-child">
+                    初めての方へ <i class="fal fa-caret-down" aria-hidden="true"></i>
+                    
+                    <?php
+                        extract(Ctm::getFixPage());
+                    ?>
+                
+                    @if(count($fixOthers) > 0) 
+                    <ul class="list-unstyled nav-child"> 
+                        @foreach($fixOthers as $fixOther)
+                            <li><a href="{{ url($fixOther->slug) }}">
+                                @if($fixOther->sub_title != '')
+                                {{ $fixOther->sub_title }} <i class="fal fa-angle-double-right"></i>
+                                @else
+                                {{ $fixOther->title }} <i class="fal fa-angle-double-right"></i>
+                                @endif
+                            </a></li>
+                        @endforeach                     
+                    </ul>
+                    @endif
+                </li>
+                
+                <li class="has-child">
+                    グリーンロケットについて <i class="fal fa-caret-down" aria-hidden="true"></i>
+                    <ul class="list-unstyled nav-child">
+                        
+                        @if(count($fixNeeds) > 0)         
+                            @foreach($fixNeeds as $fixNeed)
+                            <li><a href="{{ url($fixNeed->slug) }}">
+                                @if($fixNeed->sub_title != '')
+                                {{ $fixNeed->sub_title }} <i class="fal fa-angle-double-right"></i>
+                                @else
+                                {{ $fixNeed->title }} <i class="fal fa-angle-double-right"></i>
+                                @endif
+                            </a></li>
+                            @endforeach
+                        @endif 
+                        <li><a href="{{ url('contact') }}">お問い合わせ <i class="fal fa-angle-double-right"></i></a></li>
+                    </ul>
+                </li>
+
+               
+                @foreach($cates as $cate)
+                    <li class="">
+                        <a href="{{ url('category/' . $cate->slug) }}">
+                            {{ $cate->name }} <i class="fal fa-angle-double-right"></i>
+                        </a>
+                    </li>
+                @endforeach     
+
+            </ul>
+        </div>
+
+    </nav>
 
 </header>
 
 </div><!-- fixed-top -->
 
+
+
 <div class="head-navi">
     <p class="aniv">初めてでも安心！全品6ヶ月枯れ保証！3ヶ月取置き可能！</p>
 </div>
-
-<div class="fade-black">
-	<span class="nav-tgl"><i class="fal fa-times"></i></span>	
-</div>
-
-<nav class="navbar main-navigation">
-
-        <?php
-            use App\Category;
-            use App\CategorySecond;
-//            use App\State;
-//            use App\FeatureCategory;
-            
-            //$states = State::all();
-            $cates = Category::all();
-            //$subCates = CategorySecond::all();
-//            $fCates = FeatureCategory::where('status', 1)->get();
-        ?>
-	<div class="navi-body">
-
-        <ul class="clearfix">
-        	
-            <li class="">
-                
-            {{--    
-            <span>ページ<i class="fa fa-caret-down" aria-hidden="true"></i></span>
-            --}}    
-
-                <section class="drops clearfix">
-                    
-                    <div class="clearfix">
-                        <h3><a href="{{ url('first-guide') }}">
-                                初めての方へ <i class="fal fa-angle-double-right"></i>
-                            </a></h3>
-                        <div class="">
-                            <p>グリーンロケットは初めての植木、お庭づくりを全力で応援します。</p>
-                        </div>
-                        
-                        <?php
-                            extract(Ctm::getFixPage());
-                        ?>
-                    
-                        @if(count($fixOthers) > 0) 
-                        <ul class="list-unstyled"> 
-                            @foreach($fixOthers as $fixOther)
-                                <li><a href="{{ url($fixOther->slug) }}">
-                                    @if($fixOther->sub_title != '')
-                                    {{ $fixOther->sub_title }} <i class="fal fa-angle-double-right"></i>
-                                    @else
-                                    {{ $fixOther->title }} <i class="fal fa-angle-double-right"></i>
-                                    @endif
-                                </a></li>
-                            @endforeach                     
-                        </ul>
-                        @endif
-                    </div>
-                    
-                    <div class="clearfix">
-                        
-                        <h3>グリーンロケットについて</h3>
-                        
-                        <ul class="mt-3 list-unstyled">
-                            @if(count($fixNeeds) > 0)         
-                                @foreach($fixNeeds as $fixNeed)
-                                <li><a href="{{ url($fixNeed->slug) }}">
-                                    @if($fixNeed->sub_title != '')
-                                    {{ $fixNeed->sub_title }} <i class="fal fa-angle-double-right"></i>
-                                    @else
-                                    {{ $fixNeed->title }} <i class="fal fa-angle-double-right"></i>
-                                    @endif
-                                </a></li>
-                                @endforeach
-                        	@endif 
-                            <li><a href="{{ url('contact') }}">お問い合わせ <i class="fal fa-angle-double-right"></i></a></li>
-                        </ul>
-                        
-                    </div>
-
-                </section>
-            </li>
-           
-            @foreach($cates as $cate)
-                <li class="">
-                    
-                    {{--
-                    <span>{!! str_replace('/', "<br>", $cate->link_name) !!} <i class="fa fa-caret-down" aria-hidden="true"></i></span>
-                    --}}
-
-                    <section class="drops clearfix">
-                    	
-                        <div class="clearfix">
-                        	<h3><a href="{{ url('category/' . $cate->slug) }}">
-                                    {{ $cate->name }} <i class="fal fa-angle-double-right"></i>
-                                </a></h3>
-                            <div class="">
-                                
-                                <p>{{ $cate->meta_description }}</p>
-                                
-                            </div>
-                        
-                            <ul class="">
-                                <?php
-                                    $cateSecs = CategorySecond::where('parent_id', $cate->id)->get();
-                                ?>
-                                @foreach($cateSecs as $cateSec)
-                                    <li><a href="{{ url('category/'.$cate->slug.'/'.$cateSec->slug) }}">{{ $cateSec->name }} <i class="fal fa-angle-double-right"></i></a></li>
-                                @endforeach                  
-                            </ul>
-                        </div>
-                        
-                        <div class="clearfix">
-                            <?php
-                            	$cateItems = Item::where(['cate_id'=>$cate->id, 'open_status'=>1, 'is_potset'=>0])->orderBy('created_at','desc')->get()->take(3);
-                            ?>
-
-                            <h3>{{ $cate->name }}の最新の商品</h3>
-                                @foreach($cateItems as $cateItem)
-                                    <div class="float-left">
-                                        <a href="{{ url('item/'.$cateItem->id) }}">
-                                            <img src="{{ Storage::url($cateItem->main_img) }}">
-                                            <p>{{ $cateItem->title }}</p>
-                                        </a>
-                                    </div>
-                                @endforeach
-                        </div>
-
-                    </section>
-                </li>
-            @endforeach     
-
-        </ul>
-    
-    </div>
-
-</nav>
 
 
 

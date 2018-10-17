@@ -7,6 +7,7 @@
 
                 <div class="panel-heading">
                 	<h2 class="card-header">お問い合わせ内容の確認</h2>
+                    <p class="mt-3 mb-0 pb-0">以下の内容で送信します。<br>よろしければ「送信する」ボタンを押して下さい。</p>
                 </div>
 
                 <div class="panel-body mt-5">

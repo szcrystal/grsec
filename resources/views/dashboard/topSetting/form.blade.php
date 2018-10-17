@@ -44,7 +44,7 @@
         </div>
     @endif
         
-    <div class="col-lg-11">
+    <div class="col-lg-12">
         <form class="form-horizontal" role="form" method="POST" action="/dashboard/top-settings" enctype="multipart/form-data">
         	
          	<div class="form-group">
@@ -68,7 +68,7 @@
             
             @include('dashboard.shared.contents')
             
-            <label>メタ設定</label>
+            <label class="mt-4">TOPメタ設定</label>
             @include('dashboard.shared.meta')
             
             

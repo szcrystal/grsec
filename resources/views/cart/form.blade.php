@@ -22,14 +22,14 @@ use App\DeliveryGroup;
 
 @if (count($errors) > 0)
     <div class="alert alert-danger">
-        <strong><i class="fas fa-exclamation-triangle"></i>
+        <i class="far fa-exclamation-triangle"></i>
         @if ($errors->has('no_delivery.*'))
-        	</strong> 配送不可の商品があります
+        	配送不可の商品があります。
         @else
-        	Error!!</strong> 確認して下さい
+        	確認して下さい。
         @endif
-        <br>
-        <ul>
+        
+        <ul class="mt-2">
             @foreach ($errors->all() as $error)
                 <li>{{ $error }}</li>
             @endforeach

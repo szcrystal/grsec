@@ -91,6 +91,7 @@ var exe = (function() {
         
         searchSlide: function() {
         	var $input = $('.s-form');
+            var $nav = $('.nav-sp');
             
             //var $width = this.isSpTab('sp') ? '65%' : '13em';
             var speed = 180;
@@ -98,14 +99,18 @@ var exe = (function() {
            
             $('.s-tgl').on('click', function(){
                 if($input.is(':hidden')) {
+                	
+                    if($nav.is(':visible')) {
+                    	$nav.slideUp(100);
+                    }
+                    
                     $input.slideDown(speed, ease, function(){
                         //$(this).queue([]).stop();
                     });
                 }
                 else {
                     $input.slideUp(speed, ease, function(){
-                        //$(this).queue([]).stop();
-                        
+                        //$(this).queue([]).stop(); 
                     });
                 
                 }
@@ -119,9 +124,46 @@ var exe = (function() {
 //            	$('.s-form input').slideToggle(150);
 //            });
            
-            var t;
+            //var t;
+            
+            var $nav = $('.nav-sp');
+            var $sForm = $('.s-form');
+            var $hasChild = $('.has-child');
+            
+            var speed = 180;
             var ease = 'linear';
             
+            $('.nav-tgl').on('click', function() {
+
+                if($nav.is(':hidden')) {
+                	if($sForm.is(':visible')) {
+                    	$sForm.slideUp(100);
+                    }
+                    
+                	$nav.slideDown(speed);
+                }
+                else {
+                	$nav.slideUp(speed);
+                }
+ 
+            });
+            
+            $hasChild.on('click', function(){
+            	$ul = $(this).find('ul');
+            	
+                $hasChild.find('ul:visible').slideUp(speed);
+                
+                if($ul.is(':hidden')) {
+                    $ul.slideDown(speed);
+                }
+                else {
+                    $ul.slideUp(speed);
+                }
+                
+            });
+            
+            
+            /* ORG navi ===========================
             //$('.fade-black').css({height:'100%'})
             
             $('.nav-tgl').on('click', function(){
@@ -159,39 +201,9 @@ var exe = (function() {
                 }
                 //$('.navbar-brand').text(t);
             });
+            */
 
-            //SP Only
-//            $('.site-header .nav-tgl').on('click', function(){
-//            	
-//                var $nav = $('.main-navigation');
-//                var $sForm = $('.s-form > div');
-//                var t = $(window).scrollTop();
-//                
-//                if($nav.is(':visible')) {
-//                	var top = $nav.data('top');
-//                    $('html,body').css({position:'static'}).scrollTop(top);
-//                }
-//                else {
-//                    $('html,body').css({position:'fixed', top:-t});
-//                    $nav.data('top', t);
-//                }
-//
-//				if($sForm.is(':visible')) {
-//                	$sForm.slideUp(200, function(){
-//                        $nav.slideToggle(300, 'linear', function(){
-//                            $('.menu-dropdown').hide();
-//                        });
-//                        
-//                        $(this).queue([]).stop();
-//                    });
-//                }
-//                else {
-//                    $nav.slideToggle(300, 'linear', function(){
-//                        $('.menu-dropdown').hide();
-//                    });
-//                }
-//                
-//            });
+            
         },
         
         

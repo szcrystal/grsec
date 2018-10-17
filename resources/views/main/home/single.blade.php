@@ -110,13 +110,6 @@ use App\TopSetting;
                         </div>
                     @endif
                  	
-                  	<?php
-                        $per = env('TAX_PER');
-                        $per = $per/100;
-                        
-                        $tax = floor($item->price * $per);
-                        $price = $item->price + $tax;
-                   	?>
                    
                    {{--
                     <div class="mb-3" >

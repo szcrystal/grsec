@@ -285,8 +285,8 @@ for SP
 	.site-header {
 		position: relative;
         box-sizing: content-box;
-        padding: 0.2em 0.2em 0.2em;
-        border-bottom: 1px solid #eaeaea;
+        padding: 0.2em 0 0;
+        border-bottom: 1px solid #d5d5d5;
         border-top: 0;
 	}
     .fixed-top {
@@ -303,7 +303,7 @@ for SP
     .site-header h1 {
     	width: 5.5em;
         float: none;
-    	margin: 1px auto 2px;
+    	margin: 1px auto 0.15em;
         padding: 0;
         line-height: 0;
         text-align: center;
@@ -346,7 +346,7 @@ for SP
         //border: 1px solid red;
     }
     .nav-tgl {
-        padding: 0.15em 0.2em 0.2em 0.2em;
+        padding: 0.2em 0.2em 0.2em 0.2em;
         top: 0;
         left: 1.0%;
         font-size: 1.7em;
@@ -442,8 +442,48 @@ for SP
     	margin-left: -2em;
     }
     
-    
 
+    .nav-sp {
+    	display: none;
+        padding: 0.5em 0 0;
+        overflow: scroll;
+    }
+    .nav-sp > p {
+    	text-align: center;
+        font-weight: bold;
+        font-size: 0.75em;
+        margin: 0 0 0.3em;
+        padding: 0;
+    }
+    .nav-sp ul {
+    	padding: 0;
+        margin: 0;
+    }
+    .nav-sp ul > li {
+    	padding: 0.5em 0 0.5em 1.4em;
+    	border-bottom: 1px solid #d5d5d5;
+        font-size: 1.0em;
+        color: #333;
+    }
+    .nav-sp ul > li:last-of-type {
+    	border-bottom: 0;
+    }
+    .nav-sp .has-child {
+    	
+    }
+    .nav-sp .has-child ul {
+    	display: none;
+        margin-top: 0.3em;
+    }
+    .nav-sp .has-child li {
+    	padding: 0.3em 0 0.3em 2em;
+        border: 0;
+        font-size: 0.9em;
+    }
+    
+    
+    
+/* ORG ================
     .fade-black {
     	width: 100%;
         height: 100%;
@@ -550,7 +590,7 @@ for SP
         display: block;
         border-bottom: 1px solid #aaa;
     }
-    
+ORG END ======================== */
     
     
     /* Shop */

@@ -14,7 +14,7 @@
             
             @if (count($errors) > 0)
                 <div class="alert alert-danger">
-                    <strong><i class="fas fa-exclamation-triangle"></i> Error</strong>
+                    <i class="far fa-exclamation-triangle"></i> 確認して下さい。
                     <ul>
                         @foreach ($errors->all() as $error)
                             <li>{{ $error }}</li>

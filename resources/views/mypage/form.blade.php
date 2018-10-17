@@ -17,8 +17,8 @@
 
 @if (count($errors) > 0)
     <div class="alert alert-danger">
-        <strong><i class="fas fa-exclamation-triangle"></i> Error!!</strong> 以下の入力を確認して下さい。<br><br>
-        <ul>
+        <i class="far fa-exclamation-triangle"></i> 確認して下さい。
+        <ul class="mt-2">
             @foreach ($errors->all() as $error)
                 <li>{{ $error }}</li>
             @endforeach
@@ -433,7 +433,9 @@ $url = $isMypage ? url('mypage/register') : url('register');
          </table>
          </div>
 
-	<button class="btn btn-block btn-custom col-md-3 my-4 mx-auto py-2" type="submit" name="recognize" value="1">確認する</button>                 
+        <div>
+            <button class="btn btn-block btn-custom col-md-4 mt-5 mb-3 mx-auto py-2" type="submit" name="recognize" value="1">確認する</button>
+        </div>                
     </form>
 
 @if($isMypage)

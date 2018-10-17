@@ -13,16 +13,14 @@
 
                 <div class="panel-heading">
                 	<h2 class="card-header">お問い合わせ</h2>
-                 	<p class="mt-4 pb-3">ここに何か説明を入れるなら<br>ここに何か説明を入れるなら<br>
-                  
-                  	</p>      
+                 	<p class="mt-4 pb-3"></p>      
                 </div>
 
                 <div class="panel-body">
 
                     @if (count($errors) > 0)
                         <div class="alert alert-danger">
-                            <strong>Error!!</strong> 確認して下さい。<br>
+                            <i class="far fa-exclamation-triangle"></i> 確認して下さい。
                             <ul class="mt-2">
                                 @foreach ($errors->all() as $error)
                                     <li>{{ $error }}</li>

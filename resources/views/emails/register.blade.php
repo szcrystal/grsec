@@ -16,7 +16,7 @@
 <br><br>
 ■詳細のご確認および会員情報の修正はこちら<br>
 （メールアドレスの変更やメルマガの配信停止など）<br>
-<a href="{{ url('mypage')}}">https://green-rocket.jp/mypage/</a>
+<a href="{{ url('mypage')}}">{{ url('mypage')}}</a>
 <br><br>
 ＊ご利用するにはログインが必要です。<br>
 <hr>

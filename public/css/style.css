@@ -883,8 +883,8 @@ body {
     z-index: 99;
 }
 .top .main-atcl > span.top-new {
-	background: #C9353F;
-    color: #fff;
+	background: #fff/*#C9353F*/;
+    color: #000;
 /*    top: 0;*/
 /*    left: 0;*/
 }
@@ -915,14 +915,20 @@ body {
     top: 0;
     right: 0;
     //font-weight: bold;
+    background: #C15360/*#C9353F*/;
     color: #fff;
-    background: orange;
     z-index: 99;
 /*    -webkit-transform: rotate(15deg);*/
 /*    transform: rotate(15deg);*/
 }
 .main-atcl:hover > span {
 	opacity: 1;
+}
+.single-recom span.sale-belt {
+	font-size: 0.85em;
+}
+.recent-check span.sale-belt {
+	font-size: 0.8em;
 }
 
 
@@ -955,9 +961,10 @@ body {
 	font-size: 0.65em;
     padding: 0.1em 0.7em;
     border-radius: 0.3em;
+    background: #8a8a8a;
     color: #fff;
 }
-
+/*
 .icons .icon_daibiki {
 	background: royalblue;
 }
@@ -970,7 +977,7 @@ body {
 .icons .icon_kare_ensure {
 	background: limegreen;
 }
-
+*/
 
 
 .main-atcl .meta .tags {
@@ -1236,6 +1243,10 @@ ul.side-rank {
     border: 1px solid #999/*#E2D2C8*/;
     cursor: pointer;
     font-size: 0.9em;
+}
+.no-list li.rank-tag {
+	font-size: 0.9em;
+	margin-bottom: 0.3em;
 }
 .main-navigation .rank-tag {
 	background: mintcream/*#F7EBE4*/;/*#F7F1E4*/
@@ -1525,9 +1536,7 @@ select.potSetSelect {
 .recent-check .floar .meta .price {
 	display: none;
 }
-.recent-check span.sale-belt {
-	font-size: 0.8em;
-}
+
 
 /* img-boxは上段へ(Line:740 辺) */
 .floar li a:hover img {

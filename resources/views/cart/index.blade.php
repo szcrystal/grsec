@@ -27,8 +27,8 @@
 
 @if ($errors->has('no_delivery.*'))
     <div class="alert alert-danger">
-        <strong><i class="fas fa-exclamation-triangle"></i></strong> 配送不可の商品があります<br>
-        <ul>
+        <i class="far fa-exclamation-triangle"></i> 配送不可の商品があります。
+        <ul class="mt-2">
             @foreach ($errors->get('no_delivery.*') as $error)
                 <li>{{ $error[0] }}</li>
             @endforeach
