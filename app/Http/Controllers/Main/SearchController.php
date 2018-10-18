@@ -28,7 +28,7 @@ class SearchController extends Controller
         //$this->tagGroup = $tagGroup;
         $this->category = $category;
         
-        $this->perPage = 20;
+        $this->perPage = env('PER_PAGE', Ctm::isAgent('sp') ? 21 : 20);
     }
 
     /**
@@ -62,8 +62,8 @@ class SearchController extends Controller
         //Custom pagination END
         */
         
-        $allResults = $this->item->whereIn('id', $allResIds)->where([
-            ['open_status', '=', 1]/*, ['del_status', '=', 0], ['owner_id', '>', 0]*/
+        $allResults = $this->item->whereIn('id', $allResIds)->where(['open_status'=>1, 'is_potset'=>0
+            //['open_status', '=', 1], ['del_status', '=', 0], ['owner_id', '>', 0]
         ])->orderBy('created_at','DESC')->paginate($this->perPage);
         
         //Sidebar

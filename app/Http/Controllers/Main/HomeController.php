@@ -34,23 +34,16 @@ class HomeController extends Controller
         $this->tag = $tag;
         $this->tagRel = $tagRel;
         $this->fix = $fix;
-        $this->tag = $tag;
+
         $this->setting = $setting;
         $this->itemImg = $itemImg;
         $this->favorite = $favorite;
         $this->itemSc = $itemSc;
         $this->topSet = $topSet;
-//        $this->tagRelation = $tagRelation;
-//        $this->tagGroup = $tagGroup;
-//        $this->category = $category;
-//        $this->item = $item;
-//        $this->fix = $fix;
-//        $this->totalize = $totalize;
-//        $this->totalizeAll = $totalizeAll;
         
-        $this->perPage = env('PER_PAGE', 20);
-        $this->itemPerPage = 15;
+        $this->perPage = env('PER_PAGE', Ctm::isAgent('sp') ? 21 : 20);
         
+        //$this->itemPerPage = 15;
     }
     
     public function index(Request $request)

@@ -1196,8 +1196,8 @@ ul.side-rank {
 	display: block;
     float: left;
     //width: 100%;
-    margin-left: 0.2em;
-    margin-top: 0;
+    margin-left: 0.35em;
+    margin-top: 0.1em;
     line-height: 1.3em;
     //border: 1px solid red;
 }
@@ -1205,35 +1205,35 @@ ul.side-rank {
 	display: block;
     float: left;
     font-size: 1em;
-    width: 1.4em;
-    height: 1.4em;
-    line-height: 1.4em;
+    width: 1.5em;
+    height: 1.5em;
+    line-height: 1.5em;
     text-align: center;
-    border-radius: 50%;
+    border-radius: 2px;
 	background: none;
     border: 1px solid #888;
     //vertical-align: 1em;
 }
-.side-rank span.rank-1,
-.side-rank span.rank-2,
-.side-rank span.rank-3 {
-    font-size: 1em;
-    //color: #fff;
-    //border: none;
-    line-height: 1.3em;
-}
-.side-rank span.rank-1 {
+/*.side-rank span.rank-1,*/
+/*.side-rank span.rank-2,*/
+/*.side-rank span.rank-3 {*/
+/*    font-size: 1em;*/
+/*    //color: #fff;*/
+/*    //border: none;*/
+/*    line-height: 1.3em;*/
+/*}*/
+/*.side-rank span.rank-1 {*/
 /*	background: goldenrod;*/
-	background: #fff;
-}
-.side-rank span.rank-2 {
+/*	background: #fff;*/
+/*}*/
+/*.side-rank span.rank-2 {*/
 /*	background: silver;*/
-	background: #fff;
-}
-.side-rank span.rank-3 {
+/*	background: #fff;*/
+/*}*/
+/*.side-rank span.rank-3 {*/
 /*	background: burlywood;*/
-	background: #fff;
-}
+/*	background: #fff;*/
+/*}*/
 .rank-tag {
 	display: inline-block;
 	background: #fff;/*#F7EBE4*/
@@ -1617,16 +1617,23 @@ select.potSetSelect {
 	width: 100%;
     text-align: right;
 }
+.pagination-wrap:after {
+	display: block;
+    clear: both;
+    content: "";
+    height: 0;
+}
 .pagination-wrap:last-of-type {
 	margin-top: 2.5em;
 }
+/*
 .pagination {
-  display: inline-block;
-  padding-left: 0;
-  list-style: none;
-  border-radius: 0;
-  font-size: 0.95em;
-    width: auto;
+    display: inline-block;
+  	padding-left: 0;
+  	list-style: none;
+  	border-radius: 0;
+  	font-size: 0.95em;
+	width: auto;
     margin: 0 0 0.5em;
 }
 .pagination:after {
@@ -1643,75 +1650,85 @@ select.potSetSelect {
     height: 1.9em;
     line-height: 1.9em;
     text-align: center;
-    color: #222;
-    background: #fff !important;
+    color: #fff;
+    background: #3a3b3c !important;
+    border-radius: 0;
 }
 
 .pagination li:first-of-type,
 .pagination li:last-of-type {
 	background: #fff;
+    
 }
 .pagination li.disabled span {
 	//font-size: 1.2em;
 }
 .pagination li a {
-	color: #fff;
+	color: #3a3b3c;
     display: inline-block;
     width: 100%;
     height: 100%;
-    background: #3a3b3c;
+    background: #fff !important;
     text-align: center;
 }
 .pagination li a:hover {
 	text-decoration: none;
-    background: #fff;
-    color: #222;
+    background: #3a3b3c !important;
+    color: #fff !important;
+    opacity: 1;
 }
 
 .pagination li:first-of-type a,
 .pagination li:last-of-type a {
 	font-size: 1.1em;
     line-height: 1.6em;
+    border-radius: 0;
 }
-
-
-
-
-
-
-.page-item.active .page-link {
-  z-index: 2;
-  color: #222;
-  background-color: #fff;
-  border-color: #aaa;
+*/
+/*
+Pagination View :::
+/vendor/laravel/framework/src/Illuminate/Pagination/resources/views
+Pagination View END :::
+*/
+.pagination {
+	float: right;
 }
-
-.page-item.disabled .page-link {
-  color: #222;
-  pointer-events: none;
-  background-color: #fff;
-  border-color: #aaa;
-}
-
 .page-link {
-  position: relative;
-  display: block;
-  padding: 0;
-  margin-left: 0;
-  color: #007bff;
-  background-color: #fff;
-  border: 1px solid #222;
+    position: relative;
+    display: block;
+    padding: 0;
+    margin-left: 2.5px;
 	width: 1.9em;
     height: 1.9em;
     line-height: 1.9em;
     text-align: center;
+    border-radius: 0 !important;
+    color: #3a3b3c !important;
+    background-color: #fff !important;
+  	border: 1px solid #8a8a8a !important;
 }
 
-.page-link:focus, .page-link:hover {
-  color: #0056b3;
+.page-item.active .page-link {
+  z-index: 2;
+  color: #fff !important;
+  background-color: #3a3b3c !important;
+  border-color: #3a3b3c !important;
+}
+
+.page-item.disabled .page-link {
+  color: #fff !important;
+  pointer-events: none;
+  background-color: #3a3b3c !important;
+  border-color: #3a3b3c !important;
+  border-radius: 0;
+}
+
+.page-link:focus, a.page-link:hover {
+  color: #fff !important;
   text-decoration: none;
-  background-color: #e9ecef;
-  border-color: #ddd;
+  background-color: #3a3b3c !important;
+  border-color: #3a3b3c !important;
+  opacity: 1;
 }
 
 
