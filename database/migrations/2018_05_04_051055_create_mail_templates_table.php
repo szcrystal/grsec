@@ -55,7 +55,7 @@ class CreateMailTemplatesTable extends Migration
         DB::table('mail_templates')->insert(
             [ 
                 'type_code' => 'itemEnd',
-                'type_name' => 'ご注文',
+                'type_name' => 'ご注文完了',
                 'title' => 'ご注文ありがとうございます',
                 'header' => 'ccc',
                 'footer' => '333',

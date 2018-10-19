@@ -13,6 +13,8 @@ class Item extends Model
         'title',
         'title_addition',
         'catchcopy',
+        
+        'is_pot_parent',
         'is_potset',
         'pot_parent_id',
         'pot_count',

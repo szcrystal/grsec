@@ -1,5 +1,6 @@
 <?php
 use App\Setting;
+use App\Item;
 use App\Category;
 use App\CategorySecond;
 use App\Favorite;
@@ -62,6 +63,15 @@ use App\Icon;
 
 
     <div class="price">
+    	<?php
+        	$isPotParent = $item->is_pot_parent ? 1 : 0;
+//            if($isPotParent) {
+//            	$thisItem = Item::where('pot_parent_id', $item->id)->orderBy('price', 'asc')->get()->first();
+//            }
+//            else {
+//            	$thisItem = $item;
+//            }
+        ?>
         
         @if($isSale || isset($item->sale_price))
         	@if(! $isSp)
@@ -80,7 +90,11 @@ use App\Icon;
             @endif
         @endif
         </span>
-        <span class="show-yen">円(税込)</span>
+        <span class="show-yen">円(税込)
+        @if($isPotParent)
+        〜
+        @endif
+        </span>
         
     </div>
 

@@ -181,6 +181,10 @@ class ItemController extends Controller
             ],
             'stock_reset_count' => 'nullable|numeric',
             'point_back' => 'nullable|numeric',
+            
+            'pot_parent_id' =>'required_with:is_potset|nullable|numeric',
+            'pot_count' =>'required_with:is_potset|nullable|numeric',
+            
             //'main_img' => 'filenaming',
         ];
         
@@ -220,13 +224,21 @@ class ItemController extends Controller
         
         $data['icon_id'] = isset($data['icons']) ? implode(',', $data['icons']) : '';
         
+        //ポットセットの時、親にtrueをセットする
+        if($data['is_potset']) {
+            $pItem = $this->item->find($data['pot_parent_id']);
+            
+            if(! $pItem->is_pot_parent) {
+            	$pItem->is_pot_parent = 1;
+            	$pItem->save();
+            }
+        }
+        
         if($editId) { //update（編集）の時
             $status = '商品が更新されました！';
             $item = $this->item->find($editId);
-            
             //echo date('Y-m-d H:i:s', time());
 
-            
             //stockChange save 新着情報用
             if($item->stock < $data['stock']) { //在庫が増えた時のみにしている 増えた時のみitemStockChangeにsave
 //            	$this->itemSc->updateOrCreate( //データがなければ各種設定して作成

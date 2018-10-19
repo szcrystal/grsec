@@ -391,7 +391,7 @@
             
             
             <fieldset class="mb-4 form-group">
-                <label for="price" class="control-label">価格（本体価格）<span class="text-danger text-big">*</span></label>
+                <label for="price" class="control-label">価格（本体価格）<span class="text-danger text-big">*</span>（ポット親の時は最低金額）</label>
                 <input class="form-control col-md-6{{ $errors->has('price') ? ' is-invalid' : '' }}" name="price" value="{{ Ctm::isOld() ? old('price') : (isset($item) ? $item->price : '') }}" placeholder="税抜き金額を入力">
                 
                 @if ($errors->has('price'))

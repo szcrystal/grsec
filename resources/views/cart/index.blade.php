@@ -55,8 +55,12 @@
      		@foreach($itemData as $key => $item)    
      		<tr class="{{ $errors->has('no_delivery.'. $key) ? 'tr-danger-border' : '' }}">
                 <td class="clearfix">
+                	@if(isset($item->main_img) && $item->main_img != '')
                 	<img src="{{ Storage::url($item->main_img) }}" alt="{{ $item->title }}" class="img-fluid" width="80">
-                
+                    @else
+                    <span class="no-img mr-2"><small>No Image</small></span>
+                    @endif
+                	
                 	<a href="{{ url('item/'.$item->id) }}">
                         {{ Ctm::getItemTitle($item) }}
                         <br>
@@ -126,8 +130,8 @@
          
          <tfoot>
          	<tr>
-          		<td colspan="2" class="text-right">
-                	<strong>小計</strong>
+          		<td colspan="2" class="text-right text-big">
+                	<b>小計</b>
                 </td>
             	<td class="text-big"><b>¥{{ number_format($allPrice) }}</b></td>
              	<td>	
@@ -139,14 +143,14 @@
             
             @if(isset($deliFee))
                 <tr>
-                    <td colspan="2" class="text-right"><strong>送料</strong></td>
+                    <td colspan="2" class="text-right text-big"><b>送料</b></td>
                     <td class="text-big"><b>¥{{ number_format($deliFee) }}</b></td>
                     <td></td>
                 </tr>
                 
                 <tr>
-                    <td colspan="2" class="text-right"><strong>合計 <small>（小計+送料）</small></strong></td>
-                    <td class="text-big"><b>¥{{ number_format($allPrice + $deliFee) }}</b></td>
+                    <td colspan="2" class="text-right text-big"><b>合計 <small>（小計+送料）</small></b></td>
+                    <td class="text-big text-danger"><b>¥{{ number_format($allPrice + $deliFee) }}</b></td>
                     <td></td>
                 </tr>
             @endif

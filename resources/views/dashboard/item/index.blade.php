@@ -112,7 +112,7 @@
               <tbody>
               @foreach($itemObjs as $item)
                 <tr>
-                  <td>ID{{ $item->id }}</td>
+                  <td>{{ $item->id }}</td>
                   <td class="text-small">{{ $item->number }}</td>
                   <td>
                   @if($item->main_img != '')
@@ -167,10 +167,13 @@
                 
                 <td>
                   	
-                  	<small>{{ Ctm::changeDate($item->created_at, 1) }}</small>
+                  	<small>{{ Ctm::changeDate($item->created_at, 0) }}</small>
                 </td>
                   
-                  <td><a href="{{url('dashboard/items/'. $item->id)}}" class="btn btn-success btn-sm center-block">編集</a></td>
+                <td>
+                  	<a href="{{url('dashboard/items/'. $item->id)}}" class="btn btn-success btn-sm center-block">編集</a><br>
+                  	<small class="text-secondary ml-1">ID{{ $item->id }}</small>
+                </td>
                   
                   {{-- <td></td> --}}
                 </tr>

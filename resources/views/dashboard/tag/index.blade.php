@@ -77,7 +77,8 @@
                             --}}
 
                             <td>
-                                <a style="margin:auto;" href="{{url('dashboard/tags/'.$tag->id)}}" class="btn btn-success btn-sm center-block">編集</a>
+                                <a style="margin:auto;" href="{{url('dashboard/tags/'.$tag->id)}}" class="btn btn-success btn-sm center-block">編集</a><br>
+                                <small class="text-secondary ml-1">ID{{ $tag->id }}</small>
                             </td>
                             
                             <td>

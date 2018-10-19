@@ -5,7 +5,7 @@
 
 	{{-- @include('main.shared.carousel') --}}
 
-<div id="main" class="history-single">
+<div id="main" class="history-single confirm">
 
         <div class="panel panel-default">
 
@@ -18,7 +18,7 @@
 <div class="clearfix">
 {{-- @include('cart.guide') --}}
 
-<div class="float-left col-md-8">
+<div class="confirm-left">
 	<h5 class="card-header mb-3 py-2">購入履歴詳細</h5>
 	
 	<div class="table-responsive table-custom">
@@ -81,7 +81,12 @@
              
              <tr>
                 <td class="clearfix">
-                	<img src="{{ Storage::url($item->main_img) }}" alt="{{ $item->title }}" class="img-fluid float-left d-block" width="80">
+                	@if(isset($item->main_img) && $item->main_img != '')
+                	<img src="{{ Storage::url($item->main_img) }}" alt="{{ $item->title }}" class="img-fluid" width="80">
+                    @else
+                    <span class="no-img mr-2">No Image</span>
+                    @endif
+                	
                     <div>
                     {{ Ctm::getItemTitle($item) }}<br>[ {{ $item->number }} ]
                     <span class="d-block mt-1">¥{{ number_format($sale->single_price) }}（税込）</span>
@@ -134,7 +139,7 @@
 </div> 
 
 
-<div class="float-right col-md-4">
+<div class="confirm-right">
 <h5 class="mb-4">&nbsp;</h5>
 <div class="table-responsive table-custom">
     <table class="table border table-borderd bg-white">

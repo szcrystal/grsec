@@ -353,7 +353,10 @@ use App\Setting;
                   
                   </td>
  
-                  <td><a href="{{ url('dashboard/sales/order/'. $saleRel->order_number) }}" class="btn btn-success btn-sm center-block">確認</a></td>
+                  <td>
+                  	<a href="{{ url('dashboard/sales/order/'. $saleRel->order_number) }}" class="btn btn-success btn-sm center-block">確認</a><br>
+                	<small class="text-secondary ml-1">ID{{ $saleRel->id }}</small>
+                </td>
                   
                 </tr>
             @endforeach

@@ -30,13 +30,17 @@
              
              @foreach($itemData as $item)    
              <tr>
-                
-                <td>
+             	<td>
+                	@if(isset($item->main_img) && $item->main_img != '')
                 	<img src="{{ Storage::url($item->main_img) }}" alt="{{ $item->title }}" class="img-fluid" width="80">
-                		{{ Ctm::getItemTitle($item) }}
-	                    <br>
-                        [ {{ $item->number }} ]
-                        <span class="d-block mt-1">¥{{ Ctm::getItemPrice($item) }}（税込）</span>
+                    @else
+                    <span class="no-img mr-2">No Image</span>
+                    @endif
+
+                    {{ Ctm::getItemTitle($item) }}
+                    <br>
+                    [ {{ $item->number }} ]
+                    <span class="d-block mt-1">¥{{ Ctm::getItemPrice($item) }}（税込）</span>
                 </td>
                 
                 <td>{{ $item->count }}</td>

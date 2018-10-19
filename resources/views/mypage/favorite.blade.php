@@ -37,7 +37,7 @@ use App\Item;
         <tbody>
         @foreach($items as $item)
         <tr>
-             <td>{{ Ctm::changeDate($item->created_at, 1) }}</td>
+             <td><i class="fas fa-heart text-enji"></i> {{ Ctm::changeDate($item->created_at, 1) }}</td>
              <td class="clearfix">
              	<a href="{{ url('item/'.$item->id) }}">
               	<img src="{{ Storage::url($item->main_img) }}" width="80" class="img-fluid float-left mr-3">  
@@ -84,25 +84,28 @@ use App\Item;
         <tbody>
         @foreach($items as $item)
         <tr>
-        	<td class="clearfix">
-             <p>登録日：{{ Ctm::changeDate($item->created_at, 1) }}</P>
+        	<td class="clearfix mb-1">
+             <p><i class="fas fa-heart text-enji"></i> 登録日：{{ Ctm::changeDate($item->created_at, 1) }}</P>
              
              <div class="clearfix mb-2">
-             	<a href="{{ url('item/'.$item->id) }}">
-              	<img src="{{ Storage::url($item->main_img) }}" width="85" height="85" class="img-fluid float-left d-block mr-3">  
-             	{{ $item->title }}<br>
-              	[{{ $item->number }}]
-               </a> 
-               <p class="text-right">¥{{ number_format(Ctm::getPriceWithTax($item->price)) }}</p>
+             	
+              	<img src="{{ Storage::url($item->main_img) }}" width="70" class="img-fluid float-left d-block mr-2">
+                
+                <div class="float-left w-75">
+             		<b>{{ $item->title }}</b>&nbsp;
+              		[{{ $item->number }}]
+               
+               		<p class="mb-1 p-0">¥{{ number_format(Ctm::getPriceWithTax($item->price)) }}</p>
+               		カテゴリー：<a href="{{ url('category/'. $item->cate_id) }}">{{ $cates->find($item->cate_id)->link_name }}</a>
+               </div>
             </div>
             
-            <p>カテゴリー：<a href="{{ url('category/'. $item->cate_id) }}">{{ $cates->find($item->cate_id)->link_name }}</a></p>
             
             
-            
-            <div class="w-50 float-right">
-                <a href="{{ url('item/'.$item->id) }}" class="btn border-secondary bg-white text-small w-100 rounded-0">
-                商品ページへ <i class="fas fa-angle-double-right"></i>
+
+            <div class="w-50 float-right mt-2">
+                <a href="{{ url('item/'.$item->id) }}" class="btn border-secondary text-small bg-white w-100 rounded-0">
+                商品ページへ <i class="fal fa-angle-double-right"></i>
                 </a>
                 
                 <?php 
@@ -122,7 +125,7 @@ use App\Item;
                         <small class="d-block mb-2 mt-2">この商品は{{ Ctm::changeDate($item->saleDate, 1) }}<br>に購入しています</small>
                         <button class="btn btn-custom text-small text-center w-100" type="submit" name="regist_off" value="1">もう一度購入</button>      
                     @else   
-                        <button type="submit" class="btn btn-custom text-small text-center w-100 mt-3">カートに入れる</button>
+                        <button type="submit" class="btn btn-custom text-center text-small w-100 mt-2">カートに入れる</button>
                     @endif 
                     </form> 
                 @endif

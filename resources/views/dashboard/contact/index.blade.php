@@ -69,7 +69,8 @@
                 </td>
 
                 <td>
-                	<a style="margin:auto;" href="{{url('dashboard/contacts/'.$obj->id)}}" class="btn btn-success btn-sm center-block">確認</a>
+                	<a style="margin:auto;" href="{{url('dashboard/contacts/'.$obj->id)}}" class="btn btn-success btn-sm center-block">確認</a><br>
+                    <small class="text-secondary ml-1">ID{{$obj->id}}</small>
                 	{{--
                 	<a style="margin:auto;" href="{{url('dashboard/contacts/'.$obj->id. '/edit')}}" class="btn btn-primary btn-sm center-block">確認</a>
                  	--}}   

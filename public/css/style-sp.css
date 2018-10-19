@@ -285,7 +285,7 @@ for SP
 	.site-header {
 		position: relative;
         box-sizing: content-box;
-        padding: 0.2em 0 0;
+        padding: 0.1em 0;
         border-bottom: 1px solid #d5d5d5;
         border-top: 0;
 	}
@@ -301,26 +301,41 @@ for SP
 /*        //border: 1px solid red;*/
 /*	}*/
     .site-header h1 {
-    	width: 5.5em;
+    	width: 6.2em;
         float: none;
-    	margin: 1px auto 0.15em;
+    	margin: 0 auto;
         padding: 0;
         line-height: 0;
         text-align: center;
         //border: 1px solid red;
     }
     .site-header h1 a {
-    	display: inline-block;
+    	display: block;
+        height: 100%;
+    	width: 100%;
+        padding: 1px 0;
+        //border: 1px solid orange;
     }
-    .site-header .logos h1 img:first-of-type {
+/*    .site-header h1 a:after {*/
+/*    	display: block;*/
+/*        clear: both;*/
+/*        content: "";*/
+/*        height: 0;*/
+/*    }*/
+    .site-header h1 img:first-of-type {
+    	//display: block;
 		float: none;
+/*        height: 70%;*/
+/*        width: auto;*/
   		width: 70%;
-        margin-top: 1px;
+        margin-top: 0;
         margin-left: 0;
     	//border: 1px solid red;          
 	}
-    .site-header .logos h1 img:last-of-type {
+    .site-header h1 img:last-of-type {
+    	//display: block;
 		float: none;
+        //height: 98%;
   		width: 12.0%;
         margin-top: 0;
         margin-left: -0.2em;
@@ -346,13 +361,13 @@ for SP
         //border: 1px solid red;
     }
     .nav-tgl {
-        padding: 0.2em 0.2em 0.2em 0.2em;
+        padding: 0.15em 0.2em 0.2em 0.2em;
         top: 0;
         left: 1.0%;
         font-size: 1.7em;
     }
     .s-tgl {
-        padding: 0.4em 0.3em 0.2em 0.3em;
+        padding: 0.35em 0.3em 0.2em 0.3em;
         top: 0;
         right: 1.0%;
         font-size: 1.3em;
@@ -386,13 +401,14 @@ for SP
     }
     .icon-belt {
     	width: 100%;
-    	background: #3a3b3b;
+    	background: #3a3b3c;
         height: 32px;
+        line-height: 32px;
+        padding: 0 0.2em;
         position: fixed;
-        bottom: 0;
         left: 0;
+        bottom: 0;
         z-index: 999;
-        padding: 0.4em 0.2em 0.15em;
         text-align: center;
     }
     .icon-belt ul {
@@ -417,7 +433,7 @@ for SP
         font-size: 1.5em;
         margin-right: 0.5em;
         font-weight: 0;
-        //vertical-align: top;
+        vertical-align: -2px;
     }
     
     .s-form {
@@ -452,7 +468,7 @@ for SP
     	text-align: center;
         font-weight: bold;
         font-size: 0.75em;
-        margin: 0 0 0.3em;
+        margin: 0.3em 0 0.3em;
         padding: 0;
     }
     .nav-sp ul {
@@ -646,33 +662,55 @@ ORG END ======================== */
         font-size: 0.85em;
         table-layout: fixed;
     }
+    .confirm .table-cart .table {
+    	font-size: 0.9em;
+    }
     .table-cart .table td img.img-fluid {
         float: none;
         display: block;
         margin-right: 0;
     }
    	.table-cart .table thead th {
-   		font-size: 0.9em;
+   		font-size: 0.75em;
+        vertical-align: middle;
+        //height: 2em !important;
+        line-height: 1.2em;
    	}
    	.table-cart .table thead th:first-of-type {
-    	width: 30% !important;
+    	width: 35% !important;
     }
     .table-cart .table thead th:nth-of-type(2) {
     	width: 25%;
     }
     .table-cart .table thead th:nth-of-type(3) {
-    	width: 30%;
+    	width: 25%;
     }
     .table-cart .table thead th:nth-of-type(4) {
     	width: 25%;
     }
+    
+    .confirm-left .table-cart .table thead th:first-of-type {
+    	width: 60% !important;
+    }
+    .confirm-left .table-cart .table thead th:nth-of-type(2) {
+    	width: 15%;
+    }
+    .confirm-left .table-cart .table thead th:nth-of-type(3) {
+    	width: 25%;
+    }
+/*    .confirm-left .table-cart .table thead th:nth-of-type(3),*/
+/*    .confirm-left .table-cart .table thead th:nth-of-type(4) {*/
+/*    	width: 20%;*/
+/*    }*/
+    
+    
     .table-cart .btn {
     	font-size: 0.85em;
         width: 100%;
     }
-    .table-cart .btn .fal {
+    .table-cart .btn .fal { /* 再計算等のアイコン */
     	//display: none;
-    	font-size: 0.6em;
+    	font-size: 0.75em;
         margin: 0;
         vertical-align: 1px;
     }
@@ -681,22 +719,29 @@ ORG END ======================== */
         padding-right: 0.3em;
     }
     .table-cart td:first-of-type {
-    	font-size: 85%;
+    	//font-size: 90%;
     }
-    .table-cart .text-right { /* cart index 数量変更後は、、の文言部分 */
+    .table-cart tr:last-of-type .text-right { /* cart index 数量変更後は、、の文言部分 */
     	text-align: left !important;
     }
     
-    .cart-btn-wrap > div:first-of-type{ /* カゴページの購入するボタンのwrap */
+    .cart-btn-wrap > div:first-of-type .table {
+        table-layout: fixed;
+    }
+    .cart-btn-wrap > div:first-of-type { /* カゴページの購入するボタンのwrap */
         float: none;
         width: 100%;
         margin-bottom: 4em;
+        padding: 0;
         //border: 1px solid red;
     }
-    .cart-btn-wrap > div:first-of-type th,
-    .cart-btn-wrap > div:first-of-type td {
+    .cart-btn-wrap > div:first-of-type table th,
+    .cart-btn-wrap > div:first-of-type table td {
     	display: block;
         width: 100%;
+        padding-left: 0;
+        padding-right: 0;
+        border: 1px solid red;
     }
     .cart-btn-wrap > div:first-of-type th {
     	padding-bottom: 0;
@@ -704,13 +749,27 @@ ORG END ======================== */
     }
     .cart-btn-wrap > div:first-of-type > .btn-custom { /* login後の購入手続きへボタン */
     	width: 100%;
-        
 	}
+    
+    .deliRadioWrap { /* form 配送時間指定のラジオチェック */
+    	display: block;
+        width: 100%;
+        margin-bottom: 0.4em;
+    }
     
     .confirm .confirm-left,
     .confirm .confirm-right {
         float: none;
         width: 100%;
+    }
+    
+    .no-img {
+    	width: 70px;
+    }
+    .table-cart .no-img {
+    	float: none;
+        display: block;
+        width: 80px;
     }
     
     
@@ -737,6 +796,9 @@ ORG END ======================== */
 /*      -webkit-overflow-scrolling: touch;*/
 /*      -ms-overflow-style: -ms-autohiding-scrollbar;*/
 /*    }*/
+
+
+	/* 未使用のはず ***** */
     .mypage .table-responsive.table-cart .table {
     	width: 250% !important;
         max-width: 250%;
@@ -944,6 +1006,14 @@ ORG END ======================== */
 		font-size: 1.2em;
     }
     
+    .potset h3 {
+    	font-size: 1.1em;
+        margin-bottom: 0.2em;
+    }
+    .potset .price-meta {
+        font-size: 1.0em;
+        margin-bottom: 0.3em;
+    }
     .potSetSelect-wrap {
         width: 60%;
     }
@@ -1128,8 +1198,8 @@ ORG END ======================== */
 	body {
     	font-size: 11px;
     }
-    .site-branding h1 img {
-		width: 85%;
+    .site-header h1 {
+    	width: 5.5em;
     }
     
     .aniv {

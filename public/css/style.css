@@ -282,7 +282,7 @@ body {
     //border: 1px solid red;
 }
 
-.cart-btn-wrap > div:first-of-type{ /* カゴページの購入するボタンのwrap */
+.cart-btn-wrap > div:first-of-type { /* カゴページの購入するボタンのwrap */
 	float: right;
     width: auto;
     //border: 1px solid red;
@@ -298,17 +298,23 @@ body {
 
 
 
-
 .no-img {
-    display: block;
-    width: 100%;
-    height: 550px;
-    line-height: 550px;
+    display: inline-block;
+    float: left;
+    width: 80px;
+    height: 90px;
+    line-height: 90px;
     text-align: center;
     background: #FCFCFB;
     border: 1px solid #dfdfdf;
     color: #aaa;
-    font-size: 0.9em;
+    font-size: 0.8em;
+    vertical-align: top;
+}
+.table-cart .no-img {
+    width: 80px;
+    height: 90px;
+    line-height: 90px;
 }
 
 /*.thumb-prev .no-img {*/
@@ -1209,7 +1215,7 @@ ul.side-rank {
     height: 1.5em;
     line-height: 1.5em;
     text-align: center;
-    border-radius: 2px;
+    border-radius: 50%;
 	background: none;
     border: 1px solid #888;
     //vertical-align: 1em;
@@ -1453,7 +1459,7 @@ ul.side-rank {
 }
 .potset h3 {
 	font-size: 1.3em;
-    margin: 0 0 0.1em;
+    margin: 0 0 0.2em;
     padding: 0;
     font-weight: bold;
 }
@@ -1474,7 +1480,6 @@ ul.side-rank {
 .potset div.img-box + div.potset-text {
 	width: 78%;
 }
-
 
 .potset .price-meta {
 	font-size: 1.2em;

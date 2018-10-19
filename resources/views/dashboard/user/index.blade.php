@@ -104,7 +104,7 @@
                     @endif
                 	</td>
                   
-                  <td><small>{{ Ctm::changeDate($user->created_at, 1) }}</small></td>
+                  <td><small>{{ Ctm::changeDate($user->created_at, 0) }}</small></td>
                   
                   <?php 
                   		$link = $user->id;
@@ -112,7 +112,10 @@
                             $link = $link . "?no_r=1";
                         }
                   ?>
-                  <td><a href="{{url('dashboard/users/'. $link)}}" class="btn btn-success btn-sm center-block">確認</a></td>
+                  <td>
+                  	<a href="{{url('dashboard/users/'. $link)}}" class="btn btn-success btn-sm center-block">確認</a><br>
+                	<small class="text-secondary ml-1">ID{{ $user->id }}</small>
+                </td>
                   
                 </tr>
             @endforeach

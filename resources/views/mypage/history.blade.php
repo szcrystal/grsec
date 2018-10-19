@@ -19,14 +19,15 @@
 	<p style="min-height: 350px;">まだ購入した商品がありません。</p>
 </div>
 @else
-<div class="table-responsive table-cart">
+
+    @if(! Ctm::isAgent('sp'))
+    <div class="table-responsive table-cart">
     <table class="table table-bordered bg-white">
         <thead>
         <tr>
         	<th>購入日/<br>ご注文番号</th>
          	<th>商品名</th>
-          	 
-          	<th>個数</th>
+          	<th>数量</th>
            	<th>金額合計（税込）</th>
 			<th>枯れ保証期間 残</th>
    			<th></th>         
@@ -42,7 +43,14 @@
             </td>
             <td class="clearfix">
             	<?php $i = $item->find($sale->item_id); ?>
-            	<img src="{{ Storage::url($i->main_img) }}" width="80" class="d-block img-fluid float-left">
+                
+                @if(isset($i->main_img) && $i->main_img != '')
+                <img src="{{ Storage::url($i->main_img) }}" alt="{{ $i->title }}" class="img-fluid" width="80">
+                @else
+                <span class="no-img mr-2">No Image</span>
+                @endif
+                
+            	
             
             	<div class="">
              	{{ Ctm::getItemTitle($i) }}&nbsp;
@@ -109,6 +117,89 @@
         @endforeach
         
         </tbody>
+        
+    @else
+    <div class="table-responsive">
+    <table class="table table-bordered bg-white">
+        	<tbody>
+            	@foreach($sales as $sale)
+        		<tr>
+                     <td class="clearfix mb-1">
+                        <p>
+                        	購入日：{{ Ctm::changeDate($sale->created_at, 1) }}<br>
+                        	ご注文番号：{{ $sale->order_number }}
+                        </p>
+                        
+                        <?php $i = $item->find($sale->item_id); ?>
+                        
+                        @if(isset($i->main_img) && $i->main_img != '')
+                        <img src="{{ Storage::url($i->main_img) }}" alt="{{ $i->title }}" class="d-block img-fluid float-left mr-2" width="70">
+                        @else
+                        <span class="no-img mr-2">No Image</span>
+                        @endif
+                        
+                        
+                    
+                        <div class="float-left w-75">
+                            <b>{{ Ctm::getItemTitle($i) }}</b>&nbsp;
+                            [{{ $i->number }}]
+                           <span class="d-block mt-1">¥{{ number_format($sale->single_price) }}（税込）</span> 
+                           
+                           数量:{{ $sale->item_count }}
+                           
+                           <p>金額合計（税込）:<b>
+                           ¥{{ number_format($sale->total_price) }}&nbsp;&nbsp;
+             				<small>[{{ $pm->find($sale->pay_method)->name }}]</small></b>
+                        	</p>
+                       
+                       		枯れ保証期間 残：<b>
+                    		@if($i->is_ensure)
+                                @if($sale->deli_done)
+                                    <?php 
+                                       $days = Ctm::getKareHosyou($sale->deli_start_date);   
+                                    ?>
+                                    @if($days['diffDay'])
+                                        {{ $days['limit'] }}まで<br>
+                                        <b>残{{ $days['diffDay'] }}日</b>
+                                    @else
+                                        {{ $days['limit'] }}にて<br>
+                                        <b>枯れ保証期間終了</b>
+                                    @endif
+                                
+
+                                @else
+                                    未発送
+                                @endif
+                            @else
+                              枯れ保証なし
+                            @endif
+                            </b>
+                       </div>
+                       
+                       
+                       <div class="w-50 float-right mt-3">
+                       		<a href="{{ url('mypage/history/'.$sale->id) }}" class="btn btn-block border-secondary text-small bg-white mb-2 w-100 rounded-0">詳細を確認</a>
+                            
+                            <form class="form-horizontal" role="form" method="POST" action="{{ url('shop/cart') }}">
+                                {{ csrf_field() }}
+                                                                                       
+                                <input type="hidden" name="item_count[]" value="1">
+                                <input type="hidden" name="from_item" value="1">
+                                <input type="hidden" name="item_id[]" value="{{ $i->id }}">
+                                <input type="hidden" name="uri" value="{{ Request::path() }}"> 
+                                                  
+                               <button class="btn btn-custom text-center text-small w-100" type="submit" name="regist_off" value="1">もう一度購入</button>                 
+                            </form>
+                       </div>
+                       
+                       
+                    </td>
+                </tr>
+                @endforeach
+                    
+            </tbody>
+        
+    @endif
         
 	</table>
 </div>

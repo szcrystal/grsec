@@ -682,10 +682,10 @@ use App\DeliveryGroup;
                          
                         <label class="d-block mb-2">
                         	@if(! $codCheck && $method->id == 5)
-                         		<input type="radio" name="pay_method" class="payMethodRadio" value="{{ $method->id }}" disabled>{{ $method->name }}
+                         		<input type="radio" name="pay_method" class="payMethodRadio" value="{{ $method->id }}" disabled> {{ $method->name }}
                            		<span class="text-secondary ml-3"><i class="fas fa-exclamation-circle"></i> ご注文商品の代金引換決済はご利用できません。</span>      
                          	@else
-                                <input type="radio" name="pay_method" class="payMethodRadio" value="{{ $method->id }}"{{ $checked }}>{{ $method->name }}
+                                <input type="radio" name="pay_method" class="payMethodRadio" value="{{ $method->id }}"{{ $checked }}> {{ $method->name }}
                             @endif
                         </label>
                         
@@ -696,10 +696,10 @@ use App\DeliveryGroup;
                 
                 
                 
-                <div class="mb-5 pb-3">
+                <div class="mb-3 pb-3">
                 	<h3 class="card-header mt-5">配送希望日時指定</h3>
                     
-                    <fieldset class="mb-5 mt-3 col-md-7 form-group{{ $errors->has('plan_date') ? ' has-error' : '' }}">
+                    <fieldset class="mb-4 mt-3 col-md-7 form-group{{ $errors->has('plan_date') ? ' has-error' : '' }}">
                         <label for="plan_date" class="control-label">■ご希望日程<span class="text-small"></span></label>
                         
                         <select class="form-control col-md-6{{ $errors->has('plan_date') ? ' is-invalid' : '' }}" name="plan_date">
@@ -760,7 +760,8 @@ use App\DeliveryGroup;
                             @if(session()->has('item.data') && count(session('item.data')) > 0)
                                 <p class="mb-1 pb-1">■下記の商品につきまして、ご希望配送時間の指定ができます。</p>
                                  @foreach($val as $itemId)
-                                    ・<b>{{ Item::find($itemId)->title }}</b><br>
+                                 	<?php $i = Item::find($itemId); ?>
+                                    ・<b>{{ Ctm::getItemTitle($i) }}</b><br>
                                  @endforeach
                             @endif
                              
@@ -771,7 +772,9 @@ use App\DeliveryGroup;
                                     $timeTable = explode(",", $timeTable);
                                 ?>
                                 
-                                <input type="radio" name="plan_time[{{$key}}]" class="payMethodRadio" value="希望しない" checked><span class="mr-3">希望しない</span>
+                                <span class="deliRadioWrap">
+                                <input type="radio" name="plan_time[{{$key}}]" class="payMethodRadio" value="希望なし" checked><span class="mr-3"> 希望なし</span>
+                                </span>
                                 @foreach($timeTable as $table)
                                     <?php 
                                         $checked = '';
@@ -787,7 +790,10 @@ use App\DeliveryGroup;
                                             }
                                         }
                                      ?>
-                                    <input type="radio" name="plan_time[{{$key}}]" class="payMethodRadio" value="{{ $table }}" {{ $checked }}><span class="mr-3">{{ $table }}</span>
+                                    
+                                    <span class="deliRadioWrap">
+                                    <input type="radio" name="plan_time[{{$key}}]" class="payMethodRadio" value="{{ $table }}" {{ $checked }}> <span class="mr-3">{{ $table }}</span>
+                                    </span>
                                 @endforeach
                                     
                             </label>
@@ -804,7 +810,7 @@ use App\DeliveryGroup;
         <input type="hidden" name="regist" value="{{ $regist }}">
         
         <div>
-        	<button class="btn btn-block btn-custom col-md-4 mb-4 mx-auto py-2 mt-4" type="submit" name="recognize" value="1">確認する</button>
+        	<button class="btn btn-block btn-custom col-md-4 mb-4 mx-auto py-2" type="submit" name="recognize" value="1">確認する</button>
         </div>
        
     </form>

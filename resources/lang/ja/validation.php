@@ -148,6 +148,9 @@ return [
         
         'number' => '「商品番号」',
         'cate_id' => '「カテゴリー」',
+        'is_potset' => '「ポットセットにする」',
+        'pot_parent_id' => '「ポットセット親ID」',
+        'pot_count' => '「ポット数」',
         'dg_id' => '「配送区分」',
         'is_once' => '「同梱包可能」',
         'factor' => '「係数」',

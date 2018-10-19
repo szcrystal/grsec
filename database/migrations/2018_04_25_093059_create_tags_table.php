@@ -37,29 +37,29 @@ class CreateTagsTable extends Migration
         });
         
         
-            DB::table('tags')->insert([
-                    'name' => '落葉樹',
-                    'slug' => 'rakuyoujyu',
-                    'created_at' => date('Y-m-d H:i:s', time()),
-                    'updated_at' => date('Y-m-d H:i:s', time()),
-                ]
-            );
-            
-            DB::table('tags')->insert([
-                    'name' => '緑',
-                    'slug' => 'green',
-                    'created_at' => date('Y-m-d H:i:s', time()),
-                    'updated_at' => date('Y-m-d H:i:s', time()),
-                ]
-            );
-            
-            DB::table('tags')->insert([
-                    'name' => '赤',
-                    'slug' => 'red',
-                    'created_at' => date('Y-m-d H:i:s', time()),
-                    'updated_at' => date('Y-m-d H:i:s', time()),
-                ]
-            );
+//        DB::table('tags')->insert([
+//                'name' => '落葉樹',
+//                'slug' => 'rakuyoujyu',
+//                'created_at' => date('Y-m-d H:i:s', time()),
+//                'updated_at' => date('Y-m-d H:i:s', time()),
+//            ]
+//        );
+//        
+//        DB::table('tags')->insert([
+//                'name' => '緑',
+//                'slug' => 'green',
+//                'created_at' => date('Y-m-d H:i:s', time()),
+//                'updated_at' => date('Y-m-d H:i:s', time()),
+//            ]
+//        );
+//        
+//        DB::table('tags')->insert([
+//                'name' => '赤',
+//                'slug' => 'red',
+//                'created_at' => date('Y-m-d H:i:s', time()),
+//                'updated_at' => date('Y-m-d H:i:s', time()),
+//            ]
+//        );
             
     }
 
