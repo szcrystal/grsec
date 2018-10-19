@@ -243,7 +243,7 @@
             
             <fieldset class="mb-5 form-group">
                 <label>キャッチコピー</label>
-                <input class="form-control{{ $errors->has('catchcopy') ? ' is-invalid' : '' }}" name="catchcopy" value="{{ Ctm::isOld() ? old('catchcopy') : (isset($item) ? $item->catchcopy : '') }}" placeholder="お気に入りボタンの下に表示される">
+                <input class="form-control{{ $errors->has('catchcopy') ? ' is-invalid' : '' }}" name="catchcopy" value="{{ Ctm::isOld() ? old('catchcopy') : (isset($item) ? $item->catchcopy : '') }}" placeholder="商品番号の下に表示される">
 
                 @if ($errors->has('catchcopy'))
                     <div class="text-danger">
