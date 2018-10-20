@@ -7,11 +7,10 @@
         <div class="">
             <h4 class="card-header">会員の方</h4>
 			
-            <p class="my-3 pb-2 mx-2">メールアドレスとパスワードを入力してログインして下さい。</p>
+            <p class="my-3 pb-1 mx-1">メールアドレスとパスワードを入力してログインして下さい。</p>
             
-            <div class="card-body">
+            <div class="card-body pt-0">
                 
-            
             @if (count($errors) > 0)
                 <div class="alert alert-danger">
                     <i class="far fa-exclamation-triangle"></i> 確認して下さい。
@@ -34,7 +33,7 @@
                     <fieldset class="form-group row">
                         <label for="email" class="col-md-3 col-form-label">メールアドレス</label>
 
-                        <div class="col-md-8">
+                        <div class="col-md-9">
                             <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" autofocus>
 
                             @if ($errors->has('email'))
@@ -49,7 +48,7 @@
                     <fieldset class="form-group row">
                         <label for="password" class="col-md-3 col-form-label">パスワード</label><!-- text-md-right -->
 
-                        <div class="col-md-8">
+                        <div class="col-md-9">
                             <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password">
 
                             @if ($errors->has('password'))
@@ -72,25 +71,24 @@
                     </fieldset>
                     
 
-                    <fieldset class="form-group mt-3">
-                        <div class="">
+                    <fieldset class="form-group row mt-3">
+                        <div class="col-md-7 offset-md-3">
                             @if(Request::has('to_cart'))
                                 <input type="hidden" name="to_cart" value="1">
                             @endif
                           
                             <input type="hidden" name="previous" value="{{ session('_previous.url') }}">   
                              
-                            <button type="submit" class="col-md-6 btn btn-custom btn-block mx-auto rounded-0">
+                            <button type="submit" class="btn btn-custom btn-block rounded-0">
                                 ログイン
                             </button>
-
-                            
+  
                         </div>
                     </fieldset>
                     
-                    <div class="text-right pt-2">
-                        <a class="" href="{{ route('password.request') }}">
-                            パスワードをお忘れの方 <i class="fas fa-angle-double-right"></i>
+                    <div class="row pt-2">
+                        <a class="w-100 text-right" href="{{ route('password.request') }}">
+                            パスワードをお忘れの方 <i class="fal fa-angle-double-right"></i>
                         </a>
                     </div>
                 </form>
@@ -102,11 +100,10 @@
         <div class="">
             <h4 class="card-header">会員登録がお済みでない方</h4>
 			
-            <p class="my-3 pb-2 mx-2">初めての方はこちらより会員登録をして下さい。<br>あらかじめ会員登録を済ませておくと、お買い物が便利になります。</p>
+            <p class="my-3 pb-2 mx-1">初めての方はこちらより会員登録をして下さい。<br>あらかじめ会員登録を済ませておくと、お買い物が便利になります。</p>
             
-            <div class="card-body">
-
-                <a href="{{ url('register') }}" class="col-md-6 btn btn-custom rounded-0 btn-block m-auto">新規会員登録</a>
+            <div class="col-md-7 mx-auto mt-4">
+                <a href="{{ url('register') }}" class="btn btn-custom rounded-0 btn-block m-auto">新規会員登録</a>
             </div>
         </div>
             

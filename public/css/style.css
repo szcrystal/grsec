@@ -148,7 +148,7 @@ body {
 	//border: 1px solid green;
 }
 .top-cont {
-	min-height: 700px;
+	min-height: 600px;
 }
 
 .site-description p,
@@ -219,6 +219,7 @@ body {
 }
 .bg-enji {
 	background: #C15360;
+    color: #fff;
 }
 .text-enji {
 	color: #C15360;
@@ -358,6 +359,7 @@ body {
 }
 .site-header h1 img:first-of-type {
 	width: 240px;
+    margin-top: -1px;
 }
 .site-header h1 img:last-of-type {
 	width: 55px;
@@ -1616,6 +1618,12 @@ select.potSetSelect {
 .login > div:last-of-type {
 	padding-left: 1.4em;
 }
+.login [class*="col-md-"] {
+	padding-left: 0;
+    padding-right: 0;
+    //border: 1px solid red;
+}
+
 
 /* Pagination */
 .pagination-wrap {

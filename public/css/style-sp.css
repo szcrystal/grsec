@@ -394,6 +394,7 @@ for SP
         //background: red;
     }
     #colop {
+    	margin-top: 0;
     	margin-bottom: 32px;
     }
     #colop.single-colop {
@@ -671,8 +672,9 @@ ORG END ======================== */
         margin-right: 0;
     }
    	.table-cart .table thead th {
-   		font-size: 0.75em;
+   		font-size: 0.9em;
         vertical-align: middle;
+        padding: 1em 0.6em;
         //height: 2em !important;
         line-height: 1.2em;
    	}
@@ -751,7 +753,7 @@ ORG END ======================== */
     	width: 100%;
 	}
     
-    .deliRadioWrap { /* form 配送時間指定のラジオチェック */
+    .deliRadioWrap { /* form 配送時間指定のラジオチェックのwrap */
     	display: block;
         width: 100%;
         margin-bottom: 0.4em;
@@ -1101,7 +1103,13 @@ ORG END ======================== */
         padding-left: 0;
         margin-top: 2em;
     }
+
     
+    /* Favorite / History */
+    .w-70 {
+    	width: 70%;
+        //border: 1px solid red;
+    }
     
     /* Footer */
     
@@ -1199,11 +1207,11 @@ ORG END ======================== */
     	font-size: 11px;
     }
     .site-header h1 {
-    	width: 5.5em;
+    	width: 4.8em;
     }
     
     .aniv {
-    	font-size: 0.85em;
+    	//font-size: 1em;
     }
 
 }

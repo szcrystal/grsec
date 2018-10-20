@@ -140,7 +140,7 @@
                         
                         
                     
-                        <div class="float-left w-75">
+                        <div class="float-left w-70">
                             <b>{{ Ctm::getItemTitle($i) }}</b>&nbsp;
                             [{{ $i->number }}]
                            <span class="d-block mt-1">¥{{ number_format($sale->single_price) }}（税込）</span> 

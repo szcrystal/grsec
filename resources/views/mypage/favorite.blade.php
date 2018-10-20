@@ -91,12 +91,13 @@ use App\Item;
              	
               	<img src="{{ Storage::url($item->main_img) }}" width="70" class="img-fluid float-left d-block mr-2">
                 
-                <div class="float-left w-75">
+                <div class="float-left w-70">
              		<b>{{ $item->title }}</b>&nbsp;
               		[{{ $item->number }}]
                
                		<p class="mb-1 p-0">¥{{ number_format(Ctm::getPriceWithTax($item->price)) }}</p>
-               		カテゴリー：<a href="{{ url('category/'. $item->cate_id) }}">{{ $cates->find($item->cate_id)->link_name }}</a>
+               		
+                    カテゴリー：<a href="{{ url('category/'. $item->cate_id) }}">{{ $cates->find($item->cate_id)->link_name }}</a>
                </div>
             </div>
             

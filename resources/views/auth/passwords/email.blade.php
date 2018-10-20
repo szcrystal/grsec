@@ -1,20 +1,22 @@
 @extends('layouts.app')
 
 @section('content')
-<div id="main" class="mt-5 col-md-9 top-cont mx-auto">
+<div id="main" class="mt-4 row top-cont">
 
+	<div class="col-md-9 mx-auto">
         <h4 class="card-header">パスワードのリセット</h4>
 
         	@if (session('status'))
-                <div class="text-info">
+                <div class="my-3 pb-1 mx-1">
                     {{ session('status') }}
-                    
+                    <br>
+                    まだパスワードのリセットはされていません。メールの内容に従い手続きを進めて下さい。
                 </div>
             @else
             
-            <p class="my-3 pb-2 mx-2">パスワードリセット用のリンクを、登録しているメールアドレスへ送信します。<br>メールアドレスを入力して下さい。</p>
+            <p class="my-3 pb-1 mx-1">パスワードリセット用のリンクを、登録しているメールアドレスへ送信します。<br>メールアドレスを入力して下さい。</p>
 			
-            <div class="card-body">
+            <div class="card-body px-1">
                 <form method="POST" action="{{ route('password.email') }}">
                     @csrf
 
@@ -34,7 +36,7 @@
 
                     <div class="form-group row mb-0">
                         <div class="col-md-6 offset-md-3">
-                            <button type="submit" class="btn btn-custom mt-5 w-100">
+                            <button type="submit" class="btn btn-custom mt-3 w-100">
                                 送信する
                             </button>
                         </div>
@@ -42,7 +44,8 @@
                 </form>
             @endif
         </div>
-            
+     
+     </div>       
 
 </div>
 @endsection
