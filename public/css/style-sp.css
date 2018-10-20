@@ -656,6 +656,14 @@ ORG END ======================== */
     	width: 85%;
         margin-bottom: 0.8em;
     }
+    .table-custom td {
+    	padding-left: 0.5em;
+        padding-right: 0.5em;
+    }
+    .table-custom th small { /* ハイフンなし半角数字のテキスト */
+    	margin-top: -1em;
+        padding-bottom: 0.2em;
+    }
     
     .table-cart .table {
         width: 99%;
@@ -730,10 +738,11 @@ ORG END ======================== */
     .cart-btn-wrap > div:first-of-type .table {
         table-layout: fixed;
     }
-    .cart-btn-wrap > div:first-of-type { /* カゴページの購入するボタンのwrap */
+    .cart-btn-wrap > div:first-of-type,
+    .cart-btn-wrap > div:last-of-type { /* カゴページの購入するボタンのwrap */
         float: none;
         width: 100%;
-        margin-bottom: 4em;
+        margin-bottom: 1em;
         padding: 0;
         //border: 1px solid red;
     }

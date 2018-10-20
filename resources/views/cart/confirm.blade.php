@@ -325,7 +325,7 @@
 	</div>                
 </form>
 
-<a href="{{ url('shop/form') }}" class="btn border border-secondary bg-white mt-5"><i class="fal fa-angle-double-left"></i> お客様情報の入力に戻る</a>
+<a href="{{ url('shop/form') }}" class="btn border border-secondary bg-white my-3"><i class="fal fa-angle-double-left"></i> お客様情報の入力に戻る</a>
 </div>
 
 

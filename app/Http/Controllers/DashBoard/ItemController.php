@@ -224,15 +224,15 @@ class ItemController extends Controller
         
         $data['icon_id'] = isset($data['icons']) ? implode(',', $data['icons']) : '';
         
-        //ポットセットの時、親にtrueをセットする
-        if($data['is_potset']) {
-            $pItem = $this->item->find($data['pot_parent_id']);
-            
-            if(! $pItem->is_pot_parent) {
-            	$pItem->is_pot_parent = 1;
-            	$pItem->save();
-            }
-        }
+        //ポットセットの時、親にtrueをセットする->不要にした
+//        if($data['is_potset']) {
+//            $pItem = $this->item->find($data['pot_parent_id']);
+//            
+//            if(! $pItem->is_pot_parent) {
+//            	$pItem->is_pot_parent = 1;
+//            	$pItem->save();
+//            }
+//        }
         
         if($editId) { //update（編集）の時
             $status = '商品が更新されました！';

@@ -261,7 +261,7 @@ use App\DeliveryGroup;
          
          <div class="table-responsive table-custom">
          <p class="mt-3 text-small">よろしければ以下もお答え下さい。</p>
-            <table class="table table-borderd">
+            <table class="table table-borderd border">
 
          <tr class="form-group">
              <th><label class="control-label">性別</label></th>
@@ -816,7 +816,7 @@ use App\DeliveryGroup;
     </form>
     
 </div>
-<a href="{{ url('shop/cart') }}" class="btn border-secondary bg-white mt-5">
+<a href="{{ url('shop/cart') }}" class="btn border-secondary bg-white my-3">
 <i class="fal fa-angle-double-left"></i> カートに戻る
 </a>
 </div>

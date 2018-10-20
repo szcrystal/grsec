@@ -87,8 +87,8 @@ $url = $isMypage ? url('mypage/register') : url('register');
          </tr>
          
          <tr class="form-group">
-             <th><label class="control-label">電話番号</label><em>必須</em><br>
-             	<small>例）09012345678 ハイフンなし半角数字</small>
+             <th><label class="control-label">電話番号</label><em>必須</em>
+             	<small>例）09012345678ハイフンなし半角数字</small>
              </th>
                <td>
                 <input type="text" class="form-control rounded-0 col-md-12{{ $errors->has('user.tel_num') ? ' is-invalid' : '' }}" name="user[tel_num]" value="{{ Ctm::isOld() ? old('user.tel_num') : (isset($user) ? $user->tel_num : '') }}" placeholder="例）09012345678 ハイフンなし半角数字">
@@ -102,14 +102,9 @@ $url = $isMypage ? url('mypage/register') : url('register');
             </td>
          </tr>
          
-
-
-	
-         
-         
          <tr class="form-group">
-             <th><label class="control-label">郵便番号</label><em>必須</em><br>
-             	<small>例）1234567 ハイフンなし半角数字</small>
+             <th><label class="control-label">郵便番号</label><em>必須</em>
+             	<small>例）1234567ハイフンなし半角数字</small>
              </th>
                <td>
                 <input id="zipcode" type="text" class="form-control rounded-0 col-md-6{{ $errors->has('user.post_num') ? ' is-invalid' : '' }}" name="user[post_num]" value="{{ Ctm::isOld() ? old('user.post_num') : (isset($user) ? $user->post_num : '') }}" placeholder="例）1234567 ハイフンなし半角数字">
@@ -205,7 +200,7 @@ $url = $isMypage ? url('mypage/register') : url('register');
          
          <div class="table-responsive table-custom">
          <p class="mt-4 text-small">よろしければ以下もお答え下さい。</p>
-   		 <table class="table table-borderd">
+   		 <table class="table table-borderd border">
 
          <tr>
          	<fieldset  class="form-group">

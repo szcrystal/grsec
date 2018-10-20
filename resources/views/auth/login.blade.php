@@ -97,7 +97,7 @@
         </div>
             
             
-        <div class="">
+        <div class="mb-5 pb-5">
             <h4 class="card-header">会員登録がお済みでない方</h4>
 			
             <p class="my-3 pb-2 mx-1">初めての方はこちらより会員登録をして下さい。<br>あらかじめ会員登録を済ませておくと、お買い物が便利になります。</p>

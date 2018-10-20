@@ -64,7 +64,10 @@ use App\Icon;
 
     <div class="price">
     	<?php
-        	$isPotParent = $item->is_pot_parent ? 1 : 0;
+        	//$isPotParent = $item->is_pot_parent ? 1 : 0;
+            
+            $isPotParent = Item::where(['is_potset'=>1, 'pot_parent_id'=>$item->id])->get()->isNotEmpty();
+            
 //            if($isPotParent) {
 //            	$thisItem = Item::where('pot_parent_id', $item->id)->orderBy('price', 'asc')->get()->first();
 //            }

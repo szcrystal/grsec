@@ -230,10 +230,10 @@
                    <tr class="border-0">
                         <td class="border-0"><button class="btn btn-block btn-custom mb-4 py-2 px-5" type="submit" name="regist_off" value="1" formaction="{{ url('shop/form') }}">会員登録せずに購入手続きへ</button></td>               
                     </tr>
-                    <tr class="pt-2">
+                    <tr>
                         <th class="border-0">会員登録がお済みの方</th>      
                         <td class="border-0">	
-                        <a href="{{ url('login?to_cart=1') }}" class="btn btn-block btn-custom mb-4 py-2 px-5">ログインする</a>
+                        <a href="{{ url('login?to_cart=1') }}" class="btn btn-block btn-custom mb-2 py-2 px-5">ログインする</a>
                         {{--
                         <button class="btn btn-block btn-custom mb-3 py-2" type="submit" name="to_cart" value="shop/cart" formaction="{{ url('login') }}">ログインする</button>
                         --}}
@@ -247,7 +247,7 @@
     <div class="">
 		<input type="hidden" name="uri" value="{{ $uri }}">
         
-		<a href="{{ url($uri)}}" class="btn border border-secondary bg-white"><i class="fal fa-angle-double-left"></i> 元に戻って買い物を続ける</a>
+		<a href="{{ url($uri)}}" class="btn border border-secondary bg-white my-2"><i class="fal fa-angle-double-left"></i> 元に戻って買い物を続ける</a>
 	</div>
     
 </div>
