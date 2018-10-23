@@ -23,19 +23,7 @@ class Item extends Model
         'is_ensure',
         
         'main_img',
-        
-        /*
-        'spare_img_0',
-        'spare_img_1',
-        'spare_img_2',
-        'spare_img_3',
-        'spare_img_4',
-        'spare_img_5',
-        'spare_img_6',
-        'spare_img_7',
-        'spare_img_8',
-        'spare_img_9',
-        */
+        'main_caption',
         
         'price',
         'cost_price',

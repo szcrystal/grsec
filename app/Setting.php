@@ -14,8 +14,12 @@ class Setting extends Model
         
         'is_product',
         'tax_per',
+        
         'is_sale',
         'sale_per',
+        'is_point',
+        'point_per',
+        
         'kare_ensure',
         'bank_info',
         'cot_per',

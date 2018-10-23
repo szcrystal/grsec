@@ -195,11 +195,7 @@
                     </div>
                 </td>
                 <td>
-                    @if(! Ctm::isLocal())
-                    <button class="btn border border-secondary bg-white px-2" type="submit" name="delifee_calc" value="1" disabled><i class="fal fa-redo"></i> 送料計算</button>
-                    @else
                     <button class="btn border border-secondary bg-white px-2" type="submit" name="delifee_calc" value="1"><i class="fal fa-redo"></i> 送料計算</button>
-                    @endif
                 </td>
             </tr>
             

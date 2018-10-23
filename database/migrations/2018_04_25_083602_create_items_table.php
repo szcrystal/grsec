@@ -33,6 +33,7 @@ class CreateItemsTable extends Migration
             
             
             $table->string('main_img')->nullable()->default(NULL);
+            $table->string('main_caption')->nullable()->default(NULL);
             /*
             $table->string('spare_img_0')->nullable()->default(NULL);
             $table->string('spare_img_1')->nullable()->default(NULL);

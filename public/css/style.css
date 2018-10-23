@@ -129,10 +129,10 @@ body {
 	background: #fefffe;
 }
 .fixed-top {
-	background: #fdfcfc;
+	background: #fbfbfb/*#fdfcfc*/;
 }
 .main-navigation {
-	background: #fdfcfc;
+	background: #fbfbfb/*#fdfcfc*/;
 }
 
 /*max-width ==================== */
@@ -207,6 +207,9 @@ body {
     color: #fff;
     border-radius: 0;
     cursor: pointer;
+}
+.btn-blue {
+	background: #506EA8;
 }
 .text-big {
 	font-size: 1.1em;
@@ -444,7 +447,7 @@ body {
 	text-align: center;
     color: #C15360;
     font-size: 1.7em;
-    font-weight: bold;
+    font-weight: normal;
     padding: 0;
     margin: 0 0 0.2em;
 }
@@ -1299,7 +1302,7 @@ ul.side-rank {
 
 /* Single Carousel */
 .single .carousel-item {
-	height: 683px; /* 1:1.2 */
+	height: 680px; /* 1:1.2 */
     overflow: hidden;
     //border: 1px solid #ddd;
 }
@@ -1340,6 +1343,17 @@ ul.side-rank {
     overflow: hidden;
 }
 
+.carousel-caption {
+	color: #fff;
+    font-size: 0.95em;
+    font-weight: normal;
+    bottom: 0;
+    left: 0;
+    background: rgba(0,0,0,0.55);
+    width: 100%;
+    padding: 0.3em 0.2em;
+}
+
 /* Top Carousel */
 .tophead-wrap .carousel-indicators {
 	position: static;
@@ -1374,7 +1388,7 @@ ul.side-rank {
 .carousel-control-prev,
 .carousel-control-next {
 	width: 1.5em;
-    opacity: 0.45;
+    opacity: 0.55;
     height: 1.5em;
     top: 40%;
     margin: 0;
@@ -1399,7 +1413,7 @@ ul.side-rank {
 
 
 .single .head-frame h2 {
-	font-weight: bold;
+	font-weight: normal;
 	font-size: 1.4em;
     line-height: 1.4em;
 	//border-bottom: 1px solid #222;
@@ -1411,7 +1425,7 @@ ul.side-rank {
 }
 .single .price-meta {
 	font-size: 1.4em;
-	font-weight: bold;
+	font-weight: normal;
     text-align: right;
 }
 
@@ -1441,17 +1455,17 @@ ul.side-rank {
 .single .btn[type="submit"]:disabled {
 	cursor: default;
     opacity: 0.25;
-    //background: #aaa;
+    background: #838383;
 }
 .single .btn[type="submit"]:disabled:hover {
 	opacity: 0.25;
-    //background: #aaa;
+    background: #838383;
 }
 
 .slideDeli {
 	width: 100%;
 }
-.slideDeli + .table-custom {
+.slideDeli + .table-deli {
 	display: none;
 }
 .potset {
@@ -1463,7 +1477,7 @@ ul.side-rank {
 	font-size: 1.2em;
     margin: 0 0 0.2em;
     padding: 0;
-    font-weight: bold;
+    font-weight: normal;
 }
 .potset > div {
 	float: left;

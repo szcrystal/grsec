@@ -273,23 +273,32 @@ class ItemController extends Controller
 //        exit;
         
         //Main-img
-        if(isset($data['main_img'])) {
+        if(isset($data['del_mainimg']) && $data['del_mainimg']) { //削除チェックの時
+            if($item->main_img !== null && $item->main_img != '') {
+                Storage::delete($item->main_img); //Storageはpublicフォルダのあるところをルートとしてみる
+                $item->main_img = null;
+                $item->save();
+            }
+        }
+        else {
+            if(isset($data['main_img'])) {
                 
-            //$filename = $request->file('main_img')->getClientOriginalName();
-            $filename = $data['main_img']->getClientOriginalName();
-            $filename = str_replace(' ', '_', $filename);
-            
-            //$aId = $editId ? $editId : $rand;
-            //$pre = time() . '-';
-            $filename = 'item/' . $itemId . '/main/'/* . $pre*/ . $filename;
-            //if (App::environment('local'))
-            $path = $data['main_img']->storeAs('public', $filename);
-            //else
-            //$path = Storage::disk('s3')->putFileAs($filename, $request->file('thumbnail'), 'public');
-            //$path = $request->file('thumbnail')->storeAs('', $filename, 's3');
-            
-            $item->main_img = $path;
-            $item->save();
+                //$filename = $request->file('main_img')->getClientOriginalName();
+                $filename = $data['main_img']->getClientOriginalName();
+                $filename = str_replace(' ', '_', $filename);
+                
+                //$aId = $editId ? $editId : $rand;
+                //$pre = time() . '-';
+                $filename = 'item/' . $itemId . '/main/'/* . $pre*/ . $filename;
+                //if (App::environment('local'))
+                $path = $data['main_img']->storeAs('public', $filename);
+                //else
+                //$path = Storage::disk('s3')->putFileAs($filename, $request->file('thumbnail'), 'public');
+                //$path = $request->file('thumbnail')->storeAs('', $filename, 's3');
+                
+                $item->main_img = $path;
+                $item->save();
+            }
         }
         
         
@@ -301,23 +310,36 @@ class ItemController extends Controller
                 $spareModel = $this->itemImg->where(['item_id'=>$itemId, 'type'=>1, 'number'=>$count+1])->first();
                 
                 if($spareModel !== null) {
-                	Storage::delete('public/'.$snapModel->img_path); //Storageはpublicフォルダのあるところをルートとしてみる
+                	Storage::delete('public/'. $spareModel->img_path); //Storageはpublicフォルダのあるところをルートとしてみる
                     $spareModel ->delete();
                 }
             
             }
             else {
+            	//キャプションのupが必ず必要なので、画像数データを全て作成する
+                $spareImg = $this->itemImg->updateOrCreate(
+                    ['item_id'=>$itemId, 'type'=>1, 'number'=>$count+1],
+                    [
+                        'item_id'=>$itemId,
+                        'caption'=>$data['caption'][$count],
+                        'type' => 1,
+                        'number'=> $count+1,
+                    ]
+                );
+
+                
             	if(isset($data['spare_thumb'][$count])) {
-                    
+                    /*
                     $spareImg = $this->itemImg->updateOrCreate(
                         ['item_id'=>$itemId, 'type'=>1, 'number'=>$count+1],
                         [
                             'item_id'=>$itemId,
+                            'caption'=>$data['caption'][$count],
                             'type' => 1,
                             'number'=> $count+1,
                         ]
                     );
-                
+                    */
                 
                     $filename = $data['spare_thumb'][$count]->getClientOriginalName();
                     $filename = str_replace(' ', '_', $filename);

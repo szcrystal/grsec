@@ -19,6 +19,8 @@ class CreateItemImagesTable extends Migration
             $table->integer('item_id');
             
             $table->string('img_path')->nullable()->default(NULL);
+            $table->string('caption')->nullable()->default(NULL);
+            
             $table->integer('type')->nullable()->default(NULL);
     
             $table->integer('number')->nullable()->default(NULL);

@@ -23,8 +23,13 @@ class CreateSettingsTable extends Migration
             
             $table->boolean('is_product')->nullable()->default(NULL);
             $table->integer('tax_per')->nullable()->default(NULL);
+            
             $table->boolean('is_sale')->nullable()->default(NULL);
             $table->float('sale_per')->nullable()->default(NULL);
+
+			$table->boolean('is_point')->nullable()->default(NULL);
+            $table->float('point_per')->nullable()->default(NULL);
+            
             
             $table->integer('kare_ensure')->nullable()->default(NULL);
             $table->text('bank_info')->nullable()->default(NULL);

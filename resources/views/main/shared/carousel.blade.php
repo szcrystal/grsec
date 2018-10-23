@@ -18,9 +18,6 @@
             @endif
             	
               	<img class="d-block img-fluid w-100" src="{{ Storage::url($caro->img_path) }}" alt="slide">
-              	<div class="carousel-caption d-none d-md-block">
-                	<h3></h3>
-                </div>
             </div>
             
             <?php $n++; ?>

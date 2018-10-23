@@ -427,7 +427,7 @@ class CalcDelifeeController extends Controller
 
         
         if($factorKs > 0) { //下草特殊送料で有料となる余りが出る場合
-            $factor = $factor + $factorKs;
+            $factor = $factor + $factorKs; //モリヤコニファー大/小に下草有料分の余り係数を足す
         }
         
 

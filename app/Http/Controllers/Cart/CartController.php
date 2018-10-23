@@ -234,6 +234,8 @@ class CartController extends Controller
     /* 値段 商品金額 算出 Sale or Normal Price **************************************************************** */
     private function getItemPrice($item) {
         
+        //商品に入力されているSale金額が最優先
+        
         $isSale = $this->setting->get()->first()->is_sale;
         $price = 0;
         
@@ -252,6 +254,27 @@ class CartController extends Controller
         return $price;
     }
     /* END 値段 商品金額 算出 Sale or Normal Price **************************************************************** */
+    
+    /* ポイント 還元率 算出 is_point or item point **************************************************************** */
+    private function getPointBack($item) {
+        
+        //商品に入力されているポイント還元率が最優先
+        
+        //$setting = $this->setting->get()->first();
+        $pointBack = 0;
+        
+        if(isset($item->point_back)) {
+            $pointBack = $item->point_back / 100;
+        }
+        else {
+            if($this->set->is_point) {
+                $pointBack = $this->set->point_per / 100;
+            }
+        }
+        
+        return $pointBack;
+    }
+    /* ポイント 還元率 算出 is_point or item point END **************************************************************** */
     
     
     public function getThankyou(Request $request)
@@ -656,10 +679,9 @@ class CartController extends Controller
         
         //都道府県ID
         $prefId = $this->prefecture->where('name', $prefName)->first()->id;
-		
-        //$prefDeli = array();
-        
-        foreach( $itemSes as $key => $val) {
+		//$prefDeli = array();
+                
+        foreach($itemSes as $key => $val) {
         	$obj = $this->item->find($val['item_id']);
             
             // 配送先が配送可能かどうかを確認するための配列をここで作る
@@ -667,12 +689,16 @@ class CartController extends Controller
             
          	//カウント 個数  
          	$obj['count'] = $val['item_count'];
-          	//トータルプライス   
+          	
+            //トータルプライス   
             $obj['item_total_price'] = $val['item_total_price'];
-            //ポイント計算
-            $obj['point'] = ceil($val['item_total_price'] * ($obj->point_back/100)); //商品金額のみに対してのパーセント 切り上げ 切り捨て->floor()
+            
+            //ポイント　ポイント加算
+            $pointBack = $this->getPointBack($obj);
+            $obj['point'] = ceil($val['item_total_price'] * $pointBack); //商品金額のみに対してのパーセント 切り上げ 切り捨て->floor()
 			$addPoint += $obj['point'];
             
+            //配送希望時間
             if(isset($data['plan_time'])) {
                 foreach($data['plan_time'] as $dgKey => $timeVal) {
                     if($obj->dg_id == $dgKey) {
@@ -716,7 +742,7 @@ class CartController extends Controller
         //手数料、送料、ポイントをここで合計する -------------------------
         $totalFee = 0;
         
-        //ポイント -----------
+        //ポイント 使用ポイント減算-----------
         $usePoint = $data['use_point'];
         $totalFee = $allPrice - $usePoint;
         //ポイント END-----------

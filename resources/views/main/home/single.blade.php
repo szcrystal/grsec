@@ -36,17 +36,29 @@ use App\TopSetting;
             
             	<?php //================================================================= ?>
                 @if($item -> main_img)
-                <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" data-interval="7500">
+                <div id="carouselExampleIndicators" class="carousel slide" data-ride="false" data-interval="false">
 
                       <div class="carousel-inner">
                         <div class="carousel-item active">
                           <img class="d-block w-100" src="{{ Storage::url($item->main_img) }}" alt="First slide">
+                          
+                          @if(isset($item->main_caption))
+                          	<div class="carousel-caption d-block">
+                            	{{ $item->main_caption }}
+                          	</div>
+                          @endif
                         </div>
                         
-                        @foreach($imgsPri as $img)
-                            @if($img->img_path !== null )
+                        @foreach($imgsPri as $itemImg)
+                            @if($itemImg->img_path !== null )
                             <div class="carousel-item">
-                              <img class="d-block w-100" src="{{ Storage::url($img->img_path)}}" alt="Sub slide">
+                              <img class="d-block w-100" src="{{ Storage::url($itemImg->img_path)}}" alt="Sub slide">
+                              
+                              @if(isset($itemImg->caption))
+                              	<div class="carousel-caption d-block">
+                                	{{ $itemImg->caption }}
+                              	</div>
+                              @endif
                             </div>
                             @endif
                         @endforeach
@@ -73,15 +85,15 @@ use App\TopSetting;
                             $n = 1;
                         ?>
                         
-                            @foreach($imgsPri as $img)
-                                @if($img->img_path !== null )
-                                	<li data-target="#carouselExampleIndicators" data-slide-to="{{$n}}">
-                                        <img class="img-fluid" src="{{ Storage::url($img->img_path)}}" alt="slide">
-                                    </li>
-                                    
-                                    <?php $n++; ?>
-                                @endif
-                            @endforeach
+                        @foreach($imgsPri as $img)
+                            @if($img->img_path !== null )
+                                <li data-target="#carouselExampleIndicators" data-slide-to="{{$n}}">
+                                    <img class="img-fluid" src="{{ Storage::url($img->img_path)}}" alt="slide">
+                                </li>
+                                
+                                <?php $n++; ?>
+                            @endif
+                        @endforeach
                       </ol>
                 </div>
                     
@@ -167,7 +179,7 @@ use App\TopSetting;
                                         
                                         @if($potSet->stock > 0)
                                             @if($potSet->stock_show)
-                                                <span><b>在庫：{{ $potSet->stock }}</b></span>
+                                                <span>在庫：{{ $potSet->stock }}</span>
                                             @endif
                                             
                                             <div class="potSetSelect-wrap float-right">
@@ -281,7 +293,7 @@ use App\TopSetting;
                                 <fieldset class="mb-4 form-group clearfix text-right">
                                     <label>数量
                                     @if($item->stock_show)
-                                        <span><b>（在庫数：{{ $item->stock }}）</b></span>
+                                        <span>（在庫：{{ $item->stock }}）</span>
                                     @endif
                                     </label>
                                     
@@ -351,11 +363,11 @@ use App\TopSetting;
                                 }
                             ?>
                             
-                            <button type="submit" class="btn btn-custom text-center col-md-12"{{ $disabled }}>カートに入れる</button>
+                            <button type="submit" class="btn btn-custom btn-blue text-center col-md-12"{{ $disabled }}><i class="fal fa-cart-arrow-down"></i> カートに入れる</button>
                             <p class="">{{ $item->deli_plan_text }}</p>
                             
                             @if(Ctm::isAgent('sp'))
-                                <button id="spCartBtn" type="submit" class="btn btn-custom text-center col-md-6">この商品をカートに入れる</button>
+                                <button id="spCartBtn" type="submit" class="btn btn-custom btn-blue text-center col-md-6"><i class="fal fa-cart-arrow-down"></i> この商品をカートに入れる</button>
                             @endif
                         @endif
                    </form>
@@ -374,13 +386,13 @@ use App\TopSetting;
                 
                        <ul class="nav nav-tabs">
                             <li class="nav-item">
-                              <a href="#tab1" class="nav-link active" data-toggle="tab">商品詳細</a>
+                              <a href="#tab1" class="nav-link active" data-toggle="tab"><i class="fal fa-info-circle"></i> 商品詳細</a>
                             </li>
                             <li class="nav-item">
-                              <a href="#tab2" class="nav-link" data-toggle="tab">配送について</a>
+                              <a href="#tab2" class="nav-link" data-toggle="tab"><i class="fal fa-truck"></i> 配送について</a>
                             </li>
                             <li class="nav-item">
-                              <a href="#tab3" class="nav-link" data-toggle="tab">育て方</a>
+                              <a href="#tab3" class="nav-link" data-toggle="tab"><i class="fal fa-tree-alt"></i> 育て方</a>
                             </li>
                         </ul> 
                         
@@ -397,14 +409,14 @@ use App\TopSetting;
                             
                             @if($item->is_delifee_table)
                                 <div class="btn btn-custom mt-4 slideDeli">
-                                    送料表を見る <i class="fas fa-angle-down"></i>
+                                    送料表を見る <i class="fal fa-angle-down"></i>
                                 </div>
                                 <?php
                                     $dgRels = DeliveryGroupRelation::where('dg_id', $item->dg_id)->get();
                                 ?>
                                 
                                 
-                                <div class="table-responsive table-custom text-small mt-2">
+                                <div class="table-responsive table-deli text-small mt-2">
                                     <table class="table table-bordered bg-white">
                                     	<thead class="bg-light">
                                         	<tr>

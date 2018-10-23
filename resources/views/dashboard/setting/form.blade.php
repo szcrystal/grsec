@@ -138,24 +138,24 @@
                 @endif
             </fieldset>
             
-            <fieldset class="form-group mb-0">
-                    <div class="checkbox">
-                        <label>
-                            <?php
-                                $checked = '';
-                                if(Ctm::isOld()) {
-                                    if(old('is_sale'))
-                                        $checked = ' checked';
+            <fieldset class="form-group mt-5 mb-0">
+                <div class="checkbox">
+                    <label>
+                        <?php
+                            $checked = '';
+                            if(Ctm::isOld()) {
+                                if(old('is_sale'))
+                                    $checked = ' checked';
+                            }
+                            else {
+                                if(isset($setting) && $setting->is_sale) {
+                                    $checked = ' checked';
                                 }
-                                else {
-                                    if(isset($setting) && $setting->is_sale) {
-                                        $checked = ' checked';
-                                    }
-                                }
-                            ?>
-                            <input type="checkbox" name="is_sale" value="1"{{ $checked }}> セール中にする
-                        </label>
-                    </div>
+                            }
+                        ?>
+                        <input type="checkbox" name="is_sale" value="1"{{ $checked }}> セール中にする
+                    </label>
+                </div>
             </fieldset>
             
             <fieldset class="mb-4 form-group{{ $errors->has('sale_per') ? ' has-error' : '' }}">
@@ -171,9 +171,42 @@
             </fieldset>
             
             
+            <fieldset class="form-group mt-5 mb-0">
+                <div class="checkbox">
+                    <label>
+                        <?php
+                            $checked = '';
+                            if(Ctm::isOld()) {
+                                if(old('is_point'))
+                                    $checked = ' checked';
+                            }
+                            else {
+                                if(isset($setting) && $setting->is_point) {
+                                    $checked = ' checked';
+                                }
+                            }
+                        ?>
+                        <input type="checkbox" name="is_point" value="1"{{ $checked }}> ポイント祭にする
+                    </label>
+                </div>
+            </fieldset>
+            
+            <fieldset class="mb-4 form-group{{ $errors->has('point_per') ? ' has-error' : '' }}">
+                <label>還元率（%）</label>
+                <input class="form-control d-inline-block col-md-3{{ $errors->has('point_per') ? ' is-invalid' : '' }}" name="point_per" value="{{ Ctm::isOld() ? old('point_per') : (isset($setting) ? $setting->point_per : '') }}"> <span>%</span>
+
+                @if ($errors->has('point_per'))
+                    <div class="text-danger">
+                        <span class="fa fa-exclamation form-control-feedback"></span>
+                        <span>{{ $errors->first('point_per') }}</span>
+                    </div>
+                @endif
+            </fieldset>
             
             
-            <fieldset class="mb-4 form-group{{ $errors->has('kare_ensure') ? ' has-error' : '' }}">
+            
+            
+            <fieldset class="mt-5 mb-4 form-group{{ $errors->has('kare_ensure') ? ' has-error' : '' }}">
                 <label>枯れ保証日数</label><br>
                 <input class="form-control d-inline-block col-md-4{{ $errors->has('kare_ensure') ? ' is-invalid' : '' }}" name="kare_ensure" value="{{ Ctm::isOld() ? old('kare_ensure') : (isset($setting) ? $setting->kare_ensure : '') }}"> <span>日</span>
 
@@ -186,7 +219,7 @@
             </fieldset>
             
             
-            <fieldset class="mb-4 form-group{{ $errors->has('bank_info') ? ' has-error' : '' }}">
+            <fieldset class="mt-5 mb-4 form-group{{ $errors->has('bank_info') ? ' has-error' : '' }}">
                     <label for="bank_info" class="control-label">銀行振込先</label>
 
                     <textarea id="bank_info" type="text" class="form-control" name="bank_info" rows="8">{{ Ctm::isOld() ? old('bank_info') : (isset($setting) ? $setting->bank_info : '') }}</textarea>

@@ -113,11 +113,8 @@ class SettingController extends Controller
         //status
 		$data['is_product'] = isset($data['is_product']) ? $data['is_product'] : 0;
         $data['is_sale'] = isset($data['is_sale']) ? $data['is_sale'] : 0;
-//            $data['open_status'] = 0;
-//        }
-//        else {
-//            $data['open_status'] = 1;
-//        }
+        $data['is_point'] = isset($data['is_point']) ? $data['is_point'] : 0;
+
         
         //if($editId) { //update（編集）の時
             $status = 'サイト設定が更新されました！';

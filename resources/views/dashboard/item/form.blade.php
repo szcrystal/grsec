@@ -53,7 +53,7 @@
     <div class="col-lg-12 mb-5">
         <form class="form-horizontal" role="form" method="POST" action="/dashboard/items" enctype="multipart/form-data">
         
-        	<div class="form-group mb-5">
+        	<div class="form-group mb-0">
                 <div class="clearfix">
                     <button type="submit" class="btn btn-primary btn-block mx-auto w-btn w-25">更　新</button>
                 </div>
@@ -69,7 +69,7 @@
             @endif
 
 			<div class="form-group">
-                <div class="col-md-12 text-right">
+                <div class="col-md-12 text-right mb-3 pb-3 mt-0">
                     <div class="checkbox">
                         <label>
                             <?php
@@ -89,36 +89,74 @@
                     </div>
                 </div>
             </div>
+        <hr>
 	
 		<div class="form-group clearfix mb-4 thumb-wrap">
-            <div class="float-left col-md-5 thumb-prev">
-                @if(count(old()) > 0)
-                    @if(old('main_img') != '' && old('main_img'))
-                    <img src="{{ Storage::url(old('main_img')) }}" class="img-fluid">
+        	<fieldset class="w-25 float-right">
+                <div class="col-md-12 checkbox text-right px-0">
+                    <label>
+                        <?php
+                            $checked = '';
+                            if(Ctm::isOld()) {
+                                if(old('del_mainimg'))
+                                    $checked = ' checked';
+                            }
+                            else {
+                                if(isset($item) && $item->del_mainimg) {
+                                    $checked = ' checked';
+                                }
+                            }
+                        ?>
+
+                        <input type="hidden" name="del_mainimg" value="0">
+                        <input type="checkbox" name="del_mainimg" value="1"{{ $checked }}> この画像を削除
+                    </label>
+                </div>
+            </fieldset>
+            
+            <fieldset>
+                <div class="float-left col-md-4 px-0 thumb-prev">
+                    @if(count(old()) > 0)
+                        @if(old('main_img') != '' && old('main_img'))
+                        <img src="{{ Storage::url(old('main_img')) }}" class="img-fluid">
+                        @elseif(isset($item) && $item->main_img)
+                        <img src="{{ Storage::url($item->main_img) }}" class="img-fluid">
+                        @else
+                        <span class="no-img">No Image</span>
+                        @endif
                     @elseif(isset($item) && $item->main_img)
                     <img src="{{ Storage::url($item->main_img) }}" class="img-fluid">
                     @else
                     <span class="no-img">No Image</span>
                     @endif
-                @elseif(isset($item) && $item->main_img)
-                <img src="{{ Storage::url($item->main_img) }}" class="img-fluid">
-                @else
-                <span class="no-img">No Image</span>
-                @endif
-            </div>
+                </div>
+                
 
-            <div class="float-left col-md-7">
-                <fieldset class="form-group{{ $errors->has('main_img') ? ' is-invalid' : '' }}">
-                    <label for="main_img">メイン画像</label>
-                    <input class="form-control-file thumb-file" id="main_img" type="file" name="main_img">
-                </fieldset>
-            </div>
+                <div class="float-left col-md-8 pl-3 pr-0">
+                    <fieldset class="form-group{{ $errors->has('main_img') ? ' is-invalid' : '' }}">
+                        <label for="main_img">メイン画像</label>
+                        <input class="form-control-file thumb-file" id="main_img" type="file" name="main_img">
+                    </fieldset>
+                
+                    @if ($errors->has('main_img'))
+                        <span class="help-block text-danger">
+                            <strong>{{ $errors->first('main_img') }}</strong>
+                        </span>
+                    @endif
+                    
+                    <span class="text-small text-secondary">＊メイン画像は原則必要なものとなります。<br>削除後の未入力など注意して下さい。</span>
+                
+                </div>
+            </fieldset>
             
-            @if ($errors->has('main_img'))
-                <span class="help-block text-danger">
-                    <strong>{{ $errors->first('main_img') }}</strong>
-                </span>
-            @endif
+            <input class="form-control mt-3 col-md-12{{ $errors->has('main_caption') ? ' is-invalid' : '' }}" name="main_caption" value="{{ Ctm::isOld() ? old('main_caption') : (isset($item) ? $item->main_caption : '') }}" placeholder="メインキャプション">
+
+                @if ($errors->has('main_caption'))
+                    <div class="text-danger">
+                        <span class="fa fa-exclamation form-control-feedback"></span>
+                        <span>{{ $errors->first('main_caption') }}</span>
+                    </div>
+                @endif
         </div>
         
         {{--
@@ -130,82 +168,96 @@
      	--}}
                     
   		<div class="clearfix mb-3">
-                <hr>
-                <?php
-                    $s=0;
-                    //use App\Setting;
-                    //$subSetCount = 10;
-                    //$setCount = Setting::get()->first()->snap_count;
-                ?>
-                @while($s < $primaryCount)
+            <hr class="my-4">
+            <?php
+                $s=0;
+                //use App\Setting;
+                //$subSetCount = 10;
+                //$setCount = Setting::get()->first()->snap_count;
+            ?>
+            @while($s < $primaryCount)
                 <div class="clearfix spare-img thumb-wrap">
 
-                <fieldset class="col-md-4 float-right">
-                	<div class="col-md-12 checkbox text-right px-5">
-                        <label>
-                            <?php
-                                $checked = '';
-                                if(Ctm::isOld()) {
-                                    if(old('del_spare.'.$s))
-                                        $checked = ' checked';
-                                }
-                                else {
-                                    if(isset($item) && $item->del_spare) {
-                                        $checked = ' checked';
+                    <fieldset class="w-25 float-right">
+                        <div class="checkbox text-right px-0">
+                            <label>
+                                <?php
+                                    $checked = '';
+                                    if(Ctm::isOld()) {
+                                        if(old('del_spare.'.$s))
+                                            $checked = ' checked';
                                     }
-                                }
-                            ?>
+                                    else {
+                                        if(isset($item) && $item->del_spare) {
+                                            $checked = ' checked';
+                                        }
+                                    }
+                                ?>
 
-                            <input type="hidden" name="del_spare[{{$s}}]" value="0">
-                            <input type="checkbox" name="del_spare[{{$s}}]" value="1"{{ $checked }}> この画像を削除
-                        </label>
-                    </div>
-                </fieldset>
-                    
-                <fieldset class="float-left col-md-8 clearfix">
-                    <div class="col-md-5 float-left thumb-prev">
-                        @if(count(old()) > 0)
-                            @if(old('spare_thumb.'.$s) != '' && old('spare_thumb.'.$s))
-                            <img src="{{ Storage::url(old('spare_thumb.'.$s)) }}" class="img-fluid">
-                            @elseif(isset($snaps[$s]) && $snaps[$s]->snap_path)
-                            <img src="{{ Storage::url($spares[$s]->snap_path) }}" class="img-fluid">
-                            @else
-                            <span class="no-img">No Image</span>
-                            @endif
-                        @elseif(isset($spares[$s]) && $spares[$s]->img_path)
-                            <img src="{{ Storage::url($spares[$s]->img_path) }}" class="img-fluid">
-                        @else
-                            <span class="no-img">No Image</span>
-                        @endif
-                    </div>
-
-                    <div class="col-md-6 pull-left text-left form-group{{ $errors->has('spare_thumb.'.$s) ? ' has-error' : '' }}">
-                        <label for="model_thumb" class="col-md-12 text-left">サブ画像 <span class="text-primary">{{ $s+1}}</spa></label>
-                        <div class="col-md-12">
-                            <input id="model_thumb" class="thumb-file" type="file" name="spare_thumb[]">
-
-                            @if ($errors->has('spare_thumb.'.$s))
-                            <span class="help-block">
-                                <strong>{{ $errors->first('spare_thumb.'.$s) }}</strong>
-                            </span>
-                        @endif
+                                <input type="hidden" name="del_spare[{{$s}}]" value="0">
+                                <input type="checkbox" name="del_spare[{{$s}}]" value="1"{{ $checked }}> この画像を削除
+                            </label>
                         </div>
-                    </div>
+                    </fieldset>
+                    
+                    <fieldset class="float-left w-75 clearfix">
+                        <div class="w-25 float-left thumb-prev">
+                            @if(count(old()) > 0)
+                                @if(old('spare_thumb.'.$s) != '' && old('spare_thumb.'.$s))
+                                <img src="{{ Storage::url(old('spare_thumb.'.$s)) }}" class="img-fluid">
+                                @elseif(isset($spares[$s]) && $spares[$s]->img_path)
+                                <img src="{{ Storage::url($spares[$s]->img_path) }}" class="img-fluid">
+                                @else
+                                <span class="no-img">No Image</span>
+                                @endif
+                            @elseif(isset($spares[$s]) && $spares[$s]->img_path)
+                                <img src="{{ Storage::url($spares[$s]->img_path) }}" class="img-fluid">
+                            @else
+                                <span class="no-img">No Image</span>
+                            @endif
+                        </div>
+
+                        <div class="col-md-8 pull-left text-left form-group{{ $errors->has('spare_thumb.'.$s) ? ' is-invalid' : '' }}">
+                            <label for="model_thumb" class="col-md-12 text-left">サブ画像 <span class="text-primary">{{ $s+1 }}</spa></label>
+                            <div class="w-100">
+                                <input id="model_thumb" class="thumb-file" type="file" name="spare_thumb[]">
+
+                                @if ($errors->has('spare_thumb.'.$s))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('spare_thumb.'.$s) }}</strong>
+                                    </span>
+                                @endif
+
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+                
+                <fieldset>
+                    <input class="form-control mt-2{{ $errors->has('caption.'.$s) ? ' is-invalid' : '' }}" name="caption[]" value="{{ Ctm::isOld() ? old('caption.'.$s) : (isset($spares[$s]) ? $spares[$s]->caption : '') }}" placeholder="キャプション{{ $s+1 }}">
+
+                    @if ($errors->has('caption.'.$s))
+                        <div class="text-danger">
+                            <span class="fa fa-exclamation form-control-feedback"></span>
+                            <span>{{ $errors->first('caption.'.$s) }}</span>
+                        </div>
+                    @endif
                 </fieldset>
-				</div>
-                <hr>
+                
+                
+                <hr class="my-4">
 
                 <input type="hidden" name="spare_count[]" value="{{ $s }}">
 
                 <?php $s++; ?>
-                @endwhile
+            @endwhile
 
 
-            </div>
+        </div>
             
             
         
-			<fieldset class="mb-4 form-group">
+			<fieldset class="mt-5 mb-4 form-group">
                 <label>商品番号 <span class="text-danger text-big">*</span></label>
                 <input class="form-control{{ $errors->has('number') ? ' is-invalid' : '' }}" name="number" value="{{ Ctm::isOld() ? old('number') : (isset($item) ? $item->number : '') }}">
 

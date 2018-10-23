@@ -546,7 +546,7 @@ var exe = (function() {
         
         slideDeliFee: function() {
         	$('.slideDeli').on('click', function(){
-            	$target = $(this).siblings('.table-custom');
+            	$target = $(this).siblings('.table-deli');
                 
                 $target.slideToggle(250);
             });
