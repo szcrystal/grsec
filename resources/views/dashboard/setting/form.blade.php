@@ -170,10 +170,11 @@
                 @endif
             </fieldset>
             
-            
+            {{--
             <fieldset class="form-group mt-5 mb-0">
                 <div class="checkbox">
                     <label>
+        	--}}
                         <?php
                             $checked = '';
                             if(Ctm::isOld()) {
@@ -186,6 +187,7 @@
                                 }
                             }
                         ?>
+            {{--
                         <input type="checkbox" name="is_point" value="1"{{ $checked }}> ポイント祭にする
                     </label>
                 </div>
@@ -202,6 +204,7 @@
                     </div>
                 @endif
             </fieldset>
+            --}}
             
             
             
