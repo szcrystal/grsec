@@ -170,11 +170,10 @@
                 @endif
             </fieldset>
             
-            {{--
+            
             <fieldset class="form-group mt-5 mb-0">
                 <div class="checkbox">
                     <label>
-        	--}}
                         <?php
                             $checked = '';
                             if(Ctm::isOld()) {
@@ -187,7 +186,7 @@
                                 }
                             }
                         ?>
-            {{--
+            
                         <input type="checkbox" name="is_point" value="1"{{ $checked }}> ポイント祭にする
                     </label>
                 </div>
@@ -204,9 +203,6 @@
                     </div>
                 @endif
             </fieldset>
-            --}}
-            
-            
             
             
             <fieldset class="mt-5 mb-4 form-group{{ $errors->has('kare_ensure') ? ' has-error' : '' }}">
@@ -320,6 +316,18 @@
                     <div class="text-danger">
                         <span class="fa fa-exclamation form-control-feedback"></span>
                         <span>{{ $errors->first('snap_category') }}</span>
+                    </div>
+                @endif
+            </fieldset>
+            
+            <fieldset class="mb-4 form-group{{ $errors->has('snap_fix') ? ' has-error' : '' }}">
+                <label>固定ページ画像の枚数</label><br>
+                <input class="form-control d-inline-block col-md-4{{ $errors->has('snap_fix') ? ' is-invalid' : '' }}" name="snap_fix" value="{{ Ctm::isOld() ? old('snap_fix') : (isset($setting) ? $setting->snap_fix : '') }}"> <span>枚</span>
+
+                @if ($errors->has('snap_fix'))
+                    <div class="text-danger">
+                        <span class="fa fa-exclamation form-control-feedback"></span>
+                        <span>{{ $errors->first('snap_fix') }}</span>
                     </div>
                 @endif
             </fieldset>

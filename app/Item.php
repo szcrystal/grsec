@@ -57,6 +57,8 @@ class Item extends Model
         'icon_id',
         
         'contents',
+        
+        'free_space',
                 
         'meta_title',
         'meta_description',

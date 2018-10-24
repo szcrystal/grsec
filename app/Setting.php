@@ -29,6 +29,7 @@ class Setting extends Model
         'snap_primary',
         'snap_secondary',
         'snap_category',
+        'snap_fix',
         
         'meta_title',
         'meta_description',

@@ -443,7 +443,7 @@
             
             
             <fieldset class="mb-4 form-group">
-                <label for="price" class="control-label">価格（本体価格）<span class="text-danger text-big">*</span>（ポット親の時は最低金額を入力）</label>
+                <label for="price" class="control-label">価格（本体価格）<span class="text-danger text-big">*</span><small>（ポット親の時は1を入力）</small></label>
                 <input class="form-control col-md-6{{ $errors->has('price') ? ' is-invalid' : '' }}" name="price" value="{{ Ctm::isOld() ? old('price') : (isset($item) ? $item->price : '') }}" placeholder="税抜き金額を入力">
                 
                 @if ($errors->has('price'))
@@ -468,7 +468,7 @@
             </fieldset>
             
             <fieldset class="mb-4 form-group">
-                <label for="sale_price" class="control-label">セール価格</label>
+                <label for="sale_price" class="control-label">セール価格<span><small>（ポット親でSaleにしたい時は1を入力）</small></label>
                 <input class="form-control col-md-6{{ $errors->has('sale_price') ? ' is-invalid' : '' }}" name="sale_price" value="{{ Ctm::isOld() ? old('sale_price') : (isset($item) ? $item->sale_price : '') }}">
                 
 
@@ -627,9 +627,6 @@
                     </div>
                 @endif
             </fieldset>
-            
-            
-            
             
 
             <fieldset class="mt-5 mb-2 form-group">
@@ -866,7 +863,7 @@
 
             
             <fieldset class="my-5 form-group{{ $errors->has('exp_first') ? ' is-invalid' : '' }}">
-                    <label for="explain" class="control-label">キャッチ説明（商品ヘッドの中に表示される）</label>
+                    <label for="explain" class="control-label">キャッチ説明（商品ヘッドの中に表示）</label>
 
                     <textarea id="explain" type="text" class="form-control" name="exp_first" rows="10">{{ Ctm::isOld() ? old('exp_first') : (isset($item) ? $item->exp_first : '') }}</textarea>
 
@@ -880,7 +877,7 @@
             <fieldset class="my-5 form-group{{ $errors->has('explain') ? ' is-invalid' : '' }}">
                     <label for="explain" class="control-label">商品詳細</label>
 
-                    <textarea id="explain" type="text" class="form-control" name="explain" rows="18">{{ Ctm::isOld() ? old('explain') : (isset($item) ? $item->explain : '') }}</textarea>
+                    <textarea id="explain" type="text" class="form-control" name="explain" rows="20">{{ Ctm::isOld() ? old('explain') : (isset($item) ? $item->explain : '') }}</textarea>
 
                     @if ($errors->has('explain'))
                         <span class="help-block">
@@ -893,7 +890,7 @@
             <fieldset class="mt-3 mb-2 form-group{{ $errors->has('about_ship') ? ' is-invalid' : '' }}">
                     <label for="detail" class="control-label">配送について</label>
 
-                        <textarea id="detail" type="text" class="form-control" name="about_ship" rows="18">{{ Ctm::isOld() ? old('about_ship') : (isset($item) ? $item->about_ship : '') }}</textarea>
+                        <textarea id="detail" type="text" class="form-control" name="about_ship" rows="20">{{ Ctm::isOld() ? old('about_ship') : (isset($item) ? $item->about_ship : '') }}</textarea>
 
                         @if ($errors->has('about_ship'))
                             <span class="help-block">
@@ -926,9 +923,27 @@
                 $obj = null;
                 if(isset($item)) $obj = $item;
             ?>
-            
-            
+
             @include('dashboard.shared.contents')
+            
+            
+            <div class="form-group mt-3 pt-3 mb-5 pb-5">
+                <button type="submit" class="btn btn-primary btn-block w-btn w-25 mx-auto">更　新</button>
+            </div>
+            
+            
+            
+            <fieldset class="mt-3 mb-2 form-group{{ $errors->has('free_space') ? ' is-invalid' : '' }}">
+                <label for="detail" class="control-label">フリースペース（ページ上部）</label>
+
+                <textarea id="detail" type="text" class="form-control" name="free_space" rows="20">{{ Ctm::isOld() ? old('free_space') : (isset($item) ? $item->free_space : '') }}</textarea>
+
+                @if ($errors->has('free_space'))
+                    <span class="help-block">
+                        <strong>{{ $errors->first('free_space') }}</strong>
+                    </span>
+                @endif
+        	</fieldset>
             
             
             

@@ -86,10 +86,10 @@ class MyPageController extends Controller
         $sales = $this->sale->whereIn('salerel_id', $relIds)->orderBy('id', 'desc')->paginate($this->perPage);
         
         $saleRel = $this->saleRel;
-        $item = $this->item;
+        //$item = $this->item;
         $pm = $this->payMethod;
         
-     	return view('mypage.history', ['user'=>$user, 'saleRel'=>$saleRel, 'sales'=>$sales, 'item'=>$item, 'pm'=>$pm]);   
+     	return view('mypage.history', ['user'=>$user, 'saleRel'=>$saleRel, 'sales'=>$sales, 'pm'=>$pm]);   
     }
     
     public function showHistory($saleId)

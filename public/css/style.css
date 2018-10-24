@@ -1454,12 +1454,12 @@ ul.side-rank {
 
 .single .btn[type="submit"]:disabled {
 	cursor: default;
-    opacity: 0.25;
-    background: #838383;
+    opacity: 1;
+    background: #dfdfdf;
 }
 .single .btn[type="submit"]:disabled:hover {
-	opacity: 0.25;
-    background: #838383;
+	opacity: 1;
+    background: #dfdfdf;
 }
 
 .slideDeli {

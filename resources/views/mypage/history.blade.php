@@ -2,15 +2,16 @@
 
 @section('content')
 
+<?php
+use App\Item;
+?>
 
-	{{-- @include('main.shared.carousel') --}}
 
 <div id="main" class="history">
 
         <div class="panel panel-default">
 
             <div class="panel-body">
-                {{-- @include('main.shared.main') --}}
 
 
 <h3 class="mb-3 card-header">購入履歴一覧</h3>
@@ -42,20 +43,14 @@
             	<p class="mt-2"><small>ご注文番号</small><br>{{ $sale->order_number }}</p>
             </td>
             <td class="clearfix">
-            	<?php $i = $item->find($sale->item_id); ?>
+            	<?php $item = Item::find($sale->item_id); ?>
                 
-                @if(isset($i->main_img) && $i->main_img != '')
-                <img src="{{ Storage::url($i->main_img) }}" alt="{{ $i->title }}" class="img-fluid" width="80">
-                @else
-                <span class="no-img mr-2">No Image</span>
-                @endif
+                @include('main.shared.smallThumbnail')
                 
-            	
-            
-            	<div class="">
-             	{{ Ctm::getItemTitle($i) }}&nbsp;
-              	[{{ $i->number }}]
-               <span class="d-block mt-1">¥{{ number_format($sale->single_price) }}（税込）</span> 
+            	<div>
+             		{{ Ctm::getItemTitle($item) }}&nbsp;
+              		[{{ $item->number }}]
+               		<span class="d-block mt-1">¥{{ number_format($sale->single_price) }}（税込）</span> 
                </div>
             </td>
              <td>{{ $sale->item_count }}</td>
@@ -64,7 +59,7 @@
              	[{{ $pm->find($sale->pay_method)->name }}]
             </td>
              <td>
-             	@if($i->is_ensure)
+             	@if($item->is_ensure)
                     @if($sale->deli_done)
                     <?php 
                        $days = Ctm::getKareHosyou($sale->deli_start_date);   
@@ -99,7 +94,7 @@
              </td>
              <td>
              	<a href="{{ url('mypage/history/'.$sale->id) }}" class="btn btn-block border-secondary bg-white text-small mb-3 w-100 rounded-0">
-                詳細を確認
+                詳細を確認 <i class="fal fa-angle-double-right"></i>
                 </a>
                 
                 <form class="form-horizontal" role="form" method="POST" action="{{ url('shop/cart') }}">
@@ -107,7 +102,7 @@
                                                                            
                     <input type="hidden" name="item_count[]" value="1">
                     <input type="hidden" name="from_item" value="1">
-                    <input type="hidden" name="item_id[]" value="{{ $i->id }}">
+                    <input type="hidden" name="item_id[]" value="{{ $item->id }}">
                     <input type="hidden" name="uri" value="{{ Request::path() }}"> 
                                       
                    <button class="btn btn-custom text-small text-center w-100" type="submit" name="regist_off" value="1">もう一度購入</button>                 
@@ -119,8 +114,8 @@
         </tbody>
         
     @else
-    <div class="table-responsive">
-    <table class="table table-bordered bg-white">
+    	<div class="table-responsive">
+    	<table class="table table-bordered bg-white">
         	<tbody>
             	@foreach($sales as $sale)
         		<tr>
@@ -130,19 +125,15 @@
                         	ご注文番号：{{ $sale->order_number }}
                         </p>
                         
-                        <?php $i = $item->find($sale->item_id); ?>
+                        <?php $item = Item::find($sale->item_id); ?>
                         
-                        @if(isset($i->main_img) && $i->main_img != '')
-                        <img src="{{ Storage::url($i->main_img) }}" alt="{{ $i->title }}" class="d-block img-fluid float-left mr-2" width="70">
-                        @else
-                        <span class="no-img mr-2">No Image</span>
-                        @endif
+                        <div class="float-left mr-2">
+                            @include('main.shared.smallThumbnail')
+                        </div>
                         
-                        
-                    
                         <div class="float-left w-70">
-                            <b>{{ Ctm::getItemTitle($i) }}</b>&nbsp;
-                            [{{ $i->number }}]
+                            <b>{{ Ctm::getItemTitle($item) }}</b>&nbsp;
+                            [{{ $item->number }}]
                            <span class="d-block mt-1">¥{{ number_format($sale->single_price) }}（税込）</span> 
                            
                            数量:{{ $sale->item_count }}
@@ -153,7 +144,7 @@
                         	</p>
                        
                        		枯れ保証期間 残：<b>
-                    		@if($i->is_ensure)
+                    		@if($item->is_ensure)
                                 @if($sale->deli_done)
                                     <?php 
                                        $days = Ctm::getKareHosyou($sale->deli_start_date);   
@@ -178,14 +169,14 @@
                        
                        
                        <div class="w-50 float-right mt-3">
-                       		<a href="{{ url('mypage/history/'.$sale->id) }}" class="btn btn-block border-secondary text-small bg-white mb-2 w-100 rounded-0">詳細を確認</a>
+                       		<a href="{{ url('mypage/history/'.$sale->id) }}" class="btn btn-block border-secondary text-small bg-white mb-2 w-100 rounded-0">詳細を確認 <i class="fal fa-angle-double-right"></i></a>
                             
                             <form class="form-horizontal" role="form" method="POST" action="{{ url('shop/cart') }}">
                                 {{ csrf_field() }}
                                                                                        
                                 <input type="hidden" name="item_count[]" value="1">
                                 <input type="hidden" name="from_item" value="1">
-                                <input type="hidden" name="item_id[]" value="{{ $i->id }}">
+                                <input type="hidden" name="item_id[]" value="{{ $item->id }}">
                                 <input type="hidden" name="uri" value="{{ Request::path() }}"> 
                                                   
                                <button class="btn btn-custom text-center text-small w-100" type="submit" name="regist_off" value="1">もう一度購入</button>                 

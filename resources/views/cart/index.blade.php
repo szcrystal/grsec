@@ -55,11 +55,9 @@
      		@foreach($itemData as $key => $item)    
      		<tr class="{{ $errors->has('no_delivery.'. $key) ? 'tr-danger-border' : '' }}">
                 <td class="clearfix">
-                	@if(isset($item->main_img) && $item->main_img != '')
-                	<img src="{{ Storage::url($item->main_img) }}" alt="{{ $item->title }}" class="img-fluid" width="80">
-                    @else
-                    <span class="no-img mr-2"><small>No Image</small></span>
-                    @endif
+                	
+                    <?php $obj = $item; ?>
+                    @include('main.shared.smallThumbnail')
                 	
                 	<a href="{{ url('item/'.$item->id) }}">
                         {{ Ctm::getItemTitle($item) }}

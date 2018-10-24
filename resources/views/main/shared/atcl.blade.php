@@ -64,32 +64,31 @@ use App\Icon;
 
     <div class="price">
     	<?php
-        	//$isPotParent = $item->is_pot_parent ? 1 : 0;
+        	$pots = Item::where(['is_potset'=>1, 'pot_parent_id'=>$item->id])->orderBy('price', 'asc')->get();
+            $isPotParent = $pots->isNotEmpty();
             
-            $isPotParent = Item::where(['is_potset'=>1, 'pot_parent_id'=>$item->id])->get()->isNotEmpty();
-            
-//            if($isPotParent) {
-//            	$thisItem = Item::where('pot_parent_id', $item->id)->orderBy('price', 'asc')->get()->first();
-//            }
-//            else {
-//            	$thisItem = $item;
-//            }
+            if($isPotParent) {
+            	$thisItem = $pots->first();
+            }
+            else {
+            	$thisItem = $item;
+            }
         ?>
         
-        @if($isSale || isset($item->sale_price))
+        @if($isSale || isset($thisItem->sale_price))
         	@if(! $isSp)
-            	<strike>{{ number_format(Ctm::getPriceWithTax($item->price)) }}</strike>
+            	<strike>{{ number_format(Ctm::getPriceWithTax($thisItem->price)) }}</strike>
             	<i class="fal fa-arrow-right text-small"></i>
             @endif
         @endif
         
-        @if(isset($item->sale_price))
-            <span class="show-price text-enji">{{ number_format(Ctm::getPriceWithTax($item->sale_price)) }}
+        @if(isset($thisItem->sale_price))
+            <span class="show-price text-enji">{{ number_format(Ctm::getPriceWithTax($thisItem->sale_price)) }}
         @else
             @if($isSale)
-                <span class="show-price text-enji">{{ number_format(Ctm::getSalePriceWithTax($item->price)) }}
+                <span class="show-price text-enji">{{ number_format(Ctm::getSalePriceWithTax($thisItem->price)) }}
             @else
-                <span class="show-price">{{ number_format(Ctm::getPriceWithTax($item->price)) }}
+                <span class="show-price">{{ number_format(Ctm::getPriceWithTax($thisItem->price)) }}
             @endif
         @endif
         </span>

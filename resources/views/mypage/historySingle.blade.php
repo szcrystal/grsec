@@ -81,11 +81,8 @@
              
              <tr>
                 <td class="clearfix">
-                	@if(isset($item->main_img) && $item->main_img != '')
-                	<img src="{{ Storage::url($item->main_img) }}" alt="{{ $item->title }}" class="img-fluid" width="80">
-                    @else
-                    <span class="no-img mr-2">No Image</span>
-                    @endif
+
+                	@include('main.shared.smallThumbnail')
                 	
                     <div>
                     {{ Ctm::getItemTitle($item) }}<br>[ {{ $item->number }} ]
@@ -224,8 +221,10 @@
     <input type="hidden" name="item_id[]" value="{{ $item->id }}">
     <input type="hidden" name="uri" value="{{ Request::path() }}"> 
     
-                         
-   <button class="btn btn-block btn-custom col-md-4 mb-4 mx-auto py-2" type="submit" name="regist_off" value="1">もう一度購入する</button>                 
+	<div>
+    	<button class="btn btn-block btn-custom col-md-4 mb-4 mx-auto py-2" type="submit" name="regist_off" value="1"><i class="fal fa-cart-arrow-down"></i> もう一度購入する</button>
+   </div>
+   
 </form>
 
 <a href="{{ url('mypage/history') }}" class="btn border border-secondary bg-white mt-5">

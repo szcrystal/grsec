@@ -30,7 +30,6 @@ class CreateSettingsTable extends Migration
 			$table->boolean('is_point')->nullable()->default(NULL);
             $table->float('point_per')->nullable()->default(NULL);
             
-            
             $table->integer('kare_ensure')->nullable()->default(NULL);
             $table->text('bank_info')->nullable()->default(NULL);
             $table->integer('cot_per')->nullable()->default(NULL);
@@ -46,7 +45,7 @@ class CreateSettingsTable extends Migration
             $table->integer('snap_primary')->nullable()->default(NULL);
             $table->integer('snap_secondary')->nullable()->default(NULL);
             $table->integer('snap_category')->nullable()->default(NULL);
-            
+            $table->integer('snap_fix')->nullable()->default(NULL);
             
             
 //            $table->string('meta_title')->nullable()->default(NULL);
@@ -73,6 +72,7 @@ class CreateSettingsTable extends Migration
                 'snap_primary'=> 10,
                 'snap_secondary'=> 5,
                 'snap_category'=> 3,
+                'snap_fix'=> 5,
                 
                 'fix_need' => '1,2,3,4',
                 

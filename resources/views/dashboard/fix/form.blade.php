@@ -38,8 +38,8 @@
     @endif
 
 
-    <div class="col-lg-11">
-        <form class="form-horizontal" role="form" method="POST" action="/dashboard/fixes">
+    <div class="col-lg-12">
+        <form class="form-horizontal" role="form" method="POST" action="/dashboard/fixes" enctype="multipart/form-data">
 			
             <div class="form-group mt-5">
                 <button type="submit" class="btn btn-primary btn-block mx-auto w-25"><span class="octicon octicon-sync"></span>更　新</button>
@@ -101,6 +101,7 @@
                     @endif
             </fieldset>
 
+			{{--
             <fieldset class="form-group mb-4">
                 <label class="control-label">コンテンツ</label>
 
@@ -112,6 +113,15 @@
                         </span>
                     @endif
             </fieldset>
+            --}}
+            
+            
+            <?php
+                $obj = null;
+                if(isset($fix)) $obj = $fix;
+            ?>
+
+            @include('dashboard.shared.contents')
 
 
               <div class="form-group mt-5">

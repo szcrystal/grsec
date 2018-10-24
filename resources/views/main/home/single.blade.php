@@ -29,6 +29,12 @@ use App\TopSetting;
     <div id="main" class="single">
     	
         @include('main.shared.bread')
+        
+        @if(isset($item->free_space))
+        	<div class="clearfix">
+        		{!! $item->free_space !!}
+        	</div>
+        @endif
 		
         <div class="head-frame clearfix">
             
@@ -151,95 +157,95 @@ use App\TopSetting;
                         <div class="potset-wrap form-wrap">
                         	 
                             @foreach($potSets as $potSet)
-                            <div class="potset clearfix">
-                            	@if(isset($potSet->main_img))
-                                <div class="img-box">
-                                	<img src="{{ Storage::url($potSet->main_img) }}" class="img-fluid">
-                                </div>
-                                @endif
-                                
-                                <div class="potset-text">
-                                    <h3>
-                                    	{{ $potSet->title }}
-                                    </h3>
-                                    
-                                    <div class="price-meta">
-                                        <?php $obj = $potSet; ?>
-                                        @include('main.shared.priceMeta')
+                                <div class="potset clearfix">
+                                    @if(isset($potSet->main_img))
+                                    <div class="img-box">
+                                        <img src="{{ Storage::url($potSet->main_img) }}" class="img-fluid">
                                     </div>
-                                    
-                                    @if(isset($potSet->icon_id) && $potSet->icon_id != '')
-                                        <div class="icons">
-                                        	<?php //$obj = $potSet; ?>
-                                            @include('main.shared.icon')
-                                        </div>
                                     @endif
                                     
-                                    <div class="clearfix">
+                                    <div class="potset-text">
+                                        <h3>
+                                            {{ $potSet->title }}
+                                        </h3>
                                         
-                                        @if($potSet->stock > 0)
-                                            @if($potSet->stock_show)
-                                                <span>在庫：{{ $potSet->stock }}</span>
-                                            @endif
+                                        <div class="price-meta">
+                                            <?php $obj = $potSet; ?>
+                                            @include('main.shared.priceMeta')
+                                        </div>
+                                        
+                                        @if(isset($potSet->icon_id) && $potSet->icon_id != '')
+                                            <div class="icons">
+                                                <?php //$obj = $potSet; ?>
+                                                @include('main.shared.icon')
+                                            </div>
+                                        @endif
+                                        
+                                        <div class="clearfix">
                                             
-                                            <div class="potSetSelect-wrap float-right">
-                                                <fieldset class="clearfix text-right">
-                                                <label>数量</label>
-                                                
-                                                <select class="potSetSelect form-control d-inline{{ $errors->has('item_count') ? ' is-invalid' : '' }}" name="item_count[]">
-                                                    <option value="0" selected>選択</option>
-                                                        <?php
-                                                            $max = 100;
-                                                            if($potSet->stock < 100) {
-                                                                $max = $item->stock;
-                                                            }
-                                                        ?>
-                                                        @for($i=1; $i <= $max; $i++)
-                                                            <?php
-                                                                $selected = '';
-                                                                if(Ctm::isOld()) {
-                                                                    if(old('item_count') == $i)
-                                                                        $selected = ' selected';
-                                                                }
-    //                                                            else {
-    //                                                                if($i == 1) {
-    //                                                                    $selected = ' selected';
-    //                                                                }
-    //                                                            }
-                                                            ?>
-                                                            <option value="{{ $i }}"{{ $selected }}>{{ $i }}</option>
-                                                        @endfor
-                                                </select>
-                                                <span class="text-warning"></span>
-                                                
-                                                @if ($errors->has('item_count'))
-                                                    <div class="help-block text-danger">
-                                                        <span class="fa fa-exclamation form-control-feedback"></span>
-                                                        <span>{{ $errors->first('item_count') }}</span>
-                                                    </div>
+                                            @if($potSet->stock > 0)
+                                                @if($potSet->stock_show)
+                                                    <span>在庫：{{ $potSet->stock }}</span>
                                                 @endif
                                                 
-                                                <input type="hidden" name="item_id[]" value="{{ $potSet->id }}">
-                                                
-                                                </fieldset>
-                                            </div>
-                                        @else
-                                            <span class="text-danger text-big">在庫がありません</span>
-                                            @if($potSet->stock_type)
-                                                <p class="d-inline">
-                                                    @if($potSet->stock_type == 1)
-                                                        次回{{ $potSet->stock_reset_month }}月頃入荷予定
-                                                    @else
-                                                        次回入荷未定
+                                                <div class="potSetSelect-wrap float-right">
+                                                    <fieldset class="clearfix text-right">
+                                                    <label>数量</label>
+                                                    
+                                                    <select class="potSetSelect form-control d-inline{{ $errors->has('item_count') ? ' is-invalid' : '' }}" name="item_count[]">
+                                                        <option value="0" selected>選択</option>
+                                                            <?php
+                                                                $max = 100;
+                                                                if($potSet->stock < 100) {
+                                                                    $max = $potSet->stock;
+                                                                }
+                                                            ?>
+                                                            @for($ii=1; $ii <= $max; $ii++)
+                                                                <?php
+                                                                    $selected = '';
+                                                                    if(Ctm::isOld()) {
+                                                                        if(old('item_count') == $ii)
+                                                                            $selected = ' selected';
+                                                                    }
+        //                                                            else {
+        //                                                                if($i == 1) {
+        //                                                                    $selected = ' selected';
+        //                                                                }
+        //                                                            }
+                                                                ?>
+                                                                <option value="{{ $ii }}"{{ $selected }}>{{ $ii }}</option>
+                                                            @endfor
+                                                    </select>
+                                                    <span class="text-warning"></span>
+                                                    
+                                                    @if ($errors->has('item_count'))
+                                                        <div class="help-block text-danger">
+                                                            <span class="fa fa-exclamation form-control-feedback"></span>
+                                                            <span>{{ $errors->first('item_count') }}</span>
+                                                        </div>
                                                     @endif
-                                                </p>
+                                                    
+                                                    <input type="hidden" name="item_id[]" value="{{ $potSet->id }}">
+                                                    
+                                                    </fieldset>
+                                                </div>
+                                            @else
+                                                <span class="text-danger text-small">在庫がありません</span>
+                                                @if($potSet->stock_type)
+                                                    <p class="d-inline text-small ml-1">
+                                                        @if($potSet->stock_type == 1)
+                                                            次回{{ $potSet->stock_reset_month }}月頃入荷予定
+                                                        @else
+                                                            次回入荷未定
+                                                        @endif
+                                                    </p>
+                                                @endif
                                             @endif
-                                        @endif
-                                            
-                                	</div>
-                                
+                                                
+                                        </div>
+                                    
+                                    </div>
                                 </div>
-                            </div>
                             @endforeach
   
                     	</div>   	
@@ -367,7 +373,7 @@ use App\TopSetting;
                             <p class="">{{ $item->deli_plan_text }}</p>
                             
                             @if(Ctm::isAgent('sp'))
-                                <button id="spCartBtn" type="submit" class="btn btn-custom btn-blue text-center col-md-6"><i class="fal fa-cart-arrow-down"></i> この商品をカートに入れる</button>
+                                <button id="spCartBtn" type="submit" class="btn btn-custom btn-blue text-center col-md-6"{{ $disabled }}><i class="fal fa-cart-arrow-down"></i> この商品をカートに入れる</button>
                             @endif
                         @endif
                    </form>

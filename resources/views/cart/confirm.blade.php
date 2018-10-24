@@ -31,11 +31,8 @@
              @foreach($itemData as $item)    
              <tr>
              	<td>
-                	@if(isset($item->main_img) && $item->main_img != '')
-                	<img src="{{ Storage::url($item->main_img) }}" alt="{{ $item->title }}" class="img-fluid" width="80">
-                    @else
-                    <span class="no-img mr-2">No Image</span>
-                    @endif
+                	<?php $obj = $item; ?>
+                	@include('main.shared.smallThumbnail')
 
                     {{ Ctm::getItemTitle($item) }}
                     <br>

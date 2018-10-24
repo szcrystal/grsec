@@ -3,18 +3,27 @@
 namespace App\Http\Controllers\DashBoard;
 
 use App\Fix;
+use App\Setting;
+use App\ItemImage;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
+//use App\Http\Requests;
+use Illuminate\Support\Facades\Storage;
+
 class FixController extends Controller
 {
-    public function __construct(Fix $fix)
+    public function __construct(Fix $fix, Setting $setting, ItemImage $itemImg)
     {
         $this -> middleware('adminauth');
         //$this -> middleware('log', ['only' => ['getIndex']]);
         
         $this -> fix = $fix;
+        $this->setting = $setting;
+        $this->set = $this->setting->get()->first();
+        
+        $this->itemImg = $itemImg;
         
         $this->perPage = 20;
         
@@ -31,14 +40,21 @@ class FixController extends Controller
         return view('dashboard.fix.index', ['fixes'=>$fixes]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function show($id)
+    {
+        $fix = $this->fix->find($id);
+        
+        $snaps = $this->itemImg->where(['item_id'=>$id, 'type'=>7])->get();
+        $imgCount = $this->set->snap_fix;
+        
+        return view('dashboard.fix.form', ['fix'=>$fix, 'id'=>$id, 'snaps'=>$snaps, 'imgCount'=>$imgCount, 'edit'=>1]);
+    }
+    
     public function create()
     {
-        return view('dashboard.fix.form');
+        $imgCount = $this->set->snap_fix;
+        
+        return view('dashboard.fix.form', ['imgCount'=>$imgCount,]);
     }
 
     /**
@@ -49,9 +65,9 @@ class FixController extends Controller
      */
     public function store(Request $request)
     {
-        $edit_id = $request->input('edit_id') !== FALSE ? $request->input('edit_id') : 0;
+        $editId = $request->has('edit_id') ? $request->input('edit_id') : 0;
         
-        $exceptId = $edit_id ? ','.$edit_id : '';
+        $exceptId = $editId ? ','. $editId : '';
         $rules = [
             'title' => 'required|max:255',
             'slug' => 'required|max:255|unique:fixes,slug'.$exceptId,
@@ -61,12 +77,8 @@ class FixController extends Controller
         
         $data = $request->all(); //requestから配列として$dataにする
         
-        if(! isset($data['open_status'])) { //checkbox
-            $data['open_status'] = 1;
-        }
-        else {
-            $data['open_status'] = 0;
-        }
+        $data['open_status'] = isset($data['open_status']) ? $data['open_status'] : 0;
+        
         
         //$data['up_date'] = $request->input('up_year'). '-' .$request->input('up_month') . '-' . $request->input('up_day');
 //        $data['up_date'] = '2017-01-01 11:11:11';
@@ -88,8 +100,8 @@ class FixController extends Controller
 //            $n++;
 //        }
 
-        if($request->input('edit_id') !== NULL ) { //update（編集）の時
-            $fixModel = $this->fix->find($request->input('edit_id'));
+        if($editId) { //update（編集）の時
+            $fixModel = $this->fix->find($editId);
             $status = '固定ページが更新されました！';
         }
         else { //新規追加の時
@@ -100,31 +112,86 @@ class FixController extends Controller
         $fixModel->fill($data); //モデルにセット
         $fixModel->save(); //モデルからsave
         
-        $id = $fixModel->id;
-        //return view('dashboard.article.form', ['thisClass'=>$this, 'tags'=>$tags, 'status'=>'記事が更新されました。']);
-        return redirect('dashboard/fixes/'.$id)->with('status', $status);
-
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        $fix = $this->fix->find($id);
+        $fixId = $fixModel->id;
         
-        return view('dashboard.fix.form', ['fix'=>$fix, 'id'=>$id, 'edit'=>1]);
+        //Snap Save ==================================================
+        foreach($data['snap_count'] as $count) {
+        
+            /*
+                type:1-> item main
+                type:2-> item spare
+                type:3-> category
+                type:4-> sub category
+                type:5-> tag 
+                type:6-> top carousel
+                type:7-> fix                           
+            */         
+ 
+            if(isset($data['del_snap'][$count]) && $data['del_snap'][$count]) { //削除チェックの時
+                //echo $count . '/' .$data['del_snap'][$count];
+                //exit;
+                
+                $snapModel = $this->itemImg->where(['item_id'=>$fixId, 'type'=>7, 'number'=>$count+1])->first();
+                
+                if($snapModel !== null) {
+                	Storage::delete('public/'. $snapModel->img_path); //Storageはpublicフォルダのあるところをルートとしてみる
+                    $snapModel ->delete();
+                }
+            
+            }
+            else {
+                if(isset($data['snap_thumb'][$count])) {
+                    
+                    $snapImg = $this->itemImg->updateOrCreate(
+                        ['item_id'=>$fixId, 'type'=>7, 'number'=>$count+1],
+                        [
+                            'item_id'=>$fixId,
+                            //'snap_path' =>'',
+                            'type' => 7,
+                            'number'=> $count+1,
+                        ]
+                    );
+
+                    $filename = $data['snap_thumb'][$count]->getClientOriginalName();
+                    $filename = str_replace(' ', '_', $filename);
+                    
+                    //$aId = $editId ? $editId : $rand;
+                    //$pre = time() . '-';
+                    $filename = 'fix/' . $fixId . '/snap/'/* . $pre*/ . $filename;
+                    //if (App::environment('local'))
+                    $path = $data['snap_thumb'][$count]->storeAs('public', $filename);
+                    //else
+                    //$path = Storage::disk('s3')->putFileAs($filename, $request->file('thumbnail'), 'public');
+                    //$path = $request->file('thumbnail')->storeAs('', $filename, 's3');
+                
+                    //$data['model_thumb'] = $filename;
+                    
+                    $snapImg->img_path = $filename;
+                    $snapImg->save();
+                }
+            }
+            
+        } //foreach
+        
+        
+        //Snapのナンバーを振り直す
+        $num = 1;
+        $snaps = $this->itemImg->where(['item_id'=>$fixId, 'type'=>7])->get();
+        
+        foreach($snaps as $snap) {
+            $snap->number = $num;
+            $snap->save();
+            $num++;
+        }
+        
+        //Snap END ===========================================
+        
+        //return view('dashboard.article.form', ['thisClass'=>$this, 'tags'=>$tags, 'status'=>'記事が更新されました。']);
+        return redirect('dashboard/fixes/'. $fixId)->with('status', $status);
+
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function edit($id)
     {
         //

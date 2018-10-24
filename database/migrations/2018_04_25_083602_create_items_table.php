@@ -33,20 +33,7 @@ class CreateItemsTable extends Migration
             
             
             $table->string('main_img')->nullable()->default(NULL);
-            $table->string('main_caption')->nullable()->default(NULL);
-            /*
-            $table->string('spare_img_0')->nullable()->default(NULL);
-            $table->string('spare_img_1')->nullable()->default(NULL);
-            $table->string('spare_img_2')->nullable()->default(NULL);
-            $table->string('spare_img_3')->nullable()->default(NULL);
-            $table->string('spare_img_4')->nullable()->default(NULL);
-            $table->string('spare_img_5')->nullable()->default(NULL);
-            $table->string('spare_img_6')->nullable()->default(NULL);
-            $table->string('spare_img_7')->nullable()->default(NULL);
-            $table->string('spare_img_8')->nullable()->default(NULL);
-            $table->string('spare_img_9')->nullable()->default(NULL);
-            */
-            
+            $table->string('main_caption')->nullable()->default(NULL);            
             
             
             $table->integer('price')->nullable()->default(NULL);
@@ -81,6 +68,8 @@ class CreateItemsTable extends Migration
             $table->boolean('is_delifee_table')->nullable()->default(NULL);
             
             $table->longText('contents')->nullable()->default(NULL);
+            
+            $table->longText('free_space')->nullable()->default(NULL);
             
             $table->string('meta_title')->nullable()->default(NULL);
             $table->text('meta_description')->nullable()->default(NULL);
