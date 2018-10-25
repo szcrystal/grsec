@@ -93,7 +93,24 @@
                       <a href="{{ url('dashboard/dgs/create') }}">配送区分新規登録</a>
                     </li>
               	</ul>   
-             </li>      
+             </li>
+             
+            <div class="border border-secondary border-top-0 w-75 mx-auto"></div>  
+             
+             <li class="nav-item" data-toggle="tooltip" data-placement="right" title="配送区分">
+             	<a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#dcs" data-parent="#collapseMaster">
+                    <i class="fa fa-building"></i>
+                    <span class="nav-link-text">配送会社</span>
+                </a>
+             	<ul class="sidenav-third-level collapse" id="dcs"><!-- class=" collapse" -->
+              		<li>
+                      <a href="{{ url('dashboard/dcs') }}">配送会社一覧</a>
+                    </li>
+                    <li>
+                      <a href="{{ url('dashboard/dcs/create') }}">配送会社新規登録</a>
+                    </li>
+              	</ul>   
+             </li>
           	
            	<div class="border border-secondary border-top-0 w-75 mx-auto"></div>
               

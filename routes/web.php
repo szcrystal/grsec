@@ -43,6 +43,9 @@ Route::resource('dashboard/dgs', 'DashBoard\DeliveryGroupController');
 Route::get('dashboard/dgs/fee/{dgId}', 'DashBoard\DeliveryGroupController@getFee');
 Route::post('dashboard/dgs/fee/{dgId}', 'DashBoard\DeliveryGroupController@postFee');
 
+//DeliveryCompany
+Route::resource('dashboard/dcs', 'DashBoard\DeliveryCompanyController');
+
 //Prefecture
 //Route::resource('dashboard/prefectures', 'DashBoard\PrefectureController');
 
