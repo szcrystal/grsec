@@ -43,13 +43,12 @@ use App\Setting;
             {{ session('status') }}
         </div>
     @endif
-        
+    
     <div class="col-lg-12 mb-5">
         <form class="form-horizontal" role="form" method="POST" action="/dashboard/sales/order">
 
             {{ csrf_field() }}
 
-            
              <div class="form-group mb-3">
                 <div class="clearfix">
                 	<p class="w-50 float-left">
@@ -310,6 +309,7 @@ use App\Setting;
                         </tbody>
                     </table>
                 </div>
+                
                 
                 
                 @if($saleRel->pay_method == 6)

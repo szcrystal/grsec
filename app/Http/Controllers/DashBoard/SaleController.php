@@ -296,7 +296,15 @@ class SaleController extends Controller
         
         $saleRel = $this->saleRel->find($data['order_id']);
         $saleRel->pay_done = isset($data['pay_done']) ? $data['pay_done'] : 0;
-        $saleRel->pay_date = date('Y-m-d H:i:s', time());
+        
+        if(isset($data['pay_done'])) {
+        	$saleRel->pay_date = date('Y-m-d H:i:s', time());
+        }
+        
+        $saleRel->information = $data['information'];
+        $saleRel->memo = $data['memo'];
+        $saleRel->craim = $data['craim'];
+        
         $saleRel->save();
         
         if($withMail) {
@@ -340,19 +348,21 @@ class SaleController extends Controller
     public function store(Request $request)
     {
 //        $editId = $request->has('edit_id') ? $request->input('edit_id') : 0;
-//        
-//        $rules = [
-//            'title' => 'required|max:255',
-//            'cate_id' => 'required',
-//            //'main_img' => 'filenaming',
-//        ];
-//        
-//         $messages = [
-//             'title.required' => '「商品名」を入力して下さい。',
-//            'cate_id.required' => '「カテゴリー」を選択して下さい。',
-//        ];
-//        
-//        $this->validate($request, $rules, $messages);
+        
+        if($request->has('with_mail')) {
+            $rules = [
+                'deli_schedule_date' => 'required',
+                //'cate_id' => 'required',
+                //'main_img' => 'filenaming',
+            ];
+            
+             $messages = [
+                'deli_schedule_date.required' => '「お届け予定日」を入力して下さい。',
+                //'cate_id.required' => '「カテゴリー」を選択して下さい。',
+            ];
+            
+            $this->validate($request, $rules, $messages);
+        }
         
         $data = $request->all();
 
@@ -391,6 +401,7 @@ class SaleController extends Controller
                 $obj->deli_slip_num = $data['deli_slip_num'];
             	$obj->deli_schedule_date = $data['deli_schedule_date'];
                 $obj->information = $data['information'];
+
                 $obj->save();
             }
         }

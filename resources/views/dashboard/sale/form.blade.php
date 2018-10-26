@@ -45,7 +45,7 @@ use App\Setting;
             {{ session('status') }}
         </div>
     @endif
-        
+    
     <div class="col-lg-12 mb-5">
         <form class="form-horizontal" role="form" method="POST" action="/dashboard/sales">
 
@@ -321,24 +321,26 @@ use App\Setting;
                             <tr>
                                 <th>同時購入商品.{{ $num }}</th>
                                 <td class="clearfix">
-                                	@if(! $sale->deli_done)
-                                	<fieldset class="form-group checkbox">
-                                            <label>
-                                                <?php
-                                                    $checked = '';
-                                                    if(Ctm::isOld()) {
-                                                        if(old('open_status'))
-                                                            $checked = ' checked';
-                                                    }
-                                                    else {
-                                                        if(isset($item) && ! $item->open_status) {
-                                                            $checked = ' checked';
+                                	@if(! $sameSale->deli_done)
+                                        <fieldset class="form-group checkbox">
+                                                <label>
+                                                    <?php
+                                                        $checked = '';
+                                                        if(Ctm::isOld()) {
+                                                            if(old('open_status'))
+                                                                $checked = ' checked';
                                                         }
-                                                    }
-                                                ?>
-                                                <input type="checkbox" name="sale_ids[]" value="{{ $sameSale->id }}"{{ $checked }}> 同時に発送済みメールをする
-                                            </label>
-                                    </fieldset>
+                                                        else {
+                                                            if(isset($item) && ! $item->open_status) {
+                                                                $checked = ' checked';
+                                                            }
+                                                        }
+                                                    ?>
+                                                    <input type="checkbox" name="sale_ids[]" value="{{ $sameSale->id }}"{{ $checked }}> 同時に発送済みメールをする
+                                                </label>
+                                        </fieldset>
+                                    @else
+                                    	<span class="text-secondary">発送済み</span><br>
                                     @endif
                                     
                                 	<a href="{{ url('dashboard/sales/'.$sameSale->id) }}" class="float-right btn border border-secondary text-dark bg-white"><i class="fa fa-arrow-right"></i> 売上情報</a>
@@ -388,12 +390,9 @@ use App\Setting;
                             
                             <tr>
                                 <th>購入総合計（A+B）</th>
-                                <td><span style="font-size: 1.2em;">¥{{ number_format($total + $all) }}</span></td>
+                                <td><span style="font-size:1.2em;">¥{{ number_format($total + $all) }}</span></td>
                             </tr>
-                            
-                            
-                            
-                 
+
                             
                             {{--
                             <tr>
@@ -466,7 +465,7 @@ use App\Setting;
 
                             @if ($errors->has('information'))
                                 <span class="help-block">
-                                    <strong>{{ $errors->first('information') }}</strong>
+                                    <strong class="text-danger">{{ $errors->first('information') }}</strong>
                                 </span>
                             @endif
                     </fieldset>

@@ -95,6 +95,7 @@
               	</ul>   
              </li>
              
+             {{--
             <div class="border border-secondary border-top-0 w-75 mx-auto"></div>  
              
              <li class="nav-item" data-toggle="tooltip" data-placement="right" title="配送区分">
@@ -111,6 +112,7 @@
                     </li>
               	</ul>   
              </li>
+             --}}
           	
            	<div class="border border-secondary border-top-0 w-75 mx-auto"></div>
               
