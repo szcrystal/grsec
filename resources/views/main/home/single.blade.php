@@ -522,10 +522,9 @@ use App\TopSetting;
 
         </div><!-- head-frame -->
         
-		
-        @if(isset($cacheItems))
-        	<div class="recent-check mt-3 pt-1">
-            
+
+        <div class="recent-check mt-3 pt-1">
+            @if(count($cacheItems) > 0)
                 <div class="mt-4 floar">
                     <h4>最近チェックしたアイテム</h4>
                     <ul class="clearfix">
@@ -537,8 +536,8 @@ use App\TopSetting;
                         @endforeach      
                     </ul>	     
                 </div>
-	        </div>
-        @endif
+            @endif
+        </div>
 
 
             
