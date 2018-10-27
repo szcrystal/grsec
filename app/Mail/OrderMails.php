@@ -11,19 +11,20 @@ use App\Receiver;
 use App\MailTemplate;
 use App\Item;
 use App\PayMethod;
+use App\DeliveryCompany;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class OrderSend extends Mailable
+class OrderMails extends Mailable
 {
     use Queueable, SerializesModels;
-	
-    public $saleId;
+
+    //public $saleId;
 	public $saleIds;
-    //public $mailId;
+    public $mailId;
     
 //    public $user;
 //    public $receiver;
@@ -31,23 +32,18 @@ class OrderSend extends Mailable
     public $setting;
     public $pmModel;
     public $itemModel;
+    public $dcModel;
     
     public $mailTemplate;
-
-    //public $isUser;
     
-    /**
-     * Create a new message instance.
-     *
-     * @return void
-     */
-    public function __construct($saleId, $saleIds)
+    
+    public function __construct($saleIds, $mailId)
     {
         $this->setting = Setting::get()->first();
         
-        $this->saleId = $saleId;
+        //$this->saleId = $saleId;
         $this->saleIds = $saleIds; 
-        //$this->mailId = $mailId;
+        $this->mailId = $mailId;
         
 //        $this->saleRel = SaleRelation::find($saleRelId);
 //        $this->sales = Sale::where(['salerel_id'=>$this->saleRel->id])->get();       
@@ -67,11 +63,12 @@ class OrderSend extends Mailable
     {
     	$this->pmModel = new PayMethod;
         $this->itemModel = new Item;
+        $this->dcModel = new DeliveryCompany;
         
-        $templ = MailTemplate::where(['type_code'=>'itemDelivery', ])->get()->first();
-        //$templ = MailTemplate::find($this->mailId);
+        //$templ = MailTemplate::where(['type_code'=>'itemDelivery', ])->get()->first();
+        $templ = MailTemplate::find($this->mailId);
         
-        $thisSale = Sale::find($this->saleId);
+        //$thisSale = Sale::find($this->saleId);
         
         $sales = Sale::find($this->saleIds);
         $saleRelId = $sales->first()->salerel_id;
@@ -88,11 +85,12 @@ class OrderSend extends Mailable
 
         //return $this->from($this->setting->admin_email, $this->setting->admin_name)
         return $this->from(env('ADMIN_EMAIL', 'no-reply@green-rocket.jp'), $this->setting->admin_name)
-                    ->view('emails.orderSend')
+                    ->view('emails.orderMails')
                     ->with([
-                          'header' => $templ->header,
-                        'footer' => $templ->footer, 
-                        'thisSale' => $thisSale,
+                    	'templ' => $templ,
+                        //'header' => $templ->header,
+                        //'footer' => $templ->footer, 
+                        //'thisSale' => $thisSale,
                         'sales' => $sales,
                         'saleRel' => $saleRel,
                         'user' => $user,

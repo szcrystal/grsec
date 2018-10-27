@@ -9,9 +9,9 @@ use App\Setting;
 	<div class="text-left">
         <h1 class="Title">
         @if(isset($edit))
-        売上情報
+        注文個別（売上情報）
         @else
-        売上情報
+        注文個別（売上情報）
         @endif
         </h1>
         <p class="Description"></p>
@@ -187,19 +187,6 @@ use App\Setting;
                             </tr>
                             
                             <tr>
-                                <th>ご希望配送日時</th>
-                                <td>
-                                	@if(isset($sale->plan_date))
-                                        <p class="mb-2">{{ $sale->plan_date }}</p>
-                                    @endif
-                                    
-                                    @if(isset($sale->deli_time))
-                                        {{ $sale->deli_time }}
-                                    @endif
-                                </td>
-                            </tr>
-                             
-                            <tr>
                                 <th>送料区分/<br>送料</th>
                                 <td>
                                 @if($item->deli_fee)
@@ -210,7 +197,7 @@ use App\Setting;
                                 {{-- ¥{{ number_format($sale->deli_fee) }} --}}
                                 
                                 <fieldset class="mt-2 mb-4 form-group">
-                                    <input class="form-control col-md-5 d-inline{{ $errors->has('deli_fee') ? ' is-invalid' : '' }}" name="deli_fee" value="{{ Ctm::isOld() ? old('deli_fee') : (isset($sale->deli_fee) ? $sale->deli_fee : '') }}">
+                                    <input class="form-control col-md-6 d-inline{{ $errors->has('deli_fee') ? ' is-invalid' : '' }}" name="deli_fee" value="{{ Ctm::isOld() ? old('deli_fee') : (isset($sale->deli_fee) ? $sale->deli_fee : '') }}">
                                     
                                     @if ($errors->has('deli_fee'))
                                         <div class="text-danger">
@@ -224,27 +211,148 @@ use App\Setting;
                             </tr>
                             
                             <tr>
-                            	<th>配送業者<br><small class="text-dark">*同時発送する商品に対しても適用されます</small></th>
+                                <th>ご希望配送日時</th>
                                 <td>
-                                	<fieldset class="mb-4 form-group">
-                                    <input class="form-control col-md-5 d-inline{{ $errors->has('deli_company') ? ' is-invalid' : '' }}" name="deli_company" value="{{ Ctm::isOld() ? old('deli_company') : (isset($sale->deli_company) ? $sale->deli_company : '') }}">
-                                    
-                                    @if ($errors->has('deli_company'))
-                                        <div class="text-danger">
-                                            <span class="fa fa-exclamation form-control-feedback"></span>
-                                            <span>{{ $errors->first('deli_company') }}</span>
-                                        </div>
+                                	@if(isset($sale->plan_date))
+                                        <p class="mb-2">{{ $sale->plan_date }}</p>
                                     @endif
-                                </fieldset>
+                                    
+                                    @if(isset($sale->deli_time))
+                                        {{ $sale->deli_time }}
+                                    @endif
+                                </td>
+                            </tr>
+                             
+                            <tr>
+                            	<th>出荷予定日</th>
+                                <td>
+                                	<div class="">
+                                        <fieldset class="mb-4 form-group">
+                                            <select class="form-control col-md-6{{ $errors->has('deli_start_date') ? ' is-invalid' : '' }}" name="deli_start_date">
+                                                <option selected value="0">選択して下さい</option>
+                                                    <?php 
+                                                        $days = array();
+                                                        $week = ['日', '月', '火', '水', '木', '金', '土'];
+                                                    
+                                                        for($plusDay = 0; $plusDay < 64; $plusDay++) {
+                                                            $now = date('Y-m-d', time());
+                                                            $first = strtotime($now." +". $plusDay . " day");
+                                                            $days[] = date('Y/m/d', $first) . '（' . $week[date('w', $first)] . '）';
+                                                        }
+                                                    ?>
+                                                
+
+                                                    @foreach($days as $day)
+                                                        <?php
+                                                            $selected = '';
+                                                            if(Ctm::isOld()) {
+                                                                if(old('deli_start_date') == $day)
+                                                                    $selected = ' selected';
+                                                            }
+                                                            else {
+                                                                if(isset($sale) && $sale->deli_start_date == $day) {
+                                                                    $selected = ' selected';
+                                                                }
+                                                            }
+                                                        ?>
+                                                        <option value="{{ $day }}"{{ $selected }}>{{ $day }}</option>
+                                                    @endforeach
+                                            </select>
+                                            
+                                            @if ($errors->has('deli_start_date'))
+                                                <span class="help-block">
+                                                    <strong class="text-danger">{{ $errors->first('deli_start_date') }}</strong>
+                                                </span>
+                                            @endif
+                                        </fieldset>
+                                    </div>
                                 </td>
                             </tr>
                             
                             <tr>
-                            	<th>伝票番号<br><small class="text-dark">*同時発送する商品に対しても適用されます</small></th>
+                            	<th>お届け予定日</th>
+                                <td>
+                                	<div class="">
+                                        <fieldset class="mb-4 form-group">
+                                            <select class="form-control col-md-6{{ $errors->has('deli_schedule_date') ? ' is-invalid' : '' }}" name="deli_schedule_date">
+                                                <option selected value="0">選択して下さい</option>
+                                                    <?php 
+//                                                        $days = array();
+//                                                        $week = ['日', '月', '火', '水', '木', '金', '土'];
+//                                                    
+//                                                        for($plusDay = 0; $plusDay < 64; $plusDay++) {
+//                                                            $now = date('Y-m-d', time());
+//                                                            $first = strtotime($now." +". $plusDay . " day");
+//                                                            $days[] = date('Y/m/d', $first) . '（' . $week[date('w', $first)] . '）';
+//                                                        }
+                                                    ?>
+                                                
+
+                                                    @foreach($days as $day)
+                                                        <?php
+                                                            $selected = '';
+                                                            if(Ctm::isOld()) {
+                                                                if(old('deli_schedule_date') == $day)
+                                                                    $selected = ' selected';
+                                                            }
+                                                            else {
+                                                                if(isset($sale) && $sale->deli_schedule_date == $day) {
+                                                                    $selected = ' selected';
+                                                                }
+                                                            }
+                                                        ?>
+                                                        <option value="{{ $day }}"{{ $selected }}>{{ $day }}</option>
+                                                    @endforeach
+                                            </select>
+                                            
+                                            @if ($errors->has('deli_schedule_date'))
+                                                <span class="help-block">
+                                                    <strong class="text-danger">{{ $errors->first('deli_schedule_date') }}</strong>
+                                                </span>
+                                            @endif
+                                        </fieldset>
+                                    </div>
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                            	<th>配送会社</th>
+                                <td>
+                                	<select class="form-control col-md-6{{ $errors->has('deli_company_id') ? ' is-invalid' : '' }}" name="deli_company_id">
+                                            <option selected value="0">選択して下さい</option>
+                                                
+                                                @foreach($dcs as $dc)
+                                                    <?php
+                                                        $selected = '';
+                                                        if(Ctm::isOld()) {
+                                                            if(old('deli_company_id') == $dc->id)
+                                                                $selected = ' selected';
+                                                        }
+                                                        else {
+                                                            if(isset($sale) && $sale->deli_company_id == $dc->id) {
+                                                                $selected = ' selected';
+                                                            }
+                                                        }
+                                                    ?>
+                                                    <option value="{{ $dc->id }}"{{ $selected }}>{{ $dc->name }}</option>
+                                                @endforeach
+                                        </select>
+                                        
+                                        @if ($errors->has('deli_company_id'))
+                                            <span class="help-block">
+                                                <strong class="text-danger">{{ $errors->first('deli_company_id') }}</strong>
+                                            </span>
+                                        @endif
+                                    </fieldset>
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                            	<th>伝票番号</th>
                                 <td>
                                 <fieldset class="mb-4 form-group">
                                 	
-                                    <input class="form-control col-md-5 d-inline{{ $errors->has('deli_slip_num') ? ' is-invalid' : '' }}" name="deli_slip_num" value="{{ Ctm::isOld() ? old('deli_slip_num') : (isset($sale->deli_slip_num) ? $sale->deli_slip_num : '') }}">
+                                    <input class="form-control col-md-6 d-inline{{ $errors->has('deli_slip_num') ? ' is-invalid' : '' }}" name="deli_slip_num" value="{{ Ctm::isOld() ? old('deli_slip_num') : (isset($sale->deli_slip_num) ? $sale->deli_slip_num : '') }}">
                                     
                                     @if ($errors->has('deli_slip_num'))
                                         <div class="text-danger">
@@ -321,36 +429,16 @@ use App\Setting;
                             <tr>
                                 <th>同時購入商品.{{ $num }}</th>
                                 <td class="clearfix">
-                                	@if(! $sameSale->deli_done)
-                                        <fieldset class="form-group checkbox">
-                                                <label>
-                                                    <?php
-                                                        $checked = '';
-                                                        if(Ctm::isOld()) {
-                                                            if(old('open_status'))
-                                                                $checked = ' checked';
-                                                        }
-                                                        else {
-                                                            if(isset($item) && ! $item->open_status) {
-                                                                $checked = ' checked';
-                                                            }
-                                                        }
-                                                    ?>
-                                                    <input type="checkbox" name="sale_ids[]" value="{{ $sameSale->id }}"{{ $checked }}> 同時に発送済みメールをする
-                                                </label>
-                                        </fieldset>
-                                    @else
-                                    	<span class="text-secondary">発送済み</span><br>
-                                    @endif
+                                	
                                     
-                                	<a href="{{ url('dashboard/sales/'.$sameSale->id) }}" class="float-right btn border border-secondary text-dark bg-white"><i class="fa fa-arrow-right"></i> 売上情報</a>
+                                	<a href="{{ url('dashboard/sales/'.$sameSale->id) }}" class="float-right btn border border-secondary text-dark bg-white"><i class="fa fa-arrow-right"></i> 注文個別情報</a>
                                     
-                                    商品番号: {{ $items->find($sameSale->item_id)->number }}<br>
                                 	<a href="{{ url('dashboard/items/'. $sameSale->item_id) }}">
                                  	   
                                     	（{{ $sameSale->item_id }}）
                                     	{{ Ctm::getItemTitle($items->find($sameSale->item_id)) }}<br>
                                     </a>
+                                    商品番号: {{ $items->find($sameSale->item_id)->number }}<br>
                                     
                                     ご希望配送時間：
                                     @if(isset($sameSale->plan_date))
@@ -417,87 +505,15 @@ use App\Setting;
                     </table>
                 </div>
                 
-                <div class="mt-5">
-                	<fieldset class="mb-4 form-group">
-                    	<label for="detail" class="control-label text-info">お届け予定日（ユーザー反映）<small class="text-dark">*同時発送する商品に対しても適用されます</small></label>
-                        <select class="form-control col-md-6{{ $errors->has('deli_schedule_date') ? ' is-invalid' : '' }}" name="deli_schedule_date">
-                            <option selected disabled>選択して下さい</option>
-                            	<?php 
-                                	$days = array();
-                                    $week = ['日', '月', '火', '水', '木', '金', '土'];
-                                
-                                    for($plusDay = 0; $plusDay < 64; $plusDay++) {
-                                        $now = date('Y-m-d', time());
-                                        $first = strtotime($now." +". $plusDay . " day");
-                                        $days[] = date('Y/m/d', $first) . '（' . $week[date('w', $first)] . '）';
-                                    }
-                                ?>
-                            
-
-                                @foreach($days as $day)
-                                    <?php
-                                        $selected = '';
-                                        if(Ctm::isOld()) {
-                                            if(old('deli_schedule_date') == $day)
-                                                $selected = ' selected';
-                                        }
-                                        else {
-                                            if(isset($sale) && $sale->deli_schedule_date == $day) {
-                                                $selected = ' selected';
-                                            }
-                                        }
-                                    ?>
-                                    <option value="{{ $day }}"{{ $selected }}>{{ $day }}</option>
-                                @endforeach
-                        </select>
-                        
-                        @if ($errors->has('deli_schedule_date'))
-                            <span class="help-block">
-                                <strong>{{ $errors->first('deli_schedule_date') }}</strong>
-                            </span>
-                        @endif
-                    </fieldset>
-                        
-                	<fieldset class="mb-2 form-group{{ $errors->has('information') ? ' is-invalid' : '' }}">
-                        <label for="detail" class="control-label text-info">ご連絡事項（ユーザー反映）<small class="text-dark">*同時発送する商品に対しても適用されます</small></label>
-
-                            <textarea id="information" class="form-control" name="information" rows="8">{{ Ctm::isOld() ? old('information') : (isset($sale) ? $sale->information : '') }}</textarea>
-
-                            @if ($errors->has('information'))
-                                <span class="help-block">
-                                    <strong class="text-danger">{{ $errors->first('information') }}</strong>
-                                </span>
-                            @endif
-                    </fieldset>
-                    
-                    <fieldset class="mt-5 mb-2 form-group{{ $errors->has('memo') ? ' is-invalid' : '' }}">
-                        <label for="memo" class="control-label">メモ<span class="text-small">（内部のみ）</span></label>
-
-                            <textarea id="memo" class="form-control" name="memo" rows="8">{{ Ctm::isOld() ? old('memo') : (isset($sale) ? $sale->memo : '') }}</textarea>
-
-                            @if ($errors->has('memo'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('memo') }}</strong>
-                                </span>
-                            @endif
-                    </fieldset>
-                    
-                    <fieldset class="mb-2 form-group{{ $errors->has('craim') ? ' is-invalid' : '' }}">
-                        <label for="detail" class="control-label">クレーム<span class="text-small">（内部のみ）</span></label>
-
-                            <textarea id="detail" class="form-control" name="craim" rows="8">{{ Ctm::isOld() ? old('craim') : (isset($sale) ? $sale->craim : '') }}</textarea>
-
-                            @if ($errors->has('craim'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('craim') }}</strong>
-                                </span>
-                            @endif
-                    </fieldset>
                 
-                </div>
 
 				<input type="hidden" name="saleId" value="{{ $sale->id }}">
+                
+                <div class="form-group col-md-5 mx-auto my-5">
+                    <button type="submit" class="btn btn-primary btn-block w-btn w-100 text-white" name="only_up" value="1"> 更新する</button>
+                </div>
 				
+                {{--
                 <div class="clearfix my-5">
                 	<div class="form-group float-left w-25">
                         <button type="submit" class="btn btn-primary btn-block w-btn w-100 text-white" name="only_up" value="1"> 更新のみする</button>
@@ -507,7 +523,10 @@ use App\Setting;
                         <button type="submit" class="btn btn-danger btn-block mx-auto w-btn w-100 text-white" name="with_mail" value="1"><i class="fa fa-envelope"></i> 更新して発送済みメールを送る</button>
                     </div>
                 </div>
+                --}}
         </form>
+        
+        <a href="{{ url('/dashboard/sales/order/' . $sale->order_number) }}" class="btn bg-white border border-1 border-round border-secondary text-primary mt-2"><i class="fa fa-angle-double-left" aria-hidden="true"></i>ご注文情報へ</a>
         
     </div>
 

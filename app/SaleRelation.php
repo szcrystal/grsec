@@ -33,6 +33,10 @@ class SaleRelation extends Model
         'pay_payment_code', //ネットバンク、GMO後払いのみ  
         'pay_result', //クレカのみ
         'pay_state',
+		
+        'information',
+        'memo',
+        'craim',
         
     ];
 }

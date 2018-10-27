@@ -23,6 +23,10 @@
     <!-- <link href="{{ asset('/fontawesome/web-fonts-with-css/css/fontawesome-all.min.css') }}" rel="stylesheet" type="text/css"> -->
     <link href="{{ asset('/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet" type="text/css">
 
+	<!--
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-9ralMzdK1QYsk4yBY680hmsb4/hJ98xK3w0TIaJ3ll4POWpWUYaA2bRjGGujGT8w" crossorigin="anonymous">
+    -->
+    
 
     <!-- Custom CSS -->
     <link href="{{ asset('/js/dbd/vendor/datatables/dataTables.bootstrap4.css') }}" rel="stylesheet">
@@ -30,7 +34,8 @@
 
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
 	
-    <link href="{{ asset('/css/dbd/custom.css') }}" rel="stylesheet" type="text/css">
+    <?php $getNow = '?up=' . time(); ?>
+    <link href="{{ asset('/css/dbd/custom.css'. $getNow) }}" rel="stylesheet" type="text/css">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->

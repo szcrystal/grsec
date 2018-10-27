@@ -14,8 +14,11 @@ use App\DeliveryGroup;
 use App\Consignor;
 use App\Category;
 use App\Setting;
+use App\DeliveryCompany;
+use App\MailTemplate;
 
 use App\Mail\OrderSend;
+use App\Mail\OrderMails;
 use App\Mail\PayDone;
 
 use Mail;
@@ -28,7 +31,7 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class SaleController extends Controller
 {
-    public function __construct(Admin $admin, Sale $sale, SaleRelation $saleRel, Item $item, User $user, PayMethod $payMethod, UserNoregist $userNoregist, Receiver $receiver, DeliveryGroup $dg, Consignor $consignor, Category $category, Setting $setting)
+    public function __construct(Admin $admin, Sale $sale, SaleRelation $saleRel, Item $item, User $user, PayMethod $payMethod, UserNoregist $userNoregist, Receiver $receiver, DeliveryGroup $dg, Consignor $consignor, Category $category, Setting $setting, DeliveryCompany $dc, MailTemplate $templ)
     {
         
         $this -> middleware('adminauth');
@@ -45,9 +48,15 @@ class SaleController extends Controller
         $this->dg = $dg;
         $this->category = $category;
         $this->setting = $setting;
-//        $this -> tag = $tag;
-//        $this->tagRelation = $tagRelation;
-//        $this->consignor = $consignor;
+        $this->dc = $dc;
+        $this->templ = $templ;
+
+		$this->templIds = [
+        	'thanks'=> 10,
+            'stockNow'=> 11,
+            'deliDoneNo'=> 12,
+            'deliDone'=> 13,
+        ];
         
         $this->perPage = 20;
         
@@ -209,6 +218,7 @@ class SaleController extends Controller
         return view('dashboard.sale.indexCompare', ['saleObjs'=>$saleObjs, 'saleRels'=>$saleRels, 'items'=>$items, 'pms'=>$pms, 'users'=>$users, 'userNs'=>$userNs, 'cates'=>$cates]);
     }
 
+	//注文個別情報フォーム
     public function show($id)
     {
         $sale = $this->sale->find($id);
@@ -228,7 +238,9 @@ class SaleController extends Controller
   
   		$itemDg = $this->dg->find($item->dg_id); 
     
-    	$cates = $this->category;           
+    	$cates = $this->category;
+        
+        $dcs = $this->dc->all();
 //        
 //        $tagNames = $this->tagRelation->where(['item_id'=>$id])->get()->map(function($item) {
 //            return $this->tag->find($item->tag_id)->name;
@@ -238,7 +250,7 @@ class SaleController extends Controller
 //            return $item->name;
 //        })->all();
         
-        return view('dashboard.sale.form', ['sale'=>$sale, 'saleRel'=>$saleRel, 'sameSales'=>$sameSales, 'item'=>$item, 'items'=>$items, 'pms'=>$pms, 'users'=>$users, 'userNs'=>$userNs, 'receiver'=>$receiver, 'cates'=>$cates, 'itemDg'=>$itemDg, 'id'=>$id, 'edit'=>1]);
+        return view('dashboard.sale.form', ['sale'=>$sale, 'saleRel'=>$saleRel, 'sameSales'=>$sameSales, 'item'=>$item, 'items'=>$items, 'pms'=>$pms, 'users'=>$users, 'userNs'=>$userNs, 'receiver'=>$receiver, 'cates'=>$cates, 'itemDg'=>$itemDg, 'dcs'=>$dcs, 'id'=>$id, 'edit'=>1]);
     }
     
     //1注文の詳細 & 銀行振込入金用Get
@@ -259,7 +271,8 @@ class SaleController extends Controller
   
   		//$itemDg = $this->dg->find($item->dg_id); 
     
-    	$cates = $this->category;           
+    	$cates = $this->category;
+        $templs = $this->templIds;         
 //        
 //        $tagNames = $this->tagRelation->where(['item_id'=>$id])->get()->map(function($item) {
 //            return $this->tag->find($item->tag_id)->name;
@@ -269,16 +282,17 @@ class SaleController extends Controller
 //            return $item->name;
 //        })->all();
         
-        return view('dashboard.sale.orderForm', ['saleRel'=>$saleRel, 'sales'=>$sales, 'items'=>$items, 'pms'=>$pms, 'users'=>$users, 'userNs'=>$userNs, 'receiver'=>$receiver, 'cates'=>$cates, 'id'=>$orderNum, 'edit'=>1]);
+        return view('dashboard.sale.orderForm', ['saleRel'=>$saleRel, 'sales'=>$sales, 'items'=>$items, 'pms'=>$pms, 'users'=>$users, 'userNs'=>$userNs, 'receiver'=>$receiver, 'cates'=>$cates, 'id'=>$orderNum, 'templs'=>$templs, 'edit'=>1]);
     }
     
     
     //銀行振込入金用Post
     public function postSaleOrder(Request $request) 
     {
-    	$withMail = $request->has('with_mail') ? 1 : 0;
+    	$withPayDone = $request->has('with_paydone') ? 1 : 0;
+        $withMail = $request->has('with_mail') ? $request->input('with_mail') : 0;
     	
-        if($withMail) {
+        if($withPayDone) {
             $rules = [
                 'pay_done' => 'required',
                 //'cate_id' => 'required',
@@ -292,7 +306,22 @@ class SaleController extends Controller
             $this->validate($request, $rules, $messages);
 		}
         
+        if($withMail) {
+        	$rules = [
+                'sale_ids' => 'required',
+                //'cate_id' => 'required',
+            ];
+            
+             $messages = [
+                 'sale_ids.required' => '「メールをする」のチェックがされていません。メールする商品を選択して下さい。',
+               // 'cate_id.required' => '「カテゴリー」を選択して下さい。',
+            ];
+            
+            $this->validate($request, $rules, $messages);
+        }
+        
     	$data = $request->all();
+        
         
         $saleRel = $this->saleRel->find($data['order_id']);
         $saleRel->pay_done = isset($data['pay_done']) ? $data['pay_done'] : 0;
@@ -307,7 +336,7 @@ class SaleController extends Controller
         
         $saleRel->save();
         
-        if($withMail) {
+        if($withPayDone) {
             $mail = Mail::to($data['user_email'], $data['user_name'])->queue(new PayDone($saleRel->id));
                 
             //if(! $mail) {
@@ -320,9 +349,45 @@ class SaleController extends Controller
 //            }
         }
         else {
-        	$status = '更新されました。';
-            return redirect('dashboard/sales/order/'. $saleRel->order_number)->with('status', $status);
+        	if($withMail) {
+                
+                $mail = Mail::to($data['user_email'], $data['user_name'])->queue(new OrderMails($data['sale_ids'], $withMail));
+                
+                $templ = $this->templ->find($withMail);
+
+                $status = $templ->type_name . 'メールが送信されました。('. $mail . ')';
+                
+                $sales = $this->sale->find($data['sale_ids']);
+                
+                
+                foreach($sales as $sale) {
+                    if($templ->type_code == 'thanks') {
+                        $sale->thanks_done = 1;
+                    }
+                    elseif($templ->type_code == 'stockNow') {
+                        $sale->stocknow_done = 1;
+                    }
+                    elseif($templ->type_code == 'deliDoneNo' || $templ->type_code == 'deliDone') {
+                        $sale->deli_done = 1;
+                        $sale->deli_sended_date = date('Y-m-d H:i:s', time());
+                    }
+                    
+                    $sale ->save();      
+                }
+                 
+        
+                return redirect('dashboard/sales/order/'. $saleRel->order_number)->with('status', $status);
+
+            }
+            else {
+        		$status = '更新されました。';
+            	return redirect('dashboard/sales/order/'. $saleRel->order_number)->with('status', $status);
+            }
         }
+        
+        
+        
+
         
     }
     

@@ -34,19 +34,23 @@ class Sale extends Model
         'charge_loss',
         'arari',
         
-        'deli_company',
+        'deli_company_id',
         'deli_slip_num',
         
+        'deli_start_date',
         'deli_schedule_date',
         
-        'deli_start_date',
+        'deli_sended_date',
         'deli_done',
+        
+        'thanks_done',
+        'stocknow_done',
 
         //'pay_done',
         
-        'information',
-        'memo',
-        'craim',
+//        'information',
+//        'memo',
+//        'craim',
         
         /*
         'destination',

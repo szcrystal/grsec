@@ -44,19 +44,24 @@ class CreateSalesTable extends Migration
             $table->integer('charge_loss')->nullable()->default(NULL);
             $table->integer('arari')->nullable()->default(NULL);
             
-            $table->string('deli_company')->nullable()->default(NULL);
+            $table->string('deli_company_id')->nullable()->default(NULL);
             $table->string('deli_slip_num')->nullable()->default(NULL);
             
+            $table->string('deli_start_date')->nullable()->default(NULL);
             $table->string('deli_schedule_date')->nullable()->default(NULL);
             
-            $table->timestamp('deli_start_date')->nullable()->default(NULL);
-            $table->boolean('deli_done')->nullable()->default(NULL);
+            $table->timestamp('deli_sended_date')->nullable()->default(NULL);
+            
+            $table->boolean('deli_done')->nullable()->default(0);
+            
+            $table->boolean('thanks_done')->nullable()->default(0);
+            $table->boolean('stocknow_done')->nullable()->default(0);
             
             //$table->boolean('pay_done')->nullable()->default(NULL);
 
-            $table->text('information')->nullable()->default(NULL);
-            $table->text('memo')->nullable()->default(NULL);
-            $table->text('craim')->nullable()->default(NULL);
+//            $table->text('information')->nullable()->default(NULL);
+//            $table->text('memo')->nullable()->default(NULL);
+//            $table->text('craim')->nullable()->default(NULL);
             
             /*
             $table->boolean('destination')->nullable()->default(NULL);

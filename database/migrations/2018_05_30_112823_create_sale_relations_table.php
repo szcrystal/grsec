@@ -43,9 +43,9 @@ class CreateSaleRelationsTable extends Migration
             $table->integer('pay_result')->nullable()->default(NULL); //クレカのみ
             $table->integer('pay_state')->nullable()->default(NULL);
             
-//            $table->text('information')->nullable()->default(NULL);
-//            $table->text('memo')->nullable()->default(NULL);
-//            $table->text('craim')->nullable()->default(NULL);
+            $table->text('information')->nullable()->default(NULL);
+            $table->text('memo')->nullable()->default(NULL);
+            $table->text('craim')->nullable()->default(NULL);
             
             $table->timestamps();
         });

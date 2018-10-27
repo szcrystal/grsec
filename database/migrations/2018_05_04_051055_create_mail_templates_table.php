@@ -67,32 +67,6 @@ class CreateMailTemplatesTable extends Migration
         
         DB::table('mail_templates')->insert(
             [ 
-                'type_code' => 'itemDelivery',
-                'type_name' => '発送完了',
-                'title' => '商品を発送しました',
-                'header' => 'ddd',
-                'footer' => '444',
-                
-                'created_at' => date('Y-m-d H:i:s', time()),
-                'updated_at' => date('Y-m-d H:i:s', time()),
-            ]
-        );
-        
-        DB::table('mail_templates')->insert(
-            [ 
-                'type_code' => 'payDone',
-                'type_name' => 'ご入金完了',
-                'title' => 'ご入金を確認しました',
-                'header' => 'eee',
-                'footer' => '55555',
-                
-                'created_at' => date('Y-m-d H:i:s', time()),
-                'updated_at' => date('Y-m-d H:i:s', time()),
-            ]
-        );
-        
-        DB::table('mail_templates')->insert(
-            [ 
                 'type_code' => 'ensure_7',
                 'type_name' => '枯れ保証 ７日',
                 'title' => '枯れ保証期間について',
@@ -155,6 +129,74 @@ class CreateMailTemplatesTable extends Migration
                 'updated_at' => date('Y-m-d H:i:s', time()),
             ]
         );
+        
+        
+        DB::table('mail_templates')->insert(
+            [ 
+                'type_code' => 'payDone',
+                'type_name' => 'ご入金完了',
+                'title' => 'ご入金を確認しました',
+                'header' => 'eee',
+                'footer' => '55555',
+                
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time()),
+            ]
+        );
+        
+        DB::table('mail_templates')->insert(
+            [ 
+                'type_code' => 'thanks',
+                'type_name' => 'サンクス',
+                'title' => 'サンクス',
+                'header' => 'ababab',
+                'footer' => '121212',
+                
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time()),
+            ]
+        );
+        
+        DB::table('mail_templates')->insert(
+            [ 
+                'type_code' => 'stockNow',
+                'type_name' => '在庫確認中',
+                'title' => '',
+                'header' => 'ababab',
+                'footer' => '121212',
+                
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time()),
+            ]
+        );
+        
+        DB::table('mail_templates')->insert(
+            [ 
+                'type_code' => 'deliDoneNo',
+                'type_name' => '出荷完了(伝票番号未確認)',
+                'title' => '',
+                'header' => 'ababab',
+                'footer' => '121212',
+                
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time()),
+            ]
+        );
+        
+        DB::table('mail_templates')->insert(
+            [ 
+                'type_code' => 'deliDone',
+                'type_name' => '出荷完了',
+                'title' => '商品を出荷しました',
+                'header' => 'ddd',
+                'footer' => '444',
+                
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time()),
+            ]
+        );
+        
+        
     }
 
     /**
