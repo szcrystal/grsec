@@ -50,23 +50,18 @@ use App\DeliveryCompany;
 
             {{ csrf_field() }}
 
-             <div class="form-group mb-3">
                 <div class="clearfix">
-                	<p class="w-50 float-left">
+                	<p class="w-50 float-left mb-0 pb-0">
                  		
                     @if($saleRel->pay_method == 6)
                         @if($saleRel->pay_done)
-                   		<span class="text-success text-big">この注文は、銀行振込：入金済みです。</span>
+                   		<span class="text-success text-big">このご注文は、銀行振込：入金済みです。</span>
                      	@else
-                      	<span class="text-danger text-big">この注文は、銀行振込：未入金です。</span>
+                      	<span class="text-danger text-big">このご注文は、銀行振込：未入金です。</span>
                        	@endif  
                      @endif                 
                     </p>
-                    {{--
-                    <button type="submit" class="btn btn-info btn-block float-right mx-auto w-btn w-25 text-white"><i class="fa fa-envelope"></i> 配送済みメールを送る</button>
-                    --}}
                 </div>
-            </div>
 
 
             	<div class="table-responsive">
@@ -134,7 +129,17 @@ use App\DeliveryCompany;
                                                         
                             <tr>
                                 <th>決済方法</th>
-                                <td><span class="text-big"><b>{{ $pms->find($saleRel->pay_method)->name }}</b></span></td>
+                                <td>
+                                	<span class="text-big"><b>{{ $pms->find($saleRel->pay_method)->name }}</b></span>
+                                	@if($saleRel->pay_method == 6)
+                                        @if($saleRel->pay_done)
+                                        <span class="text-success">(入金済み)</span>
+                                        @else
+                                        <span class="text-danger">(未入金)</span>
+                                        @endif  
+                                     @endif 
+                                
+                                </td>
                             </tr>
 
                   
@@ -179,8 +184,13 @@ use App\DeliveryCompany;
                                         	<tr>
                                             	<th>商品</th>
                                             	<td>
+                                                	<div class="float-left mr-2">
+                                                	<?php $item = $items->find($sale->item_id); ?>
+                                                	@include('main.shared.smallThumbnail')
+                                                    </div>
+                                                    
                                                 	<a href="{{ url('dashboard/items/'. $sale->item_id) }}">
-                                                        （{{ $sale->item_id }}）
+                                                        [{{ $sale->item_id }}] 
                                                         {{ Ctm::getItemTitle($items->find($sale->item_id)) }}<br>
                                                     </a>
                                                     <span class="text-small">商品番号: {{ $items->find($sale->item_id)->number }}</span><br>
@@ -428,14 +438,14 @@ use App\DeliveryCompany;
                 	<h5 class="mb-4"><i class="fa fa-envelope"></i> メール送信</h5>
                 
                     @if($saleRel->pay_method == 6)
-                        <div class="form-group clearfix my-2">
-                            {{-- <button type="submit" class="btn btn-primary col-md-3 text-white float-left" name="only_up" value="1">更新のみする</button> --}}
-                            
-                            <?php
-                                $state = ( $saleRel->pay_done && ! Ctm::isEnv('local')) ? ' disabled' : '';
-                            ?>
-                            <button type="submit" class="btn btn-danger col-md-5 text-white" name="with_paydone" value="1" {{ $state }}><i class="fa fa-yen"></i> 入金済メール送信</button>
-                        </div>
+                        
+                        @if( ! $saleRel->pay_done || Ctm::isEnv('local'))                    
+                            <div class="form-group clearfix my-2">
+                                {{-- <button type="submit" class="btn btn-primary col-md-3 text-white float-left" name="only_up" value="1">更新のみする</button> --}}
+
+                                <button type="submit" class="btn btn-danger col-md-5 text-white" name="with_paydone" value="1"><i class="fa fa-yen"></i> 入金済メール送信</button>
+                            </div>
+                        @endif
                     @endif
                     
                     <div class="clearfix">

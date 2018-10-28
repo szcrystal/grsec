@@ -62,7 +62,7 @@ class ProcessFollowMail implements ShouldQueue
             
         foreach($sales as $sale) {
             
-            $from = new DateTime($sale->deli_sended_date);
+            $from = new DateTime($sale->deli_start_date);
             $diff = $current->diff($from);
             
             $ensure = Item::find($sale->item_id)->is_ensure;

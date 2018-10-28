@@ -9,9 +9,9 @@ use App\Setting;
 	<div class="text-left">
         <h1 class="Title">
         @if(isset($edit))
-        注文個別（売上情報）
+        売上個別情報（注文商品個別）
         @else
-        注文個別（売上情報）
+        売上個別情報（注文商品個別）
         @endif
         </h1>
         <p class="Description"></p>
@@ -142,20 +142,21 @@ use App\Setting;
                                 <td><a href="{{ url('dashboard/sales/order/'. $sale->order_number) }}">{{ $sale->order_number }}</a></td>
                             </tr>
                             <tr>
-                                <th>(ID)商品名</th>
+                                <th>[ID]商品名</th>
                                 <td class="clearfix">
                                 	
-                                	<a href="{{ url('dashboard/items/'. $item->id) }}">
-                                	<img src="{{ Storage::url($item->main_img) }}" width="80" height="60" class="img-fluid float-left mr-3">
-                                 	</a>   
+                                	<div class="float-left mr-2 mb-1">
+                                        <?php //$item = $items->find($sameSale->item_id); ?>
+                                        @include('main.shared.smallThumbnail')
+                                    </div>  
                                 	<div>
                                  		商品番号: {{ $item->number }}<br>   
                                  		<a href="{{ url('dashboard/items/'. $item->id) }}">   
-                                 	   	（{{ $item->id }}）{{ Ctm::getItemTitle($item) }}
+                                 	   	[{{ $item->id }}] {{ Ctm::getItemTitle($item) }}
                                      	</a>
                                       	<br>
                                        	      
-                                      	¥<b>{{ number_format(Ctm::getPriceWithTax($item->price)) }}</b> （税込）  
+                                      	¥<b>{{ number_format($sale->single_price) }}</b> （税込）  
                                     </div>
 	
 									<input type="hidden" name="sale_ids[]" value="{{ $sale->id }}">
@@ -167,8 +168,7 @@ use App\Setting;
                                 <td>{{ $sale->item_count }}</td>
                             </tr>
                             
-                            
-                            
+
                             <tr>
                                 <th>商品合計金額</th>
                                 <td>
@@ -224,7 +224,7 @@ use App\Setting;
                             </tr>
                              
                             <tr>
-                            	<th>出荷予定日</th>
+                            	<th>出荷予定日<br><span class="text-small text-secondary">（ユーザー反映）</span></th>
                                 <td>
                                 	<div class="">
                                         <fieldset class="mb-4 form-group">
@@ -270,7 +270,7 @@ use App\Setting;
                             </tr>
                             
                             <tr>
-                            	<th>お届け予定日</th>
+                            	<th>お届け予定日<br><span class="text-small text-secondary">（ユーザー反映）</span></th>
                                 <td>
                                 	<div class="">
                                         <fieldset class="mb-4 form-group">
@@ -316,7 +316,7 @@ use App\Setting;
                             </tr>
                             
                             <tr>
-                            	<th>配送会社</th>
+                            	<th>配送会社<br><span class="text-small text-secondary">（ユーザー反映）</span></th>
                                 <td>
                                 	<select class="form-control col-md-6{{ $errors->has('deli_company_id') ? ' is-invalid' : '' }}" name="deli_company_id">
                                             <option selected value="0">選択して下さい</option>
@@ -348,7 +348,7 @@ use App\Setting;
                             </tr>
                             
                             <tr>
-                            	<th>伝票番号</th>
+                            	<th>伝票番号<br><span class="text-small text-secondary">（ユーザー反映）</span></th>
                                 <td>
                                 <fieldset class="mb-4 form-group">
                                 	
@@ -431,41 +431,55 @@ use App\Setting;
                                 <td class="clearfix">
                                 	
                                     
-                                	<a href="{{ url('dashboard/sales/'.$sameSale->id) }}" class="float-right btn border border-secondary text-dark bg-white"><i class="fa fa-arrow-right"></i> 注文個別情報</a>
+                                	<a href="{{ url('dashboard/sales/'.$sameSale->id) }}" class="float-right btn border border-secondary text-dark bg-white"><i class="fa fa-arrow-right"></i> 売上個別情報</a>
+                                    
+                                    <div class="clearfix">
+                                    <div class="float-left mr-2 mb-1">
+                                        <?php $item = $items->find($sameSale->item_id); ?>
+                                        @include('main.shared.smallThumbnail')
+                                    </div>
+                                    
                                     
                                 	<a href="{{ url('dashboard/items/'. $sameSale->item_id) }}">
                                  	   
-                                    	（{{ $sameSale->item_id }}）
+                                    	[{{ $sameSale->item_id }}]
                                     	{{ Ctm::getItemTitle($items->find($sameSale->item_id)) }}<br>
                                     </a>
                                     商品番号: {{ $items->find($sameSale->item_id)->number }}<br>
+                                    </div>
                                     
-                                    ご希望配送時間：
-                                    @if(isset($sameSale->plan_date))
-                                        {{ $sameSale->plan_date }}
-                                    @endif
-                                    &nbsp;&nbsp;
-                                    @if(isset($sameSale->deli_time))
-                                        {{ $sameSale->deli_time }}
-                                    @endif
-                                    <br>
-                                    配送状況：
-                                    @if($sameSale->deli_done)
-                                       <span class="text-success">発送済み（{{ date('Y/m/d H:i', time($sameSale->deli_start_date)) }}）</span>
-                                     @else
-                                      <span class="text-danger">未配送</span>
-                                    @endif
-                                    <br>
-                                    個数：{{ $sameSale->item_count }}<br>
-                                    {{--
-                                    商品合計：¥{{ number_format($sameSale->total_price) }}<br>
-                                    送料：¥{{ number_format($sameSale->deli_fee) }}<br>
-                                    @if($sameSale->pay_method == 5)
-                                    	代引手数料：¥{{ number_format($sameSale->cod_fee) }}<br>
-                                    @endif
-                                    --}}
-                                    <?php $allTotal = $sameSale->total_price + $sameSale->deli_fee +  $sameSale->cod_fee; ?>
-                                    <b>商品合計（B）：<span class="text-success">¥{{ number_format($sameSale->total_price) }}</span></b>
+                                    <div class="clearfix">
+                                    	個数：{{ $sameSale->item_count }}<br>
+                                        
+                                        ご希望配送時間：
+                                        @if(isset($sameSale->plan_date))
+                                            {{ $sameSale->plan_date }}
+                                        @endif
+                                        &nbsp;&nbsp;
+                                        @if(isset($sameSale->deli_time))
+                                            {{ $sameSale->deli_time }}
+                                        @endif
+                                        <br>
+                                        
+                                        配送状況：
+                                        @if($sameSale->deli_done)
+                                           <span class="text-success">発送済み（{{ date('Y/m/d H:i', time($sameSale->deli_start_date)) }}）</span>
+                                         @else
+                                          <span class="text-danger">未配送</span>
+                                        @endif
+                                        <br>
+                                        
+                                        {{--
+                                        商品合計：¥{{ number_format($sameSale->total_price) }}<br>
+                                        送料：¥{{ number_format($sameSale->deli_fee) }}<br>
+                                        @if($sameSale->pay_method == 5)
+                                            代引手数料：¥{{ number_format($sameSale->cod_fee) }}<br>
+                                        @endif
+                                        --}}
+                                        
+                                        <?php $allTotal = $sameSale->total_price + $sameSale->deli_fee +  $sameSale->cod_fee; ?>
+                                        <b>商品合計（B）：<span class="text-success">¥{{ number_format($sameSale->total_price) }}</span></b>
+                                    </div>
                                     
                                     <?php 
                                     	$all += $allTotal;

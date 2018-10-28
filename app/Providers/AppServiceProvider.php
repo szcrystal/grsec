@@ -37,13 +37,14 @@ class AppServiceProvider extends ServiceProvider
             $event->job;
             $event->exception;
             
-            $str = env('APP_ENV') . "\n\n" . $event->job->getName();
-            $str .= "\n\n" . $event->job->getRawBody();
-            //$event->job->getName();
+            $str = env('APP_ENV') . "\n\n";
+            $str .= $event->job->getName() . "\n\n";
+            $str .= $event->job->getRawBody() . "\n\n";
+
                     
             Mail::raw($str, function ($message) {
-                $message -> from('no-reply@green-rocket.jp', '送信元の名前')
-                         -> to('szk.create@gmail.com', 'サンプル')
+                $message -> from('no-reply@green-rocket.jp', 'GR-SYSTEM')
+                         -> to('szk.create@gmail.com', 'Name-S')
                          -> subject('Failed Job Information');
             });
 

@@ -300,34 +300,36 @@ use App\Setting;
                   
                   
                   <td>
-                  	<small>
-                    商品数：{{ count($sales) }}<br>
+                  	
+                    <span class="text-small">商品数：{{ count($sales) }}</span><br>
+                    <small>
                   	@foreach($sales as $sale)
-                    	@if($sale->deli_done)
-                           <a href="{{ url('dashboard/sales/'.$sale->id) }}">
-                               <span class="text-success">済</span>
-                               {{ Ctm::changeDate($sale->deli_start_date, 1) }}
-                           </a><br>
-                         @else
-                         	<a href="{{ url('dashboard/sales/'.$sale->id) }}">
-                          		<span class="text-danger">未</span>
-                          	</a><br>
-                        @endif 
+                    	<a href="{{ url('dashboard/sales/'.$sale->id) }}">
+                            @if($sale->deli_done)
+                                <span class="text-success">済</span>
+                                {{ Ctm::changeDate($sale->deli_sended_date, 1) }}
+                             @else
+                                <span class="text-danger">未</span>
+                            @endif 
+                        </a><br>
                     @endforeach
                     </small>
                   </td>
                   
                   <td style="line-height: 1em;">
-                  	<small>
+                  	
+                    	{{ Ctm::shortStr($saleRel->memo, 15) }}
+                    	
+                        {{--
+                        <small>
                         @foreach($sales as $sale)
                         	@if($sale->memo != '')
                                 {{ Ctm::shortStr($sale->memo, 15) }}
                                 <hr class="my-1">
                             @endif
                         @endforeach
-                    </small>
-                  
-                  
+                        </small>
+                        --}}
                   
                   </td>
                   

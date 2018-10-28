@@ -40,7 +40,13 @@ h1 {
     overflow-wrap: break-word;
 }
 
-
+.table-responsive {
+	padding-top: 0.5em;
+}
+/*input[type="search"]*/
+/*.table-responsive #dataTable_filter { */
+/*    border: 1px solid red;*/
+/*}*/
 .table-tyumon th {
 	width: 27%;
 	background: #f1f1f1;
