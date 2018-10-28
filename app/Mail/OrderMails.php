@@ -32,7 +32,7 @@ class OrderMails extends Mailable
     public $setting;
     public $pmModel;
     public $itemModel;
-    //public $dcModel;
+    public $dcModel;
     
     public $mailTemplate;
     
