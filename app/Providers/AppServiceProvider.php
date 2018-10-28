@@ -44,7 +44,7 @@ class AppServiceProvider extends ServiceProvider
                     
             Mail::raw($str, function ($message) {
                 $message -> from('no-reply@green-rocket.jp', 'GR-SYSTEM')
-                         -> to('szk.create@gmail.com', 'Name-S')
+                         -> to('szk.create@gmail.com', '')
                          -> subject('Failed Job Information');
             });
 
