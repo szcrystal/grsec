@@ -62,7 +62,7 @@ class ProcessFollowMail implements ShouldQueue
             
         foreach($sales as $sale) {
             
-            $from = new DateTime($sale->deli_start_date);
+            $from = new DateTime($sale->deli_sended_date);
             $diff = $current->diff($from);
             
             $ensure = Item::find($sale->item_id)->is_ensure;
@@ -105,7 +105,7 @@ class ProcessFollowMail implements ShouldQueue
         foreach($sales as $sale) {
             
             //$d = strtotime($sale->deli_start_date);
-            $from = new DateTime($sale->deli_start_date);
+            $from = new DateTime($sale->deli_sended_date);
             $diff = $current->diff($from);
             
             $ensure = Item::find($sale->item_id)->is_ensure;
@@ -184,9 +184,9 @@ class ProcessFollowMail implements ShouldQueue
     public function failed(Exception $exception)
     {
 		Mail::raw($exception->getMessage(), function ($message) {
-    		$message -> from('info@green-rocket.jp', '送信元の名前')
+    		$message -> from('no-reply@green-rocket.jp', '送信元の名前')
                      -> to('crunch.butter777@gmail.com', 'サンプル')
-                     -> subject('queue-exception');
+                     -> subject('queue-exception-ProcessFollowMail');
 		});
     }
 }
