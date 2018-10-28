@@ -37,7 +37,8 @@ class AppServiceProvider extends ServiceProvider
             $event->job;
             $event->exception;
             
-            $str = '/' . env('APP_ENV') . var_dump($event->exception->getMessage());
+            $str = '/' . env('APP_ENV') . '/' . $event->job->getName();
+            $str .= '/' . $event->job->getRawBody();
             //$event->job->getName();
                     
             Mail::raw($str, function ($message) {
