@@ -34,8 +34,8 @@ class AppServiceProvider extends ServiceProvider
             //return redirect('dashboard/');
             
             $str = $event->connectionName;
-            $str .= '/' . $event->job;
-            $str .= '/' . $event->exception;
+            //$str .= '/' . $event->job;
+            //$str .= '/' . $event->exception;
                     
             Mail::raw($str, function ($message) {
                 $message -> from('no-reply@green-rocket.jp', '送信元の名前')
