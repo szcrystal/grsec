@@ -37,7 +37,8 @@ class AppServiceProvider extends ServiceProvider
             $event->job;
             $event->exception;
             
-            $str = '/' . env('APP_ENV') . $event->job->getName();
+            $str = '/' . env('APP_ENV') . var_dump($event->exception->getMessage());
+            //$event->job->getName();
                     
             Mail::raw($str, function ($message) {
                 $message -> from('no-reply@green-rocket.jp', '送信元の名前')
