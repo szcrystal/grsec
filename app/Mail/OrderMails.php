@@ -63,7 +63,7 @@ class OrderMails extends Mailable
     {
     	$this->pmModel = new PayMethod;
         $this->itemModel = new Item;
-        //$this->dcModel = new DeliveryCompany;
+        $this->dcModel = new DeliveryCompany;
         
         //$templ = MailTemplate::where(['type_code'=>'itemDelivery', ])->get()->first();
         $templ = MailTemplate::find($this->mailId);
