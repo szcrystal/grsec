@@ -411,7 +411,7 @@ use App\DeliveryCompany;
                 
                 <div class="mt-3 mb-5">
                 	<fieldset class="mb-2 form-group{{ $errors->has('information') ? ' is-invalid' : '' }}">
-                        <label for="detail" class="control-label">ご連絡事項</label>
+                        <label for="detail" class="control-label">ご連絡事項（ユーザー反映）</label>
 
                             <textarea id="information" class="form-control" name="information" rows="8">{{ Ctm::isOld() ? old('information') : (isset($saleRel) ? $saleRel->information : '') }}</textarea>
 
@@ -420,9 +420,7 @@ use App\DeliveryCompany;
                                     <strong class="text-danger">{{ $errors->first('information') }}</strong>
                                 </span>
                             @endif
-                    </fieldset>
-                    
-                    
+                    </fieldset>   
                 </div>
                 
                 
@@ -434,7 +432,7 @@ use App\DeliveryCompany;
                             {{-- <button type="submit" class="btn btn-primary col-md-3 text-white float-left" name="only_up" value="1">更新のみする</button> --}}
                             
                             <?php
-                                $state = ( $saleRel->pay_done && !Ctm::isLocal() ) ? ' disabled' : '';
+                                $state = ( $saleRel->pay_done && ! Ctm::isEnv('local')) ? ' disabled' : '';
                             ?>
                             <button type="submit" class="btn btn-danger col-md-5 text-white" name="with_paydone" value="1" {{ $state }}><i class="fa fa-yen"></i> 入金済メール送信</button>
                         </div>
@@ -442,20 +440,20 @@ use App\DeliveryCompany;
                     
                     <div class="clearfix">
                         <div class="form-group clearfix my-2 w-50 float-left">
-                            <button type="submit" class="btn btn-success col-md-10 text-white" name="with_mail" value="{{ $templs['thanks'] }}" {{ $state }}><i class="fa fa-thumbs-up"></i> サンクスメール送信</button>
+                            <button type="submit" class="btn btn-success col-md-10 text-white" name="with_mail" value="{{ $templs['thanks'] }}"><i class="fa fa-thumbs-up"></i> サンクスメール送信</button>
                         </div>
                         
                         <div class="form-group clearfix my-2 w-50 float-left">
-                            <button type="submit" class="btn btn-warning col-md-10 text-white" name="with_mail" value="{{ $templs['stockNow'] }}" {{ $state }}><i class="fa fa-check"></i> 在庫確認中メール送信</button>
+                            <button type="submit" class="btn btn-warning col-md-10 text-white" name="with_mail" value="{{ $templs['stockNow'] }}"><i class="fa fa-check"></i> 在庫確認中メール送信</button>
                         </div>
 
                         
                         <div class="form-group clearfix my-2 w-50 float-left">
-                            <button type="submit" class="btn btn-info col-md-10 text-white" name="with_mail" value="{{ $templs['deliDoneNo'] }}" {{ $state }}><i class="fa fa-truck"></i> 出荷完了（伝票番号未確認）メール送信</button>
+                            <button type="submit" class="btn btn-info col-md-10 text-white" name="with_mail" value="{{ $templs['deliDoneNo'] }}"><i class="fa fa-truck"></i> 出荷完了（伝票番号未確認）メール送信</button>
                         </div>
                         
                         <div class="form-group clearfix my-2 w-50 float-left">
-                            <button type="submit" class="btn btn-info col-md-10 text-white" name="with_mail" value="{{ $templs['deliDone'] }}" {{ $state }}><i class="fa fa-truck"></i> 出荷完了メール送信</button>
+                            <button type="submit" class="btn btn-info col-md-10 text-white" name="with_mail" value="{{ $templs['deliDone'] }}"><i class="fa fa-truck"></i> 出荷完了メール送信</button>
                         </div>
                     </div>
                 
