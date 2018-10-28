@@ -340,54 +340,47 @@ class SaleController extends Controller
             $mail = Mail::to($data['user_email'], $data['user_name'])->queue(new PayDone($saleRel->id));
                 
             //if(! $mail) {
-                $status = '入金済みメールが送信されました。('. $mail . ')';
-                return redirect('dashboard/sales/order/'. $saleRel->order_number)->with('status', $status);
+            $status = '入金済みメールが送信されました。('. $mail . ')';
+                //return redirect('dashboard/sales/order/'. $saleRel->order_number)->with('status', $status);
 //            } 
 //            else {
 //                $errors = array('入金済みメールの送信に失敗しました。('. $mail . ')');
 //                return redirect('dashboard/sales/order/'. $saleRel->order_number)->withErrors($errors)->withInput();
 //            }
         }
-        else {
-        	if($withMail) {
+        elseif($withMail) {
                 
-                $mail = Mail::to($data['user_email'], $data['user_name'])->queue(new OrderMails($data['sale_ids'], $withMail));
-                
-                $templ = $this->templ->find($withMail);
+            $mail = Mail::to($data['user_email'], $data['user_name'])->queue(new OrderMails($data['sale_ids'], $withMail)); //sale_ids->メール送信する複数商品　$withMail->メールテンプレのID
+            
+            $templ = $this->templ->find($withMail);
 
-                $status = $templ->type_name . 'メールが送信されました。('. $mail . ')';
-                
-                $sales = $this->sale->find($data['sale_ids']);
-                
-                
-                foreach($sales as $sale) {
-                    if($templ->type_code == 'thanks') {
-                        $sale->thanks_done = 1;
-                    }
-                    elseif($templ->type_code == 'stockNow') {
-                        $sale->stocknow_done = 1;
-                    }
-                    elseif($templ->type_code == 'deliDoneNo' || $templ->type_code == 'deliDone') {
-                        $sale->deli_done = 1;
-                        $sale->deli_sended_date = date('Y-m-d H:i:s', time());
-                    }
-                    
-                    $sale ->save();      
+            $status = $templ->type_name . 'メールが送信されました。('. $mail . ')';
+            
+            $sales = $this->sale->find($data['sale_ids']);
+            
+            foreach($sales as $sale) {
+                if($templ->type_code == 'thanks') {
+                    $sale->thanks_done = 1;
                 }
-                 
-        
-                return redirect('dashboard/sales/order/'. $saleRel->order_number)->with('status', $status);
-
+                elseif($templ->type_code == 'stockNow') {
+                    $sale->stocknow_done = 1;
+                }
+                elseif($templ->type_code == 'deliDoneNo' || $templ->type_code == 'deliDone') {
+                    $sale->deli_done = 1;
+                    $sale->deli_sended_date = date('Y-m-d H:i:s', time());
+                }
+                
+                $sale ->save();      
             }
-            else {
-        		$status = '更新されました。';
-            	return redirect('dashboard/sales/order/'. $saleRel->order_number)->with('status', $status);
-            }
+             
+            //return redirect('dashboard/sales/order/'. $saleRel->order_number)->with('status', $status);
+        }
+        else {
+            $status = '更新されました。'; 
         }
         
-        
-        
 
+        return redirect('dashboard/sales/order/'. $saleRel->order_number)->with('status', $status);
         
     }
     
