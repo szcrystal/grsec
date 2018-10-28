@@ -32,13 +32,12 @@ class AppServiceProvider extends ServiceProvider
         Queue::failing(function (JobFailed $event) {
         	
             //return redirect('dashboard/');
-            
-            $str = '/' . env('APP_ENV') . report($event->exception);
-            
-            
+ 
             $event->connectionName;
             $event->job;
             $event->exception;
+            
+            $str = '/' . env('APP_ENV') . $event->job->getName();
                     
             Mail::raw($str, function ($message) {
                 $message -> from('no-reply@green-rocket.jp', '送信元の名前')
