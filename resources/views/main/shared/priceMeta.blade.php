@@ -23,4 +23,12 @@ $isSale = Setting::get()->first()->is_sale;
 </span>
 <span class="text-small">円&nbsp;(税込)</span>
 
+<small class="d-block text-blue">
+    @if($item->is_once)
+    同梱包可能
+    @else
+    同梱包不可
+    @endif
+</small>
+
 

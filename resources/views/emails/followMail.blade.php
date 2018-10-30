@@ -24,7 +24,7 @@
 <div>{{ $num }}.</div>
 商品番号: {{ $itemModel->find($sale->item_id)->number }}<br>
 商品名: {{ Ctm::getItemTitle($itemModel->find($sale->item_id)) }}<br>
-個数: {{ $sale->item_count}}<br>
+数量: {{ $sale->item_count}}<br>
 発送日：{{ Ctm::changeDate($sale->deli_start_date, 1) }}
 </div>
 <?php $num++; ?>

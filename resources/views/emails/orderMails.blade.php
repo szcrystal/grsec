@@ -54,20 +54,24 @@
 数量: {{ $sale->item_count}}<br>
 金額：¥{{ number_format($sale->total_price) }}（税込）<br>
 @if($templ->type_code == 'thanks')
-出荷予定日：{{ $sale->deli_start_date }}<br>
+出荷予定日：{{ Ctm::getDateWithYoubi($sale->deli_start_date) }}<br>
 @endif
 
 @if($templ->type_code == 'thanks' || $templ->type_code == 'deliDoneNo' || $templ->type_code == 'deliDone')
-<b>お届け予定日：{{ $sale->deli_schedule_date }}</b><br>
+<b>お届け予定日：{{ Ctm::getDateWithYoubi($sale->deli_schedule_date) }}</b><br>
 @endif
 
 @if($templ->type_code == 'deliDone')
-<?php $dc = $dcModel->find($sale->deli_company_id); ?>
-<br>
-配送会社：{{ $dc->name }}<br>
-伝票番号：{{ $sale->deli_slip_num }}<br>
-お荷物の追跡はこちらから<br>
-{{ $dc->url }}
+    <?php $dc = $dcModel->find($sale->deli_company_id); ?>
+    <br>
+    配送会社：{{ $dc->name }}<br>
+    @if(isset($sale->deli_slip_num) && $sale->deli_slip_num != '')
+    伝票番号：{{ $sale->deli_slip_num }}<br>
+    @endif
+    @if(isset($dc->url))
+    お荷物の追跡はこちらから<br>
+    {{ $dc->url }}
+    @endif
 @endif
 
 </div>
@@ -79,7 +83,11 @@
 <div style="margin: 0 0 1.0em 1.0em;">
 商品金額合計：￥{{ number_format($saleRel->all_price) }} <br>
 送料：￥{{ number_format($saleRel->deli_fee) }}<br>
-@if($saleRel->pay_method == 5)
+@if($saleRel->pay_method == 2)
+コンビニ決済手数料：￥{{ number_format($saleRel->cod_fee) }}<br>
+@elseif($saleRel->pay_method == 4)
+GMO後払い手数料：￥{{ number_format($saleRel->cod_fee) }}<br>
+@elseif($saleRel->pay_method == 5)
 代引手数料：￥{{ number_format($saleRel->cod_fee) }}<br>
 @endif
 @if($saleRel->is_user)

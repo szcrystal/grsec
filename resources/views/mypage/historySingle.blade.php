@@ -47,7 +47,7 @@
             <td>
             	@if($item->is_ensure)
                     @if($sale->deli_done)
-                        <?php $days = Ctm::getKareHosyou($sale->deli_start_date); ?>
+                        <?php $days = Ctm::getKareHosyou($sale->deli_schedule_date); ?>
                         @if($days['diffDay'])
                             {{ $days['limit'] }}まで<br>
                             <b class="text-big">残{{ $days['diffDay'] }}日</b>

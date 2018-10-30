@@ -164,7 +164,7 @@ use App\Setting;
                   
                             </tr>
                             <tr>
-                                <th>個数</th>
+                                <th>数量</th>
                                 <td>{{ $sale->item_count }}</td>
                             </tr>
                             
@@ -232,30 +232,33 @@ use App\Setting;
                                                 <option selected value="0">選択して下さい</option>
                                                     <?php 
                                                         $days = array();
-                                                        $week = ['日', '月', '火', '水', '木', '金', '土'];
+                                                        //$week = ['日', '月', '火', '水', '木', '金', '土'];
                                                     
                                                         for($plusDay = 0; $plusDay < 64; $plusDay++) {
-                                                            $now = date('Y-m-d', time());
+                                                            $now = date('Y-m-d H:i:s', time());
                                                             $first = strtotime($now." +". $plusDay . " day");
-                                                            $days[] = date('Y/m/d', $first) . '（' . $week[date('w', $first)] . '）';
+                                                            //$days[$first] = date('Y/m/d', $first) . '（' . $week[date('w', $first)] . '）';
+                                                            $days[$first] = Ctm::getDateWithYoubi(date('Y-m-d H:i:s', $first));
                                                         }
                                                     ?>
                                                 
 
-                                                    @foreach($days as $day)
+                                                    @foreach($days as $key => $day)
                                                         <?php
                                                             $selected = '';
+                                                            $key = date('Y-m-d', $key);
+                                                            
                                                             if(Ctm::isOld()) {
-                                                                if(old('deli_start_date') == $day)
+                                                                if(old('deli_start_date') == $key)
                                                                     $selected = ' selected';
                                                             }
                                                             else {
-                                                                if(isset($sale) && $sale->deli_start_date == $day) {
+                                                                if(isset($sale) && $sale->deli_start_date == $key) {
                                                                     $selected = ' selected';
                                                                 }
                                                             }
                                                         ?>
-                                                        <option value="{{ $day }}"{{ $selected }}>{{ $day }}</option>
+                                                        <option value="{{ $key }}"{{ $selected }}>{{ $day }}</option>
                                                     @endforeach
                                             </select>
                                             
@@ -278,32 +281,45 @@ use App\Setting;
                                                 <option selected value="0">選択して下さい</option>
                                                     <?php 
 //                                                        $days = array();
-//                                                        $week = ['日', '月', '火', '水', '木', '金', '土'];
+//                                                        //$week = ['日', '月', '火', '水', '木', '金', '土'];
 //                                                    
 //                                                        for($plusDay = 0; $plusDay < 64; $plusDay++) {
-//                                                            $now = date('Y-m-d', time());
+//                                                            $now = date('Y-m-d H:i:s', time());
 //                                                            $first = strtotime($now." +". $plusDay . " day");
-//                                                            $days[] = date('Y/m/d', $first) . '（' . $week[date('w', $first)] . '）';
+//                                                            //$days[$first] = date('Y/m/d', $first) . '（' . $week[date('w', $first)] . '）';
+//                                                            $days[$first] = Ctm::getDateWithYoubi(date('Y-m-d H:i:s', $first));
 //                                                        }
                                                     ?>
                                                 
 
-                                                    @foreach($days as $day)
+                                                    @foreach($days as $key => $day)
                                                         <?php
                                                             $selected = '';
+                                                            $key = date('Y-m-d', $key);
+                                                            
                                                             if(Ctm::isOld()) {
-                                                                if(old('deli_schedule_date') == $day)
+                                                                if(old('deli_schedule_date') == $key)
                                                                     $selected = ' selected';
                                                             }
                                                             else {
-                                                                if(isset($sale) && $sale->deli_schedule_date == $day) {
+                                                                if(isset($sale) && $sale->deli_schedule_date == $key) {
                                                                     $selected = ' selected';
                                                                 }
                                                             }
                                                         ?>
-                                                        <option value="{{ $day }}"{{ $selected }}>{{ $day }}</option>
+                                                        <option value="{{ $key }}"{{ $selected }}>{{ $day }}</option>
                                                     @endforeach
                                             </select>
+                                            
+                                            <?php
+//                                                $current = new DateTime('now');
+//                                                $from = new DateTime($sale->deli_schedule_date);
+//                                                $diff = $current->diff($from); //マイナスの時はinvert:1
+//                                                echo $diff->days . '/' . $diff->invert . '/';
+//                                                
+//                                                print_r($diff);
+                                            ?>
+
                                             
                                             @if ($errors->has('deli_schedule_date'))
                                                 <span class="help-block">
@@ -449,7 +465,7 @@ use App\Setting;
                                     </div>
                                     
                                     <div class="clearfix">
-                                    	個数：{{ $sameSale->item_count }}<br>
+                                    	数量：{{ $sameSale->item_count }}<br>
                                         
                                         ご希望配送時間：
                                         @if(isset($sameSale->plan_date))

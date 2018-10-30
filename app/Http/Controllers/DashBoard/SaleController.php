@@ -16,6 +16,7 @@ use App\Category;
 use App\Setting;
 use App\DeliveryCompany;
 use App\MailTemplate;
+use App\SendMailFlag;
 
 use App\Mail\OrderSend;
 use App\Mail\OrderMails;
@@ -31,7 +32,7 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class SaleController extends Controller
 {
-    public function __construct(Admin $admin, Sale $sale, SaleRelation $saleRel, Item $item, User $user, PayMethod $payMethod, UserNoregist $userNoregist, Receiver $receiver, DeliveryGroup $dg, Consignor $consignor, Category $category, Setting $setting, DeliveryCompany $dc, MailTemplate $templ)
+    public function __construct(Admin $admin, Sale $sale, SaleRelation $saleRel, Item $item, User $user, PayMethod $payMethod, UserNoregist $userNoregist, Receiver $receiver, DeliveryGroup $dg, Consignor $consignor, Category $category, Setting $setting, DeliveryCompany $dc, MailTemplate $templ, SendMailFlag $smf)
     {
         
         $this -> middleware('adminauth');
@@ -50,13 +51,22 @@ class SaleController extends Controller
         $this->setting = $setting;
         $this->dc = $dc;
         $this->templ = $templ;
+        $this->smf = $smf;
 
-		$this->templIds = [
-        	'thanks'=> 10,
-            'stockNow'=> 11,
-            'deliDoneNo'=> 12,
-            'deliDone'=> 13,
+		$templCodes = [
+        	'payDone',
+        	'thanks',
+            'stockNow',
+            'howToUe',
+            'deliDoneNo',
+            'deliDone',
         ];
+		
+        $this->templIds = array();
+                
+        foreach($templCodes as $templCode) {
+			$this->templIds[$templCode] = $this->templ->where('type_code', $templCode)->first()->id;
+        }
         
         $this->perPage = 20;
         
@@ -170,9 +180,7 @@ class SaleController extends Controller
         
         $totalSum = $saleObjs->sum('total_price');
         
-        
-        
-        
+
         $saleRels = $this->saleRel;
         
         $items= $this->item;
@@ -291,7 +299,37 @@ class SaleController extends Controller
     {
     	$withPayDone = $request->has('with_paydone') ? 1 : 0;
         $withMail = $request->has('with_mail') ? $request->input('with_mail') : 0;
+        
+        $templIds = $this->templIds;
     	
+ /*       
+//        $rules = [
+//            'deli_start_date' => [
+//                function($attribute, $value, $fail) {
+//                    if (! isset($value) || ! $value) {
+//                        return $fail('出荷予定日を入力して下さい。');
+//                    }
+//                },
+//            ],
+//            
+//            'deli_schedule_date' => [
+//                function($attribute, $value, $fail) {
+//                    if (! isset($value) || ! $value) {
+//                        return $fail('到着予定日を入力して下さい。');
+//                    }
+//                },
+//            ],
+//            
+//            'deli_company_id' => [
+//                function($attribute, $value, $fail) {
+//                    if (! isset($value) || ! $value) {
+//                        return $fail('配送会社を入力して下さい。');
+//                    }
+//                },
+//            ],
+//        ];
+*/
+
         if($withPayDone) {
             $rules = [
                 'pay_done' => 'required',
@@ -309,17 +347,44 @@ class SaleController extends Controller
         if($withMail) {
         	$rules = [
                 'sale_ids' => 'required',
-                //'cate_id' => 'required',
             ];
             
              $messages = [
                  'sale_ids.required' => '「メールをする」のチェックがされていません。メールする商品を選択して下さい。',
-               // 'cate_id.required' => '「カテゴリー」を選択して下さい。',
             ];
             
             $this->validate($request, $rules, $messages);
         }
         
+        if($withMail == $templIds['thanks'] || $withMail == $templIds['deliDoneNo'] || $withMail == $templIds['deliDone']) {
+            foreach($request->input('sale_ids') as $si) {
+                $rules['deli_start_date.'. $si] = 
+                    function($attribute, $value, $fail) use($si) {
+                        if (! isset($value) || ! $value) {
+                            return $fail('売上ID'. $si .'の出荷予定日を入力して下さい。');
+                        }
+                    };
+                
+                $rules['deli_schedule_date.'. $si] = 
+                    function($attribute, $value, $fail) use($si) {
+                        if (! isset($value) || ! $value) {
+                            return $fail('売上ID'. $si .'の到着予定日を入力して下さい。');
+                        }
+                    };
+                
+                $rules['deli_company_id.'. $si] = 
+                    function($attribute, $value, $fail) use($si) {
+                        if (! isset($value) || ! $value) {
+                            return $fail('売上ID'. $si .'の配送会社を入力して下さい。');
+                        }
+                    };
+            }
+            
+            $messages = [];
+            
+            $this->validate($request, $rules, $messages);
+        }
+ 
     	$data = $request->all();
         
         
@@ -341,7 +406,8 @@ class SaleController extends Controller
                 
             //if(! $mail) {
             $status = '入金済みメールが送信されました。('. $mail . ')';
-                //return redirect('dashboard/sales/order/'. $saleRel->order_number)->with('status', $status);
+            
+            //return redirect('dashboard/sales/order/'. $saleRel->order_number)->with('status', $status);
 //            } 
 //            else {
 //                $errors = array('入金済みメールの送信に失敗しました。('. $mail . ')');
@@ -359,18 +425,17 @@ class SaleController extends Controller
             $sales = $this->sale->find($data['sale_ids']);
             
             foreach($sales as $sale) {
-                if($templ->type_code == 'thanks') {
-                    $sale->thanks_done = 1;
-                }
-                elseif($templ->type_code == 'stockNow') {
-                    $sale->stocknow_done = 1;
-                }
-                elseif($templ->type_code == 'deliDoneNo' || $templ->type_code == 'deliDone') {
+                if($templ->type_code == 'deliDoneNo' || $templ->type_code == 'deliDone') {
                     $sale->deli_done = 1;
                     $sale->deli_sended_date = date('Y-m-d H:i:s', time());
+                    $sale ->save();
                 }
                 
-                $sale ->save();      
+                $this->smf->updateOrCreate(
+                    ['sale_id'=>$sale->id, 'templ_id'=>$templ->id],
+                    ['is_mail' =>1]
+                );
+         
             }
              
             //return redirect('dashboard/sales/order/'. $saleRel->order_number)->with('status', $status);

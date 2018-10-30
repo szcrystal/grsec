@@ -100,7 +100,7 @@
             </fieldset>
             
             <fieldset class="mb-4 form-group">
-                <label for="name_code" class="control-label">コードネーム <span class="text-danger text-small">*</span>（半角英数字にて。スラッグと同等と考えて構いません。）</label>
+                <label for="name_code" class="control-label">スラッグ <span class="text-danger text-small">*</span>（半角英数字）</label>
                 <input class="form-control col-md-6{{ $errors->has('name_code') ? ' is-invalid' : '' }}" name="name_code" value="{{ Ctm::isOld() ? old('name_code') : (isset($dc) ? $dc->name_code : '') }}">
                 
 

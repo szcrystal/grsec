@@ -62,12 +62,19 @@ class ProcessFollowMail implements ShouldQueue
             
         foreach($sales as $sale) {
             
-            $from = new DateTime($sale->deli_sended_date);
-            $diff = $current->diff($from);
+            $from = new DateTime($sale->deli_schedule_date);
+            $diff = $current->diff($from); //マイナスの時はinvert:1 $currentが$fromより大きければマイナスとなりinvertは1となる
+            
+            /*
+            	大きい日付->diff(小さい日付) マイナス:invert 1
+                小さい日付->diff(大きい日付) マイナス:invert 1
+            	現在より前の日付であればinvertはマイナス->値は1
+                現在より後ろの日付であればinvertはプラス->値は0
+            */
             
             $ensure = Item::find($sale->item_id)->is_ensure;
             
-            if($diff->days == 0 && $diff->h == 0 && $diff->i == 3) {
+            if($diff->days == 0/* && $diff->h == 0*/ && $diff->i == 3) {
                 if($ensure) {
                     //if($diff->days == $day_7) {
                         $ensure_7[$sale->salerel_id][] = $sale;
@@ -105,28 +112,35 @@ class ProcessFollowMail implements ShouldQueue
         foreach($sales as $sale) {
             
             //$d = strtotime($sale->deli_start_date);
-            $from = new DateTime($sale->deli_sended_date);
-            $diff = $current->diff($from);
+            $from = new DateTime($sale->deli_schedule_date);
+            $diff = $current->diff($from); //マイナスの時はinvert:1 $currentが$fromより大きければマイナスとなりinvertは1となる
+            
+            //	大きい日付->diff(小さい日付) マイナス:invert 1
+            //  小さい日付->diff(大きい日付) プラス:invert 0
+            //	現在より前の日付であればinvertはマイナス->値は1
+            //  現在より後ろの日付であればinvertはプラス->値は0
             
             $ensure = Item::find($sale->item_id)->is_ensure;
             
-            if($ensure) {
-                if($diff->days == $day_7) {
-                    $ensure_7[$sale->salerel_id][] = $sale;
+            if($diff->invert) {
+                if($ensure) {
+                    if($diff->days == $day_7) {
+                        $ensure_7[$sale->salerel_id][] = $sale;
+                    }
+                    elseif($diff->days == $day_33) {
+                        $ensure_33[$sale->salerel_id][] = $sale;
+                    }
+                    elseif($diff->days == $day_96) {
+                        $ensure_96[$sale->salerel_id][] = $sale;
+                    }
+                    elseif($diff->days == $day_155) {
+                        $ensure_155[$sale->salerel_id][] = $sale;
+                    }
                 }
-                elseif($diff->days == $day_33) {
-                    $ensure_33[$sale->salerel_id][] = $sale;
-                }
-                elseif($diff->days == $day_96) {
-                    $ensure_96[$sale->salerel_id][] = $sale;
-                }
-                elseif($diff->days == $day_155) {
-                    $ensure_155[$sale->salerel_id][] = $sale;
-                }
-            }
-            else {
-                if($diff->days == $dayNo_33) {
-                    $noEnsure_33[$sale->salerel_id][] = $sale;
+                else {
+                    if($diff->days == $dayNo_33) {
+                        $noEnsure_33[$sale->salerel_id][] = $sale;
+                    }
                 }
             }
         

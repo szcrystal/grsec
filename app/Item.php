@@ -20,7 +20,9 @@ class Item extends Model
         'pot_count',
         'cate_id',
         'subcate_id',
+        
         'is_ensure',
+        'item_type',
         
         'main_img',
         'main_caption',
@@ -57,6 +59,7 @@ class Item extends Model
         'icon_id',
         
         'contents',
+        'caution',
         
         'free_space',
                 

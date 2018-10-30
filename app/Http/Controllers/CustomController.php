@@ -354,6 +354,17 @@ class CustomController extends Controller
     	return ['limit'=>date('Y/m/d', $limit), 'diffDay'=>$diff->days];
     }
     
+    static function getDateWithYoubi($dateNormalFormat)
+    {
+    	$time = strtotime($dateNormalFormat);	
+    	$week = ['日', '月', '火', '水', '木', '金', '土'];
+        
+        $withYoubi = date('Y/m/d', $time);
+        $withYoubi .= ' (' . $week[date('w', $time)] . ')';
+        
+        return $withYoubi;
+    }
+    
     
     static function sendMail($data, $typeCode)
     {

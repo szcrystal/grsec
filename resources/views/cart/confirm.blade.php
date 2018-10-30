@@ -8,11 +8,23 @@
         <div class="panel panel-default">
 
             <div class="panel-body">
-                {{-- @include('main.shared.main') --}}
 
 
 <div class="clearfix">
 @include('cart.guide')
+
+
+@if (count($errors) > 0)
+    <div class="alert alert-danger">
+        <i class="far fa-exclamation-triangle"></i> 確認して下さい。
+        
+        <ul class="mt-2">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
 
 <div class="confirm-left">
 	<h5 class="card-header mb-3 py-2">ご注文の商品</h5>
@@ -225,7 +237,19 @@
             <td>¥{{ number_format($deliFee) }}</td>
         </tr>
         
-        @if($data['pay_method'] == 5)
+        @if($data['pay_method'] == 2)
+            <tr>
+                <th><label class="control-label">コンビニ決済手数料</label></th>
+                <td>¥{{ number_format($codFee) }}</td>
+            </tr>
+        
+        @elseif($data['pay_method'] == 4)
+            <tr>
+                <th><label class="control-label">GMO後払い手数料</label></th>
+                <td>¥{{ number_format($codFee) }}</td>
+            </tr>
+        
+        @elseif($data['pay_method'] == 5)
             <tr>
                 <th><label class="control-label">代引き手数料</label></th>
                 <td>¥{{ number_format($codFee) }}</td>
@@ -245,7 +269,7 @@
         
         <tr>
             <th><label class="control-label">注文金額合計（税込）</label></th>
-             <td class="text-danger text-big">
+             <td class="text-danger text-big{{ count($errors) > 0 ? ' alert-danger' : '' }}">
                   ¥{{ number_format($allPrice + $deliFee + $codFee - $usePoint) }}
             </td>
         </tr>
@@ -276,7 +300,7 @@
         
         <tr>
             <th><label class="control-label">お支払い方法</label></th>
-            <td>
+            <td class="{{ count($errors) > 0 ? 'alert-danger' : '' }}">
             	{{ $payMethod->find($data['pay_method'])->name }}
             </td>
         </tr>
@@ -313,12 +337,30 @@
     @endforeach
     
   <small class="col-md-5 mx-auto d-block px-5 mb-3">
-  上記ご注文内容で注文を確定します。<br>
-	<b>「注文する」ボタンをクリックすると注文を確定します。</b>
+  	@if($errors->has('konbiniLimit'))
+        <span class="text-danger text-big">
+        	{{ $errors->first('konbiniLimit') }}<br>
+        	戻ってお支払い方法か購入商品を変更して下さい。
+        </span>
+    @elseif($errors->has('gmoLimit'))
+    	<span class="text-danger text-big">
+        	{{ $errors->first('gmoLimit') }}<br>
+            戻ってお支払い方法か購入商品を変更して下さい。
+        </span>
+    @else
+  		上記ご注文内容で注文を確定します。<br>
+		<b>「注文する」ボタンをクリックすると注文を確定します。</b>
+    @endif
   </small>
   
-  <div class="">
-  	<button class="btn btn-block btn-custom col-md-4 mb-4 mx-auto py-2" type="submit" name="regist_off" value="1">注文する</button>
+	<div class="">
+    	<?php
+        	$disabled = '';
+            if(count($errors) > 0) {
+            	$disabled = ' disabled';
+            }
+        ?>
+  		<button class="btn btn-block btn-custom col-md-4 mb-4 mx-auto py-2" type="submit" name="regist_off" value="1"{{ $disabled }}>注文する</button>
 	</div>                
 </form>
 

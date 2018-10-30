@@ -19,6 +19,12 @@ h1 {
 .btn {
 	cursor: pointer;
 }
+.btn-purple {
+	background: #7324b7;
+}
+.btn-purple:hover {
+	background-color: #5b1894;
+}
 .hide {
 	display: none;
 }

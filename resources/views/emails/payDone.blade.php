@@ -47,7 +47,7 @@
 <div>{{ $num }}.</div>
 商品番号: {{ $itemModel->find($sale->item_id)->number }}<br>
 商品名: {{ Ctm::getItemTitle($itemModel->find($sale->item_id)) }}<br>
-個数: {{ $sale->item_count}}<br>
+数量: {{ $sale->item_count}}<br>
 金額：¥{{ number_format($sale->total_price) }}（税込）
 </div>
 
@@ -57,11 +57,14 @@
 <div style="margin: 0 0 1.0em 1.0em;">
 商品金額合計：￥{{ number_format($saleRel->all_price) }} <br>
 送料：￥{{ number_format($saleRel->deli_fee) }} <br>
-{{--
-@if($saleRel->pay_method == 5)
+@if($saleRel->pay_method == 2)
+コンビニ決済手数料：￥{{ number_format($saleRel->cod_fee) }}<br>
+@elseif($saleRel->pay_method == 4)
+GMO後払い手数料：￥{{ number_format($saleRel->cod_fee) }}<br>
+@elseif($saleRel->pay_method == 5)
 代引手数料：￥{{ number_format($saleRel->cod_fee) }} <br>
 @endif
---}}
+
 @if(Auth::check())
 ポイント利用：{{ $saleRel->use_point }}ポイント <br>
 @endif

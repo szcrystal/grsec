@@ -172,6 +172,19 @@ class CreateMailTemplatesTable extends Migration
         
         DB::table('mail_templates')->insert(
             [ 
+                'type_code' => 'howToUe',
+                'type_name' => '植え付け方法のご案内',
+                'title' => '',
+                'header' => 'ababab',
+                'footer' => '121212',
+                
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time()),
+            ]
+        );
+        
+        DB::table('mail_templates')->insert(
+            [ 
                 'type_code' => 'deliDoneNo',
                 'type_name' => '出荷完了(伝票番号未確認)',
                 'title' => '',

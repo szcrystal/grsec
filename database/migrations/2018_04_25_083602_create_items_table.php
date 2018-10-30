@@ -29,7 +29,9 @@ class CreateItemsTable extends Migration
             
             $table->integer('cate_id')->nullable()->default(NULL);
             $table->integer('subcate_id')->nullable()->default(NULL);
+            
             $table->boolean('is_ensure')->nullable()->default(NULL);
+            $table->integer('item_type')->nullable()->default(NULL);
             
             
             $table->string('main_img')->nullable()->default(NULL);
@@ -68,6 +70,8 @@ class CreateItemsTable extends Migration
             $table->boolean('is_delifee_table')->nullable()->default(NULL);
             
             $table->longText('contents')->nullable()->default(NULL);
+            
+            $table->longText('caution')->nullable()->default(NULL);
             
             $table->longText('free_space')->nullable()->default(NULL);
             

@@ -62,7 +62,7 @@ use App\Item;
              	@if($item->is_ensure)
                     @if($sale->deli_done)
                     <?php 
-                       $days = Ctm::getKareHosyou($sale->deli_start_date);   
+                       $days = Ctm::getKareHosyou($sale->deli_schedule_date);   
                     ?>
                     @if($days['diffDay'])
                 		{{ $days['limit'] }}まで<br>
@@ -147,7 +147,7 @@ use App\Item;
                     		@if($item->is_ensure)
                                 @if($sale->deli_done)
                                     <?php 
-                                       $days = Ctm::getKareHosyou($sale->deli_start_date);   
+                                       $days = Ctm::getKareHosyou($sale->deli_schedule_date);   
                                     ?>
                                     @if($days['diffDay'])
                                         {{ $days['limit'] }}まで<br>

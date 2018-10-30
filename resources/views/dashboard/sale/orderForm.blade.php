@@ -5,6 +5,7 @@
 use App\Item;
 use App\Setting;
 use App\DeliveryCompany;
+use App\SendMailFlag;
 ?>
 	
 	<div class="text-left">
@@ -182,7 +183,7 @@ use App\DeliveryCompany;
                                     <table class="table-tyumon w-100">
                                     	<tbody>
                                         	<tr>
-                                            	<th>商品</th>
+                                            	<th>商品<br><span class="text-small">売上ID:{{ $sale->id }}</span></th>
                                             	<td>
                                                 	<div class="float-left mr-2">
                                                 	<?php $item = $items->find($sale->item_id); ?>
@@ -199,7 +200,7 @@ use App\DeliveryCompany;
                                             </tr>
                                             
                                             <tr>
-                                            	<th>購入数量</th>
+                                            	<th>数量</th>
                                                 <td>{{ $sale->item_count }}</td>
                                             </tr>
                                             
@@ -224,21 +225,22 @@ use App\DeliveryCompany;
                                             <tr>
                                             	<th>出荷予定日</th>
                                                 <td>
-                                                	@if(isset($sale->deli_start_date))
-                                                        {{ $sale->deli_start_date }}&nbsp;
+                                                	@if(isset($sale->deli_start_date) && $sale->deli_start_date)
+                                                        {{ Ctm::getDateWithYoubi($sale->deli_start_date) }}&nbsp;
                                                     @endif
                                                     
-                                                    
+                                                    <input type="hidden" name="deli_start_date[{{ $sale->id }}]" value="{{ $sale->deli_start_date }}">
                                                 </td>
                                             </tr>
                                             
                                             <tr>
                                             	<th>お届け予定日</th>
                                                 <td>
-                                                	@if(isset($sale->deli_schedule_date))
-                                                        {{ $sale->deli_schedule_date }}&nbsp;
-                                                    @endif
+                                                	@if(isset($sale->deli_schedule_date) && $sale->deli_schedule_date)
+                                                        {{ Ctm::getDateWithYoubi($sale->deli_schedule_date) }}&nbsp;
+                                                    @endif 
                                                     
+                                                    <input type="hidden" name="deli_schedule_date[{{ $sale->id }}]" value="{{ $sale->deli_schedule_date }}">   
                                                 </td>
                                             </tr>
                                             
@@ -247,13 +249,17 @@ use App\DeliveryCompany;
                                             <tr>
                                             	<th>配送会社/伝票番号</th>
                                                 <td>
+                                                @if(isset($sale->deli_company_id) && $sale->deli_company_id)
                                                 	{{ DeliveryCompany::find($sale->deli_company_id)->name }} / 
                                                     @if($sale->deli_slip_num)
                                                     	{{ $sale->deli_slip_num }}
                                                     @else
-                                                    	<span class="text-danger">未</span>
+                                                    	<span class="text-danger">未確認</span>
                                                     @endif
+                                                @endif
                                                 </td>
+                                                
+                                                <input type="hidden" name="deli_company_id[{{ $sale->id }}]" value="{{ $sale->deli_company_id }}">
                                             </tr>
                                             
                                             <tr>
@@ -271,7 +277,7 @@ use App\DeliveryCompany;
                                             <tr>
                                             	<th>サンクスメール</th>
                                                 <td>
-                                                	@if($sale->thanks_done)
+                                                	@if(SendMailFlag::where(['sale_id'=>$sale->id, 'templ_id'=>$templs['thanks'] ])->get()->isNotEmpty())
                                                     <span class="text-success">済</span>
                                                     @else
                                                     <span class="text-danger">未</span>
@@ -281,7 +287,37 @@ use App\DeliveryCompany;
                                             <tr>
                                             	<th>在庫確認中メール</th>
                                                 <td>
-                                                	@if($sale->stocknow_done)
+                                                	@if(SendMailFlag::where(['sale_id'=>$sale->id, 'templ_id'=>$templs['stockNow'] ])->get()->isNotEmpty())
+                                                    <span class="text-success">済</span>
+                                                    @else
+                                                    <span class="text-danger">未</span>
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                            	<th>植え付け方法メール</th>
+                                                <td>
+                                                	@if(SendMailFlag::where(['sale_id'=>$sale->id, 'templ_id'=>$templs['howToUe'] ])->get()->isNotEmpty())
+                                                    <span class="text-success">済</span>
+                                                    @else
+                                                    <span class="text-danger">未</span>
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                            	<th>出荷完了メール<br><small>（伝票未確認）</small></th>
+                                                <td>
+                                                	@if(SendMailFlag::where(['sale_id'=>$sale->id, 'templ_id'=>$templs['deliDoneNo'] ])->get()->isNotEmpty())
+                                                    <span class="text-success">済</span>
+                                                    @else
+                                                    <span class="text-danger">未</span>
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                            	<th>出荷完了メール</th>
+                                                <td>
+                                                	@if(SendMailFlag::where(['sale_id'=>$sale->id, 'templ_id'=>$templs['deliDone'] ])->get()->isNotEmpty())
                                                     <span class="text-success">済</span>
                                                     @else
                                                     <span class="text-danger">未</span>
@@ -316,8 +352,16 @@ use App\DeliveryCompany;
                             </tr>
                             
                             <tr>
-                                <th>代引手数料（C）</th>
-                                <td>¥{{ number_format($saleRel->cod_fee) }}</td>
+                                <th>手数料（C）</th>
+                                <td>
+                                	¥{{ number_format($saleRel->cod_fee) }}
+                                	@if($saleRel->pay_method == 2)
+                                    （コンビニ決済）
+                                    @elseif($saleRel->pay_method == 4)
+                                    （GMO後払い）
+                                    @endif
+                                	
+                                </td>
                             </tr>
                             
                             <tr>
@@ -440,30 +484,32 @@ use App\DeliveryCompany;
                     @if($saleRel->pay_method == 6)
                         
                         @if( ! $saleRel->pay_done || Ctm::isEnv('local'))                    
-                            <div class="form-group clearfix my-2">
-                                {{-- <button type="submit" class="btn btn-primary col-md-3 text-white float-left" name="only_up" value="1">更新のみする</button> --}}
-
-                                <button type="submit" class="btn btn-danger col-md-5 text-white" name="with_paydone" value="1"><i class="fa fa-yen"></i> 入金済メール送信</button>
+                            <div class="form-group clearfix my-3">
+                                <button type="submit" class="btn btn-danger col-md-5 text-white py-2" name="with_paydone" value="{{ $templs['payDone'] }}"><i class="fa fa-yen"></i> 入金済メール送信</button>
                             </div>
                         @endif
                     @endif
                     
                     <div class="clearfix">
-                        <div class="form-group clearfix my-2 w-50 float-left">
-                            <button type="submit" class="btn btn-success col-md-10 text-white" name="with_mail" value="{{ $templs['thanks'] }}"><i class="fa fa-thumbs-up"></i> サンクスメール送信</button>
+                        <div class="form-group clearfix my-3 w-50 float-left">
+                            <button type="submit" class="btn btn-success col-md-10 text-white py-2" name="with_mail" value="{{ $templs['thanks'] }}"><i class="fa fa-thumbs-up"></i> サンクスメール送信</button>
                         </div>
                         
-                        <div class="form-group clearfix my-2 w-50 float-left">
-                            <button type="submit" class="btn btn-warning col-md-10 text-white" name="with_mail" value="{{ $templs['stockNow'] }}"><i class="fa fa-check"></i> 在庫確認中メール送信</button>
+                        <div class="form-group clearfix my-3 w-50 float-left">
+                            <button type="submit" class="btn btn-warning col-md-10 text-white py-2" name="with_mail" value="{{ $templs['stockNow'] }}"><i class="fa fa-check"></i> 在庫確認中メール送信</button>
+                        </div>
+                        
+                        <div class="form-group clearfix my-3 w-50 float-left">
+                            <button type="submit" class="btn btn-purple col-md-10 text-white py-2" name="with_mail" value="{{ $templs['howToUe'] }}"><i class="fa fa-check"></i> 植え付け方法メール送信</button>
                         </div>
 
                         
-                        <div class="form-group clearfix my-2 w-50 float-left">
-                            <button type="submit" class="btn btn-info col-md-10 text-white" name="with_mail" value="{{ $templs['deliDoneNo'] }}"><i class="fa fa-truck"></i> 出荷完了（伝票番号未確認）メール送信</button>
+                        <div class="form-group clearfix my-3 w-50 float-left">
+                            <button type="submit" class="btn btn-info col-md-10 text-white py-2" name="with_mail" value="{{ $templs['deliDoneNo'] }}"><i class="fa fa-truck"></i> 出荷完了（伝票番号未確認）メール送信</button>
                         </div>
                         
-                        <div class="form-group clearfix my-2 w-50 float-left">
-                            <button type="submit" class="btn btn-info col-md-10 text-white" name="with_mail" value="{{ $templs['deliDone'] }}"><i class="fa fa-truck"></i> 出荷完了メール送信</button>
+                        <div class="form-group clearfix my-3 w-50 float-left">
+                            <button type="submit" class="btn btn-info col-md-10 text-white py-2" name="with_mail" value="{{ $templs['deliDone'] }}"><i class="fa fa-truck"></i> 出荷完了メール送信</button>
                         </div>
                     </div>
                 

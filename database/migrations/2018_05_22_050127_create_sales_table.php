@@ -54,8 +54,8 @@ class CreateSalesTable extends Migration
             
             $table->boolean('deli_done')->nullable()->default(0);
             
-            $table->boolean('thanks_done')->nullable()->default(0);
-            $table->boolean('stocknow_done')->nullable()->default(0);
+//            $table->boolean('thanks_done')->nullable()->default(0);
+//            $table->boolean('stocknow_done')->nullable()->default(0);
             
             //$table->boolean('pay_done')->nullable()->default(NULL);
 

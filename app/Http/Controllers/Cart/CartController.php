@@ -367,13 +367,13 @@ class CartController extends Controller
         
         
         //配送先登録 Receiver 別先であってもなくても登録
-        $isEmpty = 1;
-        foreach($receiverData as $receive) {
-        	if(empty($receive)) { //空の時はTrueになる
-         		$isEmpty = 0;
-           		break;      
-         	}    
-        }
+        $isEmpty = isset($receiverData) ? 1 : 0; //不要かも
+//        foreach($receiverData as $receive) {
+//        	if(empty($receive)) { //空の時はTrueになる
+//         		$isEmpty = 0;
+//           		break;      
+//         	}    
+//        }
        
        //if($isEmpty && ! $destination) { //receiveDataが入力されている時
        $receiverData['user_id'] = $userId;
@@ -752,9 +752,52 @@ class CartController extends Controller
         $totalFee = $totalFee + $deliFee;
         //送料END -----------------
         
-        //代引き手数料 -----------
+        
         $codFee = 0;
-        if($data['pay_method'] == 5) { 
+        $errors = array();
+        //コンビニ手数料 --------------
+        if($data['pay_method'] == 2) { 
+        	//https://www.epsilon.jp/pricelist/com_conv.html
+        	
+            $taxPer = $this->set->tax_per / 100;
+            
+         	if($totalFee <= 1999) {
+            	$epTesu = 130;
+          		$codFee = ceil(($epTesu * $taxPer) + $epTesu);
+          	}
+           	elseif ($totalFee >= 2000 && $totalFee <= 2999) {
+            	$epTesu = 150;
+          		$codFee = ceil(($epTesu * $taxPer) + $epTesu);
+            }
+            elseif ($totalFee >= 3000 && $totalFee <= 4999) {
+            	$epTesu = 180;
+          		$codFee = ceil(($epTesu * $taxPer) + $epTesu);
+            }
+            elseif ($totalFee >= 5000) {
+            	$epTesu = $totalFee * 0.04;
+            	$codFee = ceil(($epTesu * $taxPer) + $epTesu);
+            }
+            
+            if( ($totalFee + $codFee) > 300000) {
+            	$errors['konbiniLimit'] = 'コンビニ決済の上限額30万円を超えています。';
+                
+            }
+                   
+        }
+        
+        //GMO後払い手数料 ----------------
+        else if($data['pay_method'] == 4) { 
+        	$codFee = 205;
+            
+            if( ($totalFee + $codFee) > 50000) {
+            	$errors['gmoLimit'] = 'GMO後払い決済の上限額5万円を超えています。';
+            }
+        }
+        
+        
+        //代引き手数料 -----------
+        
+        else if($data['pay_method'] == 5) { 
         	
          	if($totalFee <= 10000) {
           		$codFee = 324;
@@ -812,7 +855,7 @@ class CartController extends Controller
         	$settles['url'] = url('shop/thankyou');
         }
         else {
-        	$isProduct = $this->setting->get()->first()->is_product;
+        	$isProduct = $this->set->is_product;
             
             if($isProduct) { //本番環境
             	$settles['url'] = "https://secure.epsilon.jp/cgi-bin/order/receive_order3.cgi"; //本番(完了通知書：contract_66254480.pdf内にあり)
@@ -875,7 +918,7 @@ class CartController extends Controller
 //        print_r($userArr);
 //        exit;
         
-        return view('cart.confirm', ['data'=>$data, 'userArr'=>$userArr, 'itemData'=>$itemData, 'regist'=>$regist, 'allPrice'=>$allPrice, 'settles'=>$settles, 'payMethod'=>$payMethod, 'deliFee'=>$deliFee, 'codFee'=>$codFee, 'usePoint'=>$usePoint, 'addPoint'=>$addPoint, 'active'=>3]);
+        return view('cart.confirm', ['data'=>$data, 'userArr'=>$userArr, 'itemData'=>$itemData, 'regist'=>$regist, 'allPrice'=>$allPrice, 'settles'=>$settles, 'payMethod'=>$payMethod, 'deliFee'=>$deliFee, 'codFee'=>$codFee, 'usePoint'=>$usePoint, 'addPoint'=>$addPoint,  'active'=>3])->withErrors($errors);
     }
     
     

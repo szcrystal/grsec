@@ -258,7 +258,7 @@
             
         
 			<fieldset class="mt-5 mb-4 form-group">
-                <label>商品番号 <span class="text-danger text-big">*</span></label>
+                <label>商品番号 <span class="text-danger text-big">*</span> （アンダーバー不可 ハイフンのみ）</label>
                 <input class="form-control{{ $errors->has('number') ? ' is-invalid' : '' }}" name="number" value="{{ Ctm::isOld() ? old('number') : (isset($item) ? $item->number : '') }}">
 
                 @if ($errors->has('number'))
@@ -305,7 +305,7 @@
                 @endif
             </fieldset>
             
-            <fieldset class="form-group mb-4 pb-1">
+            <fieldset class="form-group mb-2 pb-1">
                 <div class="checkbox">
                     <label>
                         <?php
@@ -323,6 +323,37 @@
                         <input type="checkbox" name="is_ensure" value="1"{{ $checked }}> 枯れ保証あり
                     </label>
                 </div>
+            </fieldset>
+            
+            <fieldset class="mt-1 mb-5 form-group">
+                <label>商品タイプ</label>
+                <select class="form-control col-md-6{{ $errors->has('item_type') ? ' is-invalid' : '' }}" name="item_type">
+                	<?php
+                    	$itemTypes = ['植木'=>1, 'ポット苗'=>2, '資材'=>3];
+                    ?>
+                    <option selected>選択して下さい</option>
+                    @foreach($itemTypes as $key => $itemTypeNum)
+                        <?php
+                            $selected = '';
+                            if(Ctm::isOld()) {
+                                if(old('item_type') == $itemTypeNum)
+                                    $selected = ' selected';
+                            }
+                            else {
+                                if(isset($item) && $item->item_type == $itemTypeNum) {
+                                    $selected = ' selected';
+                                }
+                            }
+                        ?>
+                        <option value="{{ $itemTypeNum }}"{{ $selected }}>{{ $key }}</option>
+                    @endforeach
+                </select>
+                
+                @if ($errors->has('consignor_id'))
+                    <span class="help-block text-warning">
+                        <strong>{{ $errors->first('consignor_id') }}</strong>
+                    </span>
+                @endif   
             </fieldset>
             
             
@@ -865,7 +896,7 @@
             <fieldset class="my-5 form-group{{ $errors->has('exp_first') ? ' is-invalid' : '' }}">
                     <label for="explain" class="control-label">キャッチ説明（商品ヘッドの中に表示）</label>
 
-                    <textarea id="explain" type="text" class="form-control" name="exp_first" rows="10">{{ Ctm::isOld() ? old('exp_first') : (isset($item) ? $item->exp_first : '') }}</textarea>
+                    <textarea class="form-control" name="exp_first" rows="10">{{ Ctm::isOld() ? old('exp_first') : (isset($item) ? $item->exp_first : '') }}</textarea>
 
                     @if ($errors->has('exp_first'))
                         <span class="help-block">
@@ -877,7 +908,7 @@
             <fieldset class="my-5 form-group{{ $errors->has('explain') ? ' is-invalid' : '' }}">
                     <label for="explain" class="control-label">商品詳細</label>
 
-                    <textarea id="explain" type="text" class="form-control" name="explain" rows="20">{{ Ctm::isOld() ? old('explain') : (isset($item) ? $item->explain : '') }}</textarea>
+                    <textarea class="form-control" name="explain" rows="20">{{ Ctm::isOld() ? old('explain') : (isset($item) ? $item->explain : '') }}</textarea>
 
                     @if ($errors->has('explain'))
                         <span class="help-block">
@@ -890,7 +921,7 @@
             <fieldset class="mt-3 mb-2 form-group{{ $errors->has('about_ship') ? ' is-invalid' : '' }}">
                     <label for="detail" class="control-label">配送について</label>
 
-                        <textarea id="detail" type="text" class="form-control" name="about_ship" rows="20">{{ Ctm::isOld() ? old('about_ship') : (isset($item) ? $item->about_ship : '') }}</textarea>
+                        <textarea class="form-control" name="about_ship" rows="20">{{ Ctm::isOld() ? old('about_ship') : (isset($item) ? $item->about_ship : '') }}</textarea>
 
                         @if ($errors->has('about_ship'))
                             <span class="help-block">
@@ -900,23 +931,23 @@
             </fieldset>
             
             <fieldset class="form-group mt-3 mb-5">
-                    <div class="checkbox">
-                        <label>
-                            <?php
-                                $checked = '';
-                                if(Ctm::isOld()) {
-                                    if(old('is_delifee_table'))
-                                        $checked = ' checked';
+                <div class="checkbox">
+                    <label>
+                        <?php
+                            $checked = '';
+                            if(Ctm::isOld()) {
+                                if(old('is_delifee_table'))
+                                    $checked = ' checked';
+                            }
+                            else {
+                                if(isset($item) && $item->is_delifee_table) {
+                                    $checked = ' checked';
                                 }
-                                else {
-                                    if(isset($item) && $item->is_delifee_table) {
-                                        $checked = ' checked';
-                                    }
-                                }
-                            ?>
-                            <input type="checkbox" name="is_delifee_table" value="1"{{ $checked }}> 送料表を表示する
-                        </label>
-                    </div>
+                            }
+                        ?>
+                        <input type="checkbox" name="is_delifee_table" value="1"{{ $checked }}> 送料表を表示する
+                    </label>
+                </div>
             </fieldset>
             
             <?php
@@ -925,6 +956,19 @@
             ?>
 
             @include('dashboard.shared.contents')
+            
+            
+            <fieldset class="mt-3 mb-2 form-group{{ $errors->has('caution') ? ' is-invalid' : '' }}">
+                <label for="caution" class="control-label">ご注意</label>
+
+                <textarea class="form-control" name="caution" rows="20">{{ Ctm::isOld() ? old('caution') : (isset($item) ? $item->caution : '') }}</textarea>
+
+                @if ($errors->has('caution'))
+                    <span class="help-block">
+                        <strong>{{ $errors->first('caution') }}</strong>
+                    </span>
+                @endif
+            </fieldset>
             
             
             <div class="form-group mt-3 pt-3 mb-5 pb-5">

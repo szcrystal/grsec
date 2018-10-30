@@ -95,6 +95,12 @@ button.btn-custom:hover {
 button.btn:hover {
 	opacity: 0.7;
 }
+button.btn:disabled {
+	cursor: default;
+    background: #bbb;
+    opacity: 1;
+}
+
 
 input[type=checkbox] {
   -ms-transform: scale(1, 1);
@@ -226,6 +232,9 @@ body {
 }
 .text-enji {
 	color: #C15360;
+}
+.text-blue {
+	color: #506EA8;
 }
 .text-brown {
 	color: sienna;
@@ -1428,7 +1437,9 @@ ul.side-rank {
 	font-weight: normal;
     text-align: right;
 }
-
+.single .price-meta small {
+	font-size: 0.7em;
+}
 .single h4 {
 	font-weight: normal;
     font-size: 1.3em;
@@ -1572,10 +1583,13 @@ select.potSetSelect {
     padding: 0;
     margin: 0;
     border-bottom: 0;
+    display: flex;
     //border: 1px solid red;
 }
 .nav-item {
-	width: calc(100% / 3);
+	//width: calc(100% / 3);
+    width: calc(100% / 4);
+    flex: auto;
     text-align: center;
     font-size: 0.95em;
     padding: 0;

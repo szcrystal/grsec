@@ -253,8 +253,7 @@ use App\TopSetting;
                     @else
                         <div class="price-meta">
                         	<?php $obj = $item; ?>
-                            @include('main.shared.priceMeta') 
-                            
+                            @include('main.shared.priceMeta')
                         </div>
                     @endif
                     
@@ -389,17 +388,22 @@ use App\TopSetting;
                     
                     
                     <div class="cont-wrap mt-5 mb-5 pb-2">
-                
+                            
                        <ul class="nav nav-tabs">
                             <li class="nav-item">
-                              <a href="#tab1" class="nav-link active" data-toggle="tab"><i class="fal fa-info-circle"></i> 商品詳細</a>
+                              <a href="#tab1" class="nav-link active" data-toggle="tab"><i class="fal fa-info-circle"></i> 詳細</a>
                             </li>
                             <li class="nav-item">
-                              <a href="#tab2" class="nav-link" data-toggle="tab"><i class="fal fa-truck"></i> 配送について</a>
+                              <a href="#tab2" class="nav-link" data-toggle="tab"><i class="fal fa-truck"></i> 配送</a>
                             </li>
                             <li class="nav-item">
                               <a href="#tab3" class="nav-link" data-toggle="tab"><i class="fal fa-tree-alt"></i> 育て方</a>
                             </li>
+                            @if(isset($item->caution))
+                            	<li class="nav-item">
+                                  <a href="#tab4" class="nav-link" data-toggle="tab"><i class="fal fa-exclamation-triangle"></i> ご注意</a>
+                                </li>
+                            @endif
                         </ul> 
                         
                         <div class="tab-content mt-2">
@@ -488,6 +492,12 @@ use App\TopSetting;
                           <div id="tab3" class="tab-pane contents clearfix">
                             {!! nl2br($item->contents) !!}
                           </div>
+                          
+                          @if(isset($item->caution))
+                          <div id="tab4" class="tab-pane contents clearfix">
+                            {!! nl2br($item->caution) !!}
+                          </div>
+                          @endif
                           
                         </div>
                         
