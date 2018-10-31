@@ -415,13 +415,8 @@ class SaleController extends Controller
 //            }
         }
         elseif($withMail) {
-                
-            $mail = Mail::to($data['user_email'], $data['user_name'])->queue(new OrderMails($data['sale_ids'], $withMail)); //sale_ids->メール送信する複数商品　$withMail->メールテンプレのID
             
             $templ = $this->templ->find($withMail);
-
-            $status = $templ->type_name . 'メールが送信されました。('. $mail . ')';
-            
             $sales = $this->sale->find($data['sale_ids']);
             
             foreach($sales as $sale) {
@@ -437,6 +432,9 @@ class SaleController extends Controller
                 );
          
             }
+            
+            $mail = Mail::to($data['user_email'], $data['user_name'])->queue(new OrderMails($data['sale_ids'], $withMail)); //sale_ids->メール送信する複数商品　$withMail->メールテンプレのID
+			$status = $templ->type_name . 'メールが送信されました。('. $mail . ')';
              
             //return redirect('dashboard/sales/order/'. $saleRel->order_number)->with('status', $status);
         }

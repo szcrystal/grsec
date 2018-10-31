@@ -54,7 +54,9 @@
 数量: {{ $sale->item_count}}<br>
 金額：¥{{ number_format($sale->total_price) }}（税込）<br>
 @if($templ->type_code == 'thanks')
-出荷予定日：{{ Ctm::getDateWithYoubi($sale->deli_start_date) }}<br>
+<b>出荷予定日：{{ Ctm::getDateWithYoubi($sale->deli_start_date) }}</b><br>
+@elseif($templ->type_code == 'deliDoneNo' || $templ->type_code == 'deliDone')
+<b>出荷日：{{ Ctm::getDateWithYoubi($sale->deli_sended_date) }}</b><br>
 @endif
 
 @if($templ->type_code == 'thanks' || $templ->type_code == 'deliDoneNo' || $templ->type_code == 'deliDone')
