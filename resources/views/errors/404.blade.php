@@ -10,7 +10,7 @@
 
             <div>
                 <p>お探しのページがありませんでした。<br><a href="{{ url('/') }}">HOME</a>に戻り、再度リンクより入り直して下さい。</p>
-                <a href="{{ url('/') }}" class="edit-btn">HOMEへ <i class="fa fa-angle-double-right" aria-hidden="true"></i></a>
+                <a href="{{ url('/') }}" class="edit-btn">HOMEへ <i class="fal fa-angle-double-right" aria-hidden="true"></i></a>
             </div>
         </article>
 

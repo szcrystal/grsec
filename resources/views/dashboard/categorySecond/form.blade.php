@@ -98,7 +98,7 @@
 
 
             <fieldset class="form-group">
-                <label for="slug" class="control-label">スラッグ</label>
+                <label for="slug" class="control-label">スラッグ（半角英数字・ハイフンのみ）</label>
 
                 <input id="slug" type="text" class="form-control col-md-10{{ $errors->has('slug') ? ' is-invalid' : '' }}" name="slug" value="{{ Ctm::isOld() ? old('slug') : (isset($subCate) ? $subCate->slug : '') }}">
 

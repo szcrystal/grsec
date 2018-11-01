@@ -71,7 +71,7 @@
 
 
             <fieldset class="form-group mb-4">
-                <label for="slug" class="control-label">スラッグ</label>
+                <label for="slug" class="control-label">スラッグ（半角英数字・ハイフンのみ）</label>
 
                 <div class="">
                     <input id="slug" type="text" class="form-control col-md-10{{ $errors->has('slug') ? ' is-invalid' : '' }}" name="slug" value="{{ Ctm::isOld() ? old('slug') : (isset($tag) ? $tag->slug : '') }}">
