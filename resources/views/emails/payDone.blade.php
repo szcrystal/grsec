@@ -73,7 +73,7 @@ $allTotal = $saleRel->all_price + $saleRel->deli_fee - $saleRel->use_point;
 ?>
 <b style="display:block; font-size:1.1em; margin-top:0.5em;">ご注文金額合計：￥{{ number_format($allTotal) }} （税込）</b>
 </div>
-【お支払方法】：{{ $pmModel->find($saleRel->pay_method)->name }} <br>
+【お支払方法】：{{ $pmModel->find($saleRel->pay_method)->name }} <br><br>
 【ご入金確認日】：{{ Ctm::changeDate($saleRel->pay_date, 1) }} <br>
 <br>
 <hr>

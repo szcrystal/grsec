@@ -143,7 +143,8 @@ class TopSettingController extends Controller
                 type:3->category
                 type:4->sub category
                 type:5->tag
-                type:6->top carousel                            
+                type:6->top carousel
+                type:7->fix                            
             */         
  
             if(isset($data['del_snap'][$count]) && $data['del_snap'][$count]) { //削除チェックの時

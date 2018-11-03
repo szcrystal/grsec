@@ -1,5 +1,8 @@
 <?php
 use App\Setting;
+use App\User;
+use App\Prefecture;
+use App\DeliveryGroupRelation;
 
 $isSale = Setting::get()->first()->is_sale; 
 ?>
@@ -23,12 +26,30 @@ $isSale = Setting::get()->first()->is_sale;
 </span>
 <span class="text-small">円&nbsp;(税込)</span>
 
-<small class="d-block text-blue">
+<br><span class="text-middle">
+@if($obj->is_delifee)
+	送料無料</span>
+@else
+    @if(Auth::check())
+    <?php
+        $u = User::find(Auth::id());
+        $pref = Prefecture::where('name', $u->prefecture)->first();
+        $dgr = DeliveryGroupRelation::where(['dg_id'=>$obj->dg_id, 'pref_id'=>$pref->id])->first();
+    ?>
+    
+    	{{ $pref->name }}への最低送料 {{ number_format($dgr->fee) }}円
+    @else
+    	<i class="fal fa-plus"></i> 送料
+    @endif
+@endif
+</span>
+
+<span class="d-block text-blue text-middle">
     @if($item->is_once)
     同梱包可能
     @else
     同梱包不可
     @endif
-</small>
+</span>
 
 

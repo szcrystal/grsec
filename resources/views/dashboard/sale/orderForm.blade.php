@@ -4,6 +4,7 @@
 <?php
 use App\Item;
 use App\Setting;
+use App\PayMethod;
 use App\DeliveryCompany;
 use App\SendMailFlag;
 ?>
@@ -54,11 +55,13 @@ use App\SendMailFlag;
                 <div class="clearfix">
                 	<p class="w-50 float-left mb-0 pb-0">
                  		
-                    @if($saleRel->pay_method == 6)
+                    @if($saleRel->pay_method == 2 || $saleRel->pay_method == 6)
+                    	<?php $payName = PayMethod::find($saleRel->pay_method)->name; ?>
+                        
                         @if($saleRel->pay_done)
-                   		<span class="text-success text-big">このご注文は、銀行振込：入金済みです。</span>
+                   		<span class="text-success text-big">このご注文は、{{ $payName }}：入金済みです。</span>
                      	@else
-                      	<span class="text-danger text-big">このご注文は、銀行振込：未入金です。</span>
+                      	<span class="text-danger text-big">このご注文は、{{ $payName }}：未入金です。</span>
                        	@endif  
                      @endif                 
                     </p>
@@ -180,7 +183,7 @@ use App\SendMailFlag;
                                         
                                     </fieldset>
                                 	
-                                    <table class="table-tyumon w-100">
+                                    <table class="table-tyumon w-100 table-striped">
                                     	<tbody>
                                         	<tr>
                                             	<th>商品<br><span class="text-small">売上ID:{{ $sale->id }}</span></th>
@@ -305,7 +308,7 @@ use App\SendMailFlag;
                                                 </td>
                                             </tr>
                                             <tr>
-                                            	<th>出荷完了メール<br><small>（伝票未確認）</small></th>
+                                            	<th>出荷完了（伝票未）メール</th>
                                                 <td>
                                                 	@if(SendMailFlag::where(['sale_id'=>$sale->id, 'templ_id'=>$templs['deliDoneNo'] ])->get()->isNotEmpty())
                                                     <span class="text-success">済</span>
@@ -318,6 +321,23 @@ use App\SendMailFlag;
                                             	<th>出荷完了メール</th>
                                                 <td>
                                                 	@if(SendMailFlag::where(['sale_id'=>$sale->id, 'templ_id'=>$templs['deliDone'] ])->get()->isNotEmpty())
+                                                    <span class="text-success">済</span>
+                                                    @else
+                                                    <span class="text-danger">未</span>
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                            	<th>キャンセル状況／<br>キャンセルメール</th>
+                                                <td>
+                                                	@if($sale->is_cancel)
+                                                    <span class="text-danger">キャンセル済</span><br>
+                                                    @else
+                                                    --<br>
+                                                    <input type="hidden" name="is_cancel[{{ $sale->id }}]" value="{{ $sale->is_cancel }}">
+                                                    @endif
+                                                    
+                                                	@if(SendMailFlag::where(['sale_id'=>$sale->id, 'templ_id'=>$templs['cancel'] ])->get()->isNotEmpty())
                                                     <span class="text-success">済</span>
                                                     @else
                                                     <span class="text-danger">未</span>
@@ -411,7 +431,7 @@ use App\SendMailFlag;
                             </tr>
                             
                             
-                            @if($saleRel->pay_method == 6)
+                            @if($saleRel->pay_method == 2 || $saleRel->pay_method == 6)
                             <tr>
                                 <th>入金</th>
                            
@@ -432,10 +452,7 @@ use App\SendMailFlag;
                                             ?>
                                             <input type="checkbox" name="pay_done" value="1"{{ $checked }}> 入金済みにする
                                         </label>
-                                    </fieldset>
-                                    
-                                	
-                                    
+                                    </fieldset>   
                                 </td>
                             </tr>
                             @endif
@@ -481,13 +498,13 @@ use App\SendMailFlag;
                 <div class="btn-box mt-4">
                 	<h5 class="mb-4"><i class="fa fa-envelope"></i> メール送信</h5>
                 
-                    @if($saleRel->pay_method == 6)
+                    @if($saleRel->pay_method == 2 || $saleRel->pay_method == 6 || Ctm::isEnv('local'))
                         
-                        @if( ! $saleRel->pay_done || Ctm::isEnv('local'))                    
+                        {{-- @if( ! $saleRel->pay_done || Ctm::isEnv('local'))  --}}                   
                             <div class="form-group clearfix my-3">
                                 <button type="submit" class="btn btn-danger col-md-5 text-white py-2" name="with_paydone" value="{{ $templs['payDone'] }}"><i class="fa fa-yen"></i> 入金済メール送信</button>
                             </div>
-                        @endif
+                        {{-- @endif --}}
                     @endif
                     
                     <div class="clearfix">
@@ -511,6 +528,10 @@ use App\SendMailFlag;
                         <div class="form-group clearfix my-3 w-50 float-left">
                             <button type="submit" class="btn btn-info col-md-10 text-white py-2" name="with_mail" value="{{ $templs['deliDone'] }}"><i class="fa fa-truck"></i> 出荷完了メール送信</button>
                         </div>
+                        
+                        <div class="form-group clearfix my-3 w-50 float-left">
+                            <button type="submit" class="btn btn-danger col-md-10 text-white py-2" name="with_mail" value="{{ $templs['cancel'] }}"><i class="fa fa-times"></i> キャンセルメール送信</button>
+                        </div>
                     </div>
                 
                 </div>
@@ -519,7 +540,7 @@ use App\SendMailFlag;
                 	<fieldset class="mt-5 mb-2 form-group{{ $errors->has('memo') ? ' is-invalid' : '' }}">
                         <label for="memo" class="control-label">メモ<span class="text-small">（内部のみ）</span></label>
 
-                            <textarea id="memo" class="form-control" name="memo" rows="8">{{ Ctm::isOld() ? old('memo') : (isset($saleRel) ? $saleRel->memo : '') }}</textarea>
+                            <textarea id="memo" class="form-control" name="memo" rows="10">{{ Ctm::isOld() ? old('memo') : (isset($saleRel) ? $saleRel->memo : '') }}</textarea>
 
                             @if ($errors->has('memo'))
                                 <span class="help-block">
@@ -531,7 +552,7 @@ use App\SendMailFlag;
                     <fieldset class="mb-2 form-group{{ $errors->has('craim') ? ' is-invalid' : '' }}">
                         <label for="detail" class="control-label">クレーム<span class="text-small">（内部のみ）</span></label>
 
-                            <textarea id="detail" class="form-control" name="craim" rows="8">{{ Ctm::isOld() ? old('craim') : (isset($saleRel) ? $saleRel->craim : '') }}</textarea>
+                            <textarea id="detail" class="form-control" name="craim" rows="10">{{ Ctm::isOld() ? old('craim') : (isset($saleRel) ? $saleRel->craim : '') }}</textarea>
 
                             @if ($errors->has('craim'))
                                 <span class="help-block">
@@ -540,7 +561,7 @@ use App\SendMailFlag;
                             @endif
                     </fieldset>
                     
-                    <div class="form-group float-left w-25">
+                    <div class="form-group float-left w-25 mt-3">
                         <button type="submit" class="btn btn-primary btn-block w-btn w-100 text-white" name="only_up" value="1"> 更新のみする</button>
                     </div>
                 </div>

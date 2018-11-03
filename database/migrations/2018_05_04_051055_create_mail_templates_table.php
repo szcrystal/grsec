@@ -208,6 +208,19 @@ class CreateMailTemplatesTable extends Migration
                 'updated_at' => date('Y-m-d H:i:s', time()),
             ]
         );
+
+		DB::table('mail_templates')->insert(
+            [ 
+                'type_code' => 'cancel',
+                'type_name' => 'キャンセル',
+                'title' => 'キャンセル致しました',
+                'header' => 'ddd',
+                'footer' => '444',
+                
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time()),
+            ]
+        );
         
         
     }

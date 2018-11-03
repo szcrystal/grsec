@@ -104,11 +104,11 @@ class MailTemplateController extends Controller
 //        }
         
         if($editId) { //update（編集）の時
-            $status = '商品が更新されました！';
+            $status = 'メールテンプレートが更新されました！';
             $mail = $this->mailTemplate->find($editId);
         }
         else { //新規追加の時
-            $status = '商品が追加されました！';
+            $status = 'メールテンプレートが追加されました！';
             //$data['model_id'] = 1;
             
             $mail = $this->mailTemplate;

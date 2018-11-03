@@ -52,18 +52,19 @@ use App\Setting;
             {{ csrf_field() }}
 
             
-             <div class="form-group mb-3">
+             <div class="form-group mb-0">
                 <div class="clearfix">
                 	<p class="w-50 float-left">
-                 		@if($sale->deli_done)
-                   		<span class="text-success text-big">この商品は{{ date('Y/m/d H:i', time($sale->deli_start_date)) }}に発送済みです。</span>
-                     	@else
-                      	<span class="text-danger text-big">この商品は未配送です。</span>
-                       	@endif                  
+                    	@if($sale->is_cancel)
+                        	<span class="text-danger text-big">この商品はキャンセルです。</span>
+                        @else
+                            @if($sale->deli_done)
+                            <span class="text-success text-big">この商品は{{ date('Y/m/d H:i', time($sale->deli_start_date)) }}に発送済みです。</span>
+                            @else
+                            <span class="text-danger text-big">この商品は未配送です。</span>
+                            @endif
+                        @endif                  
                     </p>
-                    {{--
-                    <button type="submit" class="btn btn-info btn-block float-right mx-auto w-btn w-25 text-white"><i class="fa fa-envelope"></i> 配送済みメールを送る</button>
-                    --}}
                 </div>
             </div>
 
@@ -511,6 +512,36 @@ use App\Setting;
                                 <td><span style="font-size:1.2em;">¥{{ number_format($total + $all) }}</span></td>
                             </tr>
 
+							
+                            <tr>
+                            	<th></th>
+                                <td>
+                                	<fieldset class="form-group checkbox">
+                                        <label class="{{ $errors->has('is_cancel') ? 'is-invalid' : '' }}">
+                                            <?php
+                                                $checked = '';
+                                                if(Ctm::isOld()) {
+                                                    if(old('is_cancel'))
+                                                        $checked = ' checked';
+                                                }
+                                                else {
+                                                    if(isset($sale) && $sale->is_cancel) {
+                                                        $checked = ' checked';
+                                                    }
+                                                }
+                                            ?>
+                                            <input type="checkbox" name="is_cancel" value="1"{{ $checked }}> キャンセルする
+                                        </label>
+                                        
+                                        @if ($errors->has('is_cancel'))
+                                            <br><span class="help-block text-danger text-small">
+                                                {{ $errors->first('is_cancel') }}
+                                            </span>
+                                        @endif
+                                        
+                                    </fieldset>
+                                </td>
+                            </tr>
                             
                             {{--
                             <tr>

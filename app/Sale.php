@@ -43,6 +43,8 @@ class Sale extends Model
         'deli_sended_date',
         'deli_done',
         
+        'is_cancel',
+        
 //        'thanks_done',
 //        'stocknow_done',
 

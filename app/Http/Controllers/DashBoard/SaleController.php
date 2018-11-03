@@ -60,6 +60,7 @@ class SaleController extends Controller
             'howToUe',
             'deliDoneNo',
             'deliDone',
+            'cancel',
         ];
 		
         $this->templIds = array();
@@ -226,7 +227,7 @@ class SaleController extends Controller
         return view('dashboard.sale.indexCompare', ['saleObjs'=>$saleObjs, 'saleRels'=>$saleRels, 'items'=>$items, 'pms'=>$pms, 'users'=>$users, 'userNs'=>$userNs, 'cates'=>$cates]);
     }
 
-	//注文個別情報フォーム
+	//売上個別情報フォーム GET
     public function show($id)
     {
         $sale = $this->sale->find($id);
@@ -261,7 +262,89 @@ class SaleController extends Controller
         return view('dashboard.sale.form', ['sale'=>$sale, 'saleRel'=>$saleRel, 'sameSales'=>$sameSales, 'item'=>$item, 'items'=>$items, 'pms'=>$pms, 'users'=>$users, 'userNs'=>$userNs, 'receiver'=>$receiver, 'cates'=>$cates, 'itemDg'=>$itemDg, 'dcs'=>$dcs, 'id'=>$id, 'edit'=>1]);
     }
     
-    //1注文の詳細 & 銀行振込入金用Get
+    //売上個別情報 POST
+    public function store(Request $request)
+    {
+//        $editId = $request->has('edit_id') ? $request->input('edit_id') : 0;
+        
+        if($request->has('with_mail')) {
+            $rules = [
+                'deli_schedule_date' => 'required',
+                //'cate_id' => 'required',
+                //'main_img' => 'filenaming',
+            ];
+            
+            $messages = [
+                'deli_schedule_date.required' => '「お届け予定日」を入力して下さい。',
+                //'cate_id.required' => '「カテゴリー」を選択して下さい。',
+            ];
+            
+            $this->validate($request, $rules, $messages);
+        }
+        
+        $data = $request->all();
+
+//        if(isset($data['only_craim'])) {
+//            $saleModel = $this->sale->find($data['saleId']);
+//            $saleModel->craim = $data['craim'];
+//            $saleModel->save();
+//         	
+//          	$status = "クレームが更新されました。";   
+//            return redirect('dashboard/sales/'. $data['saleId'])->with('status', $status);
+//        }
+
+		$data['is_cancel'] = isset($data['is_cancel']) ? $data['is_cancel'] : 0;
+        
+        $saleModel = $this->sale->find($data['saleId']); //saleIdとsale_idsの両方あるので注意
+        $saleModel->fill($data); //ここでのdeli_feeの更新は不要かも
+        $saleModel->cost_price = $data['cost_price'] * $data['this_count'];
+        $saleModel->save();
+        
+        $saleRel = $this->saleRel->find($saleModel->salerel_id);
+        $saleRel->deli_fee = $data['deli_fee'];
+        
+
+        $item = $this->item->find($saleModel->item_id);
+        $item->cost_price = $data['cost_price'];
+        $item->save();
+        
+        $sales = $this->sale->find($data['sale_ids']); //saleIdとsale_idsの両方あるので注意
+                
+        //同時メールを選択した商品に対しての更新
+        foreach($sales as $obj) {
+        	if($obj->id != $saleModel->id) {
+            	$obj->deli_company = $data['deli_company'];
+                $obj->deli_slip_num = $data['deli_slip_num'];
+            	$obj->deli_schedule_date = $data['deli_schedule_date'];
+                $obj->information = $data['information'];
+
+                $obj->save();
+            }
+        }
+        
+            
+        if(isset($data['only_up'])) {  
+        	$status = "更新されました。";   
+            return redirect('dashboard/sales/'. $data['saleId'])->with('status', $status);
+		}
+        elseif(isset($data['with_mail'])) { 
+            $mail = Mail::to($data['user_email'], $data['user_name'])->queue(new OrderSend($saleModel->id, $data['sale_ids']));
+            
+    	//if(! $mail) {
+        	$status = '発送済みメールが送信されました。('. $mail . ')';
+        
+            $sales = $this->sale->find($data['sale_ids']);
+            foreach($sales as $sale) {
+                $sale->deli_done = 1;
+                $sale->deli_start_date = date('Y-m-d H:i:s', time());
+                $sale ->save();      
+        	}   
+
+        	return redirect('dashboard/sales/'. $data['sale_ids'][0])->with('status', $status);
+        }
+    }
+    
+    //1注文の詳細 & ご注文情報 Get
     public function saleOrder($orderNum) 
     {
     	$saleRel = $this->saleRel->where('order_number', $orderNum)->first();
@@ -294,7 +377,7 @@ class SaleController extends Controller
     }
     
     
-    //銀行振込入金用Post
+    //ご注文情報 Post
     public function postSaleOrder(Request $request) 
     {
     	$withPayDone = $request->has('with_paydone') ? 1 : 0;
@@ -352,6 +435,21 @@ class SaleController extends Controller
              $messages = [
                  'sale_ids.required' => '「メールをする」のチェックがされていません。メールする商品を選択して下さい。',
             ];
+            
+            $this->validate($request, $rules, $messages);
+        }
+        
+        if($withMail == $templIds['cancel']) {
+        	foreach($request->input('sale_ids') as $si) {
+                $rules['is_cancel.'. $si] = 
+                    function($attribute, $value, $fail) use($si) {
+                        if (! isset($value) || ! $value) {
+                            return $fail('売上ID'. $si .'のキャンセルがされていません。');
+                        }
+                    };
+            }
+            
+            $messages = [];
             
             $this->validate($request, $rules, $messages);
         }
@@ -421,9 +519,26 @@ class SaleController extends Controller
             
             foreach($sales as $sale) {
                 if($templ->type_code == 'deliDoneNo' || $templ->type_code == 'deliDone') {
-                    $sale->deli_done = 1;
+                    $sale->deli_done = 1; //deli_doneがされた商品をフォローメールするので必ず必要
                     $sale->deli_sended_date = date('Y-m-d H:i:s', time());
                     $sale ->save();
+                }
+                elseif($templ->type_code == 'cancel') { //キャンセルの時ポイントを戻す
+                	$allSales = $this->sale->where(['salerel_id'=>$saleRel->id,])->get();
+                    
+                    $allCancel = 1; //すべての商品をキャンセルかどうかを確認
+                    foreach($allSales as $val) {
+                    	if(! $val->is_cancel) {
+                        	$allCancel = 0;
+                            break;
+                        }
+                    }
+                    
+                    if($saleRel->is_user && $saleRel->use_point && $allCancel) { //ユーザーでポイント使用があり、すべての商品がキャンセルの時
+                    	$u = $this->user->find($saleRel->user_id);
+                        $u->point += $saleRel->use_point;
+                        $u->save();
+                    }
                 }
                 
                 $this->smf->updateOrCreate(
@@ -460,92 +575,9 @@ class SaleController extends Controller
         return view('dashboard.item.orderForm', ['cates'=>$cates, 'consignors'=>$consignors, 'allTags'=>$allTags]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-//        $editId = $request->has('edit_id') ? $request->input('edit_id') : 0;
-        
-        if($request->has('with_mail')) {
-            $rules = [
-                'deli_schedule_date' => 'required',
-                //'cate_id' => 'required',
-                //'main_img' => 'filenaming',
-            ];
-            
-             $messages = [
-                'deli_schedule_date.required' => '「お届け予定日」を入力して下さい。',
-                //'cate_id.required' => '「カテゴリー」を選択して下さい。',
-            ];
-            
-            $this->validate($request, $rules, $messages);
-        }
-        
-        $data = $request->all();
+    
+    
 
-//        if(isset($data['only_craim'])) {
-//            $saleModel = $this->sale->find($data['saleId']);
-//            $saleModel->craim = $data['craim'];
-//            $saleModel->save();
-//         	
-//          	$status = "クレームが更新されました。";   
-//            return redirect('dashboard/sales/'. $data['saleId'])->with('status', $status);
-//        }
-
-//		print_r($data);
-//        exit;
-        
-        $saleModel = $this->sale->find($data['saleId']); //saleIdとsale_idsの両方あるので注意
-        $saleModel->fill($data); //ここでのdeli_feeの更新は不要かも
-        $saleModel->cost_price = $data['cost_price'] * $data['this_count'];
-        $saleModel->save();
-        
-        $saleRel = $this->saleRel->find($saleModel->salerel_id);
-        $saleRel->deli_fee = $data['deli_fee'];
-        
-        
-        
-        $item = $this->item->find($saleModel->item_id);
-        $item->cost_price = $data['cost_price'];
-        $item->save();
-        
-        $sales = $this->sale->find($data['sale_ids']); //saleIdとsale_idsの両方あるので注意
-                
-        //同時メールを選択した商品に対しての更新
-        foreach($sales as $obj) {
-        	if($obj->id != $saleModel->id) {
-            	$obj->deli_company = $data['deli_company'];
-                $obj->deli_slip_num = $data['deli_slip_num'];
-            	$obj->deli_schedule_date = $data['deli_schedule_date'];
-                $obj->information = $data['information'];
-
-                $obj->save();
-            }
-        }
-        
-            
-        if(isset($data['only_up'])) {  
-        	$status = "更新されました。";   
-            return redirect('dashboard/sales/'. $data['saleId'])->with('status', $status);
-		}
-        elseif(isset($data['with_mail'])) { 
-            $mail = Mail::to($data['user_email'], $data['user_name'])->queue(new OrderSend($saleModel->id, $data['sale_ids']));
-            
-            //if(! $mail) {
-                $status = '発送済みメールが送信されました。('. $mail . ')';
-                
-                $sales = $this->sale->find($data['sale_ids']);
-                foreach($sales as $sale) {
-                    $sale->deli_done = 1;
-                    $sale->deli_start_date = date('Y-m-d H:i:s', time());
-                    $sale ->save();      
-                }   
-        
-                return redirect('dashboard/sales/'. $data['sale_ids'][0])->with('status', $status);
 //            } 
 //            else {
 //            	//Mail::toでerror時に返されるのは単なる数字（13や14など）何の数字か不明
@@ -553,7 +585,7 @@ class SaleController extends Controller
 //                $errors = array('発送済みメールの送信に失敗しました。('. $mail . ')');
 //                return redirect('dashboard/sales/'. $data['sale_ids'][0])->withErrors($errors)->withInput();
 //            }
-        }
+
         
         //status
 //        if(isset($data['open_status'])) { //非公開On
@@ -701,7 +733,7 @@ class SaleController extends Controller
 //        
 //        
 //        return redirect('dashboard/items/'. $itemId)->with('status', $status);
-    }
+
 
     /**
      * Display the specified resource.

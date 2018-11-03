@@ -1434,11 +1434,15 @@ ul.side-rank {
 }
 .single .price-meta {
 	font-size: 1.4em;
+    line-height: 1.3em;
 	font-weight: normal;
     text-align: right;
 }
 .single .price-meta small {
 	font-size: 0.7em;
+}
+.single .price-meta .text-middle {
+	font-size: 0.75em;
 }
 .single h4 {
 	font-weight: normal;

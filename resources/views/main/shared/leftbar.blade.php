@@ -61,7 +61,7 @@
                 	use App\Item;
                 	$n = 1;
                     
-                    $items = Item::where('open_status', 1)->orderBy('sale_count', 'desc')->take(10)->get();
+                    $items = Item::where(['open_status'=>1, 'is_potset'=>0])->orderBy('sale_count', 'desc')->take(10)->get();
                 ?>
                 @foreach($items as $item)
                     <li class="clearfix">
