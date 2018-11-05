@@ -170,12 +170,12 @@ class TopSettingController extends Controller
                         ]
                     );
 
-                    $filename = $data['snap_thumb'][$count]->getClientOriginalName();
+                    $filename = $data['snap_thumb'][$count]->getClientOriginalName();                    
                     $filename = str_replace(' ', '_', $filename);
                     
                     //$aId = $editId ? $editId : $rand;
-                    //$pre = time() . '-';
-                    $filename = 'top/' . 9999 . '/snap/'/* . $pre*/ . $filename;
+                    $pre = mt_rand(0, 99999) . '-'; 
+                    $filename = 'top/' . 9999 . '/snap/'. $pre . $filename;
                     //if (App::environment('local'))
                     $path = $data['snap_thumb'][$count]->storeAs('public', $filename);
                     //else

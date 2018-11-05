@@ -313,13 +313,18 @@
 </div>
 
 <div class="mt-5">
-<form id="with1" class="form-horizontal" role="form" method="POST" action="{{ $settles['url'] }}">
+<form id="with1" class="form-horizontal" role="form" method="POST" action="{{ $actionUrl }}">
     {{ csrf_field() }}
     
-    <?php //print_r($itemData); ?>
-    
+    {{--
     <input type="hidden" name="regist" value="{{ $regist }}">
     <input type="hidden" name="all_price" value="{{ $allPrice }}">
+    
+    @foreach($itemData as $item)
+        <input type="hidden" name="item_id[]" value="{{ $item->id}}">
+        <input type="hidden" name="item_count[]" value="{{ $item->count}}">
+    @endforeach
+    --}}
     
     @if($data['pay_method'] == 5)
     	<input type="hidden" name="trans_code" value="888888">
@@ -327,10 +332,6 @@
     	<input type="hidden" name="trans_code" value="999999">
     @endif   
     
-    @foreach($itemData as $item)
-        <input type="hidden" name="item_id[]" value="{{ $item->id}}">
-        <input type="hidden" name="item_count[]" value="{{ $item->count}}">
-    @endforeach
     
     @foreach($settles as $key => $settle)
     	<input type="hidden" name="{{ $key }}" value="{{ $settle }}">

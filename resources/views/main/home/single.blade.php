@@ -386,122 +386,125 @@ use App\TopSetting;
                         @include('main.shared.tag')
                     </div>
                     
+                    <?php
+                    	$isCaution = isset($item->caution) && $item->caution != '' ? 1 : 0;
+                    ?>
                     
-                    <div class="cont-wrap mt-5 mb-5 pb-2">
-                            
-                       <ul class="nav nav-tabs">
-                            <li class="nav-item">
-                              <a href="#tab1" class="nav-link active" data-toggle="tab"><i class="fal fa-info-circle"></i> 詳細</a>
-                            </li>
-                            <li class="nav-item">
-                              <a href="#tab2" class="nav-link" data-toggle="tab"><i class="fal fa-truck"></i> 配送</a>
-                            </li>
-                            <li class="nav-item">
-                              <a href="#tab3" class="nav-link" data-toggle="tab"><i class="fal fa-tree-alt"></i> 育て方</a>
-                            </li>
-                            @if(isset($item->caution))
-                            	<li class="nav-item">
-                                  <a href="#tab4" class="nav-link" data-toggle="tab"><i class="fal fa-exclamation-triangle"></i> ご注意</a>
-                                </li>
-                            @endif
-                        </ul> 
-                        
-                        <div class="tab-content mt-2">
-                          
-                          <div id="tab1" class="tab-pane active contents clearfix">
-                            {!! nl2br($item->explain) !!}
+                    @if(Ctm::isAgent('sp'))
+                    	<div id="accordion">
+                          <div class="card">
+                            <div class="card-header" id="headingOne">
+                                <a class="btn clearfix collapsed" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                  <i class="fal fa-info-circle"></i> 商品詳細
+                                  <i class="fal fa-angle-down float-right"></i>
+                                </a>
+                                
+                            </div>
+
+                            <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+                              <div class="card-body clearfix">
+                                {!! nl2br($item->explain) !!}
+                              </div>
+                            </div>
                           </div>
                           
-                          <div id="tab2" class="tab-pane contents">
-                            <div class="clearfix">
+                          <div class="card">
+                            <div class="card-header" id="headingTwo">
+                                <a class="btn clearfix collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                  <i class="fal fa-truck"></i> 配送について
+                                  <i class="fal fa-angle-down float-right"></i>
+                                </a>
+                            </div>
+                            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                              <div class="card-body clearfix">
                                 {!! nl2br($item->about_ship) !!}
+                                
+                                @include('main.shared.deliFeeTable')
+                              </div>
+                            </div>
+                          </div>
+                          
+                          <div class="card">
+                            <div class="card-header" id="headingThree">
+                                <a class="btn clearfix collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                  <i class="fal fa-tree-alt"></i> 育て方
+                                  <i class="fal fa-angle-down float-right"></i>
+                                </a>
                             </div>
                             
-                            @if($item->is_delifee_table)
-                                <div class="btn btn-custom mt-4 slideDeli">
-                                    送料表を見る <i class="fal fa-angle-down"></i>
+                            <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+                              <div class="card-body clearfix">
+                                {!! nl2br($item->contents) !!}
+                              </div>
+                            </div>
+                          </div>
+
+                        @if($isCaution)
+                        	<div class="card">
+                                <div class="card-header" id="headingFour">
+                                    <a class="btn clearfix" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                                      <i class="fal fa-exclamation-triangle"></i> ご注意下さい
+                                      <i class="fal fa-angle-down float-right"></i>
+                                    </a>
                                 </div>
-                                <?php
-                                    $dgRels = DeliveryGroupRelation::where('dg_id', $item->dg_id)->get();
-                                ?>
                                 
-                                
-                                <div class="table-responsive table-deli text-small mt-2">
-                                    <table class="table table-bordered bg-white">
-                                    	<thead class="bg-light">
-                                        	<tr>
-                                            	<td class="text-center" colspan="2">地域</td>
-                                                <td class="text-center">送料</td>
-                                            </tr>
-                                        </thead>
-                                        
-                                        <tbody>
-                                            @foreach($dgRels as $dgRel)
-                                                <tr>
-                                                	<?php
-                                                    	$format = '<td class="bg-light" rowspan="%d">'. Prefecture::find($dgRel->pref_id)->rural . '</td>';
-                                                    ?>
-                                                        
-                                                    @if($dgRel->pref_id == 1)
-                                                        <?php printf($format, 1); ?>
-                                                    
-                                                    @elseif($dgRel->pref_id == 2)
-                                                        <?php printf($format, 7); ?>
-                                                    
-                                                    @elseif($dgRel->pref_id == 9)
-                                                        <?php printf($format, 6); ?>
-                                                    
-                                                    @elseif($dgRel->pref_id == 15)
-                                                        <?php printf($format, 9); ?>
-                                                    
-                                                    @elseif($dgRel->pref_id == 24)
-                                                        <?php printf($format, 7); ?>
-                                                    
-                                                    @elseif($dgRel->pref_id == 31)
-                                                        <?php printf($format, 5); ?>
-                                                    
-                                                    @elseif($dgRel->pref_id == 36)
-                                                        <?php printf($format, 4); ?>
-                                                    
-                                                    @elseif($dgRel->pref_id == 40)
-                                                        <?php printf($format, 7); ?>
-                                                    
-                                                    @elseif($dgRel->pref_id == 47)
-                                                        <?php printf($format, 1); ?>
-                                                    @endif
- 
-                                                    
-                                                    <td>{{ Prefecture::find($dgRel->pref_id)->name }}</td>
-                                                    <td class="bg-light">
-                                                        @if($dgRel->fee == 99999 || $dgRel->fee === null)
-                                                            配送不可
-                                                        @elseif(! $dgRel->fee)
-                                                        	無料
-                                                        @else
-                                                            {{ number_format($dgRel->fee) }} 円
-                                                        @endif
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
+                                <div id="collapseFour" class="collapse show" aria-labelledby="headingFour" data-parent="#accordion">
+                                  <div class="card-body clearfix">
+                                    {!! nl2br($item->caution) !!}
+                                  </div>
                                 </div>
-                            @endif
-                          </div>
-                          
-                          <div id="tab3" class="tab-pane contents clearfix">
-                            {!! nl2br($item->contents) !!}
-                          </div>
-                          
-                          @if(isset($item->caution))
-                          <div id="tab4" class="tab-pane contents clearfix">
-                            {!! nl2br($item->caution) !!}
-                          </div>
-                          @endif
-                          
-                        </div>
+                              </div>
+                            </div>	
+                        @endif
                         
-                    </div>
+                        </div><!-- accordion -->
+                    
+                    @else
+                        <div class="cont-wrap mt-5 mb-5 pb-2">
+                           <ul class="nav nav-tabs">
+                                <li class="nav-item">
+                                  <a href="#tab1" class="nav-link active" data-toggle="tab"><i class="fal fa-info-circle"></i> 詳細</a>
+                                </li>
+                                <li class="nav-item">
+                                  <a href="#tab2" class="nav-link" data-toggle="tab"><i class="fal fa-truck"></i> 配送</a>
+                                </li>
+                                <li class="nav-item">
+                                  <a href="#tab3" class="nav-link" data-toggle="tab"><i class="fal fa-tree-alt"></i> 育て方</a>
+                                </li>
+                                @if(isset($item->caution))
+                                    <li class="nav-item">
+                                      <a href="#tab4" class="nav-link" data-toggle="tab"><i class="fal fa-exclamation-triangle"></i> ご注意</a>
+                                    </li>
+                                @endif
+                            </ul> 
+                            
+                            <div class="tab-content mt-2">
+                                  <div id="tab1" class="tab-pane active contents clearfix">
+                                    {!! nl2br($item->explain) !!}
+                                  </div>
+                                  
+                                  <div id="tab2" class="tab-pane contents">
+                                    <div class="clearfix">
+                                        {!! nl2br($item->about_ship) !!}
+                                    </div>
+                                    
+                                    @include('main.shared.deliFeeTable')
+                                    
+                                  </div>
+                                  
+                                  <div id="tab3" class="tab-pane contents clearfix">
+                                    {!! nl2br($item->contents) !!}
+                                  </div>
+                                  
+                                  @if($isCaution)
+                                      <div id="tab4" class="tab-pane contents clearfix">
+                                        {!! nl2br($item->caution) !!}
+                                      </div>
+                                  @endif
+                            </div> 
+                        </div>
+                    
+                    @endif
                     
             	
                 </div><!-- right -->
@@ -512,7 +515,7 @@ use App\TopSetting;
 
 					@foreach($recomArr as $key => $recoms)
                         @if(count($recoms) > 0)
-                            <div class="mt-5 floar">
+                            <div class="mt-3 floar">
                                 <h4 class="text-small">{{ $key }}</h4>
                                 <ul class="clearfix">
                                     @foreach($recoms as $item)

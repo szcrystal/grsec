@@ -1305,13 +1305,14 @@ ul.side-rank {
 .single-recom {
 	float: left;
     width: 48.5%;
+    margin-top: 2.5em;
     //border: 1px solid green;
 }
 
 
 /* Single Carousel */
 .single .carousel-item {
-	height: 680px; /* 1:1.2 */
+	height: 680px; /* 1:1.2 img-box */
     overflow: hidden;
     //border: 1px solid #ddd;
 }
@@ -1335,7 +1336,7 @@ ul.side-rank {
     flex: none;
     text-indent: 0;
     width: 20%;
-    height: 129px;
+    height: 129px; /* 1:1.2 img-box */
     //margin-right: 0.5%;
     //margin-left: 0;
     margin: 0 0 3px 0 !important;
@@ -1348,7 +1349,7 @@ ul.side-rank {
 	margin-right: 0;
 }
 .single .carousel-indicators li img {
-	height: 121px;
+	height: 121px; /* 1:1.2 img-box */
     overflow: hidden;
 }
 
@@ -1369,12 +1370,14 @@ ul.side-rank {
     height: auto;
     margin: 3px 0 0;
     padding: 0;
+    display: flex;
 	//border: 1px solid red;
 }
 .tophead-wrap .carousel-indicators li {
 	position: static;
 	width: 20% !important;
     height: auto !important;
+    flex: auto;
     cursor: pointer;
     margin: 0;
     padding: 4px;
@@ -1443,6 +1446,7 @@ ul.side-rank {
 }
 .single .price-meta .text-middle {
 	font-size: 0.75em;
+    margin-right: 0.3em;
 }
 .single h4 {
 	font-weight: normal;

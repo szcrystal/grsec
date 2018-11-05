@@ -579,6 +579,100 @@ class CartController extends Controller
       //後払い戻りサンプルURL
       //https://192.168.10.16/shop/thankyou?trans_code=718177&order_number=1449574270&state=5&payment_code=18&user_id=9999    
     }
+    
+    
+    public function postEpsilon(Request $request)
+    {
+    	$data = $request->all();
+        
+        $data2 = ['aaa', 'bbb', 'ccc'];
+        //exit;
+        
+        $strData = implode(',', $data);
+//        exit;
+        
+    	mb_language('Japanese');
+        mb_internal_encoding('UTF-8');
+
+        // ヘッダで、相手方に送信フォーマットとデータの長さを伝える
+        $header = [
+            'Content-Type: application/x-www-form-urlencoded',
+            'Content-Length: '. strlen($strData)
+        ];
+
+        $context = stream_context_create([
+            'http' => [
+                'method' => 'POST',
+                'header' => implode('\r\n', $header),
+                'content' => http_build_query($data, '', '&'),
+                'max_redirects' => 3,        // リダイレクトの最大回数 def:3
+                'timeout' => '20',           // タイムアウトの秒数指定
+            ]
+        ]);
+        
+        
+        $isProduct = $this->set->is_product;
+
+        if($isProduct) { //本番環境
+            $url = "https://secure.epsilon.jp/cgi-bin/order/receive_order3.cgi"; //本番(完了通知書：contract_66254480.pdf内にあり)
+        }
+        else {
+            // 結果問い合わせ用URL CGI-2利用(basicAuth不要、設定画面からのIP制限有)
+            // サンプルソースのCGI-1はIP制限無し、basicAuthのみで制限かけてるって恐い気がする……
+            $url = "https://beta.epsilon.jp/cgi-bin/order/receive_order3.cgi"; //テスト環境
+        }
+//        else{
+//            throw new Exception('決済サーバURLの指定が異常');
+//        }
+
+        $res = file_get_contents($url, false, $context);
+        
+        if(!$res){
+        	throw new Exception('決済サーバに情報が送信できない');
+        }
+        
+        //return (string)$res;
+        
+        $xml = (string)$res;
+        
+        $obj = simplexml_load_string($xml);
+        if(!$obj){throw new Exception('決済サーバからの情報を解析できない');}
+
+        //受け取ったxmlをjsonに変換してからデコードして配列にするという黒魔術
+        $json_res =json_encode($obj);
+        $decode_res = json_decode($json_res,TRUE);
+        
+//        print_r($decode_res);
+//        exit;
+
+        //普通にforeach１段で回すと、無駄な多次元配列になってしまう 例:$arr[0]['result']
+        //2段で回すことで、添字が文字列のみの一次元連想配列にする 例:$arr['result']
+        //流石に同じ添字が存在しないことを祈る（API信用できてない）
+        $array_res = [];
+        foreach($decode_res['result'] as $key => $val){
+            $attributes = $val['@attributes'];
+            foreach( $attributes as $key_attr => $val_attr ){
+                $array_res[$key_attr] = (string)$val_attr;
+            }
+        }
+        //return $array_res;
+        
+        if(!$array_res['result']){    //失敗時の処理
+            $err_code = $array_res['err_code'];
+            $err_detail = urldecode($array_res['err_detail']);
+
+            $err_msg = '決済データの送信に失敗 code-' . $err_code . ':' . $err_detail . PHP_EOL;
+            $err_msg .= 'memo1:' . $array_res['memo1'] . PHP_EOL;
+            $err_msg .= 'memo2:' . $array_res['memo2'] . PHP_EOL;
+            
+            throw new Exception(mb_convert_encoding($err_msg, "UTF-8", "auto"));
+
+        }//成功時の処理
+        
+        $redirectUrl = urldecode($array_res['redirect']);
+        return redirect()->away($redirectUrl);
+    }
+    
 
     public function postConfirm(Request $request)
     {
@@ -850,19 +944,22 @@ class CartController extends Controller
         }
         
         $settles = array();
+        $actionUrl = '';
         
         if($data['pay_method'] == 5 || $data['pay_method'] == 6) {
-        	$settles['url'] = url('shop/thankyou');
+        	//$settles['url'] = url('shop/thankyou');
+            $actionUrl = url('shop/thankyou');
         }
         else {
-        	$isProduct = $this->set->is_product;
-            
-            if($isProduct) { //本番環境
-            	$settles['url'] = "https://secure.epsilon.jp/cgi-bin/order/receive_order3.cgi"; //本番(完了通知書：contract_66254480.pdf内にあり)
-            }
-            else { //テスト環境
-            	$settles['url'] = "https://beta.epsilon.jp/cgi-bin/order/receive_order3.cgi"; //テスト環境
-            }
+        	$actionUrl = url('shop/to-epsilon');
+//        	$isProduct = $this->set->is_product;
+//            
+//            if($isProduct) { //本番環境
+//            	$settles['url'] = "https://secure.epsilon.jp/cgi-bin/order/receive_order3.cgi"; //本番(完了通知書：contract_66254480.pdf内にあり)
+//            }
+//            else { //テスト環境
+//            	$settles['url'] = "https://beta.epsilon.jp/cgi-bin/order/receive_order3.cgi"; //テスト環境
+//            }
             
         }
         
@@ -896,11 +993,11 @@ class CartController extends Controller
         $settles['item_price'] = $totalFee;
         $settles['process_code'] = 1;
         $settles['memo1'] = '';
-        $settles['xml'] = 0;
+        $settles['xml'] = 1;
         $settles['lang_id'] = 'ja';
         //$settles['page_type'] = 12;
 //        $settles['version'] = 2;
-//        $settles['character_code'] = 'UTF8';
+        $settles['character_code'] = 'UTF8';
         
         //注文番号のsession入れ
         session(['all.order_number'=>$settles['order_number']]);
@@ -918,7 +1015,7 @@ class CartController extends Controller
 //        print_r($userArr);
 //        exit;
         
-        return view('cart.confirm', ['data'=>$data, 'userArr'=>$userArr, 'itemData'=>$itemData, 'regist'=>$regist, 'allPrice'=>$allPrice, 'settles'=>$settles, 'payMethod'=>$payMethod, 'deliFee'=>$deliFee, 'codFee'=>$codFee, 'usePoint'=>$usePoint, 'addPoint'=>$addPoint,  'active'=>3])->withErrors($errors);
+        return view('cart.confirm', ['data'=>$data, 'userArr'=>$userArr, 'itemData'=>$itemData, 'regist'=>$regist, 'allPrice'=>$allPrice, 'settles'=>$settles, 'payMethod'=>$payMethod, 'deliFee'=>$deliFee, 'codFee'=>$codFee, 'usePoint'=>$usePoint, 'addPoint'=>$addPoint, 'actionUrl'=>$actionUrl, 'active'=>3])->withErrors($errors);
     }
     
     

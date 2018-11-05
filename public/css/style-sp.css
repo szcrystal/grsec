@@ -103,42 +103,69 @@ for SP
     	font-size: 1.3em;
     }
     
-    /* Tablet img-box */
-    .img-box { /* Single ->.single .carousel-item  */
+    /* Tablet img-box ORG ===================================== */
+    /* Single ->.single .carousel-item  */
+/*    .img-box { */
+/*        width: 100%;*/
+/*        height: 250px;*/
+/*        overflow: hidden;*/
+/*    }*/
+/*    .top .img-box,*/
+/*    .archive .img-box {*/
+/*        height: 172px;*/
+/*    }*/
+/*    .top-second .img-box {*/
+/*        width: 40%;*/
+/*        height: 140px;*/
+/*        float: left;*/
+/*    }*/
+/*    .floar .img-box { /* Single 小img Recent Check */
+/*        height: 106px;*/
+/*    }*/
+/*    .single-recom .floar .img-box { /* Single 3つ並び小img */
+/*        height: 140px;*/
+/*    }*/
+/*    .potset .img-box {*/
+/*        height: 78px;*/
+/*        //border: 1px solid red;*/
+/*    }*/
+/*    */
+/*    */
+/*    .single .carousel-item {*/
+/*		height: 432px;*/
+/*    }*/
+/*    .single .carousel-indicators li {*/
+/*        height: 80px;*/
+/*    }*/
+/*    .single .carousel-indicators li img {*/
+/*    	height: 72px;*/
+/*    }*/
+    /* Tablet img-box ORG END ===================================== */
+    
+    
+    /* Tablet img-box Now ================================ */
+    .img-box { 
         width: 100%;
-        height: 250px;
+        height: auto;
         overflow: hidden;
     }
     .top .img-box,
-    .archive .img-box {
-        height: 172px;
-    }
-    .top-second .img-box {
-        width: 40%;
-        height: 140px;
-        float: left;
-    }
-    .floar .img-box { /* Single 小img Recent Check */
-        height: 106px;
-    }
-    .single-recom .floar .img-box { /* Single 3つ並び小img */
-        height: 140px;
-    }
+    .archive .img-box,
+    .top-second .img-box,
+    .floar .img-box,
+    .single-recom .floar .img-box,
     .potset .img-box {
-        height: 78px;
-        //border: 1px solid red;
+        height: auto;
     }
     
-    
-    .single .carousel-item {
-		height: 432px;
-    }
-    .single .carousel-indicators li {
-        height: 80px;
-    }
+    .single .carousel-item,
+    .single .carousel-indicators li,
     .single .carousel-indicators li img {
-    	height: 72px;
+		height: auto;
     }
+    /* Tablet img-box Now END ================================ */
+    
+    
     .single .head-frame h2 {
     	font-size: 1.4em;
     }
@@ -870,34 +897,38 @@ ORG END ======================== */
     }
     
 
-	/* SP img-box ******************** */
-	.img-box {
-        height: 275px;
-        //height: calc(100% * 1.2);
-        overflow: hidden;
-    }
-    .top .img-box,
-    .archive .img-box {
-        height: 142px;
-        overflow: hidden;
-    }
-    .top-second .img-box {
-    	height: 175px;
-    	//border: 1px solid orange;
-    }
-    .floar .img-box {
-    	height: 107px;
-        //border: 1px solid red;
-    }
-    .single-recom .floar .img-box {
-    	height: 142px;
-        //border: 1px solid red;
-    }
-    .potset .img-box {
-		height: 78.5px;
-    }
-    /* img-box END ******************* */
+	/* SP img-box ORG ========================= ******************** */
+/*	.img-box {*/
+/*        height: 275px;*/
+/*        //height: calc(100% * 1.2);*/
+/*        overflow: hidden;*/
+/*    }*/
+/*    .top .img-box,*/
+/*    .archive .img-box {*/
+/*        height: 142px;*/
+/*        overflow: hidden;*/
+/*    }*/
+/*    .top-second .img-box {*/
+/*    	height: 175px;*/
+/*    	//border: 1px solid orange;*/
+/*    }*/
+/*    .floar .img-box {*/
+/*    	height: 107px;*/
+/*        //border: 1px solid red;*/
+/*    }*/
+/*    .single-recom .floar .img-box {*/
+/*    	height: 142px;*/
+/*        //border: 1px solid red;*/
+/*    }*/
+/*    .potset .img-box {*/
+/*		height: 78.5px;*/
+/*    }*/
+    /* SP img-box ORG END  ========================= ******************* */
     
+    
+    /* SP img-box Now ========================================== */
+    /* ここはTablet img-box内で指定しているので不要（146行目辺り） ***** */
+    /* SP img-box Now END ========================================== */
     
     
     .wrap-all {
@@ -1000,18 +1031,10 @@ ORG END ======================== */
     .single-recom {
         float: none;
         width: 100%;
+        margin-top: 2.5em;
     }
 
-    .single .carousel-item {
-        height: 436px;
-        //border: 1px solid red;
-    }
-    .single .carousel-indicators li {
-    	height: 85px;
-    }
-    .single .carousel-indicators li img {
-		height: 77px;
-    }
+    
     
     .single .price-meta {
 		font-size: 1.2em;
@@ -1034,6 +1057,46 @@ ORG END ======================== */
     
     .nav-tabs .nav-link {
     	font-size: 0.9em;
+    }
+    
+    .single #accordion .card-header {
+    	background: none;
+        border: none;
+        padding: 0;
+        border-radius: 0;
+    }
+
+    .single #accordion .card {
+    	border-radius: 0;
+        border-bottom: 0;
+        background: none;
+    }
+    .single #accordion .card:last-of-type {
+    	border-bottom: 1px solid #eaeaea;
+    }
+    .single #accordion a.btn {
+    	display: block;
+        margin: 0;
+        padding: 0.6em 0.8em;
+        border-radius: 0;
+    	text-align: left;
+        background: #3a3b3c;
+        color: #fff;
+    }
+    .single #accordion a.btn.collapsed { /* 非Activeの時 .collapsedが付く*/
+    	text-align: left;
+        background: none;
+        color: #3a3b3c;
+    }
+    .single #accordion a.btn:hover {
+    	opacity: 1;
+    }
+    .single #accordion a.btn .fa-angle-down {
+    	font-size: 1.3em;
+    }
+    .single #accordion .card-body {
+    	//background: red;
+        padding: 0.8em 0.8em;
     }
     
     

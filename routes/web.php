@@ -140,6 +140,8 @@ Route::get('/shop/form', 'Cart\CartController@postForm');
 Route::post('/shop/confirm', 'Cart\CartController@postConfirm');
 Route::get('/shop/confirm', 'Cart\CartController@postConfirm');
 
+Route::post('/shop/to-epsilon', 'Cart\CartController@postEpsilon');
+
 Route::post('/shop/thankyou', 'Cart\CartController@getThankyou');
 Route::get('/shop/thankyou', 'Cart\CartController@getThankyou');
 
