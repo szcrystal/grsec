@@ -27,6 +27,7 @@ use Mail;
 use Auth;
 use DB;
 use Delifee;
+use Exception;
 
 class CartController extends Controller
 {
@@ -583,13 +584,13 @@ class CartController extends Controller
     
     public function postEpsilon(Request $request)
     {
+    	//1回postで送信（file_get_contentsで）し、結果がxmlで返る。その結果が正常ならepsilonへリダイレクトするという仕様
+        //イプシロン_system_manual.pdfの47ページに返り値があり
+        //しかし、この仕様については詳しく書いていない。サンプルCGIを見ろということらしい
+        //https://www.epsilon.jp/developer/each_time.html
+        
     	$data = $request->all();
-        
-        $data2 = ['aaa', 'bbb', 'ccc'];
-        //exit;
-        
         $strData = implode(',', $data);
-//        exit;
         
     	mb_language('Japanese');
         mb_internal_encoding('UTF-8');
@@ -616,10 +617,10 @@ class CartController extends Controller
         if($isProduct) { //本番環境
             $url = "https://secure.epsilon.jp/cgi-bin/order/receive_order3.cgi"; //本番(完了通知書：contract_66254480.pdf内にあり)
         }
-        else {
+        else { //テスト環境
             // 結果問い合わせ用URL CGI-2利用(basicAuth不要、設定画面からのIP制限有)
-            // サンプルソースのCGI-1はIP制限無し、basicAuthのみで制限かけてるって恐い気がする……
-            $url = "https://beta.epsilon.jp/cgi-bin/order/receive_order3.cgi"; //テスト環境
+            // サンプルソースのCGI-1はIP制限無し、basicAuthのみで制限
+            $url = "https://beta.epsilon.jp/cgi-bin/order/receive_order3.cgi";
         }
 //        else{
 //            throw new Exception('決済サーバURLの指定が異常');
@@ -636,7 +637,9 @@ class CartController extends Controller
         $xml = (string)$res;
         
         $obj = simplexml_load_string($xml);
-        if(!$obj){throw new Exception('決済サーバからの情報を解析できない');}
+        if(!$obj){
+        	throw new Exception('決済サーバからの情報を解析できない');
+        }
 
         //受け取ったxmlをjsonに変換してからデコードして配列にするという黒魔術
         $json_res =json_encode($obj);
@@ -656,8 +659,8 @@ class CartController extends Controller
             }
         }
         //return $array_res;
-        
-        if(!$array_res['result']){    //失敗時の処理
+
+        if(!$array_res['result']){ //失敗時の処理
             $err_code = $array_res['err_code'];
             $err_detail = urldecode($array_res['err_detail']);
 
@@ -665,7 +668,10 @@ class CartController extends Controller
             $err_msg .= 'memo1:' . $array_res['memo1'] . PHP_EOL;
             $err_msg .= 'memo2:' . $array_res['memo2'] . PHP_EOL;
             
-            throw new Exception(mb_convert_encoding($err_msg, "UTF-8", "auto"));
+            //throw new Exception(mb_convert_encoding($err_msg, "UTF-8", "auto"));
+            
+            $errors['fromEpe'] = $err_msg;
+            return redirect('shop/confirm')->withErrors($errors);
 
         }//成功時の処理
         
@@ -676,7 +682,7 @@ class CartController extends Controller
 
     public function postConfirm(Request $request)
     {
-    	$pt=0;
+    	$pt=0; //ポイント
     	if(Auth::check()) {
      		$pt = $this->user->find(Auth::id())->point;
      	}
@@ -872,6 +878,7 @@ class CartController extends Controller
             	$codFee = ceil(($epTesu * $taxPer) + $epTesu);
             }
             
+            //コンビニ上限額
             if( ($totalFee + $codFee) > 300000) {
             	$errors['konbiniLimit'] = 'コンビニ決済の上限額30万円を超えています。';
                 
@@ -883,6 +890,7 @@ class CartController extends Controller
         else if($data['pay_method'] == 4) { 
         	$codFee = 205;
             
+            //GMO後払い上限額
             if( ($totalFee + $codFee) > 50000) {
             	$errors['gmoLimit'] = 'GMO後払い決済の上限額5万円を超えています。';
             }
@@ -890,7 +898,6 @@ class CartController extends Controller
         
         
         //代引き手数料 -----------
-        
         else if($data['pay_method'] == 5) { 
         	
          	if($totalFee <= 10000) {
@@ -993,7 +1000,7 @@ class CartController extends Controller
         $settles['item_price'] = $totalFee;
         $settles['process_code'] = 1;
         $settles['memo1'] = '';
-        $settles['xml'] = 1;
+        $settles['xml'] = 1; //1回postで送信し、結果がxmlで返り、正常ならepsilonへリダイレクトするという仕様
         $settles['lang_id'] = 'ja';
         //$settles['page_type'] = 12;
 //        $settles['version'] = 2;
