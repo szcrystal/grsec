@@ -101,6 +101,9 @@ $allTotal = $saleRel->all_price + $saleRel->deli_fee + $saleRel->cod_fee - $sale
 <b style="display:block; font-size:1.1em; margin-top:0.5em;">ご注文金額合計：￥{{ number_format($allTotal) }} （税込）</b>
 </div>
 【お支払方法】：{{ $pmModel->find($saleRel->pay_method)->name }}
+@if($saleRel->pay_method == 3)
+（{{ $pmChildModel->find($saleRel->pay_method_child)->name }}）
+@endif
 
 <br><br>
 <hr>

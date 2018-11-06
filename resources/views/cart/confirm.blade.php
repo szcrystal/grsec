@@ -302,6 +302,9 @@
             <th><label class="control-label">お支払い方法</label></th>
             <td class="{{ count($errors) > 0 ? 'alert-danger' : '' }}">
             	{{ $payMethod->find($data['pay_method'])->name }}
+                @if($data['pay_method'] == 3)
+                	<br><span class="text-small">{{ $pmChild->find($data['net_bank'])->name }}</span>
+                @endif
             </td>
         </tr>
 

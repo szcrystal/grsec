@@ -5,6 +5,7 @@
 <?php
 use App\SaleRelation;
 use App\Setting;
+use App\PayMethodChild;
 ?>
 
     <div class="text-left">
@@ -283,7 +284,7 @@ use App\Setting;
                 </td>
 
                   <td>
-                  	@if($saleRel->pay_method == 6)
+                  	@if($saleRel->pay_method == 2 || $saleRel->pay_method == 6)
                         <a href="{{ url('dashboard/sales/order/'. $saleRel->order_number) }}">
                             {{ $pms->find($saleRel->pay_method)->sec_name }}<br>
 
@@ -295,6 +296,9 @@ use App\Setting;
                         </a>
                 	@else
                     	{{ $pms->find($saleRel->pay_method)->sec_name }}
+                        @if($saleRel->pay_method == 3)
+                        	<span class="text-small">{{ PayMethodChild::find($saleRel->pay_method_child)->sec_name }}</span>
+                        @endif
                     @endif
                 	</td>
                   

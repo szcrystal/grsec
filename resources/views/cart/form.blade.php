@@ -305,7 +305,7 @@ use App\DeliveryGroup;
                     <option value="0" selected>年</option>
                     <?php
                         $yNow = date('Y');
-                        $y = 1900;
+                        $y = 1920;
                     ?>
                     @while($y <= $yNow)
                         <?php
@@ -662,7 +662,7 @@ use App\DeliveryGroup;
                             <span>{{ $errors->first('pay_method') }}</span>
                         </div>
                     @endif
-                    {{-- <label class="d-block card-header">お支払い方法</label> --}}
+
                     @foreach($payMethod as $method)
                         <?php 
                             $checked = '';
@@ -679,13 +679,37 @@ use App\DeliveryGroup;
                             }
                          ?>
                          
-                         
-                        <label class="d-block mb-2">
-                        	@if(! $codCheck && $method->id == 5)
+                        <label class="d-block mb-3">
+                            @if(! $codCheck && $method->id == 5)
                          		<input type="radio" name="pay_method" class="payMethodRadio" value="{{ $method->id }}" disabled> {{ $method->name }}
-                           		<span class="text-secondary ml-3"><i class="fas fa-exclamation-circle"></i> ご注文商品の代金引換決済はご利用できません。</span>      
+                           		<span class="text-secondary ml-3"><i class="fas fa-exclamation-circle"></i> ご注文商品の代金引換決済はご利用できません。</span>                            
                          	@else
                                 <input type="radio" name="pay_method" class="payMethodRadio" value="{{ $method->id }}"{{ $checked }}> {{ $method->name }}
+                                
+                                @if($method->id == 3)
+                                	<div class="wrap-pmc mt-1 pt-1 mb-3 ml-3 pl-2{{ $errors->has('net_bank') ? ' border border-danger' : '' }}">
+                                    	@foreach($pmChilds as $pmChild)
+                                        	<?php 
+                                                $ch = '';
+                                                if( Ctm::isOld()) {
+                                                    if( old('net_bank') == $pmChild->id) {
+                                                        $ch = ' checked';
+                                                    }
+                                                }
+                                                elseif(Session::has('all.data.net_bank')) {
+                                                    if(session('all.data.net_bank') == $pmChild->id) {
+                                                        $ch = ' checked';
+                                                    }
+                                                }
+                                             ?>
+                                            
+                                            <span class="deliRadioWrap">
+                                                <input type="radio" name="net_bank" class="pmcRadio" value="{{ $pmChild->id }}" {{ $ch }}> <span class="mr-3">{{ $pmChild->name }}</span>
+                                            </span>   
+                                        @endforeach
+                                    </div>
+                                
+								@endif
                             @endif
                         </label>
                         

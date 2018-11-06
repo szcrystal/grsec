@@ -599,6 +599,27 @@ var exe = (function() {
             });
         },
         
+        slidePayMethodChild: function() {
+        	$pmRadio = $('.payMethodRadio');
+            $wrapPmc = $('.wrap-pmc');
+            
+            if($('.payMethodRadio:checked').val() == 3) {
+            	$wrapPmc.show();
+            }
+            
+            $pmRadio.on('change', function(e){
+            	if($(this).val() == 3) {
+                	$wrapPmc.slideDown(100); 
+                }
+                else {
+                	$wrapPmc.slideUp(100);
+                }
+            	
+            });
+            
+            console.log($pmRadio.find(':checked').val());
+        },
+        
         getWH: function() {
         	$target = $('.top-first .img-box');
         	var w = $target.width();
@@ -663,6 +684,8 @@ $(function(e){ //ready
     exe.faqCate();
     
     exe.potSetSelect();
+    
+    exe.slidePayMethodChild();
 });
 
 

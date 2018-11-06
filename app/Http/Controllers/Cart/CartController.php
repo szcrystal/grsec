@@ -14,6 +14,7 @@ use App\Prefecture;
 use App\DeliveryGroup;
 use App\DeliveryGroupRelation;
 use App\Favorite;
+use App\PayMethodChild;
 
 use App\Mail\OrderEnd;
 use App\Mail\Register;
@@ -31,7 +32,7 @@ use Exception;
 
 class CartController extends Controller
 {
-    public function __construct(Item $item, Setting $setting, User $user, UserNoregist $userNor, Sale $sale, SaleRelation $saleRel, Receiver $receiver, PayMethod $payMethod, Prefecture $prefecture, DeliveryGroup $dg, DeliveryGroupRelation $dgRel, Favorite $favorite)
+    public function __construct(Item $item, Setting $setting, User $user, UserNoregist $userNor, Sale $sale, SaleRelation $saleRel, Receiver $receiver, PayMethod $payMethod, Prefecture $prefecture, DeliveryGroup $dg, DeliveryGroupRelation $dgRel, Favorite $favorite, PayMethodChild $payMethodChild)
     {
         
         //$this -> middleware('adminauth');
@@ -51,6 +52,7 @@ class CartController extends Controller
         $this->dg = $dg;
         $this->dgRel = $dgRel;
         $this->favorite = $favorite;
+        $this->payMethodChild = $payMethodChild;
 //        $this->category = $category;
 //        $this->categorySecond = $categorySecond;
 //        $this -> tag = $tag;
@@ -402,8 +404,12 @@ class CartController extends Controller
    
        
        //paymentCode ネットバンクとGMOのみ
+       $pmChild = null;
        $payPaymentCode = null;
+       
        if($pm == 3) {
+            $pmChild = isset($allData['net_bank']) ? $allData['net_bank'] : 0;
+            
        		if($data['payment_code'] == 4)
          		$payPaymentCode = 'ジャパンネットバンク';
          	elseif($data['payment_code'] == 5) 
@@ -424,6 +430,7 @@ class CartController extends Controller
             'is_user' => $isUser,
             'receiver_id' => $receiverId, 
             'pay_method' => $pm,
+            'pay_method_child' => $pmChild,
             
             'deli_fee' => $deliFee,
             'cod_fee' => $codFee,
@@ -715,6 +722,7 @@ class CartController extends Controller
             'receiver.address_3' => 'max:255',
             
             'pay_method' => 'required', 
+            'net_bank'=> 'required_if:pay_method,3'
             //'main_img' => 'filenaming',
         ];
         
@@ -724,8 +732,7 @@ class CartController extends Controller
          	
           	if($request->input('regist') && ! Ctm::isLocal()) {
           		$rules['user.email'] = 'filled|email|unique:users,email|max:255';
-          	}   
-               
+          	}
         }
         
          $messages = [
@@ -734,6 +741,7 @@ class CartController extends Controller
             'destination.required_without' => '「配送先」を入力して下さい。', //登録先住所に配送の場合は「登録先住所に配送する」にチェックをして下さい。
             'pay_method.required' => '「お支払い方法」を選択して下さい。',
             'use_point.max' => '「ポイント」が保持ポイントを超えています。',
+            'net_bank.required_if'=> '「お支払い方法」ネットバンク決済の銀行を選択して下さい。',
             //'post_thumb.filenaming' => '「サムネイル-ファイル名」は半角英数字、及びハイフンとアンダースコアのみにして下さい。',
             //'post_movie.filenaming' => '「動画-ファイル名」は半角英数字、及びハイフンとアンダースコアのみにして下さい。',
             //'slug.unique' => '「スラッグ」が既に存在します。',
@@ -978,7 +986,15 @@ class CartController extends Controller
         	$payCode = '00100-0000-00000-00000-00000-00000-00000';
         }
         elseif($data['pay_method'] == 3) { // ネットバンク
-            $payCode = '00010-0000-00000-00000-00000-00000-00000';
+        	if($data['net_bank'] == 1) {
+            	$payCode = '00010-0000-00000-00000-00000-00000-00000';
+            }
+            elseif($data['net_bank'] == 2) {
+            	$payCode = '00001-0000-00000-00000-00000-00000-00000';
+            }
+            elseif($data['net_bank'] == 3) {
+            	$payCode = '00000-0000-00000-00100-00000-00000-00000';
+            }
         }
         elseif($data['pay_method'] == 4) { //後払い
             $payCode = '00000-0000-00000-00010-00000-00000-00000';
@@ -1010,6 +1026,7 @@ class CartController extends Controller
         session(['all.order_number'=>$settles['order_number']]);
         
         $payMethod = $this->payMethod;
+        $pmChild = $this->payMethodChild;
         
         $userArr = '';
         if(Auth::check()) {
@@ -1022,7 +1039,7 @@ class CartController extends Controller
 //        print_r($userArr);
 //        exit;
         
-        return view('cart.confirm', ['data'=>$data, 'userArr'=>$userArr, 'itemData'=>$itemData, 'regist'=>$regist, 'allPrice'=>$allPrice, 'settles'=>$settles, 'payMethod'=>$payMethod, 'deliFee'=>$deliFee, 'codFee'=>$codFee, 'usePoint'=>$usePoint, 'addPoint'=>$addPoint, 'actionUrl'=>$actionUrl, 'active'=>3])->withErrors($errors);
+        return view('cart.confirm', ['data'=>$data, 'userArr'=>$userArr, 'itemData'=>$itemData, 'regist'=>$regist, 'allPrice'=>$allPrice, 'settles'=>$settles, 'payMethod'=>$payMethod, 'pmChild'=>$pmChild, 'deliFee'=>$deliFee, 'codFee'=>$codFee, 'usePoint'=>$usePoint, 'addPoint'=>$addPoint, 'actionUrl'=>$actionUrl, 'active'=>3])->withErrors($errors);
     }
     
     
@@ -1069,6 +1086,9 @@ class CartController extends Controller
      
      	//PayMethod
       	$payMethod = $this->payMethod->all();
+        
+        //PayMethodChild
+      	$pmChilds = $this->payMethodChild->all();
        
        	//Prefecture
         $prefs = $this->prefecture->all();      
@@ -1110,7 +1130,7 @@ class CartController extends Controller
 //        exit;
 
      
-     	return view('cart.form', ['regist'=>$regist, 'payMethod'=>$payMethod, 'prefs'=>$prefs, 'userObj'=>$userObj, 'codCheck'=>$codCheck, 'dgGroup'=>$dgGroup, 'active'=>2]);   
+     	return view('cart.form', ['regist'=>$regist, 'payMethod'=>$payMethod, 'pmChilds'=>$pmChilds, 'prefs'=>$prefs, 'userObj'=>$userObj, 'codCheck'=>$codCheck, 'dgGroup'=>$dgGroup, 'active'=>2]);   
     }
     
     

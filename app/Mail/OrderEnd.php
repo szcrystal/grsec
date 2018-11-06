@@ -11,6 +11,7 @@ use App\Receiver;
 use App\MailTemplate;
 use App\Item;
 use App\PayMethod;
+use App\PayMethodChild;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
@@ -31,6 +32,7 @@ class OrderEnd extends Mailable
 	
 	public $setting;
 	public $pmModel;
+    public $pmChildModel;
 	public $itemModel;
 	
 	public $mailTemplate;
@@ -74,6 +76,7 @@ class OrderEnd extends Mailable
     	//$set = Setting::get()->first();
         
         $this->pmModel = new PayMethod;
+        $this->pmChildModel = new PayMethodChild;
         $this->itemModel = new Item;
         
      	$templ = MailTemplate::where(['type_code'=>'itemEnd', ])->get()->first();

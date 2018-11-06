@@ -11,6 +11,7 @@ use App\Receiver;
 use App\MailTemplate;
 use App\Item;
 use App\PayMethod;
+use App\PayMethodChild;
 use App\DeliveryCompany;
 
 use Illuminate\Bus\Queueable;
@@ -31,6 +32,7 @@ class OrderMails extends Mailable
     
     public $setting;
     public $pmModel;
+    public $pmChildModel;
     public $itemModel;
     public $dcModel;
     
@@ -62,6 +64,7 @@ class OrderMails extends Mailable
     public function build()
     {
     	$this->pmModel = new PayMethod;
+        $this->pmChildModel = new PayMethodChild;
         $this->itemModel = new Item;
         $this->dcModel = new DeliveryCompany;
         

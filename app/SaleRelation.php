@@ -15,6 +15,8 @@ class SaleRelation extends Model
         'receiver_id',
 
         'pay_method',
+        'pay_method_child',
+        
         'deli_fee',
         'cod_fee',
         //'take_charge_fee',

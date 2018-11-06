@@ -7,6 +7,7 @@ use App\Setting;
 use App\PayMethod;
 use App\DeliveryCompany;
 use App\SendMailFlag;
+use App\PayMethodChild;
 ?>
 	
 	<div class="text-left">
@@ -135,7 +136,11 @@ use App\SendMailFlag;
                                 <th>決済方法</th>
                                 <td>
                                 	<span class="text-big"><b>{{ $pms->find($saleRel->pay_method)->name }}</b></span>
-                                	@if($saleRel->pay_method == 6)
+                                    @if($saleRel->pay_method == 3)
+                                        <span>（{{ PayMethodChild::find($saleRel->pay_method_child)->name }}）</span>
+                                    @endif
+                                    
+                                	@if($saleRel->pay_method == 2 && $saleRel->pay_method == 6)
                                         @if($saleRel->pay_done)
                                         <span class="text-success">(入金済み)</span>
                                         @else

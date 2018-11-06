@@ -24,6 +24,8 @@ class CreateSaleRelationsTable extends Migration
             $table->integer('receiver_id')->nullable()->default(NULL);
             
             $table->integer('pay_method')->nullable()->default(NULL);
+            $table->integer('pay_method_child')->nullable()->default(NULL);
+            
             $table->integer('deli_fee')->nullable()->default(NULL);
             $table->integer('cod_fee')->nullable()->default(NULL);
             //$table->integer('take_charge_fee')->nullable()->default(NULL);

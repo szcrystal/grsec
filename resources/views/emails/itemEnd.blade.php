@@ -78,14 +78,16 @@ $allTotal = $saleRel->all_price + $saleRel->deli_fee + $saleRel->cod_fee - $sale
 ?>
 <b style="display:block; font-size:1.1em; margin-top:0.5em;">ご注文金額合計：￥{{ number_format($allTotal) }} （税込）</b>
 </div>
-【お支払方法】：{{ $pmModel->find($saleRel->pay_method)->name }} <br>
-@if($saleRel->pay_method == 6)
+【お支払方法】：{{ $pmModel->find($saleRel->pay_method)->name }} 
+@if($saleRel->pay_method == 3)
+（{{ $pmChildModel->find($saleRel->pay_method_child)->name }}）
+@elseif($saleRel->pay_method == 6)
 <div style="margin: 0 0 1.5em 0.8em;">
 ５日以内に下記口座までお振り込み下さい。<br><br>
 {!! nl2br($setting['bank_info']) !!}
 </div>
 @endif
-<br>
+<br><br>
 <hr>
 <br>
 @if($isUser)

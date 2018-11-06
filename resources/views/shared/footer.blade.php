@@ -107,7 +107,7 @@
     
     </div>    
      
-    <p><i class="fa fa-copyright" aria-hidden="true"></i> GREEN LOCKET</p>
+    <p><i class="fa fa-copyright" aria-hidden="true"></i> GREEN ROCKET</p>
 
 
 </footer>
