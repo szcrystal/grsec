@@ -390,7 +390,7 @@ use App\TopSetting;
                     	$isCaution = isset($item->caution) && $item->caution != '' ? 1 : 0;
                     ?>
                     
-                    @if(Ctm::isAgent('sp'))
+                    @if(Ctm::isEnv('local'))
                     	<div id="accordion">
                           <div class="card">
                             <div class="card-header" id="headingOne">
