@@ -687,7 +687,7 @@ ORG END ======================== */
     	padding-left: 0.5em;
         padding-right: 0.5em;
     }
-    .table-custom th small { /* ハイフンなし半角数字のテキスト */
+    .table-custom th small { /* 「ハイフンなし半角数字」のテキスト */
     	margin-top: -1em;
         padding-bottom: 0.2em;
     }
@@ -754,6 +754,9 @@ ORG END ======================== */
     .table-cart td {
     	padding-left: 0.3em;
         padding-right: 0.3em;
+    }
+    .cart-index .table-cart td .text-enji {
+    	font-size: 1.05em;
     }
     .table-cart td:first-of-type {
     	//font-size: 90%;

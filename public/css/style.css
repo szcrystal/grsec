@@ -329,7 +329,7 @@ body {
     line-height: 90px;
 }
 
-.wrap-pmc {
+.wrap-pmc { /* payMethod child wrap */
 	display: none;
 }
 

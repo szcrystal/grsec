@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div id="main" class="">
+<div id="main" class="cart-index">
 
         <div class="panel panel-default">
 
@@ -199,7 +199,7 @@
             
             <tr>
            		<td colspan="5" class="text-right">
-           			<small>数量変更後の小計を確認する場合は「再計算」を、事前に送料を確認する場合は「配送先都道府県」を選択して「送料計算」を押して下さい</small>
+           			<span class="text-enji">数量変更後の小計を確認する場合は「再計算」を、事前に送料を確認する場合は「配送先都道府県」を選択して「送料計算」を押して下さい</span>
                 </td>
            </tr>
            
