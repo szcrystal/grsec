@@ -51,6 +51,8 @@ class ProcessFollowMail implements ShouldQueue
         $ensure_155 = array();
         $noEnsure_33 = array();
         
+        //For Test ----------------------
+        /*
         // For Test ==================================================================
         $day_7 = 7;
         $day_33 = 33;
@@ -65,16 +67,16 @@ class ProcessFollowMail implements ShouldQueue
             $from = new DateTime($sale->deli_schedule_date);
             $diff = $current->diff($from); //マイナスの時はinvert:1 $currentが$fromより大きければマイナスとなりinvertは1となる
             
-            /*
-            	大きい日付->diff(小さい日付) マイナス:invert 1
-                小さい日付->diff(大きい日付) マイナス:invert 1
-            	現在より前の日付であればinvertはマイナス->値は1
-                現在より後ろの日付であればinvertはプラス->値は0
-            */
+            //
+//            	大きい日付->diff(小さい日付) マイナス:invert 1
+//                小さい日付->diff(大きい日付) マイナス:invert 1
+//            	現在より前の日付であればinvertはマイナス->値は1
+//                現在より後ろの日付であればinvertはプラス->値は0
+            //
             
             $ensure = Item::find($sale->item_id)->is_ensure;
             
-            if($diff->days == 0/* && $diff->h == 0*/ && $diff->i == 3) {
+            if($diff->days == 0 && $diff->i == 3) { //$diff->days == 0 && $diff->h == 0 && $diff->i == 3
                 if($ensure) {
                     //if($diff->days == $day_7) {
                         $ensure_7[$sale->salerel_id][] = $sale;
@@ -98,9 +100,10 @@ class ProcessFollowMail implements ShouldQueue
         
         }
         // For Test END ==================================================================
+        */
+        // Test END ---------------------
         
-        
-        /* For 本番 ========================================================== 
+        //For 本番 ========================================================== 
         $day_7 = 7;
         $day_33 = 33;
         $day_96 = 96;
@@ -145,7 +148,8 @@ class ProcessFollowMail implements ShouldQueue
             }
         
         }
-        For 本番 END ==========================================================  */   
+        //For 本番 END ==========================================================
+           
                 
         if(count($ensure_7) > 0) {
         	$this->sendFollowMail($ensure_7, 'ensure_7'); //Obj, typeCode

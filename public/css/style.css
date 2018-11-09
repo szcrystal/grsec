@@ -1245,18 +1245,21 @@ ul.side-rank {
 /*    //border: none;*/
 /*    line-height: 1.3em;*/
 /*}*/
-/*.side-rank span.rank-1 {*/
-/*	background: goldenrod;*/
-/*	background: #fff;*/
-/*}*/
-/*.side-rank span.rank-2 {*/
-/*	background: silver;*/
-/*	background: #fff;*/
-/*}*/
-/*.side-rank span.rank-3 {*/
-/*	background: burlywood;*/
-/*	background: #fff;*/
-/*}*/
+.side-rank span.rank-1 {
+	background: goldenrod;
+    border-color: goldenrod;
+    color: #fff;
+}
+.side-rank span.rank-2 {
+	background: silver;
+    border-color: silver;
+    color: #fff;
+}
+.side-rank span.rank-3 {
+	background: burlywood;
+    border-color: burlywood;
+    color: #fff;
+}
 .rank-tag {
 	display: inline-block;
 	background: #fff;/*#F7EBE4*/
