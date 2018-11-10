@@ -1260,6 +1260,7 @@ ul.side-rank {
     border-color: burlywood;
     color: #fff;
 }
+
 .rank-tag {
 	display: inline-block;
 	background: #fff;/*#F7EBE4*/
@@ -1269,6 +1270,9 @@ ul.side-rank {
     border: 1px solid #999/*#E2D2C8*/;
     cursor: pointer;
     //font-size: 0.9em;
+}
+.single .rank-tag {
+	font-size: 0.85em;
 }
 .no-list li.rank-tag {
 	font-size: 0.85em;
