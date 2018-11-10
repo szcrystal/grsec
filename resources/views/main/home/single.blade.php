@@ -121,14 +121,17 @@ use App\TopSetting;
 
                  	<p class="text-big">{{ $item->catchcopy }}</p>
                     
-                    @if(isset($item->icon_id) && $item->icon_id != '')
-                        <div class="icons">
-                        	<?php $obj = $item; ?>
-                            @include('main.shared.icon')
-                        </div>
+                    <?php $isPotSet = count($potSets) > 0; ?>
+                    
+                    @if(! $isPotSet)
+                        @if(isset($item->icon_id) && $item->icon_id != '')
+                            <div class="icons">
+                                <?php $obj = $item; ?>
+                                @include('main.shared.icon')
+                            </div>
+                        @endif
                     @endif
                  	
-                   
                    {{--
                     <div class="mb-3" >
                     	<span class="text-small">カテゴリー：</span>
@@ -145,7 +148,7 @@ use App\TopSetting;
                     <form method="post" action="{{ url('shop/cart') }}">
                         {{ csrf_field() }}
                     
-                    <?php $isPotSet = count($potSets) > 0; ?>
+                    
                     
                     @if($isPotSet)
                     	
