@@ -1447,9 +1447,12 @@ ul.side-rank {
 }
 .single .price-meta {
 	font-size: 1.4em;
-    line-height: 1.3em;
+    line-height: 1.2em;
 	font-weight: normal;
     text-align: right;
+}
+.single .potset .price-meta {
+	line-height: 1.15em;
 }
 .single .price-meta small {
 	font-size: 0.7em;
