@@ -45,7 +45,7 @@ $isSale = Setting::get()->first()->is_sale;
 </span>
 
 <span class="d-block text-blue text-middle">
-    @if($item->is_once)
+    @if($obj->is_once)
     同梱包可能
     @else
     同梱包不可
