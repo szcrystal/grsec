@@ -118,7 +118,6 @@ use App\TopSetting;
                 <?php //================================================================= ?>
             		<span>{{ $item->title_addition }}</span>
                 	<h2 class="single-title">{{ $item -> title }}<br><span>商品番号 {{ $item->number }}</span></h2>
-
                  	<p class="text-big">{{ $item->catchcopy }}</p>
                     
                     <?php $isPotSet = count($potSets) > 0; ?>
@@ -148,12 +147,11 @@ use App\TopSetting;
                     <form method="post" action="{{ url('shop/cart') }}">
                         {{ csrf_field() }}
                     
-                    
-                    
+
                     @if($isPotSet)
                     	
                         <?php 
-                            //$itemを最初に追加
+                            //Object $itemを最初に追加する時
                             //$potSets->prepend($item);
                         ?>
 						
@@ -390,10 +388,10 @@ use App\TopSetting;
                     </div>
                     
                     <?php
-                    	$isCaution = isset($item->caution) && $item->caution != '' ? 1 : 0;
+                    	$isCaution = isset($item->caution) && $item->caution != '';
                     ?>
                     
-                    @if(Ctm::isEnv('local'))
+                    @if(Ctm::isAgent('sp'))
                     	<div id="accordion">
                           <div class="card">
                             <div class="card-header" id="headingOne">

@@ -55,6 +55,8 @@ class CreateSettingsTable extends Migration
             $table->string('fix_need')->nullable()->default(NULL);
             $table->string('fix_other')->nullable()->default(NULL);
             
+            $table->text('analytics_code')->nullable()->default(NULL);
+            
             
             $table->timestamps();
         });

@@ -99,14 +99,25 @@ use App\User;
                     </ul>
                 </li>
 
-               
                 @foreach($cates as $cate)
                     <li class="">
                         <a href="{{ url('category/' . $cate->slug) }}">
                             {{ $cate->name }} <i class="fal fa-angle-double-right"></i>
                         </a>
                     </li>
-                @endforeach     
+                @endforeach 
+                
+                @if(Auth::check())
+                    <li>
+                        <a href="{{ url('/logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                ログアウト
+                        </a>
+
+                        <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
+                            {{ csrf_field() }}
+                        </form>
+                    </li>
+                @endif
 
             </ul>
         </div>
@@ -131,12 +142,12 @@ use App\User;
         @if(! Auth::check())
             <li><a href="{{ url('login') }}">ログイン</a></li>
         @else
-            <li><a href="{{ url('mypage') }}">マイページ</a></li>
+            <li><a href="{{ url('mypage') }}"><i class="fal fa-file-alt"></i></a></li>
             
             <li><a href="{{ url('/logout') }}"
                             onclick="event.preventDefault();
                                      document.getElementById('logout-form').submit();">
-                            ログアウト
+                            <i class="fal fa-sign-out-alt"></i>
                     </a>
 
                     <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">

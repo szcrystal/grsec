@@ -269,9 +269,7 @@
             @endif
             
             
-            
-            
-            
+ 
             <fieldset class="pt-4 mb-4 form-group{{ $errors->has('snap_top') ? ' has-error' : '' }}">
                 <label>TOPヘッダー画像の枚数</label><br>
                 <input class="form-control d-inline-block col-md-4{{ $errors->has('snap_top') ? ' is-invalid' : '' }}" name="snap_top" value="{{ Ctm::isOld() ? old('snap_top') : (isset($setting) ? $setting->snap_top : '') }}"> <span>枚</span>
@@ -359,6 +357,21 @@
                         <span class="fa fa-exclamation form-control-feedback"></span>
                         <span>{{ $errors->first('fix_other') }}</span>
                     </div>
+                @endif
+            </fieldset>
+            
+            
+            <h4 class="mt-5 pt-4"><span class="text-info">■</span> Other</h4>
+            <hr>
+            <fieldset class="mt-1 mb-4 form-group{{ $errors->has('analytics_code') ? ' has-error' : '' }}">
+                <label for="analytics_code" class="control-label">アナリティクスコード</label>
+
+                <textarea id="analytics_code" type="text" class="form-control" name="analytics_code" rows="15">{{ Ctm::isOld() ? old('analytics_code') : (isset($setting) ? $setting->analytics_code : '') }}</textarea>
+
+                @if ($errors->has('analytics_code'))
+                    <span class="help-block">
+                        <strong>{{ $errors->first('analytics_code') }}</strong>
+                    </span>
                 @endif
             </fieldset>
 

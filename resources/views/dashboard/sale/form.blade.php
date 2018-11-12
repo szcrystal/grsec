@@ -229,6 +229,11 @@ use App\Setting;
                                 <td>
                                 	<div class="">
                                         <fieldset class="mb-4 form-group">
+                                        	
+                                            @if(isset($sale->deli_start_date) && $sale->deli_start_date)
+                                        	<p>{{ Ctm::getDateWithYoubi($sale->deli_start_date) }}</p>
+                                            @endif
+                                            
                                             <select class="form-control col-md-6{{ $errors->has('deli_start_date') ? ' is-invalid' : '' }}" name="deli_start_date">
                                                 <option selected value="0">選択して下さい</option>
                                                     <?php 
@@ -278,6 +283,10 @@ use App\Setting;
                                 <td>
                                 	<div class="">
                                         <fieldset class="mb-4 form-group">
+                                        	@if(isset($sale->deli_schedule_date) && $sale->deli_schedule_date)
+                                        	<p>{{ Ctm::getDateWithYoubi($sale->deli_schedule_date) }}</p>
+                                            @endif
+                                            
                                             <select class="form-control col-md-6{{ $errors->has('deli_schedule_date') ? ' is-invalid' : '' }}" name="deli_schedule_date">
                                                 <option selected value="0">選択して下さい</option>
                                                     <?php 

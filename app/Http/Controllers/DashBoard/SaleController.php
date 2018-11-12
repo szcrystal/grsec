@@ -476,6 +476,16 @@ class SaleController extends Controller
                             return $fail('売上ID'. $si .'の配送会社を入力して下さい。');
                         }
                     };
+                
+                if($withMail == $templIds['deliDone']) {
+                    $rules['deli_slip_num.'. $si] = 
+                        function($attribute, $value, $fail) use($si) {
+                            if (! isset($value) || $value == '') {
+                                return $fail('売上ID'. $si .'の伝票番号を入力して下さい。');
+                            }
+                        };
+                }
+            	
             }
             
             $messages = [];

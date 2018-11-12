@@ -242,7 +242,7 @@ use App\PayMethodChild;
                   <th>発送状況/出荷日</th>
                   <th>メモ</th>
                   <th>金額計（税込）</th>
-                  <th>リピ情報</th>
+                  <th>リピ情報（最新5件）</th>
                   
                   <th></th>
                 </tr>
@@ -322,7 +322,7 @@ use App\PayMethodChild;
                   
                   <td style="line-height: 1em;">
                   	
-                    	{{ Ctm::shortStr($saleRel->memo, 15) }}
+                    	{{ Ctm::shortStr($saleRel->memo, 25) }}
                     	
                         {{--
                         <small>
@@ -342,11 +342,13 @@ use App\PayMethodChild;
                   </td>
                   
                   <td>
-                	<?php 
-                    	
-                    	$repes = SaleRelation::whereNotIn('id', [$saleRel->id])->where(['is_user'=>$saleRel->is_user, 'user_id'=>$saleRel->user_id])->get();
-                    	
+                	<?php
+                    	$repes = SaleRelation::whereNotIn('id', [$saleRel->id])
+                        		->where(['is_user'=>$saleRel->is_user, 'user_id'=>$saleRel->user_id])
+                                ->orderBy('created_at', 'desc')
+                                ->take(5)->get();
                     ?>
+                    
                     @if(count($repes) > 0)
                     	@foreach($repes as $repe)
                         	<a href="{{ url('dashboard/sales/order/'. $repe->order_number) }}" class="text-small">{{ Ctm::changeDate($repe->created_at, 1) }}</a><br>

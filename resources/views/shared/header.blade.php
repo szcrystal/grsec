@@ -55,15 +55,21 @@
         window.Laravel = <?php echo json_encode([
             'csrfToken' => csrf_token(),
         ]); ?>
+
     </script>
 
-</head>
-<?php 
-// $a = 7 % 4; echo $a; 
+<?php    
+use App\Setting;
 ?>
+@if(isset(Setting::first()->analytics_code) && Setting::first()->analytics_code != '')
+{!! Setting::first()->analytics_code !!}
+@endif
+
+</head>
+
 
 <?php $switch = 0; ?>
-@if(Ctm::isLocal() && $switch)
+@if(Ctm::isEnv('local') && $switch)
 <div style="position: relative; bottom:0; z-index:10000; background:red; width: 100%;">
 <?php 
 print_r(session('item.data')); 

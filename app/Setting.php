@@ -37,6 +37,8 @@ class Setting extends Model
         
         'fix_need',
         'fix_other',
+        
+        'analytics_code',
 
     ];
 }

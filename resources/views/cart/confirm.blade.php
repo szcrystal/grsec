@@ -29,51 +29,144 @@
 <div class="confirm-left">
 	<h5 class="card-header mb-3 py-2">ご注文の商品</h5>
 	<div class="table-responsive table-cart">
-    <table class="table table-bordered bg-white">
-        <thead>
-              <tr>
-                <th>商品名</th>
-                <th>数量</th>
-                <th>金額（税込）</th>
+        <table class="table table-bordered bg-white">
+            <thead>
+                  <tr>
+                    <th>商品名</th>
+                    <th>数量</th>
+                    <th>金額（税込）</th>
+                </tr>
+              </thead>  
+        
+            <tbody>
+                 
+                 @foreach($itemData as $item)    
+                 <tr>
+                    <td>
+                        <?php $obj = $item; ?>
+                        @include('main.shared.smallThumbnail')
+
+                        {{ Ctm::getItemTitle($item) }}
+                        <br>
+                        [ {{ $item->number }} ]
+                        <span class="d-block mt-1">¥{{ Ctm::getItemPrice($item) }}（税込）</span>
+                    </td>
+                    
+                    <td>{{ $item->count }}</td>
+
+                    <td>
+                        ¥{{ number_format( $item->item_total_price ) }}
+                    
+                        {{--
+                        @if(isset($item->deli_time))
+                            <br><small class="pt-3">ご希望配送時間：</small><br>{{ $item->deli_time }}
+                        @endif
+                        --}}
+                    </td>
+
+                   </tr> 
+                 @endforeach
+                              
+             </tbody>
+        </table>
+	</div>
+
+</div><!-- left -->
+
+
+
+<div class="confirm-right mt-3">
+    <h5 class="">&nbsp;</h5>
+    <div class="table-responsive table-custom show-price">
+        <table class="table border table-borderd bg-white">
+            
+            <tbody>
+            <tr>
+                <th><label class="control-label">商品金額合計（税込）</label></th>
+                 <td>¥{{ number_format($allPrice) }}</td>
             </tr>
-          </thead>  
-    
-        <tbody>
-             
-             @foreach($itemData as $item)    
-             <tr>
-             	<td>
-                	<?php $obj = $item; ?>
-                	@include('main.shared.smallThumbnail')
-
-                    {{ Ctm::getItemTitle($item) }}
-                    <br>
-                    [ {{ $item->number }} ]
-                    <span class="d-block mt-1">¥{{ Ctm::getItemPrice($item) }}（税込）</span>
+            <tr>
+                <th><label class="control-label">送料</label></th>
+                <td>¥{{ number_format($deliFee) }}</td>
+            </tr>
+            
+            @if($data['pay_method'] == 2)
+                <tr>
+                    <th><label class="control-label">コンビニ決済手数料</label></th>
+                    <td>¥{{ number_format($codFee) }}</td>
+                </tr>
+            
+            @elseif($data['pay_method'] == 4)
+                <tr>
+                    <th><label class="control-label">GMO後払い手数料</label></th>
+                    <td>¥{{ number_format($codFee) }}</td>
+                </tr>
+            
+            @elseif($data['pay_method'] == 5)
+                <tr>
+                    <th><label class="control-label">代引き手数料</label></th>
+                    <td>¥{{ number_format($codFee) }}</td>
+                </tr>
+            @endif
+            
+            @if(Auth::check())
+            <tr>
+                <th><label class="control-label">利用ポイント</label></th>
+                 <td>
+                 @if($usePoint)
+                 -
+                 @endif
+                 {{ $usePoint }}</td>
+            </tr>
+            @endif
+            
+            <tr>
+                <th><label class="control-label">注文金額合計（税込）</label></th>
+                 <td class="text-danger text-big{{ count($errors) > 0 ? ' alert-danger' : '' }}">
+                      ¥{{ number_format($allPrice + $deliFee + $codFee - $usePoint) }}
                 </td>
-                
-                <td>{{ $item->count }}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 
-                <td>
-                	¥{{ number_format( $item->item_total_price ) }}
-                
-                	{{--
-                	@if(isset($item->deli_time))
-                    	<br><small class="pt-3">ご希望配送時間：</small><br>{{ $item->deli_time }}
+    @if($regist || Auth::check())
+    <div class="table-responsive table-custom show-price mt-3">
+        <table class="table border table-borderd bg-white">
+
+            @if(Auth::check())
+            <tr>
+                <th><label class="control-label">ポイント残高</label></th>
+                 <td>{{ $userArr['point'] - $usePoint }}</td>
+            </tr>
+            @endif
+            <tr>
+                <th><label class="control-label">ポイント発生</label></th>
+                <td>{{ $addPoint }}</td>
+            </tr>
+        </table>
+    </div>
+    @endif
+
+    <div class="table-responsive table-custom show-price mt-3">
+        <table class="table border table-borderd bg-white"> 
+            <tr>
+                <th><label class="control-label">お支払い方法</label></th>
+                <td class="{{ count($errors) > 0 ? 'alert-danger' : '' }}">
+                    {{ $payMethod->find($data['pay_method'])->name }}
+                    @if($data['pay_method'] == 3)
+                        <br><span class="text-small">{{ $pmChild->find($data['net_bank'])->name }}</span>
                     @endif
-                    --}}
                 </td>
+            </tr>
+        </table>
+    </div>
 
-               </tr> 
-             @endforeach
-                          
-         </tbody> 
-         
-    </table>
-</div>
+</div><!-- right -->
 
 
-<h5 class="card-header mb-3 py-2 mt-5">配送情報</h5>
+<div class="confirm-left">
+<h5 class="card-header mb-3 py-2 mt-4">配送情報</h5>
 <div class="table-responsive table-custom mt-3">
     <table class="table table-borderd border bg-white">
     	<thead>
@@ -219,99 +312,10 @@
 </div>
 @endif
 
-</div> 
-
-
-<div class="confirm-right mt-3">
-<h5 class="">&nbsp;</h5>
-<div class="table-responsive table-custom show-price">
-    <table class="table border table-borderd bg-white">
-        
-        <tbody>
-        <tr>
-            <th><label class="control-label">商品金額合計（税込）</label></th>
-             <td>¥{{ number_format($allPrice) }}</td>
-        </tr>
-        <tr>
-            <th><label class="control-label">送料</label></th>
-            <td>¥{{ number_format($deliFee) }}</td>
-        </tr>
-        
-        @if($data['pay_method'] == 2)
-            <tr>
-                <th><label class="control-label">コンビニ決済手数料</label></th>
-                <td>¥{{ number_format($codFee) }}</td>
-            </tr>
-        
-        @elseif($data['pay_method'] == 4)
-            <tr>
-                <th><label class="control-label">GMO後払い手数料</label></th>
-                <td>¥{{ number_format($codFee) }}</td>
-            </tr>
-        
-        @elseif($data['pay_method'] == 5)
-            <tr>
-                <th><label class="control-label">代引き手数料</label></th>
-                <td>¥{{ number_format($codFee) }}</td>
-            </tr>
-        @endif
-        
-        @if(Auth::check())
-        <tr>
-            <th><label class="control-label">利用ポイント</label></th>
-             <td>
-             @if($usePoint)
-             -
-             @endif
-             {{ $usePoint }}</td>
-        </tr>
-        @endif
-        
-        <tr>
-            <th><label class="control-label">注文金額合計（税込）</label></th>
-             <td class="text-danger text-big{{ count($errors) > 0 ? ' alert-danger' : '' }}">
-                  ¥{{ number_format($allPrice + $deliFee + $codFee - $usePoint) }}
-            </td>
-        </tr>
-        </tbody>
-    </table>
 </div>
 
-@if($regist || Auth::check())
-<div class="table-responsive table-custom show-price mt-3">
-    <table class="table border table-borderd bg-white">
 
-        @if(Auth::check())
-        <tr>
-            <th><label class="control-label">ポイント残高</label></th>
-             <td>{{ $userArr['point'] - $usePoint }}</td>
-        </tr>
-        @endif
-        <tr>
-            <th><label class="control-label">ポイント発生</label></th>
-            <td>{{ $addPoint }}</td>
-        </tr>
-    </table>
-</div>
-@endif
 
-<div class="table-responsive table-custom show-price mt-3">
-    <table class="table border table-borderd bg-white">
-        
-        <tr>
-            <th><label class="control-label">お支払い方法</label></th>
-            <td class="{{ count($errors) > 0 ? 'alert-danger' : '' }}">
-            	{{ $payMethod->find($data['pay_method'])->name }}
-                @if($data['pay_method'] == 3)
-                	<br><span class="text-small">{{ $pmChild->find($data['net_bank'])->name }}</span>
-                @endif
-            </td>
-        </tr>
-
-    </table>
-</div>
-
-</div> {{-- float-right --}}
 
 </div>
 

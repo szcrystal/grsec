@@ -1256,8 +1256,8 @@ ul.side-rank {
     color: #fff;
 }
 .side-rank span.rank-3 {
-	background: burlywood;
-    border-color: burlywood;
+	background: peru/*burlywood*/;
+    border-color: peru;
     color: #fff;
 }
 

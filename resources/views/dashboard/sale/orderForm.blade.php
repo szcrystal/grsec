@@ -252,8 +252,6 @@ use App\PayMethodChild;
                                                 </td>
                                             </tr>
                                             
-                                            
-                                            
                                             <tr>
                                             	<th>配送会社/伝票番号</th>
                                                 <td>
@@ -268,25 +266,28 @@ use App\PayMethodChild;
                                                 </td>
                                                 
                                                 <input type="hidden" name="deli_company_id[{{ $sale->id }}]" value="{{ $sale->deli_company_id }}">
+                                                <input type="hidden" name="deli_slip_num[{{ $sale->id }}]" value="{{ $sale->deli_slip_num }}">
                                             </tr>
                                             
                                             <tr>
                                             	<th>配送状況</th>
                                                 <td>
                                                 	@if($sale->deli_done)
-                                                       <span class="text-success">発送済み（{{ date('Y/m/d H:i', time($sale->deli_start_date)) }}）</span>
+                                                       <span class="text-success">発送済み（{{ date('Y/m/d H:i', strtotime($sale->deli_sended_date)) }}）</span>
                                                      @else
                                                       <span class="text-danger">未発送</span>
                                                     @endif
                                                 </td>
                                             </tr>
 
- 
+ 											
                                             <tr>
                                             	<th>サンクスメール</th>
                                                 <td>
-                                                	@if(SendMailFlag::where(['sale_id'=>$sale->id, 'templ_id'=>$templs['thanks'] ])->get()->isNotEmpty())
-                                                    <span class="text-success">済</span>
+                                                	<?php $sendMail = SendMailFlag::where(['sale_id'=>$sale->id, 'templ_id'=>$templs['thanks']])->get(); ?>
+                                                	
+                                                	@if($sendMail->isNotEmpty())
+                                                    <span class="text-success">済 （{{ date('Y/m/d H:i', strtotime($sendMail->first()->created_at)) }}）</span>
                                                     @else
                                                     <span class="text-danger">未</span>
                                                     @endif
@@ -295,8 +296,10 @@ use App\PayMethodChild;
                                             <tr>
                                             	<th>在庫確認中メール</th>
                                                 <td>
-                                                	@if(SendMailFlag::where(['sale_id'=>$sale->id, 'templ_id'=>$templs['stockNow'] ])->get()->isNotEmpty())
-                                                    <span class="text-success">済</span>
+                                                	<?php $sendMail = SendMailFlag::where(['sale_id'=>$sale->id, 'templ_id'=>$templs['stockNow']])->get(); ?>
+                                                    
+                                                	@if($sendMail->isNotEmpty())
+                                                    <span class="text-success">済 （{{ date('Y/m/d H:i', strtotime($sendMail->first()->created_at)) }}）</span>
                                                     @else
                                                     <span class="text-danger">未</span>
                                                     @endif
@@ -305,8 +308,10 @@ use App\PayMethodChild;
                                             <tr>
                                             	<th>植え付け方法メール</th>
                                                 <td>
-                                                	@if(SendMailFlag::where(['sale_id'=>$sale->id, 'templ_id'=>$templs['howToUe'] ])->get()->isNotEmpty())
-                                                    <span class="text-success">済</span>
+                                                	<?php $sendMail = SendMailFlag::where(['sale_id'=>$sale->id, 'templ_id'=>$templs['howToUe']])->get(); ?>
+                                                    
+                                                	@if($sendMail->isNotEmpty())
+                                                    <span class="text-success">済 （{{ date('Y/m/d H:i', strtotime($sendMail->first()->created_at)) }}）</span>
                                                     @else
                                                     <span class="text-danger">未</span>
                                                     @endif
@@ -315,8 +320,10 @@ use App\PayMethodChild;
                                             <tr>
                                             	<th>出荷完了（伝票未）メール</th>
                                                 <td>
-                                                	@if(SendMailFlag::where(['sale_id'=>$sale->id, 'templ_id'=>$templs['deliDoneNo'] ])->get()->isNotEmpty())
-                                                    <span class="text-success">済</span>
+                                                	<?php $sendMail = SendMailFlag::where(['sale_id'=>$sale->id, 'templ_id'=>$templs['deliDoneNo']])->get(); ?>
+                                                    
+                                                	@if($sendMail->isNotEmpty())
+                                                    <span class="text-success">済 （{{ date('Y/m/d H:i', strtotime($sendMail->first()->created_at)) }}）</span>
                                                     @else
                                                     <span class="text-danger">未</span>
                                                     @endif
@@ -325,8 +332,10 @@ use App\PayMethodChild;
                                             <tr>
                                             	<th>出荷完了メール</th>
                                                 <td>
-                                                	@if(SendMailFlag::where(['sale_id'=>$sale->id, 'templ_id'=>$templs['deliDone'] ])->get()->isNotEmpty())
-                                                    <span class="text-success">済</span>
+                                                	<?php $sendMail = SendMailFlag::where(['sale_id'=>$sale->id, 'templ_id'=>$templs['deliDone']])->get(); ?>
+                                                    
+                                                	@if($sendMail->isNotEmpty())
+                                                    <span class="text-success">済 （{{ date('Y/m/d H:i', strtotime($sendMail->first()->created_at)) }}）</span>
                                                     @else
                                                     <span class="text-danger">未</span>
                                                     @endif
@@ -342,8 +351,10 @@ use App\PayMethodChild;
                                                     <input type="hidden" name="is_cancel[{{ $sale->id }}]" value="{{ $sale->is_cancel }}">
                                                     @endif
                                                     
-                                                	@if(SendMailFlag::where(['sale_id'=>$sale->id, 'templ_id'=>$templs['cancel'] ])->get()->isNotEmpty())
-                                                    <span class="text-success">済</span>
+                                                    <?php $sendMail = SendMailFlag::where(['sale_id'=>$sale->id, 'templ_id'=>$templs['cancel']])->get(); ?>
+                                                    
+                                                	@if($sendMail->isNotEmpty())
+                                                    <span class="text-success">済 （{{ date('Y/m/d H:i', strtotime($sendMail->first()->created_at)) }}）</span>
                                                     @else
                                                     <span class="text-danger">未</span>
                                                     @endif
@@ -525,7 +536,6 @@ use App\PayMethodChild;
                             <button type="submit" class="btn btn-purple col-md-10 text-white py-2" name="with_mail" value="{{ $templs['howToUe'] }}"><i class="fa fa-check"></i> 植え付け方法メール送信</button>
                         </div>
 
-                        
                         <div class="form-group clearfix my-3 w-50 float-left">
                             <button type="submit" class="btn btn-info col-md-10 text-white py-2" name="with_mail" value="{{ $templs['deliDoneNo'] }}"><i class="fa fa-truck"></i> 出荷完了（伝票番号未確認）メール送信</button>
                         </div>
@@ -541,7 +551,7 @@ use App\PayMethodChild;
                 
                 </div>
                 
-                <div class="mt-5 pt-3">
+                <div class="mt-2 pt-3">
                 	<fieldset class="mt-5 mb-2 form-group{{ $errors->has('memo') ? ' is-invalid' : '' }}">
                         <label for="memo" class="control-label">メモ<span class="text-small">（内部のみ）</span></label>
 
