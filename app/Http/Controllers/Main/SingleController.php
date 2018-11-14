@@ -189,7 +189,7 @@ class SingleController extends Controller
         	$count = array_unshift($cacheIds, $item->id); //配列の最初に追加
          	
           	if($count > 16) {
-            	$cacheIds = array_slice($cacheIds, 0, 15); 
+            	$cacheIds = array_slice($cacheIds, 0, 15); //16個分を切り取る
         	}      
         }
         else { //配列にidがある時  

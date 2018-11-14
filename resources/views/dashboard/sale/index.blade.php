@@ -322,12 +322,12 @@ use App\PayMethodChild;
                   
                   <td style="line-height: 1em;">
                   	
-                    	{{ Ctm::shortStr($saleRel->memo, 25) }}
-                    	
+                        {{ Ctm::shortStr($saleRel->memo, 25) }}
+                        
                         {{--
                         <small>
                         @foreach($sales as $sale)
-                        	@if($sale->memo != '')
+                            @if($sale->memo != '')
                                 {{ Ctm::shortStr($sale->memo, 15) }}
                                 <hr class="my-1">
                             @endif

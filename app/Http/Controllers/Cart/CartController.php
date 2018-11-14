@@ -282,13 +282,16 @@ class CartController extends Controller
     
     public function getThankyou(Request $request)
     {
+    	if(! $request->session()->has('all')) {
+        	return redirect('/');
+        }
+        
     	$data = $request->all();
      
 //         print_r(session('all'));
 //         print_r(session('item.data'));
 //         exit;
 
-		
         $itemData = session('item.data');
      	$all = session('all'); //session(all): regist, allPrice
       	$allData = $all['data']; //session(all.data): destination, pay_method, user, receiver  

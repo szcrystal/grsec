@@ -15,7 +15,7 @@
 @if(! count($itemData))
 	<div class="col-md-8 mx-auto text-center">
 	<p class="">カートに商品が入っていません</p>
-	<a href="{{ url('/') }}">HOMEへ戻る <i class="fas fa-angle-double-right"></i></a>
+	<a href="{{ url('/') }}">HOMEへ戻る <i class="fal fa-angle-double-right"></i></a>
 	</div>
 @else
 

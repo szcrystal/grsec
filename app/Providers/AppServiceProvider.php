@@ -29,6 +29,8 @@ class AppServiceProvider extends ServiceProvider
             return $value == 'foo';
         });
         
+        
+        //Job失敗時のメール通知 =======================================
         Queue::failing(function (JobFailed $event) {
         	
             //return redirect('dashboard/');
@@ -36,6 +38,9 @@ class AppServiceProvider extends ServiceProvider
             $event->connectionName;
             $event->job;
             $event->exception;
+//            $e = $event->exception;
+//            $report = report($e);
+            
             
             $str = env('APP_ENV') . "\n\n";
             $str .= $event->job->getName() . "\n\n";
@@ -45,10 +50,12 @@ class AppServiceProvider extends ServiceProvider
             Mail::raw($str, function ($message) {
                 $message -> from('no-reply@green-rocket.jp', 'GR-SYSTEM')
                          -> to('szk.create@gmail.com', '')
+                         //-> cc('szk.create@gmail.com')
                          -> subject('Failed Job Information');
             });
 
         });
+        //Job失敗時のメール通知 END =======================================
     }
 
     /**
