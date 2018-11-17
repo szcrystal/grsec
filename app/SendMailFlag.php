@@ -12,6 +12,6 @@ class SendMailFlag extends Model
         'templ_code',
         'is_mail',
         'type',
-
+		'information',
     ];
 }

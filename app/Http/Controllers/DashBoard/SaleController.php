@@ -301,8 +301,7 @@ class SaleController extends Controller
         $saleModel->save();
         
         $saleRel = $this->saleRel->find($saleModel->salerel_id);
-        $saleRel->deli_fee = $data['deli_fee'];
-        
+        //$saleRel->deli_fee = $data['deli_fee'];
 
         $item = $this->item->find($saleModel->item_id);
         $item->cost_price = $data['cost_price'];
@@ -454,6 +453,7 @@ class SaleController extends Controller
             $this->validate($request, $rules, $messages);
         }
         
+        //サンクス/発送（未伝票）/発送
         if($withMail == $templIds['thanks'] || $withMail == $templIds['deliDoneNo'] || $withMail == $templIds['deliDone']) {
             foreach($request->input('sale_ids') as $si) {
                 $rules['deli_start_date.'. $si] = 
@@ -503,10 +503,12 @@ class SaleController extends Controller
         	$saleRel->pay_date = date('Y-m-d H:i:s', time());
         }
         
+        $saleRel->deli_fee = $data['deli_fee'];
         $saleRel->information = $data['information'];
         $saleRel->memo = $data['memo'];
         $saleRel->craim = $data['craim'];
         
+        //$saleRel->fill($data);
         $saleRel->save();
         
         if($withPayDone) {
@@ -536,7 +538,7 @@ class SaleController extends Controller
                 elseif($templ->type_code == 'cancel') { //キャンセルの時ポイントを戻す
                 	$allSales = $this->sale->where(['salerel_id'=>$saleRel->id,])->get();
                     
-                    $allCancel = 1; //すべての商品をキャンセルかどうかを確認
+                    $allCancel = 1; //すべての商品をキャンセルかどうかを確認 まとめ買いの一部のみキャンセルならそのままポイント使用する
                     foreach($allSales as $val) {
                     	if(! $val->is_cancel) {
                         	$allCancel = 0;
@@ -553,7 +555,7 @@ class SaleController extends Controller
                 
                 $this->smf->updateOrCreate(
                     ['sale_id'=>$sale->id, 'templ_id'=>$templ->id],
-                    ['is_mail' =>1]
+                    ['is_mail' =>1, 'templ_code'=>$templ->type_code, 'information'=>$data['information']]
                 );
          
             }

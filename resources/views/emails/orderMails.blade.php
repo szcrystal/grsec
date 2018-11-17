@@ -17,7 +17,7 @@
 @endif
 <br>
 <br>
-@if($templ->type_code == 'thanks' && isset($saleRel->information))
+@if(isset($saleRel->information) && $saleRel->information != '')
 【グリーンロケットからのお知らせ】<br>
 {!! nl2br($saleRel->information) !!}<br><br>
 @endif
@@ -61,18 +61,24 @@
 
 @if($templ->type_code == 'thanks' || $templ->type_code == 'deliDoneNo' || $templ->type_code == 'deliDone')
 <b>お届け予定日：{{ Ctm::getDateWithYoubi($sale->deli_schedule_date) }}</b><br>
+<?php $dc = $dcModel->find($sale->deli_company_id); ?>
+<br>
+配送会社：
+@if($dc->id == 1)
+後ほど店舗よりご連絡致します
+@else
+{{ $dc->name }}
+@endif
+<br>
 @endif
 
 @if($templ->type_code == 'deliDone')
-    <?php $dc = $dcModel->find($sale->deli_company_id); ?>
-    <br>
-    配送会社：{{ $dc->name }}<br>
     @if(isset($sale->deli_slip_num) && $sale->deli_slip_num != '')
-    伝票番号：{{ $sale->deli_slip_num }}<br>
+    	伝票番号：{{ $sale->deli_slip_num }}<br>
     @endif
-    @if(isset($dc->url))
-    お荷物の追跡はこちらから<br>
-    {{ $dc->url }}
+    @if(isset($dc->url) && $dc->url != '')
+    	お荷物の追跡はこちらから<br>
+    	{{ $dc->url }}
     @endif
 @endif
 

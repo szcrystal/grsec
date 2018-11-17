@@ -106,7 +106,7 @@ class CreatePrefecturesTable extends Migration
         
         DB::table('prefectures')->insert(    
             [
-                'rural' => '東北',
+                'rural' => '関東',
                 'name' => '茨城県',
                 'roma_name' => 'ibaraki',
                 

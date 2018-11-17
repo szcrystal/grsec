@@ -213,7 +213,7 @@ use App\PayMethodChild;
                                             </tr>
                                             
                                             <tr>
-                                            	<th>合計金額</th>
+                                            	<th>合計金額（税込）</th>
                                                 <td>¥{{ number_format($sale->total_price) }}</td>
                                             </tr>
                                             
@@ -376,14 +376,31 @@ use App\PayMethodChild;
                             @endforeach
                             
                             <tr>
-                                <th>商品総合計（A）</th>
-                                <td><span style="font-size: 1.2em;">¥{{ number_format($saleRel->all_price) }}</span></td>
+                                <th>商品総合計（税込）（A）</th>
+                                <?php
+                                	$taxPer = Setting::get()->first()->tax_per;
+                                    $taxPer = $taxPer/100 + 1; //$taxPer ->1.08
+                                    
+                                	$ap = $saleRel->all_price;
+                                    $zeinuki = ceil($ap / $taxPer);
+                                ?>
+                                <td><span style="font-size: 1.2em;">¥{{ number_format($saleRel->all_price) }}<small>（税抜／税：{{ number_format($zeinuki) }}／{{ number_format($ap - $zeinuki) }}）</small></span></td>
                             </tr>
                             
                             <tr>
                                 <th>送料（B）</th>
                                 <td>
-                                	<span style="font-size: 1.2em;">¥{{ number_format($saleRel->deli_fee) }}</span>
+                                	<fieldset class="mt-2 mb-4 form-group">
+                                        <input class="form-control col-md-6 d-inline{{ $errors->has('deli_fee') ? ' is-invalid' : '' }}" name="deli_fee" value="{{ Ctm::isOld() ? old('deli_fee') : (isset($saleRel->deli_fee) ? $saleRel->deli_fee : '') }}">
+                                        
+                                        @if ($errors->has('deli_fee'))
+                                            <div class="text-danger">
+                                                <span class="fa fa-exclamation form-control-feedback"></span>
+                                                <span>{{ $errors->first('deli_fee') }}</span>
+                                            </div>
+                                        @endif
+                                    </fieldset>
+                                	{{-- <span style="font-size: 1.2em;">¥{{ number_format($saleRel->deli_fee) }}</span> --}}
                                 </td>
                             </tr>
                             
@@ -408,7 +425,7 @@ use App\PayMethodChild;
                             </tr>
                             
                             <tr>
-                                <th>購入総合計<br>（A+B+C-D）</th>
+                                <th>購入総合計（税込）<br>（A+B+C-D）</th>
                                 <?php 
                                 	//$total = $sale->total_price + $sale->deli_fee + $sale->cod_fee;
                                 	$total = $saleRel->all_price + $saleRel->deli_fee + $saleRel->cod_fee - $saleRel->use_point;
@@ -498,7 +515,7 @@ use App\PayMethodChild;
                 
                 <div class="mt-3 mb-5">
                 	<fieldset class="mb-2 form-group{{ $errors->has('information') ? ' is-invalid' : '' }}">
-                        <label for="detail" class="control-label">ご連絡事項（ユーザー反映）</label>
+                        <label for="detail" class="control-label">ご連絡事項（ユーザー反映）（ホワイトボード的な役割。全てのメールテンプレに反映されるので反映したくない場合は空にして下さい。）</label>
 
                             <textarea id="information" class="form-control" name="information" rows="8">{{ Ctm::isOld() ? old('information') : (isset($saleRel) ? $saleRel->information : '') }}</textarea>
 

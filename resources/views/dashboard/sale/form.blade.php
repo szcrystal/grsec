@@ -51,6 +51,9 @@ use App\Setting;
 
             {{ csrf_field() }}
 
+			<div class="form-group col-md-5 mx-auto my-5">
+                <button type="submit" class="btn btn-primary btn-block w-btn w-100 text-white" name="only_up" value="1"> 更新する</button>
+            </div>
             
              <div class="form-group mb-0">
                 <div class="clearfix">
@@ -188,7 +191,7 @@ use App\Setting;
                             </tr>
                             
                             <tr>
-                                <th>送料区分/<br>送料</th>
+                                <th>送料区分</th>
                                 <td>
                                 @if($item->deli_fee)
                                 	<span class="text-warning">送料無料商品</span>
@@ -197,6 +200,7 @@ use App\Setting;
                                 @endif
                                 {{-- ¥{{ number_format($sale->deli_fee) }} --}}
                                 
+                                {{--
                                 <fieldset class="mt-2 mb-4 form-group">
                                     <input class="form-control col-md-6 d-inline{{ $errors->has('deli_fee') ? ' is-invalid' : '' }}" name="deli_fee" value="{{ Ctm::isOld() ? old('deli_fee') : (isset($sale->deli_fee) ? $sale->deli_fee : '') }}">
                                     
@@ -207,6 +211,7 @@ use App\Setting;
                                         </div>
                                     @endif
                                 </fieldset>
+                                --}}
                                 
                                 </td>
                             </tr>

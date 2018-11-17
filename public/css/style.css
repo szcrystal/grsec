@@ -214,6 +214,12 @@ body {
     border-radius: 0;
     cursor: pointer;
 }
+.btn-enji {
+	background: #C15360;
+    color: #fff;
+    border-radius: 0;
+    cursor: pointer;
+}
 .btn-blue {
 	background: #506EA8;
 }

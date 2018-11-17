@@ -59,7 +59,11 @@
                     <?php $obj = $item; ?>
                     @include('main.shared.smallThumbnail')
                 	
-                	<a href="{{ url('item/'.$item->id) }}">
+                    <?php
+                        $urlId = $item->is_potset ? $item->pot_parent_id : $item->id; 
+                    ?>
+                    
+                	<a href="{{ url('item/'. $urlId) }}">
                         {{ Ctm::getItemTitle($item) }}
                         <br>
                         [ {{ $item->number }} ]

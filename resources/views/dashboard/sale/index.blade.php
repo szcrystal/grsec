@@ -236,7 +236,7 @@ use App\PayMethodChild;
                 	<th>ID</th>
                     
                   <th>購入日</th>
-                  <th>注文番号</th>
+                  {{-- <th>注文番号</th> --}}
                   <th>購入者</th>
                   <th>決済方法</th>
                   <th>発送状況/出荷日</th>
@@ -273,7 +273,9 @@ use App\PayMethodChild;
                   
                   <td><b>{{ Ctm::changeDate($saleRel->created_at, 0) }}</b></td>
                   
+                  {{--
                   <td><span class="text-small">{{ $saleRel->order_number }}</span></td>
+                  --}}
                   
                   <td>
                   	@if($saleRel->is_user)
@@ -322,7 +324,7 @@ use App\PayMethodChild;
                   
                   <td style="line-height: 1em;">
                   	
-                        {{ Ctm::shortStr($saleRel->memo, 25) }}
+                        {{ Ctm::shortStr($saleRel->memo, 100) }}
                         
                         {{--
                         <small>
@@ -362,7 +364,7 @@ use App\PayMethodChild;
                   </td>
  
                   <td>
-                  	<a href="{{ url('dashboard/sales/order/'. $saleRel->order_number) }}" class="btn btn-success btn-sm center-block">確認</a><br>
+                  	<a href="{{ url('dashboard/sales/order/'. $saleRel->order_number) }}" class="btn btn-success btn-sm center-block" target="_brank">確認</a><br>
                 	<small class="text-secondary ml-1">ID{{ $saleRel->id }}</small>
                 </td>
                   

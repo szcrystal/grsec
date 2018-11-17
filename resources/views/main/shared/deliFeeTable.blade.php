@@ -33,10 +33,10 @@ use App\DeliveryGroupRelation;
                             <?php printf($format, 1); ?>
                         
                         @elseif($dgRel->pref_id == 2)
-                            <?php printf($format, 7); ?>
-                        
-                        @elseif($dgRel->pref_id == 9)
                             <?php printf($format, 6); ?>
+                        
+                        @elseif($dgRel->pref_id == 8)
+                            <?php printf($format, 7); ?>
                         
                         @elseif($dgRel->pref_id == 15)
                             <?php printf($format, 9); ?>
@@ -63,7 +63,7 @@ use App\DeliveryGroupRelation;
                             @if($dgRel->fee == 99999 || $dgRel->fee === null)
                                 配送不可
                             @elseif(! $dgRel->fee)
-                                無料
+                                <span class="text-danger">無料</span>
                             @else
                                 {{ number_format($dgRel->fee) }} 円
                             @endif

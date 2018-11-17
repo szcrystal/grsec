@@ -25,6 +25,8 @@ class CreateSendMailFlagsTable extends Migration
             $table->boolean('is_mail')->nullable()->default(0);
             
             $table->integer('type')->nullable()->default(NULL);
+            
+            $table->text('information')->nullable()->default(NULL);
     
             //$table->string('url')->nullable()->default(NULL);
             

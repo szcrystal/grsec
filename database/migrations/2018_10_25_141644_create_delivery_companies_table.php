@@ -30,6 +30,18 @@ class CreateDeliveryCompaniesTable extends Migration
         
         DB::table('delivery_companies')->insert(
             [ 
+                'name' => '後程店舗よりご連絡',
+                //'open_status' => 1,
+                'name_code' => 'hold',
+                'url'=> '',
+                
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time()),
+            ]
+        );
+        
+        DB::table('delivery_companies')->insert(
+            [ 
                 'name' => '西濃運輸',
                 //'open_status' => 1,
                 'name_code' => 'seinou',

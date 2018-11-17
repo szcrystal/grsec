@@ -368,7 +368,7 @@
             	$disabled = ' disabled';
             }
         ?>
-  		<button class="btn btn-block btn-custom col-md-4 mb-4 mx-auto py-2" type="submit" name="regist_off" value="1"{{ $disabled }}>注文する</button>
+  		<button class="btn btn-block btn-enji col-md-4 mb-4 mx-auto py-2" type="submit" name="regist_off" value="1"{{ $disabled }}>注文する</button>
 	</div>                
 </form>
 
