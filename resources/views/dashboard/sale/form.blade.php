@@ -403,7 +403,7 @@ use App\Setting;
                             </tr>
                             @endif
                             <tr>
-                                <th>総合計（A）</th>
+                                <th>総合計（税込）[A]</th>
                                 <?php $total = $sale->total_price + $sale->deli_fee + $sale->cod_fee; ?>
                                 <td><span style="font-size: 1.3em;" class="text-success"><b>¥{{ number_format($total) }}</b></span></td>
                             </tr>
@@ -522,7 +522,7 @@ use App\Setting;
                             @endforeach
                             
                             <tr>
-                                <th>購入総合計（A+B）</th>
+                                <th>購入総合計（税込）[A+B]</th>
                                 <td><span style="font-size:1.2em;">¥{{ number_format($total + $all) }}</span></td>
                             </tr>
 

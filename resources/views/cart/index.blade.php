@@ -64,7 +64,7 @@
                     ?>
                     
                 	<a href="{{ url('item/'. $urlId) }}">
-                        {{ Ctm::getItemTitle($item) }}
+                        {!! Ctm::getItemTitle($item, 1) !!}
                         <br>
                         [ {{ $item->number }} ]
                  	</a>   

@@ -126,12 +126,13 @@ class CustomController extends Controller
 
     }
     
-    static function getItemTitle($item)
+    static function getItemTitle($item, $isHtml = 0)
     {
     	$itemTitle = '';
         
     	if($item->is_potset && $item->pot_parent_id) {
-            $itemTitle = Item::find($item->pot_parent_id)->title . '／' . $item->title;
+            $itemTitle = Item::find($item->pot_parent_id)->title . '／'/* . "<b class=\"text-danger\">" . $item->title . "</b>"*/;
+            $itemTitle .= $isHtml ? '<b class="text-danger">' . $item->title . '</b>' : $item->title;
         }
         else {
             $itemTitle = $item->title;

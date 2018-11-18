@@ -376,7 +376,7 @@ use App\PayMethodChild;
                             @endforeach
                             
                             <tr>
-                                <th>商品総合計（税込）（A）</th>
+                                <th>商品総合計（税込）[A]</th>
                                 <?php
                                 	$taxPer = Setting::get()->first()->tax_per;
                                     $taxPer = $taxPer/100 + 1; //$taxPer ->1.08
@@ -388,7 +388,7 @@ use App\PayMethodChild;
                             </tr>
                             
                             <tr>
-                                <th>送料（B）</th>
+                                <th>送料 [B]</th>
                                 <td>
                                 	<fieldset class="mt-2 mb-4 form-group">
                                         <input class="form-control col-md-6 d-inline{{ $errors->has('deli_fee') ? ' is-invalid' : '' }}" name="deli_fee" value="{{ Ctm::isOld() ? old('deli_fee') : (isset($saleRel->deli_fee) ? $saleRel->deli_fee : '') }}">
@@ -405,7 +405,7 @@ use App\PayMethodChild;
                             </tr>
                             
                             <tr>
-                                <th>手数料（C）</th>
+                                <th>手数料 [C]</th>
                                 <td>
                                 	¥{{ number_format($saleRel->cod_fee) }}
                                 	@if($saleRel->pay_method == 2)
@@ -418,14 +418,14 @@ use App\PayMethodChild;
                             </tr>
                             
                             <tr>
-                                <th>ポイント利用（D）</th>
+                                <th>ポイント利用 [D]</th>
                                 <td>
 	                                {{ $saleRel->use_point }}
                                 </td>
                             </tr>
                             
                             <tr>
-                                <th>購入総合計（税込）<br>（A+B+C-D）</th>
+                                <th>購入総合計（税込）<br>[A+B+C-D]</th>
                                 <?php 
                                 	//$total = $sale->total_price + $sale->deli_fee + $sale->cod_fee;
                                 	$total = $saleRel->all_price + $saleRel->deli_fee + $saleRel->cod_fee - $saleRel->use_point;
@@ -515,7 +515,7 @@ use App\PayMethodChild;
                 
                 <div class="mt-3 mb-5">
                 	<fieldset class="mb-2 form-group{{ $errors->has('information') ? ' is-invalid' : '' }}">
-                        <label for="detail" class="control-label">ご連絡事項（ユーザー反映）（ホワイトボード的な役割。全てのメールテンプレに反映されるので反映したくない場合は空にして下さい。）</label>
+                        <label for="detail" class="control-label">ご連絡事項（ユーザー反映）（ホワイトボード的な役割。全てのメールテンプレに反映されるので、非反映の場合は空にして下さい。）</label>
 
                             <textarea id="information" class="form-control" name="information" rows="8">{{ Ctm::isOld() ? old('information') : (isset($saleRel) ? $saleRel->information : '') }}</textarea>
 
@@ -535,7 +535,7 @@ use App\PayMethodChild;
                         
                         {{-- @if( ! $saleRel->pay_done || Ctm::isEnv('local'))  --}}                   
                             <div class="form-group clearfix my-3">
-                                <button type="submit" class="btn btn-danger col-md-5 text-white py-2" name="with_paydone" value="{{ $templs['payDone'] }}"><i class="fa fa-yen"></i> 入金済メール送信</button>
+                                <button type="submit" class="btn btn-danger col-md-5 text-white py-2" name="with_mail" value="{{ $templs['payDone'] }}"><i class="fa fa-yen"></i> 入金済メール送信</button>
                             </div>
                         {{-- @endif --}}
                     @endif

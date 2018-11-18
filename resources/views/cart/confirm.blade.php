@@ -46,7 +46,7 @@
                         <?php $obj = $item; ?>
                         @include('main.shared.smallThumbnail')
 
-                        {{ Ctm::getItemTitle($item) }}
+                        {!! Ctm::getItemTitle($item, 1) !!}
                         <br>
                         [ {{ $item->number }} ]
                         <span class="d-block mt-1">¥{{ Ctm::getItemPrice($item) }}（税込）</span>

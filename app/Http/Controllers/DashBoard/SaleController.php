@@ -379,10 +379,14 @@ class SaleController extends Controller
     //ご注文情報 Post
     public function postSaleOrder(Request $request) 
     {
-    	$withPayDone = $request->has('with_paydone') ? 1 : 0;
+    	//$withPayDone = $request->has('with_paydone') ? $request->input('with_paydone') : 0;
         $withMail = $request->has('with_mail') ? $request->input('with_mail') : 0;
         
         $templIds = $this->templIds;
+        
+        //payDoneだけ若干特殊なのでswitchを作る
+        $withPayDone = $withMail == $templIds['payDone'] ? 1 : 0;
+        	
     	
  /*       
 //        $rules = [
@@ -426,7 +430,7 @@ class SaleController extends Controller
             $this->validate($request, $rules, $messages);
 		}
         
-        if($withMail) {
+        if($withMail && ! $withPayDone) {
         	$rules = [
                 'sale_ids' => 'required',
             ];
@@ -466,7 +470,7 @@ class SaleController extends Controller
                 $rules['deli_schedule_date.'. $si] = 
                     function($attribute, $value, $fail) use($si) {
                         if (! isset($value) || ! $value) {
-                            return $fail('売上ID'. $si .'の到着予定日を入力して下さい。');
+                            return $fail('売上ID'. $si .'のお届け予定日を入力して下さい。');
                         }
                     };
                 
@@ -511,58 +515,64 @@ class SaleController extends Controller
         //$saleRel->fill($data);
         $saleRel->save();
         
-        if($withPayDone) {
-            $mail = Mail::to($data['user_email'], $data['user_name'])->queue(new PayDone($saleRel->id));
-                
-            //if(! $mail) {
-            $status = '入金済みメールが送信されました。('. $mail . ')';
-            
-            //return redirect('dashboard/sales/order/'. $saleRel->order_number)->with('status', $status);
-//            } 
-//            else {
-//                $errors = array('入金済みメールの送信に失敗しました。('. $mail . ')');
-//                return redirect('dashboard/sales/order/'. $saleRel->order_number)->withErrors($errors)->withInput();
-//            }
-        }
-        elseif($withMail) {
-            
+        if($withMail) {
             $templ = $this->templ->find($withMail);
-            $sales = $this->sale->find($data['sale_ids']);
             
-            foreach($sales as $sale) {
-                if($templ->type_code == 'deliDoneNo' || $templ->type_code == 'deliDone') {
-                    $sale->deli_done = 1; //deli_doneがされた商品をフォローメールするので必ず必要
-                    $sale->deli_sended_date = date('Y-m-d H:i:s', time());
-                    $sale ->save();
-                }
-                elseif($templ->type_code == 'cancel') { //キャンセルの時ポイントを戻す
-                	$allSales = $this->sale->where(['salerel_id'=>$saleRel->id,])->get();
+            if($templ->type_code == 'payDone') {
+                $mail = Mail::to($data['user_email'], $data['user_name'])->queue(new PayDone($saleRel->id));
+                
+                $this->smf->updateOrCreate(
+                    ['sale_id'=>0, 'templ_id'=>$templ->id],
+                    ['is_mail' =>1, 'templ_code'=>$templ->type_code, 'information'=>$data['information']]
+                );
                     
-                    $allCancel = 1; //すべての商品をキャンセルかどうかを確認 まとめ買いの一部のみキャンセルならそのままポイント使用する
-                    foreach($allSales as $val) {
-                    	if(! $val->is_cancel) {
-                        	$allCancel = 0;
-                            break;
+                //if(! $mail) {
+                //$status = '入金済みメールが送信されました。('. $mail . ')';
+                
+    //            } 
+    //            else {
+    //                $errors = array('入金済みメールの送信に失敗しました。('. $mail . ')');
+    //                return redirect('dashboard/sales/order/'. $saleRel->order_number)->withErrors($errors)->withInput();
+    //            }
+            }
+            else {
+            	$sales = $this->sale->find($data['sale_ids']);
+                
+                foreach($sales as $sale) {
+                    if($templ->type_code == 'deliDoneNo' || $templ->type_code == 'deliDone') {
+                        $sale->deli_done = 1; //deli_doneがされた商品をフォローメールするので必ず必要
+                        $sale->deli_sended_date = date('Y-m-d H:i:s', time());
+                        $sale ->save();
+                    }
+                    elseif($templ->type_code == 'cancel') { //キャンセルの時ポイントを戻す
+                        $allSales = $this->sale->where(['salerel_id'=>$saleRel->id,])->get();
+                        
+                        $allCancel = 1; //すべての商品をキャンセルかどうかを確認 まとめ買いの一部のみキャンセルならそのままポイント使用する
+                        foreach($allSales as $val) {
+                            if(! $val->is_cancel) {
+                                $allCancel = 0;
+                                break;
+                            }
+                        }
+                        
+                        if($saleRel->is_user && $saleRel->use_point && $allCancel) { //ユーザーでポイント使用があり、すべての商品がキャンセルの時
+                            $u = $this->user->find($saleRel->user_id);
+                            $u->point += $saleRel->use_point;
+                            $u->save();
                         }
                     }
                     
-                    if($saleRel->is_user && $saleRel->use_point && $allCancel) { //ユーザーでポイント使用があり、すべての商品がキャンセルの時
-                    	$u = $this->user->find($saleRel->user_id);
-                        $u->point += $saleRel->use_point;
-                        $u->save();
-                    }
+                    $this->smf->updateOrCreate(
+                        ['sale_id'=>$sale->id, 'templ_id'=>$templ->id],
+                        ['is_mail' =>1, 'templ_code'=>$templ->type_code, 'information'=>$data['information']]
+                    );
+             
                 }
                 
-                $this->smf->updateOrCreate(
-                    ['sale_id'=>$sale->id, 'templ_id'=>$templ->id],
-                    ['is_mail' =>1, 'templ_code'=>$templ->type_code, 'information'=>$data['information']]
-                );
-         
+                $mail = Mail::to($data['user_email'], $data['user_name'])->queue(new OrderMails($data['sale_ids'], $withMail)); //sale_ids->メール送信する複数商品　$withMail->メールテンプレのID
             }
             
-            $mail = Mail::to($data['user_email'], $data['user_name'])->queue(new OrderMails($data['sale_ids'], $withMail)); //sale_ids->メール送信する複数商品　$withMail->メールテンプレのID
-			$status = $templ->type_name . 'メールが送信されました。('. $mail . ')';
-             
+            $status = $templ->type_name . 'メールが送信されました。('. $mail . ')';
             //return redirect('dashboard/sales/order/'. $saleRel->order_number)->with('status', $status);
         }
         else {

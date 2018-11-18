@@ -9,16 +9,19 @@
 @if($isUser)
 <br>
 <p>※このメールは配信専用メールのため、ご返信いただけません。</p>
-<br>
+
 {!! nl2br( $header ) !!}
 
 @else
 よりご注文がありました。<br>
 ご注文内容は下記となります。
 @endif
-
-
-<br /><br />
+<br>
+<br>
+@if(isset($saleRel->information) && $saleRel->information != '')
+【グリーンロケットからのお知らせ】<br>
+{!! nl2br($saleRel->information) !!}<br><br>
+@endif
 
 <hr>
 【ご注文番号】：{{ $saleRel->order_number }}<br>
