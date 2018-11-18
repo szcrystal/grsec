@@ -357,11 +357,16 @@ class CustomController extends Controller
     
     static function getDateWithYoubi($dateNormalFormat)
     {
-    	$time = strtotime($dateNormalFormat);	
     	$week = ['日', '月', '火', '水', '木', '金', '土'];
-        
+        /*
+        $time = strtotime($dateNormalFormat);
         $withYoubi = date('Y/m/d', $time);
         $withYoubi .= ' (' . $week[date('w', $time)] . ')';
+        */
+		
+        $time = new DateTime($dateNormalFormat);
+		$withYoubi = $time->format('Y/m/d');
+        $withYoubi .= ' (' . $week[$time->format('w')] . ')';
         
         return $withYoubi;
     }

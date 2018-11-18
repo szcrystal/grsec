@@ -232,54 +232,70 @@ use App\Setting;
                             <tr>
                             	<th>出荷予定日<br><span class="text-small text-secondary">（ユーザー反映）</span></th>
                                 <td>
-                                	<div class="">
-                                        <fieldset class="mb-4 form-group">
-                                        	
-                                            @if(isset($sale->deli_start_date) && $sale->deli_start_date)
-                                        	<p>{{ Ctm::getDateWithYoubi($sale->deli_start_date) }}</p>
-                                            @endif
+                                    <fieldset class="mb-4 form-group">
+                                        
+                                        <select class="form-control col-md-6{{ $errors->has('deli_start_date') ? ' is-invalid' : '' }}" name="deli_start_date">
                                             
-                                            <select class="form-control col-md-6{{ $errors->has('deli_start_date') ? ' is-invalid' : '' }}" name="deli_start_date">
-                                                <option selected value="0">選択して下さい</option>
-                                                    <?php 
-                                                        $days = array();
-                                                        //$week = ['日', '月', '火', '水', '木', '金', '土'];
+                                            <?php 
+//                                                $now = date('Y-m-d', time());
+//                                            
+//                                                $days = array();
+//                                                //$week = ['日', '月', '火', '水', '木', '金', '土'];
+//                                            
+//                                                for($plusDay = 0; $plusDay < 64; $plusDay++) {
+//                                                    //$now = date('Y-m-d H:i:s', time());
+//                                                    $first = date('Y-m-d', strtotime($now." +". $plusDay . " day"));
+//                                                    //$days[$first] = date('Y/m/d', $first) . '（' . $week[date('w', $first)] . '）';
+//                                                    $days[$first] = Ctm::getDateWithYoubi($first); //引数はstr(Y-m-d)で
+//                                                }
+											
+                                            	$now = new DateTime('now');
+                                                $nowDate = $now->format('Y-m-d');
+                                                $days = array();
+                                            
+                                                for($plusDay = 0; $plusDay < 64; $plusDay++) {
+                                                    //$d = new DateTime("+". $plusDay . " days");
+                                                    //$first = $d->format('Y-m-d');
                                                     
-                                                        for($plusDay = 0; $plusDay < 64; $plusDay++) {
-                                                            $now = date('Y-m-d H:i:s', time());
-                                                            $first = strtotime($now." +". $plusDay . " day");
-                                                            //$days[$first] = date('Y/m/d', $first) . '（' . $week[date('w', $first)] . '）';
-                                                            $days[$first] = Ctm::getDateWithYoubi(date('Y-m-d H:i:s', $first));
-                                                        }
-                                                    ?>
-                                                
-
-                                                    @foreach($days as $key => $day)
-                                                        <?php
-                                                            $selected = '';
-                                                            $key = date('Y-m-d', $key);
-                                                            
-                                                            if(Ctm::isOld()) {
-                                                                if(old('deli_start_date') == $key)
-                                                                    $selected = ' selected';
-                                                            }
-                                                            else {
-                                                                if(isset($sale) && $sale->deli_start_date == $key) {
-                                                                    $selected = ' selected';
-                                                                }
-                                                            }
-                                                        ?>
-                                                        <option value="{{ $key }}"{{ $selected }}>{{ $day }}</option>
-                                                    @endforeach
-                                            </select>
+                                                    $d = $plusDay ? $now->modify("+1 days")->format('Y-m-d') : $nowDate; //nowにmodifyすると持続されるので+1days
+                                                    $days[$d] = Ctm::getDateWithYoubi($d); //引数はstr(Y-m-d)で
+                                                }                                                
+                                            ?>
                                             
-                                            @if ($errors->has('deli_start_date'))
-                                                <span class="help-block">
-                                                    <strong class="text-danger">{{ $errors->first('deli_start_date') }}</strong>
-                                                </span>
+                                            <option value="0" selected>選択して下さい</option>
+                                            
+                                            @if(isset($sale->deli_start_date) && $sale->deli_start_date && $sale->deli_start_date < $nowDate)
+                                                <option value="{{ $sale->deli_start_date }}" selected>
+                                                    {{ Ctm::getDateWithYoubi($sale->deli_start_date) }}
+                                                </option>
                                             @endif
-                                        </fieldset>
-                                    </div>
+
+                                            @foreach($days as $key => $day)
+                                                <?php
+                                                    $selected = '';
+                                                    //$key = date('Y-m-d', $key);
+                                                    
+                                                    if(Ctm::isOld()) {
+                                                        if(old('deli_start_date') == $key)
+                                                            $selected = ' selected';
+                                                    }
+                                                    else {
+                                                        if(isset($sale) && $sale->deli_start_date == $key) {
+                                                            $selected = ' selected';
+                                                        }
+                                                    }
+                                                ?>
+                                                
+                                                <option value="{{ $key }}"{{ $selected }}>{{ $day }}</option>
+                                            @endforeach
+                                        </select>
+                                        
+                                        @if ($errors->has('deli_start_date'))
+                                            <span class="help-block">
+                                                <strong class="text-danger">{{ $errors->first('deli_start_date') }}</strong>
+                                            </span>
+                                        @endif
+                                    </fieldset>
                                 </td>
                             </tr>
                             
@@ -288,42 +304,34 @@ use App\Setting;
                                 <td>
                                 	<div class="">
                                         <fieldset class="mb-4 form-group">
-                                        	@if(isset($sale->deli_schedule_date) && $sale->deli_schedule_date)
-                                        	<p>{{ Ctm::getDateWithYoubi($sale->deli_schedule_date) }}</p>
-                                            @endif
-                                            
                                             <select class="form-control col-md-6{{ $errors->has('deli_schedule_date') ? ' is-invalid' : '' }}" name="deli_schedule_date">
-                                                <option selected value="0">選択して下さい</option>
-                                                    <?php 
-//                                                        $days = array();
-//                                                        //$week = ['日', '月', '火', '水', '木', '金', '土'];
-//                                                    
-//                                                        for($plusDay = 0; $plusDay < 64; $plusDay++) {
-//                                                            $now = date('Y-m-d H:i:s', time());
-//                                                            $first = strtotime($now." +". $plusDay . " day");
-//                                                            //$days[$first] = date('Y/m/d', $first) . '（' . $week[date('w', $first)] . '）';
-//                                                            $days[$first] = Ctm::getDateWithYoubi(date('Y-m-d H:i:s', $first));
-//                                                        }
-                                                    ?>
+                                            	
+                                                <option value="0" selected>選択して下さい</option>
                                                 
-
-                                                    @foreach($days as $key => $day)
-                                                        <?php
-                                                            $selected = '';
-                                                            $key = date('Y-m-d', $key);
-                                                            
-                                                            if(Ctm::isOld()) {
-                                                                if(old('deli_schedule_date') == $key)
-                                                                    $selected = ' selected';
+                                                @if(isset($sale->deli_schedule_date) && $sale->deli_schedule_date && $sale->deli_schedule_date < $nowDate)
+                                                	<option value="{{ $sale->deli_schedule_date }}" selected>
+                                                    	{{ Ctm::getDateWithYoubi($sale->deli_schedule_date) }}
+                                                    </option>
+                                                @endif
+                                                
+                                                @foreach($days as $key => $day)
+                                                    <?php
+                                                        $selected = '';
+                                                        //$key = date('Y-m-d', $key);
+                                                        
+                                                        if(Ctm::isOld()) {
+                                                            if(old('deli_schedule_date') == $key)
+                                                                $selected = ' selected';
+                                                        }
+                                                        else {
+                                                            if(isset($sale) && $sale->deli_schedule_date == $key) {
+                                                                $selected = ' selected';
                                                             }
-                                                            else {
-                                                                if(isset($sale) && $sale->deli_schedule_date == $key) {
-                                                                    $selected = ' selected';
-                                                                }
-                                                            }
-                                                        ?>
-                                                        <option value="{{ $key }}"{{ $selected }}>{{ $day }}</option>
-                                                    @endforeach
+                                                        }
+                                                    ?>
+                                                    
+                                                    <option value="{{ $key }}"{{ $selected }}>{{ $day }}</option>
+                                                @endforeach
                                             </select>
                                             
                                             <?php
