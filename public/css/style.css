@@ -1511,6 +1511,10 @@ ul.side-rank {
     padding-bottom: 0.5em;
 	border-bottom: 1px dotted #ccc;
 }
+.potset:first-of-type {
+	padding-top: 0.5em;
+	border-top: 1px dotted #ccc;
+}
 .potset h3 {
 	font-size: 1.2em;
     margin: 0 0 0.2em;
