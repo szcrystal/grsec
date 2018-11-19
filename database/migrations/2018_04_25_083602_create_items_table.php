@@ -99,7 +99,7 @@ class CreateItemsTable extends Migration
                     'title' => 'シマトネリコ 株立 1.7m程度（根鉢含まず）',
                     'catchcopy' => '薄紫色品種の「マスコギー」',
                     'cate_id' => 1,
-                    'subcate_id'=>1,
+                    //'subcate_id'=>1,
                     
                     'main_img' => '',
 //                    'spare_img_0' => '',
