@@ -89,8 +89,11 @@
                     </div>
                 </div>
             </div>
+        
+        <span class="text-small text-secondary d-block mb-3">＊UPする画像のファイル名は全て半角英数字とハイフンのみで構成して下さい。(abc-123.jpg など)</span>
         <hr>
 	
+    	
 		<div class="form-group clearfix mb-4 thumb-wrap">
         	<fieldset class="w-25 float-right">
                 <div class="col-md-12 checkbox text-right px-0">

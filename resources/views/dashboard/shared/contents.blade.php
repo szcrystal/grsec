@@ -24,6 +24,7 @@
     @endif
     
     <div class="clearfix mb-3">
+    	<span class="text-small text-secondary d-block mb-3">＊UPする画像のファイル名は全て半角英数字とハイフンのみで構成して下さい。(abc-123.jpg など)</span>
 
         <?php
             $n=0;
