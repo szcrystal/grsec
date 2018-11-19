@@ -35,6 +35,7 @@ class CreateCategoriesTable extends Migration
             $table->timestamps();
         });
         
+        /*
         DB::table('categories')->insert([
                     'name' => '植木・庭木を選ぶ（シンボル）',
                     'slug' => 'ueki-niwaki',
@@ -58,6 +59,7 @@ class CreateCategoriesTable extends Migration
                     'updated_at' => date('Y-m-d H:i:s', time()),
             ]
         );
+        */
     }
 
     /**

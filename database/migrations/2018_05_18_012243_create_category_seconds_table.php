@@ -36,6 +36,7 @@ class CreateCategorySecondsTable extends Migration
             $table->timestamps();
         });
         
+        /*
         DB::table('category_seconds')->insert([
                 'parent_id' => 1,
                 'name' => '庭',
@@ -45,6 +46,7 @@ class CreateCategorySecondsTable extends Migration
                 'updated_at' => date('Y-m-d H:i:s', time()),
             ]
         );
+        */
     }
 
     /**
