@@ -35,15 +35,15 @@ class CreateCategoriesTable extends Migration
             $table->timestamps();
         });
         
-        /*
+        
         DB::table('categories')->insert([
-                    'name' => '植木・庭木を選ぶ（シンボル）',
+                    'name' => '植木・庭木',
                     'slug' => 'ueki-niwaki',
                     'created_at' => date('Y-m-d H:i:s', time()),
                     'updated_at' => date('Y-m-d H:i:s', time()),
             ]
         );
-        
+        /*
         DB::table('categories')->insert([
                     'name' => '苗木',
                     'slug' => 'naegi',
