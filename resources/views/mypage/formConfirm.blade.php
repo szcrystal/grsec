@@ -174,7 +174,7 @@ $str = $isMypage ? '変更する' : '登録する';
 @else
 <a href="{{ url('register') }}" class="btn border-secondary bg-white mt-5">
 @endif
-<i class="fas fa-angle-double-left"></i> 入力画面に戻る
+<i class="fal fa-angle-double-left"></i> 入力画面に戻る
 </a>
 </div>
 </div>

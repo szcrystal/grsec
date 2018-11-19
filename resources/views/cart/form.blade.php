@@ -314,12 +314,18 @@ use App\DeliveryGroup;
                                 if(old('user.birth_year') == $y)
                                     $selected = ' selected';
                             }
+                            else if(Session::has('all.data.user')) {
+                            	if(session('all.data.user.birth_year') == $y) {
+                                    $selected = ' selected';
+                                }                                
+                            }
                             else {
-                                if(Session::has('all.data.user')  && session('all.data.user.birth_year') == $y) {
+                                if($y == 1970) {
                                     $selected = ' selected';
                                 }
                             }
                         ?>
+                        
                         <option value="{{ $y }}"{{ $selected }}>{{ $y }}</option>
                         
                         <?php $y++; ?>
@@ -497,19 +503,20 @@ use App\DeliveryGroup;
                                 	$checked = ' checked';
                             }
                         ?>
-                        <input type="checkbox" name="destination" value="1"{{ $checked }}> 上記登録先へ配送する（上記の登録先住所へ配送する場合はここをチェックして下さい。）
+                        
+                        <input type="checkbox" name="destination" value="1"{{ $checked }}> 別の住所へ配送する（上記の登録先住所以外へ配送希望の場合はここをチェックして配送先を入力して下さい。）
                     </label>
                     
                     @if ($errors->has('receiver.*'))
                         <div class="help-block text-danger receiver-error">
                             <span class="fa fa-exclamation form-control-feedback"></span>
-                            <span>登録先住所と配送先が同じ場合は「上記登録先へ配送する」にチェックをして下さい。<br>&nbsp;&nbsp;登録先住所と配送先が異なる場合は下記項目の入力をして下さい。</span>
+                            <span>登録先住所と別の配送先をご希望の場合はここにチェックをして、下記項目の入力をして下さい。</span>
                         </div>
                     @endif
                 </div>
             </fieldset>     
         
-            <div class="table-responsive table-custom">
+            <div class="table-responsive table-custom receiver-wrap">
                 <table class="table table-borderd border">
 
                     <tr class="form-group">

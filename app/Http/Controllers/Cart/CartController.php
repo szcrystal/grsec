@@ -387,7 +387,7 @@ class CartController extends Controller
        $receiverData['order_number'] = $all['order_number'];
        //$receiverData['is_user'] = $isUser;
        
-       if($destination) {
+       if(! $destination) {
        		$receiverData['name'] = $userData['name'];
          	$receiverData['hurigana'] = $userData['hurigana'];      
        		$receiverData['tel_num'] = $userData['tel_num'];
@@ -715,13 +715,13 @@ class CartController extends Controller
 			'use_point' => 'numeric|max:'.$pt,
    			        
 			//'destination' => 'required_without:receiver.name,receiver.hurigana,receiver.tel_num,receiver.post_num,receiver.prefecture,receiver.address_1,receiver.address_2,receiver.address_3',
-            'receiver.name' => 'required_without:destination|max:255',
-            'receiver.hurigana' => 'required_without:destination|max:255',
-            'receiver.tel_num' => 'required_without:destination|nullable|numeric',
-            'receiver.post_num' => 'required_without:destination|nullable|numeric|digits:7',
-            'receiver.prefecture' => 'required_without:destination',
-            'receiver.address_1' => 'required_without:destination|max:255',
-            'receiver.address_2' => 'required_without:destination|max:255',
+            'receiver.name' => 'required_with:destination|max:255',
+            'receiver.hurigana' => 'required_with:destination|max:255',
+            'receiver.tel_num' => 'required_with:destination|nullable|numeric',
+            'receiver.post_num' => 'required_with:destination|nullable|numeric|digits:7',
+            'receiver.prefecture' => 'required_with:destination',
+            'receiver.address_1' => 'required_with:destination|max:255',
+            'receiver.address_2' => 'required_with:destination|max:255',
             'receiver.address_3' => 'max:255',
             
             'pay_method' => 'required', 
@@ -741,7 +741,7 @@ class CartController extends Controller
          $messages = [
             //'title.required' => '「商品名」を入力して下さい。',
             'user.prefecture.not_in' => '「都道府県」を選択して下さい。',
-            'destination.required_without' => '「配送先」を入力して下さい。', //登録先住所に配送の場合は「登録先住所に配送する」にチェックをして下さい。
+            'destination.required_with' => '「配送先」を入力して下さい。', //登録先住所に配送の場合は「登録先住所に配送する」にチェックをして下さい。
             'pay_method.required' => '「お支払い方法」を選択して下さい。',
             'use_point.max' => '「ポイント」が保持ポイントを超えています。',
             'net_bank.required_if'=> '「お支払い方法」ネットバンク決済の銀行を選択して下さい。',
@@ -775,7 +775,7 @@ class CartController extends Controller
 //        exit;
 
 		//ユーザー(配送先)の都道府県NameとIdを取得
-        if(! isset($data['destination'])) {
+        if(isset($data['destination'])) {
         	$prefName = $data['receiver']['prefecture'];
          	//$prefId = $this->prefecture->where('name', $prefName)->first()->id;   
         }
@@ -964,7 +964,7 @@ class CartController extends Controller
         $settles = array();
         $actionUrl = '';
         
-        if($data['pay_method'] == 5 || $data['pay_method'] == 6) {
+        if($data['pay_method'] == 5 || $data['pay_method'] == 6) { //代引きと銀振
         	//$settles['url'] = url('shop/thankyou');
             $actionUrl = url('shop/thankyou');
         }

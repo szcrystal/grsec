@@ -60,7 +60,8 @@ return [
     'regex'                => ':attributeの書式が正しくありません。',
     'required'             => ':attributeは必須です。',
     'required_if'          => ':otherが:valueの時、:attributeは必須です。',
-    'required_with'        => ':valuesの時、:attributeは必須です。',
+    //'required_with'        => ':valuesの時、:attributeは必須です。',
+    'required_with'        => ':attributeは必須です。',
     'required_with_all'    => ':valuesが存在する時、:attributeは必須です。',
     'required_without'     => ':attributeは必須です。',
     //'required_without'     => ':valuesが存在しない時、:attributeは必須です。',
@@ -127,6 +128,7 @@ return [
         'user.password' => '「パスワード」',
         'user.password_confirmation' => '「パスワードの確認」',
         
+        'destination' => '「別の住所へ配送する」',
         'receiver.name' => '「配送先氏名」',
         'receiver.hurigana' => '「配送先フリガナ」',
         'receiver.email' => '「配送先メールアドレス」',

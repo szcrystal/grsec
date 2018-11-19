@@ -177,7 +177,7 @@
         	<tr>
             <td>
         
-@if(! isset($data['destination']))
+@if(isset($data['destination']))
     〒{{ Ctm::getPostNum($data['receiver']['post_num']) }}<br>
     {{ $data['receiver']['prefecture'] }}&nbsp;
     {{ $data['receiver']['address_1'] }}&nbsp;

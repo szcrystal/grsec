@@ -255,13 +255,19 @@ $url = $isMypage ? url('mypage/register') : url('register');
                                 if(old('user.birth_year') == $y)
                                     $selected = ' selected';
                             }
-                            else {
-                                if(isset($user) && $user->birth_year == $y) {
+                            else if(isset($user)) {
+                            	 if($user->birth_year == $y) {
                                 //if(Session::has('all.data.user')  && session('all.data.user.birth_year') == $y) {
                                     $selected = ' selected';
                                 }
                             }
+                            else {
+                                if($y == 1970) {
+                                    $selected = ' selected';
+                                }
+                            }
                         ?>
+                        
                         <option value="{{ $y }}"{{ $selected }}>{{ $y }}</option>
                         
                         <?php $y++; ?>
@@ -421,7 +427,7 @@ $url = $isMypage ? url('mypage/register') : url('register');
              
              @else
              
-             <p class="mt-3">パスワードの変更は<a href="{{ url('password/reset') }}">こちら</a>から</p>
+             <p class="mt-3">パスワードの変更は<a href="{{ url('password/reset') }}">こちら <i class="fal fa-angle-double-right"></i></a></p>
              
              @endif
          
@@ -435,7 +441,7 @@ $url = $isMypage ? url('mypage/register') : url('register');
 
 @if($isMypage)
 <a href="{{ url('mypage') }}" class="btn border-secondary bg-white mt-5">
-<i class="fas fa-angle-double-left"></i> マイページに戻る
+<i class="fal fa-angle-double-left"></i> マイページに戻る
 </a>
 @endif
 

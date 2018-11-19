@@ -419,22 +419,32 @@ var exe = (function() {
         outReceive: function() {
         	var $destination = $('input[name="destination"]');
          	var $em = $('.receiver').find('em');
+            var $rWrap = $('.receiver-wrap');
              
               if($destination.is(':checked')) {
-                $em.hide();
+              	$rWrap.show();
+              	$em.show();
               }
               else {
-                $em.show();
+              	$rWrap.hide();
+              	$em.hide();
               }
 
             $destination.on('click', function(){
                 if($(this).is(':checked')) { 
-                    $em.fadeOut(30);
-                    $('.receiver-error:visible').fadeOut(30).siblings().removeClass('is-invalid');
-                    //$('.receiver-error:visible');
+                    $em.fadeIn(30, function(){
+                    	$rWrap.slideDown(300);
+                    });
                 }
                 else {
-                    $em.fadeIn(30);
+                	
+                    $rWrap.slideUp(300, function(){
+                    	$em.fadeOut(30);
+                    });
+                    
+                    $('.receiver-error:visible').fadeOut(30).siblings().removeClass('is-invalid');
+                    //$('.receiver-error:visible');
+                    
                 }
             });
         },

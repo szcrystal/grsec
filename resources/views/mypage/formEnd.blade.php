@@ -40,12 +40,12 @@
 
 @if($isMypage == 2)
 <a href="{{ url('/') }}" class="btn border-secondary bg-white mt-3">
-<i class="fas fa-angle-double-left"></i> HOME
+<i class="fal fa-angle-double-left"></i> HOME
 </a>
 
 @elseif($isMypage == 1)
 <a href="{{ url('mypage') }}" class="btn border-secondary bg-white mt-5">
-<i class="fas fa-angle-double-left"></i> マイページへ
+<i class="fal fa-angle-double-left"></i> マイページへ
 </a>
 @endif
 </div>
