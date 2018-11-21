@@ -93,7 +93,11 @@ class CategorySecondController extends Controller
 
         if($editId) { //update（編集）の時
             $status = '子カテゴリーが更新されました！';
-            $cateModel = $this->cateSec->find($request->input('edit_id'));
+            $cateModel = $this->cateSec->find($editId);
+            
+            $data['updated_at'] = date('Y-m-d H:i:s', time()); //Modelにupdated_atをセットする必要がある
+//            $cateModel->updated_at = date('Y-m-d H:i:s', time()); //この方法だとModelにセットする必要はない
+//            $cateModel -> save();
         }
         else { //新規追加の時
             $status = '子カテゴリーが追加されました！';

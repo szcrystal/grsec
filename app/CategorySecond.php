@@ -23,5 +23,8 @@ class CategorySecond extends Model
         'contents',
         
         'view_count',
+        'sort_num',
+        
+        'updated_at',
     ];
 }

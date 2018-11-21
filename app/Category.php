@@ -23,5 +23,6 @@ class Category extends Model
         'contents',
         
         'view_count',
+        'sort_num',
     ];
 }

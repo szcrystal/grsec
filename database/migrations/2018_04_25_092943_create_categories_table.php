@@ -31,6 +31,7 @@ class CreateCategoriesTable extends Migration
             $table->longText('contents')->nullable()->default(NULL);
             
             $table->integer('view_count')->nullable()->default(0);
+            $table->integer('sort_num')->nullable()->default(NULL);
             
             $table->timestamps();
         });

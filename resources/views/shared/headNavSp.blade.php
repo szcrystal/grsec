@@ -34,19 +34,21 @@ use App\User;
     	<i class="fal fa-search"></i>
 	</div>
 
+</header>
     
-    <div class="clearfix s-form">
-        <form class="my-1 my-lg-0" role="form" method="GET" action="{{ url('search') }}">
-            {{-- csrf_field() --}}
+    <div class="s-form-wrap">
+        <div class="clearfix s-form">
+            <form class="my-1 my-lg-0" role="form" method="GET" action="{{ url('search') }}">
+                {{-- csrf_field() --}}
 
-            <input type="search" class="form-control rounded-0" name="s" placeholder="何かお探しですか？">
-            <i class="fa fa-search btn-s"></i>
-
-        </form>
+                <input type="search" class="form-control rounded-0" name="s" placeholder="何かお探しですか？">
+                <i class="fa fa-search btn-s"></i>
+            </form>
+        </div>
     </div>
     
     
-    <nav class="">
+    <nav class="nav-sp-wrap">
 
         <?php
             use App\Category;
@@ -110,7 +112,7 @@ use App\User;
                 @if(Auth::check())
                     <li>
                         <a href="{{ url('/logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                ログアウト
+                                ログアウト <i class="fal fa-angle-double-right"></i>
                         </a>
 
                         <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
@@ -124,7 +126,7 @@ use App\User;
 
     </nav>
 
-</header>
+
 
 </div><!-- fixed-top -->
 
@@ -138,16 +140,17 @@ use App\User;
 
 <div class="icon-belt">
     <ul class="clearfix">
+    	<li><a href="{{ url('/') }}"><i class="fal fa-home"></i></a></li>
 
         @if(! Auth::check())
-            <li><a href="{{ url('login') }}">ログイン</a></li>
+            <li><a href="{{ url('login') }}"><i class="fal fa-login"></i></a></li>
         @else
-            <li><a href="{{ url('mypage') }}"><i class="fal fa-file-alt"></i></a></li>
+            <li><a href="{{ url('mypage') }}"><i class="fal fa-user"></i></a></li>
             
             <li><a href="{{ url('/logout') }}"
                             onclick="event.preventDefault();
                                      document.getElementById('logout-form').submit();">
-                            <i class="fal fa-sign-out-alt"></i>
+                            <i class="fal fa-sign-out"></i>
                     </a>
 
                     <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">

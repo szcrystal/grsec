@@ -261,7 +261,7 @@
             
         
 			<fieldset class="mt-5 mb-4 form-group">
-                <label>商品番号 <span class="text-danger text-big">*</span> （アンダーバー不可 ハイフンのみ）</label>
+                <label>商品番号 <span class="text-danger text-big">*</span> （半角英数字とハイフンのみで構成して下さい）</label>
                 <input class="form-control{{ $errors->has('number') ? ' is-invalid' : '' }}" name="number" value="{{ Ctm::isOld() ? old('number') : (isset($item) ? $item->number : '') }}">
 
                 @if ($errors->has('number'))

@@ -25,7 +25,6 @@ use App\TopSetting;
     <div class="panel panel-default">
 
         <div class="panel-body top-cont">
-            {{-- @include('main.shared.main') --}}
 
 
 @foreach($firstItems as $key => $firstItem)

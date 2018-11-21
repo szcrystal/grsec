@@ -186,7 +186,8 @@ body {
 .table-custom th,
 .table-cart th {
 	background: #3a3b3c;
-	color: #fff;
+    color: #fff;
+    //background: #efefef;
 	font-size: 0.95em;
     //position: relative;
 }
@@ -651,7 +652,6 @@ body {
 	display: block;
     width: 100%;
     height: 100%;
-    
 }
 .main-navi > ul > li:last-of-type {
 	border-right: 0/* 1px solid #d8d8d8*/;
@@ -1203,15 +1203,25 @@ body {
 .no-list {
 	list-style: none;
     padding: 0;
-    margin: 0;
+    margin: 0 0 1em;
 }
 .no-list li {
-	margin-bottom: 1em;
+	margin-bottom: 0.8em;
     font-size: 0.95em;
 }
 .no-list ul li {
 	margin-bottom: 0.1em;
 }
+.more-tgl {
+	margin-top: -0.7em;
+	cursor: pointer;
+    font-size: 0.85em;
+    //border: 1px solid #dfdfdf;
+}
+.more-list {
+	display: none;
+}
+
 
 /* Tag */
 ul.side-rank {

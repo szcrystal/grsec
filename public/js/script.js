@@ -8,6 +8,8 @@ var exe = (function() {
             crtClass: 'crnt',
             btnID: '.top_btn',
             all: 'html, body',
+            t: 0,
+            
             animEnd: 'webkitAnimationEnd MSAnimationEnd oanimationend animationend', //mozAnimationEnd
             transitEnd: 'webkitTransitionEnd MSTransitionEnd otransitionend transitionend', //mozTransitionEnd 
         },
@@ -90,18 +92,25 @@ var exe = (function() {
         },
         
         searchSlide: function() {
-        	var $input = $('.s-form');
-            var $nav = $('.nav-sp');
+        	
+            var th = this;
+            
+        	var $input = $('.s-form-wrap');
+            var $nav = $('.nav-sp-wrap');
             
             //var $width = this.isSpTab('sp') ? '65%' : '13em';
-            var speed = 180;
+            var speed = 150;
             var ease = 'linear';
            
             $('.s-tgl').on('click', function(){
                 if($input.is(':hidden')) {
                 	
                     if($nav.is(':visible')) {
-                    	$nav.slideUp(100);
+                    	$nav.slideUp(speed, function(){
+                    		$(this).css({ height: 0 });
+                        });
+                        
+                        $('html,body').css({position:'static'}).scrollTop(th.opts.t);
                     }
                     
                     $input.slideDown(speed, ease, function(){
@@ -124,26 +133,37 @@ var exe = (function() {
 //            	$('.s-form input').slideToggle(150);
 //            });
            
-            //var t;
+            var th = this;
             
+            var $navWrap = $('.nav-sp-wrap');
             var $nav = $('.nav-sp');
-            var $sForm = $('.s-form');
+            var $sForm = $('.s-form-wrap');
             var $hasChild = $('.has-child');
             
-            var speed = 180;
+            var speed = 150;
             var ease = 'linear';
             
             $('.nav-tgl').on('click', function() {
 
-                if($nav.is(':hidden')) {
+                if($navWrap.is(':hidden')) {
+                	th.opts.t = $(window).scrollTop();
+                    
                 	if($sForm.is(':visible')) {
                     	$sForm.slideUp(100);
                     }
                     
-                	$nav.slideDown(speed);
+                	//$nav.slideDown(speed);
+                    
+                    $navWrap.css({ height: $(window).height() }).slideDown(speed);
+                    $('html,body').css({position:'fixed', top:-th.opts.t});
                 }
                 else {
-                	$nav.slideUp(speed);
+                	//$nav.slideUp(speed);
+                    
+                    $navWrap.slideUp(speed, function(){
+                    	$(this).css({ height: 0 });
+                    });
+                    $('html,body').css({position:'static'}).scrollTop(th.opts.t); 
                 }
  
             });
@@ -630,6 +650,26 @@ var exe = (function() {
             console.log($pmRadio.find(':checked').val());
         },
         
+        
+        toggleSideMenu: function(){
+        	$tgl = $('.more-tgl');
+            speed = 150;
+            
+            $tgl.on('click', function(e){
+            	$list = $(this).next('.more-list');
+                
+                $list.slideToggle(speed);
+            	
+//                if($list.is(':hidden')) {
+//                	$list.slideDown(speed);
+//                }
+//                else {
+//                	$list.slideUp(speed);
+//                }
+            });
+            
+        },
+        
         getWH: function() {
         	$target = $('.top-first .img-box');
         	var w = $target.width();
@@ -696,6 +736,8 @@ $(function(e){ //ready
     exe.potSetSelect();
     
     exe.slidePayMethodChild();
+    
+    exe.toggleSideMenu();
 });
 
 

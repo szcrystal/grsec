@@ -293,7 +293,7 @@ for SP
         font-size: 1.1em;
         color: #fff;
         text-align: center;
-        padding: 0.2em 0 0.25em;
+        padding: 0.3em 0 0.35em;
     }
     .telephone a {
     	display: block;
@@ -312,12 +312,13 @@ for SP
 	.site-header {
 		position: relative;
         box-sizing: content-box;
-        padding: 0.1em 0;
+        padding: 0.15em 0;
         border-bottom: 1px solid #d5d5d5;
         border-top: 0;
 	}
     .fixed-top {
     	border: 0;
+        background: none;
     }
 	
 
@@ -377,7 +378,7 @@ for SP
         text-align: center;
         width: 100%;
         margin: 0;
-        padding: 0;
+        padding: 0.3em 0 0;
     }
     
     .nav-tgl,
@@ -388,7 +389,7 @@ for SP
         //border: 1px solid red;
     }
     .nav-tgl {
-        padding: 0.15em 0.2em 0.2em 0.2em;
+        padding: 0.2em 0.2em 0.2em 0.2em;
         top: 0;
         left: 1.0%;
         font-size: 1.7em;
@@ -412,31 +413,35 @@ for SP
     	display: block;
     	position: fixed;
         left: 0;
-        bottom: 32px;
-        height: 32px;
+        bottom: 36px;
+        height: 36px;
         line-height: 0;
         z-index: 10001;
         font-size: 1.2em;
         //padding-bottom: 0.6em;
         //background: red;
     }
+    #spCartBtn:hover,
+    #spCartBtn:active {
+    	opacity: 1;
+    }
     #colop {
     	margin-top: 0;
-    	margin-bottom: 32px;
+    	margin-bottom: 36px;
     }
     #colop.single-colop {
-    	margin-bottom: 63px;
+    	margin-bottom: 71px;
     }
     .icon-belt {
     	width: 100%;
     	background: #3a3b3c;
-        height: 32px;
-        line-height: 32px;
+        height: 36px;
+        line-height: 39px;
         padding: 0 0.2em;
         position: fixed;
         left: 0;
         bottom: 0;
-        z-index: 999;
+        z-index: 99999;
         text-align: center;
     }
     .icon-belt ul {
@@ -464,11 +469,18 @@ for SP
         vertical-align: -2px;
     }
     
-    .s-form {
+    .s-form-wrap {
     	display: none;
+    	background: #fefffe;
+        border-bottom: 1px solid #d5d5d5;
+        padding: 0.5em 0;
+        //border: 1px solid red;
+    }
+    .s-form {
         width: 93%;
         float: none;
-        margin: 0.7em auto 0.5em;
+        margin: auto;
+        
         //position: relative;
         //border: 1px solid red;
     }
@@ -486,16 +498,20 @@ for SP
     	margin-left: -2em;
     }
     
-
-    .nav-sp {
-    	display: none;
-        padding: 0.5em 0 0;
+	.nav-sp-wrap {
+    	background: rgba(0,0,0,0.5);
         overflow: scroll;
+        display: none;
+    }
+    .nav-sp {
+    	//display: none;
+        padding: 0.5em 0 0;
+        background: #fefffe;
     }
     .nav-sp > p {
     	text-align: center;
         font-weight: bold;
-        font-size: 0.75em;
+        font-size: 0.8em;
         margin: 0.3em 0 0.3em;
         padding: 0;
     }
@@ -504,9 +520,9 @@ for SP
         margin: 0;
     }
     .nav-sp ul > li {
-    	padding: 0.5em 0 0.5em 1.4em;
+    	padding: 0.6em 0 0.6em 1.4em;
     	border-bottom: 1px solid #d5d5d5;
-        font-size: 1.0em;
+        font-size: 1.05em;
         color: #333;
     }
     .nav-sp ul > li:last-of-type {
@@ -522,7 +538,7 @@ for SP
     .nav-sp .has-child li {
     	padding: 0.3em 0 0.3em 2em;
         border: 0;
-        font-size: 0.9em;
+        font-size: 0.95em;
     }
     
     

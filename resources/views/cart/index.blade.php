@@ -203,7 +203,7 @@
             
             <tr>
            		<td colspan="5" class="text-right">
-           			<span class="text-enji">数量変更後の小計を確認する場合は「再計算」を、事前に送料を確認する場合は「配送先都道府県」を選択して「送料計算」を押して下さい</span>
+           			<span class="text-enji"><i class="fas fa-exclamation-triangle"></i> 上記の「小計」に送料は含まれておりません。送料を確認する場合は「配送先都道府県」を選択して「送料計算」を押して下さい。</span>
                 </td>
            </tr>
            

@@ -1,41 +1,32 @@
 @include('shared.header')
 <body>
 
-    <div id="app">
-    	{{--
-    	@if(Auth::check())
-     		@include('shared.authNav')
-     	@endif
-      --}}   
+<div id="app">
             
-    	@if(Ctm::isAgent('sp'))
-			@include('shared.headNavSp')
-        @else
-        	@include('shared.headNav')
-        @endif
+    @if(Ctm::isAgent('sp'))
+        @include('shared.headNavSp')
+    @else
+        @include('shared.headNav')
+    @endif
+    
+    @yield('belt')
         
+<div class="sp-fix-wrap">
+    
+    <div class="container">
+    
+        <?php $className = isset($className) ? $className : ''; ?>
         
-        
-        @yield('belt')
-        
-        
-
-		<div class="container">
-        	
-            
-
-            <?php $className = isset($className) ? $className : ''; ?>
-            
-            <div class="pb-4 wrap-all clearfix {{ $className }}"><!-- offset-md-1-->
-            	@yield('bread')
-                @yield('content')
-                @yield('leftbar')
-            </div>
+        <div class="pb-4 wrap-all clearfix {{ $className }}"><!-- offset-md-1-->
+            @yield('bread')
+            @yield('content')
+            @yield('leftbar')
         </div>
-
     </div>
 
 @include('shared.footer')
+</div><!-- for sp-fix-wrap -->
+</div><!-- id app -->
 
 </body>
 </html>

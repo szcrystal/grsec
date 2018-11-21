@@ -60,10 +60,11 @@ class LoginController extends Controller
         $data = $request->all();
         
         $credentials = $request->only('email', 'password');
+        $remember = $request->has('remember') ? 1 : 0;
         
         $prevUrl = $request->has('to_cart') ? '/shop/cart' : $data['previous'];
 
-        if (Auth::attempt($credentials)) { // 認証に成功した
+        if (Auth::attempt($credentials, $remember)) { // 認証に成功した
             return redirect()->intended($prevUrl);
             
         }

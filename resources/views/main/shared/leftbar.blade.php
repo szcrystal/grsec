@@ -26,13 +26,53 @@
                 	
                     <ul class="no-list pl-3">
                     
-                    <?php $subcates = CategorySecond::where('parent_id', $cate->id)->get(); ?>
-                    @foreach($subcates as $subcate)
+                    <?php 
+                    	$subcates = CategorySecond::where('parent_id', $cate->id)->orderBy('updated_at', 'desc')->get();
+                    	
+                        $i = 0;
+						$num = Ctm::isEnv('product') ? 7 : 3;
+                        $firstCate = array();
+                        $secondCate = array();
+                        
+						if(count($subcates) > $num ) {
+                            foreach($subcates as $val) {
+                                if($i < $num)
+                                    $firstCate[] = $val;
+                                else 
+                                    $secondCate[] = $val;
+                                
+                                $i++;
+                            }
+                        }
+                        else {
+                        	$firstCate = $subcates;
+                        }
+                    ?>
+                    
+                    @foreach($firstCate as $subcate)                        
                         <li>
                             <a href="{{url('category/'. $cate->slug.'/'.$subcate->slug) }}">{{ $subcate->name }}</a>
                         </li>
                     @endforeach
-                	</ul>
+                    
+                    </ul>
+                    
+                    @if(count($secondCate) > 0)
+                    	<div class="text-right text-small more-tgl pr-2">
+                        	もっと見る <i class="fal fa-angle-down"></i>
+                        </div>
+                        
+                        <ul class="no-list pl-3 subcate-wrap more-list">
+                        
+                            @foreach($secondCate as $subcate)
+                                <li>
+                                    <a href="{{url('category/'. $cate->slug.'/'.$subcate->slug) }}">{{ $subcate->name }}</a>
+                                </li>  
+                            @endforeach
+                        
+                        </ul>
+                    @endif
+
                 @endforeach
 
             </div>
