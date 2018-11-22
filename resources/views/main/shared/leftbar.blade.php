@@ -25,35 +25,34 @@
                     </a></h5>
                 	
                     <ul class="no-list pl-3">
-                    
-                    <?php 
-                    	$subcates = CategorySecond::where('parent_id', $cate->id)->orderBy('updated_at', 'desc')->get();
-                    	
-                        $i = 0;
-						$num = Ctm::isEnv('product') ? 7 : 3;
-                        $firstCate = array();
-                        $secondCate = array();
-                        
-						if(count($subcates) > $num ) {
-                            foreach($subcates as $val) {
-                                if($i < $num)
-                                    $firstCate[] = $val;
-                                else 
-                                    $secondCate[] = $val;
-                                
-                                $i++;
+                        <?php 
+                            $subcates = CategorySecond::where('parent_id', $cate->id)->orderBy('updated_at', 'desc')->get();
+                            
+                            $i = 0;
+                            $num = Ctm::isEnv('product') ? 7 : 3;
+                            $firstCate = array();
+                            $secondCate = array();
+                            
+                            if(count($subcates) > $num ) {
+                                foreach($subcates as $val) {
+                                    if($i < $num)
+                                        $firstCate[] = $val;
+                                    else 
+                                        $secondCate[] = $val;
+                                    
+                                    $i++;
+                                }
                             }
-                        }
-                        else {
-                        	$firstCate = $subcates;
-                        }
-                    ?>
-                    
-                    @foreach($firstCate as $subcate)                        
-                        <li>
-                            <a href="{{url('category/'. $cate->slug.'/'.$subcate->slug) }}">{{ $subcate->name }}</a>
-                        </li>
-                    @endforeach
+                            else {
+                                $firstCate = $subcates;
+                            }
+                        ?>
+                        
+                        @foreach($firstCate as $subcate)                        
+                            <li>
+                                <a href="{{url('category/'. $cate->slug.'/'.$subcate->slug) }}">{{ $subcate->name }}</a>
+                            </li>
+                        @endforeach
                     
                     </ul>
                     
