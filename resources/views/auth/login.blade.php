@@ -70,8 +70,7 @@
                         </div>
                     </fieldset>
                     
-
-                    <fieldset class="form-group row mt-3">
+					<fieldset class="form-group row mt-3">
                         <div class="col-md-7 offset-md-3">
                             @if(Request::has('to_cart'))
                                 <input type="hidden" name="to_cart" value="1">
