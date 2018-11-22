@@ -21,7 +21,6 @@
     <!-- /.row -->
 
 
-  
     {{--
     <div class="row -row-compact-sm -row-compact-md -row-compact-lg">
       <div class="col-sm-12 col-md-6 col-lg-6 col-xl-5 -sameheight">

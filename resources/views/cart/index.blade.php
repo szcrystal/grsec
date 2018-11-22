@@ -121,7 +121,7 @@
                  		<input type="hidden" name="item_id" value="{{ $item->id }}">
                    		<input type="hidden" name="delete_item" value="1">  
                      	--}}             
-                		<button class="btn bg-white border-secondary btn-normal" type="submit" name="del_item_key" value="{{ $key }}"><i class="fal fa-times"></i> 削除</button>
+                		<button class="btn bg-white border-secondary btn-normal w-100" type="submit" name="del_item_key" value="{{ $key }}"><i class="fal fa-times"></i> 削除</button>
 
                 </td>        
 
@@ -138,7 +138,7 @@
             	<td class="text-big"><b>¥{{ number_format($allPrice) }}</b></td>
              	<td>	
                     <input type="hidden" name="calc" value="1" form="re">
-                    <button class="btn border border-secondary bg-white px-2" type="submit" name="re_calc" value="1"><i class="fal fa-redo"></i> 再計算</button>
+                    <button class="btn border border-secondary bg-white px-2 w-100" type="submit" name="re_calc" value="1"><i class="fal fa-redo"></i> 再計算</button>
                     {{-- <input type="submit" name="re_calc" value="再計算"> --}}
                 </td>
           	</tr>
@@ -197,7 +197,7 @@
                     </div>
                 </td>
                 <td>
-                    <button class="btn border border-secondary bg-white px-2" type="submit" name="delifee_calc" value="1"><i class="fal fa-redo"></i> 送料計算</button>
+                    <button class="btn px-2 w-100 bg-enji" type="submit" name="delifee_calc" value="1"><i class="fal fa-calculator"></i> 送料計算</button>
                 </td>
             </tr>
             
