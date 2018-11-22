@@ -75,11 +75,12 @@
                 <tr>
                   <th>ID</th>
                   <th>名前</th>
-                  <th>性別</th>
-                  <th>生年月日</th>
-                  <th>都道府県</th>
+                  <th>住所</th>
                   <th>メールアドレス</th>
-                  <th>メルマガ</th>
+                  <th>TEL</th>
+                  @if($isUser) 
+                  	<th>メルマガ</th>
+                  @endif
                   <th>登録日</th>
                   <th></th>
                   
@@ -89,22 +90,24 @@
               <tbody>
               @foreach($userObjs as $user)
                 <tr>
-                  <td>{{ $user->id }}</td>
-                  <td>{{ $user->name }}</td>
-                  <td>{{ $user->gender }}</td>
-                  <td>{{ $user->birth_year }}/{{ $user->birth_month }}/{{ $user->birth_day }}</td>
-                  <td>{{ $user->prefecture }}</td>
-                  
-                  <td><a href="mailto:{{ $user->email }}">{{ $user->email }}</a></td>
-                  <td>
-                  	@if($user->magazine)
-                  	<span class="text-info">登録済</span>
-                    @else
-                    <span class="text-warning">未登録</span>
+                  	<td>{{ $user->id }}</td>
+                    <td>{{ $user->name }}</td>
+                    <td>{{ $user->prefecture }}{{ $user->address_1 }}{{ $user->address_2 }}<br>{{ $user->address_3 }}</td>
+                  	
+                    <td><a href="mailto:{{ $user->email }}">{{ $user->email }}</a></td>
+                    <td>{{ $user->tel_num }}</td>
+                    
+                    @if($isUser)
+                        <td>
+                            @if($user->magazine)
+                            <span class="text-success">登録済</span>
+                            @else
+                            <span class="text-warning">未登録</span>
+                            @endif
+                        </td>
                     @endif
-                	</td>
                   
-                  <td><small>{{ Ctm::changeDate($user->created_at, 0) }}</small></td>
+                  	<td><small>{{ Ctm::changeDate($user->created_at, 0) }}</small></td>
                   
                   <?php 
                   		$link = $user->id;

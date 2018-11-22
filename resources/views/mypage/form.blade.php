@@ -255,8 +255,8 @@ $url = $isMypage ? url('mypage/register') : url('register');
                                 if(old('user.birth_year') == $y)
                                     $selected = ' selected';
                             }
-                            else if(isset($user)) {
-                            	 if($user->birth_year == $y) {
+                            else if(isset($user) && $user->birth_year) {
+                                if($user->birth_year == $y) {
                                 //if(Session::has('all.data.user')  && session('all.data.user.birth_year') == $y) {
                                     $selected = ' selected';
                                 }

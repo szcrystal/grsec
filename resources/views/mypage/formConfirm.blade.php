@@ -105,26 +105,18 @@ $str = $isMypage ? '変更する' : '登録する';
         <tr class="form-group">
              <th><label class="control-label">性別</label></th>
             <td>
-                 @if(isset($data['gender']))
-                 {{ $data['gender'] }}
-                 @endif
+                @if(isset($data['gender']))
+                 	{{ $data['gender'] }}
+                @endif
              </td>
          </tr>
     
          <tr class="form-group">
              <th><label class="control-label">生年月日</label></th>
                <td>
-                   @if($data['birth_year'])
-                    {{ $data['birth_year'] }}年
-                   @endif
-                   
-                   @if($data['birth_month'])
-                       {{ $data['birth_month'] }}月
-                   @endif
-                   
-                   @if($data['birth_day'])
-                       {{ $data['birth_day'] }}日
-                   @endif
+                   	@if($data['birth_year'] && $data['birth_month'] && $data['birth_day'])
+                    	{{ $data['birth_year'] }}/{{ $data['birth_month'] }}/{{ $data['birth_day'] }}
+                    @endif
                 </td>
          </tr>
          

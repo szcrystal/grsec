@@ -65,71 +65,6 @@ class CreateMailTemplatesTable extends Migration
             ]
         );
         
-        DB::table('mail_templates')->insert(
-            [ 
-                'type_code' => 'ensure_7',
-                'type_name' => '枯れ保証 ７日',
-                'title' => '枯れ保証期間について',
-                'header' => 'ababab',
-                'footer' => '121212',
-                
-                'created_at' => date('Y-m-d H:i:s', time()),
-                'updated_at' => date('Y-m-d H:i:s', time()),
-            ]
-        );
-        
-        DB::table('mail_templates')->insert(
-            [ 
-                'type_code' => 'ensure_33',
-                'type_name' => '枯れ保証 33日',
-                'title' => '枯れ保証期間について',
-                'header' => 'ababab',
-                'footer' => '121212',
-                
-                'created_at' => date('Y-m-d H:i:s', time()),
-                'updated_at' => date('Y-m-d H:i:s', time()),
-            ]
-        );
-        
-        DB::table('mail_templates')->insert(
-            [ 
-                'type_code' => 'ensure_96',
-                'type_name' => '枯れ保証 96日',
-                'title' => '枯れ保証期間について',
-                'header' => 'ababab',
-                'footer' => '121212',
-                
-                'created_at' => date('Y-m-d H:i:s', time()),
-                'updated_at' => date('Y-m-d H:i:s', time()),
-            ]
-        );
-        
-        DB::table('mail_templates')->insert(
-            [ 
-                'type_code' => 'ensure_155',
-                'type_name' => '枯れ保証 155日',
-                'title' => '枯れ保証期間について',
-                'header' => 'ababab',
-                'footer' => '121212',
-                
-                'created_at' => date('Y-m-d H:i:s', time()),
-                'updated_at' => date('Y-m-d H:i:s', time()),
-            ]
-        );
-        
-        DB::table('mail_templates')->insert(
-            [ 
-                'type_code' => 'no_ensure_33',
-                'type_name' => '枯れ保証なし 33日',
-                'title' => '枯れ保証なしについて',
-                'header' => 'ababab',
-                'footer' => '121212',
-                
-                'created_at' => date('Y-m-d H:i:s', time()),
-                'updated_at' => date('Y-m-d H:i:s', time()),
-            ]
-        );
-        
         
         DB::table('mail_templates')->insert(
             [ 
@@ -216,6 +151,71 @@ class CreateMailTemplatesTable extends Migration
                 'title' => 'キャンセル致しました',
                 'header' => 'ddd',
                 'footer' => '444',
+                
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time()),
+            ]
+        );
+        
+        DB::table('mail_templates')->insert(
+            [ 
+                'type_code' => 'ensure_7',
+                'type_name' => '枯れ保証 ７日',
+                'title' => '枯れ保証期間について',
+                'header' => 'ababab',
+                'footer' => '121212',
+                
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time()),
+            ]
+        );
+        
+        DB::table('mail_templates')->insert(
+            [ 
+                'type_code' => 'ensure_33',
+                'type_name' => '枯れ保証あと1ヶ月',
+                'title' => '枯れ保証期間について',
+                'header' => 'ababab',
+                'footer' => '121212',
+                
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time()),
+            ]
+        );
+        
+        DB::table('mail_templates')->insert(
+            [ 
+                'type_code' => 'ensure_96',
+                'type_name' => '枯れ保証あと3ヶ月',
+                'title' => '枯れ保証期間について',
+                'header' => 'ababab',
+                'footer' => '121212',
+                
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time()),
+            ]
+        );
+        
+        DB::table('mail_templates')->insert(
+            [ 
+                'type_code' => 'ensure_155',
+                'type_name' => '枯れ保証あと5ヶ月',
+                'title' => '枯れ保証期間について',
+                'header' => 'ababab',
+                'footer' => '121212',
+                
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time()),
+            ]
+        );
+        
+        DB::table('mail_templates')->insert(
+            [ 
+                'type_code' => 'no_ensure_33',
+                'type_name' => '枯れ保証なし 33日',
+                'title' => '枯れ保証なしについて',
+                'header' => 'ababab',
+                'footer' => '121212',
                 
                 'created_at' => date('Y-m-d H:i:s', time()),
                 'updated_at' => date('Y-m-d H:i:s', time()),

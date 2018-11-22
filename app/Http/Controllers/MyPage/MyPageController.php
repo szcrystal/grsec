@@ -200,6 +200,7 @@ class MyPageController extends Controller
         
         $data['user']['magazine'] = isset($data['user']['magazine']) ? 1 : 0;
         
+        
 //        $data['user']['birth_year'] = $data['user']['birth_year'] ? $data['user']['birth_year'] : null;
 //        $data['user']['birth_month'] = $data['user']['birth_month'] ? $data['user']['birth_month'] : null;
 //        $data['user']['birth_day'] = $data['user']['birth_day'] ? $data['user']['birth_day'] : null;
@@ -234,6 +235,13 @@ class MyPageController extends Controller
         else {
            	$data['password'] = bcrypt($data['password']);
             $user = $this->user; 
+        }
+        
+        //Birth Input 年月日1つでも0があるなら入力しない　ことにしているがどうか
+        if( ! $data['birth_year'] || ! $data['birth_month'] || ! $data['birth_day']) {
+            $data['birth_year'] = 0;
+            $data['birth_month'] = 0;
+            $data['birth_day'] = 0;
         }
         
         $user->fill($data);

@@ -344,6 +344,14 @@ class CartController extends Controller
         }
         else {   
             $userData['magazine'] = isset($userData['magazine']) ? $userData['magazine'] : 0;
+            
+            //Birth Input 年月日1つでも0があるなら入力しない　ことにしているがどうか
+            if( ! $userData['birth_year'] || ! $userData['birth_month'] || ! $userData['birth_day']) {
+            	$userData['birth_year'] = 0;
+                $userData['birth_month'] = 0;
+                $userData['birth_day'] = 0;
+            }
+            
             session('all.data.user.magazine', $userData['magazine']); //session入れ　不要？？
             
             if($regist) {   
@@ -753,6 +761,14 @@ class CartController extends Controller
         $this->validate($request, $rules, $messages);
         $data = $request->all();
         
+//        if(! Auth::check()) {
+//            //Birth Input 月日全て入力で登録することにしているがどうか
+//            if(! $data['user']['birth_year'] || ! $data['user']['birth_month'] || ! $data['user']['birth_day']) {
+//                $data['user']['birth_year'] = 0;
+//                $data['user']['birth_month'] = 0;
+//                $data['user']['birth_day'] = 0;
+//            }
+//        }
 
         //全データをsessionに入れる session入れ
         $request->session()->put('all.data', $data); //user receiver destination paymentMethod

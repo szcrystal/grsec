@@ -97,7 +97,13 @@
                             
                             <tr>
                                 <th>生年月日</th>
-                                <td>{{$user->birth_year}}年{{$user->birth_month}}月{{$user->birth_day}}日</td>
+                                <td>
+                                	@if($user->birth_year && $user->birth_month && $user->birth_day)
+                                        {{ $user->birth_year }}/{{ $user->birth_month }}/{{ $user->birth_day }}
+                                    @else
+                                        --
+                                    @endif
+                                </td>
                             </tr>
                             <tr>
                                 <th>郵便番号</th>
@@ -121,12 +127,16 @@
                             </tr>
                             
                             <tr>
-                                <th>メールマガジン</th>
-                                <td>@if($user->magazine)
-                                  <span class="text-info">登録済</span>
-                                @else
-                                <span class="text-warning">未登録</span>
-                                @endif</td>
+                            	@if($isUser)
+                                    <th>メールマガジン</th>
+                                    <td>
+                                        @if($user->magazine)
+                                        	<span class="text-info">登録済</span>
+                                        @else
+                                        	<span class="text-warning">未登録</span>
+                                        @endif
+                                    </td>
+                                @endif
                             </tr>
                             @if($isUser)
                             <tr>
