@@ -107,10 +107,10 @@ var exe = (function() {
                 	
                     if($nav.is(':visible')) {
                     	$nav.slideUp(speed, function(){
-                    		$(this).css({ height: 0 });
+                    		//$(this).css({ height: 0 });
                         });
                         
-                        $('html,body').css({position:'static'}).scrollTop(th.opts.t);
+                        //$('html,body').css({position:'static'}).scrollTop(th.opts.t);
                     }
                     
                     $input.slideDown(speed, ease, function(){
@@ -157,14 +157,12 @@ var exe = (function() {
                     	$sForm.slideUp(100);
                     }
                     
-                	//$nav.slideDown(speed);
+                	$navWrap.slideDown(speed);
                     
-                    $navWrap/*.css({ height: $(window).height() })*/.slideDown(speed);
-                    //$('body').css({overflowY:'hidden'});
+                    //$navWrap.css({ height: $(window).height() }).slideDown(speed);
                     //$('html,body').css({position:'fixed', top:-th.opts.t});
                 }
                 else {
-                	//$nav.slideUp(speed);
                     //$('body').off('.noScroll');
                     
                     $navWrap.slideUp(speed, function(){
