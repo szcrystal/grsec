@@ -143,7 +143,7 @@ use App\User;
     	<li><a href="{{ url('/') }}"><i class="fal fa-home"></i></a></li>
 
         @if(! Auth::check())
-            <li><a href="{{ url('login') }}"><i class="fal fa-login"></i></a></li>
+            <li><a href="{{ url('login') }}"><i class="fal fa-sign-in"></i></a></li>
         @else
             <li><a href="{{ url('mypage') }}"><i class="fal fa-user"></i></a></li>
             
