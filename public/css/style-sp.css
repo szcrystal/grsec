@@ -500,7 +500,7 @@ for SP
     
 	.nav-sp-wrap {
     	background: rgba(0,0,0,0.6);
-        overflow: auto;
+        overflow: scroll;
         display: none;
         position: relative;
         z-index: 1000;
