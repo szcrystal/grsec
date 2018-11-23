@@ -155,7 +155,7 @@ var exe = (function() {
                     
                 	//$nav.slideDown(speed);
                     
-                    $navWrap.css({ height: $(window).height()-80 }).slideDown(speed);
+                    $navWrap.css({ height: $(window).height()-40 }).slideDown(speed);
                     //$('html,body').css({overflow:'hidden'});
                     $('html,body').css({position:'fixed', top:-th.opts.t});
                 }
