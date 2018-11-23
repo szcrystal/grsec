@@ -281,7 +281,7 @@ for SP
     	margin-top: 5.8em;
     }
     .tophead-wrap {
-    	margin-top: 0.5em;
+    	//margin-top: 0.5em;
     }
     .tophead-wrap + .container {
     	margin-top: 1.0em;
@@ -294,6 +294,7 @@ for SP
         color: #fff;
         text-align: center;
         padding: 0.3em 0 0.35em;
+        height: 36px;
     }
     .telephone a {
     	display: block;
@@ -315,9 +316,11 @@ for SP
         padding: 0.15em 0;
         border-bottom: 1px solid #d5d5d5;
         border-top: 0;
+        margin: 36px 0 0;
 	}
     .fixed-top {
     	border: 0;
+        margin: 0;
         background: none;
     }
 	

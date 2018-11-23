@@ -14,6 +14,8 @@ use App\User;
 	<a href="tel:0299530030"><i class="fal fa-phone"></i> 電話をかける<span class="text-small">（月〜土 8:00〜17:00）</span></a>
 </div>
 
+</div><!-- fixed-top -->
+
 <header class="site-header clearfix">
 
 	<div class="logos clearfix">
@@ -35,6 +37,8 @@ use App\User;
 	</div>
 
 </header>
+
+
     
     <div class="s-form-wrap">
         <div class="clearfix s-form">
@@ -128,14 +132,14 @@ use App\User;
 
 
 
-</div><!-- fixed-top -->
 
-<div class="sp-fix-wrap border border-danger">
 
+
+{{--
 <div class="head-navi">
     <p class="aniv">初めてでも安心！全品6ヶ月枯れ保証！3ヶ月取置き可能！</p>
 </div>
-
+--}}
 
 
 <div class="icon-belt">
