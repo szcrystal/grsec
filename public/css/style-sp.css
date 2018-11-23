@@ -749,7 +749,7 @@ ORG END ======================== */
     }
     .table-cart .table thead th:nth-of-type(3) {
     	width: 25%;
-        font-size: 0.85em;
+        font-size: 0.8em;
     }
     .table-cart .table thead th:nth-of-type(4) {
     	width: 25%;
@@ -763,6 +763,7 @@ ORG END ======================== */
     }
     .confirm-left .table-cart .table thead th:nth-of-type(3) {
     	width: 25%;
+        font-size: 0.85em;
     }
 /*    .confirm-left .table-cart .table thead th:nth-of-type(3),*/
 /*    .confirm-left .table-cart .table thead th:nth-of-type(4) {*/
