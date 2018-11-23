@@ -11,8 +11,15 @@
 
 <div class="sp-fix-wrap">
     
-    @yield('belt')
+    {{-- @yield('belt') --}}
     
+    @if(isset($type) && $type == 'single')
+        @if(! Ctm::isAgent('sp'))
+            @include('main.shared.news')
+        @endif
+    @else
+    	@include('main.shared.news')
+    @endif
     
     <div class="container">
     

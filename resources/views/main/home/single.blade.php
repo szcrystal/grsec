@@ -10,6 +10,7 @@ use App\TopSetting;
 ?>
 
 
+@if(! Ctm::isAgent('sp'))
 @section('belt')
 <div class="tophead-wrap">
     <div class="clearfix">
@@ -21,6 +22,7 @@ use App\TopSetting;
     @endif
 </div>
 @endsection
+@endif
 
 
 

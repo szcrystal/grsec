@@ -281,7 +281,7 @@ for SP
     	margin-top: 5.8em;
     }
     .tophead-wrap {
-    	//margin-top: 0.5em;
+    	//display: none;
     }
     .tophead-wrap + .container {
     	margin-top: 1.0em;
@@ -1043,9 +1043,13 @@ ORG END ======================== */
     }
     
     /* Single */
+    .single .breadcrumb {
+    	display: none;
+    }
     .single-left {
         float: none;
         width: 100%;
+        margin-top: -0.5em;
         //border: 1px solid orange;
     }
     .single-right {
