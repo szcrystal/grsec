@@ -149,7 +149,7 @@ var exe = (function() {
                 if($navWrap.is(':hidden')) {
                 	th.opts.t = $(window).scrollTop();
                     
-                    $('.sp-fix-wrap').on('touchmove.noScroll', function(e){
+                    $('body').on('touchmove.noScroll', function(e){
                     	e.preventDefault();
                     });
                     
@@ -165,7 +165,7 @@ var exe = (function() {
                 }
                 else {
                 	//$nav.slideUp(speed);
-                    $('.sp-fix-wrap').off('.noScroll');
+                    $('body').off('.noScroll');
                     
                     $navWrap.slideUp(speed, function(){
                     	$(this).css({ height: 0 });
