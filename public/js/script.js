@@ -149,7 +149,7 @@ var exe = (function() {
                 if($navWrap.is(':hidden')) {
                 	th.opts.t = $(window).scrollTop();
                     
-                    $('body').on('touchmove', function(e){
+                    $('.sp-fix-wrap').on('touchmove.noScroll', function(e){
                     	e.preventDefault();
                     });
                     
@@ -159,13 +159,13 @@ var exe = (function() {
                     
                 	//$nav.slideDown(speed);
                     
-                    $navWrap.css({ height: $(window).height()-75 }).slideDown(speed).off('touchmove');
+                    $navWrap.css({ height: $(window).height()-75 }).slideDown(speed);
                     //$('.sp-fix-wrap').css({overflow:'hidden'});
                     //$('.sp-fix-wrap').css({position:'fixed', top:-th.opts.t});
                 }
                 else {
                 	//$nav.slideUp(speed);
-                    $('body').off('touchmove');
+                    $('.sp-fix-wrap').off('.noScroll');
                     
                     $navWrap.slideUp(speed, function(){
                     	$(this).css({ height: 0 });
