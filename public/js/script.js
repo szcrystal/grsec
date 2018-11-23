@@ -159,7 +159,7 @@ var exe = (function() {
                     
                 	//$nav.slideDown(speed);
                     
-                    $navWrap.css({ height: $(window).height()-75 }).slideDown(speed);
+                    $navWrap.css({ height: $(window).height()-75 }).slideDown(speed).off('touchmove');
                     //$('.sp-fix-wrap').css({overflow:'hidden'});
                     //$('.sp-fix-wrap').css({position:'fixed', top:-th.opts.t});
                 }
