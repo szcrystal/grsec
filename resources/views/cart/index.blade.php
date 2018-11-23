@@ -45,7 +45,7 @@
   			<tr>
                 <th>商品名</th>
                 <th>数量</th>
-                <th>金額（税込）</th>
+                <th>金額<span class="text-small">（税込）</span></th>
                 <th></th>
             </tr>
   		</thead>  
