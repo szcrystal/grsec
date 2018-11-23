@@ -155,7 +155,8 @@ var exe = (function() {
                 	//$nav.slideDown(speed);
                     
                     $navWrap.css({ height: $(window).height() }).slideDown(speed);
-                    $('html,body').css({position:'fixed', top:-th.opts.t});
+                    $('html,body').css({overflow:'hidden'});
+                    //$('html,body').css({position:'fixed', top:-th.opts.t});
                 }
                 else {
                 	//$nav.slideUp(speed);
@@ -163,7 +164,9 @@ var exe = (function() {
                     $navWrap.slideUp(speed, function(){
                     	$(this).css({ height: 0 });
                     });
-                    $('html,body').css({position:'static'}).scrollTop(th.opts.t); 
+                    
+                    $('html,body').css({overflow:'visible'});
+                    //$('html,body').css({position:'static'}).scrollTop(th.opts.t); 
                 }
  
             });
@@ -226,7 +229,7 @@ var exe = (function() {
             
         },
         
-        
+        //郵便番号のセット
         postNumSet: function() {
         	$('#zipcode').jpostal({
                 postcode : [
