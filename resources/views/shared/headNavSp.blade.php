@@ -130,7 +130,7 @@ use App\User;
 
 </div><!-- fixed-top -->
 
-
+<div class="sp-fix-wrap border border-danger">
 
 <div class="head-navi">
     <p class="aniv">初めてでも安心！全品6ヶ月枯れ保証！3ヶ月取置き可能！</p>

@@ -9,7 +9,7 @@
         @include('shared.headNav')
     @endif
 
-<div class="sp-fix-wrap border border-danger">
+
     
     @yield('belt')
     
