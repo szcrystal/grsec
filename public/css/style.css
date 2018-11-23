@@ -182,14 +182,22 @@ body {
     //border: 1px solid orange;
 }
 
+/*.table,*/
+/*.table th,*/
+/*.table td {*/
+/*	border-color: #d7d7d7 !important;*/
+/*}*/
 
 .table-custom th,
 .table-cart th {
-	background: #3a3b3c;
-    color: #fff;
-    //background: #efefef;
+	//background: #3a3b3c;
+    //color: #fff;
+    background: #ececec;
 	font-size: 0.95em;
     //position: relative;
+}
+.table-cart th {
+	border-bottom: 0 !important;
 }
 .table-custom th:after {
 	display: block;
@@ -198,11 +206,13 @@ body {
 	height: 0;
 }
 .table-custom th em {
+	display: block;
 	font-size: 0.9em;
 	line-height: 0.9em;
 	font-style: normal;
-	background: salmon;
+	background: lightsalmon;
 	color: #fff;
+    margin-top: 0.2em;
 	padding: 0.3em 0.2em;
 	float: right;
 }

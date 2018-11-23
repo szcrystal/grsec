@@ -168,7 +168,7 @@
 <div class="confirm-left">
 <h5 class="card-header mb-3 py-2 mt-4">配送情報</h5>
 <div class="table-responsive table-custom mt-3">
-    <table class="table table-borderd border bg-white">
+    <table class="table table-borderd border bg-white table-cart">
     	<thead>
      	   <tr><th>お届け先</th></tr>
         </thead>
@@ -204,7 +204,7 @@
 
 
 <div class="table-responsive table-custom mt-3">
-    <table class="table table-borderd border bg-white">
+    <table class="table table-borderd border bg-white table-cart">
     	<thead>
      	   <tr><th>ご希望配送日時</th></tr>
         </thead>

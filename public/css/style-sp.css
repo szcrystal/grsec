@@ -709,7 +709,7 @@ ORG END ======================== */
         padding-right: 0.5em;
     }
     .table-custom th small { /* 「ハイフンなし半角数字」のテキスト */
-    	margin-top: -1em;
+    	margin-top: -5px;
         padding-bottom: 0.2em;
     }
     
@@ -1049,7 +1049,7 @@ ORG END ======================== */
     .single-left {
         float: none;
         width: 100%;
-        margin-top: -0.5em;
+        margin-top: -0.6em;
         //border: 1px solid orange;
     }
     .single-right {

@@ -39,7 +39,7 @@
                             
                             <tbody>
                                 <tr class="form-group">
-                                	<th>お問い合わせ種別<em>必須</em></th>
+                                	<th><label class="control-label">お問い合わせ種別</label><em>必須</em></th>
                                     <td>
                                         <select class="form-control col-md-9{{ $errors->has('ask_category') ? ' is-invalid' : '' }}" name="ask_category">
                                         	<option disabled selected>選択して下さい</option>
