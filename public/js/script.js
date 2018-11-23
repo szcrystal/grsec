@@ -156,8 +156,8 @@ var exe = (function() {
                 	//$nav.slideDown(speed);
                     
                     $navWrap.css({ height: $(window).height()-75 }).slideDown(speed);
-                    //$('html,body').css({overflow:'hidden'});
-                    $('.sp-fix-wrap').css({position:'fixed', top:-th.opts.t});
+                    $('.sp-fix-wrap').css({overflow:'hidden'});
+                    //$('.sp-fix-wrap').css({position:'fixed', top:-th.opts.t});
                 }
                 else {
                 	//$nav.slideUp(speed);
@@ -166,8 +166,8 @@ var exe = (function() {
                     	$(this).css({ height: 0 });
                     });
                     
-                    //$('html,body').css({overflow:'visible'});
-                    $('.sp-fix-wrap').css({position:'static'}).scrollTop(th.opts.t); 
+                    $('.sp-fix-wrap').css({overflow:'visible'});
+                    //$('.sp-fix-wrap').css({position:'static'}).scrollTop(th.opts.t); 
                 }
  
             });
