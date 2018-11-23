@@ -679,6 +679,7 @@ ORG END ======================== */
         width: 100%;
         //border: 1px solid red;
     }
+    
     .single .table-custom .table tbody th,
     .single .table-custom .table tbody td { /* Single 送料表の部分 */
     	display: inline-block;
@@ -694,10 +695,11 @@ ORG END ======================== */
     .confirm .table-custom.show-price .table tbody th { /* shop confirm -> Price の部分*/
     	display: block;
 		width: 100%;
+        padding-bottom: 0 !important;
     }
     
     .table-custom .table tbody th {
-    	padding: 0.4em 0.6em 0;
+    	padding: 0.6em 0.6em !important;
         vertical-align: middle;
     }
     .table-custom .table select {
@@ -716,11 +718,11 @@ ORG END ======================== */
     .table-cart .table {
         width: 99%;
         margin: auto;
-        font-size: 0.85em;
+        //font-size: 0.9em;
         table-layout: fixed;
     }
     .confirm .table-cart .table {
-    	font-size: 0.9em;
+    	//font-size: 0.95em;
     }
     .table-cart .table td img.img-fluid {
         float: none;
@@ -730,9 +732,9 @@ ORG END ======================== */
    	.table-cart .table thead th {
    		font-size: 0.9em;
         vertical-align: middle;
-        padding: 1em 0.6em;
+        padding: 0.6em 0.6em;
         //height: 2em !important;
-        line-height: 1.2em;
+        //line-height: 1.2em;
    	}
    	.table-cart .table thead th:first-of-type {
     	width: 35% !important;

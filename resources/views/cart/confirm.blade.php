@@ -77,7 +77,7 @@
 
 <div class="confirm-right mt-3">
     <h5 class="">&nbsp;</h5>
-    <div class="table-responsive table-custom show-price">
+    <div class="table-responsive show-price table-custom">
         <table class="table border table-borderd bg-white">
             
             <tbody>
@@ -167,8 +167,8 @@
 
 <div class="confirm-left">
 <h5 class="card-header mb-3 py-2 mt-4">配送情報</h5>
-<div class="table-responsive table-custom mt-3">
-    <table class="table table-borderd border bg-white table-cart">
+<div class="table-responsive table-cart mt-3">
+    <table class="table table-borderd border bg-white">
     	<thead>
      	   <tr><th>お届け先</th></tr>
         </thead>
@@ -203,8 +203,8 @@
 </div>
 
 
-<div class="table-responsive table-custom mt-3">
-    <table class="table table-borderd border bg-white table-cart">
+<div class="table-responsive table-cart mt-3">
+    <table class="table table-borderd border bg-white">
     	<thead>
      	   <tr><th>ご希望配送日時</th></tr>
         </thead>
