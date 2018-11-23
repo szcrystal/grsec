@@ -161,7 +161,7 @@ var exe = (function() {
                     
                     $navWrap.css({ height: $(window).height()-75 }).slideDown(speed);
                     //$('.sp-fix-wrap').css({overflow:'hidden'});
-                    $('body').css({position:'fixed', overflow-y:'scroll', top:-th.opts.t});
+                    $('body').css({position:'fixed', overflowY:'scroll', top:-th.opts.t});
                 }
                 else {
                 	//$nav.slideUp(speed);
@@ -172,7 +172,7 @@ var exe = (function() {
                     });
                     
                     //$('.sp-fix-wrap').css({overflow:'visible'});
-                    $('body').css({position:'static', overflow-y:'auto'}).scrollTop(th.opts.t); 
+                    $('body').css({position:'static', overflowY:'auto'}).scrollTop(th.opts.t); 
                 }
  
             });
