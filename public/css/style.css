@@ -297,7 +297,7 @@ body {
 }
 .confirm .table-custom .table tbody th {
 	width: 30%;
-    font-size: 0.9em;
+    //font-size: 0.9em;
 }
 .confirm .table-custom.show-price .table tbody th {
 	width: 53%;
