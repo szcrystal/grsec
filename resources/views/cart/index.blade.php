@@ -197,7 +197,7 @@
                     </div>
                 </td>
                 <td>
-                    <button class="btn px-2 w-100 bg-enji" type="submit" name="delifee_calc" value="1"><i class="fal fa-calculator"></i> 送料計算</button>
+                    <button class="btn px-2 w-100 bg-enji" type="submit" name="delifee_calc" value="1"><b>送料計算</b></button>
                 </td>
             </tr>
             
