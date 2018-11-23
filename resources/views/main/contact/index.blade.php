@@ -39,7 +39,7 @@
                             
                             <tbody>
                                 <tr class="form-group">
-                                	<th><label class="control-label">お問い合わせ種別</label><em>必須</em></th>
+                                	<th>お問い合わせ種別<em>必須</em></th>
                                     <td>
                                         <select class="form-control col-md-9{{ $errors->has('ask_category') ? ' is-invalid' : '' }}" name="ask_category">
                                         	<option disabled selected>選択して下さい</option>
@@ -72,7 +72,7 @@
 
 
                                 <tr class="form-group">
-                                	<th><label class="control-label">お名前</label><em>必須</em></th>
+                                	<th>お名前<em>必須</em></th>
                                    	<td>
                                     	<input class="form-control rounded-0 col-md-12{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ Ctm::isOld() ? old('name') : (Session::has('contact') ? session('contact.name') : '') }}" placeholder="例）山田太郎">
                                    
@@ -86,7 +86,7 @@
                                 </tr>
 
                                 <tr class="form-group">
-                                	<th><label class="control-label">メールアドレス</label><em>必須</em></th>
+                                	<th>メールアドレス<em>必須</em></th>
                                     <td>
                                     	<input class="form-control rounded-0 col-md-12{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ Ctm::isOld() ? old('email') : (Session::has('contact') ? session('contact.email') : '') }}" placeholder="例）info@example.com">
                                    
@@ -100,7 +100,7 @@
                                 </tr>
                                 
                                 <tr class="form-group">
-                                	<th><label class="control-label">お問い合わせ内容</label><em>必須</em></th>
+                                	<th>お問い合わせ内容<em>必須</em></th>
                                     <td>
                                         <textarea id="comment" class="form-control rounded-0 col-md-12{{ $errors->has('comment') ? ' is-invalid' : '' }}" name="comment" rows="20">{{ Ctm::isOld() ? old('comment') : (Session::has('contact') ? session('contact.comment') : '') }}</textarea>
 
@@ -125,6 +125,8 @@
                         </div>
                     </form>
                     </div>
+                
+                </div><!-- panel-body -->
 
 
             </div><!-- panel -->

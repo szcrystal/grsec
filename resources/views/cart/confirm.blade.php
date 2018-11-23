@@ -82,36 +82,36 @@
             
             <tbody>
             <tr>
-                <th><label class="control-label">商品金額合計（税込）</label></th>
+                <th>商品金額合計（税込）</th>
                  <td>¥{{ number_format($allPrice) }}</td>
             </tr>
             <tr>
-                <th><label class="control-label">送料</label></th>
+                <th>送料</th>
                 <td>¥{{ number_format($deliFee) }}</td>
             </tr>
             
             @if($data['pay_method'] == 2)
                 <tr>
-                    <th><label class="control-label">コンビニ決済手数料</label></th>
+                    <th>コンビニ決済手数料</th>
                     <td>¥{{ number_format($codFee) }}</td>
                 </tr>
             
             @elseif($data['pay_method'] == 4)
                 <tr>
-                    <th><label class="control-label">GMO後払い手数料</label></th>
+                    <th>GMO後払い手数料</th>
                     <td>¥{{ number_format($codFee) }}</td>
                 </tr>
             
             @elseif($data['pay_method'] == 5)
                 <tr>
-                    <th><label class="control-label">代引き手数料</label></th>
+                    <th>代引き手数料</th>
                     <td>¥{{ number_format($codFee) }}</td>
                 </tr>
             @endif
             
             @if(Auth::check())
             <tr>
-                <th><label class="control-label">利用ポイント</label></th>
+                <th>利用ポイント</th>
                  <td>
                  @if($usePoint)
                  -
@@ -121,7 +121,7 @@
             @endif
             
             <tr>
-                <th><label class="control-label">注文金額合計（税込）</label></th>
+                <th>注文金額合計（税込）</th>
                  <td class="text-danger text-big{{ count($errors) > 0 ? ' alert-danger' : '' }}">
                       ¥{{ number_format($allPrice + $deliFee + $codFee - $usePoint) }}
                 </td>
@@ -136,12 +136,12 @@
 
             @if(Auth::check())
             <tr>
-                <th><label class="control-label">ポイント残高</label></th>
+                <th>ポイント残高</th>
                  <td>{{ $userArr['point'] - $usePoint }}</td>
             </tr>
             @endif
             <tr>
-                <th><label class="control-label">ポイント発生</label></th>
+                <th>ポイント発生</th>
                 <td>{{ $addPoint }}</td>
             </tr>
         </table>
@@ -151,7 +151,7 @@
     <div class="table-responsive table-custom show-price mt-3">
         <table class="table border table-borderd bg-white"> 
             <tr>
-                <th><label class="control-label">お支払い方法</label></th>
+                <th>お支払い方法</th>
                 <td class="{{ count($errors) > 0 ? 'alert-danger' : '' }}">
                     {{ $payMethod->find($data['pay_method'])->name }}
                     @if($data['pay_method'] == 3)
@@ -250,23 +250,32 @@
         
         <tbody>
         <tr>
-        	<th><label class="control-label">氏名</label></th>
+        	<th>氏名</th>
          	<td>{{ $userArr['name'] }}</td>
         </tr>
         <tr>
-            <th><label class="control-label">フリガナ</label></th>
+            <th>フリガナ</th>
              <td>{{ $userArr['hurigana'] }}</td>
         </tr>
         <tr>
-            <th><label class="control-label">メールアドレス</label></th>
+            <th>メールアドレス</th>
              <td>{{ $userArr['email'] }}</td>
         </tr>
         <tr>
-            <th><label class="control-label">電話番号</label></th>
+            <th>電話番号</th>
              <td>{{ $userArr['tel_num'] }}</td>
         </tr>
         <tr>
-            <th><label class="control-label">性別</label></th>
+            <th>住所</th>
+             <td>〒{{ Ctm::getPostNum($userArr['post_num']) }}<br>
+             		{{ $userArr['prefecture'] }}&nbsp;
+             		{{ $userArr['address_1'] }}&nbsp;
+                    {{ $userArr['address_2'] }}<br>
+               		{{ $userArr['address_3'] }}
+             </td>
+        </tr>
+        <tr>
+            <th>性別</th>
              <td>
              	@if(isset($userArr['gender']))
                  {{ $userArr['gender'] }}
@@ -276,7 +285,7 @@
             </td>
         </tr>
         <tr>
-            <th><label class="control-label">生年月日</label></th>
+            <th>生年月日</th>
              <td>
              	@if($userArr['birth_year'] && $userArr['birth_month'] && $userArr['birth_day'])
              		{{ $userArr['birth_year'] }}/{{ $userArr['birth_month'] }}/{{ $userArr['birth_day'] }}
@@ -285,18 +294,9 @@
               	@endif   
             </td>
         </tr>
+        
         <tr>
-            <th><label class="control-label">住所</label></th>
-             <td>〒{{ Ctm::getPostNum($userArr['post_num']) }}<br>
-             		{{ $userArr['prefecture'] }}&nbsp;
-             		{{ $userArr['address_1'] }}&nbsp;
-                    {{ $userArr['address_2'] }}<br>
-               		{{ $userArr['address_3'] }}     
-             
-             </td>
-        </tr>
-        <tr>
-            <th><label class="control-label">メールマガジンの登録</label></th>
+            <th>メールマガジンの登録</th>
              <td>
              	@if(isset($userArr['magazine']))
                 	する

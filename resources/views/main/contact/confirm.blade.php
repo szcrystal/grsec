@@ -25,7 +25,7 @@
 
 
                                 <tr class="form-group">
-                                	<th><label class="control-label">お名前</label</th>
+                                	<th>お名前</th>
                                    	<td>
                                     	{{ $data['name'] }}
                                     	
@@ -33,7 +33,7 @@
                                 </tr>
 
                                 <tr class="form-group">
-                                	<th><label class="control-label">メールアドレス</label></th>
+                                	<th>メールアドレス</th>
                                     <td>
                                     	{{ $data['email'] }}
                                     	
@@ -41,7 +41,7 @@
                                 </tr>
                                 
                                 <tr class="form-group">
-                                	<th><label class="control-label">お問い合わせ内容</label></th>
+                                	<th>お問い合わせ内容</th>
                                     <td>
                                     	<p>
                                     	{!! nl2br($data['comment']) !!}
@@ -70,11 +70,12 @@
                             </div>                
                         </form>
 
-                        <a href="{{ url('contact') }}" class="btn border border-secondary bg-white mt-5"><i class="fas fa-angle-double-left"></i> 入力に戻る</a>
+                        <a href="{{ url('contact') }}" class="btn border border-secondary bg-white mt-5"><i class="fal fa-angle-double-left"></i> 入力に戻る</a>
                     </div>
 
                 </div>
 
+				</div><!-- panel-body -->
 
             </div><!-- panel -->
             

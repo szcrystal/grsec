@@ -42,54 +42,54 @@ $str = $isMypage ? '変更する' : '登録する';
     <table class="table table-borderd border bg-white">
         
         <tr class="form-group">
-             <th><label class="control-label">氏名</label></th>
+             <th>氏名</th>
                <td>
                 {{ $data['name'] }}
             </td>
          </tr> 
       
           <tr class="form-group">
-             <th><label class="control-label">フリガナ</label></th>
+             <th>フリガナ</th>
                <td>{{ $data['hurigana'] }}</td>
          </tr>
          
          <tr class="form-group">
-             <th><label class="control-label">メールアドレス</label></th>
+             <th>メールアドレス</th>
             <td>{{ $data['email'] }}</td>
          </tr>
          
          <tr class="form-group">
-             <th><label class="control-label">電話番号</label></th>
+             <th>電話番号</th>
             <td>{{ $data['tel_num'] }}</td>
          </tr>
          
          <tr class="form-group">
-             <th><label class="control-label">郵便番号</label></th>
+             <th>郵便番号</th>
                <td>〒{{ Ctm::getPostNum($data['post_num']) }}</td>               
          </tr>
          
          <tr class="form-group">
-             <th><label class="control-label">都道府県</label></th>
+             <th>都道府県</th>
                <td>
                 {{ $data['prefecture'] }}
             </td>
          </tr>
          
          <tr class="form-group">
-             <th><label class="control-label">住所1（都市区）</label></th>
+             <th>住所1（都市区）</th>
                <td>{{ $data['address_1'] }}</td>
               
          </tr>
          
          <tr class="form-group">
-             <th><label class="control-label">住所2（それ以降）</label></th>
+             <th>住所2（それ以降）</th>
                <td>{{ $data['address_2'] }}</td>
                 
             </td>
          </tr>
          
          <tr class="form-group">
-             <th><label class="control-label">住所3（建物/マンション名等）</label></th>
+             <th>住所3（建物/マンション名等）</th>
                <td>
                @if(isset($data['address_3']))
                	{{ $data['address_3'] }}
@@ -103,7 +103,7 @@ $str = $isMypage ? '変更する' : '登録する';
     <table class="table table-borderd border bg-white">
         
         <tr class="form-group">
-             <th><label class="control-label">性別</label></th>
+             <th>性別</th>
             <td>
                 @if(isset($data['gender']))
                  	{{ $data['gender'] }}
@@ -112,7 +112,7 @@ $str = $isMypage ? '変更する' : '登録する';
          </tr>
     
          <tr class="form-group">
-             <th><label class="control-label">生年月日</label></th>
+             <th>生年月日</th>
                <td>
                    	@if($data['birth_year'] && $data['birth_month'] && $data['birth_day'])
                     	{{ $data['birth_year'] }}/{{ $data['birth_month'] }}/{{ $data['birth_day'] }}
@@ -127,7 +127,7 @@ $str = $isMypage ? '変更する' : '登録する';
     <table class="table table-borderd border bg-white">
          
          <tr class="form-group">
-             <th><label class="control-label">メールマガジンの登録</label></th>
+             <th>メールマガジンの登録</th>
                <td>
                @if(isset($data['magazine']) && $data['magazine'])
                登録する
@@ -145,7 +145,7 @@ $str = $isMypage ? '変更する' : '登録する';
     <table class="table table-borderd border bg-white">
        
          <tr class="form-group">
-             <th><label class="control-label">パスワード</label></th>
+             <th>パスワード</th>
                <td>********（表示されません）</td>
                
          </tr>

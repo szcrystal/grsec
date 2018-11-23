@@ -45,7 +45,7 @@ $url = $isMypage ? url('mypage/register') : url('register');
     <table class="table table-borderd border">
         
         <tr class="form-group">
-             <th><label class="control-label">氏名</label><em>必須</em></th>
+             <th>氏名<em>必須</em></th>
                <td>
                 <input class="form-control rounded-0 col-md-12{{ $errors->has('user.name') ? ' is-invalid' : '' }}" name="user[name]" value="{{ Ctm::isOld() ? old('user.name') : (isset($user) ? $user->name : '') }}" placeholder="例）山田太郎">
                
@@ -59,7 +59,7 @@ $url = $isMypage ? url('mypage/register') : url('register');
          </tr> 
       
           <tr class="form-group">
-             <th><label class="control-label">フリガナ</label><em>必須</em></th>
+             <th>フリガナ<em>必須</em></th>
                <td>
                 <input type="text" class="form-control rounded-0 col-md-12{{ $errors->has('user.hurigana') ? ' is-invalid' : '' }}" name="user[hurigana]" value="{{ Ctm::isOld() ? old('user.hurigana') : (isset($user) ? $user->hurigana : '') }}" placeholder="例）ヤマダタロウ">
                 
@@ -73,7 +73,7 @@ $url = $isMypage ? url('mypage/register') : url('register');
          </tr>
          
          <tr class="form-group">
-             <th><label class="control-label">メールアドレス</label><em>必須</em></th>
+             <th>メールアドレス<em>必須</em></th>
                <td>
                 <input type="email" class="form-control rounded-0 col-md-12{{ $errors->has('user.email') ? ' is-invalid' : '' }}" name="user[email]" value="{{ Ctm::isOld() ? old('user.email') : (isset($user) ? $user->email : '') }}" placeholder="例）abcde@example.com">
                 
@@ -87,7 +87,7 @@ $url = $isMypage ? url('mypage/register') : url('register');
          </tr>
          
          <tr class="form-group">
-             <th><label class="control-label">電話番号</label><em>必須</em>
+             <th>電話番号<em>必須</em>
              	<small>例）09012345678ハイフンなし半角数字</small>
              </th>
                <td>
@@ -103,7 +103,7 @@ $url = $isMypage ? url('mypage/register') : url('register');
          </tr>
          
          <tr class="form-group">
-             <th><label class="control-label">郵便番号</label><em>必須</em>
+             <th>郵便番号<em>必須</em>
              	<small>例）1234567ハイフンなし半角数字</small>
              </th>
                <td>
@@ -119,7 +119,7 @@ $url = $isMypage ? url('mypage/register') : url('register');
          </tr>
          
          <tr class="form-group">
-             <th><label class="control-label">都道府県</label><em>必須</em></th>
+             <th>都道府県<em>必須</em></th>
                <td>
                 <select id="pref" class="form-control rounded-0 select-first col-md-6{{ $errors->has('user.prefecture') ? ' is-invalid' : '' }}" name="user[prefecture]">
                     <option disabled selected>選択して下さい</option>
@@ -155,7 +155,7 @@ $url = $isMypage ? url('mypage/register') : url('register');
          </tr>
          
          <tr class="form-group">
-             <th><label class="control-label">住所1（都市区）</label><em>必須</em></th>
+             <th>住所1（都市区）<em>必須</em></th>
                <td>
                 <input id="address" type="text" class="form-control rounded-0 col-md-12{{ $errors->has('user.address_1') ? ' is-invalid' : '' }}" name="user[address_1]" value="{{ Ctm::isOld() ? old('user.address_1') : (isset($user) ? $user->address_1 : '') }}" placeholder="例）小美玉市">
                 
@@ -169,7 +169,7 @@ $url = $isMypage ? url('mypage/register') : url('register');
          </tr>
          
          <tr class="form-group">
-             <th><label class="control-label">住所2（それ以降）</label><em>必須</em></th>
+             <th>住所2（それ以降）<em>必須</em></th>
                <td>
                 <input type="text" class="form-control rounded-0 col-md-12{{ $errors->has('user.address_2') ? ' is-invalid' : '' }}" name="user[address_2]" value="{{ Ctm::isOld() ? old('user.address_2') : (isset($user) ? $user->address_2 : '') }}" placeholder="例）下吉影1-1">
                 
@@ -183,7 +183,7 @@ $url = $isMypage ? url('mypage/register') : url('register');
          </tr>
          
          <tr class="form-group">
-             <th><label class="control-label">住所3（建物/マンション名等）</label></th>
+             <th>住所3（建物/マンション名等）</th>
                <td>
                 <input type="text" class="form-control rounded-0 col-md-12{{ $errors->has('user.address_3') ? ' is-invalid' : '' }}" name="user[address_3]" value="{{ Ctm::isOld() ? old('user.address_3') : (isset($user) ? $user->address_3 : '') }}" placeholder="例）GRビル 101号">
                 
@@ -204,7 +204,7 @@ $url = $isMypage ? url('mypage/register') : url('register');
 
          <tr>
          	<fieldset  class="form-group">
-             <th><label class="control-label">性別</label></th>
+             <th>性別</th>
                <td>
                 <?php 
                      $arrs = array('男性', '女性');
@@ -239,7 +239,7 @@ $url = $isMypage ? url('mypage/register') : url('register');
         
         
          <tr class="form-group">
-             <th><label class="control-label">生年月日</label></th>
+             <th>生年月日</th>
                <td>
                    
                 <select class="form-control rounded-0 select-first col-md-2 d-inline{{ $errors->has('user.birth_year') ? ' is-invalid' : '' }}" name="user[birth_year]">
@@ -362,7 +362,7 @@ $url = $isMypage ? url('mypage/register') : url('register');
     <table class="table table-borderd border">
       
          <tr class="form-group">
-             <th><label class="control-label">メールマガジンの登録</label></th>
+             <th>メールマガジンの登録</th>
                <td>
                 <?php
                     $checked = '';
@@ -398,7 +398,7 @@ $url = $isMypage ? url('mypage/register') : url('register');
          
 			@if(! $isMypage)
              <tr class="form-group">
-                 <th><label class="control-label">パスワード</label><em>必須</em></th>
+                 <th>パスワード<em>必須</em></th>
                    <td>
                     <input type="password" class="form-control rounded-0 col-md-12{{ $errors->has('user.password') ? ' is-invalid' : '' }}" name="user[password]" value="{{ Ctm::isOld() ? old('user.password') : (Session::has('all.data.user') ? session('all.data.user.password') : '') }}" placeholder="8文字以上">
                                         
@@ -412,7 +412,7 @@ $url = $isMypage ? url('mypage/register') : url('register');
              </tr>
              
              <tr class="form-group">
-                 <th><label class="control-label">パスワードの確認</label><em>必須</em></th>
+                 <th>パスワードの確認<em>必須</em></th>
                    <td>
                     <input type="password" class="form-control rounded-0 col-md-12{{ $errors->has('user.password_confirmation') ? ' is-invalid' : '' }}" name="user[password_confirmation]" value="{{ Ctm::isOld() ? old('user.password_confirmation') : (Session::has('all.data.user') ? session('all.data.user.password_confirmation') : '') }}">
                     

@@ -106,7 +106,7 @@ use App\DeliveryGroup;
        
         
         <tr class="form-group">
-             <th><label class="control-label">氏名</label><em>必須</em></th>
+             <th>氏名<em>必須</em></th>
                <td>
                 <input class="form-control col-md-12{{ $errors->has('user.name') ? ' is-invalid' : '' }}" name="user[name]" value="{{ Ctm::isOld() ? old('user.name') : (Session::has('all.data.user') ? session('all.data.user.name') : '') }}" placeholder="例）山田太郎">
                
@@ -120,7 +120,7 @@ use App\DeliveryGroup;
          </tr> 
       
           <tr class="form-group">
-             <th><label class="control-label">フリガナ</label><em>必須</em></th>
+             <th>フリガナ<em>必須</em></th>
                <td>
                 <input type="text" class="form-control col-md-12{{ $errors->has('user.hurigana') ? ' is-invalid' : '' }}" name="user[hurigana]" value="{{ Ctm::isOld() ? old('user.hurigana') : (Session::has('all.data.user') ? session('all.data.user.hurigana') : '') }}" placeholder="例）ヤマダタロウ">
                 
@@ -134,7 +134,7 @@ use App\DeliveryGroup;
          </tr>
          
          <tr class="form-group">
-             <th><label class="control-label">メールアドレス</label><em>必須</em></th>
+             <th>メールアドレス<em>必須</em></th>
                <td>
                 <input type="email" class="form-control col-md-12{{ $errors->has('user.email') ? ' is-invalid' : '' }}" name="user[email]" value="{{ Ctm::isOld() ? old('user.email') : (Session::has('all.data.user') ? session('all.data.user.email') : '') }}" placeholder="例）abcde@example.com">
                 
@@ -148,7 +148,7 @@ use App\DeliveryGroup;
          </tr>
          
          <tr class="form-group">
-             <th><label class="control-label">電話番号</label><em>必須</em>
+             <th>電話番号<em>必須</em>
              	<small>例）09012345678ハイフンなし半角数字</small>
              </th>
                <td>
@@ -164,7 +164,7 @@ use App\DeliveryGroup;
          </tr>
          
          <tr class="form-group">
-             <th><label class="control-label">郵便番号</label><em>必須</em>
+             <th>郵便番号<em>必須</em>
              	<small>例）1234567ハイフンなし半角数字</small>
              </th>
                <td>
@@ -180,7 +180,7 @@ use App\DeliveryGroup;
          </tr>
          
          <tr class="form-group">
-             <th><label class="control-label">都道府県</label><em>必須</em></th>
+             <th>都道府県<em>必須</em></th>
                <td>
                 <select id="pref" class="form-control select-first col-md-6{{ $errors->has('user.prefecture') ? ' is-invalid' : '' }}" name="user[prefecture]">
                     <option selected value="0">選択して下さい</option>
@@ -215,7 +215,7 @@ use App\DeliveryGroup;
          </tr>
          
          <tr class="form-group">
-             <th><label class="control-label">住所1（都市区）</label><em>必須</em></th>
+             <th>住所1（都市区）<em>必須</em></th>
                <td>
                 <input id="address" type="text" class="form-control col-md-12{{ $errors->has('user.address_1') ? ' is-invalid' : '' }}" name="user[address_1]" value="{{ Ctm::isOld() ? old('user.address_1') : (Session::has('all.data.user') ? session('all.data.user.address_1') : '') }}" placeholder="例）小美玉市">
                 
@@ -229,7 +229,7 @@ use App\DeliveryGroup;
          </tr>
          
          <tr class="form-group">
-             <th><label class="control-label">住所2（それ以降）</label><em>必須</em></th>
+             <th>住所2（それ以降）<em>必須</em></th>
                <td>
                 <input type="text" class="form-control col-md-12{{ $errors->has('user.address_2') ? ' is-invalid' : '' }}" name="user[address_2]" value="{{ Ctm::isOld() ? old('user.address_2') : (Session::has('all.data.user') ? session('all.data.user.address_2') : '') }}" placeholder="例）下吉影1-1">
                 
@@ -243,7 +243,7 @@ use App\DeliveryGroup;
          </tr>
          
          <tr class="form-group">
-             <th><label class="control-label">住所3（建物/マンション名等）</label></th>
+             <th>住所3（建物/マンション名等）</th>
                <td>
                 <input type="text" class="form-control col-md-12{{ $errors->has('user.address_3') ? ' is-invalid' : '' }}" name="user[address_3]" value="{{ Ctm::isOld() ? old('user.address_3') : (Session::has('all.data.user') ? session('all.data.user.address_3') : '') }}" placeholder="例）GRビル 101号">
                 
@@ -264,7 +264,7 @@ use App\DeliveryGroup;
             <table class="table table-borderd border">
 
          <tr class="form-group">
-             <th><label class="control-label">性別</label></th>
+             <th>性別</th>
                <td>
                 <?php 
                      $arrs = array('男性', '女性');
@@ -298,7 +298,7 @@ use App\DeliveryGroup;
          </tr>
     
          <tr class="form-group">
-             <th><label class="control-label">生年月日</label></th>
+             <th>生年月日</th>
                <td>
                    
                 <select class="form-control select-first col-md-2 d-inline{{ $errors->has('user.birth_year') ? ' is-invalid' : '' }}" name="user[birth_year]">
@@ -419,7 +419,7 @@ use App\DeliveryGroup;
             <table class="table table-borderd border">
  
              <tr class="form-group">
-                 <th><label class="control-label">メールマガジンの登録</label></th>
+                 <th>メールマガジンの登録</th>
                    <td>
                     <?php
                         $checked = '';
@@ -453,7 +453,7 @@ use App\DeliveryGroup;
 
              <tr class="form-group">
              	
-                 <th><label class="control-label">パスワード</label><em>必須</em></th>
+                 <th>パスワード<em>必須</em></th>
                    <td>
                     <input type="password" class="form-control col-md-12{{ $errors->has('user.password') ? ' is-invalid' : '' }}" name="user[password]" value="{{ Ctm::isOld() ? old('user.password') : (Session::has('all.data.user') ? session('all.data.user.password') : '') }}" placeholder="8文字以上">
                                         
@@ -467,7 +467,7 @@ use App\DeliveryGroup;
              </tr>
              
              <tr class="form-group">
-                 <th><label class="control-label">パスワードの確認</label><em>必須</em></th>
+                 <th>パスワードの確認<em>必須</em></th>
                    <td>
                     <input type="password" class="form-control col-md-12{{ $errors->has('user.password_confirmation') ? ' is-invalid' : '' }}" name="user[password_confirmation]" value="{{ Ctm::isOld() ? old('user.password_confirmation') : (Session::has('all.data.user') ? session('all.data.user.password_confirmation') : '') }}">
                     
@@ -520,7 +520,7 @@ use App\DeliveryGroup;
                 <table class="table table-borderd border">
 
                     <tr class="form-group">
-                         <th><label class="control-label">配送先氏名</label><em>必須</em></th>
+                         <th>配送先氏名<em>必須</em></th>
                            <td>
                             <input type="text" class="form-control col-md-12{{ $errors->has('receiver.name') ? ' is-invalid' : '' }}" name="receiver[name]" value="{{ Ctm::isOld() ? old('receiver.name') : (Session::has('all.data.receiver') ? session('all.data.receiver.name') : '') }}" placeholder="例）山田太郎">
                            
@@ -534,7 +534,7 @@ use App\DeliveryGroup;
                      </tr> 
                   
                       <tr class="form-group">
-                         <th><label class="control-label">配送先フリガナ</label><em>必須</em></th>
+                         <th>配送先フリガナ<em>必須</em></th>
                            <td>
                             <input type="text" class="form-control col-md-12{{ $errors->has('receiver.hurigana') ? ' is-invalid' : '' }}" name="receiver[hurigana]" value="{{ Ctm::isOld() ? old('receiver.hurigana') : (Session::has('all.data.receiver') ? session('all.data.receiver.hurigana') : '') }}" placeholder="例）ヤマダタロウ">
                             
@@ -548,7 +548,7 @@ use App\DeliveryGroup;
                      </tr>
                      
                      <tr class="form-group">
-                         <th><label class="control-label">配送先電話番号</label><em>必須</em>
+                         <th>配送先電話番号<em>必須</em>
                          	<small>例）09012345678ハイフンなし半角数字</small>
                          </th>
                            <td>
@@ -566,7 +566,7 @@ use App\DeliveryGroup;
                      
                      
                      <tr class="form-group">
-                         <th><label class="control-label">配送先郵便番号</label><em>必須</em>
+                         <th>配送先郵便番号<em>必須</em>
                          	<small>例）1234567ハイフンなし半角数字</small>
                          </th>
                            <td>
@@ -582,7 +582,7 @@ use App\DeliveryGroup;
                      </tr>
                      
                      <tr class="form-group">
-                         <th><label class="control-label">配送先都道府県</label><em>必須</em></th>
+                         <th>配送先都道府県<em>必須</em></th>
                            <td>
                             <select id="pref_2" class="form-control select-first col-md-6{{ $errors->has('receiver.prefecture') ? ' is-invalid' : '' }}" name="receiver[prefecture]">
                                 <option disabled selected>選択して下さい</option>
@@ -614,7 +614,7 @@ use App\DeliveryGroup;
                      </tr>
                      
                      <tr class="form-group">
-                         <th><label class="control-label">配送先住所1（都市区）</label><em>必須</em></th>
+                         <th>配送先住所1（都市区）<em>必須</em></th>
                            <td>
                             <input id="address_2" type="text" class="form-control col-md-12{{ $errors->has('receiver.address_1') ? ' is-invalid' : '' }}" name="receiver[address_1]" value="{{ Ctm::isOld() ? old('receiver.address_1') : (Session::has('all.data.receiver') ? session('all.data.receiver.address_1') : '') }}" placeholder="例）小美玉市">
                             
@@ -628,7 +628,7 @@ use App\DeliveryGroup;
                      </tr>
                      
                      <tr class="form-group">
-                         <th><label class="control-label">配送先住所2（それ以降）</label><em>必須</em></th>
+                         <th>配送先住所2（それ以降）<em>必須</em></th>
                            <td>
                             <input type="text" class="form-control col-md-12{{ $errors->has('receiver.address_2') ? ' is-invalid' : '' }}" name="receiver[address_2]" value="{{ Ctm::isOld() ? old('receiver.address_2') : (Session::has('all.data.receiver') ? session('all.data.receiver.address_2') : '') }}" placeholder="例）下吉影1-1">
                             
@@ -642,7 +642,7 @@ use App\DeliveryGroup;
                      </tr>
                      
                      <tr class="form-group">
-                         <th><label class="control-label">配送先住所3（建物/マンション名等）</label></th>
+                         <th>配送先住所3（建物/マンション名等）</th>
                            <td>
                             <input type="text" class="form-control col-md-12{{ $errors->has('receiver.address_3') ? ' is-invalid' : '' }}" name="receiver[address_3]" value="{{ Ctm::isOld() ? old('receiver.address_3') : (Session::has('all.data.receiver') ? session('all.data.receiver.address_3') : '') }}" placeholder="GRビル 101号">
                             
