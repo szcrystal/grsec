@@ -155,9 +155,9 @@ var exe = (function() {
                     
                 	//$nav.slideDown(speed);
                     
-                    $navWrap.css({ height: $(window).height()-40 }).slideDown(speed);
+                    $navWrap.css({ height: $(window).height()-75 }).slideDown(speed);
                     //$('html,body').css({overflow:'hidden'});
-                    $('html,body').css({position:'fixed', top:-th.opts.t});
+                    $('.sp-fix-wrap').css({position:'fixed', top:-th.opts.t});
                 }
                 else {
                 	//$nav.slideUp(speed);
@@ -167,7 +167,7 @@ var exe = (function() {
                     });
                     
                     //$('html,body').css({overflow:'visible'});
-                    $('html,body').css({position:'static'}).scrollTop(th.opts.t); 
+                    $('.sp-fix-wrap').css({position:'static'}).scrollTop(th.opts.t); 
                 }
  
             });
