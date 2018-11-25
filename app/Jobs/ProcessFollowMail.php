@@ -104,7 +104,8 @@ class ProcessFollowMail implements ShouldQueue
         // Test END ---------------------
         
         //For 本番 ========================================================== 
-        $day_7 = 7;
+        //$day_7 = 7;
+        $day_7 = 1;
         $day_33 = 33;
         $day_96 = 96;
         $day_155 = 155;
@@ -150,7 +151,7 @@ class ProcessFollowMail implements ShouldQueue
         }
         //For 本番 END ==========================================================
            
-                
+        //メール送信 =============================================================
         if(count($ensure_7) > 0) {
         	$this->sendFollowMail($ensure_7, 'ensure_7'); //Obj, typeCode
             //ProcessFollowMail::dispatch($ensure_7, 7, true);
@@ -172,7 +173,7 @@ class ProcessFollowMail implements ShouldQueue
         	$this->sendFollowMail($noEnsure_33, 'no_ensure_33');
             //ProcessFollowMail::dispatch($noEnsure_33, 33, false);
         }  
-        
+        //メール送信 END =============================================================
     }
     
     public function sendFollowMail($saleObjs, $typeCode)

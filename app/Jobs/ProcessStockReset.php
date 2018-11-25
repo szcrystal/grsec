@@ -39,6 +39,7 @@ class ProcessStockReset implements ShouldQueue
         
         $items = Item::get();
         
+        //Item内の何月入荷の指定月が当月であれば、item内のリセットカウントをセットする
         foreach($items as $item) {
             if($nowMonth == $item->stock_reset_month) {
                 $item->stock = $item->stock_reset_count;

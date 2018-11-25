@@ -45,14 +45,43 @@ h1 {
     word-wrap: break-word;
     overflow-wrap: break-word;
 }
-
-.table-responsive {
-	padding-top: 0.5em;
+.text-orange {
+	color: darkorange;
 }
-/*input[type="search"]*/
-/*.table-responsive #dataTable_filter { */
-/*    border: 1px solid red;*/
-/*}*/
+.bg-pink {
+	background: lavenderblush;
+}
+.bg-green {
+	background: mintcream;
+}
+
+/*  */
+.table-responsive {
+	padding: 0.5em 0 0.7em !important;
+    //border: 1px solid red;
+}
+/*<div class=​"col-sm-12 col-md-6">​*/
+/*<div class=​"dataTables_filter" id=​"dataTable_filter">​*/
+/*<label>​*/
+/*"Search:"*/
+/*<input type=​"search" class=​"form-control form-control-sm" placeholder aria-controls=​"dataTable">​*/
+/*</label>​*/
+/*</div>​*/
+/*</div>*/
+
+#dataTable_wrapper {
+	width: 100% !important;
+	//padding: 0 !important;
+    //border: 1px solid red;
+}
+.dataTables_filter {
+	//border: 1px solid red;
+}
+input[type="search"].form-control {
+	width: 25em !important;
+}
+
+
 .table-tyumon th {
 	width: 27%;
 	background: #f1f1f1;
@@ -68,6 +97,9 @@ label em {
     font-style: none;
     font-size: 1.1em;
 }
+
+
+
 .no-img {
     display: block;
     width: 85px;

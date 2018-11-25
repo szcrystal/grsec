@@ -228,50 +228,102 @@ use App\PayMethodChild;
     <div class="mb-3">
     	
 
-        <div class="mt-3">
+        <div class="my-3">
           <div class="table-responsive">
-            <table id="dataTable" class="table table-striped table-bordered table-hover bg-white"{{-- id="dataTable"--}} width="100%" cellspacing="0">
+            <table id="dataTable" class="table table-striped table-bordered table-hover bg-white" width="100%" cellspacing="0">
               <thead>
                 <tr>
                 	<th>ID</th>
-                    
-                  <th>購入日</th>
-                  {{-- <th>注文番号</th> --}}
-                  <th>購入者</th>
-                  <th>決済方法</th>
-                  <th>発送状況/出荷日</th>
-                  <th>メモ</th>
-                  <th>金額計（税込）</th>
-                  <th>リピ情報（最新5件）</th>
-                  
-                  <th></th>
+                    <th>購入日</th>
+                    <th>ステータス</th>
+                    <th>購入者</th>
+                    <th>決済方法</th>
+                    <th>発送状況/出荷日</th>
+                    <th>メモ</th>
+                    <th>金額計（税込）</th>
+                    <th>リピ情報（最新5件）</th>
+                  	<th></th>
                 </tr>
               </thead>
               
-              {{--
+              
               <tfoot>
               	<tr>
-                	<th></th>
-                  <th>ID</th>
-                  <th>注文番号</th>
-                  <th>(ID)商品名</th>
-                  <th></th>
-                
+                	<th>ID</th>
+                    <th>購入日</th>
+                    <th>ステータス</th>
+                    <th>購入者</th>
+                    <th>決済方法</th>
+                    <th>発送状況/出荷日</th>
+                    <th>メモ</th>
+                    <th>金額計（税込）</th>
+                    <th>リピ情報（最新5件）</th>
+                  	<th></th>
                 </tr>
               </tfoot>
-              --}}
+              
               
               <tbody>
               @foreach($saleObjs as $saleRel)
-                <tr>
+                
                 	<?php
                  		$sales = $saleSingle->where('salerel_id', $saleRel->id)->get();
+                        
+                        $cancels = $saleSingle->where('salerel_id', $saleRel->id)->get()->map(function($obj){
+                        	return $obj->is_cancel;
+                        })->all();
+                        
+                        $deliDone = $saleSingle->where('salerel_id', $saleRel->id)->get()->map(function($obj){
+                        	return $obj->deli_done;
+                        })->all();
+                        
+                        $status = '';
+                        $allCancel = 0;
+                        $allDeliDone = 0;
+                        $class = '';
+                        
+                        if ( count(array_unique($cancels)) === 1 ) {
+                        	if($cancels[0]) {
+                            	$status = '<span class="text-danger">全キャンセル</span>';
+                                $allCancel = 1;
+                            }
+                            else {
+                            	if ( count(array_unique($deliDone)) === 1 ) {
+                                	if($deliDone[0]) {
+                                    	$status = '<span class="text-success">全発送済</span>';
+                                        $allDeliDone = 1;
+                                    }
+                                    else {
+                                    	$status = '<span class="text-orange">全未発送</span>';
+                                    }
+                                }
+                                else {
+                                	$status = '<span class="text-orange">一部未発送</span>';
+                                }
+                            	
+                            }
+                        }
+                        else {
+                        	$status = '<span class="text-danger">一部キャンセル</span>';
+                        }
+                        
+						$class = $allCancel ? 'bg-pink' : ($allDeliDone ? 'bg-green' : '');  
+                    
                  	?>   
-                	
+                
+                <tr>
+                
                     {{-- <td><a href="{{ url('dashboard/sales/order/'. $saleRel->order_number) }}" class="btn btn-success btn-sm center-block">確認</a></td> --}}
-                  <td>{{ $saleRel->id }}</td>
+                  	
+                    <td>{{ $saleRel->id }}</td>
                   
-                  <td><b>{{ Ctm::changeDate($saleRel->created_at, 0) }}</b></td>
+                  	<td>
+                  		<b>{{ Ctm::changeDate($saleRel->created_at, 0) }}</b>
+                	</td>
+                
+                	<td class="{{ $class }}">
+                    	{!! $status !!}
+                	</td>
                   
                   {{--
                   <td><span class="text-small">{{ $saleRel->order_number }}</span></td>
@@ -285,9 +337,9 @@ use App\PayMethodChild;
                  	@endif   
                 </td>
 
-                  <td>
+                <td>
                   	@if($saleRel->pay_method == 2 || $saleRel->pay_method == 6)
-                        <a href="{{ url('dashboard/sales/order/'. $saleRel->order_number) }}">
+                        <a href="{{ url('dashboard/sales/order/'. $saleRel->order_number) }}" target="_brank">
                             {{ $pms->find($saleRel->pay_method)->sec_name }}<br>
 
                             @if($saleRel->pay_done)
@@ -302,22 +354,25 @@ use App\PayMethodChild;
                         	<span class="text-small">{{ PayMethodChild::find($saleRel->pay_method_child)->sec_name }}</span>
                         @endif
                     @endif
-                	</td>
-                  
+                </td>
                   
                   <td>
                   	
                     <span class="text-small">商品数：{{ count($sales) }}</span><br>
                     <small>
                   	@foreach($sales as $sale)
-                    	<a href="{{ url('dashboard/sales/'.$sale->id) }}">
-                            @if($sale->deli_done)
-                                <span class="text-success">済</span>
-                                {{ Ctm::changeDate($sale->deli_sended_date, 1) }}
-                             @else
-                                <span class="text-danger">未</span>
-                            @endif 
-                        </a><br>
+                    	<a href="{{ url('dashboard/sales/'.$sale->id) }}" class="d-block my-1" target="_brank">
+                        	@if($sale->is_cancel)
+                            	<span class="text-danger">キャンセル</span>
+                            @else
+                                @if($sale->deli_done)
+                                    <span class="text-success">発送済</span>
+                                    {{ Ctm::changeDate($sale->deli_sended_date, 1) }}
+                                 @else
+                                    <span class="text-orange">未発送</span>
+                                @endif
+                            @endif
+                        </a>
                     @endforeach
                     </small>
                   </td>

@@ -118,7 +118,7 @@ class MainController extends Controller
             
 
   
-        $str = env('REMOTE_ADDR', '') . "\n" . env('HTTP_USER_AGENT', '');
+        $str = env('APP_ENV') . "\n" . env('REMOTE_ADDR', '') . "\n" . env('HTTP_USER_AGENT', '');
         //$str .= "<br>abcde" . '<a href="https://192.168.10.16">abcde</a>';
         
         Mail::raw($str, function ($message) {
