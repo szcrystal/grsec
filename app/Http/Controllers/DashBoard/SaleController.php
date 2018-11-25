@@ -518,7 +518,7 @@ class SaleController extends Controller
         if($withMail) {
             $templ = $this->templ->find($withMail);
             
-            if($templ->type_code == 'payDone') {
+            if($templ->type_code == 'payDone') { //入金済みメール
                 $mail = Mail::to($data['user_email'], $data['user_name'])->queue(new PayDone($saleRel->id));
                 
                 $this->smf->updateOrCreate(
@@ -535,7 +535,7 @@ class SaleController extends Controller
     //                return redirect('dashboard/sales/order/'. $saleRel->order_number)->withErrors($errors)->withInput();
     //            }
             }
-            else {
+            else { //入金済み以外のメール(サンクスや配送済みなど)
             	$sales = $this->sale->find($data['sale_ids']);
                 
                 foreach($sales as $sale) {

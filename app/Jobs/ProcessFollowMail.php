@@ -7,6 +7,8 @@ use App\SaleRelation;
 use App\User;
 use App\UserNoregist;
 use App\Item;
+use App\MailTemplate;
+use App\SendMailFlag;
 
 use App\Mail\FollowMail;
 
@@ -192,11 +194,20 @@ class ProcessFollowMail implements ShouldQueue
             $mailAdd = $u->email;
             $name = $u->name;
             
-            
             //$message = (new Magazine($data));
             //$when = now()->addMinutes(10);
             Mail::to($mailAdd, $name)->send(new FollowMail($relIdKey, $saleArr, $typeCode, $name));
             //Mail::to($mailVal, $nameKey)->send(new Magazine($data));
+            
+            //SendMailFlag（DB）に登録する
+            $templ = MailTemplate::where(['type_code'=>$typeCode])->first();
+            
+            foreach($saleArr as $sale) {
+                SendMailFlag::updateOrCreate(
+                    ['sale_id'=>$sale->id, 'templ_id'=>$templ->id, 'templ_code'=>$templ->type_code],
+                    ['is_mail'=>1]
+                );
+            }
         }
     }
     
