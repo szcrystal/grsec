@@ -81,13 +81,17 @@
                   <td><a href="{{url('dashboard/dcs/'. $dc->id)}}" class="btn btn-success btn-sm center-block">編集</a></td>
                   
                   <td>
+                  	@if($dc->id == 1)
+                    	--
+                    @else
                   	<form role="form" method="POST" action="{{ url('/dashboard/dcs/'. $dc->id) }}">
                         {{ csrf_field() }}
                         {{ method_field('DELETE') }}
 
                         <input type="submit" class="btn btn-danger btn-sm center-block" value="削除">
                     </form>
-                  
+                  	@endif
+                    
                   </td>
                 </tr>
             @endforeach

@@ -365,7 +365,7 @@ class ItemController extends Controller
         $num = 1;
         $spares = $this->itemImg->where(['item_id'=>$itemId, 'type'=>1])->get();
         
-        //Snapのナンバーを振り直す
+        //Spareのナンバーを振り直す
         foreach($spares as $spare) {
             $spare->number = $num;
             $spare->save();
@@ -378,8 +378,8 @@ class ItemController extends Controller
         foreach($data['snap_count'] as $count) {
         
 			/*
-               	type:1->item main
-               	type:2->item spare
+               	type:1->item spare
+               	type:2->item snap(contents)
               	type:3->category
             	type:4->sub category
             	type:5->tag                              

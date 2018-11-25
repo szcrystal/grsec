@@ -120,7 +120,7 @@ class CategorySecondController extends Controller
             
             //$aId = $editId ? $editId : $rand;
             //$pre = time() . '-';
-            $filename = 'subcate/' . $subCateId . '/top/'/* . $pre*/ . $filename;
+            $filename = 'subcate/' . $subCateId . '/recom/'/* . $pre*/ . $filename;
             //if (App::environment('local'))
             $path = $data['top_img_path']->storeAs('public', $filename);
             //else
@@ -136,8 +136,8 @@ class CategorySecondController extends Controller
         foreach($data['snap_count'] as $count) {
         
             /*
-                type:1->item main
-                type:2->item spare
+                type:1->item spare
+               	type:2->item snap(contents)
                 type:3->category
                 type:4->sub category
                 type:5->tag                              
@@ -150,7 +150,7 @@ class CategorySecondController extends Controller
                 $snapModel = $this->itemImg->where(['item_id'=>$subCateId, 'type'=>4, 'number'=>$count+1])->first();
                 
                 if($snapModel !== null) {
-                    Storage::delete('public/'.$snapModel->img_path); //Storageはpublicフォルダのあるところをルートとしてみる
+                    Storage::delete('public/'.$snapModel->img_path); //Storageはpublicフォルダのあるところをルートとしてみる（storage/app直下）
                     $snapModel ->delete();
                 }
             
@@ -173,7 +173,7 @@ class CategorySecondController extends Controller
                     
                     //$aId = $editId ? $editId : $rand;
                     //$pre = time() . '-';
-                    $filename = 'sub-category/' . $subCateId . '/snap/'/* . $pre*/ . $filename;
+                    $filename = 'subcate/' . $subCateId . '/snap/'/* . $pre*/ . $filename;
                     //if (App::environment('local'))
                     $path = $data['snap_thumb'][$count]->storeAs('public', $filename);
                     //else
@@ -242,17 +242,23 @@ class CategorySecondController extends Controller
      */
     public function destroy($id)
     {
-        $name = $this->category->find($id)->name;
+        $name = $this->cateSec->find($id)->name;
         
-        $atcls = $this->article->where('cate_id', $id)->get()->map(function($atcl){
-            $atcl->cate_id = 0;
-            $atcl->save();
+        $atcls = $this->item->where('subcate_id', $id)->get()->map(function($obj){
+            $obj->subcate_id = null;
+            $obj->save();
         });
         
-        $cateDel = $this->category->destroy($id);
+        $cateDel = $this->cateSec->destroy($id);
         
-        $status = $cateDel ? 'カテゴリー「'.$name.'」が削除されました' : '記事「'.$name.'」が削除出来ませんでした';
+        //if(Storage::exists('public/subcate/'. $id)) {
+        	Storage::deleteDirectory('public/subcate/'. $id); //存在しなければスルーされるようだ
+        //}
         
-        return redirect('dashboard/categories')->with('status', $status);
+        
+        $status = '子供カテゴリー「' . $name . '」';
+        $status .= $cateDel ? 'が削除されました' : 'が削除出来ませんでした。';
+        
+        return redirect('dashboard/categories/sub')->with('status', $status);
     }
 }

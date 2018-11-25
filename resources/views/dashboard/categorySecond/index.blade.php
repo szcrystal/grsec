@@ -83,14 +83,12 @@
                             </td>
 
                             <td>
-                                {{--
                                 <form role="form" method="POST" action="{{ url('/dashboard/categories/sub/'.$subCate->id) }}">
                                     {{ csrf_field() }}
                                     {{ method_field('DELETE') }}
 
                                     <input type="submit" class="btn btn-danger btn-sm center-block" value="削除">
                                 </form>
-                                --}}
                             </td>
                         </tr>
                     @endforeach

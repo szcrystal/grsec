@@ -53,7 +53,7 @@ class TagController extends Controller
     {
         $tag = $this->tag->find($tagId);
         
-        $snaps = $this->itemImg->where(['item_id'=>$tagId, 'type'=>4])->get();
+        $snaps = $this->itemImg->where(['item_id'=>$tagId, 'type'=>5])->get();
         
         $imgCount = $this->setting->get()->first()->snap_category;
         
@@ -110,7 +110,7 @@ class TagController extends Controller
         $tagId = $tagModel->id;
         
         
-        //for top-img
+        //for top-img recom
         if(isset($data['top_img_path'])) {
                 
             //$filename = $request->file('main_img')->getClientOriginalName();
@@ -119,7 +119,7 @@ class TagController extends Controller
             
             //$aId = $editId ? $editId : $rand;
             //$pre = time() . '-';
-            $filename = 'tag/' . $tagId . '/top/'/* . $pre*/ . $filename;
+            $filename = 'tag/' . $tagId . '/recom/'/* . $pre*/ . $filename;
             //if (App::environment('local'))
             $path = $data['top_img_path']->storeAs('public', $filename);
             //else
@@ -135,8 +135,8 @@ class TagController extends Controller
         foreach($data['snap_count'] as $count) {
         
             /*
-                type:1->item main
-                type:2->item spare
+                type:1->item spare
+               	type:2->item snap(contents)
                 type:3->category
                 type:4->sub category
                 type:5->tag                              
@@ -147,7 +147,7 @@ class TagController extends Controller
                 $snapModel = $this->itemImg->where(['item_id'=>$tagId, 'type'=>5, 'number'=>$count+1])->first();
                 
                 if($snapModel !== null) {
-                    Storage::delete('public/'.$snapModel->img_path); //Storageはpublicフォルダのあるところをルートとしてみる
+                    Storage::delete('public/'.$snapModel->img_path); //Storageはpublicフォルダのあるところをルートとしてみる（storage/app直下）
                     $snapModel ->delete();
                 }
             
@@ -253,6 +253,10 @@ class TagController extends Controller
         
         $tagDel = $this->tag->destroy($tagId);
         $this->tagRel->destroy($tagRels);
+        
+        //if(Storage::exists('public/subcate/'. $id)) {
+        	Storage::deleteDirectory('public/tag/'. $tagId); //存在しなければスルーされるようだ
+        //}
         
         $status = $tagDel ? 'タグ「'.$name.'」が削除されました' : 'タグ「'.$name.'」が削除出来ませんでした';
         

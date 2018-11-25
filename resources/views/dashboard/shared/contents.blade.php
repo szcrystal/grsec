@@ -85,6 +85,7 @@
                             @endif
                             &nbsp;<span class="text-secondary">{{ $n+1 }}</span>
                         </label>
+                        
                         <div class="w-100">
                             <input id="model_thumb" class="thumb-file" type="file" name="snap_thumb[]">
                             
