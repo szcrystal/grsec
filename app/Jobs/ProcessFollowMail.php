@@ -153,7 +153,7 @@ class ProcessFollowMail implements ShouldQueue
            
         //メール送信 =============================================================
         if(count($ensure_7) > 0) {
-        	$this->sendFollowMail($ensure_7, 'ensure_7'); //Obj, typeCode
+        	$this->sendFollowMail($ensure_7, 'ensure_7'); //Arg -> Arr, typeCode
             //ProcessFollowMail::dispatch($ensure_7, 7, true);
         }
         

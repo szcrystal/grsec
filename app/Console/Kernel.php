@@ -35,7 +35,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        if(Ctm::isEnv('product')) {
+        //if(Ctm::isEnv('product')) {
             //枯れ保証：フォローメールの送信(毎日6時に該当する日数の商品（ユーザー）にメール) ==============
             $schedule->job(new ProcessFollowMail)
                     //->dailyAt('7:00'); //This is for product
@@ -47,7 +47,7 @@ class Kernel extends ConsoleKernel
                     ->monthlyOn(1, '3:00'); //For Product 毎月1日の午前3時に
                     //->everyMinute(); //For Test
                     //->dailyAt('3:00'); //For Test
- 		}
+ 		//}
                
 //        $now = new DateTime('now');
 //        $nowDay = $now->format('d');
