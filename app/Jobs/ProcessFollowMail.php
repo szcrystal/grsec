@@ -106,8 +106,8 @@ class ProcessFollowMail implements ShouldQueue
         // Test END ---------------------
         
         //For 本番 ========================================================== 
-        $day_7 = 7;
-        //$day_7 = 1;
+        //$day_7 = 7;
+        $day_7 = 1;
         $day_33 = 33;
         $day_96 = 96;
         $day_155 = 155;
