@@ -107,7 +107,7 @@ var exe = (function() {
                 	
                     if($nav.is(':visible')) {
                     	$nav.slideUp(speed, function(){
-                    		//$(this).css({ height: 0 });
+                    		$(this).css({ height: 0 });
                         });
                         
                         $('body').css({position:'static'}).scrollTop(th.opts.t);
@@ -181,7 +181,7 @@ var exe = (function() {
 
                     
                     $navWrap.slideUp(speed, function(){
-                    	//$(this).css({ height: 0 });
+                    	$(this).css({ height: 0 });
                     });
                     
                     //$('body').css({overflowY:'visible'});
