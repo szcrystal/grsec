@@ -512,8 +512,8 @@ for SP
         position: relative;
         z-index: 1997;
         padding-bottom: 105px;
-        -webkit-overflow-scrolling: touch;
-        -webkit-transform: translateZ(0px);
+/*        -webkit-overflow-scrolling: touch;*/
+/*        -webkit-transform: translateZ(0px);*/
     }
     .nav-sp {
     	//display: none;
