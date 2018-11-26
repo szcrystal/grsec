@@ -14,7 +14,7 @@ use App\User;
 	<a href="tel:0299530030"><i class="fal fa-phone"></i> 電話をかける<span class="text-small">（月〜土 8:00〜17:00）</span></a>
 </div>
 
-</div><!-- fixed-top -->
+
 
 <header class="site-header clearfix">
 
@@ -131,7 +131,7 @@ use App\User;
     </nav>
 
 
-
+</div><!-- fixed-top -->
 
 
 

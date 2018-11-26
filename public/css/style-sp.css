@@ -506,7 +506,7 @@ for SP
         overflow: scroll;
         display: none;
         width: 100%;
-        position: fixed;
+        position: relative;
         z-index: 998;
     }
     .nav-sp {
