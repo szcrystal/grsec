@@ -509,8 +509,8 @@ for SP
     	background: rgba(0,0,0,0.6);
         overflow: scroll;
 /*        width: 100%;*/
-/*        position: relative;*/
-/*        z-index: 999;*/
+        position: relative;
+        z-index: 1997;
         padding-bottom: 105px;
         -webkit-overflow-scrolling: touch;
         -webkit-transform: translateZ(0px);
