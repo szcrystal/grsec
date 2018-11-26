@@ -316,7 +316,7 @@ for SP
         padding: 0.15em 0;
         border-bottom: 1px solid #d5d5d5;
         border-top: 0;
-        margin: 36px 0 0;
+        //margin: 36px 0 0;
 	}
     .fixed-top {
     	border: 0;
@@ -419,7 +419,7 @@ for SP
         bottom: 36px;
         height: 36px;
         line-height: 0;
-        z-index: 999;
+        z-index: 998;
         font-size: 1.2em;
         //padding-bottom: 0.6em;
         //background: red;
@@ -444,7 +444,7 @@ for SP
         position: fixed;
         left: 0;
         bottom: 0;
-        z-index: 999;
+        z-index: 1998;
         text-align: center;
     }
     .icon-belt ul {
@@ -504,10 +504,13 @@ for SP
 	.nav-sp-wrap {
     	background: rgba(0,0,0,0.6);
         overflow: scroll;
+        -webkit-overflow-scrolling: touch;
         display: none;
-        width: 100%;
+        height: 500px;
+/*        width: 100%;*/
         position: relative;
-        z-index: 998;
+        z-index: 999;
+        padding-bottom: 105px;
     }
     .nav-sp {
     	//display: none;
@@ -526,13 +529,13 @@ for SP
         margin: 0;
     }
     .nav-sp ul > li {
-    	padding: 3.6em 0 0.6em 1.4em;
+    	padding: 0.6em 0 0.6em 1.4em;
     	border-bottom: 1px solid #d5d5d5;
         font-size: 1.05em;
         color: #333;
     }
     .nav-sp ul > li:last-of-type {
-    	//border-bottom: 0;
+    	border-bottom: 0;
     }
     .nav-sp .has-child {
     	

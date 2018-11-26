@@ -110,7 +110,7 @@ var exe = (function() {
                     		//$(this).css({ height: 0 });
                         });
                         
-                        //$('html,body').css({position:'static'}).scrollTop(th.opts.t);
+                        $('body').css({position:'static'}).scrollTop(th.opts.t);
                     }
                     
                     $input.slideDown(speed, ease, function(){
@@ -148,7 +148,7 @@ var exe = (function() {
             
                 if($navWrap.is(':hidden')) {
                 	th.opts.t = $(window).scrollTop();
-                    $('html').css({overflow:'hidden', height:'100%'});
+                    //$('html').css({overflow:'hidden', height:'100%'});
 //                    $('body').on('touchmove.noScroll', function(e){
 //                    	e.preventDefault();
 //                    });
@@ -167,7 +167,7 @@ var exe = (function() {
                 	//$navWrap.slideDown(speed);
                     
                     $navWrap.css({ height: $(window).height() }).slideDown(speed);
-                    //$('html,body').css({position:'fixed', top:-th.opts.t});
+                    $('body').css({position:'fixed', top:-th.opts.t});
                 }
                 else {
                     //$('body').off('.noScroll');
@@ -185,7 +185,7 @@ var exe = (function() {
                     });
                     
                     //$('body').css({overflowY:'visible'});
-                    //$('html,body').css({position:'static'}).scrollTop(th.opts.t); 
+                    $('body').css({position:'static'}).scrollTop(th.opts.t); 
                 }
  
             });
