@@ -149,7 +149,7 @@ var exe = (function() {
                 if($navWrap.is(':hidden')) {
                 	th.opts.t = $(window).scrollTop();
                     
-                    $('body').on('touchmove.noScroll', function(e){
+                    $('.sp-fix-wrap').on('touchmove.noScroll', function(e){
                     	e.preventDefault();
                     });
                     
@@ -159,7 +159,7 @@ var exe = (function() {
                     
                 	//$navWrap.slideDown(speed);
                     
-                    $navWrap.css({ height: $(window).height() }).slideDown(speed).trigger('scroll');
+                    $navWrap.css({ height: $(window).height() }).slideDown(speed);
                     //$('html,body').css({position:'fixed', top:-th.opts.t});
                 }
                 else {
