@@ -280,6 +280,9 @@ for SP
     .head-navi { /* kare text */
     	margin-top: 5.8em;
     }
+    .fix-wrap {
+    	margin-top: 70px;
+    }
     .tophead-wrap {
     	//display: none;
     }
@@ -1055,7 +1058,7 @@ ORG END ======================== */
     .single-left {
         float: none;
         width: 100%;
-        margin-top: -0.6em;
+        margin-top: 75px;
         //border: 1px solid orange;
     }
     .single-right {
