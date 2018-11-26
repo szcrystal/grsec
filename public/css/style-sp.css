@@ -505,15 +505,15 @@ for SP
     }
     
 	.nav-sp-wrap {
+    	display: none;
     	background: rgba(0,0,0,0.6);
         overflow: scroll;
-        -webkit-overflow-scrolling: touch;
-        display: none;
-        height: 500px;
 /*        width: 100%;*/
-        position: relative;
-        z-index: 999;
+/*        position: relative;*/
+/*        z-index: 999;*/
         padding-bottom: 105px;
+        -webkit-overflow-scrolling: touch;
+        -webkit-transform: translateZ(0px);
     }
     .nav-sp {
     	//display: none;
