@@ -159,9 +159,7 @@ var exe = (function() {
                     
                 	//$navWrap.slideDown(speed);
                     
-                    $navWrap.css({ height: $(window).height() }).slideDown(speed).off('touchmove.noScroll', function(e){
-                    	e.preventDefault();
-                    });
+                    $navWrap.css({ height: $(window).height() }).slideDown(speed).trigger('scroll');
                     //$('html,body').css({position:'fixed', top:-th.opts.t});
                 }
                 else {
