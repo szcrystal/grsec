@@ -12,11 +12,10 @@
             <div class="panel panel-default">
 
                 <div class="panel-heading">
-                	<h2 class="card-header">お問い合わせ</h2>
-                 	<p class="mt-4 pb-3"></p>      
+                	<h2 class="card-header">お問い合わせ</h2>     
                 </div>
 
-                <div class="panel-body">
+                <div class="panel-body mt-4">
 
                     @if (count($errors) > 0)
                         <div class="alert alert-danger">
@@ -118,10 +117,10 @@
                             </tbody>
                 		</table>
                         
-                        <div class="form-group mt-5">
-                            <div class="col-md-12">
-                                <button type="submit"  class="btn btn-block btn-custom col-md-4 mb-4 mx-auto py-2">確認する</button>
-                            </div>
+                        
+                        
+                        <div>
+                            <button type="submit" class="btn btn-block btn-custom col-md-4 mb-4 mx-auto py-2">確認する</button>
                         </div>
                     </form>
                     </div>

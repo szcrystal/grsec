@@ -3,6 +3,7 @@
 	<!-- Branding Image -->
     <?php
         use App\User;
+        use App\Fix;
 //        use App\Setting;
         
 //        $path = Request::path();
@@ -28,7 +29,11 @@
         <div class="head-navi">      
             <ul class="clearfix">
             	<li>
-                	<a href="{{ url('first-guide') }}">初めての方へ</a>
+                	<?php $firstGuide = Fix::where('slug', 'first-guide')->first(); ?>
+                    
+                    @if(isset($firstGuide) && $firstGuide->open_status)
+                		<a href="{{ url('first-guide') }}">初めての方へ</a>
+                    @endif
                 </li>
 
                 @if(! Auth::check())

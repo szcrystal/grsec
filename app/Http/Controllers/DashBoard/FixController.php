@@ -77,7 +77,7 @@ class FixController extends Controller
         
         $data = $request->all(); //requestから配列として$dataにする
         
-        $data['open_status'] = isset($data['open_status']) ? $data['open_status'] : 0;
+        $data['open_status'] = isset($data['open_status']) ? 0 : 1;
         
         
         //$data['up_date'] = $request->input('up_year'). '-' .$request->input('up_month') . '-' . $request->input('up_day');
@@ -226,8 +226,33 @@ class FixController extends Controller
         
         $fixDel = $this->fix->destroy($id);
         
-        $status = $fixDel ? '「'.$fix->title.'」ページが削除されました' : '「'.$fix->title.'」ページが削除出来ませんでした';
+        //if(Storage::exists('public/subcate/'. $id)) {
+        	Storage::deleteDirectory('public/fix/'. $id); //存在しなければスルーされるようだ
+        //}
+        
+        $status = $fixDel ? '「'.$fix->title.'」ページが削除されました。' : '「'.$fix->title.'」ページが削除出来ませんでした。';
         
         return redirect('dashboard/fixes')->with('status', $status);
     }
+    
+//    $name = $this->tag->find($tagId)->name;
+//        
+//        //tag relationをここで消す
+//        $tagRels = $this->tagRel->where('tag_id', $tagId)->get()->map(function($obj){
+//            return $obj->id;
+//        })->all();
+//        
+//        $tagDel = $this->tag->destroy($tagId);
+//        $this->tagRel->destroy($tagRels);
+//        
+//        //if(Storage::exists('public/subcate/'. $id)) {
+//        	Storage::deleteDirectory('public/tag/'. $tagId); //存在しなければスルーされるようだ
+//        //}
+//        
+//        $status = $tagDel ? 'タグ「'.$name.'」が削除されました' : 'タグ「'.$name.'」が削除出来ませんでした';
+//        
+//        return redirect('dashboard/tags')->with('status', $status);
+    
+    
+    
 }

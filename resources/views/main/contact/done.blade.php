@@ -1,8 +1,10 @@
-@extends('layouts.appSingle')
+@extends('layouts.app')
+
+
 
 @section('content')
     <div class="row contact">
-        <div class="col-md-12 mx-auto py-4">
+        <div class="col-md-12 mx-auto">
             <div class="panel panel-default">
 
                 <div class="panel-heading">

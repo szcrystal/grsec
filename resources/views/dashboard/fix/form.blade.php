@@ -52,17 +52,24 @@
             @endif
 
             <fieldset class="form-group mb-4 text-right">
-                    <div class="checkbox">
-                    	<?php
-                            if(count(old()))
-                            	$checked = old('not_open') ? ' checked' : '';
-                            else
-                            	$checked = isset($fix) && $fix->not_open ? ' checked' : '';
-                        ?>
-                        <label>
-                            <input type="checkbox" name="not_open" value="1"{{ $checked }}> 非公開にする
-                        </label>
-                    </div>
+                <div class="checkbox">
+                    <?php
+                    	$checked = '';
+                        
+                        if(Ctm::isOld()) {
+                            $checked = old('open_status') ? ' checked' : '';
+                        }
+                        else {
+                        	if(isset($fix)) {
+                            	$checked = ! $fix->open_status ? ' checked' : '';
+                            }
+                        }
+                    ?>
+                    
+                    <label>
+                        <input type="checkbox" name="open_status" value="1"{{ $checked }}> 非公開にする
+                    </label>
+                </div>
             </fieldset>
 
             <fieldset class="form-group mb-4">
