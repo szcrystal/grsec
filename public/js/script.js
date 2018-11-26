@@ -108,18 +108,19 @@ var exe = (function() {
                     if($nav.is(':visible')) {
                     	$nav.slideUp(speed, function(){
                     		$(this).css({ height:0 });
+                            $(this).queue([]).stop();
                         });
                         
                         $('html,body').css({position:'static'}).scrollTop(th.opts.t);
                     }
                     
                     $input.slideDown(speed, ease, function(){
-                        //$(this).queue([]).stop();
+                        $(this).queue([]).stop();
                     });
                 }
                 else {
                     $input.slideUp(speed, ease, function(){
-                        //$(this).queue([]).stop(); 
+                        $(this).queue([]).stop(); 
                     });
                 
                 }
@@ -166,7 +167,9 @@ var exe = (function() {
                     
                 	//$navWrap.slideDown(speed);
                     
-                    $navWrap.css({ height:$(window).height() }).slideDown(speed);
+                    $navWrap.css({ height:$(window).height() }).slideDown(speed, function(){
+                    	$(this).queue([]).stop();
+                    });
                     $('html,body').css({position:'fixed', top:-th.opts.t});
                 }
                 else {
@@ -182,6 +185,7 @@ var exe = (function() {
                     
                     $navWrap.slideUp(speed, function(){
                     	$(this).css({ height:0 });
+                        $(this).queue([]).stop();
                     });
                     
                     //$('body').css({overflowY:'visible'});
