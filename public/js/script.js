@@ -148,17 +148,17 @@ var exe = (function() {
             
                 if($navWrap.is(':hidden')) {
                 	th.opts.t = $(window).scrollTop();
-                    //$('.sp-fix-wrap').css({overflowY:'hidden'});
-//                    $('.sp-fix-wrap').on('touchmove.noScroll', function(e){
-//                    	e.preventDefault();
-//                    });
-					
-                    $('.sp-fix-wrap').css({
-                    	position: 'fixed',
-                        zIndex: -1,
-                        width: '100%',
-                        height: '100%', 
+                    //$('body').css({overflow:'hidden', height:'100%'});
+                    $('body').on('touchmove.noScroll', function(e){
+                    	e.preventDefault();
                     });
+					
+//                    $('.sp-fix-wrap').css({
+//                    	position: 'fixed',
+//                        zIndex: -1,
+//                        width: '100%',
+//                        height: '100%', 
+//                    });
                     
                 	if($sForm.is(':visible')) {
                     	$sForm.slideUp(100);
@@ -166,18 +166,18 @@ var exe = (function() {
                     
                 	//$navWrap.slideDown(speed);
                     
-                    $navWrap.css({ height: $(window).height() }).slideDown(speed);
+                    $navWrap.css({ height: $(window).height() }).slideDown(speed).off('.noScroll');
                     //$('html,body').css({position:'fixed', top:-th.opts.t});
                 }
                 else {
                     //$('body').off('.noScroll');
                     
-                    $('.sp-fix-wrap').css({
-                    	position: 'static',
-                        zIndex: 1,
-                        width: 'auto',
-                        height: 'auto', 
-                    });
+//                    $('.sp-fix-wrap').css({
+//                    	position: 'static',
+//                        zIndex: 1,
+//                        width: 'auto',
+//                        height: 'auto', 
+//                    });
 
                     
                     $navWrap.slideUp(speed, function(){
