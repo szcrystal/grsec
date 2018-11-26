@@ -505,6 +505,7 @@ for SP
     	background: rgba(0,0,0,0.6);
         overflow: scroll;
         display: none;
+        width: 100%;
         position: fixed;
         z-index: 998;
     }
