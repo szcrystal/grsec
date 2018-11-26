@@ -148,10 +148,10 @@ var exe = (function() {
             
                 if($navWrap.is(':hidden')) {
                 	th.opts.t = $(window).scrollTop();
-                    $('.sp-fix-wrap').css({overflowY:'hidden'});
-//                    $('.sp-fix-wrap').on('touchmove.noScroll', function(e){
-//                    	e.preventDefault();
-//                    });
+                    //$('.sp-fix-wrap').css({overflowY:'hidden'});
+                    $('.sp-fix-wrap').on('touchmove.noScroll', function(e){
+                    	e.preventDefault();
+                    });
                     
                 	if($sForm.is(':visible')) {
                     	$sForm.slideUp(100);
