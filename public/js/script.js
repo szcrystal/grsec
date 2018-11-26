@@ -148,10 +148,10 @@ var exe = (function() {
             
                 if($navWrap.is(':hidden')) {
                 	th.opts.t = $(window).scrollTop();
-                    //$('body').css({overflow:'hidden', height:'100%'});
-                    $('body').on('touchmove.noScroll', function(e){
-                    	e.preventDefault();
-                    });
+                    $('body').css({overflow:'hidden', height:'100%'});
+//                    $('body').on('touchmove.noScroll', function(e){
+//                    	e.preventDefault();
+//                    });
 					
 //                    $('.sp-fix-wrap').css({
 //                    	position: 'fixed',
@@ -166,7 +166,7 @@ var exe = (function() {
                     
                 	//$navWrap.slideDown(speed);
                     
-                    $navWrap.css({ height: $(window).height() }).slideDown(speed).off('.noScroll');
+                    $navWrap.css({ height: $(window).height() }).slideDown(speed);
                     //$('html,body').css({position:'fixed', top:-th.opts.t});
                 }
                 else {
