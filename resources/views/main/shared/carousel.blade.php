@@ -17,7 +17,9 @@
                 <div class="carousel-item active">
             @endif
             	
+                <a href="{{ $caro->link }}">
               	<img class="d-block img-fluid w-100" src="{{ Storage::url($caro->img_path) }}" alt="slide">
+                </a>
             </div>
             
             <?php $n++; ?>

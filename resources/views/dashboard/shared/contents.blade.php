@@ -101,8 +101,17 @@
                         </div>
                     </div>
                 </fieldset>
+            </div> 
             
-            </div>            
+            @if(isset($type) && $type == 'top')
+                <div class="clearfix">
+                    <fieldset class="mt-2 mb-4 form-group{{ $errors->has('link.'.$n) ? ' is-invalid' : '' }}">
+                        <label>リンク先</label><br>
+                        <input class="form-control col-md-12" name="link[]" value="{{ Ctm::isOld() ? old('link.'.$n) : (isset($snaps[$n]) ? $snaps[$n]->link : '') }}">
+                    </fieldset>
+                </div>
+            @endif
+                       
         <hr>
 
         <input type="hidden" name="snap_count[]" value="{{ $n }}">

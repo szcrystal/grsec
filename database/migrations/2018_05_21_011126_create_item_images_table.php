@@ -20,6 +20,7 @@ class CreateItemImagesTable extends Migration
             
             $table->string('img_path')->nullable()->default(NULL);
             $table->string('caption')->nullable()->default(NULL);
+            $table->string('link')->nullable()->default(NULL);
             
             $table->integer('type')->nullable()->default(NULL);
     

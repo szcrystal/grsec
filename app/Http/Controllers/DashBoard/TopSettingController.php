@@ -138,14 +138,14 @@ class TopSettingController extends Controller
         foreach($data['snap_count'] as $count) {
         
             /*
-                type:1->item main
-                type:2->item spare
+                type:1->item spare
+                type:2->item snap(content)
                 type:3->category
                 type:4->sub category
                 type:5->tag
                 type:6->top carousel
                 type:7->fix                            
-            */         
+            */
  
             if(isset($data['del_snap'][$count]) && $data['del_snap'][$count]) { //削除チェックの時
                 
@@ -159,17 +159,13 @@ class TopSettingController extends Controller
             }
             else {
                 if(isset($data['snap_thumb'][$count])) {
-                    
-                    $snapImg = $this->itemImg->updateOrCreate(
+                	$snapImg = $this->itemImg->updateOrCreate(
                         ['item_id'=>9999, 'type'=>6, 'number'=>$count+1],
                         [
-                            'item_id'=>9999,
-                            //'snap_path' =>'',
-                            'type' => 6,
-                            'number'=> $count+1,
+                            'link' => $data['link'][$count],
                         ]
                     );
-
+                    
                     $filename = $data['snap_thumb'][$count]->getClientOriginalName();                    
                     $filename = str_replace(' ', '_', $filename);
                     
@@ -187,7 +183,18 @@ class TopSettingController extends Controller
                     $snapImg->img_path = $filename;
                     $snapImg->save();
                 }
+                else { //画像がセットされてなく、linkのみされている時
+                	if(isset($data['link'][$count]) && $data['link'][$count]) { //link
+                        $snapImg = $this->itemImg->updateOrCreate(
+                            ['item_id'=>9999, 'type'=>6, 'number'=>$count+1],
+                            [
+                                'link' => $data['link'][$count],
+                            ]
+                        );
+                    }
+                }
             }
+            
             
         } //foreach
         

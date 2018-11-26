@@ -149,17 +149,19 @@ var exe = (function() {
                 if($navWrap.is(':hidden')) {
                 	th.opts.t = $(window).scrollTop();
                     
-//                    $('body').on('touchmove.noScroll', function(e){
-//                    	e.preventDefault();
-//                    });
+                    $('body').on('touchmove.noScroll', function(e){
+                    	e.preventDefault();
+                    });
                     
                 	if($sForm.is(':visible')) {
                     	$sForm.slideUp(100);
                     }
                     
-                	$navWrap.slideDown(speed);
+                	//$navWrap.slideDown(speed);
                     
-                    //$navWrap.css({ height: $(window).height() }).slideDown(speed);
+                    $navWrap.css({ height: $(window).height() }).slideDown(speed).off('touchmove.noScroll', function(e){
+                    	e.preventDefault();
+                    });
                     //$('html,body').css({position:'fixed', top:-th.opts.t});
                 }
                 else {

@@ -505,8 +505,8 @@ for SP
     	background: rgba(0,0,0,0.6);
         overflow: scroll;
         display: none;
-/*        position: relative;*/
-/*        z-index: 998;*/
+        position: fixed;
+        z-index: 998;
     }
     .nav-sp {
     	//display: none;
@@ -525,7 +525,7 @@ for SP
         margin: 0;
     }
     .nav-sp ul > li {
-    	padding: 0.6em 0 0.6em 1.4em;
+    	padding: 3.6em 0 0.6em 1.4em;
     	border-bottom: 1px solid #d5d5d5;
         font-size: 1.05em;
         color: #333;

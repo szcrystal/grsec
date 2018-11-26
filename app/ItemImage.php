@@ -11,6 +11,7 @@ class ItemImage extends Model
         'item_id',
         'img_path',
         'caption',
+        'link',
         'type',
         'number',
 
