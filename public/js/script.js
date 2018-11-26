@@ -148,7 +148,7 @@ var exe = (function() {
             
                 if($navWrap.is(':hidden')) {
                 	th.opts.t = $(window).scrollTop();
-                    $('body').css({overflow:'hidden', height:'100%'});
+                    $('html').css({overflow:'hidden', height:'100%'});
 //                    $('body').on('touchmove.noScroll', function(e){
 //                    	e.preventDefault();
 //                    });
