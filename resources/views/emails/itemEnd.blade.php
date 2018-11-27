@@ -83,8 +83,7 @@ $allTotal = $saleRel->all_price + $saleRel->deli_fee + $saleRel->cod_fee - $sale
 （{{ $pmChildModel->find($saleRel->pay_method_child)->name }}）
 @elseif($saleRel->pay_method == 6)
 <div style="margin: 0 0 1.5em 0.8em;">
-５日以内に下記口座までお振り込み下さい。<br><br>
-{!! nl2br($setting['bank_info']) !!}
+お振込先は、改めてお知らせ致します。
 </div>
 @endif
 <br><br>
