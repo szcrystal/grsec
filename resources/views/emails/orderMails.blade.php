@@ -110,7 +110,7 @@ $allTotal = $saleRel->all_price + $saleRel->deli_fee + $saleRel->cod_fee - $sale
 @if($saleRel->pay_method == 3)
 （{{ $pmChildModel->find($saleRel->pay_method_child)->name }}）
 @elseif($templ->type_code == 'thanks' && $saleRel->pay_method == 6)
-<div style="margin: 0 0 1.5em 0.8em;">
+<div style="margin: 0 0 0.5em 0.8em;">
 {!! nl2br($setting['bank_info']) !!}
 </div>
 @endif

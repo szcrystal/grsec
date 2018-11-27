@@ -38,8 +38,8 @@ class Kernel extends ConsoleKernel
         //if(Ctm::isEnv('product')) {
             //枯れ保証：フォローメールの送信(毎日6時に該当する日数の商品（ユーザー）にメール) ==============
             $schedule->job(new ProcessFollowMail)
-                    ->dailyAt('7:00'); //This is for product
-                    //->everyMinute(); //This is for Test
+                    //->dailyAt('7:00'); //This is for product
+                    ->everyMinute(); //This is for Test
             
             
             //在庫のリセットを各月の1日に ==================================================

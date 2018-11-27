@@ -262,6 +262,9 @@ use App\PayMethodChild;
                 </tr>
               </tfoot>
               
+              <?php
+              	$target = Ctm::isEnv('product') || Ctm::isEnv('alpha') ? 'target="_brank"' : '';
+              ?>
               
               <tbody>
               @foreach($saleObjs as $saleRel)
@@ -339,7 +342,7 @@ use App\PayMethodChild;
 
                 <td>
                   	@if($saleRel->pay_method == 2 || $saleRel->pay_method == 6)
-                        <a href="{{ url('dashboard/sales/order/'. $saleRel->order_number) }}" target="_brank">
+                        <a href="{{ url('dashboard/sales/order/'. $saleRel->order_number) }}" {{ $target }}>
                             {{ $pms->find($saleRel->pay_method)->sec_name }}<br>
 
                             @if($saleRel->pay_done)
@@ -361,7 +364,7 @@ use App\PayMethodChild;
                     <span class="text-small">商品数：{{ count($sales) }}</span><br>
                     <small>
                   	@foreach($sales as $sale)
-                    	<a href="{{ url('dashboard/sales/'.$sale->id) }}" class="d-block my-1" target="_brank">
+                    	<a href="{{ url('dashboard/sales/'.$sale->id) }}" class="d-block my-1" {{ $target }}>
                         	@if($sale->is_cancel)
                             	<span class="text-danger">キャンセル</span>
                             @else
@@ -419,7 +422,7 @@ use App\PayMethodChild;
                   </td>
  
                   <td>
-                  	<a href="{{ url('dashboard/sales/order/'. $saleRel->order_number) }}" class="btn btn-success btn-sm center-block" target="_brank">確認</a><br>
+                  	<a href="{{ url('dashboard/sales/order/'. $saleRel->order_number) }}" class="btn btn-success btn-sm center-block" {{ $target }}>確認</a><br>
                 	<small class="text-secondary ml-1">ID{{ $saleRel->id }}</small>
                 </td>
                   
