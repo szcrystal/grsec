@@ -54,7 +54,8 @@ class SingleController extends Controller
             abort(404);
         }
         else {
-            if($item->is_potset) abort(404);
+            if($item->is_potset || ! $item->open_status)
+            	abort(404);
         }
         
         $cate = $this->category->find($item->cate_id);

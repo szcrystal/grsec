@@ -729,12 +729,27 @@ class ItemController extends Controller
         
         $alls = array();
         foreach($items as $item) {
-
-            $item['cate_id'] = $this->category->find($item['cate_id'])->name;
-            $item['subcate_id'] = $this->categorySecond->find($item['subcate_id'])->name;
+			
+            $item['cate_id'] = '';
+            $item['subcate_id'] = '';
+            $item['consignor_id'] = '';
+            $item['dg_id'] = '';
             
-            $item['consignor_id'] = $this->consignor->find($item['consignor_id'])->name;
-            $item['dg_id'] = $this->dg->find($item['dg_id'])->name;
+            if(isset($item['cate_id']) && $item['cate_id'] != '') {
+            	$item['cate_id'] = $this->category->find($item['cate_id'])->name;
+            }
+            
+            if(isset($item['subcate_id']) && $item['subcate_id'] != '') {
+            	$item['subcate_id'] = $this->categorySecond->find($item['subcate_id'])->name;
+            }
+            
+            if(isset($item['consignor_id']) && $item['consignor_id'] != '') {
+            	$item['consignor_id'] = $this->consignor->find($item['consignor_id'])->name;
+            }
+            
+            if(isset($item['dg_id']) && $item['dg_id'] != '') {
+            	$item['dg_id'] = $this->dg->find($item['dg_id'])->name;
+            }
             
             $priceWithTax = $item['price'] + ($item['price'] * $taxPer/100);
             array_splice($item, 9, 0, $priceWithTax); //追加項目 key名は0になるが関係ないので
