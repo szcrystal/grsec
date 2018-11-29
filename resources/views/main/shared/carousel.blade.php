@@ -17,9 +17,15 @@
                 <div class="carousel-item active">
             @endif
             	
-                <a href="{{ $caro->link }}">
-              	<img class="d-block img-fluid w-100" src="{{ Storage::url($caro->img_path) }}" alt="slide">
-                </a>
+                @if(isset($caro->link) && $caro->link != '')
+                	<a href="{{ $caro->link }}">
+                @endif
+              	
+                	<img class="d-block img-fluid w-100" src="{{ Storage::url($caro->img_path) }}" alt="slide">
+                
+                @if(isset($caro->link) && $caro->link != '')
+                	</a>
+                @endif
             </div>
             
             <?php $n++; ?>
