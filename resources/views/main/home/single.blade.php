@@ -30,7 +30,9 @@ use App\TopSetting;
 
     <div id="main" class="single">
     	
-        @include('main.shared.bread')
+        @if(! Ctm::isAgent('sp'))
+        	@include('main.shared.bread')
+        @endif
         
         @if(isset($item->free_space))
         	<div class="clearfix">
@@ -112,8 +114,10 @@ use App\TopSetting;
             	<?php //END ================================================================= ?>    
 
 			</div><!-- left -->
-
-
+            
+            @if(Ctm::isAgent('sp'))
+				@include('main.shared.bread')
+			@endif
 			
             <div class="single-right">
             	
@@ -543,14 +547,22 @@ use App\TopSetting;
             @if(count($cacheItems) > 0)
                 <div class="mt-4 floar">
                     <h4>最近チェックしたアイテム</h4>
-                    <ul class="clearfix">
-                        @foreach($cacheItems as $item)
-                            <li class="main-atcl">
-                                <?php $strNum = Ctm::isAgent('sp') ? 12 : 18; ?>
-                                @include('main.shared.atcl')
-                            </li>         
-                        @endforeach      
-                    </ul>	     
+                    <?php 
+                    	//キャッシュアイテムはItemControllerでchunkされている
+                    ?>
+                    
+                    @foreach($cacheItems as $cacheItem)
+                    <div>
+                        <ul class="clearfix">
+                            @foreach($cacheItem as $item)                            
+                                <li class="main-atcl">
+                                    <?php $strNum = Ctm::isAgent('sp') ? 12 : 16; ?>
+                                    @include('main.shared.atcl')
+                                </li>    
+                            @endforeach      
+                        </ul>
+                    </div>
+                    @endforeach
                 </div>
             @endif
         </div>

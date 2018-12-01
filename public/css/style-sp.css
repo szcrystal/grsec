@@ -179,6 +179,7 @@ for SP
     }
     
     .breadcrumb {
+    	margin-top: 1em;
     	font-size: 85%;
     }
     
@@ -553,7 +554,11 @@ for SP
         font-size: 0.95em;
     }
     
-    
+/*    [class*="col-md-"]*/
+    .for-ctsp {
+    	font-size: 110%;
+        /*font-size:6.0vmin;*/
+    }
     
 /* ORG ================
     .fade-black {
@@ -1053,7 +1058,8 @@ ORG END ======================== */
     
     /* Single */
     .single .breadcrumb {
-    	display: none;
+    	margin-top: 0.2em;
+        margin-bottom: -0.3em;
     }
     .single-left {
         float: none;

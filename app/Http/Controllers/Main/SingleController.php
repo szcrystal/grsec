@@ -105,10 +105,10 @@ class SingleController extends Controller
         //レコメンド ===========================
         //同梱包可能商品レコメンド -> 同じ出荷元で同梱包可能なもの
         $isOnceItems = null;
-        $getNum = Ctm::isAgent('sp') ? 3 : 3;
+        $getNum = Ctm::isAgent('sp') ? 6 : 6;
         
         if($item->is_once) {
-        	$isOnceItems = $this->item->whereNotIn('id', [$item->id])->where(['consignor_id'=>$item->consignor_id, 'is_once'=>1, 'is_once_recom'=>0, 'open_status'=>1, 'is_potset'=>0])->skip(2)->take($getNum)->get();
+        	$isOnceItems = $this->item->whereNotIn('id', [$item->id])->where(['consignor_id'=>$item->consignor_id, 'is_once'=>1, 'is_once_recom'=>0, 'open_status'=>1, 'is_potset'=>0])->inRandomOrder()->take($getNum)->get();
             //->inRandomOrder()->take()->get() もあり クエリビルダに記載あり
         }
         
@@ -121,7 +121,7 @@ class SingleController extends Controller
         
         //Recommend レコメンド 先頭タグと同じものをレコメンド ==============
         $recommends = null;
-        $getNum = Ctm::isAgent('sp') ? 3 : 3;
+        //$getNum = Ctm::isAgent('sp') ? 3 : 3;
         
         if(isset($tagRels[1])) {
         	$ar = [$tagRels[1]];
@@ -175,7 +175,7 @@ class SingleController extends Controller
         //Cache 最近見た ===================
         $cacheIds = array();
         $cacheItems = null;
-        $getNum = Ctm::isAgent('sp') ? 6 : 8;
+        $getNum = Ctm::isAgent('sp') ? 8 : 8;
         
         //cache()->forget('cacheIds');
         
@@ -183,7 +183,11 @@ class SingleController extends Controller
         	
         	$cacheIds = cache('cacheIds'); //pullで元キャッシュを一旦削除する必要がある
             $caches = implode(',', $cacheIds); //順を逆にする
-          	$cacheItems = $this->item->whereIn('id', $cacheIds)->whereNotIn('id', [$item->id])->where($whereArr)->orderByRaw("FIELD(id, $caches)")->take($getNum)->get();  
+            $chunkNum = Ctm::isAgent('sp') ? $getNum/2 : $getNum;
+          	$cacheItems = $this->item->whereIn('id', $cacheIds)->whereNotIn('id', [$item->id])->where($whereArr)->orderByRaw("FIELD(id, $caches)")->take($getNum)->get()->chunk($chunkNum);
+            
+//            print_r($cacheItems);
+//            exit;  
         }
         
         if(! in_array($item->id, $cacheIds)) { //配列にidがない時 or cachIdsが空の時

@@ -8,7 +8,7 @@
                 @endif
             </label>
 
-            <textarea class="form-control" name="contents" rows="22">{{ Ctm::isOld() ? old('contents') : (isset($obj) ? $obj->contents : '') }}</textarea>
+            <textarea class="form-control" name="contents" rows="35">{{ Ctm::isOld() ? old('contents') : (isset($obj) ? $obj->contents : '') }}</textarea>
 
             @if ($errors->has('contents'))
                 <span class="help-block">

@@ -28,7 +28,8 @@ use App\TopSetting;
         <div class="panel-body">
 
             <div class="top-cont clearfix">
-            
+            	
+                
                 {!! $fix->contents !!}
             
             </div>
