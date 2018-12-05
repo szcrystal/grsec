@@ -20,6 +20,8 @@ class CreateCategorySecondsTable extends Migration
             $table->string('name')->nullable()->default(NULL);
             $table->string('slug')->unique()->nullable()->default(NULL);
             
+            //$table->string('main_img')->nullable()->default(NULL);
+            
             $table->boolean('is_top')->nullable()->default(0);
             $table->string('top_img_path')->nullable()->default(NULL);
             $table->string('top_title')->nullable()->default(NULL);

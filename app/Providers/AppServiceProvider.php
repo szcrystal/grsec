@@ -46,12 +46,22 @@ class AppServiceProvider extends ServiceProvider
             $str .= $event->job->getName() . "\n\n";
             $str .= $event->job->getRawBody() . "\n\n";
 
-                    
+        	//FailedJobはOrderMails.php内で、->with[ templ...]のラインをコメントアウトし、サンクスメールを送信すれば確認できる。
+            //この辺りを変更した後は、php artisan queue:restart が必要となる
             Mail::raw($str, function ($message) {
-                $message -> from('no-reply@green-rocket.jp', 'GR-SYSTEM')
-                         -> to('szk.create@gmail.com', '')
-                         //-> cc('szk.create@gmail.com')
-                         -> subject('Failed Job Information');
+            	
+                if(env('FAILED_JOB_MAIL') != '') {
+                    $message -> from('no-reply@green-rocket.jp', 'GR-SYSTEM')
+                             -> to(env('FAILED_JOB_MAIL'))
+                             -> cc('szk.create@gmail.com')
+                             -> subject('Failed Job Information');
+                }
+                else {
+                	$message -> from('no-reply@green-rocket.jp', 'GR-SYSTEM')
+                             -> to('szk.create@gmail.com')
+                             -> subject('Failed Job Information');
+                }
+                
             });
 
         });

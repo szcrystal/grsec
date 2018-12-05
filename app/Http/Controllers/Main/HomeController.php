@@ -327,8 +327,8 @@ class HomeController extends Controller
             abort(404);
         }
         
-        $items = $this->item->where(['cate_id'=>$cate->id, 'open_status'=>1, 'is_potset'=>0])->orderBy('id', 'desc')->paginate($this->perPage);
-        //$items = $this->cateSec->where(['parent_id'=>$cate->id, ])->orderBy('updated_at', 'desc')->paginate($this->perPage);
+        //$items = $this->item->where(['cate_id'=>$cate->id, 'open_status'=>1, 'is_potset'=>0])->orderBy('id', 'desc')->paginate($this->perPage);
+        $items = $this->cateSec->where(['parent_id'=>$cate->id, ])->orderBy('updated_at', 'desc')->paginate($this->perPage);
         
         $metaTitle = isset($cate->meta_title) ? $cate->meta_title : $cate->name;
         $metaDesc = $cate->meta_description;
@@ -340,7 +340,7 @@ class HomeController extends Controller
         return view('main.archive.index', ['items'=>$items, 'cate'=>$cate, 'type'=>'category', 'metaTitle'=>$metaTitle, 'metaDesc'=>$metaDesc, 'metaKeyword'=>$metaKeyword,]);
     }
     
-    //Child
+    //Sub Category Child
     public function subCategory($slug, $subSlug)
     {
     	$cate = $this->category->where('slug', $slug)->first();
@@ -367,6 +367,7 @@ class HomeController extends Controller
         return view('main.archive.index', ['items'=>$items, 'cate'=>$cate, 'subcate'=>$subcate, 'type'=>'subcategory', 'metaTitle'=>$metaTitle, 'metaDesc'=>$metaDesc, 'metaKeyword'=>$metaKeyword,]);
     }
     
+    //Tag
     public function tag($slug)
     {
     	$tag = $this->tag->where('slug', $slug)->first();

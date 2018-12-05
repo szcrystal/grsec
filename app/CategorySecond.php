@@ -11,6 +11,8 @@ class CategorySecond extends Model
         'name',
         'slug',
         
+        'main_img',
+        
         'is_top',
     	'top_img_path',
     	'top_title',

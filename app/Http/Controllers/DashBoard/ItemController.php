@@ -10,6 +10,7 @@ use App\Tag;
 use App\TagRelation;
 use App\Consignor;
 use App\DeliveryGroup;
+use App\DeliveryGroupRelation;
 use App\ItemImage;
 use App\Setting;
 use App\ItemStockChange;
@@ -27,7 +28,7 @@ use Storage;
 
 class ItemController extends Controller
 {
-    public function __construct(Admin $admin, Item $item, Tag $tag, Category $category, CategorySecond $categorySecond, TagRelation $tagRelation, Consignor $consignor, DeliveryGroup $dg, ItemImage $itemImg, Setting $setting, ItemStockChange $itemSc, Icon $icon)
+    public function __construct(Admin $admin, Item $item, Tag $tag, Category $category, CategorySecond $categorySecond, TagRelation $tagRelation, Consignor $consignor, DeliveryGroup $dg, DeliveryGroupRelation $dgRel, ItemImage $itemImg, Setting $setting, ItemStockChange $itemSc, Icon $icon)
     {
         
         $this -> middleware('adminauth');
@@ -41,6 +42,7 @@ class ItemController extends Controller
         $this->tagRelation = $tagRelation;
         $this->consignor = $consignor;
         $this->dg = $dg;
+        $this->dgRel = $dgRel;
         $this->itemImg = $itemImg;
         $this->setting = $setting;
         $this->itemSc = $itemSc;
@@ -157,7 +159,33 @@ class ItemController extends Controller
         	'number' => 'required|unique:items,number,'.$editId,
             'title' => 'required|max:255',
             'cate_id' => 'required',
-            'dg_id' => 'required',
+            //'dg_id' => 'required',
+            'dg_id' => [
+            	'required',
+                
+                function($attribute, $value, $fail) {
+                	$result = 1;
+                    
+            		$feeObjs = $this->dgRel->where(['dg_id'=>$value])->get();
+                    
+                    if($feeObjs->isEmpty()) {
+                    	$result = 0;
+                    }
+                    else {
+                        foreach($feeObjs as $obj) {
+                            if($obj->fee === null || $obj->fee == '') {
+                                $result = 0;
+                                break;
+                            }
+                        }
+                    }
+                    
+                	if(! $result) {
+                		return $fail('「配送区分」の都道府県別送料が未入力です。配送区分マスターを確認して下さい。');
+                    }
+                },
+            ],
+            
             'factor' => 'required|numeric',
             
             'price' => 'required|numeric',

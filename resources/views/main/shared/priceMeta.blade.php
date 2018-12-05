@@ -31,13 +31,20 @@ $isSale = Setting::get()->first()->is_sale;
 	送料無料</span>
 @else
     @if(Auth::check())
-    <?php
-        $u = User::find(Auth::id());
-        $pref = Prefecture::where('name', $u->prefecture)->first();
-        $dgr = DeliveryGroupRelation::where(['dg_id'=>$obj->dg_id, 'pref_id'=>$pref->id])->first();
-    ?>
+        <?php
+            $u = User::find(Auth::id());
+            $pref = Prefecture::where('name', $u->prefecture)->first();
+            $dgr = DeliveryGroupRelation::where(['dg_id'=>$obj->dg_id, 'pref_id'=>$pref->id])->first();
+        ?>
     
-    	{{ $pref->name }}への最低送料 {{ number_format($dgr->fee) }}円
+    	@if(isset($dgr) && $dgr->fee != '')
+        	<?php
+            	$deliText = $dgr->fee == 99999 ? '配送不可' : '最低送料' . number_format($dgr->fee) . '円';
+            ?>
+        
+        	{{ $pref->name }}への{{ $deliText }}
+        @endif
+        
     @else
     	<i class="fal fa-plus"></i> 送料
     @endif

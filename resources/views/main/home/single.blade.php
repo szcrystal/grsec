@@ -73,7 +73,7 @@ use App\TopSetting;
                             @endif
                         @endforeach
                         
-                      </div>
+                      
                       
                       <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"><i class="fal fa-angle-left"></i></span>
@@ -84,6 +84,7 @@ use App\TopSetting;
                         <span class="sr-only">Next</span>
                       </a>
                       
+                      </div>
                       
                       <ol class="carousel-indicators clearfix">
                         <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active">
