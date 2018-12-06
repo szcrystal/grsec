@@ -54,6 +54,26 @@ h1 {
 .bg-green {
 	background: mintcream;
 }
+.btn-blue {
+	background: #3A9BEB;
+}
+
+.open-tgl {
+	cursor: pointer;
+}
+.table-second-wrap {
+	display: none;
+}
+
+.btn-box {
+	position: fixed;
+    top: 0;
+    right: 0;
+    height: 100%;
+    background: #efefef;
+    overflow-y: scroll;
+}
+
 
 /*  */
 .table-responsive {

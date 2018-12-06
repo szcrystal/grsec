@@ -61,6 +61,8 @@ class SaleController extends Controller
             'deliDoneNo',
             'deliDone',
             'cancel',
+            'simatone_ettou',
+            'sekkai_iou',
         ];
 		
         $this->templIds = array();
@@ -386,8 +388,7 @@ class SaleController extends Controller
         
         //payDoneだけ若干特殊なのでswitchを作る
         $withPayDone = $withMail == $templIds['payDone'] ? 1 : 0;
-        	
-    	
+        
  /*       
 //        $rules = [
 //            'deli_start_date' => [

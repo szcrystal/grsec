@@ -61,7 +61,7 @@
                 <tr>
                   <th>ID</th>
                   <th>配送区分名</th>
-                  <th></th>
+                  <th>送料状態</th>
                   <th>容量</th>
                   {{-- <th>係数</th> --}}
                   <th>時間指定</th>
@@ -90,10 +90,10 @@
                             break;
                         }
                     }
-                    ?>
+                	?>
                     
                 	@if(count($feeObjs) < 47 || ! $result)
-                		<span class="text-danger">送料が未入力の都道府県があります</span>
+                		<span class="text-danger"><b>送料が未入力の都道府県があります</b></span>
                    @endif
                    
                       

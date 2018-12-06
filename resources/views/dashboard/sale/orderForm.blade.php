@@ -30,10 +30,14 @@ use App\PayMethodChild;
         </div>
     </div>
   </div>
+  
+  <div class="col-lg-12 mb-5 clearfix">
 
+	<div class="col-lg-10 pl-0 pr-5">
+    
     @if (count($errors) > 0)
         <div class="alert alert-danger">
-            <strong>Error!!</strong><br><br>
+            <strong>Error!!</strong>
             <ul>
                 @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
@@ -48,10 +52,14 @@ use App\PayMethodChild;
         </div>
     @endif
     
-    <div class="col-lg-12 mb-5">
+    
         <form class="form-horizontal" role="form" method="POST" action="/dashboard/sales/order">
 
             {{ csrf_field() }}
+            
+            <div class="form-group float-left w-25 mt-3">
+                <button type="submit" class="btn btn-primary btn-block w-btn w-100 text-white" name="only_up" value="1"> 更新のみする</button>
+            </div>
 
                 <div class="clearfix">
                 	<p class="w-50 float-left mb-0 pb-0">
@@ -214,8 +222,18 @@ use App\PayMethodChild;
                                             
                                             <tr>
                                             	<th>合計金額（税込）</th>
-                                                <td>¥{{ number_format($sale->total_price) }}</td>
+                                                <td>
+                                                	¥{{ number_format($sale->total_price) }}
+                                                </td>
                                             </tr>
+                                        </tbody>
+                                    </table>
+                                    
+                                    <p class="text-center p-0 m-0 text-warning open-tgl">OPEN <i class="fa fa-caret-down"></i></p>
+                                    
+                                    <div class="table-second-wrap">
+                                    <table class="table-tyumon w-100 table-striped">
+                                    	<tbody>
                                             
                                             <tr>
                                             	<th>ご希望配送日時</th>
@@ -364,6 +382,7 @@ use App\PayMethodChild;
                                             
                                         </tbody>
                                     </table>
+                                    </div>
                                 	
                                     
                                     <?php 
@@ -513,9 +532,9 @@ use App\PayMethodChild;
                     </table>
                 </div>
                 
-                <div class="mt-3 mb-5">
+                <div class="mt-3">
                 	<fieldset class="mb-2 form-group{{ $errors->has('information') ? ' is-invalid' : '' }}">
-                        <label for="detail" class="control-label">ご連絡事項（ユーザー反映）（ホワイトボード的な役割。全てのメールテンプレに反映されるので、非反映の場合は空にして下さい。）</label>
+                        <label for="detail" class="control-label">ご連絡事項（ユーザー反映）<span class="text-small">（ホワイトボード的役割。全てのメールテンプレに反映されるので、非反映の場合は空にして下さい。）</span></label>
 
                             <textarea id="information" class="form-control" name="information" rows="8">{{ Ctm::isOld() ? old('information') : (isset($saleRel) ? $saleRel->information : '') }}</textarea>
 
@@ -528,45 +547,7 @@ use App\PayMethodChild;
                 </div>
                 
                 
-                <div class="btn-box mt-4">
-                	<h5 class="mb-4"><i class="fa fa-envelope"></i> メール送信</h5>
                 
-                    @if($saleRel->pay_method == 2 || $saleRel->pay_method == 6 || Ctm::isEnv('local'))
-                        
-                        {{-- @if( ! $saleRel->pay_done || Ctm::isEnv('local'))  --}}                   
-                            <div class="form-group clearfix my-3">
-                                <button type="submit" class="btn btn-danger col-md-5 text-white py-2" name="with_mail" value="{{ $templs['payDone'] }}"><i class="fa fa-yen"></i> 入金済メール送信</button>
-                            </div>
-                        {{-- @endif --}}
-                    @endif
-                    
-                    <div class="clearfix">
-                        <div class="form-group clearfix my-3 w-50 float-left">
-                            <button type="submit" class="btn btn-success col-md-10 text-white py-2" name="with_mail" value="{{ $templs['thanks'] }}"><i class="fa fa-thumbs-up"></i> サンクスメール送信</button>
-                        </div>
-                        
-                        <div class="form-group clearfix my-3 w-50 float-left">
-                            <button type="submit" class="btn btn-warning col-md-10 text-white py-2" name="with_mail" value="{{ $templs['stockNow'] }}"><i class="fa fa-check"></i> 在庫確認中メール送信</button>
-                        </div>
-                        
-                        <div class="form-group clearfix my-3 w-50 float-left">
-                            <button type="submit" class="btn btn-purple col-md-10 text-white py-2" name="with_mail" value="{{ $templs['howToUe'] }}"><i class="fa fa-check"></i> 植え付け方法メール送信</button>
-                        </div>
-
-                        <div class="form-group clearfix my-3 w-50 float-left">
-                            <button type="submit" class="btn btn-info col-md-10 text-white py-2" name="with_mail" value="{{ $templs['deliDoneNo'] }}"><i class="fa fa-truck"></i> 出荷完了（伝票番号未確認）メール送信</button>
-                        </div>
-                        
-                        <div class="form-group clearfix my-3 w-50 float-left">
-                            <button type="submit" class="btn btn-info col-md-10 text-white py-2" name="with_mail" value="{{ $templs['deliDone'] }}"><i class="fa fa-truck"></i> 出荷完了メール送信</button>
-                        </div>
-                        
-                        <div class="form-group clearfix my-3 w-50 float-left">
-                            <button type="submit" class="btn btn-danger col-md-10 text-white py-2" name="with_mail" value="{{ $templs['cancel'] }}"><i class="fa fa-times"></i> キャンセルメール送信</button>
-                        </div>
-                    </div>
-                
-                </div>
                 
                 <div class="mt-2 pt-3">
                 	<fieldset class="mt-5 mb-2 form-group{{ $errors->has('memo') ? ' is-invalid' : '' }}">
@@ -597,6 +578,60 @@ use App\PayMethodChild;
                         <button type="submit" class="btn btn-primary btn-block w-btn w-100 text-white" name="only_up" value="1"> 更新のみする</button>
                     </div>
                 </div>
+                
+                </div><!-- wrap col-lg-12 -->
+                
+                
+                <div class="btn-box col-lg-2 mt-4 pt-5">
+                	<h5 class="mb-4"><i class="fa fa-envelope"></i> メール送信</h5>
+                    
+                    <div class="clearfix">
+                    
+                    @if($saleRel->pay_method == 2 || $saleRel->pay_method == 6 || Ctm::isEnv('local'))
+                        
+                        {{-- @if( ! $saleRel->pay_done || Ctm::isEnv('local'))  --}}                   
+                            <div class="form-group clearfix my-3">
+                                <button type="submit" class="btn btn-danger col-md-12 text-white py-2" name="with_mail" value="{{ $templs['payDone'] }}"><i class="fa fa-yen"></i> 入金済</button>
+                            </div>
+                        {{-- @endif --}}
+                    @endif
+                    
+                    
+                        <div class="form-group clearfix my-3">
+                            <button type="submit" class="btn btn-success col-md-12 text-white py-2" name="with_mail" value="{{ $templs['thanks'] }}"><i class="fa fa-thumbs-up"></i> サンクス</button>
+                        </div>
+                        
+                        <div class="form-group clearfix my-3">
+                            <button type="submit" class="btn btn-warning col-md-12 text-white py-2" name="with_mail" value="{{ $templs['stockNow'] }}"><i class="fa fa-check"></i> 在庫確認中</button>
+                        </div>
+                        
+                        <div class="form-group clearfix my-3">
+                            <button type="submit" class="btn btn-purple col-md-12 text-white py-2" name="with_mail" value="{{ $templs['howToUe'] }}"><i class="fa fa-check"></i> 植え付け方法</button>
+                        </div>
+
+                        <div class="form-group clearfix my-3">
+                            <button type="submit" class="btn btn-info col-md-12 text-white py-2" name="with_mail" value="{{ $templs['deliDoneNo'] }}"><i class="fa fa-truck"></i> 出荷完了（伝番未）</button>
+                        </div>
+                        
+                        <div class="form-group clearfix my-3">
+                            <button type="submit" class="btn btn-info col-md-12 text-white py-2" name="with_mail" value="{{ $templs['deliDone'] }}"><i class="fa fa-truck"></i> 出荷完了</button>
+                        </div>
+                        
+                        <div class="form-group clearfix my-3">
+                            <button type="submit" class="btn btn-danger col-md-12 text-white py-2" name="with_mail" value="{{ $templs['cancel'] }}"><i class="fa fa-times"></i> キャンセル</button>
+                        </div>
+                        
+                        <div class="form-group clearfix my-3">
+                            <button type="submit" class="btn btn-blue col-md-12 text-white py-2" name="with_mail" value="{{ $templs['simatone_ettou'] }}"><i class="fa fa-times"></i> シマトネ越冬</button>
+                        </div>
+                        
+                        <div class="form-group clearfix my-3">
+                            <button type="submit" class="btn btn-blue col-md-12 text-white py-2" name="with_mail" value="{{ $templs['sekkai_iou'] }}"><i class="fa fa-times"></i> 石灰硫黄合剤説明</button>
+                        </div>
+                    </div>
+                
+                </div>
+                
         </form>
         
     </div>

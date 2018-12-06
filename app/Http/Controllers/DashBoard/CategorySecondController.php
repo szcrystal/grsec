@@ -276,7 +276,7 @@ class CategorySecondController extends Controller
     {
         $name = $this->cateSec->find($id)->name;
         
-        $atcls = $this->item->where('subcate_id', $id)->get()->map(function($obj){
+        $this->item->where('subcate_id', $id)->get()->map(function($obj){
             $obj->subcate_id = null;
             $obj->save();
         });

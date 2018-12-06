@@ -106,17 +106,18 @@ class SingleController extends Controller
         //同梱包可能商品レコメンド -> 同じ出荷元で同梱包可能なもの
         $isOnceItems = null;
         $getNum = Ctm::isAgent('sp') ? 6 : 6;
+        $chunkNum = $getNum/2;
         
         if($item->is_once) {
-        	$isOnceItems = $this->item->whereNotIn('id', [$item->id])->where(['consignor_id'=>$item->consignor_id, 'is_once'=>1, 'is_once_recom'=>0, 'open_status'=>1, 'is_potset'=>0])->inRandomOrder()->take($getNum)->get();
+        	$isOnceItems = $this->item->whereNotIn('id', [$item->id])->where(['consignor_id'=>$item->consignor_id, 'is_once'=>1, 'is_once_recom'=>0, 'open_status'=>1, 'is_potset'=>0])->inRandomOrder()->take($getNum)->get()->chunk($chunkNum);
             //->inRandomOrder()->take()->get() もあり クエリビルダに記載あり
         }
         
         // レコメンド：同カテゴリー
-        $recomCateItems = $this->item->whereNotIn('id', [$item->id])->where(['cate_id'=>$item->cate_id, 'open_status'=>1, 'is_potset'=>0])->inRandomOrder()->take($getNum)->get();
+        $recomCateItems = $this->item->whereNotIn('id', [$item->id])->where(['cate_id'=>$item->cate_id, 'open_status'=>1, 'is_potset'=>0])->inRandomOrder()->take($getNum)->get()->chunk($chunkNum);
         
         // レコメンド：同カテゴリーのランキング
-        $recomCateRankItems = $this->item->whereNotIn('id', [$item->id])->where(['cate_id'=>$item->cate_id, 'open_status'=>1, 'is_potset'=>0])->orderBy('view_count', 'desc')->take($getNum)->get();
+        $recomCateRankItems = $this->item->whereNotIn('id', [$item->id])->where(['cate_id'=>$item->cate_id, 'open_status'=>1, 'is_potset'=>0])->orderBy('view_count', 'desc')->take($getNum)->get()->chunk($chunkNum);
         
         
         //Recommend レコメンド 先頭タグと同じものをレコメンド ==============
@@ -153,7 +154,7 @@ class SingleController extends Controller
 //            print_r($res);
 //            exit;
             
-            $recommends = $this->item->whereNotIn('id', [$item->id])->whereIn('id', $res)->where($whereArr)->inRandomOrder()->take($getNum)->get();
+            $recommends = $this->item->whereNotIn('id', [$item->id])->whereIn('id', $res)->where($whereArr)->inRandomOrder()->take($getNum)->get()->chunk($chunkNum);
             //->inRandomOrder()->take()->get() もあり クエリビルダに記載あり
         }
         else {
@@ -183,8 +184,10 @@ class SingleController extends Controller
         	
         	$cacheIds = cache('cacheIds'); //pullで元キャッシュを一旦削除する必要がある
             $caches = implode(',', $cacheIds); //順を逆にする
+            
             $chunkNum = Ctm::isAgent('sp') ? $getNum/2 : $getNum;
-          	$cacheItems = $this->item->whereIn('id', $cacheIds)->whereNotIn('id', [$item->id])->where($whereArr)->orderByRaw("FIELD(id, $caches)")->take($getNum)->get()->chunk($chunkNum);
+          	
+            $cacheItems = $this->item->whereIn('id', $cacheIds)->whereNotIn('id', [$item->id])->where($whereArr)->orderByRaw("FIELD(id, $caches)")->take($getNum)->get()->chunk($chunkNum);
             
 //            print_r($cacheItems);
 //            exit;  

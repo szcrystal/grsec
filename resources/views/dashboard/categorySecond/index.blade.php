@@ -9,11 +9,7 @@
     	<h3 class="page-header">子カテゴリー一覧</h3>
     </div>
 
-    @if(session('status'))
-        <div class="alert alert-success">
-            {{ session('status') }}
-        </div>
-    @endif
+    
 
     {{-- $subCates->links() --}}
     
@@ -25,12 +21,19 @@
             <a href="{{url('dashboard/categories/sub/create')}}" class="btn btn-info">新規追加</a>
         </div>
         
+        @if(session('status'))
+            <div class="alert alert-success">
+                {{ session('status') }}
+            </div>
+        @endif
+        
         <div class="table-responsive">
             <table id="dataTable" class="table table-striped table-bordered table-hover bg-white" width="100%" cellspacing="0">
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>子カテゴリー</th>
+                        <th>アーカイブ画像</th>
+                        <th>子カテゴリー名</th>
                         <th>スラッグ</th>
                         <th>親カテゴリー</th>
                         <th>おすすめ</th>
@@ -44,6 +47,14 @@
                         <tr>
                             <td>
                                 {{$subCate->id}}
+                            </td>
+                            
+                            <td>
+                              @if(isset($subCate->main_img) && $subCate->main_img != '')
+                              <img src="{{ Storage::url($subCate->main_img) }}" width="60" height="70">
+                              @else
+                              <span class="no-img">No Image</span>
+                              @endif
                             </td>
                             
                             <td>

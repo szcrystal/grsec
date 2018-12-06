@@ -114,12 +114,15 @@
                 <tr>
                   <td>{{ $item->id }}</td>
                   <td class="text-small">{{ $item->number }}</td>
+                  
                   <td>
                   @if($item->main_img != '')
-                  <img src="{{ Storage::url($item->main_img) }}" width="70" height="60"></td>
+                  <img src="{{ Storage::url($item->main_img) }}" width="70" height="60">
                   @else
                   <span class="no-img">No Image</span>
                   @endif
+                  </td>
+                  
                   <td>
                   	{{ $item->title }}<br>
                   	@if($item->open_status)

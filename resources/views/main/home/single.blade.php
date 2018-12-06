@@ -525,14 +525,19 @@ use App\TopSetting;
                         @if(count($recoms) > 0)
                             <div class="mt-3 floar">
                                 <h4 class="text-small">{{ $key }}</h4>
-                                <ul class="clearfix">
-                                    @foreach($recoms as $item)
-                                        <li class="main-atcl">
-                                            <?php $strNum = Ctm::isAgent('sp') ? 16 : 23; ?>
-                                            @include('main.shared.atcl')
-                                        </li>
-                                    @endforeach
-                                </ul> 
+                                
+                                @foreach($recoms as $recom)
+                                <div>
+                                    <ul class="clearfix">
+                                        @foreach($recom as $item)
+                                            <li class="main-atcl">
+                                                <?php $strNum = Ctm::isAgent('sp') ? 16 : 23; ?>
+                                                @include('main.shared.atcl')
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                                @endforeach
                             </div>
                         @endif
                     @endforeach   

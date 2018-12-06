@@ -685,6 +685,16 @@ var exe = (function() {
             
         },
         
+        openTable: function(){
+        	
+            $('.open-tgl').on('click', function(){
+            	$(this).next('.table-second-wrap').slideToggle(150);
+            
+            });
+
+        },
+        
+        
         
     } //return
 
@@ -695,8 +705,8 @@ $(function(e){ //ready
     
     exe.autoComplete();
     
-    exe.scrollFunc();
-    exe.toggleSp();
+    //exe.scrollFunc();
+    //exe.toggleSp();
   
   	//exe.addClass();
   
@@ -709,6 +719,8 @@ $(function(e){ //ready
     exe.openNav();
     
     exe.changeSearch();
+    
+    exe.openTable();
 
 });
 

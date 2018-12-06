@@ -222,19 +222,6 @@ class CreateMailTemplatesTable extends Migration
             ]
         );
         
-        DB::table('mail_templates')->insert(
-            [ 
-                'type_code' => 'aaa',
-                'type_name' => 'AAA',
-                'title' => 'AAA',
-                'header' => 'ababab',
-                'footer' => '121212',
-                
-                'created_at' => date('Y-m-d H:i:s', time()),
-                'updated_at' => date('Y-m-d H:i:s', time()),
-            ]
-        );
-        
         
     }
 
