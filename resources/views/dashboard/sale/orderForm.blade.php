@@ -56,25 +56,25 @@ use App\PayMethodChild;
         <form class="form-horizontal" role="form" method="POST" action="/dashboard/sales/order">
 
             {{ csrf_field() }}
+
+            <div class="clearfix">
+                <p class="w-50 float-left mb-0 pb-0">
+                    
+                @if($saleRel->pay_method == 2 || $saleRel->pay_method == 6)
+                    <?php $payName = PayMethod::find($saleRel->pay_method)->name; ?>
+                    
+                    @if($saleRel->pay_done)
+                    <span class="text-success text-big">このご注文は、{{ $payName }}：入金済みです。</span>
+                    @else
+                    <span class="text-danger text-big">このご注文は、{{ $payName }}：未入金です。</span>
+                    @endif  
+                 @endif                 
+                </p>
+            </div>
             
-            <div class="form-group float-left w-25 mt-3">
+            <div class="form-group w-25 mt-3">
                 <button type="submit" class="btn btn-primary btn-block w-btn w-100 text-white" name="only_up" value="1"> 更新のみする</button>
             </div>
-
-                <div class="clearfix">
-                	<p class="w-50 float-left mb-0 pb-0">
-                 		
-                    @if($saleRel->pay_method == 2 || $saleRel->pay_method == 6)
-                    	<?php $payName = PayMethod::find($saleRel->pay_method)->name; ?>
-                        
-                        @if($saleRel->pay_done)
-                   		<span class="text-success text-big">このご注文は、{{ $payName }}：入金済みです。</span>
-                     	@else
-                      	<span class="text-danger text-big">このご注文は、{{ $payName }}：未入金です。</span>
-                       	@endif  
-                     @endif                 
-                    </p>
-                </div>
 
 
             	<div class="table-responsive">
