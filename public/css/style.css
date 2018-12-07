@@ -247,6 +247,12 @@ body {
 	background: #C15360;
     color: #fff;
 }
+.bg-orange {
+	background: navajowhite;
+}
+.bg-blue {
+	background: paleturquoise;
+}
 .text-enji {
 	color: #C15360;
 }
