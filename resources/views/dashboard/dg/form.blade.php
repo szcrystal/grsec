@@ -90,7 +90,7 @@
         
 			<fieldset class="mb-4 form-group{{ $errors->has('name') ? ' has-error' : '' }}">
                 <label>配送区分</label>
-                <input class="form-control col-md-6{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ Ctm::isOld() ? old('name') : (isset($dg) ? $dg->name : '') }}">
+                <input class="form-control col-md-10{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ Ctm::isOld() ? old('name') : (isset($dg) ? $dg->name : '') }}">
 
                 @if ($errors->has('name'))
                     <div class="text-danger">
@@ -102,7 +102,7 @@
             
             <fieldset class="mb-4 form-group">
                 <label for="stock" class="control-label">容量</label>
-                <input class="form-control col-md-6{{ $errors->has('capacity') ? ' is-invalid' : '' }}" name="capacity" value="{{ Ctm::isOld() ? old('capacity') : (isset($dg) ? $dg->capacity : '') }}">
+                <input class="form-control col-md-10{{ $errors->has('capacity') ? ' is-invalid' : '' }}" name="capacity" value="{{ Ctm::isOld() ? old('capacity') : (isset($dg) ? $dg->capacity : '') }}">
                 
 
                 @if ($errors->has('capacity'))
@@ -137,7 +137,7 @@
             
             <fieldset class="mb-4 form-group">
                 <label for="time_table" class="control-label">時間割（各時間帯をカンマで区切って下さい）</label>
-                <input class="form-control col-md-6{{ $errors->has('time_table') ? ' is-invalid' : '' }}" name="time_table" value="{{ Ctm::isOld() ? old('time_table') : (isset($dg) ? $dg->time_table : '') }}" placeholder="午前,12:00~14:00,14:00~16:00">
+                <input class="form-control col-md-12{{ $errors->has('time_table') ? ' is-invalid' : '' }}" name="time_table" value="{{ Ctm::isOld() ? old('time_table') : (isset($dg) ? $dg->time_table : '') }}" placeholder="午前,12:00~14:00,14:00~16:00">
                 
 
                 @if ($errors->has('time_table'))

@@ -39,10 +39,15 @@ $isSale = Setting::get()->first()->is_sale;
     
     	@if(isset($dgr) && $dgr->fee != '')
         	<?php
-            	$deliText = $dgr->fee == 99999 ? '配送不可' : '最低送料' . number_format($dgr->fee) . '円';
+            	$deliText = ($dgr->fee == 99999) ? 
+                        '配送不可' :
+                        '最低送料 ' . number_format($dgr->fee) . '円';
             ?>
         
         	{{ $pref->name }}への{{ $deliText }}
+        
+        @elseif(! $dgr->fee)
+        	送料無料
         @endif
         
     @else

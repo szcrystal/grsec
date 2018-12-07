@@ -229,7 +229,7 @@ use App\PayMethodChild;
                                         </tbody>
                                     </table>
                                     
-                                    <p class="text-center p-0 m-0 text-warning open-tgl">OPEN <i class="fa fa-caret-down"></i></p>
+                                    <div class="text-center py-0 my-0 border bg-white text-warning open-tgl">MORE <i class="fa fa-caret-down"></i></div>
                                     
                                     <div class="table-second-wrap">
                                     <table class="table-tyumon w-100 table-striped">
@@ -536,7 +536,7 @@ use App\PayMethodChild;
                 	<fieldset class="mb-2 form-group{{ $errors->has('information') ? ' is-invalid' : '' }}">
                         <label for="detail" class="control-label">ご連絡事項（ユーザー反映）<span class="text-small">（ホワイトボード的役割。全てのメールテンプレに反映されるので、非反映の場合は空にして下さい。）</span></label>
 
-                            <textarea id="information" class="form-control" name="information" rows="8">{{ Ctm::isOld() ? old('information') : (isset($saleRel) ? $saleRel->information : '') }}</textarea>
+                            <textarea id="information" class="form-control" name="information" rows="12">{{ Ctm::isOld() ? old('information') : (isset($saleRel) ? $saleRel->information : '') }}</textarea>
 
                             @if ($errors->has('information'))
                                 <span class="help-block">
@@ -546,10 +546,10 @@ use App\PayMethodChild;
                     </fieldset>   
                 </div>
                 
+                <hr class="mt-5">
                 
                 
-                
-                <div class="mt-2 pt-3">
+                <div class="mt-3">
                 	<fieldset class="mt-5 mb-2 form-group{{ $errors->has('memo') ? ' is-invalid' : '' }}">
                         <label for="memo" class="control-label">メモ<span class="text-small">（内部のみ）</span></label>
 
@@ -622,11 +622,11 @@ use App\PayMethodChild;
                         </div>
                         
                         <div class="form-group clearfix my-3">
-                            <button type="submit" class="btn btn-blue col-md-12 text-white py-2" name="with_mail" value="{{ $templs['simatone_ettou'] }}"><i class="fa fa-times"></i> シマトネ越冬</button>
+                            <button type="submit" class="btn btn-blue col-md-12 text-white py-2" name="with_mail" value="{{ $templs['simatone_ettou'] }}"><i class="fa fa-envelope"></i> シマトネ越冬</button>
                         </div>
                         
                         <div class="form-group clearfix my-3">
-                            <button type="submit" class="btn btn-blue col-md-12 text-white py-2" name="with_mail" value="{{ $templs['sekkai_iou'] }}"><i class="fa fa-times"></i> 石灰硫黄合剤説明</button>
+                            <button type="submit" class="btn btn-blue col-md-12 text-white py-2" name="with_mail" value="{{ $templs['sekkai_iou'] }}"><i class="fa fa-envelope"></i> 石灰硫黄合剤説明</button>
                         </div>
                     </div>
                 
