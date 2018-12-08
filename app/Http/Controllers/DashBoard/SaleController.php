@@ -17,6 +17,7 @@ use App\Setting;
 use App\DeliveryCompany;
 use App\MailTemplate;
 use App\SendMailFlag;
+use App\Prefecture;
 
 use App\Mail\OrderSend;
 use App\Mail\OrderMails;
@@ -24,6 +25,7 @@ use App\Mail\PayDone;
 
 use Mail;
 use DB;
+use Delifee;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -32,7 +34,7 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class SaleController extends Controller
 {
-    public function __construct(Admin $admin, Sale $sale, SaleRelation $saleRel, Item $item, User $user, PayMethod $payMethod, UserNoregist $userNoregist, Receiver $receiver, DeliveryGroup $dg, Consignor $consignor, Category $category, Setting $setting, DeliveryCompany $dc, MailTemplate $templ, SendMailFlag $smf)
+    public function __construct(Admin $admin, Sale $sale, SaleRelation $saleRel, Item $item, User $user, PayMethod $payMethod, UserNoregist $userNoregist, Receiver $receiver, DeliveryGroup $dg, Consignor $consignor, Category $category, Setting $setting, DeliveryCompany $dc, MailTemplate $templ, SendMailFlag $smf, Prefecture $pref)
     {
         
         $this -> middleware('adminauth');
@@ -52,6 +54,7 @@ class SaleController extends Controller
         $this->dc = $dc;
         $this->templ = $templ;
         $this->smf = $smf;
+        $this->pref = $pref;
 
 		$templCodes = [
         	'payDone',
@@ -252,16 +255,18 @@ class SaleController extends Controller
     	$cates = $this->category;
         
         $dcs = $this->dc->all();
-//        
-//        $tagNames = $this->tagRelation->where(['item_id'=>$id])->get()->map(function($item) {
-//            return $this->tag->find($item->tag_id)->name;
-//        })->all();
-//        
-//        $allTags = $this->tag->get()->map(function($item){
-//            return $item->name;
-//        })->all();
+
+		//個別送料 ----------------------
+        $item->count = $sale->item_count;
+        $itemData[] = $item;
+                
+        $prefId = $this->pref->where('name', $receiver->prefecture)->first()->id;
         
-        return view('dashboard.sale.form', ['sale'=>$sale, 'saleRel'=>$saleRel, 'sameSales'=>$sameSales, 'item'=>$item, 'items'=>$items, 'pms'=>$pms, 'users'=>$users, 'userNs'=>$userNs, 'receiver'=>$receiver, 'cates'=>$cates, 'itemDg'=>$itemDg, 'dcs'=>$dcs, 'id'=>$id, 'edit'=>1]);
+        $df = new Delifee($itemData, $prefId);
+        $deliFee = $df->getDelifee();
+
+        
+        return view('dashboard.sale.form', ['sale'=>$sale, 'saleRel'=>$saleRel, 'sameSales'=>$sameSales, 'item'=>$item, 'items'=>$items, 'pms'=>$pms, 'users'=>$users, 'userNs'=>$userNs, 'receiver'=>$receiver, 'cates'=>$cates, 'itemDg'=>$itemDg, 'dcs'=>$dcs, 'deliFee'=>$deliFee, 'id'=>$id, 'edit'=>1]);
     }
     
     //売上個別情報 POST
@@ -350,9 +355,9 @@ class SaleController extends Controller
     {
     	$saleRel = $this->saleRel->where('order_number', $orderNum)->first();
         
-        $sales= $this->sale->where('order_number', $orderNum)->get();
+        $saleObjs= $this->sale->where('order_number', $orderNum)->get();
         
-        //$item= $this->item->find($sale->item_id);
+        
         $items = $this->item;
         $pms = $this->payMethod;
         
@@ -361,18 +366,29 @@ class SaleController extends Controller
 
 		$receiver = $this->receiver->find($saleRel->receiver_id);
   
-  		//$itemDg = $this->dg->find($item->dg_id); 
+  		//$itemDg = $this->dg->find($item->dg_id);
     
     	$cates = $this->category;
-        $templs = $this->templIds;         
-//        
-//        $tagNames = $this->tagRelation->where(['item_id'=>$id])->get()->map(function($item) {
-//            return $this->tag->find($item->tag_id)->name;
-//        })->all();
-//        
-//        $allTags = $this->tag->get()->map(function($item){
-//            return $item->name;
-//        })->all();
+        $templs = $this->templIds;
+        
+        //個別送料 ----------------------
+        $sales = array();
+        $prefId = $this->pref->where('name', $receiver->prefecture)->first()->id;
+        
+        foreach($saleObjs as $sale) {
+        	$itemObj = $this->item->find($sale->item_id);
+            $itemObj->count = $sale->item_count;
+            $itemData[] = $itemObj;
+            
+            $df = new Delifee($itemData, $prefId);
+        	$deliFee = $df->getDelifee();
+            
+            $sale->deliFee = $deliFee;
+            $sales[] = $sale;
+        }
+        
+        $sales = collect($sales);
+        
         
         return view('dashboard.sale.orderForm', ['saleRel'=>$saleRel, 'sales'=>$sales, 'items'=>$items, 'pms'=>$pms, 'users'=>$users, 'userNs'=>$userNs, 'receiver'=>$receiver, 'cates'=>$cates, 'id'=>$orderNum, 'templs'=>$templs, 'edit'=>1]);
     }

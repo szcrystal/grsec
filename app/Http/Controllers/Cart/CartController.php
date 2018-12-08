@@ -1297,6 +1297,8 @@ class CartController extends Controller
             /************
             $request->session()->put('all.all_price', $allPrice);
             *************/
+            
+            //$itemDataはitemのobjに[count]が入ったものの配列
 
 			// 送料計算 ===========================
             if(isset($data['delifee_calc']) && $data['delifee_calc']) {

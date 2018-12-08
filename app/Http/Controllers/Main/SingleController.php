@@ -105,6 +105,10 @@ class SingleController extends Controller
         //レコメンド ===========================
         //同梱包可能商品レコメンド -> 同じ出荷元で同梱包可能なもの
         $isOnceItems = null;
+        $recomCateItems = null;
+        $recomCateRankItems = null;
+        $recommends = null;
+        
         $getNum = Ctm::isAgent('sp') ? 6 : 6;
         $chunkNum = $getNum/2;
         
@@ -121,7 +125,6 @@ class SingleController extends Controller
         
         
         //Recommend レコメンド 先頭タグと同じものをレコメンド ==============
-        $recommends = null;
         //$getNum = Ctm::isAgent('sp') ? 3 : 3;
         
         if(isset($tagRels[1])) {
@@ -158,7 +161,7 @@ class SingleController extends Controller
             //->inRandomOrder()->take()->get() もあり クエリビルダに記載あり
         }
         else {
-        	$recommends = $this->item->whereNotIn('id', [$item->id])->where(['subcate_id'=>$item->subcate_id, 'open_status'=>1, 'is_potset'=>0])->inRandomOrder()->take($getNum)->get();
+        	$recommends = $this->item->whereNotIn('id', [$item->id])->where(['subcate_id'=>$item->subcate_id, 'open_status'=>1, 'is_potset'=>0])->inRandomOrder()->take($getNum)->get()->chunk($chunkNum);
             //->inRandomOrder()->take()->get() もあり クエリビルダに記載あり
         }
         

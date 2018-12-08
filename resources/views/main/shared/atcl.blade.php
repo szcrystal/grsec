@@ -13,7 +13,7 @@ use App\Icon;
     $categoryId = $isCate ? $item->parent_id : $item->cate_id;
     $category = Category::find($categoryId);
     
-    $link = $isCate ? url('category/' . $category->slug . '/' . $item->slug) : url('/item/'.$item->id);
+    $link = $isCate ? url('category/' . $category->slug . '/' . $item->slug) : url('/item/'. $item->id);
 
     $isSp = Ctm::isAgent('sp');
     $isSale = Setting::get()->first()->is_sale;

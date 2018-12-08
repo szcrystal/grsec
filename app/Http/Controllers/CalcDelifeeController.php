@@ -46,6 +46,10 @@ class CalcDelifeeController extends Controller
     
     public function __construct($itemData, $prefId)
     {
+    	/***********************
+         $itemDataはitemのobjectに[count]（購入個数）を足したものを配列に入れたもの
+        ************************/
+        
         $this->item = new Item;
         $this->dg = new DeliveryGroup;
         $this->dgRel = new DeliveryGroupRelation;
@@ -393,6 +397,7 @@ class CalcDelifeeController extends Controller
             }
         }
         
+        
 
         //コニファー商品の係数の合計を算出
         foreach($coniferItem as $ioi) {	
@@ -409,7 +414,9 @@ class CalcDelifeeController extends Controller
                 }
             }
             else { //下草以外
-                $factor += $ioi->factor * $ioi->count;
+            	if(! $ioi->is_delifee) { //送料無料でなければfactor計算する
+                	$factor += $ioi->factor * $ioi->count;
+                }
             } 
             /* 特殊計算 END ******************* */
             
@@ -469,9 +476,11 @@ class CalcDelifeeController extends Controller
         	
             //府中ガーデン下草->大小を行ったり来たりする
             if($item->dg_id == $this->sitakusaSmId || $item->dg_id == $this->sitakusaBgId) { //下草 府中ガーデンの時 送料有料／無料どちらも
-            	if(! $item->is_once) { //下草府中ガーデンで同梱包不可のものはそれぞれ単独で -> ほとんどなさそうだが
-                    $factor = $item->factor * $item->count;
-                    $deliFee += $this->specialCalc($this->sitakusaSmId, $this->sitakusaBgId, $factor);                    
+            	if(! $item->is_once) { //下草府中ガーデンで同梱包不可のものはそれぞれ単独で -> 多数あるようなので、ここも重要
+                	if(! $item->is_delifee) { //送料無料でなければ計算する
+                    	$factor = $item->factor * $item->count;
+                    	$deliFee += $this->specialCalc($this->sitakusaSmId, $this->sitakusaBgId, $factor);
+                    }                    
                 }
                 else {
             		$sitakusaItem[] = $item;
@@ -479,9 +488,11 @@ class CalcDelifeeController extends Controller
         	}
             //モリヤコニファー->大の商品が含まれていれば強制的に大となり、なければ小になる
             elseif($item->dg_id == $this->coniferKsId || $item->dg_id == $this->coniferSmId || $item->dg_id == $this->coniferBgId) { //モリヤコニファーの時 送料有料／無料どちらも
-            	if(! $item->is_once) { //モリヤコニファーで同梱包不可のものはそれぞれ単独で -> ほとんどなさそうだが
-                    $factor = $item->factor * $item->count;
-                    $deliFee += $this->normalCalc($item->dg_id, $factor);                    
+            	if(! $item->is_once) { //モリヤコニファーで同梱包不可のものはそれぞれ単独で -> 多数あるようなので、ここも重要
+                	if(! $item->is_delifee) { //送料無料でなければ計算する
+                    	$factor = $item->factor * $item->count;
+                    	$deliFee += $this->normalCalc($item->dg_id, $factor); 
+                    }                   
                 }
                 else {
             		$coniferItem[] = $item;

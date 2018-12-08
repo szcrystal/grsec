@@ -404,6 +404,18 @@ use App\Setting;
                                 </td>
                             </tr>
                             
+                            {{--
+                            <tr>
+                            	<th>送料</th>
+                                <td>
+                                	@if(isset($deliFee))
+                                		¥{{ number_format($deliFee) }}
+                                	@endif
+                                </td>
+                            </tr>
+                            --}}
+                            
+                            
                             @if($sale->pay_method == 5)
                             <tr>
                                 <th>代引手数料</th>

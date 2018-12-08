@@ -234,6 +234,16 @@ use App\PayMethodChild;
                                     <div class="table-second-wrap">
                                     <table class="table-tyumon w-100 table-striped">
                                     	<tbody>
+                                        	{{--
+                                        	<tr>
+                                            	<th>送料</th>
+                                                <td>
+                                                	@if(isset($sale->deliFee))
+                                                        ¥{{ number_format($sale->deliFee) }}
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                            --}}
                                             
                                             <tr>
                                             	<th>ご希望配送日時</th>
