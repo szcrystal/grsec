@@ -123,6 +123,7 @@ class CartController extends Controller
     }
     
     /* 送料　通常の計算の関数 ******************************** */
+    /*
     public function normalCalc($dgId, $prefId, $factor)
     {
     	$deliveryFee = 0;
@@ -155,8 +156,11 @@ class CartController extends Controller
         
         return $deliveryFee;
     }
+    */
+    /* 送料　通常の計算の関数 END ******************************** */
     
-    /* 下草・シモツケ・高木コニファー　特別計算の関数 ************************************************** */ 
+    /* 下草・シモツケ・高木コニファー　特別計算の関数 ************************************************** */
+    /* 
     public function specialCalc($smId, $bgId, $prefId, $factor)
     {
         $deliveryFee = 0;
@@ -231,6 +235,7 @@ class CartController extends Controller
         
         return $deliveryFee;
     }
+    */
     /* 下草　特別計算の関数 END ************************************************** */
     
     
@@ -395,7 +400,7 @@ class CartController extends Controller
        $receiverData['order_number'] = $all['order_number'];
        //$receiverData['is_user'] = $isUser;
        
-       if(! $destination) {
+       if(! $destination) { //配送先が登録先の時（別配送先でない時）
        		$receiverData['name'] = $userData['name'];
          	$receiverData['hurigana'] = $userData['hurigana'];      
        		$receiverData['tel_num'] = $userData['tel_num'];
@@ -469,10 +474,21 @@ class CartController extends Controller
     
     	$saleIds = array();
         $stockNone = array();
+        
+        $prefectureId = $this->prefecture->where('name', $receiver->prefecture)->first()->id;
+        
         //売上登録処理 Sale create
         foreach($itemData as $key => $val) {
         	
+            $oneItemData = array();
+            $singleDeliFee = 0;
+            
 			$i = $this->item->find($val['item_id']);
+            $i->count = $val['item_count'];
+            $oneItemData[] = $i;
+            
+            $df = new Delifee($oneItemData, $prefectureId);
+            $singleDeliFee = $df->getDelifee();
         
             $sale = $this->sale->create(
                 [
@@ -488,7 +504,7 @@ class CartController extends Controller
                     'receiver_id' => $receiverId,
 					
                     'pay_method' => $pm,
-                    'deli_fee' => $deliFee,
+                    'deli_fee' => $singleDeliFee,
                     'cod_fee' => 0,
                     'use_point' => 0,
                     'single_price' => $this->getItemPrice($i),
@@ -532,7 +548,7 @@ class CartController extends Controller
             //Sale Count処理
             $item->increment('sale_count', $val['item_count']);
             
-            //お気に入りにsale_idを入れる
+            //お気に入りにsale_idを入れる。お気に入りに購入履歴を残すため。
             if($isUser) {
             	$fav = $this->favorite->where(['user_id'=>$userId, 'item_id'=>$val['item_id']])->first();
              	if(isset($fav)) {
@@ -553,10 +569,10 @@ class CartController extends Controller
         //Ctm::sendMail($data, 'itemEnd');
         //for User
         Mail::to($userData['email'], $userData['name'])->queue(new OrderEnd($saleRelId, 1));
-        //for Admin
+        //for Admin（3分後に送信）
         Mail::to($this->set->admin_email, $this->set->admin_name)->later(now()->addMinutes(3), new OrderEnd($saleRelId, 0))/*->queue(new OrderEnd($saleRelId, 0))*/;
         
-        if($regist) { 
+        if($regist) { //ユーザー新規登録の時
         	Mail::to($userData['email'], $userData['name'])->later(now()->addMinutes(2), new Register($userId))/*->queue(new Register($userId))*/; //for User New Regist
         }
         
@@ -590,7 +606,8 @@ class CartController extends Controller
 		}   
      
      	$pmModel = $this->payMethod;
-     	return view('cart.end', ['data'=>$data, 'pm'=>$pm, 'pmModel'=>$pmModel, 'paymentCode'=>$payPaymentCode, 'active'=>4]);
+     	
+        return view('cart.end', ['data'=>$data, 'pm'=>$pm, 'pmModel'=>$pmModel, 'paymentCode'=>$payPaymentCode, 'active'=>4]);
       
       
       //クレカからの戻りサンプルURL
