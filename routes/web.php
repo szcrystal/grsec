@@ -50,6 +50,8 @@ Route::resource('dashboard/dcs', 'DashBoard\DeliveryCompanyController');
 //Route::resource('dashboard/prefectures', 'DashBoard\PrefectureController');
 
 //Item
+Route::get('dashboard/items/upper', 'DashBoard\ItemController@getItemUpper');
+Route::post('dashboard/items/upper', 'DashBoard\ItemController@postItemUpper');
 Route::get('dashboard/items/csv', 'DashBoard\ItemController@getCsv');
 Route::post('dashboard/items/script', 'DashBoard\ItemController@postScript');
 Route::get('dashboard/items/pot-set', 'DashBoard\ItemController@potSetIndex');

@@ -50,10 +50,13 @@ class TopSettingController extends Controller
         
         //$cates= $this->category;
         //$status = $this->articlePost->where(['base_id'=>15])->first()->open_date;
+        $newsSnaps = $this->itemImg->where(['item_id'=>9999, 'type'=>8])->get();
         $snaps = $this->itemImg->where(['item_id'=>9999, 'type'=>6])->get();
+        
+        $newsCount = $this->setting->get()->first()->snap_news;
         $imgCount = $this->setting->get()->first()->snap_top;
         
-        return view('dashboard.topSetting.form', ['setting'=>$setting, 'imgCount'=>$imgCount, 'snaps'=>$snaps, 'edit_id'=>1]);
+        return view('dashboard.topSetting.form', ['setting'=>$setting, 'newsCount'=>$newsCount, 'imgCount'=>$imgCount, 'newsSnaps'=>$newsSnaps, 'snaps'=>$snaps, 'edit_id'=>1]);
     }
 
 //    public function show($id)
@@ -131,7 +134,79 @@ class TopSettingController extends Controller
         
         $setting->fill($data);
         $setting->save();
-        //$settingId = $setting->id;
+
+		
+        //NewsSnap Save ==================================================
+        foreach($data['news_count'] as $count) {
+        
+            /*
+                type:1->item spare
+                type:2->item snap(content)
+                type:3->category
+                type:4->sub category
+                type:5->tag
+                type:6->top carousel
+                type:7->fix 
+                type:8->top setting news                           
+            */
+ 
+            if(isset($data['del_news'][$count]) && $data['del_news'][$count]) { //削除チェックの時
+                
+                $newsSnap = $this->itemImg->where(['item_id'=>9999, 'type'=>8, 'number'=>$count+1])->first();
+                
+                if($newsSnap !== null) {
+                    Storage::delete('public/'. $newsSnap->img_path); //Storageはpublicフォルダのあるところをルートとしてみる
+                    $newsSnap ->delete();
+                }
+            
+            }
+            else {
+                if(isset($data['news_thumb'][$count])) {
+                	$snapImg = $this->itemImg->updateOrCreate(
+                        ['item_id'=>9999, 'type'=>8, 'number'=>$count+1],
+                        [
+                            'link' => $data['link'][$count],
+                        ]
+                    );
+                    
+                    $filename = $data['news_thumb'][$count]->getClientOriginalName();                    
+                    $filename = str_replace(' ', '_', $filename);
+                    
+                    //$aId = $editId ? $editId : $rand;
+                    //$pre = mt_rand(0, 99999) . '-'; 
+                    $filename = 'top/' . 9999 . '/news_snap/'. $filename;
+                    //if (App::environment('local'))
+                    $path = $data['news_thumb'][$count]->storeAs('public', $filename);
+                    //else
+                    //$path = Storage::disk('s3')->putFileAs($filename, $request->file('thumbnail'), 'public');
+                    //$path = $request->file('thumbnail')->storeAs('', $filename, 's3');
+                
+                    //$data['model_thumb'] = $filename;
+                    
+                    $snapImg->img_path = $filename;
+                    $snapImg->save();
+                }
+                
+            }
+            
+            
+        } //foreach
+        
+        $num = 1;
+        $newsSnaps = $this->itemImg->where(['item_id'=>9999, 'type'=>8])->get();
+//            $snaps = $this->modelSnap->where(['model_id'=>$modelId])->get()->map(function($obj) use($num){
+//                
+//                return true;
+//            });
+        
+        //Snapのナンバーを振り直す
+        foreach($newsSnaps as $snap) {
+            $snap->number = $num;
+            $snap->save();
+            $num++;
+        }
+        
+        
         
         
         //Snap Save ==================================================
@@ -144,7 +219,8 @@ class TopSettingController extends Controller
                 type:4->sub category
                 type:5->tag
                 type:6->top carousel
-                type:7->fix                            
+                type:7->fix 
+                type:8->top setting news                           
             */
  
             if(isset($data['del_snap'][$count]) && $data['del_snap'][$count]) { //削除チェックの時

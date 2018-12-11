@@ -75,11 +75,11 @@ class SingleController extends Controller
         $tagRels = array();
         $sortIDs = array();
         
-        $tagRels = $this->tagRel->where('item_id', $item->id)->orderBy('id','asc')->get()->map(function($obj){
+        $tagRels = $this->tagRel->where('item_id', $item->id)->orderBy('sort_num','asc')->get()->map(function($obj){
             return $obj->tag_id;
         })->all();
         
-        if(count($tagRels) > 0) {
+        if(count($tagRels) > 0) { //tagのget ->main.shared.tagの中でも指定しているのでここでは不要だが入れておく
 			$sortIDs = implode(',', $tagRels);
         	$tags = $this->tag->whereIn('id', $tagRels)->orderByRaw("FIELD(id, $sortIDs)")->get();
         }

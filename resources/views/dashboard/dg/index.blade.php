@@ -61,7 +61,7 @@
                 <tr>
                   <th>ID</th>
                   <th>配送区分名</th>
-                  <th>送料状態</th>
+                  <th>送料入力状態</th>
                   <th>容量</th>
                   {{-- <th>係数</th> --}}
                   <th>時間指定</th>
@@ -122,7 +122,10 @@
                 --}}
                 
                   
-                  <td><a href="{{url('dashboard/dgs/'. $dg->id)}}" class="btn btn-success btn-sm center-block">配送区分編集</a></td>
+                  <td>
+                  	<a href="{{url('dashboard/dgs/'. $dg->id)}}" class="btn btn-success btn-sm center-block">配送区分編集</a><br>
+                    <small class="text-secondary">ID{{ $dg->id }}</small>
+                </td>
                   <td><a href="{{url('dashboard/dgs/fee/'. $dg->id)}}" class="btn btn-warning btn-sm center-block">送料編集</a></td>
                 </tr>
             @endforeach

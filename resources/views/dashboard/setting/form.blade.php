@@ -269,9 +269,21 @@
             @endif
             
             
- 
-            <fieldset class="pt-4 mb-4 form-group{{ $errors->has('snap_top') ? ' has-error' : '' }}">
-                <label>TOPヘッダー画像の枚数</label><br>
+ 			<fieldset class="pt-4 mb-4 form-group{{ $errors->has('snap_news') ? ' has-error' : '' }}">
+                <label>TOPお知らせ用画像の枚数</label><br>
+                <input class="form-control d-inline-block col-md-4{{ $errors->has('snap_news') ? ' is-invalid' : '' }}" name="snap_news" value="{{ Ctm::isOld() ? old('snap_news') : (isset($setting) ? $setting->snap_news : '') }}"> <span>枚</span>
+
+                @if ($errors->has('snap_news'))
+                    <div class="text-danger">
+                        <span class="fa fa-exclamation form-control-feedback"></span>
+                        <span>{{ $errors->first('snap_news') }}</span>
+                    </div>
+                @endif
+            </fieldset>
+            
+            
+            <fieldset class="mb-5 form-group{{ $errors->has('snap_top') ? ' has-error' : '' }}">
+                <label>TOPヘッダースライド画像の枚数</label><br>
                 <input class="form-control d-inline-block col-md-4{{ $errors->has('snap_top') ? ' is-invalid' : '' }}" name="snap_top" value="{{ Ctm::isOld() ? old('snap_top') : (isset($setting) ? $setting->snap_top : '') }}"> <span>枚</span>
 
                 @if ($errors->has('snap_top'))
@@ -294,7 +306,7 @@
                 @endif
             </fieldset>
             
-            <fieldset class="mb-4 form-group{{ $errors->has('snap_secondary') ? ' has-error' : '' }}">
+            <fieldset class="mb-5 form-group{{ $errors->has('snap_secondary') ? ' has-error' : '' }}">
                 <label>商品コンテンツ画像の枚数</label><br>
                 <input class="form-control d-inline-block col-md-4{{ $errors->has('snap_secondary') ? ' is-invalid' : '' }}" name="snap_secondary" value="{{ Ctm::isOld() ? old('snap_secondary') : (isset($setting) ? $setting->snap_secondary : '') }}"> <span>枚</span>
 
@@ -302,6 +314,42 @@
                     <div class="text-danger">
                         <span class="fa fa-exclamation form-control-feedback"></span>
                         <span>{{ $errors->first('snap_secondary') }}</span>
+                    </div>
+                @endif
+            </fieldset>
+            
+            <fieldset class="mb-4 form-group{{ $errors->has('snap_block_a') ? ' has-error' : '' }}">
+                <label>上部コンテンツ（Aブロック）の個数</label><br>
+                <input class="form-control d-inline-block col-md-4{{ $errors->has('snap_block_a') ? ' is-invalid' : '' }}" name="snap_block_a" value="{{ Ctm::isOld() ? old('snap_block_a') : (isset($setting) ? $setting->snap_block_a : '') }}"> <span>個</span>
+
+                @if ($errors->has('snap_block_a'))
+                    <div class="text-danger">
+                        <span class="fa fa-exclamation form-control-feedback"></span>
+                        <span>{{ $errors->first('snap_block_a') }}</span>
+                    </div>
+                @endif
+            </fieldset>
+            
+            <fieldset class="mb-4 form-group{{ $errors->has('snap_block_b') ? ' has-error' : '' }}">
+                <label>上部コンテンツ（Bブロック）の個数</label><br>
+                <input class="form-control d-inline-block col-md-4{{ $errors->has('snap_block_b') ? ' is-invalid' : '' }}" name="snap_block_b" value="{{ Ctm::isOld() ? old('snap_block_b') : (isset($setting) ? $setting->snap_block_b : '') }}"> <span>個</span>
+
+                @if ($errors->has('snap_block_b'))
+                    <div class="text-danger">
+                        <span class="fa fa-exclamation form-control-feedback"></span>
+                        <span>{{ $errors->first('snap_block_b') }}</span>
+                    </div>
+                @endif
+            </fieldset>
+            
+            <fieldset class="mb-5 form-group{{ $errors->has('snap_block_c') ? ' has-error' : '' }}">
+                <label>上部コンテンツ（Cブロック）の個数</label><br>
+                <input class="form-control d-inline-block col-md-4{{ $errors->has('snap_block_c') ? ' is-invalid' : '' }}" name="snap_block_c" value="{{ Ctm::isOld() ? old('snap_block_c') : (isset($setting) ? $setting->snap_block_c : '') }}"> <span>個</span>
+
+                @if ($errors->has('snap_block_c'))
+                    <div class="text-danger">
+                        <span class="fa fa-exclamation form-control-feedback"></span>
+                        <span>{{ $errors->first('snap_block_c') }}</span>
                     </div>
                 @endif
             </fieldset>

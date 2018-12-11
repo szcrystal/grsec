@@ -9,5 +9,6 @@ class TagRelation extends Model
     protected $fillable = [
         'item_id',
         'tag_id',
+        'sort_num',
     ];
 }

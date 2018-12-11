@@ -1,26 +1,115 @@
 
     <fieldset class="mb-4 form-group{{ $errors->has('contents') ? ' is-invalid' : '' }}">
-            <label for="contents" class="control-label">
-            	@if(isset($type) && $type == 'top')
-                TOPお知らせ枠(HTML)
-            	@else
-                コンテンツ
-                @endif
-            </label>
-
-            <textarea class="form-control" name="contents" rows="35">{{ Ctm::isOld() ? old('contents') : (isset($obj) ? $obj->contents : '') }}</textarea>
-
-            @if ($errors->has('contents'))
-                <span class="help-block">
-                    <strong>{{ $errors->first('contents') }}</strong>
-                </span>
+        <label for="contents" class="control-label">
+            @if(isset($type) && $type == 'top')
+            TOPお知らせ枠(HTML)
+            @else
+            コンテンツ
             @endif
+        </label>
+
+        <?php
+            $rows = (isset($type) && $type == 'top') ? 20 : 35;
+        ?>
+        
+        <textarea class="form-control" name="contents" rows="{{ $rows }}">{{ Ctm::isOld() ? old('contents') : (isset($obj) ? $obj->contents : '') }}</textarea>
+
+        @if ($errors->has('contents'))
+            <span class="help-block">
+                <strong>{{ $errors->first('contents') }}</strong>
+            </span>
+        @endif
     </fieldset>
     
-    <hr class="mt-0 mb-2 py-0">
-    
     @if(isset($type) && $type == 'top')
-        <label class="mt-3 mb-4">TOPヘッダー画像&nbsp;&nbsp;<span class="text-small p-0 m-0">*（縦横サイズは任意、全ての画像を同じサイズで揃えて下さい。）</span></label>   
+    	<?php
+            $n=0;
+        ?>
+        
+        @while($n < $newsCount)
+        
+    	<div class="clearfix spare-img thumb-wrap">  
+            <fieldset class="w-25 float-right">
+                <div class="checkbox text-right pr-1">
+                    <label>
+                        <?php
+                            $checked = '';
+                            if(Ctm::isOld()) {
+                                if(old('del_news.'.$n))
+                                    $checked = ' checked';
+                            }
+                            else {
+                                if(isset($obj) && $obj->del_news) {
+                                    $checked = ' checked';
+                                }
+                            }
+                        ?>
+
+                        <input type="hidden" name="del_news[{{$n}}]" value="0">
+                        <input type="checkbox" name="del_news[{{$n}}]" value="1"{{ $checked }}> この画像を削除
+                    </label>
+                </div>
+            </fieldset>
+        
+            <fieldset class="float-left clearfix w-75">
+
+                <div class="w-25 float-left thumb-prev pr-3">
+                    @if(count(old()) > 0)
+                        @if(old('news_thumb.'.$n) != '' && old('news_thumb.'.$n))
+                            <img src="{{ Storage::url(old('news_thumb.'.$n)) }}" class="img-fluid">
+                        @elseif(isset($newsSnaps[$n]) && $newsSnaps[$n]->snap_path)
+                            <img src="{{ Storage::url($newsSnaps[$n]->snap_path) }}" class="img-fluid">
+                        @else
+                            <span class="no-img">No Image</span>
+                        @endif
+                    @elseif(isset($newsSnaps[$n]) && $newsSnaps[$n]->img_path)
+                        <img src="{{ Storage::url($newsSnaps[$n]->img_path) }}" class="img-fluid">
+                    @else
+                        <span class="no-img">No Image</span>
+                    @endif
+                </div>
+                 
+                <div class="w-75 float-left text-left form-group{{ $errors->has('snap_thumb.'.$n) ? ' has-error' : '' }}">
+                    <label for="model_thumb" class="text-left">
+                        お知らせ用画像&nbsp;<span class="text-secondary">{{ $n+1 }}</span>
+                    </label>
+                    
+                    <div class="w-100">
+                        <input class="thumb-file" type="file" name="news_thumb[]">
+                        
+                        @if(isset($newsSnaps[$n]) && $newsSnaps[$n]->img_path)
+                            <p class="mt-4 mb-0 text-info">src="{{ Storage::url($newsSnaps[$n]->img_path) }}"</p>
+                        @endif                  
+                        
+                        @if ($errors->has('news_thumb.'.$n))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('news_thumb.'.$n) }}</strong>
+                            </span>
+                        @endif
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+        <hr>
+        
+        <input type="hidden" name="news_count[]" value="{{ $n }}">
+
+        <?php $n++; ?>
+        @endwhile
+        
+        <div class="form-group mt-3 clearfix">
+            <button type="submit" class="btn btn-primary d-block w-25 mt-5 float-right"><span class="octicon octicon-sync"></span>更　新</button>
+        </div>
+    
+    @endif
+    
+    
+    
+    <hr class="mt-5 mb-3 border-0">
+    
+    <h5>TOPヘッダースライド画像</h5>
+    @if(isset($type) && $type == 'top')
+        <label class="mt-3 mb-4"><span class="text-small p-0 m-0">*（縦横サイズは任意、全ての画像を同じサイズで揃えて下さい。）</span></label>   
     @endif
     
     <div class="clearfix mb-3">

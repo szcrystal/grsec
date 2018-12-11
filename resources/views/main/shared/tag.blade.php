@@ -3,15 +3,15 @@
 use App\Tag;
 use App\TagRelation;
 
-    $tagIds = TagRelation::where('item_id', $item->id)->get()->map(function($obj){
+    $tagIds = TagRelation::where('item_id', $item->id)->orderBy('sort_num', 'asc')->get()->map(function($obj){
         return $obj->tag_id;
     })->all();
 	
     
-    //Controller内でないと下記のダブルクオーテーションで囲むimplodeでないとダメ
+    //Controller内でないと下記のダブルクオーテーションで囲まないと効かない
     $strs = '"'. implode('","', $tagIds) .'"';
 
-        
+    //main.shared.tagを使用しているのはアーカイブとsingleのみ。$numが指定されている時はアーカイブ $num=0ならSingle
     if($num)
         $tags = Tag::whereIn('id', $tagIds)->orderByRaw("FIELD(id, $strs)")->take($num)->get();
     else

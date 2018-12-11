@@ -108,7 +108,7 @@ class ItemController extends Controller
         
         //$users = $this->user->where('active',1)->get();
         
-		$tagNames = $this->tagRelation->where(['item_id'=>$id])->get()->map(function($item) {
+		$tagNames = $this->tagRelation->where(['item_id'=>$id])->orderBy('sort_num', 'asc')->get()->map(function($item) {
             return $this->tag->find($item->tag_id)->name;
         })->all();
         
@@ -476,10 +476,39 @@ class ItemController extends Controller
         //Snap END ===========================================
 
         
+//        print_r($data['tags']);
+//        exit;
+        
         //タグのsave動作
         if(isset($data['tags'])) {
+            
             $tagArr = $data['tags'];
-        
+            
+            //タグ削除の動作
+            if(isset($editId)) { //編集時のみ削除されたタグを消す
+            	//現在あるtagRelを取得
+                $tagRelIds = $this->tagRelation->where('item_id', $itemId)->get()->map(function($tagRelObj){
+                    return $tagRelObj->tag_id;
+                })->all();
+                
+                //入力されたtagのidを取得（新規のものは取得されない->する必要がない）
+                $tagIds = $this->tag->whereIn('name', $tagArr)->get()->map(function($tagObj){
+                    return $tagObj->id;
+                })->all();
+                
+                //配列同士を比較(重複しないものは$tagRelIdsからreturnされる->これらが削除対象となる)
+                $tagDiffs = array_diff($tagRelIds, $tagIds);
+                
+                //削除対象となったものを削除する
+                if(count($tagDiffs) > 0) {
+                    foreach($tagDiffs as $valTagId) {
+                        $this->tagRelation->where(['item_id'=>$itemId, 'tag_id'=>$valTagId])->first()->delete();
+                    }
+                }
+            }
+            
+        	$num = 1;
+            
             foreach($tagArr as $tag) {
                 
                 //Tagセット
@@ -495,23 +524,18 @@ class ItemController extends Controller
 
 
                 //tagIdがRelationになければセット ->firstOrCreate() ->updateOrCreate()
-                $tagRel = $this->tagRelation->firstOrCreate(
-                    ['tag_id'=>$tagId, 'item_id'=>$itemId]
+                $this->tagRelation->updateOrCreate(
+                    ['tag_id'=>$tagId, 'item_id'=>$itemId],
+                    ['sort_num'=>$num]
                 );
-                /*
-                $tagRel = $this->tagRelation->where(['tag_id'=>$tagId, 'item_id'=>$itemId])->get();
-                if($tagRel->isEmpty()) {
-                    $this->tagRelation->create([
-                        'tag_id' => $tagId,
-                        'item_id' => $itemId,
-                    ]);
-                }
-                */
 
+				$num++;
+                
                 //tagIdを配列に入れる　削除確認用
-                $tagIds[] = $tagId;
+                //$tagIds[] = $tagId;
             }
         
+        	/*
             //編集時のみ削除されたタグを消す
             if(isset($editId)) {
                 //元々relationにあったtagがなくなった場合：今回取得したtagIdの中にrelationのtagIdがない場合をin_arrayにて確認
@@ -523,6 +547,7 @@ class ItemController extends Controller
                     }
                 }
             }
+            */
         }
         else { 
         	if(isset($editId)) {
@@ -533,11 +558,11 @@ class ItemController extends Controller
 //            	$tagRels
 //            }
         }
-                
+        
         
         return redirect('dashboard/items/'. $itemId)->with('status', $status);
         
-        
+       
         //Spare-img ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 //        if(isset($data['spare_img'])) {
 //            $spares = $data['spare_img'];
@@ -584,7 +609,9 @@ class ItemController extends Controller
 //                 }   
 //           }
 //        }
-        
+
+
+
     }
 
 	public function postScript(Request $request)
@@ -605,12 +632,65 @@ class ItemController extends Controller
           //return view('dashboard.script.index', ['val'=>$val]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    
+    public function getItemUpper(Request $request)
+    {
+    	if(! $request->has('iId')) {
+        	
+        	return view('dashboard.item.formUpper')->withErrors();    
+            
+        }
+        
+        
+        $itemId = $request->input('iId');
+        
+        
+        $item = $this->item->find($itemId);
+        $cates = $this->category->all();
+//        $subcates = $this->categorySecond->where(['parent_id'=>$item->cate_id])->get();
+        $consignors = $this->consignor->all();
+        $dgs = $this->dg->all();
+        
+//        $spares = $this->itemImg->where(['item_id'=>$id, 'type'=>1])->get();
+//        $snaps = $this->itemImg->where(['item_id'=>$id, 'type'=>2])->get();
+        
+        //$users = $this->user->where('active',1)->get();
+        
+//		$tagNames = $this->tagRelation->where(['item_id'=>$id])->get()->map(function($item) {
+//            return $this->tag->find($item->tag_id)->name;
+//        })->all();
+//        
+//        $allTags = $this->tag->get()->map(function($item){
+//            return $item->name;
+//        })->all();
+        
+        $setting = $this->setting->get()->first();
+        $blockACount = $setting->snap_block_a;
+        $blockBCount = $setting->snap_block_b;
+        $blockCCount = $setting->snap_block_c;
+        
+        //$icons = $this->icon->all();
+        
+        return view('dashboard.item.formUpper', ['item'=>$item, 'blockACount'=>$blockACount, 'blockBCount'=>$blockBCount, 'blockCCount'=>$blockCCount, 'cates'=>$cates, 'consignors'=>$consignors, 'dgs'=>$dgs, 'id'=>$itemId, 'edit'=>1]);
+
+    }
+    
+    public function postItemUpper(Request $request)
+    {
+    	if($request->has('iId')) {
+        	$itemId = $request->input('iId');
+            
+            
+        }
+        else {
+        	
+        }
+        
+        
+        
+    }
+    
+    
     public function edit($id)
     {
         return redirect('dashboard/items/'.$id);
