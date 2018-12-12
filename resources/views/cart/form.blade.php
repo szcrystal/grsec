@@ -661,8 +661,9 @@ use App\DeliveryGroup;
                 
                 <div>
                 	<h3 class="card-header mt-5">お支払い方法</h3>
-   
-                    <fieldset class="form-group my-3 px-4 py-2{{ $errors->has('pay_method') ? ' border border-danger' : '' }}">
+   					<a href="{{ url('about-pay') }}" class="d-inline-block mt-2 ml-1 text-small" target="_brank">お支払についてのご注意はこちら <i class="fal fa-angle-double-right"></i></a>
+                    
+                    <fieldset class="form-group my-3 pt-3 pb-4 py-2{{ $errors->has('pay_method') ? ' border border-danger' : '' }}">
                     @if ($errors->has('pay_method'))
                         <div class="help-block text-danger mb-2">
                             <span class="fa fa-exclamation form-control-feedback"></span>
