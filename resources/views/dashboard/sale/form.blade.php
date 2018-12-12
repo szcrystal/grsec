@@ -404,27 +404,37 @@ use App\Setting;
                                 </td>
                             </tr>
                             
-                            {{--
+                            
                             <tr>
-                            	<th>送料</th>
+                            	<th>個別送料 [X]<br>
+                                        <small>*個別送料合計が1注文の合計送料になるとは限りません</small></th>
                                 <td>
-                                	@if(isset($deliFee))
-                                		¥{{ number_format($deliFee) }}
+                                	@if(isset($sale->deli_fee))
+                                		¥{{ number_format($sale->deli_fee) }}
                                 	@endif
                                 </td>
                             </tr>
-                            --}}
                             
                             
-                            @if($sale->pay_method == 5)
+                            
                             <tr>
-                                <th>代引手数料</th>
-                                <td>¥{{ number_format($sale->cod_fee) }}</td>
+                                <th>手数料 [Y]</th>
+                                <td>
+                                	¥{{ number_format($sale->cod_fee) }}
+                                	@if($sale->pay_method == 2)
+                                    [コンビニ決済]
+                                    @elseif($sale->pay_method == 4)
+                                    [GMO後払い]
+                                    @elseif($sale->pay_method == 5)
+                                    [代引]
+                                    @endif
+                                
+                                </td>
                             </tr>
-                            @endif
+
                             <tr>
-                                <th>総合計（税込）[A]</th>
-                                <?php $total = $sale->total_price + $sale->deli_fee + $sale->cod_fee; ?>
+                                <th>総合計（税込）[A]<br><small>* X,Yは含まず</small></th>
+                                <?php $total = $sale->total_price; ?>
                                 <td><span style="font-size: 1.3em;" class="text-success"><b>¥{{ number_format($total) }}</b></span></td>
                             </tr>
                             
@@ -529,7 +539,7 @@ use App\Setting;
                                         --}}
                                         
                                         <?php $allTotal = $sameSale->total_price + $sameSale->deli_fee +  $sameSale->cod_fee; ?>
-                                        <b>商品合計（B）：<span class="text-success">¥{{ number_format($sameSale->total_price) }}</span></b>
+                                        <b>商品合計 [B]：<span class="text-success">¥{{ number_format($sameSale->total_price) }}</span></b>
                                     </div>
                                     
                                     <?php 
@@ -542,7 +552,7 @@ use App\Setting;
                             @endforeach
                             
                             <tr>
-                                <th>購入総合計（税込）[A+B]</th>
+                                <th>購入総合計（税込）[A+B]<br><small>* X,Yは含まず</small></th>
                                 <td><span style="font-size:1.2em;">¥{{ number_format($total + $all) }}</span></td>
                             </tr>
 

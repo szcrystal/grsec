@@ -234,16 +234,16 @@ use App\PayMethodChild;
                                     <div class="table-second-wrap">
                                     <table class="table-tyumon w-100 table-striped">
                                     	<tbody>
-                                        	{{--
+                                        	
                                         	<tr>
-                                            	<th>送料</th>
+                                            	<th>個別送料</th>
                                                 <td>
-                                                	@if(isset($sale->deliFee))
-                                                        ¥{{ number_format($sale->deliFee) }}
+                                                	@if(isset($sale->deli_fee))
+                                                        ¥{{ number_format($sale->deli_fee) }}
                                                     @endif
                                                 </td>
                                             </tr>
-                                            --}}
+                                            
                                             
                                             <tr>
                                             	<th>ご希望配送日時</th>
@@ -413,7 +413,7 @@ use App\PayMethodChild;
                                 	$ap = $saleRel->all_price;
                                     $zeinuki = ceil($ap / $taxPer);
                                 ?>
-                                <td><span style="font-size: 1.2em;">¥{{ number_format($saleRel->all_price) }}<small>（税抜／税：{{ number_format($zeinuki) }}／{{ number_format($ap - $zeinuki) }}）</small></span></td>
+                                <td><b style="font-size: 1.2em;">¥{{ number_format($saleRel->all_price) }}<small>（税抜／税：{{ number_format($zeinuki) }}／{{ number_format($ap - $zeinuki) }}）</small></b></td>
                             </tr>
                             
                             <tr>
@@ -438,9 +438,11 @@ use App\PayMethodChild;
                                 <td>
                                 	¥{{ number_format($saleRel->cod_fee) }}
                                 	@if($saleRel->pay_method == 2)
-                                    （コンビニ決済）
+                                    [コンビニ決済]
                                     @elseif($saleRel->pay_method == 4)
-                                    （GMO後払い）
+                                    [GMO後払い]
+                                    @elseif($sale->pay_method == 5)
+                                    [代引]
                                     @endif
                                 	
                                 </td>
@@ -460,7 +462,7 @@ use App\PayMethodChild;
                                 	$total = $saleRel->all_price + $saleRel->deli_fee + $saleRel->cod_fee - $saleRel->use_point;
                                 ?>
                                 <td>
-                                	<span style="font-size: 1.3em;" class="text-success"><b>¥{{ number_format($total) }}</b></span><br>
+                                	<b style="font-size:1.4em;" class="text-success">¥{{ number_format($total) }}</b><br>
                                 
                                     @if($saleRel->pay_method == 6)
                                         @if($saleRel->pay_done)

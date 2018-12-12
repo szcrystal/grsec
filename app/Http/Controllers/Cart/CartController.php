@@ -505,7 +505,7 @@ class CartController extends Controller
 					
                     'pay_method' => $pm,
                     'deli_fee' => $singleDeliFee,
-                    'cod_fee' => 0,
+                    'cod_fee' => $codFee,
                     'use_point' => 0,
                     'single_price' => $this->getItemPrice($i),
                     'total_price' => $val['item_total_price'],
@@ -1001,7 +1001,7 @@ class CartController extends Controller
         	//$settles['url'] = url('shop/thankyou');
             $actionUrl = url('shop/thankyou');
         }
-        else {
+        else { //代引きと銀振以外
         	$actionUrl = url('shop/to-epsilon');
 //        	$isProduct = $this->set->is_product;
 //            

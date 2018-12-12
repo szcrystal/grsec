@@ -5,7 +5,11 @@
 		<div style="background:red; color:#fff;" class="px-3 mr-1">This Is Alpha !</div>
     @endif
     
-    <a class="navbar-brand" href="{{ url('dashboard') }}">グリーンロケット</a>
+    <a style="width:auto;" class="navbar-brand pr-3" href="{{ url('dashboard') }}">グリーンロケット</a>
+    
+    @if(env('APP_VERSION') != '')
+    	<span class="text-white">v {{ env('APP_VERSION') }}</span>
+    @endif
     
     <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
