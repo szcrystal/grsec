@@ -633,62 +633,7 @@ class ItemController extends Controller
     }
 
     
-    public function getItemUpper(Request $request)
-    {
-    	if(! $request->has('iId')) {
-        	
-        	return view('dashboard.item.formUpper')->withErrors();    
-            
-        }
-        
-        
-        $itemId = $request->input('iId');
-        
-        
-        $item = $this->item->find($itemId);
-        $cates = $this->category->all();
-//        $subcates = $this->categorySecond->where(['parent_id'=>$item->cate_id])->get();
-        $consignors = $this->consignor->all();
-        $dgs = $this->dg->all();
-        
-//        $spares = $this->itemImg->where(['item_id'=>$id, 'type'=>1])->get();
-//        $snaps = $this->itemImg->where(['item_id'=>$id, 'type'=>2])->get();
-        
-        //$users = $this->user->where('active',1)->get();
-        
-//		$tagNames = $this->tagRelation->where(['item_id'=>$id])->get()->map(function($item) {
-//            return $this->tag->find($item->tag_id)->name;
-//        })->all();
-//        
-//        $allTags = $this->tag->get()->map(function($item){
-//            return $item->name;
-//        })->all();
-        
-        $setting = $this->setting->get()->first();
-        $blockACount = $setting->snap_block_a;
-        $blockBCount = $setting->snap_block_b;
-        $blockCCount = $setting->snap_block_c;
-        
-        //$icons = $this->icon->all();
-        
-        return view('dashboard.item.formUpper', ['item'=>$item, 'blockACount'=>$blockACount, 'blockBCount'=>$blockBCount, 'blockCCount'=>$blockCCount, 'cates'=>$cates, 'consignors'=>$consignors, 'dgs'=>$dgs, 'id'=>$itemId, 'edit'=>1]);
-
-    }
     
-    public function postItemUpper(Request $request)
-    {
-    	if($request->has('iId')) {
-        	$itemId = $request->input('iId');
-            
-            
-        }
-        else {
-        	
-        }
-        
-        
-        
-    }
     
     
     public function edit($id)

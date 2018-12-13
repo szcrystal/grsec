@@ -22,8 +22,12 @@
         
         @if(isset($edit))
         	<?php $linkId = $item->is_potset ? $item->pot_parent_id : $id; ?>
-            <div class="mt-4 text-right">
-                <a href="{{ url('/item/'. $linkId) }}" class="btn btn-warning border border-1 border-round text-white" target="_brank">この商品のページを見る <i class="fa fa-angle-double-right" aria-hidden="true"></i></a>
+            <div class="mt-4 clearfix">
+            	@if(Ctm::isEnv('local') || Ctm::isEnv('beta'))
+            	<a href="{{ url('/dashboard/upper/'. $id. '?type=item') }}" class="btn btn-warning border border-1 border-round text-white d-block float-left">上部コンテンツを編集 <i class="fa fa-angle-double-right" aria-hidden="true"></i></a>
+                @endif
+                
+                <a href="{{ url('/item/'. $linkId) }}" class="btn btn-warning border border-1 border-round text-white d-block float-right" target="_brank">この商品のページを見る <i class="fa fa-angle-double-right" aria-hidden="true"></i></a>
             </div>
         @endif
         

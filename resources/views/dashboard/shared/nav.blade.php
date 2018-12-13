@@ -5,7 +5,7 @@
 		<div style="background:red; color:#fff;" class="px-3 mr-1">This Is Alpha !</div>
     @endif
     
-    <a style="width:auto;" class="navbar-brand pr-3" href="{{ url('dashboard') }}">グリーンロケット</a>
+    <a style="width:auto;" class="navbar-brand pr-2" href="{{ url('dashboard') }}">グリーンロケット</a>
     
     @if(env('APP_VERSION') != '')
     	<span class="text-white">v {{ env('APP_VERSION') }}</span>

@@ -416,14 +416,14 @@ use App\PayMethodChild;
                     @else
                     	<span>--</span>
                     @endif
-                    
-                    
-                  
+
                   </td>
  
                   <td>
                   	<a href="{{ url('dashboard/sales/order/'. $saleRel->order_number) }}" class="btn btn-success btn-sm center-block" {{ $target }}>確認</a><br>
                 	<small class="text-secondary ml-1">ID{{ $saleRel->id }}</small>
+                    <br>
+                    <small class="text-secondary ml-1 d-none">{{ $saleRel->order_number }}</small>
                 </td>
                   
                 </tr>
