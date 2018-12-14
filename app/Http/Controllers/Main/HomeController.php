@@ -330,6 +330,9 @@ class HomeController extends Controller
         //$items = $this->item->where(['cate_id'=>$cate->id, 'open_status'=>1, 'is_potset'=>0])->orderBy('id', 'desc')->paginate($this->perPage);
         $items = $this->cateSec->where(['parent_id'=>$cate->id, ])->orderBy('updated_at', 'desc')->paginate($this->perPage);
         
+        //Upper取得
+        $upperRelArr = Ctm::getUpperArr($cate->id, 'cate');
+        
         $metaTitle = isset($cate->meta_title) ? $cate->meta_title : $cate->name;
         $metaDesc = $cate->meta_description;
         $metaKeyword = $cate->meta_keyword;
@@ -337,7 +340,7 @@ class HomeController extends Controller
         $cate->timestamps = false;
         $cate->increment('view_count');
         
-        return view('main.archive.index', ['items'=>$items, 'cate'=>$cate, 'type'=>'category', 'metaTitle'=>$metaTitle, 'metaDesc'=>$metaDesc, 'metaKeyword'=>$metaKeyword,]);
+        return view('main.archive.index', ['items'=>$items, 'cate'=>$cate, 'type'=>'category', 'upperRelArr'=>$upperRelArr, 'metaTitle'=>$metaTitle, 'metaDesc'=>$metaDesc, 'metaKeyword'=>$metaKeyword,]);
     }
     
     //Sub Category Child
@@ -357,6 +360,9 @@ class HomeController extends Controller
         
         $items = $this->item->where(['subcate_id'=>$subcate->id, 'open_status'=>1, 'is_potset'=>0])->orderBy('id', 'desc')->paginate($this->perPage);
         
+        //Upper取得
+        $upperRelArr = Ctm::getUpperArr($subcate->id, 'subcate');
+        
         $metaTitle = isset($subcate->meta_title) ? $subcate->meta_title : $subcate->name;
         $metaDesc = $subcate->meta_description;
         $metaKeyword = $subcate->meta_keyword;
@@ -364,7 +370,7 @@ class HomeController extends Controller
         $subcate->timestamps = false;
         $subcate->increment('view_count');
         
-        return view('main.archive.index', ['items'=>$items, 'cate'=>$cate, 'subcate'=>$subcate, 'type'=>'subcategory', 'metaTitle'=>$metaTitle, 'metaDesc'=>$metaDesc, 'metaKeyword'=>$metaKeyword,]);
+        return view('main.archive.index', ['items'=>$items, 'cate'=>$cate, 'subcate'=>$subcate, 'type'=>'subcategory', 'upperRelArr'=>$upperRelArr, 'metaTitle'=>$metaTitle, 'metaDesc'=>$metaDesc, 'metaKeyword'=>$metaKeyword,]);
     }
     
     //Tag
@@ -382,6 +388,9 @@ class HomeController extends Controller
         
         $items = $this->item->whereIn('id',$itemIds)->where(['open_status'=>1, 'is_potset'=>0])->orderBy('id', 'desc')->paginate($this->perPage);
         
+        //Upper取得
+        $upperRelArr = Ctm::getUpperArr($tag->id, 'tag');
+        
         $metaTitle = isset($tag->meta_title) ? $tag->meta_title : $tag->name;
         $metaDesc = $tag->meta_description;
         $metaKeyword = $tag->meta_keyword;
@@ -389,7 +398,7 @@ class HomeController extends Controller
         $tag->timestamps = false;
         $tag->increment('view_count');
         
-        return view('main.archive.index', ['items'=>$items, 'tag'=>$tag, 'type'=>'tag', 'metaTitle'=>$metaTitle, 'metaDesc'=>$metaDesc, 'metaKeyword'=>$metaKeyword,]);
+        return view('main.archive.index', ['items'=>$items, 'tag'=>$tag, 'type'=>'tag', 'upperRelArr'=>$upperRelArr, 'metaTitle'=>$metaTitle, 'metaDesc'=>$metaDesc, 'metaKeyword'=>$metaKeyword,]);
     }
     
     public function create()

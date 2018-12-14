@@ -24,10 +24,10 @@
         	<?php $linkId = $item->is_potset ? $item->pot_parent_id : $id; ?>
             <div class="mt-4 clearfix">
             	@if(Ctm::isEnv('local') || Ctm::isEnv('beta'))
-            	<a href="{{ url('/dashboard/upper/'. $id. '?type=item') }}" class="btn btn-warning border border-1 border-round text-white d-block float-left">上部コンテンツを編集 <i class="fa fa-angle-double-right" aria-hidden="true"></i></a>
+            	<a href="{{ url('/dashboard/upper/'. $id. '?type=item') }}" class="btn btn-success border-round text-white d-block float-left"><i class="fa fa-angle-double-left" aria-hidden="true"></i> 上部コンテンツを編集 </a>
                 @endif
                 
-                <a href="{{ url('/item/'. $linkId) }}" class="btn btn-warning border border-1 border-round text-white d-block float-right" target="_brank">この商品のページを見る <i class="fa fa-angle-double-right" aria-hidden="true"></i></a>
+                <a href="{{ url('/item/'. $linkId) }}" class="btn btn-warning border-round text-white d-block float-right" target="_brank">この商品のページを見る <i class="fa fa-angle-double-right" aria-hidden="true"></i></a>
             </div>
         @endif
         

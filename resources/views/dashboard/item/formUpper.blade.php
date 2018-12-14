@@ -1,11 +1,36 @@
 @extends('layouts.appDashBoard')
 
 @section('content')
+
+<?php 
+    if($type == 'item') {
+        $name = $orgObj->title;
+        
+        $indexUrl = url('/dashboard/items');
+        $editUrl = url('/dashboard/items/'. $id);
+    }
+    elseif($type == 'cate') {
+        $name = 'カテゴリー：' . $orgObj->name;
+        $indexUrl = url('/dashboard/categories');
+        $editUrl = url('/dashboard/categories/'. $id);
+    }
+    elseif($type == 'subcate') {
+        $name = '子供カテゴリー：' . $orgObj->name;
+        $indexUrl = url('/dashboard/categories/sub');
+        $editUrl = url('/dashboard/categories/sub/'. $id);
+    }
+    elseif($type == 'tag') {
+        $name = 'タグ：' . $orgObj->name;
+        $indexUrl = url('/dashboard/tags');
+        $editUrl = url('/dashboard/tags/'. $id);
+    }
+?>
+
 	
 	<div class="text-left">
         <h1 class="Title">
         @if(isset($edit))
-        上部コンテンツ編集&nbsp;&nbsp;<span>ID：{{ $id }}</span>
+        上部コンテンツ編集
         @else
         上部コンテンツ新規追加
         @endif
@@ -17,8 +42,9 @@
       <div class="col-md-12 mb-5">
         <div class="bs-component clearfix">
         <div class="">
-            <a href="{{ url('/dashboard/items') }}" class="btn bg-white border border-1 border-round border-secondary text-primary"><i class="fa fa-angle-double-left" aria-hidden="true"></i>一覧へ戻る</a><br>
-            <a href="{{ url('/dashboard/items/'. $id) }}" class="btn bg-white border border-1 border-round border-secondary text-primary"><i class="fa fa-angle-double-left" aria-hidden="true"></i>商品編集へ戻る</a>
+            <a href="{{ $indexUrl }}" class="btn bg-white border border-round border-secondary text-primary"><i class="fa fa-angle-double-left" aria-hidden="true"></i> 一覧へ戻る</a>
+            <br>
+            <a href="{{ $editUrl }}" class="btn bg-white border border-round border-secondary text-primary d-inline-block mt-2"><i class="fa fa-angle-double-left" aria-hidden="true"></i> 編集画面へ戻る</a>
         </div>
         
         @if(isset($edit))
@@ -51,8 +77,8 @@
     @endif
         
 	@if (session('status'))
-        <div class="alert alert-success">
-            {{ session('status') }}
+        <div class="alert alert-success text-uppercase">
+            {!! nl2br(session('status')) !!}
         </div>
     @endif
         
@@ -60,12 +86,14 @@
         <form class="form-horizontal" role="form" method="POST" action="/dashboard/upper" enctype="multipart/form-data">
         
         	<div class="form-group mb-0">
-                <div class="clearfix mb-3">
+                <div class="clearfix mb-5">
                     <button type="submit" class="btn btn-primary btn-block mx-auto w-btn w-25">更　新</button>
                 </div>
                 
-                @if(isset($item))
-                	<b class="text-big">ID:{{ $item->id }} {{ $item->title }}の上部コンテンツ</b>
+                @if(isset($orgObj))
+                	
+                	
+                    <b class="text-big">[{{ $orgObj->id }}] {{ $name }}の上部コンテンツ</b>
                 @endif
             </div>
 
@@ -76,7 +104,7 @@
             <input type="hidden" name="type" value="{{ $type }}">
 
 			<div class="form-group">
-                <div class="col-md-12 text-right mb-3 pb-3 mt-0">
+                <div class="col-md-12 text-right mt-0">
                     <div class="checkbox">
                         <label>
                             <?php
@@ -97,10 +125,19 @@
                 </div>
             </div>
         
-        	<span class="text-small text-secondary d-block mb-3">＊UPする画像のファイル名は全て半角英数字とハイフンのみで構成して下さい。(abc-123.jpg など)</span>
+        	{{-- 
+            <span class="text-small text-secondary d-block mb-2">＊UPする画像のファイル名は全て半角英数字とハイフンのみで構成して下さい。(abc-123.jpg など)</span>
+        	--}}
         
+        <?php
+//        $n = 0;
+//        $block = 'a';
+//        print_r($errors);
+//        //print_r(old());
+//        echo old('block.' .$block . '.' . $n . '.title');
+//        exit;
         
-        
+        ?>
         
         
         	@foreach($relArr as $blockKey => $upperRel)
@@ -128,7 +165,7 @@
                 <fieldset class="mt-2 mb-5 form-group{{ $errors->has('block.' .$n) ? ' is-invalid' : '' }}">
                     <label class="text-uppercase">大タイトル（{{ $blockKey }}ブロック）</label>
                     
-                    <input class="form-control col-md-12{{ $errors->has('block.' .$n) ? ' is-invalid' : '' }}" name="block[{{ $block }}][section][title]" value="{{ Ctm::isOld() ? old($titleName.$n) : (isset($upperRel['section']) ? $upperRel['section']->title : '') }}" placeholder="">
+                    <input class="form-control col-md-12{{ $errors->has('block.' .$n) ? ' is-invalid' : '' }}" name="block[{{ $block }}][section][title]" value="{{ Ctm::isOld() ? old('title'.$n) : (isset($upperRel['section']) ? $upperRel['section']->title : '') }}" placeholder="">
 
                         @if ($errors->has('block.' .$n))
                             <div class="text-danger">
@@ -138,24 +175,25 @@
                         @endif
                 </fieldset>
 
-                <input type="text" name="block[{{ $block }}][section][rel_id]" value="{{ isset($upperRel['section']) ? $upperRel['section']->id : 0 }}">
+                <input type="hidden" name="block[{{ $block }}][section][rel_id]" value="{{ isset($upperRel['section']) ? $upperRel['section']->id : 0 }}">
                 
             	@while($n < $bCount)
-        	
+        			
+                    <div class="border border-gray p-3  mb-3 bg-gray rounded">
                     @include('dashboard.shared.upperContents')
+                    </div>
 
                     <?php $n++; ?>
                 @endwhile
+                
+                <div class="form-group mt-5 pt-3">
+                	<button type="submit" class="btn btn-primary btn-block w-btn w-25 mx-auto">更　新</button>
+            	</div>
+            
             @endforeach
         
         
         
-            
-            <div class="form-group mt-5 pt-3">
-                <button type="submit" class="btn btn-primary btn-block w-btn w-25 mx-auto">更　新</button>
-            </div>
-            
-
         </form>
 
     </div>

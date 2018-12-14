@@ -1,33 +1,62 @@
 <?php
-$delName = $block .'_del_img';
-$imgName = $block .'_img';
-$titleName = $block .'_title';
-$contName = $block .'_contents';
+
+ //inputのname名：block[a][0][title] など block[{{ $blockKey }}][{{$n}}][title]
+$nameFormat = 'block[' . $blockKey . '][' . $n .'][%s]';
+
+//oldやerrorsなどで取得する名前
+$oldName = 'block.' .$blockKey . '.' . $n . '.';
+
 ?>
 
 
 
+<div style="border-bottom: 1px solid #ccc;" class="clearfix mb-4 text-uppercase">
 
-<h5 style="border-bottom: 1px solid #ccc; text-transform:uppercase;" class="mb-3">{{ $block }}ブロック-{{ $n+1 }} </h5>
+<h5 class="mb-3 float-left d-inline-block">{{ $blockKey }}ブロック-{{ $n+1 }}</h5>
+
+<fieldset class="w-25 form-group float-left mb-0 pb-0 ml-3">
+    <div class="col-md-12 checkbox px-0">
+        <label>
+            <?php
+                $checked = '';
+                if(Ctm::isOld()) {
+                    if(old($oldName . 'del_block'))
+                        $checked = ' checked';
+                }
+                else {
+                    if(isset($upperRel[$n]) && $upperRel[$n]->del_block) {
+                        $checked = ' checked';
+                    }
+                }
+            ?>
+
+            <input type="hidden" name="{{ sprintf($nameFormat, 'del_block') }}" value="0">
+            <input type="checkbox" name="{{ sprintf($nameFormat, 'del_block') }}" value="1"{{ $checked }}> {{ $blockKey }}ブロック-{{ $n+1 }}を削除
+        </label>
+    </div>
+</fieldset>
+
+</div>
+
 <div class="form-group clearfix mb-4 thumb-wrap">
     <fieldset class="w-25 float-right">
-        <div class="col-md-12 checkbox text-right px-0">
+        <div class="col-md-12 checkbox text-right px-3">
             <label>
                 <?php
                     $checked = '';
-                    if(Ctm::isOld($delName.$n)) {
-                        if(old($delName.$n))
+                    if(Ctm::isOld()) {
+                        if(old($oldName . 'del_img'))
                             $checked = ' checked';
                     }
                     else {
-                        if(isset($upperRel[$n]) && $upperRel[$n]->$delName) {
+                        if(isset($upperRel[$n]) && $upperRel[$n]->del_img) {
                             $checked = ' checked';
                         }
                     }
                 ?>
 
-                <input type="hidden" name="block[{{ $block }}][{{$n}}][del_img]" value="0">
-                <input type="checkbox" name="block[{{ $block }}][{{$n}}][del_img]" value="1"{{ $checked }}> この画像を削除
+                <input type="hidden" name="{{ sprintf($nameFormat, 'del_img') }}" value="0">
+                <input type="checkbox" name="{{ sprintf($nameFormat, 'del_img') }}" value="1"{{ $checked }}> この画像を削除
             </label>
         </div>
     </fieldset>
@@ -35,15 +64,15 @@ $contName = $block .'_contents';
     <fieldset>
         <div class="float-left col-md-4 px-0 thumb-prev">
             @if(count(old()) > 0)
-                @if(old($imgName.$n) != '' && old($imgName.$n))
-                	<img src="{{ Storage::url(old($imgName.$n)) }}" class="img-fluid">
-                @elseif(isset($item) && $item->main_img)
-                	<img src="{{ Storage::url($item->main_img) }}" class="img-fluid">
+                @if(old($oldName . '.img') != '' && old($oldName . '.img'))
+                	<img src="{{ Storage::url(old($oldName . '.img')) }}" class="img-fluid">
+                @elseif(isset($upperRel[$n]) && $upperRel[$n]->img_path)
+                	<img src="{{ Storage::url($upperRel[$n]->main_img) }}" class="img-fluid">
                 @else
                 	<span class="no-img">No Image</span>
                 @endif
             
-            @elseif(isset($upperRel[$n]))
+            @elseif(isset($upperRel[$n]) && $upperRel[$n]->img_path)
             	<img src="{{ Storage::url($upperRel[$n]->img_path) }}" class="img-fluid">
             
             @else
@@ -53,57 +82,65 @@ $contName = $block .'_contents';
         
 
         <div class="float-left col-md-8 pl-3 pr-0">
-            <fieldset class="form-group{{ $errors->has($imgName) ? ' is-invalid' : '' }}">
+            <fieldset class="form-group{{ $errors->has($oldName .'.img') ? ' is-invalid' : '' }}">
                 <label>画像</label>
-                <input class="form-control-file thumb-file" type="file" name="block[{{ $block }}][{{$n}}][img]">
+                <input class="form-control-file thumb-file" type="file" name="{{ sprintf($nameFormat, 'img') }}">
             </fieldset>
         
-            @if ($errors->has($imgName.$n))
+            @if ($errors->has($oldName.'img'))
                 <span class="help-block text-danger">
-                    <strong>{{ $errors->first($imgName.$n) }}</strong>
+                    <strong>{{ $errors->first($oldName.'img') }}</strong>
                 </span>
             @endif
             
-            {{-- <span class="text-small text-secondary">＊メイン画像は原則必要なものとなります。<br>削除後の未入力など注意して下さい。</span> --}}
         
         </div>
     </fieldset>
-    
-    <fieldset class="my-2 form-group{{ $errors->has($titleName.$n) ? ' is-invalid' : '' }}">
-        <label>タイトル</label>
-        <input class="form-control col-md-12{{ $errors->has($titleName.$n) ? ' is-invalid' : '' }}" name="block[{{ $block }}][{{$n}}][title]" value="{{ Ctm::isOld() ? old($titleName.$n) : (isset($upperRel[$n]) ? $upperRel[$n]->title : '') }}" placeholder="">
+</div>    
 
-            @if ($errors->has($titleName.$n))
-                <div class="text-danger">
-                    <span class="fa fa-exclamation form-control-feedback"></span>
-                    <span>{{ $errors->first($titleName.$n) }}</span>
-                </div>
-            @endif
-    </fieldset>
-        
-    
-    <fieldset class="my-3 form-group{{ $errors->has($contName.$n) ? ' is-invalid' : '' }}">
-        <label class="control-label">詳細</label>
-        <textarea class="form-control" name="block[{{ $block }}][{{$n}}][detail]" rows="10">{{ Ctm::isOld() ? old($contName.$n) : (isset($upperRel[$n]) ? $upperRel[$n]->detail : '') }}</textarea>
 
-        @if ($errors->has($contName.$n))
-            <span class="help-block">
-                <strong>{{ $errors->first($contName.$n) }}</strong>
-            </span>
+
+<fieldset class="my-2 form-group">
+    <label>タイトル</label>
+    <input class="form-control col-md-12{{ $errors->has($oldName.'title') ? ' is-invalid' : '' }}" name="{{ sprintf($nameFormat, 'title') }}" value="{{ Ctm::isOld() ? old($oldName.'title') : (isset($upperRel[$n]) ? $upperRel[$n]->title : '') }}" placeholder="">
+
+        @if ($errors->has($oldName.'title'))
+            <div class="text-danger">
+                <span class="fa fa-exclamation form-control-feedback"></span>
+                <span>{{ $errors->first($oldName.'title') }}</span>
+            </div>
         @endif
-    </fieldset>
-</div>
+</fieldset>
+    
 
-{{--
-{{ $upperRel[$n]->id }}
---}}
+
+<fieldset class="my-3 form-group">
+    <label class="control-label">詳細</label>
+    <textarea class="form-control{{ $errors->has($oldName.'detail') ? ' is-invalid' : '' }}" name="{{ sprintf($nameFormat, 'detail') }}" rows="10">{{ Ctm::isOld() ? old($oldName.'detail') : (isset($upperRel[$n]) ? $upperRel[$n]->detail : '') }}</textarea>
+
+    @if ($errors->has($oldName.'detail'))
+        <span class="help-block">
+            <strong>{{ $errors->first($oldName.'detail') }}</strong>
+        </span>
+    @endif
+</fieldset>
+
+
+
+
 
 <?php
 	$relId = isset($upperRel[$n]) ? $upperRel[$n]->id : 0;
 ?>
-<input type="hidden" name="block[{{ $block }}][{{$n}}][rel_id]" value="{{ $relId }}">
 
-<input type="hidden" name="block[{{ $block }}][{{$n}}][count]" value="{{ $n }}">
+@if(Ctm::isEnv('local'))
+<br>
+{{ $relId }}
+@endif
+
+<input type="hidden" name="{{ sprintf($nameFormat, 'rel_id') }}" value="{{ $relId }}">
+
+<input type="hidden" name="{{ sprintf($nameFormat, 'count') }}" value="{{ $n }}">
 
 
 

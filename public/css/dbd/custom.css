@@ -54,8 +54,17 @@ h1 {
 .bg-green {
 	background: mintcream;
 }
+.bg-gray {
+	background: #f6f6f6;
+}
+.bg-blue {
+	background: #5cb3ef;
+}
 .btn-blue {
 	background: #3A9BEB;
+}
+.border-gray {
+	border: 1px solid #ebebeb;
 }
 
 .open-tgl {

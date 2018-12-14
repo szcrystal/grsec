@@ -11,6 +11,9 @@ use App\ItemImage;
 use App\Favorite;
 use App\User;
 
+use App\ItemUpper;
+use App\ItemUpperRelation;
+
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Cache;
@@ -20,7 +23,7 @@ use Ctm;
 
 class SingleController extends Controller
 {
-    public function __construct(Item $item, Category $category, CategorySecond $subCate, Tag $tag, TagRelation $tagRel, ItemImage $itemImg, Favorite $favorite, User $user)
+    public function __construct(Item $item, Category $category, CategorySecond $subCate, Tag $tag, TagRelation $tagRel, ItemImage $itemImg, Favorite $favorite, User $user, ItemUpper $itemUpper, ItemUpperRelation $itemUpperRel)
     {
         //$this->middleware('search');
         
@@ -32,6 +35,9 @@ class SingleController extends Controller
         $this->itemImg = $itemImg;
         $this->favorite = $favorite;
         $this->user = $user;
+        
+        $this->upper = $itemUpper;
+        $this->upperRel = $itemUpperRel;
 //        $this->tag = $tag;
 //        $this->tagRelation = $tagRelation;
 //        $this->tagGroup = $tagGroup;
@@ -227,13 +233,37 @@ class SingleController extends Controller
         
 //        print_r(cache('cacheIds'));
 //        exit;
+
+
+		//ItemUpper
+//        $upperRels = null;
+//        $upperRelArr = array();
+//        $upper = $this->upper->where(['parent_id'=>$id, 'type_code'=>'item', 'open_status'=>1])->first();
+//		
+//        if(isset($upper)) {
+//        	$upperRels = $this->upperRel->where(['upper_id'=>$upper->id, ])->orderBy('sort_num', 'asc')->get();
+//            
+//            if($upperRels->isNotEmpty()) {
+//            	foreach($upperRels as $upperRel) {
+//                	if($upperRel->is_section) {
+//                    	$upperRelArr[$upperRel->block]['section'] = $upperRel;
+//                    }
+//                    else {
+//                    	$upperRelArr[$upperRel->block]['block'][] = $upperRel;
+//                    }
+//                }
+//            }
+//        }
+        
+        $upperRelArr = Ctm::getUpperArr($id, 'item');
+
 		
         $metaTitle = isset($item->meta_title) ? $item->meta_title : $item->title;
         $metaDesc = $item->meta_description;
         $metaKeyword = $item->meta_keyword;
         
         
-        return view('main.home.single', ['item'=>$item, 'potSets'=>$potSets, 'otherItem'=>$otherItem, 'cate'=>$cate, 'subCate'=>$subCate, 'tags'=>$tags, 'imgsPri'=>$imgsPri, 'imgsSec'=>$imgsSec, 'isFav'=>$isFav, 'recomArr'=>$recomArr, 'cacheItems'=>$cacheItems, 'recommends'=>$recommends, 'metaTitle'=>$metaTitle, 'metaDesc'=>$metaDesc, 'metaKeyword'=>$metaKeyword, 'type'=>'single']);
+        return view('main.home.single', ['item'=>$item, 'potSets'=>$potSets, 'otherItem'=>$otherItem, 'cate'=>$cate, 'subCate'=>$subCate, 'tags'=>$tags, 'imgsPri'=>$imgsPri, 'imgsSec'=>$imgsSec, 'isFav'=>$isFav, 'recomArr'=>$recomArr, 'cacheItems'=>$cacheItems, 'recommends'=>$recommends, 'upperRelArr'=>$upperRelArr, 'metaTitle'=>$metaTitle, 'metaDesc'=>$metaDesc, 'metaKeyword'=>$metaKeyword, 'type'=>'single']);
     }
     
     

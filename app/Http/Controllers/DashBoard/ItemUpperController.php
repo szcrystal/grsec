@@ -118,7 +118,7 @@ class ItemUpperController extends Controller
         if(isset($upper) && $upper !== null) { //編集
         	$edit = 1;
         	
-            $upperRels = $this->itemUpperRel->where(['upper_id'=>$upper->id])->orderBy('sort_num')->get()/*->keyBy('block')*/;
+            $upperRels = $this->itemUpperRel->where(['upper_id'=>$upper->id])->orderBy('sort_num', 'asc')->get()/*->keyBy('block')*/;
             
             if($upperRels->isNotEmpty()) {
             	$relArr = array();
@@ -162,16 +162,9 @@ class ItemUpperController extends Controller
         
     	$rules = [
 //        	'number' => 'required|unique:items,number,'.$editId,
-//            'title' => 'required|max:255',
-//            'cate_id' => 'required',
-//            //'dg_id' => 'required',
-
-//            
-//            'factor' => 'required|numeric',
-//            
+            //'block.a.0.title' => 'required|max:255',
+          
 //            'price' => 'required|numeric',
-//            'cost_price' => 'nullable|numeric',
-//            'sale_price' => 'nullable|numeric',
 //            'stock' => 'nullable|numeric',
 //            'stock_reset_month' => [
 //                function($attribute, $value, $fail) use($request) {
@@ -188,32 +181,19 @@ class ItemUpperController extends Controller
 //                    }
 //                },
 //            ],
-//            'stock_reset_count' => 'nullable|numeric',
-//            'point_back' => 'nullable|numeric',
-//            
-//            'pot_parent_id' =>'required_with:is_potset|nullable|numeric',
-//            'pot_count' =>'required_with:is_potset|nullable|numeric',
-            
-            //'main_img' => 'filenaming',
+
         ];
 
         
         $messages = [
-         	'title.required' => '「商品名」を入力して下さい。',
+         	'block.a.0.title.required' => '「商品名」を入力して下さい。',
             'cate_id.required' => '「カテゴリー」を選択して下さい。',
-            
-            //'post_thumb.filenaming' => '「サムネイル-ファイル名」は半角英数字、及びハイフンとアンダースコアのみにして下さい。',
-            //'post_movie.filenaming' => '「動画-ファイル名」は半角英数字、及びハイフンとアンダースコアのみにして下さい。',
-            //'slug.unique' => '「スラッグ」が既に存在します。',
         ];
         
         $this->validate($request, $rules, $messages);
         
         $data = $request->all();
         
-//        print_r($data['icons']);
-//		echo implode(',', $data['icons']);
-//        exit;
         
         //status
         $data['open_status'] = isset($data['open_status']) ? 0 : 1;
@@ -227,32 +207,57 @@ class ItemUpperController extends Controller
 //        print_r($data);
 //        exit;
 
+		$status = '上部コンテンツが編集されました。';
+
 		foreach($data['block'] as $blockKey => $blockArr) {
-        	$num = 0;
+        	
+            $num = 0;
             
             foreach($blockArr as $key => $vals) {
                 
-				if($key === 'section') { //大タイトルの時
-                	
-                	$this->itemUpperRel->updateOrCreate(
-                        ['id'=>$vals['rel_id'], 'upper_id'=>$itemUpper->id, 'block'=>$blockKey, 'is_section'=>1],
-                        [  
-                            'title'=> $vals['title'],
-                            //'detail'=> $vals['detail'],
-                            'sort_num'=> 0,
-                        ]
-                    );
+				$isSection = $key === 'section' ? 1 : 0; //大タイトルの時かブロックかを判別する
                 
+                if(isset($vals['del_block']) && $vals['del_block'] && $vals['rel_id']) { //block削除の時
+                	$upperRel = $this->itemUpperRel->find($vals['rel_id']);
+                    
+                    if(isset($upperRel->img_path)) {
+                    	Storage::delete('public/'. $upperRel->img_path);
+                    }
+                    
+                    $upperRel->delete();
+                    
+                    $status .= "\n". '「' . $blockKey . 'ブロック-' . ($vals['count']+1) . '」が削除されました。';
                 }
-                else { //blockの時
+                else {
+                    //relationのidをinput-hiddenに設定し（0ならcreate）$vals['rel_id']でupdateOrCreateする方法もあり
                     $upperRel = $this->itemUpperRel->updateOrCreate(
-                        ['id'=>$vals['rel_id'], 'upper_id'=>$itemUpper->id, 'block'=>$blockKey, 'is_section'=>0],
                         [
+                            'id' => $vals['rel_id'],
+                        ],
+                        [
+                            'upper_id'=> $itemUpper->id, 
+                            'block'=> $blockKey, 
                             'title'=> $vals['title'],
-                            'detail'=> $vals['detail'],
-                            'sort_num'=> $num+1,
+                            'detail'=> $isSection ? null : $vals['detail'],
+                            'is_section'=> $isSection ? 1 : 0,
+                            'sort_num'=> $isSection ? 0 : $num+1,
                         ]
                     );
+
+
+    //                $upperRel = $this->itemUpperRel->updateOrCreate(
+    //                    [
+    //                        'upper_id'=> $itemUpper->id, 
+    //                        'block'=> $blockKey, 
+    //                        'is_section'=> $isSection ? 1 : 0,
+    //                        'sort_num'=> $isSection ? 0 : $vals['count']+1,
+    //                    ],
+    //                    [
+    //                        'title'=> $vals['title'],
+    //                        'detail'=> $isSection ? null : $vals['detail'],
+    //                        'sort_num'=> $isSection ? 0 : $num+1,
+    //                    ]
+    //                );
                     
                     
                     if(isset($vals['del_img']) && $vals['del_img']) { //削除チェックの時
@@ -282,13 +287,9 @@ class ItemUpperController extends Controller
                             $upperRel->save();
                         }
                     }
-                	
-                    $num++;
+                    
+                    if(! $isSection) $num++;
                 }
-                
-                
-
-                
 
             }
             
@@ -296,18 +297,18 @@ class ItemUpperController extends Controller
 		
                 
         
-        if($editId) { //update（編集）の時
-            $status = '上部コンテンツが更新されました！';
-            //$itemUpper = $this->itemUpper->where(['parent_id'=>$editId, 'type_code'=>$type])->first();
-            //echo date('Y-m-d H:i:s', time());
-
-            
-            
-        }
-        else { //新規追加の時
-            $status = '上部コンテンツが追加されました！';            
-            
-        }
+//        if($editId) { //update（編集）の時
+//            $status = '上部コンテンツが更新されました！';
+//            //$itemUpper = $this->itemUpper->where(['parent_id'=>$editId, 'type_code'=>$type])->first();
+//            //echo date('Y-m-d H:i:s', time());
+//
+//            
+//            
+//        }
+//        else { //新規追加の時
+//            $status = '上部コンテンツが追加されました！';            
+//            
+//        }
         
 
         

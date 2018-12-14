@@ -34,6 +34,12 @@ use App\TopSetting;
         	@include('main.shared.bread')
         @endif
         
+        
+        @if(Ctm::isEnv('local') || Ctm::isEnv('beta'))
+        	@include('main.shared.upper')
+        @endif
+        
+        
         @if(isset($item->free_space))
         	<div class="clearfix">
         		{!! $item->free_space !!}
@@ -525,6 +531,10 @@ use App\TopSetting;
                         @if(count($recoms) > 0)
                             <div class="mt-3 floar">
                                 <h4 class="text-small">{{ $key }}</h4>
+                                
+                                <?php 
+                                    //レコメンドアイテムはItemControllerでchunkされている
+                                ?>
                                 
                                 @foreach($recoms as $recom)
                                 <div>

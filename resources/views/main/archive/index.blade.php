@@ -58,6 +58,10 @@ use App\TopSetting;
         </div>
         
         <div class="panel-body">
+        	
+            @if(Ctm::isEnv('local') || Ctm::isEnv('beta'))
+                @include('main.shared.upper')
+            @endif
             
             @if($type == 'category' && isset($cate->contents))
                 <div class="my-4">

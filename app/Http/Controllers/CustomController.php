@@ -12,6 +12,9 @@ use App\TotalizeAll;
 use App\Setting;
 use App\MailTemplate;
 
+use App\ItemUpper;
+use App\ItemUpperRelation;
+
 use Mail;
 use DateTime;
 
@@ -369,6 +372,34 @@ class CustomController extends Controller
         $withYoubi .= ' (' . $week[$time->format('w')] . ')';
         
         return $withYoubi;
+    }
+    
+    
+    static function getUpperArr($parentId, $type)
+    {
+    	//ItemUpper
+        $upperRels = null;
+        $upperRelArr = array();
+        
+        $upper = ItemUpper::where(['parent_id'=>$parentId, 'type_code'=>$type, 'open_status'=>1])->first();
+		
+        if(isset($upper)) {
+        	$upperRels = ItemUpperRelation::where(['upper_id'=>$upper->id, ])->orderBy('sort_num', 'asc')->get();
+            
+            if($upperRels->isNotEmpty()) {
+            	foreach($upperRels as $upperRel) {
+                	if($upperRel->is_section) {
+                    	$upperRelArr[$upperRel->block]['section'] = $upperRel; //isSectionのものは1つなので。1つ以上になる場合は[]にして更に配列にする必要がある
+                    }
+                    else {
+                    	$upperRelArr[$upperRel->block]['block'][] = $upperRel;
+                    }
+                }
+            }
+
+        }
+        
+        return $upperRelArr;
     }
     
     
