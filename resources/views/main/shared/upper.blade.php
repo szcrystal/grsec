@@ -5,7 +5,7 @@
     $chunkNum = 0;
 ?>
 
-<div class="clearfix upper-wrap">
+<div class="upper-wrap">
     
     @foreach($upperRelArr as $blockKey => $upperRels)
         <?php
@@ -13,7 +13,7 @@
             $chunkNum++;         
         ?>
         
-        <div class="block-wrap clearfix">
+        <div class="block-wrap">
 
             @foreach($upperRels as $key => $upperRel)
             
@@ -24,7 +24,7 @@
                 @if($key === 'section')
                     
                     @if($upperRel->title != '')
-                        <h3>{{ $upperRel->title }}</h3>
+                        <h3>{!! $upperRel->title !!}</h3>
                     @endif
                     
                 @else
@@ -54,23 +54,25 @@
                                     
                                     <div class="{{ $blockKey }}-block clearfix">
 
-                                        @if(isset($uRel->img_path) && $uRel->img_path !== null)
+                                        @if(isset($uRel->img_path))
                                             <div class="img-wrap">
                                                 <img src="{{ Storage::url($uRel->img_path) }}" class="w-100">
                                             </div>
                                         @endif
                                         
-                                        <div class="detail-wrap">
-                                            @if(isset($uRel->title) && $uRel->title !==null)
-                                            	<h4>{{ $uRel->title }}</h4>
-                                            @endif
-                                            
-                                            @if(isset($uRel->detail) && $uRel->detail != null)
-                                                <div>
-                                                	{!! nl2br($uRel->detail) !!}
-                                                </div>
-                                            @endif
-                                        </div>
+                                        @if(isset($uRel->title) || isset($uRel->detail))
+                                            <div class="detail-wrap">
+                                                @if(isset($uRel->title))
+                                                    <h4>{{ $uRel->title }}</h4>
+                                                @endif
+                                                
+                                                @if(isset($uRel->detail))
+                                                    <div>
+                                                        {!! nl2br($uRel->detail) !!}
+                                                    </div>
+                                                @endif
+                                            </div>
+                                        @endif
                                         
                                     </div>
                                 @endforeach

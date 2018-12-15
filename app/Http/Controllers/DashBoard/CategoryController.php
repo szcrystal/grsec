@@ -65,7 +65,7 @@ class CategoryController extends Controller
         
         $rules = [
             'name' => 'required|unique:categories,name,'.$editId.'|max:255',
-            'slug' => 'required|unique:categories,slug,'.$editId.'|max:255', /* 注意:unique */
+            'slug' => 'required|alpha_dash|unique:categories,slug,'.$editId.'|max:255', /* 注意:unique */
         ];
         
         $messages = [
@@ -116,6 +116,8 @@ class CategoryController extends Controller
 
         
         //Snap Save ==================================================
+        if(isset($data['snap_count'])) {
+        
         foreach($data['snap_count'] as $count) {
         
             /*
@@ -186,6 +188,7 @@ class CategoryController extends Controller
             $num++;
         }
         
+        }
         //Snap END ===========================================
 
         return redirect('dashboard/categories/'.$cateId)->with('status', $status);

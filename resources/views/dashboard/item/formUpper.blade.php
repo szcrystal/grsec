@@ -3,61 +3,62 @@
 @section('content')
 
 <?php 
+use App\Category;
+
     if($type == 'item') {
         $name = $orgObj->title;
         
         $indexUrl = url('/dashboard/items');
         $editUrl = url('/dashboard/items/'. $id);
+        
+        $linkId = $orgObj->is_potset ? $orgObj->pot_parent_id : $id;
+        
+        $pageUrl = url('/item/'. $linkId);
     }
     elseif($type == 'cate') {
         $name = 'カテゴリー：' . $orgObj->name;
         $indexUrl = url('/dashboard/categories');
         $editUrl = url('/dashboard/categories/'. $id);
+        
+        $pageUrl = url('category/'. $orgObj->slug);
     }
     elseif($type == 'subcate') {
         $name = '子供カテゴリー：' . $orgObj->name;
         $indexUrl = url('/dashboard/categories/sub');
         $editUrl = url('/dashboard/categories/sub/'. $id);
+        
+        $cateSlug = Category::find($orgObj->parent_id)->slug;
+        $pageUrl = url('category/'. $cateSlug . '/' . $orgObj->slug);
     }
     elseif($type == 'tag') {
         $name = 'タグ：' . $orgObj->name;
         $indexUrl = url('/dashboard/tags');
         $editUrl = url('/dashboard/tags/'. $id);
+        
+        $pageUrl = url('tag/' . $orgObj->slug);
     }
 ?>
 
 	
 	<div class="text-left">
         <h1 class="Title">
-        @if(isset($edit))
         上部コンテンツ編集
-        @else
-        上部コンテンツ新規追加
-        @endif
         </h1>
         <p class="Description"></p>
     </div>
 
     <div class="row">
-      <div class="col-md-12 mb-5">
+      <div class="col-md-12 mb-3">
         <div class="bs-component clearfix">
-        <div class="">
-            <a href="{{ $indexUrl }}" class="btn bg-white border border-round border-secondary text-primary"><i class="fa fa-angle-double-left" aria-hidden="true"></i> 一覧へ戻る</a>
-            <br>
-            <a href="{{ $editUrl }}" class="btn bg-white border border-round border-secondary text-primary d-inline-block mt-2"><i class="fa fa-angle-double-left" aria-hidden="true"></i> 編集画面へ戻る</a>
-        </div>
-        
-        @if(isset($edit))
-        	@if($type=='item')
-                <?php 
-                    $linkId = $orgObj->is_potset ? $orgObj->pot_parent_id : $id;
-                ?>
-                
-                <div class="mt-4 text-right">
-                    <a href="{{ url('/item/'. $linkId) }}" class="btn btn-warning border border-1 border-round text-white" target="_brank">この商品のページを見る <i class="fa fa-angle-double-right" aria-hidden="true"></i></a>
-                </div>
-            @endif
-        @endif
+            <div class="mb-4">
+                <a href="{{ $indexUrl }}" class="btn bg-white border border-round border-secondary text-primary"><i class="fa fa-angle-double-left" aria-hidden="true"></i> 一覧へ戻る</a>
+                <br>
+                <a href="{{ $editUrl }}" class="btn bg-white border border-round border-secondary text-primary d-inline-block mt-3"><i class="fa fa-angle-double-left" aria-hidden="true"></i> 編集画面へ戻る</a>
+            </div>
+    
+            <div class="mt-4 text-right">
+                <a href="{{ $pageUrl }}" class="btn btn-warning border-round text-white" target="_brank">このページを見る <i class="fa fa-angle-double-right" aria-hidden="true"></i></a>
+            </div>
         
     	</div>
     </div>
@@ -67,7 +68,7 @@
 
     @if (count($errors) > 0)
         <div class="alert alert-danger">
-            <strong>Error!!</strong> 追加できません<br><br>
+            <strong>Error!!</strong> 追加できません<br>
             <ul>
                 @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
@@ -82,7 +83,7 @@
         </div>
     @endif
         
-    <div class="col-lg-12 mb-5">
+    <div class="col-lg-12 mb-4">
         <form class="form-horizontal" role="form" method="POST" action="/dashboard/upper" enctype="multipart/form-data">
         
         	<div class="form-group mb-0">
@@ -91,8 +92,6 @@
                 </div>
                 
                 @if(isset($orgObj))
-                	
-                	
                     <b class="text-big">[{{ $orgObj->id }}] {{ $name }}の上部コンテンツ</b>
                 @endif
             </div>
@@ -114,11 +113,12 @@
                                         $checked = ' checked';
                                 }
                                 else {
-                                    if(isset($itemUpper) && ! $itemUpper->open_status) {
+                                    if(isset($upper) && ! $upper->open_status) {
                                         $checked = ' checked';
                                     }
                                 }
                             ?>
+                            
                             <input type="checkbox" name="open_status" value="1"{{ $checked }}> この上部コンテンツを表示しない
                         </label>
                     </div>
@@ -129,25 +129,12 @@
             <span class="text-small text-secondary d-block mb-2">＊UPする画像のファイル名は全て半角英数字とハイフンのみで構成して下さい。(abc-123.jpg など)</span>
         	--}}
         
-        <?php
-//        $n = 0;
-//        $block = 'a';
-//        print_r($errors);
-//        //print_r(old());
-//        echo old('block.' .$block . '.' . $n . '.title');
-//        exit;
-        
-        ?>
-        
         
         	@foreach($relArr as $blockKey => $upperRel)
         
                 <?php
                     $n=0;
-                    $block = $blockKey;
-                    
-                    $bCount = $blockCount[$blockKey];
-                    
+                                        
 //                    if($blockKey == 'a') {
 //                        $retu = 1;
 //                    }
@@ -159,40 +146,38 @@
 //                    }
                 ?>
                 
-                <hr class="mt-5">
+                <hr class="mt-3">
         		<h4 class="mt-5 mb-3 p-2 bg-secondary text-light text-uppercase">{{ $blockKey }}ブロック（{{ $n+1 }}列部分）</h4>
                 
-                <fieldset class="mt-2 mb-5 form-group{{ $errors->has('block.' .$n) ? ' is-invalid' : '' }}">
+                <fieldset class="mt-2 mb-5 form-group">
                     <label class="text-uppercase">大タイトル（{{ $blockKey }}ブロック）</label>
                     
-                    <input class="form-control col-md-12{{ $errors->has('block.' .$n) ? ' is-invalid' : '' }}" name="block[{{ $block }}][section][title]" value="{{ Ctm::isOld() ? old('title'.$n) : (isset($upperRel['section']) ? $upperRel['section']->title : '') }}" placeholder="">
+                    <input class="form-control col-md-12{{ $errors->has('block.' .$blockKey. '.section.title') ? ' is-invalid' : '' }}" name="block[{{ $blockKey }}][section][title]" value="{{ Ctm::isOld() ? old('title'.$n) : (isset($upperRel['section']) ? $upperRel['section']->title : '') }}" placeholder="">
 
-                        @if ($errors->has('block.' .$n))
+                        @if ($errors->has('block.' .$blockKey. '.section.title'))
                             <div class="text-danger">
                                 <span class="fa fa-exclamation form-control-feedback"></span>
-                                <span>{{ $errors->first('block.' .$n) }}</span>
+                                <span>{{ $errors->first('block.' .$blockKey. '.section.title') }}</span>
                             </div>
                         @endif
+                    
+                    <input type="hidden" name="block[{{ $blockKey }}][section][rel_id]" value="{{ isset($upperRel['section']) ? $upperRel['section']->id : 0 }}">
                 </fieldset>
 
-                <input type="hidden" name="block[{{ $block }}][section][rel_id]" value="{{ isset($upperRel['section']) ? $upperRel['section']->id : 0 }}">
                 
-            	@while($n < $bCount)
-        			
-                    <div class="border border-gray p-3  mb-3 bg-gray rounded">
-                    @include('dashboard.shared.upperContents')
+            	@while($n < $blockCount[$blockKey])
+                    <div class="border border-gray p-3 mb-4 bg-gray rounded">
+                    	@include('dashboard.shared.upperContents')
                     </div>
 
                     <?php $n++; ?>
                 @endwhile
                 
-                <div class="form-group mt-5 pt-3">
+                <div class="form-group mt-5 mb-5 pt-3">
                 	<button type="submit" class="btn btn-primary btn-block w-btn w-25 mx-auto">更　新</button>
             	</div>
             
             @endforeach
-        
-        
         
         </form>
 

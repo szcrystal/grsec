@@ -318,7 +318,7 @@
                 @endif
             </fieldset>
             
-            {{--
+            
             <fieldset class="mb-4 form-group{{ $errors->has('snap_block_a') ? ' has-error' : '' }}">
                 <label>上部コンテンツ（Aブロック）の個数</label><br>
                 <input class="form-control d-inline-block col-md-4{{ $errors->has('snap_block_a') ? ' is-invalid' : '' }}" name="snap_block_a" value="{{ Ctm::isOld() ? old('snap_block_a') : (isset($setting) ? $setting->snap_block_a : '') }}"> <span>個</span>
@@ -354,7 +354,7 @@
                     </div>
                 @endif
             </fieldset>
-            --}}
+            
             
             <fieldset class="mb-4 form-group{{ $errors->has('snap_category') ? ' has-error' : '' }}">
                 <label>カテゴリー・タグ画像の枚数</label><br>

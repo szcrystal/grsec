@@ -52,7 +52,8 @@ use App\User;
     </div>
     
     
-    <nav class="nav-sp-wrap">
+    <div class="nav-sp-wrap">
+    <nav>
 
         <?php
             use App\Category;
@@ -129,6 +130,7 @@ use App\User;
         </div>
 
     </nav>
+    </div>
 
 
 </div><!-- fixed-top -->

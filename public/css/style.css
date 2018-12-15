@@ -1442,7 +1442,7 @@ ul.side-rank {
 .carousel-control-prev,
 .carousel-control-next {
 	width: 1.5em;
-    opacity: 0.55;
+    opacity: 0.5;
     height: 1.5em;
     top: 48%;
     margin: 0;
@@ -1643,41 +1643,56 @@ select.potSetSelect {
 	border: 0;
 }
 .block-wrap {
-	margin-bottom: 3em;
+	margin-bottom: 1.5em;
     //border: 1px solid red;
 }
 
+.a-block-wrap {
+	padding-bottom: 2em;
+}
+.a-block {
+	display: flex;
+    padding-bottom: 1.5em;
+}
 .a-block .img-wrap {
-	width: 49%;
-    margin-right: 1%;
+	width: 48%;
+    flex: auto;
     float: left;
+    //margin-right: 1%;
 }
 .a-block .detail-wrap {
-	width: 49%;
-    float: left;
-    margin-left: 1%;
+	width: 48.5%;
+    flex: auto;
+    float: right;
+    //margin-left: 1%;
+}
+.a-block div:nth-of-type(2n) {
+	margin-left: 1.5%;
 }
 
-.a-block,
+
 .b-block,
-.c-block {
+.c-block { /* img textを囲む個別のwrap */
 	padding-bottom: 3em;
     //border: 1px solid red;
 }
 
-.b-block-wrap > div {
-	display: flex;
+.b-block-wrap > div,
+.c-block-wrap > div {
+    display: flex;
     //border: 1px solid orange;
 }
+
 .b-block {
 	width: 49%;
-    flex: auto; /* or flex: 2 */
+    //flex: auto; /* or flex: 2 */
+    flex: 2;
     //float: left;
-    margin-right: 2%;
+    //margin-right: 2%;
     //border: 1px solid green;
 }
 .b-block:nth-of-type(2n) {
-	margin-right: 0;
+	margin-left: 1.5%;
 }
 .b-block .img-wrap {
 	margin-bottom: 0.8em;
@@ -1686,20 +1701,19 @@ select.potSetSelect {
 
 }
 
-.c-block-wrap > div {
-	display: flex;
-    //border: 1px solid orange;
-}
 .c-block {
-	width: 32.5%;
-    flex: auto;
+	//width: 32.5%;
+    flex: 3;
+    //box-sizing: border-box;
     //float: left;
-	margin-right: 1.2%;
+	//margin-right: 0.8%;
     //border: 1px solid green;
 }
+.c-block:nth-of-type(2n),
 .c-block:nth-of-type(3n) {
-	margin-right: 0;
+	margin-left: 0.9%;
 }
+
 .c-block .img-wrap {
 	margin-bottom: 0.8em;
 }

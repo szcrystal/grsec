@@ -71,7 +71,7 @@ class CategorySecondController extends Controller
         $rules = [
         	'parent_id' => 'required',
             'name' => 'required|unique:category_seconds,name,'.$editId.'|max:255',
-            'slug' => 'required|unique:category_seconds,slug,'.$editId.'|max:255', /* 注意:unique */
+            'slug' => 'required|alpha_dash|unique:category_seconds,slug,'.$editId.'|max:255', /* 注意:unique */
         ];
         
         $messages = [
@@ -165,6 +165,8 @@ class CategorySecondController extends Controller
         
         
         //Snap Save ==================================================
+        if(isset($data['snap_count'])) {
+        
         foreach($data['snap_count'] as $count) {
         
             /*
@@ -235,6 +237,8 @@ class CategorySecondController extends Controller
             $num++;
         }
         
+        
+        }
         //Snap END ===========================================
 
         return redirect('dashboard/categories/sub/'.$subCateId)->with('status', $status);

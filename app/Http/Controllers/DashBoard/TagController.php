@@ -80,7 +80,7 @@ class TagController extends Controller
         $rules = [
             //'name' => 'required|same_tag:'.$editId.','.$groupId.'|max:255', //same_tag-> on AppServiceProvider
             'name' => 'required|unique:tags,name,'.$editId.'|max:255',
-            'slug' => 'required|unique:tags,slug,'.$editId.'|max:255', /* |unique:admins 注意:unique */
+            'slug' => 'required|alpha_dash|unique:tags,slug,'.$editId.'|max:255', /* |unique:admins 注意:unique */
         ];
         
         $messages = [
@@ -132,6 +132,8 @@ class TagController extends Controller
         
         
         //Snap Save ==================================================
+        if(isset($data['snap_count'])) {
+        
         foreach($data['snap_count'] as $count) {
         
             /*
@@ -200,6 +202,8 @@ class TagController extends Controller
             $num++;
         }
         
+        
+        }
         //Snap END ===========================================
 
         return redirect('dashboard/tags/'. $tagId)->with('status', $upText);

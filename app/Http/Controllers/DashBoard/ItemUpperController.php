@@ -24,6 +24,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 use Storage;
+use File;
 
 class ItemUpperController extends Controller
 {
@@ -91,8 +92,8 @@ class ItemUpperController extends Controller
     public function show($id, Request $request)
     {
         if(! $request->has('type')) {
-        	
-        	return view('dashboard.item.formUpper')->withErrors();    
+        	return view('errors.dashboard');
+        	//return view('dashboard.item.formUpper')->withErrors(['e'=>'abcde']);    
             
         }
 
@@ -109,6 +110,13 @@ class ItemUpperController extends Controller
         }
         elseif($type == 'tag') {
         	$orgObj = $this->tag->find($id);
+        }
+        else {
+        	return view('errors.dashboard');
+        }
+        
+        if(!isset($orgObj)) {
+        	return view('errors.dashboard');
         }
         
         $upper = $this->itemUpper->where(['type_code'=>$type, 'parent_id'=>$id])->first();
@@ -198,6 +206,8 @@ class ItemUpperController extends Controller
         //status
         $data['open_status'] = isset($data['open_status']) ? 0 : 1;
         
+//        echo $data['open_status'];
+//        exit;
         
         $itemUpper = $this->itemUpper->updateOrCreate(
         	['parent_id'=>$editId, 'type_code'=>$type],
@@ -226,7 +236,7 @@ class ItemUpperController extends Controller
                     
                     $upperRel->delete();
                     
-                    $status .= "\n". '「' . $blockKey . 'ブロック-' . ($vals['count']+1) . '」が削除されました。';
+                    //$status .= "\n". '「' . $blockKey . 'ブロック-' . ($vals['count']+1) . '」が削除されました。';
                 }
                 else {
                     //relationのidをinput-hiddenに設定し（0ならcreate）$vals['rel_id']でupdateOrCreateする方法もあり
@@ -244,20 +254,22 @@ class ItemUpperController extends Controller
                         ]
                     );
 
-
-    //                $upperRel = $this->itemUpperRel->updateOrCreate(
-    //                    [
-    //                        'upper_id'=> $itemUpper->id, 
-    //                        'block'=> $blockKey, 
-    //                        'is_section'=> $isSection ? 1 : 0,
-    //                        'sort_num'=> $isSection ? 0 : $vals['count']+1,
-    //                    ],
-    //                    [
-    //                        'title'=> $vals['title'],
-    //                        'detail'=> $isSection ? null : $vals['detail'],
-    //                        'sort_num'=> $isSection ? 0 : $num+1,
-    //                    ]
-    //                );
+					//sort_numでデータを照合してupdateOrCreateする方法もあり
+                    /*
+                    $upperRel = $this->itemUpperRel->updateOrCreate(
+                        [
+                            'upper_id'=> $itemUpper->id, 
+                            'block'=> $blockKey, 
+                            'is_section'=> $isSection ? 1 : 0,
+                            'sort_num'=> $isSection ? 0 : $vals['count']+1,
+                        ],
+                        [
+                            'title'=> $vals['title'],
+                            'detail'=> $isSection ? null : $vals['detail'],
+                            'sort_num'=> $isSection ? 0 : $num+1,
+                        ]
+                    );
+                    */
                     
                     
                     if(isset($vals['del_img']) && $vals['del_img']) { //削除チェックの時
@@ -274,15 +286,22 @@ class ItemUpperController extends Controller
                             
                             //$aId = $editId ? $editId : $rand;
                             //$pre = time() . '-';
-                            $filename = 'upper/' . $type . '/' . $editId . '/' . $blockKey . '/' . $filename;
-                            //if (App::environment('local'))
+                            $pre = mt_rand(0, 99999) . '-';
+                            
+                            $filename = 'upper/' . $type . '/' . $editId . '/' . $blockKey . '/' . $pre . $filename;
+                            //$dirName = 'upper/' . $type . '/' . $editId . '/' . $blockKey;
+
+                            //new File()は画像情報を取得するためのもの。 new File('aaa.jpg')とすると、$vals['img'] or $request->file('img')と同じものになる
+                            
+                            //$path = $vals['img']->store($dirName); //ファイル名が自動生成される
+                            //Storage::putFile($dirName, $vals['img']); //上と同じ
+                            
+                            //$path = $vals['img']->storeAs($dirName, 'abc'); //ファイル名を独自指定(拡張子が付かない)
                             $path = $vals['img']->storeAs('public', $filename);
-                            //else
+                            
                             //$path = Storage::disk('s3')->putFileAs($filename, $request->file('thumbnail'), 'public');
                             //$path = $request->file('thumbnail')->storeAs('', $filename, 's3');
-                        
-                            //$data['model_thumb'] = $filename;
-                            
+                                                    
                             $upperRel->img_path = $filename;
                             $upperRel->save();
                         }

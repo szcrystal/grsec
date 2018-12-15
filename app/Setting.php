@@ -28,8 +28,14 @@ class Setting extends Model
         
         'snap_news',
         'snap_top',
+        
         'snap_primary',
         'snap_secondary',
+        
+        'snap_block_a',
+        'snap_block_b',
+        'snap_block_c',
+        
         'snap_category',
         'snap_fix',
         

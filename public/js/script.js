@@ -141,7 +141,7 @@ var exe = (function() {
             var $sForm = $('.s-form-wrap');
             var $hasChild = $('.has-child');
             
-            var speed = 150;
+            var speed = 250;
             var ease = 'linear';
             
             
@@ -184,8 +184,8 @@ var exe = (function() {
 
                     
                     $navWrap.slideUp(speed, function(){
+                    	$(this).queue([]).stop();
                     	$(this).css({ height:0 });
-                        $(this).queue([]).stop();
                     });
                     
                     //$('body').css({overflowY:'visible'});
@@ -602,7 +602,7 @@ var exe = (function() {
         
         slideDeliFee: function() {
         	$('.slideDeli').on('click', function(){
-            	$target = $(this).siblings('.table-deli');
+            	$target = $(this).next('.table-deli');
                 
                 $target.slideToggle(250);
             });

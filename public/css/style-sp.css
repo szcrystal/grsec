@@ -1164,6 +1164,49 @@ ORG END ======================== */
     .tab-content {
     	min-height: 300px;
     }
+    
+    /* upper item upper */
+    .upper-wrap {
+        padding-top: 0.8em;
+        //border: 1px solid red;
+    }
+    .upper-wrap h3 {
+    	font-size: 1.3em;
+    }
+    .upper-wrap h4 {
+		margin-top: 0.5em;
+    }
+    .block-wrap {
+		margin-bottom: 1.2em;
+    }
+    .a-block,
+    .b-block,
+    .c-block {
+        padding-bottom: 1.6em;
+    }
+    
+    .a-block {
+    	display: block;
+    }
+    .a-block .img-wrap {
+        width: 100%;
+        margin-right: 0;
+        float: none;
+    }
+    .a-block .detail-wrap {
+        width: 100%;
+        float: none;
+        margin-left: 0;
+    }
+    .a-block div:nth-of-type(2n) {
+        margin-left: 0;
+    }
+    /* upper item upper END */
+
+    
+    
+    
+    
 /*    .nav-tabs {*/
 /*    	border-bottom: 0;*/
 /*    }*/

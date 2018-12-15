@@ -22,9 +22,13 @@
         
         @if(isset($edit))
         	<?php $linkId = $item->is_potset ? $item->pot_parent_id : $id; ?>
-            <div class="mt-4 clearfix">
-            	@if(Ctm::isEnv('local') || Ctm::isEnv('beta'))
-            	<a href="{{ url('/dashboard/upper/'. $id. '?type=item') }}" class="btn btn-success border-round text-white d-block float-left"><i class="fa fa-angle-double-left" aria-hidden="true"></i> 上部コンテンツを編集 </a>
+            <div class="mt-5 pt-3 clearfix">
+            	@if(!$item->is_potset)
+                    @if(Ctm::isEnv('local') || Ctm::isEnv('beta'))
+                        <a href="{{ url('/dashboard/upper/'. $id. '?type=item') }}" class="btn btn-success border-round text-white d-block float-left"><i class="fa fa-angle-double-left" aria-hidden="true"></i> 上部コンテンツを編集 </a>
+                    @endif
+                @else
+                <small>ポットセット商品：上部コンテンツ不可</small>
                 @endif
                 
                 <a href="{{ url('/item/'. $linkId) }}" class="btn btn-warning border-round text-white d-block float-right" target="_brank">この商品のページを見る <i class="fa fa-angle-double-right" aria-hidden="true"></i></a>
@@ -983,7 +987,7 @@
             </div>
             
             
-            
+            {{--
             <fieldset class="mt-3 mb-2 form-group{{ $errors->has('free_space') ? ' is-invalid' : '' }}">
                 <label for="detail" class="control-label">フリースペース（ページ上部）</label>
 
@@ -996,12 +1000,11 @@
                 @endif
         	</fieldset>
             
-            
-            
+
             <div class="form-group mt-3 pt-3 mb-5 pb-5">
                 <button type="submit" class="btn btn-primary btn-block w-btn w-25 mx-auto">更　新</button>
             </div>
-
+			--}}
 			
             @include('dashboard.shared.meta')
             

@@ -17,7 +17,7 @@ return [
     'active_url'           => ':attributeは正しいURLではありません。',
     'after'                => ':attributeは:date以降の日付にして下さい。',
     'alpha'                => ':attributeは英字のみにして下さい。',
-    'alpha_dash'           => ':attributeは英数字とハイフンのみにして下さい。',
+    'alpha_dash'           => ':attributeは半角英数字とハイフンのみにして下さい。',
     'alpha_num'            => ':attributeは英数字のみにして下さい。',
     'array'                => ':attributeは配列にして下さい。',
     'before'               => ':attributeは:date以前の日付にして下さい。',
