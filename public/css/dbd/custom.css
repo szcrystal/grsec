@@ -81,6 +81,7 @@ h1 {
     height: 100%;
     background: #efefef;
     overflow-y: scroll;
+    z-index: 999;
 }
 
 
@@ -168,6 +169,57 @@ label em {
     background: #fdfcfb;    
 /*    background: blue;*/
 }
+
+.content-wrapper {
+	//border: 2px solid red;
+
+}
+.order-form-wrap {
+	//border: 2px solid orange;
+}
+.mail-preview-wrap {
+	display: none;
+	height: 90%;
+    width: 60%;
+    background: #fdfcfb;
+    //overflow-y: scroll;
+    position: fixed;
+    z-index: 998;
+    top: 5em;
+    padding: 4em 1.5em 1.5em;
+}
+.mail-preview {
+	font-size: 0.95em;
+    //z-index: 9;
+    height: 83%;
+    width: 80%;
+    overflow-y: scroll;
+    background: #fdfdfd;
+    border: 1px solid #aaa;
+    padding: 1.5em;
+    //width: 100%;
+    //background: #fff;
+    //left: 0;
+    
+}
+.preview-tgl {
+	position: fixed;
+    width: 2.8em;
+    text-align: center;
+    top: 4.3em;
+    left: 100%;
+    z-index: 999;
+    color: green;
+    background: #3a3a3a;
+    color: #fff;
+    padding: 0.5em 0;
+    border-radius: 0.2em;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+
+
 
 /* Tag */
 /* TagList */

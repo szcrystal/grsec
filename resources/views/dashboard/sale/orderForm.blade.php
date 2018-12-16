@@ -9,6 +9,11 @@ use App\DeliveryCompany;
 use App\SendMailFlag;
 use App\PayMethodChild;
 ?>
+
+
+
+
+<div class="order-form-wrap">
 	
 	<div class="text-left">
         <h1 class="Title">
@@ -52,10 +57,29 @@ use App\PayMethodChild;
         </div>
     @endif
     
+        
     
         <form class="form-horizontal" role="form" method="POST" action="/dashboard/sales/order">
 
             {{ csrf_field() }}
+            
+            
+            @if (session('preview'))
+
+                <div class="preview-tgl"><b><i class="fa fa-times"></i></b></div>
+                
+                <div class="mail-preview-wrap">
+
+                    <div class="mail-preview">
+                        {!! session('preview') !!}
+                    </div>
+                    
+                    <div style="margin-left: 28%;" class="form-group clearfix mt-3 w-25">
+                        <button type="submit" class="btn btn-success w-100 text-white py-2" name="with_mail" value="{{ $templs['payDone'] }}"><i class="fa fa-thumbs-up"></i> 送信</button>
+                    </div>
+                </div>
+            @endif
+            
 
             <div class="clearfix">
                 <p class="w-50 float-left mb-0 pb-0">
@@ -648,4 +672,8 @@ use App\PayMethodChild;
         
     </div>
 
+</div>
 @endsection
+
+
+

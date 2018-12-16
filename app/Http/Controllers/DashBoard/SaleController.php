@@ -532,16 +532,22 @@ class SaleController extends Controller
         //$saleRel->fill($data);
         $saleRel->save();
         
+        //メール送信 ------------------------------------------------------------
         if($withMail) {
             $templ = $this->templ->find($withMail);
             
             if($templ->type_code == 'payDone') { //入金済みメール
+                
+                //=== メールPayDoneやOrderMailsの中でinfomationデータをsmfから取得するようにする
+                
                 $mail = Mail::to($data['user_email'], $data['user_name'])->queue(new PayDone($saleRel->id));
+                //return redirect('dashboard/sales/order/'. $saleRel->order_number)->withInput()->with('preview', (new PayDone($saleRel->id))->render());
                 
                 $this->smf->updateOrCreate(
                     ['sale_id'=>0, 'templ_id'=>$templ->id],
                     ['is_mail' =>1, 'templ_code'=>$templ->type_code, 'information'=>$data['information']]
                 );
+                
                     
                 //if(! $mail) {
                 //$status = '入金済みメールが送信されました。('. $mail . ')';
