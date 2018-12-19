@@ -170,6 +170,16 @@ label em {
 /*    background: blue;*/
 }
 
+
+/* block-all-wrap */
+.block-tgl {
+	cursor: pointer;
+}
+.block-all-wrap {
+	display: none;
+}
+
+/* Mail Preview */
 .content-wrapper {
 	//border: 2px solid red;
 

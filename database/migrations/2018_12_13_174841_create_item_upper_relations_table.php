@@ -20,6 +20,7 @@ class CreateItemUpperRelationsTable extends Migration
             
             $table->string('block')->nullable()->default(NULL);
             $table->string('img_path')->nullable()->default(NULL);
+            $table->string('url')->nullable()->default(NULL);
             $table->string('title')->nullable()->default(NULL);
             $table->longText('detail')->nullable()->default(NULL); //textにするかどうするか
             

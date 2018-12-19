@@ -694,6 +694,14 @@ var exe = (function() {
 
         },
         
+        openBlock: function() {
+        	
+            $('.block-tgl').on('click', function(){
+            	$(this).next('div').slideToggle(300);
+            });
+        
+        },
+        
         openPreview: function() {
         	var w = $('.content-wrapper').width();
             var h = $(window).height();
@@ -757,6 +765,7 @@ $(function(e){ //ready
     exe.changeSearch();
     
     exe.openTable();
+    exe.openBlock();
     exe.openPreview();
 
 });

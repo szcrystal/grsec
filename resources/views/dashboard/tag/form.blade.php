@@ -21,7 +21,7 @@
             </div>
             
             @if(isset($edit))
-            @if(Ctm::isEnv('local') || Ctm::isEnv('beta'))
+            @if(! Ctm::isEnv('product'))
                 <div class="mt-3 pt-4 mb-2">
                     <a href="{{ url('/dashboard/upper/'. $tagId. '?type=tag') }}" class="btn btn-success border-round text-white d-block float-left"><i class="fa fa-angle-double-left" aria-hidden="true"></i> 上部コンテンツを編集 </a>
                 </div>

@@ -16,14 +16,14 @@ use App\Category;
         $pageUrl = url('/item/'. $linkId);
     }
     elseif($type == 'cate') {
-        $name = 'カテゴリー：' . $orgObj->name;
+        $name = '親カテゴリー：' . $orgObj->name;
         $indexUrl = url('/dashboard/categories');
         $editUrl = url('/dashboard/categories/'. $id);
         
         $pageUrl = url('category/'. $orgObj->slug);
     }
     elseif($type == 'subcate') {
-        $name = '子供カテゴリー：' . $orgObj->name;
+        $name = '子カテゴリー：' . $orgObj->name;
         $indexUrl = url('/dashboard/categories/sub');
         $editUrl = url('/dashboard/categories/sub/'. $id);
         
@@ -134,48 +134,51 @@ use App\Category;
         
                 <?php
                     $n=0;
+                    
                                         
-//                    if($blockKey == 'a') {
-//                        $retu = 1;
-//                    }
-//                    elseif($blockKey == 'b') {
-//                        $retu = 2;
-//                    }
-//                    elseif($blockKey == 'c') {
-//                        $retu = 3;
-//                    }
+                    if($blockKey == 'a') {
+                        $retu = 1;
+                    }
+                    elseif($blockKey == 'b') {
+                        $retu = 2;
+                    }
+                    elseif($blockKey == 'c') {
+                        $retu = 3;
+                    }
                 ?>
                 
                 <hr class="mt-3">
-        		<h4 class="mt-5 mb-3 p-2 bg-secondary text-light text-uppercase">{{ $blockKey }}ブロック（{{ $n+1 }}列部分）</h4>
+        		<h4 class="mt-5 mb-3 p-2 bg-secondary text-light text-uppercase block-tgl">{{ $blockKey }}ブロック（{{ $retu }}列部分）</h4>
                 
-                <fieldset class="mt-2 mb-5 form-group">
-                    <label class="text-uppercase">大タイトル（{{ $blockKey }}ブロック）</label>
-                    
-                    <input class="form-control col-md-12{{ $errors->has('block.' .$blockKey. '.section.title') ? ' is-invalid' : '' }}" name="block[{{ $blockKey }}][section][title]" value="{{ Ctm::isOld() ? old('title'.$n) : (isset($upperRel['section']) ? $upperRel['section']->title : '') }}" placeholder="">
+                <div class="block-all-wrap pt-2">
+                    <fieldset class="mb-5 form-group">
+                        <label class="text-uppercase">大タイトル（{{ $blockKey }}ブロック）</label>
+                        
+                        <input class="form-control col-md-12{{ $errors->has('block.' .$blockKey. '.section.title') ? ' is-invalid' : '' }}" name="block[{{ $blockKey }}][section][title]" value="{{ Ctm::isOld() ? old('title'.$n) : (isset($upperRel['section']) ? $upperRel['section']->title : '') }}" placeholder="">
 
-                        @if ($errors->has('block.' .$blockKey. '.section.title'))
-                            <div class="text-danger">
-                                <span class="fa fa-exclamation form-control-feedback"></span>
-                                <span>{{ $errors->first('block.' .$blockKey. '.section.title') }}</span>
-                            </div>
-                        @endif
-                    
-                    <input type="hidden" name="block[{{ $blockKey }}][section][rel_id]" value="{{ isset($upperRel['section']) ? $upperRel['section']->id : 0 }}">
-                </fieldset>
+                            @if ($errors->has('block.' .$blockKey. '.section.title'))
+                                <div class="text-danger">
+                                    <span class="fa fa-exclamation form-control-feedback"></span>
+                                    <span>{{ $errors->first('block.' .$blockKey. '.section.title') }}</span>
+                                </div>
+                            @endif
+                        
+                        <input type="hidden" name="block[{{ $blockKey }}][section][rel_id]" value="{{ isset($upperRel['section']) ? $upperRel['section']->id : 0 }}">
+                    </fieldset>
 
-                
-            	@while($n < $blockCount[$blockKey])
-                    <div class="border border-gray p-3 mb-4 bg-gray rounded">
-                    	@include('dashboard.shared.upperContents')
+                    
+                    @while($n < $blockCount[$blockKey])
+                        <div class="border border-gray p-3 mb-4 bg-gray rounded">
+                            @include('dashboard.shared.upperContents')
+                        </div>
+
+                        <?php $n++; ?>
+                    @endwhile
+                    
+                    <div class="form-group mt-5 mb-5 pt-3">
+                        <button type="submit" class="btn btn-primary btn-block w-btn w-25 mx-auto">更　新</button>
                     </div>
-
-                    <?php $n++; ?>
-                @endwhile
-                
-                <div class="form-group mt-5 mb-5 pt-3">
-                	<button type="submit" class="btn btn-primary btn-block w-btn w-25 mx-auto">更　新</button>
-            	</div>
+                </div>
             
             @endforeach
         

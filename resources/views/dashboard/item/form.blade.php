@@ -21,10 +21,13 @@
         </div>
         
         @if(isset($edit))
-        	<?php $linkId = $item->is_potset ? $item->pot_parent_id : $id; ?>
+        	<?php 
+            	$linkId = $item->is_potset ? $item->pot_parent_id : $id;
+            ?>
+            
             <div class="mt-5 pt-3 clearfix">
             	@if(!$item->is_potset)
-                    @if(Ctm::isEnv('local') || Ctm::isEnv('beta'))
+                    @if(! Ctm::isEnv('product'))
                         <a href="{{ url('/dashboard/upper/'. $id. '?type=item') }}" class="btn btn-success border-round text-white d-block float-left"><i class="fa fa-angle-double-left" aria-hidden="true"></i> 上部コンテンツを編集 </a>
                     @endif
                 @else

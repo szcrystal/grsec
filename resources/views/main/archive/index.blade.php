@@ -34,9 +34,6 @@ use App\TopSetting;
 
 <div class="panel panel-default top-cont">
 
-        {{-- @include('main.shared.main') --}}
-
-
         <div class="panel-heading">
             <h2 class="mb-3 card-header">
             @if($type == 'category')
@@ -47,7 +44,7 @@ use App\TopSetting;
                 タグ：{{ $tag->name }}
             @elseif($type=='search')
                 @if(!count($items))
-                検索ワード：{{ $searchStr }}の記事がありません
+                検索ワード：{{ $searchStr }}の商品がありません
                 @else
                 検索ワード：{{ $searchStr }}
                 @endif
@@ -59,9 +56,8 @@ use App\TopSetting;
         
         <div class="panel-body">
         	
-            @if(Ctm::isEnv('local') || Ctm::isEnv('beta'))
-                @include('main.shared.upper')
-            @endif
+            @include('main.shared.upper')
+            
             
             @if($type == 'category' && isset($cate->contents))
                 <div class="my-4">

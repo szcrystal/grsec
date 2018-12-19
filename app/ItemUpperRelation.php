@@ -10,6 +10,7 @@ class ItemUpperRelation extends Model
         'upper_id',
         'block',
         'img_path',
+        'url',
         'title',
         'detail',
         'sort_num',

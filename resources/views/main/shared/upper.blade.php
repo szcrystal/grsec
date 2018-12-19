@@ -56,14 +56,26 @@
 
                                         @if(isset($uRel->img_path))
                                             <div class="img-wrap">
-                                                <img src="{{ Storage::url($uRel->img_path) }}" class="w-100">
+                                            	@if(isset($uRel->url))
+                                                	<a href="{{ $uRel->url }}">
+                                                		<img src="{{ Storage::url($uRel->img_path) }}" class="w-100">
+                                                    </a>
+                                                @else
+                                                	<img src="{{ Storage::url($uRel->img_path) }}" class="w-100">
+                                                @endif
                                             </div>
                                         @endif
                                         
                                         @if(isset($uRel->title) || isset($uRel->detail))
                                             <div class="detail-wrap">
                                                 @if(isset($uRel->title))
-                                                    <h4>{{ $uRel->title }}</h4>
+                                                    <h4>
+                                                    	@if(isset($uRel->url))
+                                                			<a href="{{ $uRel->url }}">{{ $uRel->title }}</a>
+                                                        @else
+                                                        	{{ $uRel->title }}
+                                                        @endif
+                                                    </h4>
                                                 @endif
                                                 
                                                 @if(isset($uRel->detail))

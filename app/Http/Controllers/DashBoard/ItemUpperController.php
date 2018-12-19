@@ -246,7 +246,8 @@ class ItemUpperController extends Controller
                         ],
                         [
                             'upper_id'=> $itemUpper->id, 
-                            'block'=> $blockKey, 
+                            'block'=> $blockKey,
+                            'url'=> $isSection ? null : $vals['url'],
                             'title'=> $vals['title'],
                             'detail'=> $isSection ? null : $vals['detail'],
                             'is_section'=> $isSection ? 1 : 0,
@@ -284,9 +285,12 @@ class ItemUpperController extends Controller
                             $filename = $vals['img']->getClientOriginalName();
                             $filename = str_replace(' ', '_', $filename);
                             
-                            //$aId = $editId ? $editId : $rand;
+                            $fNameArr = explode('.', $filename);
+                            $filename = $fNameArr[0] . '-' . time() . '.' . array_pop($fNameArr); //array_pop 配列最後（拡張子を取得） end()でも可
+                            
                             //$pre = time() . '-';
-                            $pre = mt_rand(0, 99999) . '-';
+                            //$pre = mt_rand(0, 99999) . '-';
+                            $pre = '';
                             
                             $filename = 'upper/' . $type . '/' . $editId . '/' . $blockKey . '/' . $pre . $filename;
                             //$dirName = 'upper/' . $type . '/' . $editId . '/' . $blockKey;

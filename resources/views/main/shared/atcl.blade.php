@@ -10,10 +10,20 @@ use App\Icon;
 <?php
 	$isCate = (isset($type) && $type == 'category') ? 1 : 0;
 	
-    $categoryId = $isCate ? $item->parent_id : $item->cate_id;
-    $category = Category::find($categoryId);
+    $category = Category::find($item->cate_id);
+    $link = url('/item/'. $item->id);
+    ///$linkName = isset($category->link_name) ? $category->link_name : $category->name;
     
-    $link = $isCate ? url('category/' . $category->slug . '/' . $item->slug) : url('/item/'. $item->id);
+    
+    if($isCate && isset($item->subcate_id)) {
+        $subCate = CategorySecond::find($item->subcate_id);
+        $cateLink = url('category/'. $category->slug . '/' . $subCate->slug);
+        $cateName = isset($subCate->link_name) ? $subCate->link_name : $subCate->name;
+    }
+    else {
+    	$cateLink = url('category/'. $category->slug);
+    	$cateName = isset($category->link_name) ? $category->link_name : $category->name;
+    }
 
     $isSp = Ctm::isAgent('sp');
     $isSale = Setting::get()->first()->is_sale;
@@ -32,22 +42,11 @@ use App\Icon;
 
 <div class="meta">
     <h3><a href="{{ $link }}">
-        @if($isCate)
-            {{ Ctm::shortStr($item->name, $strNum) }}
-        @else
-            {{ Ctm::shortStr($item->title, $strNum) }}
-        @endif
+        {{ Ctm::shortStr($item->title, $strNum) }}
     </a></h3>
     
-    @if(! $isCate)
         <p>
-            <a href="{{ $link }}">
-                @if(isset($category->link_name))
-                    {{ $category->link_name }}
-                @else
-                    {{ $category->name }}
-                @endif
-            </a>
+			<a href="{{ $cateLink }}">{{ $cateName }}</a>
         </p>
         
         @if(isset($item->icon_id) && $item->icon_id != '')
@@ -127,7 +126,6 @@ use App\Icon;
             {{-- <span class="fav-temp"><a href="{{ url('login') }}"><i class="far fa-heart"></i></a></span> --}}
         @endif
     
-    @endif
     
 </div>
 

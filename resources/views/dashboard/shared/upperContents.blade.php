@@ -96,6 +96,18 @@ $oldName = 'block.' .$blockKey . '.' . $n . '.';
         
         </div>
     </fieldset>
+    
+    <fieldset class="mt-3 my-2 form-group">
+        <label>URL</label>
+        <input class="form-control col-md-12{{ $errors->has($oldName.'url') ? ' is-invalid' : '' }}" name="{{ sprintf($nameFormat, 'url') }}" value="{{ Ctm::isOld() ? old($oldName.'url') : (isset($upperRel[$n]) ? $upperRel[$n]->url : '') }}" placeholder="">
+
+            @if ($errors->has($oldName.'url'))
+                <div class="text-danger">
+                    <span class="fa fa-exclamation form-control-feedback"></span>
+                    <span>{{ $errors->first($oldName.'url') }}</span>
+                </div>
+            @endif
+    </fieldset>
 </div>    
 
 
