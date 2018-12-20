@@ -127,7 +127,7 @@ $oldName = 'block.' .$blockKey . '.' . $n . '.';
 
 
 <fieldset class="my-3 form-group">
-    <label class="control-label">詳細（空白枠にする場合は &nbsp; を入力）</label>
+    <label class="control-label">詳細</label>（空白枠にする場合は {{ '&nbsp;' }} を入力）
     <textarea class="form-control{{ $errors->has($oldName.'detail') ? ' is-invalid' : '' }}" name="{{ sprintf($nameFormat, 'detail') }}" rows="10">{{ Ctm::isOld() ? old($oldName.'detail') : (isset($upperRel[$n]) ? $upperRel[$n]->detail : '') }}</textarea>
 
     @if ($errors->has($oldName.'detail'))
