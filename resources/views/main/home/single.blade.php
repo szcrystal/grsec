@@ -35,16 +35,17 @@ use App\TopSetting;
         @endif
         
         
-        @if(Ctm::isEnv('local') || Ctm::isEnv('beta'))
+        @if(!Ctm::isEnv('product'))
         	@include('main.shared.upper')
         @endif
         
-        
+        {{--
         @if(isset($item->free_space))
         	<div class="clearfix">
         		{!! $item->free_space !!}
         	</div>
         @endif
+        --}}
 		
         <div class="head-frame clearfix">
             
