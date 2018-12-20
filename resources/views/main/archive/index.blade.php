@@ -56,9 +56,11 @@ use App\TopSetting;
         
         <div class="panel-body">
         	
-            @include('main.shared.upper')
+            @if(! Ctm::isEnv('product'))
+            	@include('main.shared.upper')
+            @endif
             
-            
+            {{--
             @if($type == 'category' && isset($cate->contents))
                 <div class="my-4">
                     {!! $cate->contents !!}
@@ -71,6 +73,7 @@ use App\TopSetting;
                 <div class="my-4">{!! $tag->contents !!}</div>
             
             @endif
+            --}}
 
             <div class="pagination-wrap">
             	{{ $items->links() }}
