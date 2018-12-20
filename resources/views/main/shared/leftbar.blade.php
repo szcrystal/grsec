@@ -29,7 +29,7 @@
                             $subcates = CategorySecond::where('parent_id', $cate->id)->orderBy('updated_at', 'desc')->get();
                             
                             $i = 0;
-                            $num = Ctm::isEnv('product') ? 7 : 3;
+                            $num = 7; //moreにする個数
                             $firstCate = array();
                             $secondCate = array();
                             
