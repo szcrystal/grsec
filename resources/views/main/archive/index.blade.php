@@ -57,7 +57,9 @@ use App\TopSetting;
         <div class="panel-body">
         	
             @if(! Ctm::isEnv('product'))
-            	@include('main.shared.upper')
+            	@if($type == 'category' || $type == 'subcategory' || $type == 'tag')
+            		@include('main.shared.upper')
+                @endif
             @endif
             
             {{--
