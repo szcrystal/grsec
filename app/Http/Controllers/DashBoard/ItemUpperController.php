@@ -286,7 +286,7 @@ class ItemUpperController extends Controller
                             $filename = str_replace(' ', '_', $filename);
                             
                             $fNameArr = explode('.', $filename);
-                            $filename = $fNameArr[0] . '-' . time() . '.' . array_pop($fNameArr); //array_pop 配列最後（拡張子を取得） end()でも可
+                            $filename = $fNameArr[0] . '-' . mt_rand(0, 99999) . '.' . array_pop($fNameArr); //array_pop 配列最後（拡張子を取得） end()でも可
                             
                             //$pre = time() . '-';
                             //$pre = mt_rand(0, 99999) . '-';
