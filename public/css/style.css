@@ -1683,9 +1683,10 @@ select.potSetSelect {
     //border: 1px solid orange;
 }
 
+/*
 .b-block {
 	width: 49%;
-    //flex: auto; /* or flex: 2 */
+    //flex: auto; 
     flex: 2;
     //float: left;
     //margin-right: 2%;
@@ -1700,23 +1701,29 @@ select.potSetSelect {
 .b-block .detail-wrap {
 
 }
+*/
 
+.b-block,
 .c-block {
 	//width: 32.5%;
-    flex: 3;
+    flex: 3; /* or flex: auto */
     //box-sizing: border-box;
     //float: left;
 	//margin-right: 0.8%;
     //border: 1px solid green;
 }
+.b-block:nth-of-type(2n),
+.b-block:nth-of-type(3n),
 .c-block:nth-of-type(2n),
 .c-block:nth-of-type(3n) {
 	margin-left: 0.9%;
 }
 
+.b-block .img-wrap,
 .c-block .img-wrap {
 	margin-bottom: 0.8em;
 }
+.b-block .detail-wrap,
 .c-block .detail-wrap {
 
 }

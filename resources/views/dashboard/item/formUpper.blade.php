@@ -37,6 +37,8 @@ use App\Category;
         
         $pageUrl = url('tag/' . $orgObj->slug);
     }
+    
+    $chunkNumArr = ['a'=>1, 'b'=>3, 'c'=>3];
 ?>
 
 	
@@ -135,16 +137,17 @@ use App\Category;
                 <?php
                     $n=0;
                     
+                    $retu = $chunkNumArr[$blockKey]
                                         
-                    if($blockKey == 'a') {
-                        $retu = 1;
-                    }
-                    elseif($blockKey == 'b') {
-                        $retu = 2;
-                    }
-                    elseif($blockKey == 'c') {
-                        $retu = 3;
-                    }
+//                    if($blockKey == 'a') {
+//                        $retu = 1;
+//                    }
+//                    elseif($blockKey == 'b') {
+//                        $retu = 2;
+//                    }
+//                    elseif($blockKey == 'c') {
+//                        $retu = 3;
+//                    }
                 ?>
                 
                 <hr class="mt-3">

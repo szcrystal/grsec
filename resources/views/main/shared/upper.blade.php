@@ -10,7 +10,8 @@
     @foreach($upperRelArr as $blockKey => $upperRels)
         <?php
             //ここでのblockKeyは [a],[b],[c]
-            $chunkNum++;         
+            $chunkNum++;
+            $chunkNumArr = ['a'=>1, 'b'=>3, 'c'=>3];     
         ?>
         
         <div class="block-wrap">
@@ -32,14 +33,17 @@
 
                         <?php
                             //chunkNumはroopでカウント。a->1, b->2, c->3でchunkする
-                            $chunks = array_chunk($upperRel, $chunkNum);
+                            //$chunks = array_chunk($upperRel, $chunkNum);
                             
-//                          if($blockKey === 'a') 
-//                              $chunks = array_chunk($upperRel, 1);
-//                          elseif($blockKey === 'b') 
-//                              $chunks = array_chunk($upperRel, 2);
-//                          elseif($blockKey === 'c') 
-//                              $chunks = array_chunk($upperRel, 3);
+                        	$chunks = array();
+                            $chunks = array_chunk($upperRel, $chunkNumArr[$blockKey]);
+                            
+//                            if($blockKey === 'a') 
+//                                $chunks = array_chunk($upperRel, 1);
+//                            elseif($blockKey === 'b') 
+//                                $chunks = array_chunk($upperRel, 3);
+//                            elseif($blockKey === 'c') 
+//                                $chunks = array_chunk($upperRel, 3);
                         ?>
                         
                         @foreach($chunks as $chunk)
