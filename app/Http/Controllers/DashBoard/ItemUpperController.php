@@ -129,7 +129,7 @@ class ItemUpperController extends Controller
             $upperRels = $this->itemUpperRel->where(['upper_id'=>$upper->id])->orderBy('sort_num', 'asc')->get()/*->keyBy('block')*/;
             
             if($upperRels->isNotEmpty()) {
-            	$relArr = array();
+            	//$relArr = array();
                 foreach($upperRels as $upperRel) {
                 	if($upperRel->is_section) {
                     	$relArr[$upperRel->block]['section'] = $upperRel;
@@ -144,6 +144,9 @@ class ItemUpperController extends Controller
         else { //新規作成
         	$edit = 0;
         }
+        
+//        print_r($relArr);
+//        exit;
         
         
         $blockCount = [
@@ -274,10 +277,12 @@ class ItemUpperController extends Controller
                     
                     
                     if(isset($vals['del_img']) && $vals['del_img']) { //削除チェックの時
-                        Storage::delete('public/'. $upperRel->img_path); //Storageはpublicフォルダのあるところをルートとしてみる
-                        
-                        $upperRel->img_path = null;
-                        $upperRel->save();
+                    	if(isset($upperRel->img_path)) {
+                            Storage::delete('public/'. $upperRel->img_path); //Storageはpublicフォルダのあるところをルートとしてみる
+                            
+                            $upperRel->img_path = null;
+                            $upperRel->save();
+                        }
                     }
                     else {
                         if(isset($vals['img'])) {

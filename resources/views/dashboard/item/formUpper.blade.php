@@ -157,7 +157,7 @@ use App\Category;
                     <fieldset class="mb-5 form-group">
                         <label class="text-uppercase">大タイトル（{{ $blockKey }}ブロック）</label>
                         
-                        <input class="form-control col-md-12{{ $errors->has('block.' .$blockKey. '.section.title') ? ' is-invalid' : '' }}" name="block[{{ $blockKey }}][section][title]" value="{{ Ctm::isOld() ? old('title'.$n) : (isset($upperRel['section']) ? $upperRel['section']->title : '') }}" placeholder="">
+                        <input class="form-control col-md-12{{ $errors->has('block.' .$blockKey. '.section.title') ? ' is-invalid' : '' }}" name="block[{{ $blockKey }}][section][title]" value="{{ Ctm::isOld() ? old('block.' .$blockKey. '.section.title') : (isset($upperRel['section']) ? $upperRel['section']->title : '') }}" placeholder="">
 
                             @if ($errors->has('block.' .$blockKey. '.section.title'))
                                 <div class="text-danger">
