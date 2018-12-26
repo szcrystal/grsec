@@ -19,10 +19,13 @@
             @foreach($upperRels as $key => $upperRel)
             
                 <?php
-                    //ここでのkeyは [section], [block]
+                    //ここでのkeyは [section], [mid_section], [block]
                 ?>
                 
-                @if($key === 'section')
+                @if($key === 'mid_section')
+                	<?php continue; ?>
+                    
+                @elseif($key === 'section')
                     
                     @if($upperRel->title != '')
                         <h3>{!! $upperRel->title !!}</h3>
@@ -46,17 +49,25 @@
 //                                $chunks = array_chunk($upperRel, 3);
                         ?>
                         
-                        @foreach($chunks as $chunk)
+                        
+                        @foreach($chunks as $chunkKey => $chunk)
+                        	
+                            @if(isset($upperRels['mid_section'][$chunkKey]) && $upperRels['mid_section'][$chunkKey]->title != '')
+                                <h4>{{ $upperRels['mid_section'][$chunkKey]->title }}</h4>
+                            @endif
+                            
+                            
                             <div class="clearfix">
-                                
+ 
                                 @foreach($chunk as $uRel)
-                                	@if(!isset($uRel->img_path) && !isset($uRel->title) && !isset($uRel->detail))
+                                    
+                                    @if(!isset($uRel->img_path) && !isset($uRel->title) && !isset($uRel->detail))
                                         <?php
                                         	continue;
                                         ?>
                                     @endif
                                     
-                                    <div class="{{ $blockKey }}-block clearfix">
+                                    <div class="{{ $blockKey }}-block clearfix ">
 
                                         @if(isset($uRel->img_path))
                                             <div class="img-wrap">
@@ -73,13 +84,13 @@
                                         @if(isset($uRel->title) || isset($uRel->detail))
                                             <div class="detail-wrap">
                                                 @if(isset($uRel->title))
-                                                    <h4>
+                                                    <h5>
                                                     	@if(isset($uRel->url))
                                                 			<a href="{{ $uRel->url }}">{{ $uRel->title }}</a>
                                                         @else
                                                         	{{ $uRel->title }}
                                                         @endif
-                                                    </h4>
+                                                    </h5>
                                                 @endif
                                                 
                                                 @if(isset($uRel->detail))

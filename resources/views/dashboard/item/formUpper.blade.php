@@ -135,7 +135,8 @@ use App\Category;
         	@foreach($relArr as $blockKey => $upperRel)
         
                 <?php
-                    $n=0;
+                    $n = 0;
+                    $midCount = 0;
                     
                     $retu = $chunkNumArr[$blockKey]
                                         
@@ -170,7 +171,39 @@ use App\Category;
                     </fieldset>
 
                     
+                    
                     @while($n < $blockCount[$blockKey])
+                    
+                    	@if(! ($n % $retu) && $blockKey != 'a')
+                            
+                            <fieldset class="mt-5 mb-4 form-group">
+                                <label>中タイトル-{{ $midCount+1 }}</label>
+                                <input class="form-control col-md-12{{ $errors->has('title') ? ' is-invalid' : '' }}" name="block[{{ $blockKey }}][mid_section][{{ $midCount }}][title]" value="{{ Ctm::isOld() ? old('title') : (isset($upperRel['mid_section'][$midCount]) ? $upperRel['mid_section'][$midCount]->title : '') }}" placeholder="">
+
+                                    @if ($errors->has('title'))
+                                        <div class="text-danger">
+                                            <span class="fa fa-exclamation form-control-feedback"></span>
+                                            <span>{{ $errors->first('title') }}</span>
+                                        </div>
+                                    @endif
+                                
+                                <input type="hidden" name="block[{{ $blockKey }}][mid_section][{{ $midCount }}][rel_id]" value="{{ isset($upperRel['mid_section'][$midCount]
+                                ) ? $upperRel['mid_section'][ $midCount ]->id : 0 }}">
+                                
+                                <?php
+                                    $rId = isset($upperRel['mid_section'][$midCount]) ? $upperRel['mid_section'][$midCount]->id : 0;
+                                ?>
+
+                                @if(! Ctm::isEnv('local'))
+                                    <br>{{ $rId }}<br>{{ $midCount }}
+                                @endif
+                            </fieldset>
+                            
+                            <?php $midCount++; ?>
+                            
+                        @endif
+                    
+
                         <div class="border border-gray p-3 mb-4 bg-gray rounded">
                             @include('dashboard.shared.upperContents')
                         </div>

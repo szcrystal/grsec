@@ -1640,8 +1640,19 @@ select.potSetSelect {
     padding: 0.1em 0.2em;
 }
 .upper-wrap h4 {
-	border: 0;
+	font-size: 1.4em;
+	border-bottom: 1px solid #bbb;
+    margin-bottom: 0.7em;
+    margin-top: 0.2em;
+    padding-bottom: 0.1em;
+    padding-left: 0.3em;
 }
+.upper-wrap h5 {
+	border: 0;
+    font-size: 1.0em;
+    font-weight: bold;
+}
+
 .block-wrap {
 	margin-bottom: 1.5em;
     //border: 1px solid red;
@@ -1673,7 +1684,7 @@ select.potSetSelect {
 
 .b-block,
 .c-block { /* img textを囲む個別のwrap */
-	padding-bottom: 3em;
+	padding-bottom: 2.8em;
     //border: 1px solid red;
 }
 

@@ -15,5 +15,6 @@ class ItemUpperRelation extends Model
         'detail',
         'sort_num',
 		'is_section',
+        //'is_mid_section',
     ];
 }

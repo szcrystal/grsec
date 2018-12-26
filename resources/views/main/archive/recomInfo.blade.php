@@ -38,6 +38,8 @@ use App\Setting;
                         <article class="main-atcl">
                             
                             <?php
+                            	$slugType = '';
+                                
                                 if(strpos($item['top_img_path'], 'category') !== false) {
                                     $slugType = 'category';
                                 }

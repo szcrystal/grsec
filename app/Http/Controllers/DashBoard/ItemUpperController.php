@@ -131,12 +131,22 @@ class ItemUpperController extends Controller
             if($upperRels->isNotEmpty()) {
             	//$relArr = array();
                 foreach($upperRels as $upperRel) {
-                	if($upperRel->is_section) {
-                    	$relArr[$upperRel->block]['section'] = $upperRel;
-                    }
-                    else {
-                    	$relArr[$upperRel->block][] = $upperRel;
-                    }
+//                	if($upperRel->is_mid_section) {
+//                    	$relArr[$upperRel->block]['mid_section'][] = $upperRel;
+//                    }
+//                    else {
+                        if($upperRel->is_section) {
+                        	if($upperRel->sort_num > 0) { //sort_numが1以上なら中タイトル 0は大タイトル(1つのみ)
+                            	$relArr[$upperRel->block]['mid_section'][] = $upperRel;
+                            }
+                            else {
+                            	$relArr[$upperRel->block]['section'] = $upperRel; //大タイトルは1つのみなのでpushしない
+                            }
+                        }
+                        else {
+                            $relArr[$upperRel->block][] = $upperRel;
+                        }
+                    //}
                 }
             }
             
@@ -217,7 +227,7 @@ class ItemUpperController extends Controller
         	['open_status'=>$data['open_status']]
         );
         
-//        print_r($data);
+//        print_r($data['block']);
 //        exit;
 
 		$status = '上部コンテンツが編集されました。';
@@ -229,6 +239,8 @@ class ItemUpperController extends Controller
             foreach($blockArr as $key => $vals) {
                 
 				$isSection = $key === 'section' ? 1 : 0; //大タイトルの時かブロックかを判別する
+                $isMidSection = $key === 'mid_section' ? 1 : 0; //中タイトルの時かブロックかを判別する
+                
                 
                 if(isset($vals['del_block']) && $vals['del_block'] && $vals['rel_id']) { //block削除の時
                 	$upperRel = $this->itemUpperRel->find($vals['rel_id']);
@@ -242,6 +254,33 @@ class ItemUpperController extends Controller
                     //$status .= "\n". '「' . $blockKey . 'ブロック-' . ($vals['count']+1) . '」が削除されました。';
                 }
                 else {
+                	if($isMidSection) {
+                    	//大タイトルと中タイトルの区分けは、どちらもis_sectionは1、大タイトルはsort_numが必ず0、中タイトルは1以上
+                        
+                        $nn = 0;
+
+                    	foreach($vals as $val) {
+                            $upperRel = $this->itemUpperRel->updateOrCreate(
+                                [
+                                    'id' => $val['rel_id'],
+                                ],
+                                [
+                                    'upper_id'=> $itemUpper->id, 
+                                    'block'=> $blockKey,
+                                    'url'=> null,
+                                    'title'=> $val['title'],
+                                    'detail'=> null,
+                                    'is_section'=> 1,
+                                    //'is_mid_section'=> null,
+                                    'sort_num'=> $nn+1, //sort_numが0の時は大タイトルのみなので、ここでは必ず0を入れないこと
+                                ]
+                            );
+                        	
+                            $nn++;
+                        }
+                    }
+                    else {
+                    
                     //relationのidをinput-hiddenに設定し（0ならcreate）$vals['rel_id']でupdateOrCreateする方法もあり
                     $upperRel = $this->itemUpperRel->updateOrCreate(
                         [
@@ -257,6 +296,7 @@ class ItemUpperController extends Controller
                             'sort_num'=> $isSection ? 0 : $num+1,
                         ]
                     );
+                    }
 
 					//sort_numでデータを照合してupdateOrCreateする方法もあり
                     /*

@@ -388,12 +388,19 @@ class CustomController extends Controller
             
             if($upperRels->isNotEmpty()) {
             	foreach($upperRels as $upperRel) {
-                	if($upperRel->is_section) {
-                    	$upperRelArr[$upperRel->block]['section'] = $upperRel; //isSectionのものは1つなので。1つ以上になる場合は[]にして更に配列にする必要がある
+
+                    if($upperRel->is_section) {
+                        if($upperRel->sort_num > 0) { //sort_numが1以上なら中タイトル 0は大タイトル(1つのみ)
+                            $upperRelArr[$upperRel->block]['mid_section'][] = $upperRel;
+                        }
+                        else {
+                            $upperRelArr[$upperRel->block]['section'] = $upperRel; //大タイトルは一つのみなので、pushしない
+                        }
                     }
                     else {
-                    	$upperRelArr[$upperRel->block]['block'][] = $upperRel;
+                        $upperRelArr[$upperRel->block]['block'][] = $upperRel;
                     }
+
                 }
             }
 

@@ -1171,26 +1171,39 @@ ORG END ======================== */
         //border: 1px solid red;
     }
     .upper-wrap h3 {
-    	font-size: 1.3em;
+    	font-size: 1.4em;
     }
     .upper-wrap h4 {
-		margin-top: 0.5em;
+    	font-size: 1.2em;
+        border-bottom: 1px solid #ccc;
     }
+    .upper-wrap h5 {
+    	font-weight: bold;
+        font-size: 95%;
+		margin: 0.4em 0;
+    }
+
     .block-wrap {
 		margin-bottom: 1.2em;
+        //border: 1px solid red;
     }
     .a-block,
     .b-block,
     .c-block {
         padding-bottom: 1.6em;
+        width: auto;
+        //border: 1px solid orange;
     }
     
     .a-block {
     	display: block;
+        padding-bottom: 0;
     }
     .a-block .img-wrap {
         width: 100%;
         margin-right: 0;
+        margin-top: 0.5em;
+        margin-bottom: 0.5em;
         float: none;
     }
     .a-block .detail-wrap {

@@ -150,16 +150,19 @@ class CategorySecondController extends Controller
             $filename = $data['top_img_path']->getClientOriginalName();
             $filename = str_replace(' ', '_', $filename);
             
+            $fNameArr = explode('.', $filename);
+            $filename = $fNameArr[0] . '-' . mt_rand(0, 99999) . '.' . array_pop($fNameArr); //array_pop 配列最後（拡張子を取得） end()でも可
+            
             //$aId = $editId ? $editId : $rand;
             //$pre = time() . '-';
-            $filename = 'subcate/' . $subCateId . '/recom/'/* . $pre*/ . $filename;
+            $filename = 'subcate/' . $subCateId . '/recom/' . $filename;
             //if (App::environment('local'))
             $path = $data['top_img_path']->storeAs('public', $filename);
             //else
             //$path = Storage::disk('s3')->putFileAs($filename, $request->file('thumbnail'), 'public');
             //$path = $request->file('thumbnail')->storeAs('', $filename, 's3');
             
-            $cateModel->top_img_path = $path;
+            $cateModel->top_img_path = $filename;
             $cateModel->save();
         }
         
@@ -197,7 +200,7 @@ class CategorySecondController extends Controller
                         [
                             'item_id'=>$subCateId,
                             //'snap_path' =>'',
-                            'type' => 4,
+                            //'type' => 4,
                             'number'=> $count+1,
                         ]
                     );

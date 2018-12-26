@@ -4,13 +4,15 @@
 $nameFormat = 'block[' . $blockKey . '][' . $n .'][%s]';
 
 //oldやerrorsなどで取得する名前
-$oldName = 'block.' .$blockKey . '.' . $n . '.';
+$oldName = 'block.' . $blockKey . '.' . $n . '.';
 
 ?>
 
 
 
 <div style="border-bottom: 1px solid #ccc;" class="clearfix mb-4 text-uppercase">
+
+
 
 <h5 class="mb-3 float-left d-inline-block">{{ $blockKey }}ブロック-{{ $n+1 }}</h5>
 

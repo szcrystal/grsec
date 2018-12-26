@@ -97,15 +97,28 @@ use App\TopSetting;
         	<article class="main-atcl clearfix"> 
             
             <?php
-            	if(strpos($recom->top_img_path, 'category') !== false) {
+            	$objName = get_class($recom);
+                
+                if($objName == 'App\Category') {
             		$slugType = 'category';
                 }
-                elseif(strpos($recom->top_img_path, 'subcate') !== false) {
+                elseif($objName == 'App\CategorySecond') {
                 	$slugType = 'category/' . $cates->find($recom->parent_id)->slug;
                 }
-                elseif(strpos($recom->top_img_path, 'tag') !== false) {
+                elseif($objName == 'App\Tag') {
                 	$slugType = 'tag';
                 }
+
+                
+//            	if(strpos($recom->top_img_path, 'category') !== false) {
+//            		$slugType = 'category';
+//                }
+//                elseif(strpos($recom->top_img_path, 'subcate') !== false) {
+//                	$slugType = 'category/' . $cates->find($recom->parent_id)->slug;
+//                }
+//                elseif(strpos($recom->top_img_path, 'tag') !== false) {
+//                	$slugType = 'tag';
+//                }
             ?>
         
                 

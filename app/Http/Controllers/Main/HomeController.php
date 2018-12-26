@@ -89,7 +89,7 @@ class HomeController extends Controller
 //        }
 
 		//Carousel
-        $caros = $this->itemImg->where(['item_id'=>9999, 'type'=>6])->get();
+        $caros = $this->itemImg->where(['item_id'=>9999, 'type'=>6])->inRandomOrder()->get();
 
 		//FirstItem =======================
         $getNum = Ctm::isAgent('sp') ? 3 : 4;
@@ -254,6 +254,8 @@ class HomeController extends Controller
         	$tagRecoms = $this->tag->where(['is_top'=>1])->orderBy('updated_at', 'desc')->get()->all();
             $cateRecoms = $this->category->where(['is_top'=>1])->orderBy('updated_at', 'desc')->get()->all();
             $subCateRecoms = $this->cateSec->where(['is_top'=>1])->orderBy('updated_at', 'desc')->get()->all();
+            
+            //$concat = $tagRecoms->concat($cateRecoms)->concat($cateRecoms);
             
 //            $aaa = $tagRecoms->merge($cateRecoms);
 //            $b = $aaa->paginate($this->perPage);

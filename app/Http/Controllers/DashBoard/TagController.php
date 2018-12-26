@@ -117,6 +117,9 @@ class TagController extends Controller
             $filename = $data['top_img_path']->getClientOriginalName();
             $filename = str_replace(' ', '_', $filename);
             
+            $fNameArr = explode('.', $filename);
+            $filename = $fNameArr[0] . '-' . mt_rand(0, 99999) . '.' . array_pop($fNameArr); //array_pop 配列最後（拡張子を取得） end()でも可
+            
             //$aId = $editId ? $editId : $rand;
             //$pre = time() . '-';
             $filename = 'tag/' . $tagId . '/recom/'/* . $pre*/ . $filename;
@@ -126,7 +129,7 @@ class TagController extends Controller
             //$path = Storage::disk('s3')->putFileAs($filename, $request->file('thumbnail'), 'public');
             //$path = $request->file('thumbnail')->storeAs('', $filename, 's3');
             
-            $tagModel->top_img_path = $path;
+            $tagModel->top_img_path = $filename;
             $tagModel->save();
         }
         

@@ -101,16 +101,19 @@ class CategoryController extends Controller
             $filename = $data['top_img_path']->getClientOriginalName();
             $filename = str_replace(' ', '_', $filename);
             
+            $fNameArr = explode('.', $filename);
+            $filename = $fNameArr[0] . '-' . mt_rand(0, 99999) . '.' . array_pop($fNameArr); //array_pop 配列最後（拡張子を取得） end()でも可
+            
             //$aId = $editId ? $editId : $rand;
             //$pre = time() . '-';
-            $filename = 'category/' . $cateId . '/recom/'/* . $pre*/ . $filename;
+            $filename = 'category/' . $cateId . '/recom/' . $filename;
             //if (App::environment('local'))
             $path = $data['top_img_path']->storeAs('public', $filename);
             //else
             //$path = Storage::disk('s3')->putFileAs($filename, $request->file('thumbnail'), 'public');
             //$path = $request->file('thumbnail')->storeAs('', $filename, 's3');
             
-            $cateModel->top_img_path = $path;
+            $cateModel->top_img_path = $filename;
             $cateModel->save();
         }
 
