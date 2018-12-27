@@ -8,12 +8,16 @@ use App\MailTemplate;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
+use Auth;
+
 class MailTemplateController extends Controller
 {
     public function __construct(Admin $admin, MailTemplate $mailTemplate)
     {
         
-        $this -> middleware('adminauth');
+        //$this -> middleware('adminauth'); //-> ORG;
+        $this -> middleware(['adminauth', 'role:isAdmin']);
+        
         //$this -> middleware('log', ['only' => ['getIndex']]);
         
         $this -> admin = $admin;
@@ -35,7 +39,7 @@ class MailTemplateController extends Controller
     
     public function index()
     {
-        
+
         $mailTemplates = MailTemplate::orderBy('id', 'asc')->paginate($this->perPage);
         
         //$cates= $this->category;
@@ -48,6 +52,7 @@ class MailTemplateController extends Controller
 
     public function show($id)
     {
+    	
         $mailTemplate = $this->mailTemplate->find($id);
         //$cates = $this->category->all();
         //$users = $this->user->where('active',1)->get();

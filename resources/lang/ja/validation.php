@@ -176,6 +176,7 @@ return [
         'capacity' => '「容量」',
         'admin_name' => '「管理者名」',
         'admin_email' => '「管理者メールアドレス」',
+        'permission' => '「権限」',
         'tax_per' => '「消費税率」',
         'sale_per' => '「割引率」',
         'kare_ensure' => '「枯れ保証日数」',

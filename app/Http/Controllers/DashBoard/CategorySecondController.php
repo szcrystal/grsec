@@ -17,6 +17,8 @@ class CategorySecondController extends Controller
 {
     public function __construct(Category $category, CategorySecond $cateSec, Item $item, ItemImage $itemImg, Setting $setting)
     {
+    	$this -> middleware(['adminauth', 'role:isAdmin']);
+        
         $this->category = $category;
         $this->cateSec = $cateSec;
         $this->item = $item;

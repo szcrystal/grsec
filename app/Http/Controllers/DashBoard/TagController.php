@@ -18,8 +18,9 @@ class TagController extends Controller
 {
     public function __construct(Admin $admin, Tag $tag, TagRelation $tagRel, ItemImage $itemImg, Setting $setting)
     {
+        $this -> middleware(['adminauth', 'role:isAdmin']);
         
-        $this -> middleware('adminauth');
+        //$this -> middleware('adminauth');
         //$this -> middleware('log', ['only' => ['getIndex']]);
         
         $this -> admin = $admin;

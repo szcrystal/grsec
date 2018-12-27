@@ -12,8 +12,8 @@ class ContactController extends Controller
 {
     public function __construct(Admin $admin, Contact $contact)
     {
-        
-        $this -> middleware('adminauth');
+        $this -> middleware(['adminauth', 'role:isAdmin']);
+        //$this -> middleware('adminauth');
         //$this -> middleware('log', ['only' => ['getIndex']]);
         
         $this -> admin = $admin;

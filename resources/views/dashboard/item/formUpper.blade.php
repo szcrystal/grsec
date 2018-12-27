@@ -174,28 +174,32 @@ use App\Category;
                     
                     @while($n < $blockCount[$blockKey])
                     
-                    	@if(! ($n % $retu) && $blockKey != 'a')
+                    	@if(! ($n % $retu))
+                        	
+                            <?php //中タイトル部分
+                            	$midOldName = 'block.' .$blockKey. '.mid_section.'. $midCount .'.title';
+                            	$midSecRel = isset($upperRel['mid_section'][$midCount]) ? $upperRel['mid_section'][$midCount] : null;
+                            ?>
                             
                             <fieldset class="mt-5 mb-4 form-group">
                                 <label>中タイトル-{{ $midCount+1 }}</label>
-                                <input class="form-control col-md-12{{ $errors->has('title') ? ' is-invalid' : '' }}" name="block[{{ $blockKey }}][mid_section][{{ $midCount }}][title]" value="{{ Ctm::isOld() ? old('title') : (isset($upperRel['mid_section'][$midCount]) ? $upperRel['mid_section'][$midCount]->title : '') }}" placeholder="">
+                                <input class="form-control col-md-12{{ $errors->has($midOldName) ? ' is-invalid' : '' }}" name="block[{{ $blockKey }}][mid_section][{{ $midCount }}][title]" value="{{ Ctm::isOld() ? old($midOldName) : (isset($midSecRel) ? $midSecRel->title : '') }}" placeholder="">
 
-                                    @if ($errors->has('title'))
+                                    @if ($errors->has($midOldName))
                                         <div class="text-danger">
                                             <span class="fa fa-exclamation form-control-feedback"></span>
-                                            <span>{{ $errors->first('title') }}</span>
+                                            <span>{{ $errors->first($midOldName) }}</span>
                                         </div>
                                     @endif
                                 
-                                <input type="hidden" name="block[{{ $blockKey }}][mid_section][{{ $midCount }}][rel_id]" value="{{ isset($upperRel['mid_section'][$midCount]
-                                ) ? $upperRel['mid_section'][ $midCount ]->id : 0 }}">
+                                <input type="hidden" name="block[{{ $blockKey }}][mid_section][{{ $midCount }}][rel_id]" value="{{ isset($midSecRel) ? $midSecRel->id : 0 }}">
                                 
                                 <?php
                                     $rId = isset($upperRel['mid_section'][$midCount]) ? $upperRel['mid_section'][$midCount]->id : 0;
                                 ?>
 
-                                @if(! Ctm::isEnv('local'))
-                                    <br>{{ $rId }}<br>{{ $midCount }}
+                                @if(Ctm::isEnv('local'))
+                                    <br>{{ $rId }} / {{ $midCount }}
                                 @endif
                             </fieldset>
                             

@@ -32,7 +32,8 @@ class MailMagazineController extends Controller
     public function __construct(Admin $admin, MailMagazine $mag, Setting $setting, User $user, UserNoregist $noReg)
     {
         
-        $this -> middleware('adminauth');
+        $this -> middleware(['adminauth', 'role:isAdmin']);
+        //$this -> middleware('adminauth');
         //$this -> middleware('log', ['only' => ['getIndex']]);
         
         $this -> admin = $admin;
@@ -57,6 +58,7 @@ class MailMagazineController extends Controller
     public function index()
     {
         
+            
         //$itemObjs = Item::orderBy('id', 'desc')->paginate($this->perPage);
         $magObjs = $this->mag->orderBy('id', 'desc')->get();
         
@@ -72,6 +74,8 @@ class MailMagazineController extends Controller
 
     public function show($id)
     {
+    	
+            
         $mag = $this->mag->find($id);
 //        $cates = $this->category->all();
 //        $subcates = $this->categorySecond->where(['parent_id'=>$item->cate_id])->get();
@@ -100,6 +104,9 @@ class MailMagazineController extends Controller
    
     public function create()
     {
+    	
+            
+            
 //        $cates = $this->category->all();
 //        $consignors = $this->consignor->all();
 //        $dgs = $this->dg->all();

@@ -14,8 +14,8 @@ class DeliveryCompanyController extends Controller
 {
     public function __construct(Admin $admin, DeliveryCompany $dc)
     {
-        
-        $this -> middleware('adminauth');
+        $this -> middleware(['adminauth', 'role:isAdmin']);
+        //$this -> middleware('adminauth');
         //$this -> middleware('log', ['only' => ['getIndex']]);
         
         $this -> admin = $admin;

@@ -12,8 +12,6 @@ $oldName = 'block.' . $blockKey . '.' . $n . '.';
 
 <div style="border-bottom: 1px solid #ccc;" class="clearfix mb-4 text-uppercase">
 
-
-
 <h5 class="mb-3 float-left d-inline-block">{{ $blockKey }}ブロック-{{ $n+1 }}</h5>
 
 <fieldset class="w-25 form-group float-left mb-0 pb-0 ml-3">

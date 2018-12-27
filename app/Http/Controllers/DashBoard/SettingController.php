@@ -10,6 +10,7 @@ use App\Icon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
+use Auth;
 use Storage;
 
 class SettingController extends Controller
@@ -17,7 +18,9 @@ class SettingController extends Controller
     public function __construct(Admin $admin, Setting $setting, ItemImage $itemImg, Icon $icon/*, Item $item, Tag $tag, Category $category, TagRelation $tagRelation*/)
     {
         
-        $this -> middleware('adminauth');
+        //$this -> middleware('adminauth'); //->ORG;
+        $this -> middleware(['adminauth', 'role:isAdmin']);
+        
         //$this -> middleware('log', ['only' => ['getIndex']]);
         
         $this -> admin = $admin;
@@ -42,7 +45,7 @@ class SettingController extends Controller
     
     public function index()
     {
-        
+            
         $setting = $this->setting->first(); //->paginate($this->perPage);
         
 //        print_r($setting);

@@ -10,12 +10,14 @@ use App\Prefecture;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
+use Auth;
+
 class DeliveryGroupController extends Controller
 {
     public function __construct(Admin $admin, DeliveryGroup $dg, DeliveryGroupRelation $dgRel, Prefecture $prefecture)
     {
         
-        $this -> middleware('adminauth');
+        $this -> middleware(['adminauth', 'role:isAdmin']);
         //$this -> middleware('log', ['only' => ['getIndex']]);
         
         $this -> admin = $admin;
@@ -25,6 +27,8 @@ class DeliveryGroupController extends Controller
         
         
         $this->perPage = 20;
+        
+        //$this->authorize('is-designer');
         
         // URLの生成
         //$url = route('dashboard');
@@ -37,6 +41,10 @@ class DeliveryGroupController extends Controller
     
     public function index()
     {
+//    	if (Gate::denies('is-designer', 3)) {
+//            return view('errors.dashboard');
+//        }
+        //$this->authorize('is-designer', 1);
         
         //$dgs = $this->dg->orderBy('id', 'asc')->paginate($this->perPage);
         $dgs = $this->dg->orderBy('id', 'asc')->get();
@@ -50,6 +58,10 @@ class DeliveryGroupController extends Controller
 
     public function show($id)
     {
+    	if (Auth::guard('admin')->user()->permission == 3) {
+        	return view('errors.dashboard');
+        }
+        
         $dg = $this->dg->find($id);
         //$users = $this->user->where('active',1)->get();
         
@@ -66,6 +78,10 @@ class DeliveryGroupController extends Controller
    
     public function create()
     {
+    	if (Auth::guard('admin')->user()->permission == 3) {
+        	return view('errors.dashboard');
+        }
+        
 //        $cates = $this->category->all();
 //        $allTags = $this->tag->get()->map(function($item){
 //            return $item->name;
@@ -139,6 +155,10 @@ class DeliveryGroupController extends Controller
     
     public function getFee($dgId)
     {
+    	if (Auth::guard('admin')->user()->permission == 3) {
+        	return view('errors.dashboard');
+        }
+        
         $dg = $this->dg->find($dgId);
         
         $prefs = $this->prefecture->all();

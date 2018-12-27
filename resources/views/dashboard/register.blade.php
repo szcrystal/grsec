@@ -37,11 +37,11 @@
                 <fieldset class="form-group">
                     <label for="name" class="control-label">管理者名</label>
 
-                        <input id="name" type="text" class="form-control col-md-6{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ isset($admin) ? $admin->name : old('name') }}" required autofocus>
+                        <input id="name" type="text" class="form-control col-md-6{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ isset($admin) ? $admin->name : old('name') }}">
 
                         @if ($errors->has('name'))
                             <span class="help-block text-danger">
-                                <strong>{{ $errors->first('name') }}</strong>
+                                {{ $errors->first('name') }}
                             </span>
                         @endif
 
@@ -50,26 +50,64 @@
                 <fieldset class="form-group">
                     <label for="email" class="control-label">メールアドレス</label>
 
-                        <input id="email" type="email" class="form-control col-md-6{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ isset($admin) ? $admin->email : old('email') }}" required>
+                        <input id="email" type="email" class="form-control col-md-6{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ isset($admin) ? $admin->email : old('email') }}">
 
                         @if ($errors->has('email'))
                             <span class="help-block text-danger">
-                                <strong>{{ $errors->first('email') }}</strong>
+                                {{ $errors->first('email') }}
                             </span>
                         @endif
 
                 </fieldset>
 
-                <fieldset class="form-group">
-                    <label for="password" class="control-label">パスワード</label>
+				@if(! $editId)
+                    <fieldset class="form-group">
+                        <label for="password" class="control-label">パスワード</label>
 
-                        <input id="password" type="password" class="form-control col-md-6{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
+                            <input id="password" type="password" class="form-control col-md-6{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password">
 
-                        @if ($errors->has('password'))
-                            <span class="help-block text-danger">
-                                <strong>{{ $errors->first('password') }}</strong>
-                            </span>
-                        @endif
+                            @if ($errors->has('password'))
+                                <span class="help-block text-danger">
+                                    {{ $errors->first('password') }}
+                                </span>
+                            @endif
+                    </fieldset>
+                @endif
+                
+                
+                <fieldset class="mt-1 mb-5 form-group">
+                    <label>権限</label>
+                    <select class="form-control col-md-6{{ $errors->has('permission') ? ' is-invalid' : '' }}" name="permission">
+                        <?php
+                            $authTypes = ['A:主管理者'=>1, 'B:内部管理者'=>5, 'C:サイトデザイン'=>10];
+                            $disabled = isset($admin) && $admin->id == 1 ? 'disabled' : ''; 
+                        ?>
+                        
+                        <option selected disabled>選択して下さい</option>
+                        
+                        @foreach($authTypes as $key => $authTypeNum)
+                            <?php
+                                $selected = '';
+                                if(Ctm::isOld()) {
+                                    if(old('permission') == $authTypeNum)
+                                        $selected = ' selected';
+                                }
+                                else {
+                                    if(isset($admin) && $admin->permission == $authTypeNum) {
+                                        $selected = ' selected';
+                                    }
+                                }
+                            ?>
+                            
+                            <option value="{{ $authTypeNum }}"{{ $selected }} {{ $disabled }}>{{ $key }}</option>
+                        @endforeach
+                    </select>
+                    
+                    @if ($errors->has('permission'))
+                        <span class="help-block text-danger">
+                            {{ $errors->first('permission') }}
+                        </span>
+                    @endif   
                 </fieldset>
 
 
@@ -92,6 +130,8 @@
               <th>ID</th>
               <th>管理者名</th>
               <th>メールアドレス</th>
+              <th>権限</th>
+              <th></th>
               <th></th>
             </tr>
           </thead>
@@ -110,12 +150,24 @@
                 <td>
                 	{{ $obj->email }}
                 </td>
-
-                {{--
+                
                 <td>
-                	<a href="{{url('dashboard/register/'.$obj->id)}}" class="btn btn-primary btn-sm center-block">編集</a>
+                	@if($obj->permission > 0 && $obj->permission < 5)
+                    	主管理者
+                    @elseif($obj->permission > 4 && $obj->permission < 10)
+                    	内部管理者
+                    @elseif($obj->permission > 9)
+                    	サイトデザイン
+                    @else
+                    	--
+                    @endif
                 </td>
-                --}}
+
+                
+                <td>
+                	<a href="{{url('dashboard/register/'. $obj->id)}}" class="btn btn-primary btn-sm center-block">編集</a>
+                </td>
+                
                 
                 <td>
                 	@if(Auth::guard('admin')->id() < 3)

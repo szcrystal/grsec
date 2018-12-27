@@ -37,7 +37,8 @@ class SaleController extends Controller
     public function __construct(Admin $admin, Sale $sale, SaleRelation $saleRel, Item $item, User $user, PayMethod $payMethod, UserNoregist $userNoregist, Receiver $receiver, DeliveryGroup $dg, Consignor $consignor, Category $category, Setting $setting, DeliveryCompany $dc, MailTemplate $templ, SendMailFlag $smf, Prefecture $pref)
     {
         
-        $this -> middleware('adminauth');
+        $this -> middleware(['adminauth', 'role:isAdmin']);
+        //$this -> middleware('adminauth');
         //$this -> middleware('log', ['only' => ['getIndex']]);
         
         $this -> admin = $admin;
@@ -87,6 +88,8 @@ class SaleController extends Controller
     {
     	//$saleObjs = $this->sale->whereYear('created_at', '=','2017', 'and')->whereYear('created_at', '2018')->orderBy('id', 'asc')->get();
 //        $saleObjs = $this->sale->whereBetween(DB::raw('DATE(created_at)'), ['2017-01-01', '2018-05-31'])->orderBy('id', 'asc')->get();
+
+		
 
 		$saleForSum = null;
         
@@ -235,6 +238,7 @@ class SaleController extends Controller
 	//売上個別情報フォーム GET
     public function show($id)
     {
+ 
         $sale = $this->sale->find($id);
         $saleRel = $this->saleRel->find($sale->salerel_id);
         
@@ -353,6 +357,7 @@ class SaleController extends Controller
     //1注文の詳細 & ご注文情報 Get
     public function saleOrder($orderNum) 
     {
+    	 
     	$saleRel = $this->saleRel->where('order_number', $orderNum)->first();
         
         $saleObjs= $this->sale->where('order_number', $orderNum)->get();

@@ -14,12 +14,17 @@ use App\Http\Controllers\Controller;
 
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
+use Auth;
+
 class UserController extends Controller
 {
     public function __construct(Admin $admin, User $user, UserNoregist $un, Sale $sale, SaleRelation $saleRel, Item $item)
     {
         
-        $this -> middleware('adminauth');
+        $this -> middleware(['adminauth', 'role:isAdmin']);
+		
+        //$this -> authorize('is-admin');
+        //$this -> middleware('adminauth');
         //$this -> middleware('log', ['only' => ['getIndex']]);
         
         $this -> admin = $admin;
@@ -46,6 +51,7 @@ class UserController extends Controller
     
     public function index(Request $request)
     {
+
         if($request->has('no_r')) {
         	$model = $this->un;
          	$isUser = 0;  
@@ -68,6 +74,7 @@ class UserController extends Controller
 
     public function show($id, Request $request)
     {
+            
     	if($request->has('no_r')) {
             $model = $this->un;
             $isUser = 0; 

@@ -22,8 +22,10 @@ class MainController extends Controller
 {
     public function __construct(Admin $admin, Contact $contact/*, Tag $tag, Article $article, Totalize $totalize*/)
     {
-        
-        $this -> middleware('adminauth'/*, ['except' => ['getRegister','postRegister']]*/);
+        $this->middleware('adminauth');
+        $this->middleware('role:isSuper', ['only' => ['getRegister','postRegister'] ] );
+        //$this -> middleware('adminauth'/*, ['except' => ['getRegister','postRegister']]*/);
+        //$this -> middleware(['auth:admin', 'can:is-admin']); //canについてはApp\Providers\AuthServiceProviderのGateにて
 //        //$this->middleware('auth:admin', ['except' => 'getLogout']);
 //        //$this -> middleware('log', ['only' => ['getIndex']]);
 //        
@@ -35,12 +37,13 @@ class MainController extends Controller
         
         // URLの生成
         //$url = route('dashboard');
-        
+
     }
     
     
     public function index()
     {
+            
     	$adminUser = Auth::guard('admin')->user();
      
      	$data = array();
@@ -137,7 +140,7 @@ class MainController extends Controller
 //        });  
      	   
         //return view('dashboard.index', ['name'=>$adminUser->name]);
-        return redirect('dashboard/register');
+        return redirect('dashboard/top-settings');
     }
     
     private function sendMail($data)
@@ -168,7 +171,8 @@ class MainController extends Controller
     
 
     public function getRegister ($id='')
-    {
+    {        
+        
         $editId = 0;
         $admin = NULL;
         
@@ -186,6 +190,7 @@ class MainController extends Controller
     {
         $editId = $request->input('edit_id');
         $valueId = '';
+        
         if($editId) {
             $valueId = ','. $editId;
         }
@@ -193,7 +198,8 @@ class MainController extends Controller
         $rules = [
             'name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:admins,email'.$valueId, /* |unique:admins 注意:unique */
-            'password' => 'required|min:8',
+            'password' => ! $editId ? 'required|min:8' : '',
+            'permission' => 'required',
         ];
         
         $this->validate($request, $rules);
@@ -207,7 +213,9 @@ class MainController extends Controller
             $adminModel = $this->admin;
         }
         
-        $data['password'] = bcrypt($data['password']);
+        if(! $editId) {
+        	$data['password'] = bcrypt($data['password']);
+        }
         
         $adminModel->fill($data);
         $adminModel->save();
@@ -221,7 +229,7 @@ class MainController extends Controller
 //        ]);
         
         if($editId)
-            $status = '管理者情報を更新しました！';
+            $status = $adminModel->name . 'さんの管理者情報を更新しました！';
         else
             $status = '管理者:'.$data['name'].'さんが追加されました。';
         

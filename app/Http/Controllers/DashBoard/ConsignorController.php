@@ -5,16 +5,18 @@ namespace App\Http\Controllers\DashBoard;
 use App\Admin;
 use App\Consignor;
 
-
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+
+use Auth;
 
 class ConsignorController extends Controller
 {
     public function __construct(Admin $admin, Consignor $consignor/*, Item $item, Tag $tag, Category $category, TagRelation $tagRelation*/)
     {
-        
-        $this -> middleware('adminauth');
+    
+        $this -> middleware(['adminauth', 'role:isAdmin']);
+        //$this -> middleware('adminauth');
         //$this -> middleware('log', ['only' => ['getIndex']]);
         
         $this -> admin = $admin;
@@ -36,8 +38,8 @@ class ConsignorController extends Controller
     
     
     public function index()
-    {
-        
+    { 
+     
         $consignors = Consignor::orderBy('id', 'desc')->paginate($this->perPage);
         
         //$cates= $this->category;
@@ -47,7 +49,8 @@ class ConsignorController extends Controller
     }
 
     public function show($id)
-    {
+    { 
+
         $consignor = $this->consignor->find($id);
         //$cates = $this->category->all();
         //$users = $this->user->where('active',1)->get();
@@ -58,6 +61,8 @@ class ConsignorController extends Controller
    
     public function create()
     {
+    	
+        
 //        $cates = $this->category->all();
 //        $allTags = $this->tag->get()->map(function($item){
 //            return $item->name;

@@ -17,6 +17,7 @@ use App\ItemUpperRelation;
 
 use Mail;
 use DateTime;
+use Auth;
 
 use Illuminate\Http\Request;
 
@@ -407,6 +408,29 @@ class CustomController extends Controller
         }
         
         return $upperRelArr;
+    }
+    
+    
+    static function checkRole($permission, $view=0)
+    {
+    	$per = Auth::guard('admin')->user()->permission;
+        
+        //$ret = $view ? true : view('erroes.dashboard');
+        
+        if($permission == 'isSuper' && $per == 1) {
+        	return true;
+        }
+        elseif($permission == 'isAdmin' && ($per > 0 && $per < 3)) {
+        	return true;
+        }
+        elseif($permission == 'isDesigner' && $per == 3) {
+            return true;
+        }
+        else {
+        	return false;
+        }
+        
+        
     }
     
     
