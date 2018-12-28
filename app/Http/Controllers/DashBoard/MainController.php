@@ -17,6 +17,7 @@ use App\Mail\NoStocked;
 use Auth;
 use Mail;
 use DateTime;
+use Ctm;
 
 class MainController extends Controller
 {
@@ -124,11 +125,13 @@ class MainController extends Controller
         $str = env('APP_ENV') . "\n" . env('REMOTE_ADDR', '') . "\n" . env('HTTP_USER_AGENT', '');
         //$str .= "<br>abcde" . '<a href="https://192.168.10.16">abcde</a>';
         
-        Mail::raw($str, function ($message) {
-    		$message -> from('no-reply@green-rocket.jp', '送信元の名前')
-                     -> to('szk.create@gmail.com', 'サンプル')
-                     -> subject('お問い合わせの送信が完了しました。');
-		});
+        if(! Ctm::isEnv('local')) {
+            Mail::raw($str, function ($message) {
+                $message -> from('no-reply@green-rocket.jp', '送信元の名前')
+                         -> to('szk.create@gmail.com', 'サンプル')
+                         -> subject('お問い合わせの送信が完了しました。');
+            });
+        }
             
 //        Mail::send('emails.contact', $data, function($message) use ($data) //引数について　http://readouble.com/laravel/5/1/ja/mail.html
 //        {
@@ -138,9 +141,13 @@ class MainController extends Controller
 //                     -> subject('お問い合わせの送信が完了しました');
 //            //$message->attach($pathToFile);
 //        });  
-     	   
+        
+        $url = 'dashboard/';
+        $perm = Auth::guard('admin')->user()->permission;
+        $url .= $perm < 5 ? 'register' : 'top-settings';
+        
         //return view('dashboard.index', ['name'=>$adminUser->name]);
-        return redirect('dashboard/top-settings');
+        return redirect($url);
     }
     
     private function sendMail($data)
@@ -171,8 +178,7 @@ class MainController extends Controller
     
 
     public function getRegister ($id='')
-    {        
-        
+    { 
         $editId = 0;
         $admin = NULL;
         
@@ -199,8 +205,10 @@ class MainController extends Controller
             'name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:admins,email'.$valueId, /* |unique:admins 注意:unique */
             'password' => ! $editId ? 'required|min:8' : '',
-            'permission' => 'required',
+            'permission' => $editId == 1 ? '' : 'required',
         ];
+        
+        
         
         $this->validate($request, $rules);
         

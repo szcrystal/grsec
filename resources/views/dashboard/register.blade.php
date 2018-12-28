@@ -12,8 +12,8 @@
 
     	@if (count($errors) > 0)
             <div class="alert alert-danger">
-                <strong>Error!!</strong> 追加できません<br><br>
-                <ul>
+                <strong>Error!!</strong> 追加できません
+                <ul class="mt-2">
                     @foreach ($errors->all() as $error)
                         <li>{{ $error }}</li>
                     @endforeach
@@ -28,6 +28,9 @@
         @endif
 
         <div class="mt-5">
+        	@if(isset($admin))
+        		<h5 class="mb-3">{{ $admin->name }}さんの編集</h5>
+            @endif
 
             <form class="form-horizontal" role="form" method="POST" action="/dashboard/register">
                 {{ csrf_field() }}
@@ -79,7 +82,7 @@
                     <label>権限</label>
                     <select class="form-control col-md-6{{ $errors->has('permission') ? ' is-invalid' : '' }}" name="permission">
                         <?php
-                            $authTypes = ['A:主管理者'=>1, 'B:内部管理者'=>5, 'C:サイトデザイン'=>10];
+                            $authTypes = ['A：主管理者'=>1, 'B：内部管理者'=>5, 'C：サイトデザイン'=>10];
                             $disabled = isset($admin) && $admin->id == 1 ? 'disabled' : ''; 
                         ?>
                         
@@ -152,20 +155,28 @@
                 </td>
                 
                 <td>
-                	@if($obj->permission > 0 && $obj->permission < 5)
-                    	主管理者
-                    @elseif($obj->permission > 4 && $obj->permission < 10)
-                    	内部管理者
-                    @elseif($obj->permission > 9)
-                    	サイトデザイン
-                    @else
+                	@if($obj->id == 2 && ! Ctm::isEnv('local'))
                     	--
+                    @else
+                        @if($obj->permission > 0 && $obj->permission < 5)
+                            主管理者
+                        @elseif($obj->permission > 4 && $obj->permission < 10)
+                            内部管理者
+                        @elseif($obj->permission > 9)
+                            サイトデザイン
+                        @else
+                            <span class="text-danger">！未入力</span>
+                        @endif
                     @endif
                 </td>
 
                 
                 <td>
-                	<a href="{{url('dashboard/register/'. $obj->id)}}" class="btn btn-primary btn-sm center-block">編集</a>
+                	@if($obj->id == 2 && ! Ctm::isEnv('local'))
+                    	--
+                    @else
+                		<a href="{{url('dashboard/register/'. $obj->id)}}" class="btn btn-success btn-sm center-block">編集</a>
+                    @endif
                 </td>
                 
                 

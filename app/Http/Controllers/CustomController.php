@@ -411,21 +411,20 @@ class CustomController extends Controller
     }
     
     
-    static function checkRole($permission, $view=0)
+    static function checkRole($roleName)
     {
     	$per = Auth::guard('admin')->user()->permission;
         
         //$ret = $view ? true : view('erroes.dashboard');
         
-        if($permission == 'isSuper' && $per == 1) {
+        if(
+        	$roleName == 'isSuper' && $per < 5 ||
+        	$roleName == 'isAdmin' && $per < 10 ||
+            $roleName == 'isDesigner' && $per == 10
+        ) {
         	return true;
         }
-        elseif($permission == 'isAdmin' && ($per > 0 && $per < 3)) {
-        	return true;
-        }
-        elseif($permission == 'isDesigner' && $per == 3) {
-            return true;
-        }
+        
         else {
         	return false;
         }
