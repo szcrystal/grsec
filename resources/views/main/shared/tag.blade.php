@@ -8,7 +8,7 @@ use App\TagRelation;
     })->all();
 	
     
-    //Controller内でないと下記のダブルクオーテーションで囲まないと効かない
+    //Controller内でないと下記のダブルクオーテーションで囲まないと効かない->だが、Controller内でも必要そう
     $strs = '"'. implode('","', $tagIds) .'"';
 
     //main.shared.tagを使用しているのはアーカイブとsingleのみ。$numが指定されている時はアーカイブ $num=0ならSingle

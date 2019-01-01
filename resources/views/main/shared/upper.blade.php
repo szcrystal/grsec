@@ -1,8 +1,12 @@
+
+@if(count($upperRelArr) > 0)
+
 <?php
 //    print_r($upperRelArr);
 //    exit;
 
     $chunkNum = 0;
+    $chunkNumArr = ['a'=>1, 'b'=>3, 'c'=>3];
 ?>
 
 <div class="upper-wrap">
@@ -11,7 +15,6 @@
         <?php
             //ここでのblockKeyは [a],[b],[c]
             $chunkNum++;
-            $chunkNumArr = ['a'=>1, 'b'=>3, 'c'=>3];     
         ?>
         
         <div class="block-wrap">
@@ -117,4 +120,4 @@
     @endforeach
 </div>
 
-
+@endif

@@ -208,8 +208,9 @@ class HomeController extends Controller
             })->all();
             
             if(count($scIds) > 0) {
+            	$scIds = array_splice($scIds, 100);
                 $scIdStr = implode(',', $scIds);
-                $items = $this->item->whereIn('id', $scIds)->where($whereArr)->orderByRaw("FIELD(id, $scIdStr)")->take(100)->paginate($this->perPage);
+                $items = $this->item->whereIn('id', $scIds)->where($whereArr)->orderByRaw("FIELD(id, $scIdStr)")/*->take(100)*/->paginate($this->perPage); //take()が効かない
             }
             
             $title = '新着情報';
@@ -329,7 +330,53 @@ class HomeController extends Controller
             abort(404);
         }
         
-        $items = $this->item->where(['cate_id'=>$cate->id, 'open_status'=>1, 'is_potset'=>0])->orderBy('id', 'desc')->paginate($this->perPage);
+        $whereArr = ['cate_id'=>$cate->id, 'open_status'=>1, 'is_potset'=>0];
+        
+        $stockTrues = $this->item->where($whereArr)->whereNotIn('stock', [0])->orderBy('id', 'desc')->get()->map(function($obj){
+        	return $obj->id;
+        })->all();
+                
+        $stockFalses = $this->item->where($whereArr)->where('stock', 0)->orderBy('id', 'desc')->get()->map(function($obj){
+        	return $obj->id;
+        })->all();
+        
+        $stockIds = array_merge($stockTrues, $stockFalses);
+        $potsStockFalses = array();
+        
+        foreach($stockIds as $stockId) {
+        	$pots = $this->item->where(['is_potset'=>1, 'pot_parent_id'=>$stockId])->get();
+            
+            if($pots->isNotEmpty()) {
+            	$switch = 0;
+            	foreach($pots as $pot) {
+                	if($pot->stock) {
+                    	$switch = 1;
+                    	break;
+                    }
+                }
+                
+                if(! $switch) {
+                	$potsStockFalses[] = $stockId;
+                }
+            } 
+        }
+        
+        $stockTrues = array_diff($stockTrues, $potsStockFalses);
+        
+        $stockFalses = array_diff($stockFalses, $potsStockFalses);
+        $stockFalses = array_merge($stockFalses, $potsStockFalses); 
+
+        rsort($stockFalses); //降順 3,2,1,
+        
+        $stockIds = array_merge($stockTrues, $stockFalses);
+
+        //Controller内でないと下記のダブルクオーテーションで囲まないと効かない(tag.blade.phpに記載あり)
+        $strs = implode(',', $stockIds);
+        //$strs = '"'. implode('","', $stockIds) .'"';
+
+        $items = $this->item->whereIn('id', $stockIds)->orderByRaw("FIELD(id, $strs)")->paginate($this->perPage);
+        
+        //$items = $this->item->where(['cate_id'=>$cate->id, 'open_status'=>1, 'is_potset'=>0])->orderBy('id', 'desc')->paginate($this->perPage);
         //$items = $this->cateSec->where(['parent_id'=>$cate->id, ])->orderBy('updated_at', 'desc')->paginate($this->perPage);
         
         //Upper取得

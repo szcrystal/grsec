@@ -696,6 +696,17 @@ var exe = (function() {
             
         },
         
+        accordionMoveUp: function(){
+        	var $ac = $('.single #accordion');
+            
+            var fixH = $('.fixed-top').height() + 10;
+            var top = $ac.offset().top - fixH; 
+            
+        	$('.single .card-header').on('click', function(){
+            	$("html, body").scrollTop(top);
+            });
+        },
+        
         getWH: function() {
         	$target = $('.top-first .img-box');
         	var w = $target.width();
@@ -764,6 +775,8 @@ $(function(e){ //ready
     exe.slidePayMethodChild();
     
     exe.toggleSideMenu();
+    
+    exe.accordionMoveUp();
 });
 
 

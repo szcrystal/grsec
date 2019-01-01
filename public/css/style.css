@@ -844,12 +844,33 @@ body {
 /* img-box ******************************* */
 .img-box { /* Single ->.single .carousel-item  */
 	width: 100%;
-    height: 264px;
+    height: auto;
+/*    height: 264px;*/
     overflow: hidden;
+	position: relative;
 }
 .img-box img {
 	width: 100%;
     border-radius: 0;
+}
+.img-box img.stock-zero {
+	//opacity: 0.65;
+}
+.img-box > span {
+	display: block;
+	position: absolute;
+    width: 100%;
+    top: 45%;
+    //bottom: 0;
+    //left: 32%;
+    color: #000;
+    //font-weight: bold;
+    font-size: 0.85em;
+    line-height: 0.85em;
+    background: rgba(255,255,255,0.7);
+    text-align: center;
+    padding: 0.4em 0;
+    z-index: 99;
 }
 .top .img-box,
 .archive .img-box {

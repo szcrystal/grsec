@@ -27,6 +27,26 @@ use App\Icon;
 
     $isSp = Ctm::isAgent('sp');
     $isSale = Setting::get()->first()->is_sale;
+    
+    $isStock = 0;
+    $imgClass = '';
+        
+    $pots = Item::where(['is_potset'=>1, 'pot_parent_id'=>$item->id])->get();
+    
+    if($pots->isNotEmpty()) {
+        foreach($pots as $pot) {
+            if($pot->stock) {
+                $isStock = 1;
+                break;
+            }
+        }
+    }
+    else {
+    	if($item->stock) {
+        	$isStock = 1;
+        }
+    }
+   
 ?>
 
 @if($isSale || isset($item->sale_price))
@@ -35,8 +55,13 @@ use App\Icon;
 
 
 <div class="img-box">
+	@if(! $isStock)
+    	<?php $imgClass = 'stock-zero'; ?>
+    	<span>SOLD OUT</span>
+    @endif
+    
     <a href="{{ $link }}">
-    	<img src="{{ Storage::url($item->main_img) }}" alt="{{ $item->title }}">
+    	<img src="{{ Storage::url($item->main_img) }}" alt="{{ $item->title }}" class="{{ $imgClass }}">
     </a>
 </div>
 
