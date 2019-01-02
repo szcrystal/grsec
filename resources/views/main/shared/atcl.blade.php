@@ -70,61 +70,61 @@ use App\Icon;
         {{ Ctm::shortStr($item->title, $strNum) }}
     </a></h3>
     
-        <p>
-			<a href="{{ $cateLink }}">{{ $cateName }}</a>
-        </p>
+    <p>
+        <a href="{{ $cateLink }}">{{ $cateName }}</a>
+    </p>
+    
+    @if(isset($item->icon_id) && $item->icon_id != '')
+        <div class="icons">
+            <?php $obj = $item; ?>
+            @include('main.shared.icon')
+        </div>
+    @endif
+
+
+    <div class="tags">
+        <?php $num = 2; ?>
+        @include('main.shared.tag')
+    </div>
+            
         
-        @if(isset($item->icon_id) && $item->icon_id != '')
-            <div class="icons">
-                <?php $obj = $item; ?>
-                @include('main.shared.icon')
-            </div>
+    <div class="price">
+        <?php
+            $pots = Item::where(['is_potset'=>1, 'pot_parent_id'=>$item->id])->orderBy('price', 'asc')->get();
+            $isPotParent = $pots->isNotEmpty();
+            
+            if($isPotParent) {
+                $thisItem = $pots->first();
+            }
+            else {
+                $thisItem = $item;
+            }
+        ?>
+        
+        @if($isSale || isset($thisItem->sale_price))
+            @if(! $isSp)
+                <strike>{{ number_format(Ctm::getPriceWithTax($thisItem->price)) }}</strike>
+                <i class="fal fa-arrow-right text-small"></i>
+            @endif
         @endif
-
-
-        <div class="tags">
-            <?php $num = 2; ?>
-            @include('main.shared.tag')
-        </div>
-            
         
-        <div class="price">
-            <?php
-                $pots = Item::where(['is_potset'=>1, 'pot_parent_id'=>$item->id])->orderBy('price', 'asc')->get();
-                $isPotParent = $pots->isNotEmpty();
-                
-                if($isPotParent) {
-                    $thisItem = $pots->first();
-                }
-                else {
-                    $thisItem = $item;
-                }
-            ?>
-            
-            @if($isSale || isset($thisItem->sale_price))
-                @if(! $isSp)
-                    <strike>{{ number_format(Ctm::getPriceWithTax($thisItem->price)) }}</strike>
-                    <i class="fal fa-arrow-right text-small"></i>
-                @endif
-            @endif
-            
-            @if(isset($thisItem->sale_price))
-                <span class="show-price text-enji">{{ number_format(Ctm::getPriceWithTax($thisItem->sale_price)) }}
+        @if(isset($thisItem->sale_price))
+            <span class="show-price text-enji">{{ number_format(Ctm::getPriceWithTax($thisItem->sale_price)) }}
+        @else
+            @if($isSale)
+                <span class="show-price text-enji">{{ number_format(Ctm::getSalePriceWithTax($thisItem->price)) }}
             @else
-                @if($isSale)
-                    <span class="show-price text-enji">{{ number_format(Ctm::getSalePriceWithTax($thisItem->price)) }}
-                @else
-                    <span class="show-price">{{ number_format(Ctm::getPriceWithTax($thisItem->price)) }}
-                @endif
+                <span class="show-price">{{ number_format(Ctm::getPriceWithTax($thisItem->price)) }}
             @endif
-            </span>
-            <span class="show-yen">円(税込)
-            @if($isPotParent)
-            〜
-            @endif
-            </span>
-            
-        </div>
+        @endif
+        </span>
+        <span class="show-yen">円(税込)
+        @if($isPotParent)
+        〜
+        @endif
+        </span>
+        
+    </div>
     
 
         @if(Auth::check())

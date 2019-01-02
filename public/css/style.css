@@ -848,49 +848,58 @@ body {
 /*    height: 264px;*/
     overflow: hidden;
 	position: relative;
+    text-align: center;
+    display: grid;
 }
 .img-box img {
 	width: 100%;
     border-radius: 0;
 }
 .img-box img.stock-zero {
-	//opacity: 0.65;
+	//opacity: 0.8;
 }
 .img-box > span {
-	display: block;
+	display: inline-block;
 	position: absolute;
     width: 100%;
-    top: 45%;
-    //bottom: 0;
+    //margin: auto;
+    //top: 47%;
+/*    left: 50%;*/
+    bottom: 0;
     //left: 32%;
-    color: #000;
     //font-weight: bold;
-    font-size: 0.85em;
-    line-height: 0.85em;
-    background: rgba(255,255,255,0.7);
+    font-size: 0.8em;
+    line-height: 0.8em;
+    color: #fff;
+    background: rgba(0,0,0,0.65);
     text-align: center;
-    padding: 0.4em 0;
+    padding: 0.5em 0;
     z-index: 99;
 }
 .top .img-box,
 .archive .img-box {
-    height: 276px;
+    //height: 276px;
+    height: auto;
     //border: 1px solid #bbb;
 }
-.top-second .img-box {
+.top-second .img-box { /* TOPおすすめ */
 	width: 40%;
-	height: 226px;
+/*	height: 226px;*/
+    height: auto;
     float: left;
 }
 .floar .img-box { /* Single 小img Recent Check */
-	height: 167px;
+/*	height: 167px;*/
+    height: auto;
 }
 .single-recom .floar .img-box { /* Single 3つ並び小img */
-	height: 220px;
+/*	height: 220px;*/
+	height: auto;
     //border: 1px solid #333;
 }
 .potset .img-box {
-	height: 125px;
+/*	height: 125px;*/
+	height: auto;
     //border: 1px solid red;
 }
 /* img-box END ******************************* */
@@ -934,7 +943,7 @@ body {
 	font-size: 1.05em;
 	font-weight: normal;
     line-height: 1.4em;
-	margin: 0.1em 0 0.2em;
+	margin: 0.3em 0 0.2em;
 	padding: 0;
     //height: 3em;
     //border: 1px solid red;

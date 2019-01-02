@@ -546,7 +546,12 @@ class CartController extends Controller
             }
             
             //Sale Count処理
-            $item->increment('sale_count', $val['item_count']);
+            if($item->is_potset) {
+            	$this->item->find($item->pot_parent_id)->increment('sale_count', $val['item_count']);
+            }
+            else {
+            	$item->increment('sale_count', $val['item_count']);
+            }
             
             //お気に入りにsale_idを入れる。お気に入りに購入履歴を残すため。
             if($isUser) {

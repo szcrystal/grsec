@@ -1026,6 +1026,7 @@ ORG END ======================== */
     
     .main-atcl h3 {
 		font-size: 1.0em;
+        margin-top: 0.2em;
     }
     
     .top .main-atcl > span,

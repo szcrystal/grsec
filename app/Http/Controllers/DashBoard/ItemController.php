@@ -160,7 +160,7 @@ class ItemController extends Controller
             'title' => 'required|max:255',
             'cate_id' => 'required',
             //'dg_id' => 'required',
-            'dg_id' => [
+            'dg_id' => [ //dgに送料が入力されていない時
             	'required',
                 
                 function($attribute, $value, $fail) {
@@ -289,6 +289,16 @@ class ItemController extends Controller
             
             //stockChange save 新着情報用
             $this->itemSc->create(['item_id'=>$item->id, 'is_auto'=>0]);
+        }
+        
+        //potsetの時 parentのpot_parent_idに0をセットする
+        if($item->is_potset) {
+        	$parentItem = $this->item->find($item->pot_parent_id);
+            
+            if(isset($parentItem) && ! isset($parentItem->pot_parent_id)) {
+            	$parentItem->pot_parent_id = 0;
+            	$parentItem->save();
+            }
         }
         
 //        $item->fill($data);

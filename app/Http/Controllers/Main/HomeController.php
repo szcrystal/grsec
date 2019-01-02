@@ -210,13 +210,19 @@ class HomeController extends Controller
             if(count($scIds) > 0) {
             	$scIds = array_splice($scIds, 100);
                 $scIdStr = implode(',', $scIds);
-                $items = $this->item->whereIn('id', $scIds)->where($whereArr)->orderByRaw("FIELD(id, $scIdStr)")/*->take(100)*/->paginate($this->perPage); //take()が効かない
+                $items = $this->item->whereIn('id', $scIds)->where($whereArr)->orderByRaw("FIELD(id, $scIdStr)")/*->take(100)*/->paginate($this->perPage); //paginateにtake()が効かない
             }
             
             $title = '新着情報';
         }
         elseif($path == 'ranking') {
-        	$items = $this->item->where($whereArr)->orderBy('sale_count', 'desc')->paginate($this->perPage);
+        	$rankItemIds = $this->item->where($whereArr)->orderBy('sale_count', 'desc')->limit(100)->get()->map(function($obj){
+            	return $obj->id;
+            })->all();
+            
+            $items= $this->item->whereIn('id', $rankItemIds)->orderBy('sale_count', 'desc')->paginate($this->perPage); //ここで更にorderByする必要がある
+            //$items = $this->item->where($whereArr)->orderBy('sale_count', 'desc')->take(100)->paginate($this->perPage);
+            
             $title = '人気ランキング';
         }
         elseif($path == 'recent-items') {
@@ -330,19 +336,131 @@ class HomeController extends Controller
             abort(404);
         }
         
-        $whereArr = ['cate_id'=>$cate->id, 'open_status'=>1, 'is_potset'=>0];
+        $itemObjs = $this->item->where(['cate_id'=>$cate->id, 'open_status'=>1, 'is_potset'=>0])->get();
         
-        $stockTrues = $this->item->where($whereArr)->whereNotIn('stock', [0])->orderBy('id', 'desc')->get()->map(function($obj){
+        //在庫有りなしでソートしたidを取得
+        $stockIds = $this->getStockSepIds($itemObjs); //$itemObjsはコレクション
+
+        //Controller内でないと下記のダブルクオーテーションで囲まないと効かない(tag.blade.phpに記載あり)
+        $strs = implode(',', $stockIds); //$strs = '"'. implode('","', $stockIds) .'"';
+
+        $items = $this->item->whereIn('id', $stockIds)->orderByRaw("FIELD(id, $strs)")->paginate($this->perPage);
+        //$items = $this->item->where(['cate_id'=>$cate->id, 'open_status'=>1, 'is_potset'=>0])->orderBy('id', 'desc')->paginate($this->perPage);
+        //$items = $this->cateSec->where(['parent_id'=>$cate->id, ])->orderBy('updated_at', 'desc')->paginate($this->perPage);
+        
+        //Upper取得
+        $upperRelArr = Ctm::getUpperArr($cate->id, 'cate');
+        
+        //Meta
+        $metaTitle = isset($cate->meta_title) ? $cate->meta_title : $cate->name;
+        $metaDesc = $cate->meta_description;
+        $metaKeyword = $cate->meta_keyword;
+        
+        $cate->timestamps = false;
+        $cate->increment('view_count');
+        
+        return view('main.archive.index', ['items'=>$items, 'cate'=>$cate, 'type'=>'category', 'upperRelArr'=>$upperRelArr, 'metaTitle'=>$metaTitle, 'metaDesc'=>$metaDesc, 'metaKeyword'=>$metaKeyword,]);
+    }
+    
+    
+    //Sub Category Child
+    public function subCategory($slug, $subSlug)
+    {
+    	$cate = $this->category->where('slug', $slug)->first();
+        
+        $subcate = $this->cateSec->where('slug', $subSlug)->first();
+        
+        if(!isset($cate) || !isset($subcate)) {
+            abort(404);
+        }
+        
+        
+        $itemObjs = $this->item->where(['subcate_id'=>$subcate->id, 'open_status'=>1, 'is_potset'=>0])->get();
+        
+        //在庫有りなしでソートしたidを取得
+        $stockIds = $this->getStockSepIds($itemObjs); //$itemObjsはコレクション
+
+        //Controller内でないと下記のダブルクオーテーションで囲まないと効かない(tag.blade.phpに記載あり)
+        $strs = implode(',', $stockIds); //$strs = '"'. implode('","', $stockIds) .'"';
+
+        $items = $this->item->whereIn('id', $stockIds)->orderByRaw("FIELD(id, $strs)")->paginate($this->perPage);
+        //$items = $this->item->where(['subcate_id'=>$subcate->id, 'open_status'=>1, 'is_potset'=>0])->orderBy('id', 'desc')->paginate($this->perPage);
+        
+        //Upper取得
+        $upperRelArr = Ctm::getUpperArr($subcate->id, 'subcate');
+        
+        //Meta
+        $metaTitle = isset($subcate->meta_title) ? $subcate->meta_title : $subcate->name;
+        $metaDesc = $subcate->meta_description;
+        $metaKeyword = $subcate->meta_keyword;
+        
+        $subcate->timestamps = false;
+        $subcate->increment('view_count');
+        
+        return view('main.archive.index', ['items'=>$items, 'cate'=>$cate, 'subcate'=>$subcate, 'type'=>'subcategory', 'upperRelArr'=>$upperRelArr, 'metaTitle'=>$metaTitle, 'metaDesc'=>$metaDesc, 'metaKeyword'=>$metaKeyword,]);
+    }
+    
+    
+    //Tag
+    public function tag($slug)
+    {
+    	$tag = $this->tag->where('slug', $slug)->first();
+        
+        if(!isset($tag)) {
+            abort(404);
+        }
+        
+        $tagItemIds = $this->tagRel->where('tag_id',$tag->id)->get()->map(function($obj){
+        	return $obj -> item_id;
+        })->all();
+        
+        $itemObjs = $this->item->whereIn('id', $tagItemIds)->where(['open_status'=>1, 'is_potset'=>0])->get();
+        
+        //在庫有りなしでソートしたidを取得
+        $stockIds = $this->getStockSepIds($itemObjs); //$itemObjsはコレクション
+
+        //orderByRaw用の文字列
+        $strs = implode(',', $stockIds); //$strs = '"'. implode('","', $stockIds) .'"';
+
+        $items = $this->item->whereIn('id', $stockIds)->orderByRaw("FIELD(id, $strs)")->paginate($this->perPage);
+        //$items = $this->item->whereIn('id',$itemIds)->where(['open_status'=>1, 'is_potset'=>0])->orderBy('id', 'desc')->paginate($this->perPage);
+        
+        //Upper取得
+        $upperRelArr = Ctm::getUpperArr($tag->id, 'tag');
+        
+        $metaTitle = isset($tag->meta_title) ? $tag->meta_title : $tag->name;
+        $metaDesc = $tag->meta_description;
+        $metaKeyword = $tag->meta_keyword;
+        
+        $tag->timestamps = false;
+        $tag->increment('view_count');
+        
+        return view('main.archive.index', ['items'=>$items, 'tag'=>$tag, 'type'=>'tag', 'upperRelArr'=>$upperRelArr, 'metaTitle'=>$metaTitle, 'metaDesc'=>$metaDesc, 'metaKeyword'=>$metaKeyword,]);
+    }
+    
+    
+    private function getStockSepIds($itemObjs)
+    {
+    	
+        
+        //ここで渡される$itemObjsはコレクションなので、以下記述がいつもと異なることに注意
+        //$itemObjs = $itemObjs->where('open_status', 1)->where('is_potset', 0);とすることも可能
+        
+        //ORG : $whereArr = ['open_status'=>1, 'is_potset'=>0];
+        //$stockTrues = $this->item->where($whereArr)->whereNotIn('stock', [0])->orderBy('id', 'desc')->get()->map(function($obj){
+        
+        $stockTrues = $itemObjs->whereNotIn('stock', [0])->sortByDesc('id')->map(function($obj){
         	return $obj->id;
         })->all();
                 
-        $stockFalses = $this->item->where($whereArr)->where('stock', 0)->orderBy('id', 'desc')->get()->map(function($obj){
-        	return $obj->id;
+        $stockFalses = $itemObjs->where('stock', 0)->sortByDesc('id')->map(function($objSec){
+        	return $objSec->id;
         })->all();
         
         $stockIds = array_merge($stockTrues, $stockFalses);
         $potsStockFalses = array();
         
+        //pot親の時にpotの子のstockを見る
         foreach($stockIds as $stockId) {
         	$pots = $this->item->where(['is_potset'=>1, 'pot_parent_id'=>$stockId])->get();
             
@@ -361,94 +479,19 @@ class HomeController extends Controller
             } 
         }
         
-        $stockTrues = array_diff($stockTrues, $potsStockFalses);
+        //potSetの親はstockTrue,stockFalseどちらにも入る可能性があるので両方から重複idを取り除く
+        $stockTrues = array_diff($stockTrues, $potsStockFalses); //stockTrueから重複IDを削除
+        $stockFalses = array_diff($stockFalses, $potsStockFalses); //stockFalseから重複IDを削除
         
-        $stockFalses = array_diff($stockFalses, $potsStockFalses);
-        $stockFalses = array_merge($stockFalses, $potsStockFalses); 
-
+        $stockFalses = array_merge($stockFalses, $potsStockFalses); //stockFalseにmergeして、その中でsortする
         rsort($stockFalses); //降順 3,2,1,
         
-        $stockIds = array_merge($stockTrues, $stockFalses);
-
-        //Controller内でないと下記のダブルクオーテーションで囲まないと効かない(tag.blade.phpに記載あり)
-        $strs = implode(',', $stockIds);
-        //$strs = '"'. implode('","', $stockIds) .'"';
-
-        $items = $this->item->whereIn('id', $stockIds)->orderByRaw("FIELD(id, $strs)")->paginate($this->perPage);
+        return array_merge($stockTrues, $stockFalses); //重複を削除したstockTrueとstockFalseをmergeする
         
-        //$items = $this->item->where(['cate_id'=>$cate->id, 'open_status'=>1, 'is_potset'=>0])->orderBy('id', 'desc')->paginate($this->perPage);
-        //$items = $this->cateSec->where(['parent_id'=>$cate->id, ])->orderBy('updated_at', 'desc')->paginate($this->perPage);
-        
-        //Upper取得
-        $upperRelArr = Ctm::getUpperArr($cate->id, 'cate');
-        
-        $metaTitle = isset($cate->meta_title) ? $cate->meta_title : $cate->name;
-        $metaDesc = $cate->meta_description;
-        $metaKeyword = $cate->meta_keyword;
-        
-        $cate->timestamps = false;
-        $cate->increment('view_count');
-        
-        return view('main.archive.index', ['items'=>$items, 'cate'=>$cate, 'type'=>'category', 'upperRelArr'=>$upperRelArr, 'metaTitle'=>$metaTitle, 'metaDesc'=>$metaDesc, 'metaKeyword'=>$metaKeyword,]);
     }
     
-    //Sub Category Child
-    public function subCategory($slug, $subSlug)
-    {
-    	$cate = $this->category->where('slug', $slug)->first();
-        
-        if(!isset($cate)) {
-            abort(404);
-        }
-        
-        $subcate = $this->cateSec->where('slug',$subSlug)->first();
-        
-        if(!isset($subcate)) {
-            abort(404);
-        }
-        
-        $items = $this->item->where(['subcate_id'=>$subcate->id, 'open_status'=>1, 'is_potset'=>0])->orderBy('id', 'desc')->paginate($this->perPage);
-        
-        //Upper取得
-        $upperRelArr = Ctm::getUpperArr($subcate->id, 'subcate');
-        
-        $metaTitle = isset($subcate->meta_title) ? $subcate->meta_title : $subcate->name;
-        $metaDesc = $subcate->meta_description;
-        $metaKeyword = $subcate->meta_keyword;
-        
-        $subcate->timestamps = false;
-        $subcate->increment('view_count');
-        
-        return view('main.archive.index', ['items'=>$items, 'cate'=>$cate, 'subcate'=>$subcate, 'type'=>'subcategory', 'upperRelArr'=>$upperRelArr, 'metaTitle'=>$metaTitle, 'metaDesc'=>$metaDesc, 'metaKeyword'=>$metaKeyword,]);
-    }
     
-    //Tag
-    public function tag($slug)
-    {
-    	$tag = $this->tag->where('slug', $slug)->first();
-        
-        if(!isset($tag)) {
-            abort(404);
-        }
-        
-        $itemIds = $this->tagRel->where('tag_id',$tag->id)->get()->map(function($obj){
-        	return $obj -> item_id;
-        })->all();
-        
-        $items = $this->item->whereIn('id',$itemIds)->where(['open_status'=>1, 'is_potset'=>0])->orderBy('id', 'desc')->paginate($this->perPage);
-        
-        //Upper取得
-        $upperRelArr = Ctm::getUpperArr($tag->id, 'tag');
-        
-        $metaTitle = isset($tag->meta_title) ? $tag->meta_title : $tag->name;
-        $metaDesc = $tag->meta_description;
-        $metaKeyword = $tag->meta_keyword;
-        
-        $tag->timestamps = false;
-        $tag->increment('view_count');
-        
-        return view('main.archive.index', ['items'=>$items, 'tag'=>$tag, 'type'=>'tag', 'upperRelArr'=>$upperRelArr, 'metaTitle'=>$metaTitle, 'metaDesc'=>$metaDesc, 'metaKeyword'=>$metaKeyword,]);
-    }
+    
     
     public function create()
     {
