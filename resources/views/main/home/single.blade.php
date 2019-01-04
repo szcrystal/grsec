@@ -52,68 +52,77 @@ use App\TopSetting;
             <div class="single-left">
             
             	<?php //================================================================= ?>
+                
+                
+                
                 @if($item -> main_img)
-                <div id="carouselExampleIndicators" class="carousel slide" data-ride="false" data-interval="false">
+                    <div id="carouselExampleIndicators" class="carousel slide" data-ride="false" data-interval="false">
 
-                      <div class="carousel-inner">
-                        <div class="carousel-item active">
-                          <img class="d-block w-100" src="{{ Storage::url($item->main_img) }}" alt="First slide">
-                          
-                          @if(isset($item->main_caption))
-                          	<div class="carousel-caption d-block">
-                            	{{ $item->main_caption }}
-                          	</div>
-                          @endif
-                        </div>
-                        
-                        @foreach($imgsPri as $itemImg)
-                            @if($itemImg->img_path !== null )
-                            <div class="carousel-item">
-                              <img class="d-block w-100" src="{{ Storage::url($itemImg->img_path)}}" alt="Sub slide">
-                              
-                              @if(isset($itemImg->caption))
-                              	<div class="carousel-caption d-block">
-                                	{{ $itemImg->caption }}
-                              	</div>
-                              @endif
+                          <div class="carousel-inner">
+                            <div class="carousel-item active">
+                            	@if(isset($item->main_caption))
+                                	<?php $mainCaption = $item->main_caption; ?>
+                                    <div class="carousel-caption d-block">
+                                        {{ $mainCaption }}
+                                    </div>
+                                @endif
+                                  
+                                <a href="{{ Storage::url($item->main_img) }}" data-lightbox="{{ $item->number }}" data-title="{{ $mainCaption }}">
+                                    <img class="d-block w-100" src="{{ Storage::url($item->main_img) }}" alt="First slide">
+                                </a>
                             </div>
-                            @endif
-                        @endforeach
-                        
-                      
-                      
-                      <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"><i class="fal fa-angle-left"></i></span>
-                        <span class="sr-only">Previous</span>
-                      </a>
-                      <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"><i class="fal fa-angle-right"></i></span>
-                        <span class="sr-only">Next</span>
-                      </a>
-                      
-                      </div>
-                      
-                      <ol class="carousel-indicators clearfix">
-                        <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active">
-                        	<img class="img-fluid" src="{{ Storage::url($item->main_img) }}" alt="slide">
-                        </li>
-                        
-                        <?php 
-                        	$count = count($imgsPri);
-                            $n = 1;
-                        ?>
-                        
-                        @foreach($imgsPri as $img)
-                            @if($img->img_path !== null )
-                                <li data-target="#carouselExampleIndicators" data-slide-to="{{$n}}">
-                                    <img class="img-fluid" src="{{ Storage::url($img->img_path)}}" alt="slide">
-                                </li>
-                                
-                                <?php $n++; ?>
-                            @endif
-                        @endforeach
-                      </ol>
-                </div>
+                            
+                            @foreach($imgsPri as $itemImg)
+                                @if($itemImg->img_path !== null )
+                                    <div class="carousel-item">
+                                        @if(isset($itemImg->caption))
+                                        	<?php $caption = $itemImg->caption; ?>
+                                            <div class="carousel-caption d-block">
+                                                {{ $caption }}
+                                            </div>
+                                        @endif
+                                        
+                                        <a href="{{ Storage::url($itemImg->img_path)}}" data-lightbox="{{ $item->number }}" data-title="{{ $caption }}">
+                                            <img class="d-block w-100" src="{{ Storage::url($itemImg->img_path)}}" alt="Sub slide">
+                                        </a>
+                                    </div>
+                                @endif
+                            @endforeach
+                            
+                          
+                          
+                          <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"><i class="fal fa-angle-left"></i></span>
+                            <span class="sr-only">Previous</span>
+                          </a>
+                          <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"><i class="fal fa-angle-right"></i></span>
+                            <span class="sr-only">Next</span>
+                          </a>
+                          
+                          </div>
+                          
+                          <ol class="carousel-indicators clearfix">
+                            <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active">
+                                <img class="img-fluid" src="{{ Storage::url($item->main_img) }}" alt="slide">
+                            </li>
+                            
+                            <?php 
+                                $count = count($imgsPri);
+                                $n = 1;
+                            ?>
+                            
+                            @foreach($imgsPri as $img)
+                                @if($img->img_path !== null )
+                                    <li data-target="#carouselExampleIndicators" data-slide-to="{{$n}}">
+                                        <img class="img-fluid" src="{{ Storage::url($img->img_path)}}" alt="slide">
+                                    </li>
+                                    
+                                    <?php $n++; ?>
+                                @endif
+                            @endforeach
+                          </ol>
+                    </div>
                     
                 @else
                     <span class="no-img">No Image</span>

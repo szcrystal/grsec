@@ -868,13 +868,17 @@ body {
     bottom: 0;
     //left: 32%;
     //font-weight: bold;
-    font-size: 0.8em;
-    line-height: 0.8em;
+    font-size: 0.85em;
+    line-height: 0.85em;
     color: #fff;
     background: rgba(0,0,0,0.65);
     text-align: center;
     padding: 0.5em 0;
     z-index: 99;
+}
+.floar .img-box > span {
+	font-size: 0.75em;
+    padding: 0.5em 0 0.4em;
 }
 .top .img-box,
 .archive .img-box {
@@ -892,7 +896,7 @@ body {
 /*	height: 167px;*/
     height: auto;
 }
-.single-recom .floar .img-box { /* Single 3つ並び小img */
+.single-recom .floar .img-box { /* Single recommend 3つ並び小img */
 /*	height: 220px;*/
 	height: auto;
     //border: 1px solid #333;
@@ -904,6 +908,10 @@ body {
 }
 /* img-box END ******************************* */
 
+#lightbox .lb-data .lb-caption {
+	font-weight: normal !important;
+    font-size: 0.9em;
+}
 
 .tr-danger-border {
     background: #fcf2f2;

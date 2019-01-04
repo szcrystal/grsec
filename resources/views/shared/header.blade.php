@@ -35,6 +35,8 @@
     
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
     
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.10.0/css/lightbox.css" rel="stylesheet">
+    
     <?php
         $getNow = '';
         //if(Ctm::isLocal())

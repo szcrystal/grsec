@@ -733,6 +733,7 @@ var exe = (function() {
                     //$("html, body").animate({scrollTop:pos}, 500);
                 }
             }
+            
                 
         },
         

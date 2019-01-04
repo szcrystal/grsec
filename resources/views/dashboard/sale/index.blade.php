@@ -382,7 +382,7 @@ use App\PayMethodChild;
                   
                   <td style="line-height: 1em;">
                   	
-                        {{ Ctm::shortStr($saleRel->memo, 100) }}
+                        {{ Ctm::shortStr($saleRel->memo, 120) }}
                         
                         {{--
                         <small>

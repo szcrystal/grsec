@@ -61,11 +61,14 @@
                 </td>
 
                 <td>
-                	@if(strlen($obj->comment) > 100)
-					{{ substr($obj->comment, 0, 100) . "..." }}
-                    @else
-					{{ $obj->comment }}
-                    @endif
+                	<?php 
+//                    	$comment = trim($obj->comment);
+//                        $comment = str_replace("\n", '', $comment);
+                        //echo mb_strlen($obj->comment);  
+                    ?>
+                    
+                    {{ Ctm::shortStr($obj->comment, 100) }}
+                	
                 </td>
 
                 <td>
