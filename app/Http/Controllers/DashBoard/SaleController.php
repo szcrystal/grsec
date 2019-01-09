@@ -403,6 +403,7 @@ class SaleController extends Controller
     public function postSaleOrder(Request $request) 
     {
     	//$withPayDone = $request->has('with_paydone') ? $request->input('with_paydone') : 0;
+        $withPreview = $request->has('with_preview') ? $request->input('with_preview') : 0;
         $withMail = $request->has('with_mail') ? $request->input('with_mail') : 0;
         
         $templIds = $this->templIds;
@@ -531,13 +532,30 @@ class SaleController extends Controller
         
         $saleRel->deli_fee = $data['deli_fee'];
         $saleRel->information = $data['information'];
+        $saleRel->information_foot = $data['information_foot'];
         $saleRel->memo = $data['memo'];
         $saleRel->craim = $data['craim'];
         
         //$saleRel->fill($data);
         $saleRel->save();
         
+        //プレビュー表示 --------------------------------------------------------
+        if($withPreview) {
+            $templ = $this->templ->find($withPreview);
+                    
+        	if($templ->type_code == 'payDone') { //入金済みメール
+            	$previewRender = (new PayDone($saleRel->id))->render();
+            }
+            else {
+            	$previewRender = (new OrderMails($data['sale_ids'], $withPreview))->render();
+            }
+            
+            return redirect('dashboard/sales/order/'. $saleRel->order_number)->withInput()->with('preview', $previewRender);
+        }
+        
+        
         //メール送信 ------------------------------------------------------------
+        //elseif($withMail) {
         if($withMail) {
             $templ = $this->templ->find($withMail);
             
@@ -549,14 +567,13 @@ class SaleController extends Controller
                 //return redirect('dashboard/sales/order/'. $saleRel->order_number)->withInput()->with('preview', (new PayDone($saleRel->id))->render());
                 
                 $this->smf->updateOrCreate(
-                    ['sale_id'=>0, 'templ_id'=>$templ->id],
-                    ['is_mail' =>1, 'templ_code'=>$templ->type_code, 'information'=>$data['information']]
+                    ['sale_id'=>$saleRel->id, 'templ_id'=>$templ->id], //ここだけsale_idはsalerel_idをセットなので注意
+                    ['is_mail' =>1, 'templ_code'=>$templ->type_code, 'information'=>$data['information'], 'information_foot'=>$data['information_foot']]
                 );
                 
                     
                 //if(! $mail) {
                 //$status = '入金済みメールが送信されました。('. $mail . ')';
-                
     //            } 
     //            else {
     //                $errors = array('入金済みメールの送信に失敗しました。('. $mail . ')');
@@ -592,7 +609,7 @@ class SaleController extends Controller
                     
                     $this->smf->updateOrCreate(
                         ['sale_id'=>$sale->id, 'templ_id'=>$templ->id],
-                        ['is_mail' =>1, 'templ_code'=>$templ->type_code, 'information'=>$data['information']]
+                        ['is_mail' =>1, 'templ_code'=>$templ->type_code, 'information'=>$data['information'], 'information_foot'=>$data['information_foot']]
                     );
              
                 }
@@ -600,7 +617,7 @@ class SaleController extends Controller
                 $mail = Mail::to($data['user_email'], $data['user_name'])->queue(new OrderMails($data['sale_ids'], $withMail)); //sale_ids->メール送信する複数商品　$withMail->メールテンプレのID
             }
             
-            $status = $templ->type_name . 'メールが送信されました。('. $mail . ')';
+            $status = '「' . $templ->type_name . '」メールが送信されました。'; //('. $mail . ')
             //return redirect('dashboard/sales/order/'. $saleRel->order_number)->with('status', $status);
         }
         else {

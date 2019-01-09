@@ -192,16 +192,16 @@ label em {
 	height: 90%;
     width: 60%;
     background: #fdfcfb;
-    //overflow-y: scroll;
+    overflow-y: scroll;
     position: fixed;
     z-index: 998;
     top: 5em;
-    padding: 4em 1.5em 1.5em;
+    padding: 3em 1.5em 4em;
 }
 .mail-preview {
 	font-size: 0.95em;
     //z-index: 9;
-    height: 83%;
+    height: 78%;
     width: 80%;
     overflow-y: scroll;
     background: #fdfdfd;
@@ -217,9 +217,8 @@ label em {
     width: 2.8em;
     text-align: center;
     top: 4.3em;
-    left: 100%;
+    left: 50%;
     z-index: 999;
-    color: green;
     background: #3a3a3a;
     color: #fff;
     padding: 0.5em 0;

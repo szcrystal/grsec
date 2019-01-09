@@ -35,9 +35,7 @@ use App\TopSetting;
         @endif
         
         
-        @if(!Ctm::isEnv('product'))
-        	@include('main.shared.upper')
-        @endif
+        @include('main.shared.upper')
         
         {{--
         @if(isset($item->free_space))
@@ -52,8 +50,6 @@ use App\TopSetting;
             <div class="single-left">
             
             	<?php //================================================================= ?>
-                
-                
                 
                 @if($item -> main_img)
                     <div id="carouselExampleIndicators" class="carousel slide" data-ride="false" data-interval="false">

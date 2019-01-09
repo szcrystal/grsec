@@ -711,7 +711,7 @@ var exe = (function() {
             var $mpWrap = $('.mail-preview-wrap');
             
             if($mpWrap.is(':hidden')) {
-            	$('.preview-tgl').css({left:w-18});
+            	$('.preview-tgl').css({left:$('.btn-box').position().left - 70});
                 
             	$mpWrap.css({width:w, height:h, top:posi.top, left:n}).fadeIn(300, function(){
                 

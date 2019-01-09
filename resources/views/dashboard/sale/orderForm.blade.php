@@ -6,6 +6,7 @@ use App\Item;
 use App\Setting;
 use App\PayMethod;
 use App\DeliveryCompany;
+use App\MailTemplate;
 use App\SendMailFlag;
 use App\PayMethodChild;
 ?>
@@ -64,20 +65,35 @@ use App\PayMethodChild;
             {{ csrf_field() }}
             
             
-            @if (session('preview'))
-
-                <div class="preview-tgl"><b><i class="fa fa-times"></i></b></div>
+            @if(session('preview'))
+            
+                <div class="preview-tgl">
+                	<b><i class="fa fa-times"></i></b>
+                </div>
                 
                 <div class="mail-preview-wrap">
+                	
+                    <?php
+                    	$templateId = old('with_preview');
+                    	$typeName = MailTemplate::find($templateId)->type_name;
+                    ?>
+                    
+                    <div style="margin-left: 28%;" class="form-group clearfix mt-0 w-25">
+                    	<p class="text-center p-0 m-0"><b>{{ $typeName }}メール</b></p>
+                        <button type="submit" class="btn btn-primary w-100 text-white py-2 d-inline-block" name="with_mail" value="{{ $templateId }}"><i class="fa fa-envelope"></i> 送信</button>
+                    </div>
 
                     <div class="mail-preview">
                         {!! session('preview') !!}
                     </div>
                     
-                    <div style="margin-left: 28%;" class="form-group clearfix mt-3 w-25">
-                        <button type="submit" class="btn btn-success w-100 text-white py-2" name="with_mail" value="{{ $templs['payDone'] }}"><i class="fa fa-thumbs-up"></i> 送信</button>
+                    <div style="margin-left: 28%;" class="form-group clearfix mt-2 w-25">
+                    	<p class="text-center p-0 m-0"><b>{{ $typeName }}メール</b></p>
+                        <button type="submit" class="btn btn-primary w-100 text-white py-2 d-inline-block" name="with_mail" value="{{ $templateId }}"><i class="fa fa-envelope"></i> 送信</button>
                     </div>
+                    
                 </div>
+                
             @endif
             
 
@@ -569,8 +585,10 @@ use App\PayMethodChild;
                 </div>
                 
                 <div class="mt-3">
-                	<fieldset class="mb-2 form-group{{ $errors->has('information') ? ' is-invalid' : '' }}">
-                        <label for="detail" class="control-label">ご連絡事項（ユーザー反映）<span class="text-small">（ホワイトボード的役割。全てのメールテンプレに反映されるので、非反映の場合は空にして下さい。）</span></label>
+                	<h6>ご連絡事項（ユーザー反映/ホワイトボード）<span class="text-small">（全てのメールテンプレに反映されるので、非反映の場合は空にして下さい。）</span></h6>
+                    
+                	<fieldset class="mt-3 mb-4 form-group{{ $errors->has('information') ? ' is-invalid' : '' }}">
+                        <label for="information" class="control-label">ヘッダー内（商品情報の直上部分）</label>
 
                             <textarea id="information" class="form-control" name="information" rows="12">{{ Ctm::isOld() ? old('information') : (isset($saleRel) ? $saleRel->information : '') }}</textarea>
 
@@ -579,8 +597,23 @@ use App\PayMethodChild;
                                     <strong class="text-danger">{{ $errors->first('information') }}</strong>
                                 </span>
                             @endif
-                    </fieldset>   
+                    </fieldset>
+                    
+                    @if(Ctm::isEnv('local'))
+                    <fieldset class="mb-2 form-group{{ $errors->has('information_foot') ? ' is-invalid' : '' }}">
+                        <label for="information_foot" class="control-label">フッター内（商品情報の直下部分）</label>
+
+                            <textarea id="information" class="form-control" name="information_foot" rows="12">{{ Ctm::isOld() ? old('information_foot') : (isset($saleRel) ? $saleRel->information_foot : '') }}</textarea>
+
+                            @if ($errors->has('information_foot'))
+                                <span class="help-block">
+                                    <strong class="text-danger">{{ $errors->first('information_foot') }}</strong>
+                                </span>
+                            @endif
+                    </fieldset>
+                    @endif
                 </div>
+
                 
                 <hr class="mt-5">
                 
@@ -624,12 +657,9 @@ use App\PayMethodChild;
                     <div class="clearfix">
                     
                     @if($saleRel->pay_method == 2 || $saleRel->pay_method == 6 || Ctm::isEnv('local'))
-                        
-                        {{-- @if( ! $saleRel->pay_done || Ctm::isEnv('local'))  --}}                   
-                            <div class="form-group clearfix my-3">
-                                <button type="submit" class="btn btn-danger col-md-12 text-white py-2" name="with_mail" value="{{ $templs['payDone'] }}"><i class="fa fa-yen"></i> 入金済</button>
-                            </div>
-                        {{-- @endif --}}
+                        <div class="form-group clearfix my-3">
+                            <button type="submit" class="btn btn-danger col-md-12 text-white py-2" name="with_mail" value="{{ $templs['payDone'] }}"><i class="fa fa-yen"></i> 入金済</button>
+                        </div>
                     @endif
                     
                     

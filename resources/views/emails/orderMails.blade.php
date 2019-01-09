@@ -6,13 +6,13 @@
 
 
 {{ $user['name'] }} 様
-<br>
-<p>※このメールは配信専用メールのため、ご返信いただけません。</p>
-
 @if($isUser)
+<br><br>
+※このメールは配信専用メールのため、ご返信いただけません。
+<br><br>
 {!! nl2br( $templ->header ) !!}
 @else
-よりご注文がありました。<br>
+<br>よりご注文がありました。<br>
 ご注文内容は下記となります。
 @endif
 <br>
@@ -119,7 +119,11 @@ $allTotal = $saleRel->all_price + $saleRel->deli_fee + $saleRel->cod_fee - $sale
 <hr>
 <br>
 @if($isUser)
-{!! nl2br( $templ->footer ) !!}
+	@if(isset($saleRel->information_foot) && $saleRel->information_foot != '')
+    	{!! nl2br($saleRel->information_foot) !!}<br><br><br>
+    @endif
+	
+    {!! nl2br( $templ->footer ) !!}
 @endif
 
 <br><br><br><br>

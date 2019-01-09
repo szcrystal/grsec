@@ -23,12 +23,12 @@ class AddColumnToCatesec extends Migration
         	$table->integer('snap_news')->after('cot_per')->nullable()->default(1);
             
             $table->integer('snap_block_a')->after('snap_secondary')->nullable()->default(1);
-            $table->integer('snap_block_b')->after('snap_block_a')->nullable()->default(4);
+            $table->integer('snap_block_b')->after('snap_block_a')->nullable()->default(3);
             $table->integer('snap_block_c')->after('snap_block_b')->nullable()->default(6);
             
         });
         
-        //Settingにsnap_newsのカラム追加
+        //tag_relationsにsort_numのカラム追加 Item編集でタグ順を可能にするため
     	Schema::table('tag_relations', function (Blueprint $table) {
         	$table->integer('sort_num')->after('tag_id')->nullable()->default(null);
         });

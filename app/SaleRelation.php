@@ -37,6 +37,7 @@ class SaleRelation extends Model
         'pay_state',
 		
         'information',
+        'information_foot',
         'memo',
         'craim',
         

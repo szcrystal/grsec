@@ -2,11 +2,12 @@
 @if(count($upperRelArr) > 0)
 
 <?php
-//    print_r($upperRelArr);
-//    exit;
 
     $chunkNum = 0;
     $chunkNumArr = ['a'=>1, 'b'=>3, 'c'=>3];
+    
+//    print_r($upperRelArr);
+//    exit;
 ?>
 
 <div class="upper-wrap">
@@ -15,6 +16,8 @@
         <?php
             //ここでのblockKeyは [a],[b],[c]
             $chunkNum++;
+            
+            //echo count($upperRels);
         ?>
         
         <div class="block-wrap">
@@ -30,7 +33,7 @@
                     
                 @elseif($key === 'section')
                     
-                    @if($upperRel->title != '')
+                    @if(isset($upperRel->title) && $upperRel->title != '')
                         <h3>{!! $upperRel->title !!}</h3>
                     @endif
                     

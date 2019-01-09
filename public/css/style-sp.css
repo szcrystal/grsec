@@ -1167,12 +1167,13 @@ ORG END ======================== */
     }
     
     /* upper item upper */
-    .upper-wrap {
+    .single .upper-wrap {
         padding-top: 0.8em;
         //border: 1px solid red;
     }
     .upper-wrap h3 {
     	font-size: 1.4em;
+        //margin: 1em 0 0.7em;
     }
     .upper-wrap h4 {
     	font-size: 1.2em;
@@ -1185,7 +1186,7 @@ ORG END ======================== */
     }
 
     .block-wrap {
-		margin-bottom: 1.2em;
+		//margin-bottom: 1.2em;
         //border: 1px solid red;
     }
     .a-block,
@@ -1211,12 +1212,16 @@ ORG END ======================== */
         width: 100%;
         float: none;
         margin-left: 0;
-        margin-bottom: 1.4em;
+        margin-bottom: 1.8em;
     }
     .a-block div:nth-of-type(2n) {
         margin-left: 0;
     }
-    /* upper item upper END */
+    .b-block,
+	.c-block { /* img textを囲む個別のwrap */
+		padding-bottom: 1.3em;
+    }
+    /* upper item upper END *********** */
 
     
     

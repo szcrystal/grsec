@@ -13,5 +13,6 @@ class SendMailFlag extends Model
         'is_mail',
         'type',
 		'information',
+        'information_foot',
     ];
 }
