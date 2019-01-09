@@ -60,7 +60,10 @@ use App\TopSetting;
 
                           <div class="carousel-inner">
                             <div class="carousel-item active">
-                            	@if(isset($item->main_caption))
+                            	
+                                <?php $mainCaption = ''; ?>
+                            	
+                                @if(isset($item->main_caption))
                                 	<?php $mainCaption = $item->main_caption; ?>
                                     <div class="carousel-caption d-block">
                                         {{ $mainCaption }}
@@ -73,6 +76,9 @@ use App\TopSetting;
                             </div>
                             
                             @foreach($imgsPri as $itemImg)
+                            	
+                                <?php $caption = ''; ?>
+                                
                                 @if($itemImg->img_path !== null )
                                     <div class="carousel-item">
                                         @if(isset($itemImg->caption))
