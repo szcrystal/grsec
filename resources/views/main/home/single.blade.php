@@ -65,10 +65,16 @@ use App\TopSetting;
                                         {{ $mainCaption }}
                                     </div>
                                 @endif
-                                  
+                                
+                                @if(! Ctm::isAgent('sp'))
                                 <a href="{{ Storage::url($item->main_img) }}" data-lightbox="{{ $item->number }}" data-title="{{ $mainCaption }}">
+                                @endif
+                               
                                     <img class="d-block w-100" src="{{ Storage::url($item->main_img) }}" alt="First slide">
+                                
+                                @if(! Ctm::isAgent('sp'))
                                 </a>
+                                @endif
                             </div>
                             
                             @foreach($imgsPri as $itemImg)
@@ -84,9 +90,15 @@ use App\TopSetting;
                                             </div>
                                         @endif
                                         
+                                        @if(! Ctm::isAgent('sp'))
                                         <a href="{{ Storage::url($itemImg->img_path)}}" data-lightbox="{{ $item->number }}" data-title="{{ $caption }}">
+                                        @endif
+                                        
                                             <img class="d-block w-100" src="{{ Storage::url($itemImg->img_path)}}" alt="Sub slide">
+                                        
+                                        @if(! Ctm::isAgent('sp'))
                                         </a>
+                                        @endif
                                     </div>
                                 @endif
                             @endforeach

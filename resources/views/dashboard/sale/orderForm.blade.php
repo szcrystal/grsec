@@ -585,10 +585,10 @@ use App\PayMethodChild;
                 </div>
                 
                 <div class="mt-3">
-                	<h6>ご連絡事項（ユーザー反映/ホワイトボード）<span class="text-small">（全てのメールテンプレに反映されるので、非反映の場合は空にして下さい。）</span></h6>
+                	<h6></h6>
                     
                 	<fieldset class="mt-3 mb-4 form-group{{ $errors->has('information') ? ' is-invalid' : '' }}">
-                        <label for="information" class="control-label">ヘッダー内（商品情報の直上部分）</label>
+                        <label for="information" class="control-label">ご連絡事項（ユーザー反映/ホワイトボード）<span class="text-small">（全てのメールテンプレに反映されるので、非反映の場合は空にして下さい。）</span></label>
 
                             <textarea id="information" class="form-control" name="information" rows="12">{{ Ctm::isOld() ? old('information') : (isset($saleRel) ? $saleRel->information : '') }}</textarea>
 
