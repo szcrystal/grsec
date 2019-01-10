@@ -203,14 +203,25 @@ class HomeController extends Controller
         
         if($path == 'new-items') {
         
-            $scIds = $this->itemSc->orderBy('updated_at','desc')->take(100)->get()->map(function($isc){
-                return $isc->item_id;
-            })->all();
+            $scs = $this->itemSc->orderBy('updated_at','desc')/*->take(100)*/->get();
+//            ->map(function($isc){
+//                	return $isc->item_id;
+//            })->all();
+            
+            $scIds = array();
+            
+            foreach($scs as $sc) {
+            	$i = $this->item->whereIn('id', [$sc->item_id])->where($whereArr)->get();
+                if($i->isNotEmpty()) {
+                	$scIds[] = $sc->item_id;
+                }
+            }
             
             if(count($scIds) > 0) {
-            	//$scIds = array_splice($scIds, 100);
+            	$scIds = array_slice($scIds, 0, 100);
                 $scIdStr = implode(',', $scIds);
-                $items = $this->item->whereIn('id', $scIds)->where($whereArr)->orderByRaw("FIELD(id, $scIdStr)")/*->take(100)*/->paginate($this->perPage); //paginateにtake()が効かない
+                
+                $items = $this->item->whereIn('id', $scIds)/*->where($whereArr)*/->orderByRaw("FIELD(id, $scIdStr)")/*->take(100)*/->paginate($this->perPage); //paginateにtake()が効かない  
             }
             
             $title = '新着情報';
