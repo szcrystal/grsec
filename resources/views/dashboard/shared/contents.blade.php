@@ -107,9 +107,11 @@
     
     <hr class="mt-5 mb-3 border-0">
     
-    <h5>TOPヘッダースライド画像</h5>
     @if(isset($type) && $type == 'top')
-        <label class="mt-3 mb-4"><span class="text-small p-0 m-0">*（縦横サイズは任意、全ての画像を同じサイズで揃えて下さい。）</span></label>   
+    	<h5>TOPヘッダースライド画像</h5>
+        <label class="mt-3 mb-4"><span class="text-small p-0 m-0">*（縦横サイズは任意、全ての画像を同じサイズで揃えて下さい。）</span></label> 
+    @else
+    	<h5>コンテンツ画像</h5>
     @endif
     
     <div class="clearfix mb-3">
