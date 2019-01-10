@@ -532,7 +532,7 @@ class SaleController extends Controller
         
         $saleRel->deli_fee = $data['deli_fee'];
         $saleRel->information = $data['information'];
-        $saleRel->information_foot = $data['information_foot'];
+        //$saleRel->information_foot = $data['information_foot'];
         $saleRel->memo = $data['memo'];
         $saleRel->craim = $data['craim'];
         
@@ -568,7 +568,12 @@ class SaleController extends Controller
                 
                 $this->smf->updateOrCreate(
                     ['sale_id'=>$saleRel->id, 'templ_id'=>$templ->id], //ここだけsale_idはsalerel_idをセットなので注意
-                    ['is_mail' =>1, 'templ_code'=>$templ->type_code, 'information'=>$data['information'], 'information_foot'=>$data['information_foot']]
+                    [
+                    	'is_mail' =>1, 
+                        'templ_code'=>$templ->type_code, 
+                        'information'=>$data['information'], 
+                        //'information_foot'=>$data['information_foot'],
+                    ]
                 );
                 
                     
@@ -609,7 +614,12 @@ class SaleController extends Controller
                     
                     $this->smf->updateOrCreate(
                         ['sale_id'=>$sale->id, 'templ_id'=>$templ->id],
-                        ['is_mail' =>1, 'templ_code'=>$templ->type_code, 'information'=>$data['information'], 'information_foot'=>$data['information_foot']]
+                        [
+                        	'is_mail' =>1, 
+                            'templ_code'=>$templ->type_code, 
+                            'information'=>$data['information'], 
+                            //'information_foot'=>$data['information_foot'],
+                        ]
                     );
              
                 }
