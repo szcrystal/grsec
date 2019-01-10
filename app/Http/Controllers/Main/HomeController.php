@@ -203,12 +203,12 @@ class HomeController extends Controller
         
         if($path == 'new-items') {
         
-            $scIds = $this->itemSc->orderBy('updated_at','desc')->get()->map(function($isc){
+            $scIds = $this->itemSc->orderBy('updated_at','desc')->take(100)->get()->map(function($isc){
                 return $isc->item_id;
             })->all();
             
             if(count($scIds) > 0) {
-            	$scIds = array_splice($scIds, 100);
+            	//$scIds = array_splice($scIds, 100);
                 $scIdStr = implode(',', $scIds);
                 $items = $this->item->whereIn('id', $scIds)->where($whereArr)->orderByRaw("FIELD(id, $scIdStr)")/*->take(100)*/->paginate($this->perPage); //paginateにtake()が効かない
             }
