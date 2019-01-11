@@ -1161,14 +1161,17 @@ ORG END ======================== */
     	margin-right: 0;
     }
     
-    
     .tab-content {
     	min-height: 300px;
     }
     
     /* upper item upper */
     .single .upper-wrap {
-        padding-top: 0.8em;
+        padding-top: 1px;
+        //border: 1px solid red;
+    }
+    .upper-wrap + .head-frame .single-left {
+    	margin-top: 1.5em;
         //border: 1px solid red;
     }
     .upper-wrap h3 {

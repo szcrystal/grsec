@@ -295,16 +295,8 @@ class SaleController extends Controller
         
         $data = $request->all();
 
-//        if(isset($data['only_craim'])) {
-//            $saleModel = $this->sale->find($data['saleId']);
-//            $saleModel->craim = $data['craim'];
-//            $saleModel->save();
-//         	
-//          	$status = "クレームが更新されました。";   
-//            return redirect('dashboard/sales/'. $data['saleId'])->with('status', $status);
-//        }
-
 		$data['is_cancel'] = isset($data['is_cancel']) ? $data['is_cancel'] : 0;
+        $data['is_keep'] = isset($data['is_keep']) ? $data['is_keep'] : 0;
         
         $saleModel = $this->sale->find($data['saleId']); //saleIdとsale_idsの両方あるので注意
         $saleModel->fill($data); //ここでのdeli_feeの更新は不要かも
@@ -318,40 +310,40 @@ class SaleController extends Controller
         $item->cost_price = $data['cost_price'];
         $item->save();
         
-        $sales = $this->sale->find($data['sale_ids']); //saleIdとsale_idsの両方あるので注意
+        //$sales = $this->sale->find($data['sale_ids']); //saleIdとsale_idsの両方あるので注意
                 
         //同時メールを選択した商品に対しての更新
-        foreach($sales as $obj) {
-        	if($obj->id != $saleModel->id) {
-            	$obj->deli_company = $data['deli_company'];
-                $obj->deli_slip_num = $data['deli_slip_num'];
-            	$obj->deli_schedule_date = $data['deli_schedule_date'];
-                $obj->information = $data['information'];
-
-                $obj->save();
-            }
-        }
+//        foreach($sales as $obj) {
+//        	if($obj->id != $saleModel->id) {
+//            	$obj->deli_company = $data['deli_company'];
+//                $obj->deli_slip_num = $data['deli_slip_num'];
+//            	$obj->deli_schedule_date = $data['deli_schedule_date'];
+//                $obj->information = $data['information'];
+//
+//                $obj->save();
+//            }
+//        }
         
             
-        if(isset($data['only_up'])) {  
+        //if(isset($data['only_up'])) {  
         	$status = "更新されました。";   
             return redirect('dashboard/sales/'. $data['saleId'])->with('status', $status);
-		}
-        elseif(isset($data['with_mail'])) { 
-            $mail = Mail::to($data['user_email'], $data['user_name'])->queue(new OrderSend($saleModel->id, $data['sale_ids']));
-            
-    	//if(! $mail) {
-        	$status = '発送済みメールが送信されました。('. $mail . ')';
-        
-            $sales = $this->sale->find($data['sale_ids']);
-            foreach($sales as $sale) {
-                $sale->deli_done = 1;
-                $sale->deli_start_date = date('Y-m-d H:i:s', time());
-                $sale ->save();      
-        	}   
-
-        	return redirect('dashboard/sales/'. $data['sale_ids'][0])->with('status', $status);
-        }
+//		}
+//        elseif(isset($data['with_mail'])) { 
+//            $mail = Mail::to($data['user_email'], $data['user_name'])->queue(new OrderSend($saleModel->id, $data['sale_ids']));
+//            
+//    	//if(! $mail) {
+//        	$status = '発送済みメールが送信されました。('. $mail . ')';
+//        
+//            $sales = $this->sale->find($data['sale_ids']);
+//            foreach($sales as $sale) {
+//                $sale->deli_done = 1;
+//                $sale->deli_start_date = date('Y-m-d H:i:s', time());
+//                $sale ->save();      
+//        	}   
+//
+//        	return redirect('dashboard/sales/'. $data['sale_ids'][0])->with('status', $status);
+//        }
     }
     
     //1注文の詳細 & ご注文情報 Get

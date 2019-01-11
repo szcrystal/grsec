@@ -44,6 +44,7 @@ class Sale extends Model
         'deli_done',
         
         'is_cancel',
+        'is_keep',
         
 //        'thanks_done',
 //        'stocknow_done',

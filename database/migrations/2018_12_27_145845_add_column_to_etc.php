@@ -25,6 +25,11 @@ class AddColumnToEtc extends Migration
         Schema::table('send_mail_flags', function (Blueprint $table) {
         	$table->text('information_foot')->after('information')->nullable()->default(NULL);
         });
+        
+        
+        Schema::table('sales', function (Blueprint $table) {
+        	$table->boolean('is_keep')->after('deli_done')->nullable()->default(0);
+        });
     }
 
     /**
@@ -49,6 +54,12 @@ class AddColumnToEtc extends Migration
         if (Schema::hasColumn('send_mail_flags', 'information_foot')) {
             Schema::table('send_mail_flags', function (Blueprint $table) {
                 $table->dropColumn('information_foot');
+            });
+        }
+        
+        if (Schema::hasColumn('sales', 'is_keep')) {
+            Schema::table('sales', function (Blueprint $table) {
+                $table->dropColumn('is_keep');
             });
         }
         

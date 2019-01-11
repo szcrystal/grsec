@@ -235,9 +235,9 @@ use App\PayMethodChild;
                 <tr>
                 	<th>ID</th>
                     <th>購入日</th>
-                    <th>ステータス</th>
-                    <th>購入者</th>
-                    <th>決済方法</th>
+                    <th style="min-width:5em;">ステータス</th>
+                    <th style="width:5em;">購入者</th>
+                    <th style="min-width:3em;">決済方法</th>
                     <th>発送状況/出荷日</th>
                     <th>メモ</th>
                     <th>金額計（税込）</th>
@@ -272,45 +272,60 @@ use App\PayMethodChild;
                 	<?php
                  		$sales = $saleSingle->where('salerel_id', $saleRel->id)->get();
                         
-                        $cancels = $saleSingle->where('salerel_id', $saleRel->id)->get()->map(function($obj){
+                        $cancels = $sales->map(function($obj){
                         	return $obj->is_cancel;
                         })->all();
                         
-                        $deliDone = $saleSingle->where('salerel_id', $saleRel->id)->get()->map(function($obj){
+                        $deliDone = $sales->map(function($obj){
                         	return $obj->deli_done;
+                        })->all();
+                        
+                        $keeps = $sales->map(function($obj){
+                        	return $obj->is_keep;
                         })->all();
                         
                         $status = '';
                         $allCancel = 0;
                         $allDeliDone = 0;
+                        $allKeep = 0;
                         $class = '';
                         
                         if ( count(array_unique($cancels)) === 1 ) {
                         	if($cancels[0]) {
-                            	$status = '<span class="text-danger">全キャンセル</span>';
+                            	$status = '<div class="text-danger">全キャンセル</div>';
                                 $allCancel = 1;
                             }
                             else {
                             	if ( count(array_unique($deliDone)) === 1 ) {
                                 	if($deliDone[0]) {
-                                    	$status = '<span class="text-success">全発送済</span>';
+                                    	$status = '<div class="text-success">全発送済</div>';
                                         $allDeliDone = 1;
                                     }
                                     else {
-                                    	$status = '<span class="text-orange">全未発送</span>';
+                                    	$status = '<div class="text-orange">全未発送</div>';
                                     }
                                 }
                                 else {
-                                	$status = '<span class="text-orange">一部未発送</span>';
+                                	$status = '<div class="text-orange">一部未発送</div>';
                                 }
-                            	
                             }
                         }
                         else {
-                        	$status = '<span class="text-danger">一部キャンセル</span>';
+                        	$status = '<div class="text-danger">一部キャンセル</div>';
                         }
                         
-						$class = $allCancel ? 'bg-pink' : ($allDeliDone ? 'bg-green' : '');  
+                        
+                        if ( count(array_unique($keeps)) === 1 ) {
+                            if($keeps[0]) {
+                                $status .= '<div class="text-dark">全取置き</div>';
+                                $allKeep = 1;
+                            }
+                        }
+                        else {
+                            $status .= '<div class="text-dark">一部取置き</div>';
+                        }
+                        
+						$class = $allCancel ? 'bg-pink' : ($allDeliDone ? 'bg-green' : '' );  
                     
                  	?>   
                 
@@ -332,7 +347,7 @@ use App\PayMethodChild;
                   <td><span class="text-small">{{ $saleRel->order_number }}</span></td>
                   --}}
                   
-                  <td>
+                  <td style="word-break:break-all;">
                   	@if($saleRel->is_user)
                 		<span class="text-primary"><small>会員</small></span><br>{{ $users->find($saleRel->user_id)->name }}
                 	@else
@@ -372,7 +387,11 @@ use App\PayMethodChild;
                                     <span class="text-success">発送済</span>
                                     {{ Ctm::changeDate($sale->deli_sended_date, 1) }}
                                  @else
+                                 	@if($sale->is_keep)
+                                    <span class="text-dark">取置き</span>
+                                    @else
                                     <span class="text-orange">未発送</span>
+                                    @endif
                                 @endif
                             @endif
                         </a>

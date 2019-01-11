@@ -209,18 +209,21 @@ class HomeController extends Controller
 //            })->all();
             
             $scIds = array();
+            $n = 0;
             
             foreach($scs as $sc) {
+            	if($n > 99) break;
+                
             	$i = $this->item->whereIn('id', [$sc->item_id])->where($whereArr)->get();
                 if($i->isNotEmpty()) {
                 	$scIds[] = $sc->item_id;
+                    $n++;
                 }
             }
             
             if(count($scIds) > 0) {
-            	$scIds = array_slice($scIds, 0, 100);
+            	//$scIds = array_slice($scIds, 0, 100);
                 $scIdStr = implode(',', $scIds);
-                
                 $items = $this->item->whereIn('id', $scIds)/*->where($whereArr)*/->orderByRaw("FIELD(id, $scIdStr)")/*->take(100)*/->paginate($this->perPage); //paginateにtake()が効かない  
             }
             

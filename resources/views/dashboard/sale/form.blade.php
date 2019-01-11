@@ -556,6 +556,35 @@ use App\Setting;
                                 <td><span style="font-size:1.2em;">¥{{ number_format($total + $all) }}</span></td>
                             </tr>
 
+							<tr>
+                            	<th></th>
+                                <td>
+                                	<fieldset class="form-group checkbox">
+                                        <label class="{{ $errors->has('is_keep') ? 'is-invalid' : '' }}">
+                                            <?php
+                                                $checked = '';
+                                                if(Ctm::isOld()) {
+                                                    if(old('is_keep'))
+                                                        $checked = ' checked';
+                                                }
+                                                else {
+                                                    if(isset($sale) && $sale->is_keep) {
+                                                        $checked = ' checked';
+                                                    }
+                                                }
+                                            ?>
+                                            <input type="checkbox" name="is_keep" value="1"{{ $checked }}> お取り置きにする
+                                        </label>
+                                        
+                                        @if ($errors->has('is_keep'))
+                                            <br><span class="help-block text-danger text-small">
+                                                {{ $errors->first('is_keep') }}
+                                            </span>
+                                        @endif
+                                        
+                                    </fieldset>
+                                </td>
+                            </tr>
 							
                             <tr>
                             	<th></th>
@@ -587,25 +616,6 @@ use App\Setting;
                                 </td>
                             </tr>
                             
-                            {{--
-                            <tr>
-                                <th>対応状況</th>
-                                <td>
-                                    <div class="form-group{{ $errors->has('status') ? ' has-error' : '' }}">
-                                        <div class="col-md-10">
-                                            <div class="checkbox">
-                                                <label>
-                                                    <input type="checkbox" name="status" value="1"{{isset($contact) && $contact->status ? ' checked' : '' }}> 対応済みにする
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            --}}
-
-                            
-
                         </tbody>
                     </table>
                 </div>
