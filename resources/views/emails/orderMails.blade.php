@@ -21,6 +21,7 @@
 【グリーンロケットからのお知らせ】<br>
 {!! nl2br($saleRel->information) !!}<br><br>
 @endif
+
 <hr>
 【ご注文番号】：{{ $saleRel->order_number }}<br>
 【ご注文日】：{{ Ctm::changeDate($saleRel->created_at, 1) }}<br>

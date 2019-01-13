@@ -191,7 +191,7 @@ class SingleController extends Controller
         
         if(cache()->has('cacheIds')) {
         	
-        	$cacheIds = cache('cacheIds'); //pullで元キャッシュを一旦削除する必要がある
+        	$cacheIds = cache()->pull('cacheIds'); //pullで元キャッシュを一旦削除する必要がある
             $caches = implode(',', $cacheIds); //順を逆にする
             
             $chunkNum = Ctm::isAgent('sp') ? $getNum/2 : $getNum;
@@ -206,7 +206,7 @@ class SingleController extends Controller
         	$count = array_unshift($cacheIds, $item->id); //配列の最初に追加
          	
           	if($count > 16) {
-            	$cacheIds = array_slice($cacheIds, 0, 15); //16個分を切り取る
+            	$cacheIds = array_slice($cacheIds, 0, 16); //16個分を切り取る
         	}      
         }
         else { //配列にidがある時  
@@ -229,7 +229,7 @@ class SingleController extends Controller
         }
 
 		cache()->forget('cacheIds');
-        cache(['cacheIds'=>$cacheIds], env('CACHE_TIME', 43200)); //putのはず? 上書きではなく後ろに追加されている
+        cache(['cacheIds'=>$cacheIds], env('CACHE_TIME', 43200)); //put 上書きではなく後ろに追加されている
         
 //        print_r(cache('cacheIds'));
 //        exit;
