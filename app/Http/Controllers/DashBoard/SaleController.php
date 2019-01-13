@@ -401,7 +401,7 @@ class SaleController extends Controller
         $templIds = $this->templIds;
         
         //payDoneだけ若干特殊なのでswitchを作る
-        $withPayDone = $withMail == $templIds['payDone'] ? 1 : 0;
+        $withPayDone = $withPreview == $templIds['payDone'] ? 1 : 0;
         
  /*       
 //        $rules = [
@@ -445,7 +445,7 @@ class SaleController extends Controller
             $this->validate($request, $rules, $messages);
 		}
         
-        if($withMail && ! $withPayDone) {
+        if($withPreview && ! $withPayDone) {
         	$rules = [
                 'sale_ids' => 'required',
             ];
@@ -457,7 +457,7 @@ class SaleController extends Controller
             $this->validate($request, $rules, $messages);
         }
         
-        if($withMail == $templIds['cancel']) {
+        if($withPreview == $templIds['cancel']) {
         	foreach($request->input('sale_ids') as $si) {
                 $rules['is_cancel.'. $si] = 
                     function($attribute, $value, $fail) use($si) {
@@ -473,30 +473,33 @@ class SaleController extends Controller
         }
         
         //サンクス/発送（未伝票）/発送
-        if($withMail == $templIds['thanks'] || $withMail == $templIds['deliDoneNo'] || $withMail == $templIds['deliDone']) {
+        if(/*$withPreview == $templIds['thanks'] || */$withPreview == $templIds['deliDoneNo'] || $withPreview == $templIds['deliDone']) {
             foreach($request->input('sale_ids') as $si) {
-                $rules['deli_start_date.'. $si] = 
-                    function($attribute, $value, $fail) use($si) {
-                        if (! isset($value) || ! $value) {
-                            return $fail('売上ID'. $si .'の出荷予定日を入力して下さい。');
-                        }
-                    };
+            	
+                //if(! $this->sale->find($si)->is_keep) {
+                    $rules['deli_start_date.'. $si] = 
+                        function($attribute, $value, $fail) use($si) {
+                            if (! isset($value) || ! $value) {
+                                return $fail('売上ID'. $si .'の出荷予定日を入力して下さい。');
+                            }
+                        };
+                    
+                    $rules['deli_schedule_date.'. $si] = 
+                        function($attribute, $value, $fail) use($si) {
+                            if (! isset($value) || ! $value) {
+                                return $fail('売上ID'. $si .'のお届け予定日を入力して下さい。');
+                            }
+                        };
+                    
+                    $rules['deli_company_id.'. $si] = 
+                        function($attribute, $value, $fail) use($si) {
+                            if (! isset($value) || ! $value) {
+                                return $fail('売上ID'. $si .'の配送会社を入力して下さい。');
+                            }
+                        };
+                //}
                 
-                $rules['deli_schedule_date.'. $si] = 
-                    function($attribute, $value, $fail) use($si) {
-                        if (! isset($value) || ! $value) {
-                            return $fail('売上ID'. $si .'のお届け予定日を入力して下さい。');
-                        }
-                    };
-                
-                $rules['deli_company_id.'. $si] = 
-                    function($attribute, $value, $fail) use($si) {
-                        if (! isset($value) || ! $value) {
-                            return $fail('売上ID'. $si .'の配送会社を入力して下さい。');
-                        }
-                    };
-                
-                if($withMail == $templIds['deliDone']) {
+                if($withPreview == $templIds['deliDone']) {
                     $rules['deli_slip_num.'. $si] = 
                         function($attribute, $value, $fail) use($si) {
                             if (! isset($value) || $value == '') {
@@ -524,7 +527,7 @@ class SaleController extends Controller
         
         $saleRel->deli_fee = $data['deli_fee'];
         $saleRel->information = $data['information'];
-        //$saleRel->information_foot = $data['information_foot'];
+        $saleRel->information_foot = $data['information_foot'];
         $saleRel->memo = $data['memo'];
         $saleRel->craim = $data['craim'];
         
@@ -564,7 +567,7 @@ class SaleController extends Controller
                     	'is_mail' =>1, 
                         'templ_code'=>$templ->type_code, 
                         'information'=>$data['information'], 
-                        //'information_foot'=>$data['information_foot'],
+                        'information_foot'=>$data['information_foot'],
                     ]
                 );
                 
@@ -610,7 +613,7 @@ class SaleController extends Controller
                         	'is_mail' =>1, 
                             'templ_code'=>$templ->type_code, 
                             'information'=>$data['information'], 
-                            //'information_foot'=>$data['information_foot'],
+                            'information_foot'=>$data['information_foot'],
                         ]
                     );
              

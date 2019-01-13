@@ -229,7 +229,7 @@ class SingleController extends Controller
         }
 
 		cache()->forget('cacheIds');
-        cache(['cacheIds'=>$cacheIds], env('CACHE_TIME', 360)); //putのはず? 上書きではなく後ろに追加されている
+        cache(['cacheIds'=>$cacheIds], env('CACHE_TIME', 43200)); //putのはず? 上書きではなく後ろに追加されている
         
 //        print_r(cache('cacheIds'));
 //        exit;

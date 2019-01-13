@@ -78,16 +78,13 @@ use App\PayMethodChild;
                     	$typeName = MailTemplate::find($templateId)->type_name;
                     ?>
                     
-                    <div style="margin-left: 28%;" class="form-group clearfix mt-0 w-25">
-                    	<p class="text-center p-0 m-0"><b>{{ $typeName }}メール</b></p>
-                        <button type="submit" class="btn btn-primary w-100 text-white py-2 d-inline-block" name="with_mail" value="{{ $templateId }}"><i class="fa fa-envelope"></i> 送信</button>
-                    </div>
+                    <h5 class="p-0 mb-2"><b>{{ $typeName }}メール</b></h5>
 
                     <div class="mail-preview">
                         {!! session('preview') !!}
                     </div>
                     
-                    <div style="margin-left: 28%;" class="form-group clearfix mt-2 w-25">
+                    <div style="margin-left: 28%;" class="form-group clearfix mt-3 w-25">
                     	<p class="text-center p-0 m-0"><b>{{ $typeName }}メール</b></p>
                         <button type="submit" class="btn btn-primary w-100 text-white py-2 d-inline-block" name="with_mail" value="{{ $templateId }}"><i class="fa fa-envelope"></i> 送信</button>
                     </div>
@@ -650,47 +647,47 @@ use App\PayMethodChild;
                 
                 
                 <div class="btn-box col-lg-2 mt-4 pt-5">
-                	<h5 class="mb-4"><i class="fa fa-envelope"></i> メール送信</h5>
+                	<h5 class="mb-4"><i class="fa fa-file"></i> プレビュー確認</h5>
                     
                     <div class="clearfix">
                     
                     @if($saleRel->pay_method == 2 || $saleRel->pay_method == 6 || Ctm::isEnv('local'))
                         <div class="form-group clearfix my-3">
-                            <button type="submit" class="btn btn-danger col-md-12 text-white py-2" name="with_mail" value="{{ $templs['payDone'] }}"><i class="fa fa-yen"></i> 入金済</button>
+                            <button type="submit" class="btn btn-danger col-md-12 text-white py-2" name="with_preview" value="{{ $templs['payDone'] }}"><i class="fa fa-yen"></i> 入金済</button>
                         </div>
                     @endif
                     
                     
                         <div class="form-group clearfix my-3">
-                            <button type="submit" class="btn btn-success col-md-12 text-white py-2" name="with_mail" value="{{ $templs['thanks'] }}"><i class="fa fa-thumbs-up"></i> サンクス</button>
+                            <button type="submit" class="btn btn-success col-md-12 text-white py-2" name="with_preview" value="{{ $templs['thanks'] }}"><i class="fa fa-thumbs-up"></i> サンクス</button>
                         </div>
                         
                         <div class="form-group clearfix my-3">
-                            <button type="submit" class="btn btn-warning col-md-12 text-white py-2" name="with_mail" value="{{ $templs['stockNow'] }}"><i class="fa fa-check"></i> 在庫確認中</button>
+                            <button type="submit" class="btn btn-warning col-md-12 text-white py-2" name="with_preview" value="{{ $templs['stockNow'] }}"><i class="fa fa-check"></i> 在庫確認中</button>
                         </div>
                         
                         <div class="form-group clearfix my-3">
-                            <button type="submit" class="btn btn-purple col-md-12 text-white py-2" name="with_mail" value="{{ $templs['howToUe'] }}"><i class="fa fa-check"></i> 植え付け方法</button>
+                            <button type="submit" class="btn btn-purple col-md-12 text-white py-2" name="with_preview" value="{{ $templs['howToUe'] }}"><i class="fa fa-check"></i> 植え付け方法</button>
                         </div>
 
                         <div class="form-group clearfix my-3">
-                            <button type="submit" class="btn btn-info col-md-12 text-white py-2" name="with_mail" value="{{ $templs['deliDoneNo'] }}"><i class="fa fa-truck"></i> 出荷完了（伝番未）</button>
+                            <button type="submit" class="btn btn-info col-md-12 text-white py-2" name="with_preview" value="{{ $templs['deliDoneNo'] }}"><i class="fa fa-truck"></i> 出荷完了（伝番未）</button>
                         </div>
                         
                         <div class="form-group clearfix my-3">
-                            <button type="submit" class="btn btn-info col-md-12 text-white py-2" name="with_mail" value="{{ $templs['deliDone'] }}"><i class="fa fa-truck"></i> 出荷完了</button>
+                            <button type="submit" class="btn btn-info col-md-12 text-white py-2" name="with_preview" value="{{ $templs['deliDone'] }}"><i class="fa fa-truck"></i> 出荷完了</button>
                         </div>
                         
                         <div class="form-group clearfix my-3">
-                            <button type="submit" class="btn btn-danger col-md-12 text-white py-2" name="with_mail" value="{{ $templs['cancel'] }}"><i class="fa fa-times"></i> キャンセル</button>
+                            <button type="submit" class="btn btn-danger col-md-12 text-white py-2" name="with_preview" value="{{ $templs['cancel'] }}"><i class="fa fa-times"></i> キャンセル</button>
                         </div>
                         
                         <div class="form-group clearfix my-3">
-                            <button type="submit" class="btn btn-blue col-md-12 text-white py-2" name="with_mail" value="{{ $templs['simatone_ettou'] }}"><i class="fa fa-envelope"></i> シマトネ越冬</button>
+                            <button type="submit" class="btn btn-blue col-md-12 text-white py-2" name="with_preview" value="{{ $templs['simatone_ettou'] }}"><i class="fa fa-envelope"></i> シマトネ越冬</button>
                         </div>
                         
                         <div class="form-group clearfix my-3">
-                            <button type="submit" class="btn btn-blue col-md-12 text-white py-2" name="with_mail" value="{{ $templs['sekkai_iou'] }}"><i class="fa fa-envelope"></i> 石灰硫黄合剤説明</button>
+                            <button type="submit" class="btn btn-blue col-md-12 text-white py-2" name="with_preview" value="{{ $templs['sekkai_iou'] }}"><i class="fa fa-envelope"></i> 石灰硫黄合剤説明</button>
                         </div>
                     </div>
                 

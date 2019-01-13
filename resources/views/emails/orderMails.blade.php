@@ -33,43 +33,46 @@
 {{ $receiver->address_3 }}
 </div>
 
-{{--
-@if($templ->type_code == 'deliDoneNo' || $templ->type_code == 'deliDone' )
-【発送日】： {{ date('Y/m/d', time()) }}<br>
-@endif
-
-@if(isset($thisSale->plan_date))
-【お届け予定日】： {{ $thisSale->plan_date }}<br>
-@endif
---}}
 
 【ご注文商品】： <br>
-
 <?php $num = 1; ?>
 @foreach($sales as $sale)
 <div style="margin: 0 0 1.5em 1.0em;">
 <div>{{ $num }}.</div>
+@if($sale->is_keep)
+	<b>[お取り置き商品]</b><br>
+@endif
 商品番号: {{ $itemModel->find($sale->item_id)->number }}<br>
 商品名: {{ Ctm::getItemTitle($itemModel->find($sale->item_id)) }}<br>
 数量: {{ $sale->item_count}}<br>
 金額：¥{{ number_format($sale->total_price) }}（税込）<br>
+
 @if($templ->type_code == 'thanks')
-<b>出荷予定日：{{ Ctm::getDateWithYoubi($sale->deli_start_date) }}</b><br>
+	@if(isset($sale->deli_start_date) && $sale->deli_start_date)
+        <b>出荷予定日：{{ Ctm::getDateWithYoubi($sale->deli_start_date) }}</b>
+        <br>
+    @endif
 @elseif($templ->type_code == 'deliDoneNo' || $templ->type_code == 'deliDone')
-<b>出荷日：{{ Ctm::getDateWithYoubi($sale->deli_sended_date) }}</b><br>
+	<?php $d = date('Y-m-d', time()); ?>
+    <b>出荷日：{{ Ctm::getDateWithYoubi($d) }}</b><br>
 @endif
 
 @if($templ->type_code == 'thanks' || $templ->type_code == 'deliDoneNo' || $templ->type_code == 'deliDone')
-<b>お届け予定日：{{ Ctm::getDateWithYoubi($sale->deli_schedule_date) }}</b><br>
-<?php $dc = $dcModel->find($sale->deli_company_id); ?>
-<br>
-配送会社：
-@if($dc->id == 1)
-後ほど店舗よりご連絡致します
-@else
-{{ $dc->name }}
-@endif
-<br>
+    @if(isset($sale->deli_schedule_date) && $sale->deli_schedule_date)
+    	<b>お届け予定日：{{ Ctm::getDateWithYoubi($sale->deli_schedule_date) }}</b><br>
+    @endif
+    
+    @if(isset($sale->deli_company_id) && $sale->deli_company_id)
+        <?php $dc = $dcModel->find($sale->deli_company_id); ?>
+        <br>
+        配送会社：
+        @if($dc->id == 1)
+        	後ほど店舗よりご連絡致します
+        @else
+        	{{ $dc->name }}
+        @endif
+        <br>
+    @endif
 @endif
 
 @if($templ->type_code == 'deliDone')
@@ -110,12 +113,11 @@ $allTotal = $saleRel->all_price + $saleRel->deli_fee + $saleRel->cod_fee - $sale
 @if($saleRel->pay_method == 3)
 （{{ $pmChildModel->find($saleRel->pay_method_child)->name }}）
 @elseif($templ->type_code == 'thanks' && $saleRel->pay_method == 6)
-<div style="margin: 0 0 0.5em 0.8em;">
+<div style="margin: 0 0 0.2em 0.8em;">
 {!! nl2br($setting['bank_info']) !!}
 </div>
 @endif
-
-<br><br>
+<br>
 <hr>
 <br>
 @if($isUser)
