@@ -38,15 +38,13 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.10.0/css/lightbox.css" rel="stylesheet">
     
     <?php
-        $getNow = '';
-        //if(Ctm::isLocal())
-    		$getNow = '?up=' . time();
+        $getNow = '?up=' . time();
     ?>
+    
+    <link href="{{ asset('css/style.css'. $getNow) }}" rel="stylesheet">
     
     @if(Ctm::isAgent('all'))
     <link href="{{ asset('css/style-sp.css' . $getNow) }}" rel="stylesheet">
-    @else
-    <link href="{{ asset('css/style.css'. $getNow) }}" rel="stylesheet">
 	@endif
 
 	{{-- <script type="text/javascript" src="//code.jquery.com/jquery-2.1.0.min.js"></script> --}}

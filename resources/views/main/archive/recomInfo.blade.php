@@ -24,7 +24,6 @@ use App\Setting;
         </div>
         
         <div class="panel-body">
-            
 
             <div class="pagination-wrap">
             	{{ $items->links() }}
@@ -35,7 +34,7 @@ use App\Setting;
     
                     @foreach($items as $item)
                     
-                        <article class="main-atcl">
+                        <article class="main-atcl clearfix">
                             
                             <?php
                             	$slugType = '';
@@ -52,18 +51,18 @@ use App\Setting;
                             ?>
             
                     
-                    <div class="img-box">
-                        <a href="{{ url($slugType . '/'. $item['slug']) }}">
-                        <img src="{{ Storage::url($item['top_img_path']) }}" alt="{{ $item['top_title'] }}">
-                        </a>
-                    </div>
-                    
-                    <div class="meta">
-                        <h3><a href="{{ url($slugType . '/'. $item['slug']) }}">{{ $item['top_title'] }}</a></h3>
-                        
-                        <p>{!! nl2br($item['top_text']) !!}</p>
-                        
-                    </div>
+                            <div class="img-box">
+                                <a href="{{ url($slugType . '/'. $item['slug']) }}">
+                                <img src="{{ Storage::url($item['top_img_path']) }}" alt="{{ $item['top_title'] }}">
+                                </a>
+                            </div>
+                            
+                            <div class="meta">
+                                <h3><a href="{{ url($slugType . '/'. $item['slug']) }}">{{ $item['top_title'] }}</a></h3>
+                                
+                                <p>{!! nl2br($item['top_text']) !!}</p>
+                                
+                            </div>
                         
                         
                         {{-- @include('main.shared.favorite') --}}

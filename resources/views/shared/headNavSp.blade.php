@@ -153,16 +153,7 @@ use App\User;
         @else
             <li><a href="{{ url('mypage') }}"><i class="fal fa-user"></i></a></li>
             
-            <li><a href="{{ url('/logout') }}"
-                            onclick="event.preventDefault();
-                                     document.getElementById('logout-form').submit();">
-                            <i class="fal fa-sign-out"></i>
-                    </a>
-
-                    <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
-                        {{ csrf_field() }}
-                    </form>
-            </li>
+            
             
             <li><a href="{{ url('mypage/favorite') }}"><i class="fal fa-heart"></i></a></li>
             
@@ -192,6 +183,19 @@ use App\User;
         
         <li><a href="{{ url('shop/cart') }}"><i class="fal fa-shopping-cart"></i></a></li>
         <li><a href="{{ url('contact') }}"><i class="fal fa-envelope"></i></a></li>
+        
+        @if(Auth::check())
+        	<li><a href="{{ url('/logout') }}"
+                            onclick="event.preventDefault();
+                                     document.getElementById('logout-form').submit();">
+                            <i class="fal fa-sign-out"></i>
+                </a>
+
+                <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
+                    {{ csrf_field() }}
+                </form>
+            </li>
+        @endif
         
    </ul> 
 </div>
