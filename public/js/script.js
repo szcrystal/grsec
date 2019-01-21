@@ -697,14 +697,20 @@ var exe = (function() {
         },
         
         accordionMoveUp: function(){
-        	var $ac = $('.single #accordion');
+            var $ac = $('.single #accordion');
+            
+            var h = $('.upper-wrap').height();
             
             var fixH = $('.fixed-top').height() + 10;
-            var top = $ac.offset().top - fixH; 
+            var top = $ac.offset().top - fixH;
+            //var top = $ac.position().top - fixH; 
             
-        	$('.single .card-header').on('click', function(){
-            	$("html, body").scrollTop(top);
+            //$('h2').text(h);
+            
+            $('.single .card-header').on('click', function(){
+                $('html, body').scrollTop(top);
             });
+
         },
         
         getWH: function() {

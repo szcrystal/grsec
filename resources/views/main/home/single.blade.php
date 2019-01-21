@@ -37,13 +37,6 @@ use App\TopSetting;
         
         @include('main.shared.upper')
         
-        {{--
-        @if(isset($item->free_space))
-        	<div class="clearfix">
-        		{!! $item->free_space !!}
-        	</div>
-        @endif
-        --}}
 		
         <div class="head-frame clearfix">
             
