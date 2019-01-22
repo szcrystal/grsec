@@ -2,7 +2,7 @@
     <fieldset class="mb-4 form-group{{ $errors->has('contents') ? ' is-invalid' : '' }}">
         <label for="contents" class="control-label">
             @if(isset($type) && $type == 'top')
-            TOPお知らせ枠(HTML)
+            TOPお知らせ枠(HTML) <br><small>PC用にする場合は「for-pc」SP用の場合は「for-sp」というクラスをソースコードに当てて下さい。</small>
             @else
             コンテンツ
             @endif

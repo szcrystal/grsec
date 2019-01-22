@@ -422,7 +422,7 @@ use App\TopSetting;
                     ?>
                     
                     @if(Ctm::isAgent('sp'))
-                    	<div id="accordion">
+                    	<div id="accordion" class="mt-4">
                           <div class="card">
                             <div class="card-header" id="headingOne">
                                 <a class="btn clearfix collapsed" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">

@@ -364,6 +364,12 @@ body {
 
 
 /* header */
+.for-pc {
+	display: block;
+}
+.for-sp {
+	display: none;
+}
 
 .fixed-top {
     border-bottom: 1px solid #d8d8d8;

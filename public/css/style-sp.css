@@ -327,6 +327,13 @@ for SP
         margin: 0;
         background: none;
     }
+    
+    .for-pc {
+        display: none;
+    }
+    .for-sp {
+        display: block;
+    }
 	
 
 /*	.site-header .logos {*/

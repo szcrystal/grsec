@@ -697,18 +697,20 @@ var exe = (function() {
         },
         
         accordionMoveUp: function(){
-            var $ac = $('.single #accordion');
-            
-            var h = $('.upper-wrap').height();
+            //var $ac = $('.single #accordion');            
+            //var h = $('.upper-wrap').height();
             
             var fixH = $('.fixed-top').height() + 10;
-            var top = $ac.offset().top - fixH;
-            //var top = $ac.position().top - fixH; 
-            
-            //$('h2').text(h);
+            //var top = $ac.offset().top - fixH;            
             
             $('.single .card-header').on('click', function(){
-                $('html, body').scrollTop(top);
+            	var t = $(this).parents('#accordion').offset().top;
+                t -= fixH;
+                            
+                //$('html, body').scrollTop(t);
+                $('html, body').animate({scrollTop:t}, 100, 'linear', function(){
+                	$(this).queue([]).stop();
+                });
             });
 
         },
