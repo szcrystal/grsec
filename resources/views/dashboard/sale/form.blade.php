@@ -51,7 +51,7 @@ use App\Setting;
 
             {{ csrf_field() }}
 
-			<div class="form-group col-md-5 mx-auto my-5">
+			<div class="form-group col-md-5 mx-auto mb-3">
                 <button type="submit" class="btn btn-primary btn-block w-btn w-100 text-white" name="only_up" value="1"> 更新する</button>
             </div>
             
@@ -64,7 +64,11 @@ use App\Setting;
                             @if($sale->deli_done)
                             <span class="text-success text-big">この商品は{{ date('Y/m/d H:i', time($sale->deli_start_date)) }}に発送済みです。</span>
                             @else
-                            <span class="text-danger text-big">この商品は未配送です。</span>
+                            	@if($sale->is_keep)
+                                <span class="text-info text-big">この商品はお取り置きです。</span>
+                                @else
+                            	<span class="text-danger text-big">この商品は未配送です。</span>
+                                @endif
                             @endif
                         @endif                  
                     </p>

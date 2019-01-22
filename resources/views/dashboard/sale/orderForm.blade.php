@@ -254,7 +254,12 @@ use App\PayMethodChild;
                                             
                                             <tr>
                                             	<th>数量</th>
-                                                <td>{{ $sale->item_count }}</td>
+                                                <td>
+                                                	{{ $sale->item_count }}
+                                                	@if($sale->is_keep)
+                                                    <b class="ml-2 text-small">[お取り置き]</b>
+                                                    @endif
+                                                </td>
                                             </tr>
                                             
                                             <tr>
@@ -406,6 +411,15 @@ use App\PayMethodChild;
                                                     @endif
                                                 </td>
                                             </tr>
+                                            <tr>
+                                            	<th>お取り置き</th>
+                                                <td>
+                                                	@if($sale->is_keep)
+                                                    <span class="text-info">お取り置き中</span><br>
+                                                    @endif 
+                                                </td>
+                                            </tr>
+                                            
                                             <tr>
                                             	<th>キャンセル状況／<br>キャンセルメール</th>
                                                 <td>
