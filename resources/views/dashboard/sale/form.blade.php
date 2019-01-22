@@ -108,7 +108,7 @@ use App\Setting;
                                             $users = $userNs->find($saleRel->user_id);
                                         ?>   
                                      @endif
-                                     （{{ $users->id }}）{{ $users->name }}<br>
+                                     （{{ $users->id }}）{{ $users->name }}<span class="text-small ml-1">（{{ $users->hurigana }}）</span><br>
                                      <a href="mailto:{{ $users->email }}">{{ $users->email }}</a><br>
                                      
                                      〒{{ Ctm::getPostNum($users->post_num) }}<br>
@@ -129,7 +129,7 @@ use App\Setting;
                                 〒{{ Ctm::getPostNum($receiver->post_num) }}<br>
                                 {{ $receiver->prefecture }}{{ $receiver->address_1 }}{{ $receiver->address_2 }}&nbsp;
                                 {{ $receiver->address_3 }}<br>
-                                {{ $receiver->name }} 様<br>
+                                {{ $receiver->name }}<span class="text-small ml-1">（{{ $receiver->hurigana }}）</span> 様<br>
                                 TEL: {{ $receiver->tel_num }}
                                 
                                 </td>

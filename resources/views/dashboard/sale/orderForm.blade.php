@@ -149,7 +149,7 @@ use App\PayMethodChild;
                                             $users = $userNs->find($saleRel->user_id);
                                         ?>   
                                      @endif
-                                     （{{ $users->id }}）{{ $users->name }} <span class="text-small ml-2">{{ $users->hurigana }}</span><br>
+                                     （{{ $users->id }}）{{ $users->name }} <span class="text-small ml-1">（{{ $users->hurigana }}）</span><br>
                                      <a href="mailto:{{ $users->email }}">{{ $users->email }}</a><br>
                                      
                                      〒{{ Ctm::getPostNum($users->post_num) }}<br>
@@ -171,7 +171,7 @@ use App\PayMethodChild;
                                 〒{{ Ctm::getPostNum($receiver->post_num) }}<br>
                                 {{ $receiver->prefecture }}{{ $receiver->address_1 }}{{ $receiver->address_2 }}&nbsp;
                                 {{ $receiver->address_3 }}<br>
-                                {{ $receiver->name }} 様 <span class="text-small ml-2">{{ $receiver->hurigana }}</span><br>
+                                {{ $receiver->name }}<span class="text-small ml-1">（{{ $receiver->hurigana }}）</span> 様<br>
                                 TEL: {{ $receiver->tel_num }}
                                 
                                 </td>
@@ -416,6 +416,8 @@ use App\PayMethodChild;
                                                 <td>
                                                 	@if($sale->is_keep)
                                                     <span class="text-info">お取り置き中</span><br>
+                                                    @else
+                                                    --
                                                     @endif 
                                                 </td>
                                             </tr>

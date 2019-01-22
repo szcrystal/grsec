@@ -317,12 +317,12 @@ use App\PayMethodChild;
                         
                         if ( count(array_unique($keeps)) === 1 ) {
                             if($keeps[0]) {
-                                $status .= '<div class="text-dark">全取置き</div>';
+                                $status .= '<div class="text-info">全取置き</div>';
                                 $allKeep = 1;
                             }
                         }
                         else {
-                            $status .= '<div class="text-dark">一部取置き</div>';
+                            $status .= '<div class="text-info">一部取置き</div>';
                         }
                         
 						$class = $allCancel ? 'bg-pink' : ($allDeliDone ? 'bg-green' : '' );  
@@ -349,10 +349,15 @@ use App\PayMethodChild;
                   
                   <td style="word-break:break-all;">
                   	@if($saleRel->is_user)
-                		<span class="text-primary"><small>会員</small></span><br>{{ $users->find($saleRel->user_id)->name }}
+                    	<?php $u = $users->find($saleRel->user_id); ?>
+                		<span class="text-primary"><small>会員</small></span><br>
                 	@else
-                 		<span class="text-danger"><small>非会員</small></span><br>{{ $userNs->find($saleRel->user_id)->name }}
-                 	@endif   
+                    	<?php $u = $userNs->find($saleRel->user_id); ?>
+                 		<span class="text-danger"><small>非会員</small></span><br>
+                 	@endif
+                    
+                    {{ $u->name }}
+                    {{-- <br><small class="text-small ml-1">（{{ $u->hurigana }}）</small> --}}
                 </td>
 
                 <td>
