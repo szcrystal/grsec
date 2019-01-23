@@ -189,9 +189,9 @@ class SingleController extends Controller
         
         //cache()->forget('cacheIds');
         
-        if(cache()->has('cacheIds')) {
+        if(cache()->has('item_ids')) {
         	
-        	$cacheIds = cache()->pull('cacheIds'); //pullで元キャッシュを一旦削除する必要がある
+        	$cacheIds = cache()->pull('item_ids'); //pullで元キャッシュを一旦削除する必要がある
             $caches = implode(',', $cacheIds); //順を逆にする
             
             $chunkNum = Ctm::isAgent('sp') ? $getNum/2 : $getNum;
@@ -228,8 +228,8 @@ class SingleController extends Controller
         	$count = array_unshift($cacheIds, $item->id); //配列の最初に追加
         }
 
-		cache()->forget('cacheIds');
-        cache(['cacheIds'=>$cacheIds], env('CACHE_TIME', 43200)); //put 上書きではなく後ろに追加されている
+		cache()->forget('item_ids');
+        cache(['item_ids'=>$cacheIds], env('CACHE_TIME', 43200)); //put 上書きではなく後ろに追加されている
         
 //        print_r(cache('cacheIds'));
 //        exit;

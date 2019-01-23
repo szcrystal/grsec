@@ -114,9 +114,9 @@ class HomeController extends Controller
         $cacheItems = null;
         //$getNum = Ctm::isAgent('sp') ? 6 : 7;
         
-        if(cache()->has('cacheIds')) {
+        if(cache()->has('item_ids')) {
         	
-        	$cacheIds = cache('cacheIds');
+        	$cacheIds = cache('item_ids');
             
 //            print_r($cacheIds);
 //            exit;
@@ -242,9 +242,9 @@ class HomeController extends Controller
         elseif($path == 'recent-items') {
         	$cacheIds = array();
             
-            if(cache()->has('cacheIds')) {
+            if(cache()->has('item_ids')) {
                 
-                $cacheIds = cache('cacheIds');
+                $cacheIds = cache('item_ids');
                 
                 $caches = implode(',', $cacheIds); //orderByRowに渡すものはString
                 
