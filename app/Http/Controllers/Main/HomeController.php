@@ -269,6 +269,10 @@ class HomeController extends Controller
         $metaDesc = '';
         $metaKeyword = '';
         
+        if(! isset($items)) {
+        	abort(404);
+        }
+        
         return view('main.archive.index', ['items'=>$items, 'type'=>'unique', 'title'=>$title, 'metaTitle'=>$metaTitle, 'metaDesc'=>$metaDesc, 'metaKeyword'=>$metaKeyword,]);
  
     }

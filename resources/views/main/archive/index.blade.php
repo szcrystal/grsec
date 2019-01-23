@@ -60,21 +60,7 @@ use App\TopSetting;
                 @include('main.shared.upper')
             @endif
             
-            {{--
-            @if($type == 'category' && isset($cate->contents))
-                <div class="my-4">
-                    {!! $cate->contents !!}
-                </div>
-            @elseif($type == 'subcategory' && isset($subcate->contents))
-                <div class="my-4">
-                    {!! $subcate->contents !!}
-                </div>
-            @elseif($type == 'tag' && isset($tag->contents))
-                <div class="my-4">{!! $tag->contents !!}</div>
             
-            @endif
-            --}}
-
             <div class="pagination-wrap">
             	{{ $items->links() }}
             </div>
