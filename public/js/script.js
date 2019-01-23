@@ -708,7 +708,7 @@ var exe = (function() {
                 t -= fixH;
                             
                 //$('html, body').scrollTop(t);
-                $('html, body').animate({scrollTop:t}, 100, 'linear', function(){
+                $('html, body').animate({scrollTop:t}, 50, 'linear', function(){
                 	$(this).queue([]).stop();
                 });
             });
