@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Cache;
 
 use Auth;
 use Ctm;
+use Cookie;
 
 class SingleController extends Controller
 {
@@ -183,12 +184,46 @@ class SingleController extends Controller
         
         
         //Cache 最近見た ===================
-        $cacheIds = array();
+        $cookieArr = array();
         $cacheItems = null;
         $getNum = Ctm::isAgent('sp') ? 8 : 8;
         
-        //cache()->forget('cacheIds');
         
+        $cookieIds = Cookie::get('item_ids');
+//        echo $cookieIds;
+//        exit;
+        
+        if(isset($cookieIds) && $cookieIds != '') {
+	        $cookieArr = explode(',', $cookieIds); 
+            
+	        $chunkNum = Ctm::isAgent('sp') ? $getNum/2 : $getNum;
+          	
+	        $cacheItems = $this->item->whereIn('id', $cookieArr)->whereNotIn('id', [$item->id])->where($whereArr)->orderByRaw("FIELD(id, $cookieIds)")->take($getNum)->get()->chunk($chunkNum);
+		}
+        
+        if(! in_array($item->id, $cookieArr)) { //配列にidがない時 or cachIdsが空の時
+        	$count = array_unshift($cookieArr, $item->id); //配列の最初に追加
+         	
+          	if($count > 16) {
+            	$cookieArr = array_slice($cookieArr, 0, 16); //16個分を切り取る
+        	} 
+        }
+        else { //配列にidがある時 
+        	$index = array_search($item->id, $cookieArr); //key取得
+            
+            //$split = array_splice($cacheIds, $index, 1); //keyからその要素を削除
+            unset($cookieArr[$index]);
+            $cookieArr = array_values($cookieArr);
+            
+        	$count = array_unshift($cookieArr, $item->id); //配列の最初に追加
+        }
+        
+        $cookieIds = implode(',', $cookieArr);
+        
+        Cookie::queue(Cookie::make('item_ids', $cookieIds, env('COOKIE_TIME', 43200) ));
+        
+        
+        /*
         if(cache()->has('item_ids')) {
         	
         	$cacheIds = cache()->pull('item_ids'); //pullで元キャッシュを一旦削除する必要がある
@@ -230,9 +265,7 @@ class SingleController extends Controller
 
 		cache()->forget('item_ids');
         cache(['item_ids'=>$cacheIds], env('CACHE_TIME', 43200)); //put 上書きではなく後ろに追加されている
-        
-//        print_r(cache('cacheIds'));
-//        exit;
+        */
 
 
 		//ItemUpper

@@ -20,6 +20,7 @@ use App\Http\Controllers\Controller;
 
 use Auth;
 use Ctm;
+use Cookie;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class HomeController extends Controller
@@ -110,29 +111,33 @@ class HomeController extends Controller
         $rankItems = $this->item->where($whereArr)->orderBy('sale_count', 'desc')->take($getNum)->get()->all();
         
         //Recent 最近見た
-        $cacheIds = array();
-        $cacheItems = null;
+        $cookieArr = array();
+        $cookieItems = null;
         //$getNum = Ctm::isAgent('sp') ? 6 : 7;
         
+        $cookieIds = Cookie::get('item_ids');
+        
+        if(isset($cookieIds) && $cookieIds != '') {
+            $cookieArr = explode(',', $cookieIds); //orderByRowに渡すものはString
+          	$cookieItems = $this->item->whereIn('id', $cookieArr)->where($whereArr)->orderByRaw("FIELD(id, $cookieIds)")->take($getNum)->get()->all();  
+        }
+        
+        /*
         if(cache()->has('item_ids')) {
         	
         	$cacheIds = cache('item_ids');
             
-//            print_r($cacheIds);
-//            exit;
-            
             $caches = implode(',', $cacheIds); //orderByRowに渡すものはString
-//            echo $caches;
-//            exit;
             
           	$cacheItems = $this->item->whereIn('id', $cacheIds)->where($whereArr)->orderByRaw("FIELD(id, $caches)")->take($getNum)->get()->all();  
         }
+        */
         
         //array
         $firstItems = [
         	'新着情報'=> $newItems,
             '人気ランキング'=> $rankItems,
-            '最近チェックしたアイテム'=> $cacheItems,
+            '最近チェックしたアイテム'=> $cookieItems,
         ];
         //FirstItem END ================================
         
@@ -240,16 +245,22 @@ class HomeController extends Controller
             $title = '人気ランキング';
         }
         elseif($path == 'recent-items') {
-        	$cacheIds = array();
+        	$cookieArr = array();
             
+            $cookieIds = Cookie::get('item_ids');
+        
+        	if(isset($cookieIds) && $cookieIds != '') {
+                $cookieArr = explode(',', $cookieIds); //orderByRowに渡すものはString
+                $items = $this->item->whereIn('id', $cookieArr)->where($whereArr)->orderByRaw("FIELD(id, $cookieIds)")->paginate($this->perPage);  
+            }
+            
+            /*
             if(cache()->has('item_ids')) {
-                
                 $cacheIds = cache('item_ids');
-                
                 $caches = implode(',', $cacheIds); //orderByRowに渡すものはString
-                
                 $items = $this->item->whereIn('id', $cacheIds)->where($whereArr)->orderByRaw("FIELD(id, $caches)")->paginate($this->perPage);  
             }
+            */
             
             $title = '最近チェックしたアイテム';               
         }
