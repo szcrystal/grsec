@@ -26,10 +26,6 @@ class AddColumnToEtc extends Migration
         	$table->text('information_foot')->after('information')->nullable()->default(NULL);
         });
         
-        
-        Schema::table('sales', function (Blueprint $table) {
-        	$table->boolean('is_keep')->after('deli_done')->nullable()->default(0);
-        });
     }
 
     /**
@@ -57,11 +53,6 @@ class AddColumnToEtc extends Migration
             });
         }
         
-        if (Schema::hasColumn('sales', 'is_keep')) {
-            Schema::table('sales', function (Blueprint $table) {
-                $table->dropColumn('is_keep');
-            });
-        }
         
     }
 }
