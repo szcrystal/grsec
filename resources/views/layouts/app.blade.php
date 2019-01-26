@@ -53,6 +53,9 @@
 
 <script type="text/javascript" src="//jpostal-1006.appspot.com/jquery.jpostal.js"></script>
 <script src="//code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+
+
+
 <script src="{{ asset('js/script.js' . $getNow) }}"></script>
 
 @if(! Ctm::isAgent('sp'))
@@ -67,6 +70,8 @@
     });
 </script>
 @endif
+
+
 
 </body>
 </html>

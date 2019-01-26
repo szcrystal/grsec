@@ -320,18 +320,50 @@
 </div>
 
 <div class="mt-5">
-<form id="with1" class="form-horizontal" role="form" method="POST" action="{{ $actionUrl }}">
+
+<form id="getTokenForm">
+
+@foreach($cardInfo as $key => $ci)
+    <input id="{{ $key }}" type="hidden" name="{{ $key }}" value="{{ $ci }}">
+@endforeach
+
+	<div class="">
+    	<?php
+        	$disabled = '';
+            if(count($errors) > 0) {
+            	$disabled = ' disabled';
+            }
+        ?>
+        
+        <small class="col-md-5 mx-auto d-block px-5 mb-3">
+            @if($errors->has('konbiniLimit'))
+                <span class="text-danger text-big">
+                    {{ $errors->first('konbiniLimit') }}<br>
+                    戻ってお支払い方法か購入商品を変更して下さい。
+                </span>
+            @elseif($errors->has('gmoLimit'))
+                <span class="text-danger text-big">
+                    {{ $errors->first('gmoLimit') }}<br>
+                    戻ってお支払い方法か購入商品を変更して下さい。
+                </span>
+            @else
+                上記ご注文内容で注文を確定します。<br>
+                <b>「注文する」ボタンをクリックすると注文を確定します。</b>
+            @endif
+        </small>
+  		
+        <input type="button" class="btn btn-block btn-enji col-md-4 mb-4 mx-auto py-2" value="購入する" onclick="doPurchase()">
+        
+        {{--
+        <button class="btn btn-block btn-enji col-md-4 mb-4 mx-auto py-2" type="submit" name="regist_off" value="1"{{ $disabled }} onclick="doPurchase()">注文する</button>
+        --}}
+	</div>
+</form>
+
+
+<form id="purchaseForm" class="form-horizontal" role="form" method="POST" action="{{ $actionUrl }}">
     {{ csrf_field() }}
     
-    {{--
-    <input type="hidden" name="regist" value="{{ $regist }}">
-    <input type="hidden" name="all_price" value="{{ $allPrice }}">
-    
-    @foreach($itemData as $item)
-        <input type="hidden" name="item_id[]" value="{{ $item->id}}">
-        <input type="hidden" name="item_count[]" value="{{ $item->count}}">
-    @endforeach
-    --}}
     
     @if($data['pay_method'] == 5)
     	<input type="hidden" name="trans_code" value="888888">
@@ -344,33 +376,60 @@
     	<input type="hidden" name="{{ $key }}" value="{{ $settle }}">
     @endforeach
     
-  <small class="col-md-5 mx-auto d-block px-5 mb-3">
-  	@if($errors->has('konbiniLimit'))
-        <span class="text-danger text-big">
-        	{{ $errors->first('konbiniLimit') }}<br>
-        	戻ってお支払い方法か購入商品を変更して下さい。
-        </span>
-    @elseif($errors->has('gmoLimit'))
-    	<span class="text-danger text-big">
-        	{{ $errors->first('gmoLimit') }}<br>
-            戻ってお支払い方法か購入商品を変更して下さい。
-        </span>
-    @else
-  		上記ご注文内容で注文を確定します。<br>
-		<b>「注文する」ボタンをクリックすると注文を確定します。</b>
-    @endif
-  </small>
+    <input type="hidden" value="" id="token" name="token">
   
-	<div class="">
-    	<?php
-        	$disabled = '';
-            if(count($errors) > 0) {
-            	$disabled = ' disabled';
-            }
-        ?>
-  		<button class="btn btn-block btn-enji col-md-4 mb-4 mx-auto py-2" type="submit" name="regist_off" value="1"{{ $disabled }}>注文する</button>
-	</div>                
 </form>
+
+<script type="text/javascript">
+	function execPurchase(response) {
+		if (response.resultCode != "000") {
+            window.alert("購入処理中にエラーが発生しました");
+		}
+        else {
+            // カード情報は念のため値を除去
+            document.getElementById("cardno").value = "";
+            document.getElementById("expire_year").value = "";
+            document.getElementById("expire_month").value = "";
+            document.getElementById("securitycode").value = "";
+            document.getElementById("tokennumber").value = "";
+            
+            // 予め購入フォームに用意した token フィールドに、値を設定 
+            //発行されたトークンは、有効期限が経過するか、一度 API で利用されると、無効となります。 
+            //複数の API でトークンを利用される場合は、tokenNumber にてトークンを複数発行してください。
+            document.getElementById("token").value = response.tokenObject.token;                
+
+            // スクリプトからフォームを submit
+            document.getElementById("purchaseForm").submit();
+		}
+	}
+
+	
+    function doPurchase() {
+        var cardno, expire, securitycode, holdername;
+        
+        var cardno = document.getElementById("cardno").value;
+        var expire = document.getElementById("expire_year").value + document.getElementById("expire_month").value;
+        var securitycode = document.getElementById("securitycode").value;
+        var holdername = document.getElementById("holdername").value;
+        var tokennumber = document.getElementById("tokennumber").value;
+        
+        Multipayment.init("tshop00036826");
+			
+        Multipayment.getToken({ 
+            cardno : cardno, 
+            expire : expire,
+            securitycode : securitycode, 
+            holdername : holdername, 
+            tokennumber : tokennumber
+
+        }, execPurchase);
+    }
+</script>
+
+
+
+
+
 
 <a href="{{ url('shop/form') }}" class="btn border border-secondary bg-white my-3"><i class="fal fa-angle-double-left"></i> お客様情報の入力に戻る</a>
 </div>

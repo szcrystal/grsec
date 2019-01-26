@@ -57,6 +57,8 @@
         ]); ?>
 
     </script>
+    
+    <script src="https://pt01.mul-pay.jp/ext/js/token.js"></script>
 
 <?php    
 use App\Setting;

@@ -657,78 +657,12 @@ use App\DeliveryGroup;
                      
                      </table>
                 </div> 
-         </div><!-- receiver -->       
-                
-                <div>
-                	<h3 class="card-header mt-5">お支払い方法</h3>
-   					<a href="{{ url('about-pay') }}" class="d-inline-block mt-2 ml-1 text-small" target="_brank">お支払についてのご注意はこちら <i class="fal fa-angle-double-right"></i></a>
-                    
-                    <fieldset class="form-group my-3 pt-3 pb-4 py-2{{ $errors->has('pay_method') ? ' border border-danger' : '' }}">
-                    @if ($errors->has('pay_method'))
-                        <div class="help-block text-danger mb-2">
-                            <span class="fa fa-exclamation form-control-feedback"></span>
-                            <span>{{ $errors->first('pay_method') }}</span>
-                        </div>
-                    @endif
-
-                    @foreach($payMethod as $method)
-                        <?php 
-                            $checked = '';
-                            
-                            if( Ctm::isOld()) {
-                            	if( old('pay_method') == $method->id) {
-                                	$checked = ' checked';
-                                }
-                            }
-                            elseif(Session::has('all.data.pay_method')) {
-                            	if(session('all.data.pay_method') == $method->id) {
-                                	$checked = ' checked';
-                                }
-                            }
-                         ?>
-                         
-                        <label class="d-block mb-3">
-                            @if(! $codCheck && $method->id == 5)
-                         		<input type="radio" name="pay_method" class="payMethodRadio" value="{{ $method->id }}" disabled> {{ $method->name }}
-                           		<span class="text-secondary ml-3"><i class="fas fa-exclamation-circle"></i> ご注文商品の代金引換決済はご利用できません。</span>                            
-                         	@else
-                                <input type="radio" name="pay_method" class="payMethodRadio" value="{{ $method->id }}"{{ $checked }}> {{ $method->name }}
-                                
-                                @if($method->id == 3)
-                                	<div class="wrap-pmc mt-1 pt-1 mb-3 ml-3 pl-2{{ $errors->has('net_bank') ? ' border border-danger' : '' }}">
-                                    	@foreach($pmChilds as $pmChild)
-                                        	<?php 
-                                                $ch = '';
-                                                if( Ctm::isOld()) {
-                                                    if( old('net_bank') == $pmChild->id) {
-                                                        $ch = ' checked';
-                                                    }
-                                                }
-                                                elseif(Session::has('all.data.net_bank')) {
-                                                    if(session('all.data.net_bank') == $pmChild->id) {
-                                                        $ch = ' checked';
-                                                    }
-                                                }
-                                             ?>
-                                            
-                                            <span class="deliRadioWrap">
-                                                <input type="radio" name="net_bank" class="pmcRadio" value="{{ $pmChild->id }}" {{ $ch }}> <span class="mr-3">{{ $pmChild->name }}</span>
-                                            </span>   
-                                        @endforeach
-                                    </div>
-                                
-								@endif
-                            @endif
-                        </label>
-                        
-                     @endforeach
-                    
-                </fieldset>
-                </div>
+         </div><!-- receiver -->
+         
                 
                 
                 
-                <div class="mb-3 pb-3">
+                <div class="pt-3">
                 	<h3 class="card-header mt-5">配送希望日時指定</h3>
                     
                     <fieldset class="mb-4 mt-3 col-md-7 form-group{{ $errors->has('plan_date') ? ' has-error' : '' }}">
@@ -836,6 +770,142 @@ use App\DeliveryGroup;
                 	</fieldset>
                 @endif
                 
+                </div>
+                
+                
+                <div>
+                	<h3 class="card-header mt-5">お支払い方法</h3>
+   					<a href="{{ url('about-pay') }}" class="d-inline-block mt-2 ml-1 text-small" target="_brank">お支払についてのご注意はこちら <i class="fal fa-angle-double-right"></i></a>
+                    
+                    <fieldset class="form-group my-3 pt-3 pb-4 py-2{{ $errors->has('pay_method') ? ' border border-danger' : '' }}">
+                    @if ($errors->has('pay_method'))
+                        <div class="help-block text-danger mb-2">
+                            <span class="fa fa-exclamation form-control-feedback"></span>
+                            <span>{{ $errors->first('pay_method') }}</span>
+                        </div>
+                    @endif
+
+                    @foreach($payMethod as $method)
+                        <?php 
+                            $checked = '';
+                            
+                            if( Ctm::isOld()) {
+                            	if( old('pay_method') == $method->id) {
+                                	$checked = ' checked';
+                                }
+                            }
+                            elseif(Session::has('all.data.pay_method')) {
+                            	if(session('all.data.pay_method') == $method->id) {
+                                	$checked = ' checked';
+                                }
+                            }
+                         ?>
+                         
+                        <label class="d-block mb-3">
+                            @if(! $codCheck && $method->id == 5)
+                         		<input type="radio" name="pay_method" class="payMethodRadio" value="{{ $method->id }}" disabled> {{ $method->name }}
+                           		<span class="text-secondary ml-3"><i class="fas fa-exclamation-circle"></i> ご注文商品の代金引換決済はご利用できません。</span> 
+                                
+                            @elseif($method->id == 1)
+                            	<input type="radio" name="pay_method" class="payMethodRadio" value="{{ $method->id }}"{{ $checked }}> {{ $method->name }}
+                                
+                                <div class="mt-2 mb-5 ml-5">
+                                	<div class="mb-3">
+                                        <label>カード番号</label>
+                                        <input type="text" id="cardno" class="form-control col-md-6{{ $errors->has('cardno') ? ' is-invalid' : '' }}" name="cardno" value="{{ Ctm::isOld() ? old('cardno') : (Session::has('all.data.cardno') ? session('all.data.cardno') : '') }}" placeholder="">
+                               
+                                        @if ($errors->has('cardno'))
+                                            <div class="help-block text-danger receiver-error">
+                                                <span class="fa fa-exclamation form-control-feedback"></span>
+                                                <span>{{ $errors->first('cardno') }}</span>
+                                            </div>
+                                        @endif
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label class="d-block">カード有効期限（年/月）</label>
+                                        <input type="text" id="expire_year" class="form-control d-inline-block col-md-2{{ $errors->has('expire_year') ? ' is-invalid' : '' }}" name="expire_year" value="{{ Ctm::isOld() ? old('expire_year') : (Session::has('all.data.expire_year') ? session('all.data.expire_year') : '') }}" placeholder="">
+                               
+                                        @if ($errors->has('expire_year'))
+                                            <div class="help-block text-danger receiver-error">
+                                                <span class="fa fa-exclamation form-control-feedback"></span>
+                                                <span>{{ $errors->first('expire_year') }}</span>
+                                            </div>
+                                        @endif
+                                        
+                                        <label>／</label>
+                                        <input type="text" id="expire_month" class="form-control d-inline-block col-md-2{{ $errors->has('expire_month') ? ' is-invalid' : '' }}" name="expire_month" value="{{ Ctm::isOld() ? old('expire_month') : (Session::has('all.data.expire_month') ? session('all.data.expire_month') : '') }}" placeholder="">
+                               
+                                        @if ($errors->has('expire_month'))
+                                            <div class="help-block text-danger receiver-error">
+                                                <span class="fa fa-exclamation form-control-feedback"></span>
+                                                <span>{{ $errors->first('expire_month') }}</span>
+                                            </div>
+                                        @endif
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label>カード名義人</label>
+                                        <input type="text" id="holdername" class="form-control col-md-6{{ $errors->has('holdername') ? ' is-invalid' : '' }}" name="holdername" value="{{ Ctm::isOld() ? old('holdername') : (Session::has('all.data.holdername') ? session('all.data.holdername') : '') }}" placeholder="">
+                               
+                                        @if ($errors->has('holdername'))
+                                            <div class="help-block text-danger receiver-error">
+                                                <span class="fa fa-exclamation form-control-feedback"></span>
+                                                <span>{{ $errors->first('holdername') }}</span>
+                                            </div>
+                                        @endif
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label>セキュリティコード</label>
+                                        <input type="text" id="securitycode" class="form-control col-md-6{{ $errors->has('securitycode') ? ' is-invalid' : '' }}" name="securitycode" value="{{ Ctm::isOld() ? old('securitycode') : (Session::has('all.data.securitycode') ? session('all.data.securitycode') : '') }}" placeholder="">
+                               
+                                        @if ($errors->has('securitycode'))
+                                            <div class="help-block text-danger receiver-error">
+                                                <span class="fa fa-exclamation form-control-feedback"></span>
+                                                <span>{{ $errors->first('securitycode') }}</span>
+                                            </div>
+                                        @endif
+                                    </div>
+                                    
+                                    <input type="hidden" value="1" name="tokennumber" id="tokennumber">
+                                    
+                                </div>
+                                
+                                
+                         	@else
+                                <input type="radio" name="pay_method" class="payMethodRadio" value="{{ $method->id }}"{{ $checked }}> {{ $method->name }}
+                                
+                                @if($method->id == 3)
+                                	<div class="wrap-pmc mt-1 pt-1 mb-3 ml-3 pl-2{{ $errors->has('net_bank') ? ' border border-danger' : '' }}">
+                                    	@foreach($pmChilds as $pmChild)
+                                        	<?php 
+                                                $ch = '';
+                                                if( Ctm::isOld()) {
+                                                    if( old('net_bank') == $pmChild->id) {
+                                                        $ch = ' checked';
+                                                    }
+                                                }
+                                                elseif(Session::has('all.data.net_bank')) {
+                                                    if(session('all.data.net_bank') == $pmChild->id) {
+                                                        $ch = ' checked';
+                                                    }
+                                                }
+                                             ?>
+                                            
+                                            <span class="deliRadioWrap">
+                                                <input type="radio" name="net_bank" class="pmcRadio" value="{{ $pmChild->id }}" {{ $ch }}> <span class="mr-3">{{ $pmChild->name }}</span>
+                                            </span>   
+                                        @endforeach
+                                    </div>
+                                
+								@endif
+                            @endif
+                        </label>
+                        
+                     @endforeach
+                    
+                	</fieldset>
                 </div>
                 
 

@@ -144,7 +144,8 @@ Route::get('/shop/form', 'Cart\CartController@postForm');
 Route::post('/shop/confirm', 'Cart\CartController@postConfirm');
 Route::get('/shop/confirm', 'Cart\CartController@postConfirm');
 
-Route::post('/shop/to-epsilon', 'Cart\CartController@postEpsilon');
+Route::post('/shop/tokendo', 'Cart\CartController@postGetToken');
+Route::post('/shop/paydo', 'Cart\CartController@postGmoPay');
 
 Route::post('/shop/thankyou', 'Cart\CartController@getThankyou');
 Route::get('/shop/thankyou', 'Cart\CartController@getThankyou');
