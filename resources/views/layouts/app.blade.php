@@ -1,3 +1,7 @@
+<?php
+use App\Setting;
+?>
+
 @include('shared.header')
 <body>
 
@@ -37,7 +41,6 @@
 </div><!-- id app -->
 
 <?php
-    $getNow = '';
     $getNow = '?up=' . time();
 ?>
 
@@ -54,7 +57,11 @@
 <script type="text/javascript" src="//jpostal-1006.appspot.com/jquery.jpostal.js"></script>
 <script src="//code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 
-
+@if(Setting::first()->is_product)
+<script src="https://p01.mul-pay.jp/ext/js/token.js"></script>
+@else
+<script src="https://pt01.mul-pay.jp/ext/js/token.js"></script>
+@endif
 
 <script src="{{ asset('js/script.js' . $getNow) }}"></script>
 

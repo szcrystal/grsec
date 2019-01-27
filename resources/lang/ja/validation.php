@@ -180,6 +180,12 @@ return [
         'tax_per' => '「消費税率」',
         'sale_per' => '「割引率」',
         'kare_ensure' => '「枯れ保証日数」',
+        
+        'cardno' => '「カード番号」',
+        'expire_year' => '「カード有効期限（年）」',
+        'expire_month' => '「カード有効期限（月）」',
+        'holdername' => '「カード名義人」',
+        'securitycode' => '「セキュリティコード」',
     ],
 
 ];

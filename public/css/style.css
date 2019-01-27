@@ -92,7 +92,8 @@ button.btn-custom:hover {
 	color: #fff;
 	opacity: 0.7;
 }
-button.btn:hover {
+button.btn:hover,
+input[type="button"].btn:hover {
 	opacity: 0.7;
 }
 button.btn:disabled {
@@ -1203,14 +1204,20 @@ body {
     left: 6%;
 }
 
+.loader-wrap {
+	height: 1.5em;
+    position: relative;
+    //border: 1px solid red;
+}
 .loader {
-	font-size: 0.7em;
+	font-size: 0.85em;
 	display: none;
-	color: #777;
+	color: #5a5a5a;
     position: absolute;
-    top: 20%;
-    left: 20%;
+    top: 100%;
+    left: 45.5%;
     z-index: 99;
+    border: none;
 }
 .main-atcl .loader {
 	
@@ -1226,7 +1233,7 @@ body {
 	top: 5%;
 	left: 27%;
 }
-.loader .fas {
+.loader .fal {
 	-webkit-animation: rt 0.8s infinite linear alternate;
     animation: rt 0.8s infinite linear alternate;
 }

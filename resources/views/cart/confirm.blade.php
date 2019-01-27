@@ -335,7 +335,7 @@
             }
         ?>
         
-        <small class="col-md-5 mx-auto d-block px-5 mb-3">
+        <small class="col-md-5 mx-auto d-block px-5 mb-1 confirm-small">
             @if($errors->has('konbiniLimit'))
                 <span class="text-danger text-big">
                     {{ $errors->first('konbiniLimit') }}<br>
@@ -350,9 +350,14 @@
                 上記ご注文内容で注文を確定します。<br>
                 <b>「注文する」ボタンをクリックすると注文を確定します。</b>
             @endif
+            
         </small>
-  		
-        <input type="button" class="btn btn-block btn-enji col-md-4 mb-4 mx-auto py-2" value="購入する" onclick="doPurchase()">
+        
+        <div class="loader-wrap">
+	        <span class="loader"><i class="fal fa-square-full mr-2"></i> 処理中..</span>
+  		</div>
+    
+        <input type="button" id="card-submit" class="btn btn-block btn-enji col-md-4 mb-4 mx-auto py-2" value="注文する"{{ $disabled }}>
         
         {{--
         <button class="btn btn-block btn-enji col-md-4 mb-4 mx-auto py-2" type="submit" name="regist_off" value="1"{{ $disabled }} onclick="doPurchase()">注文する</button>
@@ -379,54 +384,6 @@
     <input type="hidden" value="" id="token" name="token">
   
 </form>
-
-<script type="text/javascript">
-	function execPurchase(response) {
-		if (response.resultCode != "000") {
-            window.alert("購入処理中にエラーが発生しました");
-		}
-        else {
-            // カード情報は念のため値を除去
-            document.getElementById("cardno").value = "";
-            document.getElementById("expire_year").value = "";
-            document.getElementById("expire_month").value = "";
-            document.getElementById("securitycode").value = "";
-            document.getElementById("tokennumber").value = "";
-            
-            // 予め購入フォームに用意した token フィールドに、値を設定 
-            //発行されたトークンは、有効期限が経過するか、一度 API で利用されると、無効となります。 
-            //複数の API でトークンを利用される場合は、tokenNumber にてトークンを複数発行してください。
-            document.getElementById("token").value = response.tokenObject.token;                
-
-            // スクリプトからフォームを submit
-            document.getElementById("purchaseForm").submit();
-		}
-	}
-
-	
-    function doPurchase() {
-        var cardno, expire, securitycode, holdername;
-        
-        var cardno = document.getElementById("cardno").value;
-        var expire = document.getElementById("expire_year").value + document.getElementById("expire_month").value;
-        var securitycode = document.getElementById("securitycode").value;
-        var holdername = document.getElementById("holdername").value;
-        var tokennumber = document.getElementById("tokennumber").value;
-        
-        Multipayment.init("tshop00036826");
-			
-        Multipayment.getToken({ 
-            cardno : cardno, 
-            expire : expire,
-            securitycode : securitycode, 
-            holdername : holdername, 
-            tokennumber : tokennumber
-
-        }, execPurchase);
-    }
-</script>
-
-
 
 
 

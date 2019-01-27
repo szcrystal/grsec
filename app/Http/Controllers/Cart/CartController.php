@@ -29,6 +29,7 @@ use Auth;
 use DB;
 use Delifee;
 use Exception;
+use Validator;
 
 class CartController extends Controller
 {
@@ -622,11 +623,11 @@ class CartController extends Controller
     }
     
     
-    public function postGetToken(Request $request)
+    public function getShopError(Request $request)
     {
     	$data = $request->all();
         
-    	return view('cart.token', []);
+    	return view('cart.error', []);
     }
     
     
@@ -639,13 +640,16 @@ class CartController extends Controller
         
     	$data = $request->all();
         
+        $url = $this->set->is_product ? "https://pt01.mul-pay.jp/" : "https://pt01.mul-pay.jp/";
         
-        //取引実行 ----------------------
+        
+        //取引実行 ---------------------------------
         $datas = array();
         
         //User識別
         $datas['ShopID'] = 'tshop00036826'; //
         $datas['ShopPass'] = 'bgx3a3xf'; //
+        //$datas['ShopPass'] = 'bgx3a3x';
         
         $datas['JobCd'] = 'CAPTURE';
         $datas['OrderID'] = $data['OrderID'];
@@ -654,12 +658,11 @@ class CartController extends Controller
         //echo $data['token'];
         //print_r($datas);
         //exit;
-        
 
         $ch = curl_init();
         
         $options = [
-            CURLOPT_URL => "https://pt01.mul-pay.jp/payment/EntryTran.idPass",
+            CURLOPT_URL => $url . "payment/EntryTran.idPass",
             CURLOPT_RETURNTRANSFER => true, //文字列として返す
             CURLOPT_POST => true,
             CURLOPT_POSTFIELDS => http_build_query($datas),
@@ -674,15 +677,19 @@ class CartController extends Controller
         //ErrCode=E01&ErrInfo=E01040010
         //AccessID=5bdbac2fa1e034a90227382dcd67239f&AccessPass=96bb7efe36501aba8865696db0f9687c
         //echo $response;
-        
+                
         $resArr = explode('&', $response);
         $sucArr = array();
         
-        //ErrCodeがある時の処理をここに
         
         foreach($resArr as $res) {
         	$arr = explode('=', $res);
         	$sucArr[$arr[0]] = $arr[1];
+        }
+        
+        //Error時
+        if(array_key_exists('ErrCode', $sucArr)) {
+        	return view('cart.error', ['erroeName'=>'取引実行エラー（5001）', 'active'=>3]);
         }
         
         
@@ -693,6 +700,7 @@ class CartController extends Controller
         //決済実行 -------------------------
         $settleArr = [
         	'AccessID' => $sucArr['AccessID'],
+            //'AccessID' => 1234,
             'AccessPass' => $sucArr['AccessPass'],
             'OrderID' => $data['OrderID'],
             'Method' => 1,
@@ -701,13 +709,37 @@ class CartController extends Controller
         
         $settleCh = curl_init();
         
-        $options[CURLOPT_URL] = "https://pt01.mul-pay.jp/payment/ExecTran.idPass";
+        $options[CURLOPT_URL] = $url . "payment/ExecTran.idPass";
         $options[CURLOPT_POSTFIELDS] = http_build_query($settleArr);
         
         curl_setopt_array($settleCh, $options);
         
         $resSecond = curl_exec($settleCh);
         curl_close($settleCh);
+        
+        //返るresponseを配列に
+        $resSecondArr = explode('&', $resSecond);
+        $sucSecArr = array();
+        
+        foreach($resSecondArr as $res) {
+        	$arr = explode('=', $res);
+        	$sucSecArr[$arr[0]] = $arr[1];
+        }
+        
+        //echo $resSecond;
+//        print_r($sucSecArr);
+//        exit;
+        
+        //Error時
+        if(array_key_exists('ErrCode', $sucSecArr)) {
+        	if(strpos($sucSecArr['ErrCode'], 'G') !== false || strpos($sucSecArr['ErrCode'], 'C') !== false) {
+            	//$errors['carderr'] = 'カード情報が正しくないか、お取り扱いが出来ません。';
+            	return redirect('shop/form?carderr=1000');
+            }
+            else {
+        		return view('cart.error', ['erroeName'=>'決済実行エラー（5002）', 'active'=>3]);
+            }
+        }
         
 //        echo $resSecond;
 //        exit;
@@ -845,8 +877,13 @@ class CartController extends Controller
             'receiver.address_3' => 'max:255',
             
             'pay_method' => 'required', 
-            'net_bank'=> 'required_if:pay_method,3'
-            //'main_img' => 'filenaming',
+            'net_bank'=> 'required_if:pay_method,3',
+            
+            'cardno' => 'required_if:pay_method,1|numeric',
+            'expire_year' => 'required_if:pay_method,1|numeric',
+            'expire_month' => 'required_if:pay_method,1|numeric',
+            //'holdername' => 'required_if:pay_method,1',
+            'securitycode' => 'required_if:pay_method,1|numeric',
         ];
         
         //
@@ -865,12 +902,22 @@ class CartController extends Controller
             'pay_method.required' => '「お支払い方法」を選択して下さい。',
             'use_point.max' => '「ポイント」が保持ポイントを超えています。',
             'net_bank.required_if'=> '「お支払い方法」ネットバンク決済の銀行を選択して下さい。',
+            //'cardno.required_if' => '「カード番号」は必須です。',
             //'post_thumb.filenaming' => '「サムネイル-ファイル名」は半角英数字、及びハイフンとアンダースコアのみにして下さい。',
             //'post_movie.filenaming' => '「動画-ファイル名」は半角英数字、及びハイフンとアンダースコアのみにして下さい。',
             //'slug.unique' => '「スラッグ」が既に存在します。',
         ];
         
-        $this->validate($request, $rules, $messages);
+        //$this->validate($request, $rules, $messages);
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()) {
+            return redirect('shop/form')
+                        ->withErrors($validator)
+                        ->withInput();
+        }
+        
+        
         $data = $request->all();
         
 //        if(! Auth::check()) {
@@ -1195,7 +1242,21 @@ class CartController extends Controller
 //       print_r(session('item.data'));
 //       exit;
 //         print_r(session('all'));   
-//         exit; 
+//         exit;
+
+		
+		//カードトークン取得でエラーが返った時 getで?carderr=122を付ける
+        $cardErrors = array();
+        if($request->has('carderr') && $request->input('carderr')) {
+        	
+        	if($request->input('carderr') == 1000) { //決済を実行してカードに問題がある時ここにエラーコード1000でリダイレクトさせている
+            	$cardErrors['carderr'] = 'カード情報が正しくないか、お取り扱いが出来ません。';
+            }
+            else {
+        		$cardErrors['carderr'] = 'カード情報が正しくありません。';
+            }
+        }
+        
         
         $allPrice = 0;
           
@@ -1277,7 +1338,7 @@ class CartController extends Controller
 //        exit;
 
      
-     	return view('cart.form', ['regist'=>$regist, 'payMethod'=>$payMethod, 'pmChilds'=>$pmChilds, 'prefs'=>$prefs, 'userObj'=>$userObj, 'codCheck'=>$codCheck, 'dgGroup'=>$dgGroup, 'active'=>2]);   
+     	return view('cart.form', ['regist'=>$regist, 'payMethod'=>$payMethod, 'pmChilds'=>$pmChilds, 'prefs'=>$prefs, 'userObj'=>$userObj, 'codCheck'=>$codCheck, 'dgGroup'=>$dgGroup, 'cardErrors'=>$cardErrors, 'active'=>2]);   
     }
     
     

@@ -715,6 +715,62 @@ var exe = (function() {
 
         },
         
+        getCardToken: function() {
+        	
+            $('#card-submit').on('click', function() {
+            	
+                $(this).addClass('invisible');
+                $('.loader').fadeIn(100);
+                //exit;
+                
+            
+                var cardno, expire, securitycode, holdername;
+                
+                var cardno = $("#cardno").val();
+                var expire = $("#expire_year").val() + $("#expire_month").val();
+                var securitycode = $("#securitycode").val();
+                var holdername = $("#holdername").val();
+                var tokennumber = $("#tokennumber").val();
+                
+                Multipayment.init("tshop00036826"); //ここを変えるか暗証番号の桁数を変えるとエラーにすることが出来る
+                //Multipayment.init("tshop000");
+                    
+                Multipayment.getToken({ 
+                    cardno : cardno, 
+                    expire : expire,
+                    securitycode : securitycode, 
+                    holdername : holdername, 
+                    tokennumber : tokennumber
+
+                }, function(response) { //callback function purchaseDoの部分
+                    if (response.resultCode != "000") {
+                        //window.alert("購入処理中にエラーが発生しました");
+                        location.href = "/shop/form?carderr=" + response.resultCode;
+                    }
+                    else {
+                        // カード情報は念のため値を除去
+                        $("#cardno").val('');
+                        $("#expire_year").val('');
+                        $("#expire_month").val('');
+                        $("#securitycode").val('');
+                        $("#tokennumber").val('');
+                        
+                        // 予め購入フォームに用意した token フィールドに、値を設定 
+                        //発行されたトークンは、有効期限が経過するか、一度 API で利用されると、無効となります。 
+                        //複数の API でトークンを利用される場合は、tokenNumber にてトークンを複数発行してください。
+                        $("#token").val(response.tokenObject.token);                
+
+                        // スクリプトからフォームをsubmit
+                        $("#purchaseForm").submit();
+                    }
+                }
+
+                ); //Multipayment.getToken
+                
+            }); //card-submit
+                
+        },
+        
         getWH: function() {
         	$target = $('.top-first .img-box');
         	var w = $target.width();
@@ -786,6 +842,8 @@ $(function(e){ //ready
     exe.toggleSideMenu();
     
     exe.accordionMoveUp();
+    
+    exe.getCardToken();
 });
 
 

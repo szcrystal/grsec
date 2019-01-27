@@ -20,6 +20,17 @@ use App\DeliveryGroup;
 
 @include('cart.guide')
 
+@if(count($cardErrors) > 0)
+	<div class="alert alert-danger">
+        <i class="far fa-exclamation-triangle"></i> 確認して下さい。
+        <ul class="mt-2">
+            @foreach ($cardErrors as $cardError)
+                <li>{{ $cardError }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
 @if (count($errors) > 0)
     <div class="alert alert-danger">
         <i class="far fa-exclamation-triangle"></i>
@@ -809,10 +820,15 @@ use App\DeliveryGroup;
                             @elseif($method->id == 1)
                             	<input type="radio" name="pay_method" class="payMethodRadio" value="{{ $method->id }}"{{ $checked }}> {{ $method->name }}
                                 
-                                <div class="mt-2 mb-5 ml-5">
+                                @if (count($cardErrors) > 0)
+                                	<span class="fa fa-exclamation form-control-feedback text-danger ml-4"></span>
+                                    <span class="text-danger">{{ $cardErrors['carderr'] }}</span>
+                                @endif
+                                
+                                <div class="mt-2 mb-5 ml-3 pl-3{{ count($cardErrors) > 0 ? ' border border-danger' : '' }}">
                                 	<div class="mb-3">
                                         <label>カード番号</label>
-                                        <input type="text" id="cardno" class="form-control col-md-6{{ $errors->has('cardno') ? ' is-invalid' : '' }}" name="cardno" value="{{ Ctm::isOld() ? old('cardno') : (Session::has('all.data.cardno') ? session('all.data.cardno') : '') }}" placeholder="">
+                                        <input type="text" id="cardno" class="form-control col-md-6{{ $errors->has('cardno') ? ' is-invalid' : '' }}" name="cardno" value="{{ Ctm::isOld() ? old('cardno') : (Session::has('all.data.cardno') ? session('all.data.cardno') : '') }}" placeholder="例：1234123412341234">
                                
                                         @if ($errors->has('cardno'))
                                             <div class="help-block text-danger receiver-error">
@@ -823,8 +839,8 @@ use App\DeliveryGroup;
                                     </div>
                                     
                                     <div class="mb-3">
-                                        <label class="d-block">カード有効期限（年/月）</label>
-                                        <input type="text" id="expire_year" class="form-control d-inline-block col-md-2{{ $errors->has('expire_year') ? ' is-invalid' : '' }}" name="expire_year" value="{{ Ctm::isOld() ? old('expire_year') : (Session::has('all.data.expire_year') ? session('all.data.expire_year') : '') }}" placeholder="">
+                                        <label class="d-block">カード有効期限（年／月）</label>
+                                        <input type="text" id="expire_year" class="form-control d-inline-block col-md-2{{ $errors->has('expire_year') ? ' is-invalid' : '' }}" name="expire_year" value="{{ Ctm::isOld() ? old('expire_year') : (Session::has('all.data.expire_year') ? session('all.data.expire_year') : '') }}" placeholder="例：2020">
                                
                                         @if ($errors->has('expire_year'))
                                             <div class="help-block text-danger receiver-error">
@@ -834,7 +850,7 @@ use App\DeliveryGroup;
                                         @endif
                                         
                                         <label>／</label>
-                                        <input type="text" id="expire_month" class="form-control d-inline-block col-md-2{{ $errors->has('expire_month') ? ' is-invalid' : '' }}" name="expire_month" value="{{ Ctm::isOld() ? old('expire_month') : (Session::has('all.data.expire_month') ? session('all.data.expire_month') : '') }}" placeholder="">
+                                        <input type="text" id="expire_month" class="form-control d-inline-block col-md-2{{ $errors->has('expire_month') ? ' is-invalid' : '' }}" name="expire_month" value="{{ Ctm::isOld() ? old('expire_month') : (Session::has('all.data.expire_month') ? session('all.data.expire_month') : '') }}" placeholder="例：03">
                                
                                         @if ($errors->has('expire_month'))
                                             <div class="help-block text-danger receiver-error">
@@ -846,7 +862,7 @@ use App\DeliveryGroup;
                                     
                                     <div class="mb-3">
                                         <label>カード名義人</label>
-                                        <input type="text" id="holdername" class="form-control col-md-6{{ $errors->has('holdername') ? ' is-invalid' : '' }}" name="holdername" value="{{ Ctm::isOld() ? old('holdername') : (Session::has('all.data.holdername') ? session('all.data.holdername') : '') }}" placeholder="">
+                                        <input type="text" id="holdername" class="form-control col-md-6{{ $errors->has('holdername') ? ' is-invalid' : '' }}" name="holdername" value="{{ Ctm::isOld() ? old('holdername') : (Session::has('all.data.holdername') ? session('all.data.holdername') : '') }}" placeholder="例：tarou yamada">
                                
                                         @if ($errors->has('holdername'))
                                             <div class="help-block text-danger receiver-error">
@@ -858,7 +874,7 @@ use App\DeliveryGroup;
                                     
                                     <div class="mb-3">
                                         <label>セキュリティコード</label>
-                                        <input type="text" id="securitycode" class="form-control col-md-6{{ $errors->has('securitycode') ? ' is-invalid' : '' }}" name="securitycode" value="{{ Ctm::isOld() ? old('securitycode') : (Session::has('all.data.securitycode') ? session('all.data.securitycode') : '') }}" placeholder="">
+                                        <input type="text" id="securitycode" class="form-control col-md-6{{ $errors->has('securitycode') ? ' is-invalid' : '' }}" name="securitycode" value="{{ Ctm::isOld() ? old('securitycode') : (Session::has('all.data.securitycode') ? session('all.data.securitycode') : '') }}" placeholder="例：1234">
                                
                                         @if ($errors->has('securitycode'))
                                             <div class="help-block text-danger receiver-error">
