@@ -321,50 +321,32 @@
 
 <div class="mt-5">
 
+@if($data['pay_method'] == 1)
 <form id="getTokenForm">
 
-@foreach($cardInfo as $key => $ci)
-    <input id="{{ $key }}" type="hidden" name="{{ $key }}" value="{{ $ci }}">
-@endforeach
+	@foreach($cardInfo as $key => $ci)
+    	<input id="{{ $key }}" type="hidden" name="{{ $key }}" value="{{ $ci }}">
+	@endforeach
 
 	<div class="">
-    	<?php
-        	$disabled = '';
-            if(count($errors) > 0) {
-            	$disabled = ' disabled';
-            }
-        ?>
-        
         <small class="col-md-5 mx-auto d-block px-5 mb-1 confirm-small">
-            @if($errors->has('konbiniLimit'))
-                <span class="text-danger text-big">
-                    {{ $errors->first('konbiniLimit') }}<br>
-                    戻ってお支払い方法か購入商品を変更して下さい。
-                </span>
-            @elseif($errors->has('gmoLimit'))
-                <span class="text-danger text-big">
-                    {{ $errors->first('gmoLimit') }}<br>
-                    戻ってお支払い方法か購入商品を変更して下さい。
-                </span>
-            @else
-                上記ご注文内容で注文を確定します。<br>
-                <b>「注文する」ボタンをクリックすると注文を確定します。</b>
-            @endif
-            
+            上記ご注文内容で注文を確定します。<br>
+            <b>「注文する」ボタンをクリックすると注文を確定します。</b>
         </small>
         
         <div class="loader-wrap">
 	        <span class="loader"><i class="fal fa-square-full mr-2"></i> 処理中..</span>
   		</div>
     
-        <input type="button" id="card-submit" class="btn btn-block btn-enji col-md-4 mb-4 mx-auto py-2" value="注文する"{{ $disabled }}>
+        <input type="button" id="card-submit" class="btn btn-block btn-enji col-md-4 mb-4 mx-auto py-2" value="注文する">
         
         {{--
         <button class="btn btn-block btn-enji col-md-4 mb-4 mx-auto py-2" type="submit" name="regist_off" value="1"{{ $disabled }} onclick="doPurchase()">注文する</button>
         --}}
 	</div>
-</form>
 
+</form>
+@endif
 
 <form id="purchaseForm" class="form-horizontal" role="form" method="POST" action="{{ $actionUrl }}">
     {{ csrf_field() }}
@@ -382,6 +364,34 @@
     @endforeach
     
     <input type="hidden" value="" id="token" name="token">
+    
+    @if($data['pay_method'] != 1)
+    	<?php
+        	$disabled = '';
+            if(count($errors) > 0) {
+            	$disabled = ' disabled';
+            }
+        ?>
+        
+    	<small class="col-md-5 mx-auto d-block px-5 mb-4 confirm-small">
+            @if($errors->has('konbiniLimit'))
+                <span class="text-danger text-big">
+                    {{ $errors->first('konbiniLimit') }}<br>
+                    戻ってお支払い方法か購入商品を変更して下さい。
+                </span>
+            @elseif($errors->has('gmoLimit'))
+                <span class="text-danger text-big">
+                    {{ $errors->first('gmoLimit') }}<br>
+                    戻ってお支払い方法か購入商品を変更して下さい。
+                </span>
+            @else
+                上記ご注文内容で注文を確定します。<br>
+                <b>「注文する」ボタンをクリックすると注文を確定します。</b>
+            @endif
+        </small>
+        
+    	<button class="btn btn-block btn-enji col-md-4 mb-4 mx-auto py-2" type="submit"{{ $disabled }}>注文する</button>
+    @endif
   
 </form>
 

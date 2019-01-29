@@ -28,8 +28,8 @@
                         
                         お買い上げ、ありがとうございます。<br>ご注文が完了致しました。<br>
                         
-                        @if(isset($data['order_number']))
-                        	ご注文番号：[ {{ $data['order_number'] }} ] <br>
+                        @if(isset($orderNumber))
+                        	ご注文番号：[ {{ $orderNumber }} ] <br>
                         @endif
                         
                      	

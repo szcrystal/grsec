@@ -299,7 +299,7 @@ class CartController extends Controller
 //         exit;
 
         $itemData = session('item.data');
-     	$all = session('all'); //session(all): regist, allPrice
+     	$all = session('all'); //session(all): regist, allPrice, order_number
       	$allData = $all['data']; //session(all.data): destination, pay_method, user, receiver  
      	
       	$regist = $all['regist']; 
@@ -438,10 +438,13 @@ class CartController extends Controller
        		$payPaymentCode = 'GMO後払い';
        }
        
+       //order_numberの変数入れ
+       $orderNumber = $all['order_number'];
+       
        
        //SaleRelationのcreate
         $saleRel = $this->saleRel->create([
-            'order_number' => $all['order_number'], //コンビニなし
+            'order_number' => $orderNumber, //コンビニなし
             'regist' =>$all['regist'],
             'user_id' =>$userId,
             'is_user' => $isUser,
@@ -494,7 +497,7 @@ class CartController extends Controller
             $sale = $this->sale->create(
                 [
                 	'salerel_id' => $saleRelId,
-                	'order_number' => $all['order_number'], //コンビニなし
+                	'order_number' => $orderNumber, //コンビニなし
                     
                     'item_id' =>$val['item_id'],
                     'item_count' =>$val['item_count'], 
@@ -613,7 +616,7 @@ class CartController extends Controller
      
      	$pmModel = $this->payMethod;
      	
-        return view('cart.end', ['data'=>$data, 'pm'=>$pm, 'pmModel'=>$pmModel, 'paymentCode'=>$payPaymentCode, 'active'=>4]);
+        return view('cart.end', ['data'=>$data, 'pm'=>$pm, 'pmModel'=>$pmModel, 'paymentCode'=>$payPaymentCode, 'orderNumber'=>$orderNumber, 'active'=>4]);
       
       
       //クレカからの戻りサンプルURL
@@ -880,10 +883,11 @@ class CartController extends Controller
             'net_bank'=> 'required_if:pay_method,3',
             
             'cardno' => 'required_if:pay_method,1|numeric',
+            'securitycode' => 'required_if:pay_method,1|digits_between:3,4|numeric',
             'expire_year' => 'required_if:pay_method,1|numeric',
             'expire_month' => 'required_if:pay_method,1|numeric',
             //'holdername' => 'required_if:pay_method,1',
-            'securitycode' => 'required_if:pay_method,1|numeric',
+            
         ];
         
         //
@@ -902,7 +906,10 @@ class CartController extends Controller
             'pay_method.required' => '「お支払い方法」を選択して下さい。',
             'use_point.max' => '「ポイント」が保持ポイントを超えています。',
             'net_bank.required_if'=> '「お支払い方法」ネットバンク決済の銀行を選択して下さい。',
-            //'cardno.required_if' => '「カード番号」は必須です。',
+            'cardno.required_if' => '「カード番号」は必須です。',
+            'securitycode.required_if' => '「セキュリティコード」は必須です。',
+            'expire_year.required_if' => '「有効期限（年）」は必須です。',
+            'expire_month.required_if' => '「有効期限（月）」は必須です。',
             //'post_thumb.filenaming' => '「サムネイル-ファイル名」は半角英数字、及びハイフンとアンダースコアのみにして下さい。',
             //'post_movie.filenaming' => '「動画-ファイル名」は半角英数字、及びハイフンとアンダースコアのみにして下さい。',
             //'slug.unique' => '「スラッグ」が既に存在します。',
@@ -1185,11 +1192,11 @@ class CartController extends Controller
         
         //User識別
         $cardInfo['cardno'] = $data['cardno'];
+        $cardInfo['securitycode'] = $data['securitycode'];
         $cardInfo['expire_year'] = $data['expire_year'];
         $cardInfo['expire_month'] = $data['expire_month'];
-        $cardInfo['holdername'] = $data['holdername'];
-        $cardInfo['securitycode'] = $data['securitycode'];
-        $cardInfo['tokennumber'] = $data['tokennumber'];
+        //$cardInfo['holdername'] = $data['holdername'];
+        //$cardInfo['tokennumber'] = $data['tokennumber'];
         
         //$settles['ShopID'] = 'tshop00036826'; //
         //$settles['ShopPass'] = 'bgx3a3xf'; //
