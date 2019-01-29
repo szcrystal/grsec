@@ -163,7 +163,7 @@ use App\DeliveryGroup;
              	<small>例）09012345678ハイフンなし半角数字</small>
              </th>
                <td>
-                <input type="text" class="form-control col-md-12{{ $errors->has('user.tel_num') ? ' is-invalid' : '' }}" name="user[tel_num]" value="{{ Ctm::isOld() ? old('user.tel_num') : (Session::has('all.data.user') ? session('all.data.user.tel_num') : '') }}" placeholder="例）09012345678 ハイフンなし半角数字">
+                <input type="text" class="form-control col-md-12{{ $errors->has('user.tel_num') ? ' is-invalid' : '' }}" name="user[tel_num]" value="{{ Ctm::isOld() ? old('user.tel_num') : (Session::has('all.data.user') ? session('all.data.user.tel_num') : '') }}" placeholder="例）09012345678（ハイフンなし半角数字）">
                 
                 @if ($errors->has('user.tel_num'))
                     <div class="help-block text-danger">
@@ -179,7 +179,7 @@ use App\DeliveryGroup;
              	<small>例）1234567ハイフンなし半角数字</small>
              </th>
                <td>
-                <input id="zipcode" type="text" class="form-control col-md-6{{ $errors->has('user.post_num') ? ' is-invalid' : '' }}" name="user[post_num]" value="{{ Ctm::isOld() ? old('user.post_num') : (Session::has('all.data.user') ? session('all.data.user.post_num') : '') }}" placeholder="例）1234567 ハイフンなし半角数字">
+                <input id="zipcode" type="text" class="form-control col-md-6{{ $errors->has('user.post_num') ? ' is-invalid' : '' }}" name="user[post_num]" value="{{ Ctm::isOld() ? old('user.post_num') : (Session::has('all.data.user') ? session('all.data.user.post_num') : '') }}" placeholder="例）1234567（ハイフンなし半角数字）">
                 
                 @if ($errors->has('user.post_num'))
                     <div class="help-block text-danger">
@@ -563,7 +563,7 @@ use App\DeliveryGroup;
                          	<small>例）09012345678ハイフンなし半角数字</small>
                          </th>
                            <td>
-                            <input type="text" class="form-control col-md-12{{ $errors->has('receiver.tel_num') ? ' is-invalid' : '' }}" name="receiver[tel_num]" value="{{ Ctm::isOld() ? old('receiver.tel_num') : (Session::has('all.data.receiver') ? session('all.data.receiver.tel_num') : '') }}" placeholder="例）09012345678 ハイフンなし半角数字">
+                            <input type="text" class="form-control col-md-12{{ $errors->has('receiver.tel_num') ? ' is-invalid' : '' }}" name="receiver[tel_num]" value="{{ Ctm::isOld() ? old('receiver.tel_num') : (Session::has('all.data.receiver') ? session('all.data.receiver.tel_num') : '') }}" placeholder="例）09012345678（ハイフンなし半角数字）">
                             
                             @if ($errors->has('receiver.tel_num'))
                                 <div class="help-block text-danger receiver-error">
@@ -581,7 +581,7 @@ use App\DeliveryGroup;
                          	<small>例）1234567ハイフンなし半角数字</small>
                          </th>
                            <td>
-                            <input id="zipcode_2" type="text" class="form-control col-md-6{{ $errors->has('receiver.post_num') ? ' is-invalid' : '' }}" name="receiver[post_num]" value="{{ Ctm::isOld() ? old('receiver.post_num') : (Session::has('all.data.receiver') ? session('all.data.receiver.post_num') : '') }}" placeholder="例）1234567 ハイフンなし半角数字">
+                            <input id="zipcode_2" type="text" class="form-control col-md-6{{ $errors->has('receiver.post_num') ? ' is-invalid' : '' }}" name="receiver[post_num]" value="{{ Ctm::isOld() ? old('receiver.post_num') : (Session::has('all.data.receiver') ? session('all.data.receiver.post_num') : '') }}" placeholder="例）1234567（ハイフンなし半角数字）">
                             
                             @if ($errors->has('receiver.post_num'))
                                 <div class="help-block help-block text-danger receiver-error">
@@ -674,7 +674,7 @@ use App\DeliveryGroup;
                 
                 
                 <div class="pt-3">
-                	<h3 class="card-header mt-5">配送希望日時指定</h3>
+                	<h3 class="card-header mt-5">配送希望日時</h3>
                     
                     <fieldset class="mb-4 mt-3 col-md-7 form-group{{ $errors->has('plan_date') ? ' has-error' : '' }}">
                         <label for="plan_date" class="control-label">■ご希望日程<span class="text-small"></span></label>
@@ -783,6 +783,21 @@ use App\DeliveryGroup;
                 
                 </div>
                 
+                <div>
+                	<h3 class="card-header mt-4">その他コメント</h3>
+                    
+                    <fieldset class="form-group my-3 pb-4">
+                        <textarea id="user_comment" class="form-control{{ $errors->has('user_comment') ? ' is-invalid' : '' }}" name="user_comment" rows="10">{{ Ctm::isOld() ? old('user_comment') : (Session::has('all.data.user_comment') ? session('all.data.user_comment') : '') }}</textarea>
+                        
+                        @if ($errors->has('user_comment'))
+                            <div class="help-block text-danger receiver-error">
+                                <span class="fa fa-exclamation form-control-feedback"></span>
+                                <span>{{ $errors->first('user_comment') }}</span>
+                            </div>
+                        @endif
+                    </fieldset>
+                </div>
+                
                 
                 <div>
                 	<h3 class="card-header mt-5">お支払い方法</h3>
@@ -814,11 +829,11 @@ use App\DeliveryGroup;
                          
                         <label class="d-block mb-3">
                             @if(! $codCheck && $method->id == 5)
-                         		<input type="radio" name="pay_method" class="payMethodRadio" value="{{ $method->id }}" disabled> {{ $method->name }}
+                         		<input type="radio" name="pay_method" class="payMethodRadio ml-2" value="{{ $method->id }}" disabled> {{ $method->name }}
                            		<span class="text-secondary ml-3"><i class="fas fa-exclamation-circle"></i> ご注文商品の代金引換決済はご利用できません。</span> 
                                 
                             @elseif($method->id == 1)
-                            	<input type="radio" name="pay_method" class="payMethodRadio" value="{{ $method->id }}"{{ $checked }}> {{ $method->name }}
+                            	<input type="radio" name="pay_method" class="payMethodRadio ml-2" value="{{ $method->id }}"{{ $checked }}> {{ $method->name }}
                                 
                                 @if (count($cardErrors) > 0)
                                 	<span class="fa fa-exclamation form-control-feedback text-danger ml-4"></span>
@@ -828,7 +843,7 @@ use App\DeliveryGroup;
                                 <div class="mt-2 mb-5 ml-3 pl-3{{ count($cardErrors) > 0 ? ' border border-danger' : '' }}">
                                 	<div class="mb-3">
                                         <label>カード番号</label>
-                                        <input type="text" id="cardno" class="form-control col-md-5{{ $errors->has('cardno') ? ' is-invalid' : '' }}" name="cardno" value="{{ Ctm::isOld() ? old('cardno') : (Session::has('all.data.cardno') ? session('all.data.cardno') : '') }}" placeholder="例：1234123412341234">
+                                        <input type="text" id="cardno" class="form-control col-md-5{{ $errors->has('cardno') ? ' is-invalid' : '' }}" name="cardno" value="{{ Ctm::isOld() ? old('cardno') : (Session::has('all.data.cardno') ? session('all.data.cardno') : '') }}" placeholder="例）1234123412341234（ハイフンなし半角数字）">
                                
                                         @if ($errors->has('cardno'))
                                             <div class="help-block text-danger receiver-error">
@@ -840,7 +855,7 @@ use App\DeliveryGroup;
                                     
                                     <div class="mb-3">
                                         <label>セキュリティコード</label>
-                                        <input type="text" id="securitycode" class="form-control col-md-5{{ $errors->has('securitycode') ? ' is-invalid' : '' }}" name="securitycode" value="{{ Ctm::isOld() ? old('securitycode') : (Session::has('all.data.securitycode') ? session('all.data.securitycode') : '') }}" placeholder="例：1234">
+                                        <input type="text" id="securitycode" class="form-control col-md-5{{ $errors->has('securitycode') ? ' is-invalid' : '' }}" name="securitycode" value="{{ Ctm::isOld() ? old('securitycode') : (Session::has('all.data.securitycode') ? session('all.data.securitycode') : '') }}" placeholder="例）1234（半角数字）">
                                
                                         @if ($errors->has('securitycode'))
                                             <div class="help-block text-danger receiver-error">
@@ -947,7 +962,7 @@ use App\DeliveryGroup;
                                 
                                 
                          	@elseif($method->id != 2 && $method->id != 3)
-                                <input type="radio" name="pay_method" class="payMethodRadio" value="{{ $method->id }}"{{ $checked }}> {{ $method->name }}
+                                <input type="radio" name="pay_method" class="payMethodRadio ml-2" value="{{ $method->id }}"{{ $checked }}> {{ $method->name }}
                                 
                                 @if($method->id == 3)
                                 	<div class="wrap-pmc mt-1 pt-1 mb-3 ml-3 pl-2{{ $errors->has('net_bank') ? ' border border-danger' : '' }}">
