@@ -22,6 +22,8 @@ class NoStocked extends Mailable
      */
     public function __construct($str)
     {
+    	//$this->setting = Setting::get()->first();
+        
         $this->str = $str;
     }
 
@@ -42,7 +44,7 @@ class NoStocked extends Mailable
 //                     //-> later(now()->addMinutes(10), new NoStocked());
 //        });
         
-        return $this->from(env('ADMIN_EMAIL', 'no-reply@green-rocket.jp'), env('ADMIN_NAME', 'GREEN ROCKET'))
+        return $this->from(env('ADMIN_EMAIL', 'no-reply@green-rocket.jp'), $setting->admin_name)
         			-> to($setting->admin_email, $setting->admin_name)
                     ->view('emails.raw')
                     ->with([

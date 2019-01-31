@@ -882,21 +882,30 @@ class CartController extends Controller
             'pay_method' => 'required', 
             'net_bank'=> 'required_if:pay_method,3',
             
-            'cardno' => 'required_if:pay_method,1|numeric',
-            'securitycode' => 'required_if:pay_method,1|digits_between:3,4|numeric',
-            'expire_year' => 'required_if:pay_method,1|numeric',
-            'expire_month' => 'required_if:pay_method,1|numeric',
+//            'cardno' => 'required_if:pay_method,1|nullable|numeric',
+//            'securitycode' => 'required_if:pay_method,1|nullable|digits_between:3,4|numeric',
+//            'expire_year' => 'required_if:pay_method,1|nullable|numeric',
+//            'expire_month' => 'required_if:pay_method,1|nullable|numeric',
             //'holdername' => 'required_if:pay_method,1',
             
         ];
         
-        //
+        
+        //会員新規登録時でのemailバリデーション
         if(! Auth::check()) {
         	//$rules['user.prefecture'] = 'required';
          	
           	if($request->input('regist') && ! Ctm::isLocal()) {
           		$rules['user.email'] = 'filled|email|unique:users,email|max:255';
           	}
+        }
+        
+        //クレカの時のバリデーション
+        if($request->input('pay_method') == 1) {
+        	$rules['cardno'] = 'required|numeric';
+            $rules['securitycode'] = 'required|digits_between:3,4|numeric';
+            $rules['expire_year'] = 'required|numeric';
+            $rules['expire_month'] = 'required|numeric';
         }
         
          $messages = [
