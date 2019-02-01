@@ -235,10 +235,18 @@
         </tbody>
     </table>
 </div>
-                
+
+@if(isset($data['user_comment']) && $data['user_comment'] != '')
+<div class="mb-5">
+    <h5 class="card-header mb-3 py-2 mt-4">その他コメント</h5>
+    <div style="min-height:8em;" class="bg-white p-2 border border-gray">
+    	{!! nl2br($data['user_comment']) !!}
+    </div>
+</div>
+@endif
 
 @if(! Auth::check())
-<h5 class="card-header mb-3 py-2 mt-5">
+<h5 class="card-header mb-3 py-2 mt-4">
 @if($regist)
 会員登録情報
 @else

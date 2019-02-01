@@ -459,6 +459,7 @@ class CartController extends Controller
             'all_price' => $allPrice, //商品withTax x 個数 の合計　送料等は含まれない
             
             'destination' => $destination,
+            'user_comment' => $allData['user_comment'],
             'deli_done' => 0,
             'pay_done' => 0,
             
@@ -879,6 +880,8 @@ class CartController extends Controller
             'receiver.address_2' => 'required_with:destination|max:255',
             'receiver.address_3' => 'max:255',
             
+            'user_comment' => 'max:30000',
+            
             'pay_method' => 'required', 
             'net_bank'=> 'required_if:pay_method,3',
             
@@ -915,6 +918,8 @@ class CartController extends Controller
             'pay_method.required' => '「お支払い方法」を選択して下さい。',
             'use_point.max' => '「ポイント」が保持ポイントを超えています。',
             'net_bank.required_if'=> '「お支払い方法」ネットバンク決済の銀行を選択して下さい。',
+            'user_comment.max' => '「コメント」の文字数が長すぎます。',
+            
             'cardno.required_if' => '「カード番号」は必須です。',
             'securitycode.required_if' => '「セキュリティコード」は必須です。',
             'expire_year.required_if' => '「有効期限（年）」は必須です。',
@@ -928,9 +933,7 @@ class CartController extends Controller
         $validator = Validator::make($request->all(), $rules, $messages);
 
         if ($validator->fails()) {
-            return redirect('shop/form')
-                        ->withErrors($validator)
-                        ->withInput();
+            return redirect('shop/form')->withErrors($validator)->withInput();
         }
         
         
@@ -1444,8 +1447,10 @@ class CartController extends Controller
         
         //削除の時
         if($request->has('del_item_key')) {
-        	unset($data['last_item_count'][$data['del_item_key']]);
-            $data['last_item_count'] = array_values($data['last_item_count']);
+        	//if(isset($data['last_item_count'][$data['del_item_key']])) {
+        		unset($data['last_item_count'][$data['del_item_key']]);
+            	$data['last_item_count'] = array_values($data['last_item_count']);
+            //}
             
             //sesionから消す
             $request->session()->forget('item.data.'.$data['del_item_key']);

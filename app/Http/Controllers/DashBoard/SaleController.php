@@ -298,6 +298,9 @@ class SaleController extends Controller
 		$data['is_cancel'] = isset($data['is_cancel']) ? $data['is_cancel'] : 0;
         $data['is_keep'] = isset($data['is_keep']) ? $data['is_keep'] : 0;
         
+        //cancelの時 日付を入力
+        $data['cancel_date'] = $data['is_cancel'] ? date('Y-m-d H:i:s', time()) : null;
+        
         $saleModel = $this->sale->find($data['saleId']); //saleIdとsale_idsの両方あるので注意
         $saleModel->fill($data); //ここでのdeli_feeの更新は不要かも
         $saleModel->cost_price = $data['cost_price'] * $data['this_count'];

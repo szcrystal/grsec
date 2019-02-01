@@ -176,6 +176,13 @@ use App\PayMethodChild;
                                 
                                 </td>
                             </tr>
+                            
+                            <tr>
+                                <th>コメント</th>
+                                <td>
+                                	{!! nl2br($saleRel->user_comment) !!}
+                                </td>
+                            </tr>
                                                         
                             <tr>
                                 <th>決済方法</th>

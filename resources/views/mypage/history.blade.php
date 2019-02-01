@@ -48,6 +48,7 @@ use App\Item;
                 @include('main.shared.smallThumbnail')
                 
             	<div>
+                	
              		{{ Ctm::getItemTitle($item) }}&nbsp;
               		[{{ $item->number }}]
                		<span class="d-block mt-1">¥{{ number_format($sale->single_price) }}（税込）</span> 

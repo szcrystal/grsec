@@ -24,6 +24,7 @@ class SaleRelation extends Model
         'all_price',
         
         'destination',
+        'user_comment',
         
         //'deli_done',
         'pay_done',

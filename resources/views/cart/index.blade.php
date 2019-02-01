@@ -51,6 +51,7 @@
   		</thead>  
     
     	<tbody>
+        	<?php $disabled = ''; ?>
      		
      		@foreach($itemData as $key => $item)    
      		<tr class="{{ $errors->has('no_delivery.'. $key) ? 'tr-danger-border' : '' }}">
@@ -73,42 +74,48 @@
                 	
                 <td>
                     <fieldset class="mb-4 form-group">
-                        {{-- <label>数量</label> --}}
                         
                         <input type="hidden" name="last_item_id[]" value="{{ $item->id }}">
                         
-                        <select class="form-control col-md-11{{ $errors->has('last_item_count') ? ' is-invalid' : '' }}" name="last_item_count[]">
-                            	
-                                <?php
-                                    $max = 100;
-                                    if($item->stock < 100) {
-                                        $max = $item->stock;
-                                    }
-                                ?>
-                                
-                                @for($i=1; $i <= $max; $i++)
+                        @if(! $item->stock)
+                        	<small class="text-danger"><i class="far fa-exclamation-triangle"></i> <b>売切れ商品です。<br>カートから削除して進んで下さい。</b></small>
+                            <input type="hidden" name="last_item_count[]" value="0">
+                            <?php $disabled = ' disabled'; ?>
+                        @else
+                            <select class="form-control col-md-11{{ $errors->has('last_item_count') ? ' is-invalid' : '' }}" name="last_item_count[]">
+                                    
                                     <?php
-                                        $selected = '';
-                                        if(Ctm::isOld()) {
-                                            if(old('last_item_count.'. $key) == $i)
-                                                $selected = ' selected';
-                                        }
-                                        else {
-                                            if($i == $item->count) {
-                                                $selected = ' selected';
-                                            }
+                                        $max = 100;
+                                        if($item->stock < 100) {
+                                            $max = $item->stock;
                                         }
                                     ?>
-                                    <option value="{{ $i }}"{{ $selected }}>{{ $i }}</option>
-                                @endfor
-                        </select>
-                        <span class="text-warning"></span>
+                                    
+                                    @for($i=1; $i <= $max; $i++)
+                                        <?php
+                                            $selected = '';
+                                            if(Ctm::isOld()) {
+                                                if(old('last_item_count.'. $key) == $i)
+                                                    $selected = ' selected';
+                                            }
+                                            else {
+                                                if($i == $item->count) {
+                                                    $selected = ' selected';
+                                                }
+                                            }
+                                        ?>
+                                        <option value="{{ $i }}"{{ $selected }}>{{ $i }}</option>
+                                    @endfor
+                            </select>
+                            <span class="text-warning"></span>
+                            
+                            @if ($errors->has('last_item_count'))
+                                <div class="help-block text-danger">
+                                    <span class="fa fa-exclamation form-control-feedback"></span>
+                                    <span>{{ $errors->first('last_item_count.'. $key) }}</span>
+                                </div>
+                            @endif
                         
-                        @if ($errors->has('last_item_count'))
-                            <div class="help-block text-danger">
-                                <span class="fa fa-exclamation form-control-feedback"></span>
-                                <span>{{ $errors->first('last_item_count.'. $key) }}</span>
-                            </div>
                         @endif
                         
                     </fieldset>
@@ -121,7 +128,7 @@
                  		<input type="hidden" name="item_id" value="{{ $item->id }}">
                    		<input type="hidden" name="delete_item" value="1">  
                      	--}}             
-                		<button class="btn bg-white border-secondary btn-normal w-100" type="submit" name="del_item_key" value="{{ $key }}"><i class="fal fa-times"></i> 削除</button>
+                		<button class="btn btn-line w-100" type="submit" name="del_item_key" value="{{ $key }}"><i class="fal fa-times"></i> 削除</button>
 
                 </td>        
 
@@ -138,7 +145,7 @@
             	<td class="text-big"><b>¥{{ number_format($allPrice) }}</b></td>
              	<td>	
                     <input type="hidden" name="calc" value="1" form="re">
-                    <button class="btn border border-secondary bg-white px-2 w-100" type="submit" name="re_calc" value="1"><i class="fal fa-redo"></i> 再計算</button>
+                    <button class="btn btn-line px-2 w-100" type="submit" name="re_calc" value="1"{{ $disabled }}><i class="fal fa-redo"></i> 再計算</button>
                     {{-- <input type="submit" name="re_calc" value="再計算"> --}}
                 </td>
           	</tr>
@@ -197,7 +204,7 @@
                     </div>
                 </td>
                 <td>
-                    <button class="btn px-2 w-100 bg-enji" type="submit" name="delifee_calc" value="1"><b>送料計算</b></button>
+                    <button class="btn px-2 w-100 bg-enji" type="submit" name="delifee_calc" value="1"{{ $disabled }}><b>送料計算</b></button>
                 </td>
             </tr>
             
@@ -217,16 +224,16 @@
         <input type="hidden" name="from_cart" value="1">
 
         @if(Auth::check())
-            <button class="btn btn-block btn-custom mb-4 py-2 px-5" type="submit" name="regist_off" value="1" formaction="{{ url('shop/form') }}">購入手続きへ</button>
+            <button class="btn btn-block btn-custom mb-4 py-2 px-5" type="submit" name="regist_off" value="1" formaction="{{ url('shop/form') }}"{{ $disabled }}>購入手続きへ</button>
         @else
             <div class="table-responsive">
                 <table class="table">
                     <tr>
                         <th rowspan="2" class="border-0">会員登録がまだの方</th>
-                        <td class="border-0"><button class="btn btn-block btn-custom mb-1 py-2 px-5" type="submit" name="regist_on" value="1" formaction="{{ url('shop/form') }}">会員登録をして購入手続きへ</button></td>
+                        <td class="border-0"><button class="btn btn-block btn-custom mb-1 py-2 px-5" type="submit" name="regist_on" value="1" formaction="{{ url('shop/form') }}"{{ $disabled }}>会員登録をして購入手続きへ</button></td>
                    </tr>
                    <tr class="border-0">
-                        <td class="border-0"><button class="btn btn-block btn-custom mb-4 py-2 px-5" type="submit" name="regist_off" value="1" formaction="{{ url('shop/form') }}">会員登録せずに購入手続きへ</button></td>               
+                        <td class="border-0"><button class="btn btn-block btn-custom mb-4 py-2 px-5" type="submit" name="regist_off" value="1" formaction="{{ url('shop/form') }}"{{ $disabled }}>会員登録せずに購入手続きへ</button></td>               
                     </tr>
                     <tr>
                         <th class="border-0">会員登録がお済みの方</th>      
