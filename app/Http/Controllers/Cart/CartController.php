@@ -644,16 +644,109 @@ class CartController extends Controller
         
     	$data = $request->all();
         
-        $url = $this->set->is_product ? "https://pt01.mul-pay.jp/" : "https://pt01.mul-pay.jp/";
+        //URL 接続ドメイン ---------------
+        $url = $this->set->is_product ? "https://p01.mul-pay.jp/" : "https://pt01.mul-pay.jp/";
+        
+        //cUrl Option
+        $options = [
+            //CURLOPT_URL => $url . "/payment/SaveMember.idPass",
+            CURLOPT_RETURNTRANSFER => true, //文字列として返す
+            CURLOPT_POST => true,
+            //CURLOPT_POSTFIELDS => http_build_query($userRegDatas),
+            CURLOPT_TIMEOUT => 60, // タイムアウト時間
+        ];
         
         
+        $isRegistUser = session('all.regist');
+        $isRegistCard = session('all.data.is_regist_card') != '' ? session('all.data.is_regist_card') : 0;
+        
+        $gmoId = null;
+        
+        if(Auth::check() && isset($user->find(Auth::id())->gmo_id)) {
+            $gmoId = $user->find(Auth::id())->gmo_id;
+        }
+        else {
+            $gmoId = Ctm::getOrderNum(15);
+        }
+        
+        //$allData['user']; //session(all.data.user)
+        
+//        echo $userId;
+//        exit;
+        
+        
+        if( $isRegistCard) {
+            
+            //会員登録 するときしない時の条件 -------------------------------------------
+        	//GMOの保管期間を調べる必要があるかも
+        	//2重登録はされないようなのでカード登録なら必ずここを通すか？？
+            
+            $userRegDatas = array();
+            //$gmoId = Ctm::getOrderNum(15);
+            
+            //Data
+            $userRegDatas['SiteID'] = 'tsite00032753';
+            $userRegDatas['SitePass'] = 'uu6xvemh';
+            $userRegDatas['MemberID'] = $gmoId;
+            //$registDatas['MemberName'] = ;
+            
+            //curl init
+            $userRegCh = curl_init();
+            
+            //option
+            $options[CURLOPT_URL] = $url . "/payment/SaveMember.idPass";
+            $options[CURLOPT_POSTFIELDS] = http_build_query($userRegDatas);
+            
+            //curl setOption
+            curl_setopt_array($userRegCh, $options);
+            
+            //response
+            $userRegResponse = curl_exec($userRegCh);
+            curl_close($userRegCh);
+            
+            //$userRegResponse Error処理をここに ***********
+        
+
+        
+        
+            //クレカ登録 -----------------------------------------
+            $cardRegDatas = array();
+            
+            $cardRegDatas['SiteID'] = 'tsite00032753';
+            $cardRegDatas['SitePass'] = 'uu6xvemh';
+            $cardRegDatas['MemberID'] = $gmoId;
+            //$registDatas['MemberName'] = ;
+            $cardRegDatas['Token'] = $data['token'];
+            
+            //curl init
+            $cardRegCh = curl_init();
+            
+            //option
+            $options[CURLOPT_URL] = $url . "/payment/SaveCard.idPass";
+            $options[CURLOPT_POSTFIELDS] = http_build_query($cardRegDatas);
+            
+            //setOption
+            curl_setopt_array($cardRegCh, $options);
+            
+            //response
+            $cardRegResponse = curl_exec($cardRegCh);
+            curl_close($cardRegCh);
+            
+            echo $cardRegResponse;
+            exit;
+        
+        }
+        
+        
+        
+        //決済 -------------------------------------------
         //取引実行 ---------------------------------
         $datas = array();
         
         //User識別
         $datas['ShopID'] = 'tshop00036826'; //
         $datas['ShopPass'] = 'bgx3a3xf'; //
-        //$datas['ShopPass'] = 'bgx3a3x';
+        //$datas['ShopPass'] = 'bgx3a3x'; //パスワードを変えると意図的にエラーにできる
         
         $datas['JobCd'] = 'CAPTURE';
         $datas['OrderID'] = $data['OrderID'];
@@ -1096,8 +1189,8 @@ class CartController extends Controller
         	$codFee = 205;
             
             //GMO後払い上限額
-            if( ($totalFee + $codFee) > 50000) {
-            	$errors['gmoLimit'] = 'GMO後払い決済の上限額5万円を超えています。';
+            if( ($totalFee + $codFee) > 54000) {
+            	$errors['gmoLimit'] = 'GMO後払い決済の上限額54,000円を超えています。';
             }
         }
         
@@ -1139,20 +1232,21 @@ class CartController extends Controller
         $title = $itemData[0]->title; //購入１個目の商品をタイトルにする。これ以外なさそう。
         $number = $itemData[0]->number;
         
-        //Order_Number
-        //$rand = mt_rand();
-        $orderNum = Ctm::getOrderNum(10);
+        //注文番号作成 Order_Number
+        $orderNum = Ctm::getOrderNum(11);
         
         //UserInfo
         if(isset($data['user'])) { //Authでなければ$data['user']にデータが入る
-        	$user_id = '99999';
+        	$user_id = Ctm::getOrderNum(15);
         	$user_name = $data['user']['name'];
          	$user_email = $data['user']['email'];   
         }
         else {
-        	$user_id = '88' . Auth::id();
-        	$user_name = $this->user->find(Auth::id())->name;
-            $user_email = $this->user->find(Auth::id())->email;
+        	$u = $this->user->find(Auth::id());
+        	
+            $user_id = isset($u->gmo_id) ? $u->gmo_id : Ctm::getOrderNum(15);
+        	$user_name = $u->name;
+            $user_email = $u->email;
         }
         
         $settles = array();

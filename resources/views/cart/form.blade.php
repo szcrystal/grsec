@@ -750,7 +750,7 @@ use App\DeliveryGroup;
                                 ?>
                                 
                                 <span class="deliRadioWrap">
-                                <input type="radio" name="plan_time[{{$key}}]" class="payMethodRadio" value="希望なし" checked><span class="mr-3"> 希望なし</span>
+                                	<input type="radio" name="plan_time[{{$key}}]" class="deliRadio" value="希望なし" checked><span class="mr-3"> 希望なし</span>
                                 </span>
                                 @foreach($timeTable as $table)
                                     <?php 
@@ -769,7 +769,7 @@ use App\DeliveryGroup;
                                      ?>
                                     
                                     <span class="deliRadioWrap">
-                                    <input type="radio" name="plan_time[{{$key}}]" class="payMethodRadio" value="{{ $table }}" {{ $checked }}> <span class="mr-3">{{ $table }}</span>
+                                    	<input type="radio" name="plan_time[{{$key}}]" class="deliRadio" value="{{ $table }}" {{ $checked }}> <span class="mr-3">{{ $table }}</span>
                                     </span>
                                 @endforeach
                                     
@@ -804,12 +804,12 @@ use App\DeliveryGroup;
    					<a href="{{ url('about-pay') }}" class="d-inline-block mt-2 ml-1 text-small" target="_brank">お支払についてのご注意はこちら <i class="fal fa-angle-double-right"></i></a>
                     
                     <fieldset class="form-group my-3 pt-3 pb-4 py-2{{ $errors->has('pay_method') ? ' border border-danger' : '' }}">
-                    @if ($errors->has('pay_method'))
-                        <div class="help-block text-danger mb-2">
-                            <span class="fa fa-exclamation form-control-feedback"></span>
-                            <span>{{ $errors->first('pay_method') }}</span>
-                        </div>
-                    @endif
+                        @if ($errors->has('pay_method'))
+                            <div class="help-block text-danger mb-2">
+                                <span class="fa fa-exclamation form-control-feedback"></span>
+                                <span>{{ $errors->first('pay_method') }}</span>
+                            </div>
+                        @endif
 
                     @foreach($payMethod as $method)
                         <?php 
@@ -835,111 +835,156 @@ use App\DeliveryGroup;
                             @elseif($method->id == 1)
                             	<input type="radio" name="pay_method" class="payMethodRadio ml-2" value="{{ $method->id }}"{{ $checked }}> {{ $method->name }}
                                 
+                                <div class="wrap-all-card">
+                                
+                                <?php //RegistCard ------------------------- ?>
+                                <div class="wrap-regist-card mt-3 mb-2 ml-3 pl-3{{ count($cardErrors) > 0 ? ' border border-danger' : '' }}">
+                                	<div class="mb-4">
+                                    	<input type="radio" name="use_card" class="useCardRadio ml-2" value="1"{{ $checked }}> 
+                                        <label>カード番号： </label>
+                                        <span>************</span>
+                                        <small class="d-block ml-4 pl-1">有効期限：03/2021</small>
+                                	</div>
+                                    
+                                    <div class="mb-4">
+                                    	<input type="radio" name="use_card" class="useCardRadio ml-2" value="2"{{ $checked }}> 
+                                        <label>カード番号： </label>
+                                        <span>************</span>
+                                        <small class="d-block ml-4 pl-1">有効期限：03/2021</small>
+                                	</div>
+                                </div>
+                                
+                                <?php //NewCard ------------------------- ?>
+                                
                                 @if (count($cardErrors) > 0)
                                 	<span class="fa fa-exclamation form-control-feedback text-danger ml-4"></span>
                                     <span class="text-danger">{{ $cardErrors['carderr'] }}</span>
                                 @endif
                                 
                                 <div class="mt-2 mb-5 ml-3 pl-3{{ count($cardErrors) > 0 ? ' border border-danger' : '' }}">
-                                	<div class="mb-3">
-                                        <label>カード番号</label>
-                                        <input type="text" id="cardno" class="form-control col-md-5{{ $errors->has('cardno') ? ' is-invalid' : '' }}" name="cardno" value="{{ Ctm::isOld() ? old('cardno') : (Session::has('all.data.cardno') ? session('all.data.cardno') : '') }}" placeholder="例）1234123412341234（ハイフンなし半角数字）">
-                               
-                                        @if ($errors->has('cardno'))
-                                            <div class="help-block text-danger receiver-error">
-                                                <span class="fa fa-exclamation form-control-feedback"></span>
-                                                <span>{{ $errors->first('cardno') }}</span>
-                                            </div>
-                                        @endif
-                                    </div>
+                                	
+                                    <input type="radio" name="use_card" class="useCardRadio ml-2" value="99"{{ $checked }}> 新しいクレジットカードを使う
                                     
-                                    <div class="mb-3">
-                                        <label>セキュリティコード</label>
-                                        <input type="text" id="securitycode" class="form-control col-md-5{{ $errors->has('securitycode') ? ' is-invalid' : '' }}" name="securitycode" value="{{ Ctm::isOld() ? old('securitycode') : (Session::has('all.data.securitycode') ? session('all.data.securitycode') : '') }}" placeholder="例）1234（半角数字）">
-                               
-                                        @if ($errors->has('securitycode'))
-                                            <div class="help-block text-danger receiver-error">
-                                                <span class="fa fa-exclamation form-control-feedback"></span>
-                                                <span>{{ $errors->first('securitycode') }}</span>
-                                            </div>
-                                        @endif
-                                    </div>
-                                    
-                                    <div class="mb-3">
-                                    	<?php
-                                            $time = new DateTime('now');
-                                            $expireYear = $time->format('y');
-                                            //$withYoubi .= ' (' . $week[$time->format('w')] . ')';
+                                    <div class="wrap-new-card mt-3 mb-3 ml-4 pl-1">
                                         
-                                            $yn = 0;
-                                            $mn = 1;
-                                        ?>
-                                    
-                                        <label class="d-block">有効期限（月／年）</label>
+                                        <div class="mb-3">
+                                            <label>カード番号</label>
+                                            <input type="text" id="cardno" class="form-control col-md-5{{ $errors->has('cardno') ? ' is-invalid' : '' }}" name="cardno" value="{{ Ctm::isOld() ? old('cardno') : (Session::has('all.data.cardno') ? session('all.data.cardno') : '') }}" placeholder="例）1234123412341234（ハイフンなし半角数字）">
+                                   
+                                            @if ($errors->has('cardno'))
+                                                <div class="help-block text-danger receiver-error">
+                                                    <span class="fa fa-exclamation form-control-feedback"></span>
+                                                    <span>{{ $errors->first('cardno') }}</span>
+                                                </div>
+                                            @endif
+                                        </div>
                                         
-                                        <select id="expire_month" class="form-control d-inline-block col-md-2{{ $errors->has('expire_month') ? ' is-invalid' : '' }}" name="expire_month">
+                                        <div class="mb-3">
+                                            <label>セキュリティコード</label>
+                                            <input type="text" id="securitycode" class="form-control col-md-5{{ $errors->has('securitycode') ? ' is-invalid' : '' }}" name="securitycode" value="{{ Ctm::isOld() ? old('securitycode') : (Session::has('all.data.securitycode') ? session('all.data.securitycode') : '') }}" placeholder="例）1234（半角数字）">
+                                   
+                                            @if ($errors->has('securitycode'))
+                                                <div class="help-block text-danger receiver-error">
+                                                    <span class="fa fa-exclamation form-control-feedback"></span>
+                                                    <span>{{ $errors->first('securitycode') }}</span>
+                                                </div>
+                                            @endif
+                                        </div>
+                                        
+                                        <div class="mb-3">
+                                            <?php
+                                                $time = new DateTime('now');
+                                                $expireYear = $time->format('y');
+                                                //$withYoubi .= ' (' . $week[$time->format('w')] . ')';
                                             
-                                            @while($mn < 13)
-                                                <?php
-                                                	$expireMonth = str_pad($mn, 2, 0, STR_PAD_LEFT);
+                                                $yn = 0;
+                                                $mn = 1;
+                                            ?>
+                                        
+                                            <label class="d-block">有効期限（月／年）</label>
+                                            
+                                            <select id="expire_month" class="form-control d-inline-block col-md-2{{ $errors->has('expire_month') ? ' is-invalid' : '' }}" name="expire_month">
+                                                
+                                                @while($mn < 13)
+                                                    <?php
+                                                        $expireMonth = str_pad($mn, 2, 0, STR_PAD_LEFT);
+                                                        
+                                                        $selected = '';
+                                                        if(Ctm::isOld()) {
+                                                            if(old('expire_month') == $expireMonth)
+                                                                $selected = ' selected';
+                                                        }
+                                                        else {
+                                                            if(Session::has('expire_month')  && session('expire_month') == $expireMonth) {
+                                                                $selected = ' selected';
+                                                            }
+                                                        }
+                                                    ?>
                                                     
-                                                    $selected = '';
-                                                    if(Ctm::isOld()) {
-                                                        if(old('expire_month') == $expireMonth)
-                                                            $selected = ' selected';
-                                                    }
-                                                    else {
-                                                        if(Session::has('expire_month')  && session('expire_month') == $expireMonth) {
-                                                            $selected = ' selected';
-                                                        }
-                                                    }
-                                                ?>
-                                                
-                                                <option value="{{ $expireMonth }}"{{ $selected }}>{{ $expireMonth }}</option>
-                                                
-                                                <?php $mn++; ?>
-                                            @endwhile
-                                        </select>
-                                        <span class="mr-3">月</span>
-                                        
-                                        @if ($errors->has('expire_month'))
-                                            <div class="help-block text-danger">
-                                                <span class="fa fa-exclamation form-control-feedback"></span>
-                                                <span>{{ $errors->first('expire_month') }}</span>
-                                            </div>
-                                        @endif
-                                        
-                                        
-                                        <select id="expire_year" class="form-control d-inline-block col-md-2{{ $errors->has('expire_year') ? ' is-invalid' : '' }}" name="expire_year">
+                                                    <option value="{{ $expireMonth }}"{{ $selected }}>{{ $expireMonth }}</option>
+                                                    
+                                                    <?php $mn++; ?>
+                                                @endwhile
+                                            </select>
+                                            <span class="mr-3">月</span>
                                             
-                                            @while($yn < 11)
-                                                <?php
-                                                    $selected = '';
-                                                    if(Ctm::isOld()) {
-                                                        if(old('expire_year') == $expireYear + $yn)
-                                                            $selected = ' selected';
-                                                    }
-                                                    else {
-                                                        if(Session::has('expire_year')  && session('expire_year') == $expireYear + $yn) {
-                                                            $selected = ' selected';
+                                            @if ($errors->has('expire_month'))
+                                                <div class="help-block text-danger">
+                                                    <span class="fa fa-exclamation form-control-feedback"></span>
+                                                    <span>{{ $errors->first('expire_month') }}</span>
+                                                </div>
+                                            @endif
+                                            
+                                            
+                                            <select id="expire_year" class="form-control d-inline-block col-md-2{{ $errors->has('expire_year') ? ' is-invalid' : '' }}" name="expire_year">
+                                                
+                                                @while($yn < 11)
+                                                    <?php
+                                                        $selected = '';
+                                                        if(Ctm::isOld()) {
+                                                            if(old('expire_year') == $expireYear + $yn)
+                                                                $selected = ' selected';
                                                         }
-                                                    }
-                                                ?>
-                                                
-                                                <option value="{{ $expireYear + $yn }}"{{ $selected }}>{{ $expireYear + $yn }}</option>
-                                                
-                                                <?php $yn++; ?>
-                                            @endwhile
-                                        </select>
-                                        <span class="mr-3">年</span>
+                                                        else {
+                                                            if(Session::has('expire_year')  && session('expire_year') == $expireYear + $yn) {
+                                                                $selected = ' selected';
+                                                            }
+                                                        }
+                                                    ?>
+                                                    
+                                                    <option value="{{ $expireYear + $yn }}"{{ $selected }}>{{ $expireYear + $yn }}</option>
+                                                    
+                                                    <?php $yn++; ?>
+                                                @endwhile
+                                            </select>
+                                            <span class="mr-3">年</span>
+                                            
+                                            @if ($errors->has('expire_year'))
+                                                <div class="help-block text-danger">
+                                                    <span class="fa fa-exclamation form-control-feedback"></span>
+                                                    <span>{{ $errors->first('expire_year') }}</span>
+                                                </div>
+                                            @endif
+                                            
+                                        </div>
                                         
-                                        @if ($errors->has('expire_year'))
-                                            <div class="help-block text-danger">
-                                                <span class="fa fa-exclamation form-control-feedback"></span>
-                                                <span>{{ $errors->first('expire_year') }}</span>
-                                            </div>
-                                        @endif
                                         
+                                        <label class="mt-2">
+                                            <?php                            
+                                                $checked = '';
+                                                if(Ctm::isOld()) {
+                                                     if(old('regist_card') !== null) 
+                                                        $checked = ' checked';
+                                                }
+                                                else {
+                                                    if(Session::has('all.data.regist_card') && session('all.data.regist_card'))
+                                                        $checked = ' checked';
+                                                }
+                                            ?>
+                                            
+                                            <input type="checkbox" name="is_regist_card" value="1"{{ $checked }}> このクレジットカード情報を登録する
+                                        </label>
+                                    
                                     </div>
                                     
                                     {{--
@@ -958,6 +1003,8 @@ use App\DeliveryGroup;
                                     <input type="hidden" value="1" name="tokennumber" id="tokennumber">
                                     --}}
                                     
+                                </div>
+                                
                                 </div>
                                 
                                 

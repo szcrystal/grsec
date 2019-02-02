@@ -363,6 +363,12 @@ body {
     line-height: 90px;
 }
 
+.wrap-all-card { /* creca child wrap */
+	display: none;
+}
+.wrap-new-card {
+	display: none;
+}
 .wrap-pmc { /* payMethod child wrap */
 	display: none;
 }

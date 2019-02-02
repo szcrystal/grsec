@@ -657,23 +657,60 @@ var exe = (function() {
         
         slidePayMethodChild: function() {
         	$pmRadio = $('.payMethodRadio');
-            $wrapPmc = $('.wrap-pmc');
+            $useCardRadio = $('.useCardRadio');
             
-            if($('.payMethodRadio:checked').val() == 3) {
-            	$wrapPmc.show();
+            $wrapPmc = $('.wrap-pmc');
+            $wrapAllCard = $('.wrap-all-card');
+            $wrapNewCard = $('.wrap-new-card');
+            
+            //クレカ
+            if($('.payMethodRadio:checked').val() == 1) {
+            	$wrapAllCard.show();
+                console.log($('.payMethodRadio:checked').val() + "a");
             }
             
             $pmRadio.on('change', function(e){
-            	if($(this).val() == 3) {
-                	$wrapPmc.slideDown(100); 
+            	if($(this).val() == 1) {
+                	$wrapAllCard.slideDown(100); 
                 }
                 else {
-                	$wrapPmc.slideUp(100);
+                	$wrapAllCard.slideUp(100);
                 }
             	
             });
             
-            console.log($pmRadio.find(':checked').val());
+            if($('.useCardRadio:checked').val() == 99) {
+            	$wrapNewCard.show();
+            }
+            
+            $useCardRadio.on('change', function(){
+            	if($(this).val() == 99) {
+                	$wrapNewCard.slideDown(100); 
+                }
+                else {
+                	$wrapNewCard.slideUp(100);
+                }
+            
+            });
+            
+            console.log($('.payMethodRadio:checked').val());
+            
+            //ネットバンク銀行選択
+//            if($('.payMethodRadio:checked').val() == 3) {
+//            	$wrapPmc.show();
+//            }
+//            
+//            $pmRadio.on('change', function(e){
+//            	if($(this).val() == 3) {
+//                	$wrapPmc.slideDown(100); 
+//                }
+//                else {
+//                	$wrapPmc.slideUp(100);
+//                }
+//            	
+//            });
+            
+            //console.log($pmRadio.find(':checked').val());
         },
         
         
@@ -696,6 +733,7 @@ var exe = (function() {
             
         },
         
+        //スマホ時 Single 詳細などのaccordion
         accordionMoveUp: function(){
             //var $ac = $('.single #accordion');            
             //var h = $('.upper-wrap').height();

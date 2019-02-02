@@ -323,15 +323,19 @@ class CustomController extends Controller
         $eng = array_merge(range('a', 'z'));
         $num = array_merge(range('0', '9'));
         
+        $alphaNum = 3;
+        $intNum = $length - $alphaNum;
+        
         $r_str = null;
         
-        for ($i = 0; $i < 3; $i++) {
+        //アルファベット部分
+        for ($i = 0; $i < $alphaNum; $i++) {
             $r_str .= $eng[mt_rand(0, count($eng) - 1)];
         }
         
         //$r_str .= '-';
-        
-        for ($n = 0; $n < 8; $n++) {
+        //整数部分
+        for ($n = 0; $n < $intNum; $n++) {
             $r_str .= $num[mt_rand(0, count($num) - 1)];
         }
         
