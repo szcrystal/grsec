@@ -679,7 +679,7 @@ var exe = (function() {
             	
             });
             
-            if($('.useCardRadio:checked').val() == 99) {
+            if($('.useCardRadio:checked').val() == 99 || ! $useCardRadio.length) {
             	$wrapNewCard.show();
             }
             

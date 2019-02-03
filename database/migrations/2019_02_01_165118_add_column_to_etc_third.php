@@ -22,6 +22,20 @@ class AddColumnToEtcThird extends Migration
         });
         
         
+        //users gmo関連のカラム
+        Schema::table('users', function (Blueprint $table) {
+        	$table->string('member_id')->after('remember_token')->nullable()->default(NULL);
+        });
+        
+        Schema::table('users', function (Blueprint $table) {
+        	$table->timestamp('member_regist_date')->after('member_id')->nullable()->default(NULL);
+        });
+        
+        Schema::table('users', function (Blueprint $table) {
+        	$table->integer('card_regist_count')->after('member_regist_date')->nullable()->default(0);
+        });
+        
+        
     }
 
     /**
@@ -40,6 +54,25 @@ class AddColumnToEtcThird extends Migration
         if (Schema::hasColumn('sale_relations', 'user_comment')) {
             Schema::table('sale_relations', function (Blueprint $table) {
                 $table->dropColumn('user_comment');
+            });
+        }
+        
+        //users gmo関連のカラム
+        if (Schema::hasColumn('users', 'member_id')) {
+            Schema::table('users', function (Blueprint $table) {
+                $table->dropColumn('member_id');
+            });
+        }
+        
+        if (Schema::hasColumn('users', 'member_regist_date')) {
+            Schema::table('users', function (Blueprint $table) {
+                $table->dropColumn('member_regist_date');
+            });
+        }
+        
+        if (Schema::hasColumn('users', 'card_regist_count')) {
+            Schema::table('users', function (Blueprint $table) {
+                $table->dropColumn('card_regist_count');
             });
         }
         

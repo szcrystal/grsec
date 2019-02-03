@@ -47,6 +47,10 @@ class User extends Authenticatable
         'destination',
         
         'active',
+        
+        'member_id',
+        'member_regist_date',
+        'card_regist_count',
     ];
 
     /**

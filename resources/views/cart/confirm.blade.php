@@ -131,21 +131,21 @@
     </div>
 
     @if($regist || Auth::check())
-    <div class="table-responsive table-custom show-price mt-3">
-        <table class="table border table-borderd bg-white">
+        <div class="table-responsive table-custom show-price mt-3">
+            <table class="table border table-borderd bg-white">
 
-            @if(Auth::check())
-            <tr>
-                <th>ポイント残高</th>
-                 <td>{{ $userArr['point'] - $usePoint }}</td>
-            </tr>
-            @endif
-            <tr>
-                <th>ポイント発生</th>
-                <td>{{ $addPoint }}</td>
-            </tr>
-        </table>
-    </div>
+                @if(Auth::check())
+                <tr>
+                    <th>ポイント残高</th>
+                     <td>{{ $userArr['point'] - $usePoint }}</td>
+                </tr>
+                @endif
+                <tr>
+                    <th>ポイント発生</th>
+                    <td>{{ $addPoint }}</td>
+                </tr>
+            </table>
+        </div>
     @endif
 
     <div class="table-responsive table-custom show-price mt-3">
@@ -159,6 +159,19 @@
                     @endif
                 </td>
             </tr>
+            
+            @if($data['pay_method'] == 1 && $data['card_seq'] == 99)
+            	<tr>
+                    <th>カード番号の登録</th>
+                    <td>
+                        @if(isset($data['is_regist_card']))
+                            する
+                        @else
+                            しない
+                        @endif
+                    </td>
+                </tr>
+            @endif
         </table>
     </div>
 

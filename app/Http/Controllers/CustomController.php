@@ -436,6 +436,54 @@ class CustomController extends Controller
         
     }
     
+    static function gmoId()
+    {    	
+        if(Setting::get()->first()->is_product) { //本番
+        	return [
+            	'siteId' =>'tsite00032753',
+                'sitePass' => 'uu6xvemh',
+                'shopId' =>'tshop00036826',
+                'shopPass' => 'bgx3a3xf',
+        	];	
+        }
+        else { //テスト
+        	return [
+            	'siteId' =>'tsite00032753',
+                'sitePass' => 'uu6xvemh',
+                'shopId' =>'tshop00036826',
+                'shopPass' => 'bgx3a3xf',
+        	];
+        }
+    	
+    }
+    
+    static function cUrlFunc($connectUrl, $datas)
+    {
+    	$url = Setting::get()->first()->is_product ? "https://p01.mul-pay.jp/" : "https://pt01.mul-pay.jp/"; 
+    	
+        $options = [
+            CURLOPT_URL => $url . $connectUrl,
+            CURLOPT_RETURNTRANSFER => true, //文字列として返す
+            CURLOPT_POST => true,
+            CURLOPT_POSTFIELDS => http_build_query($datas),
+            CURLOPT_TIMEOUT => 60, // タイムアウト時間
+        ];
+        
+        //curl init
+        $ch = curl_init();
+        
+        //setOption
+        curl_setopt_array($ch, $options);
+        
+        //response
+        $response = curl_exec($ch);
+        
+        //close
+        curl_close($ch);
+        
+        return $response;
+    }
+    
     
     static function sendMail($data, $typeCode)
     {

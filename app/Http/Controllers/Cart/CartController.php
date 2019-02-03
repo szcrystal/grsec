@@ -54,12 +54,8 @@ class CartController extends Controller
         $this->dgRel = $dgRel;
         $this->favorite = $favorite;
         $this->payMethodChild = $payMethodChild;
-//        $this->category = $category;
-//        $this->categorySecond = $categorySecond;
-//        $this -> tag = $tag;
-//        $this->tagRelation = $tagRelation;
-//        $this->consignor = $consignor;
-//        
+
+        $this->gmoId = Ctm::gmoId(); 
 //        $this->perPage = 20;
         
         // URLの生成
@@ -317,7 +313,15 @@ class CartController extends Controller
         
         $userData = Auth::check() ? $this->user->find(Auth::id()) : $allData['user']; //session(all.data.user)
       	$receiverData = $allData['receiver']; //session('all.data.receiver');
-      	
+        
+        
+        //order_numberの変数入れ
+       	$orderNumber = $all['order_number'];
+       
+       	//クレカ関連
+       	$memberId = isset($allData['member_id']) && $allData['member_id'] != '' ? $allData['member_id'] : null;
+       
+       	$isCardRegist = isset($allData['card_regist']) && $allData['card_regist'] != '' ? 1 : 0;
        
        	
         //配送時間指定 itemごとにitemDataの配列内に入れる
@@ -332,9 +336,9 @@ class CartController extends Controller
                 }
             }
         }
-    
+
       
-      	//User登録処理
+      	//User登録処理 ==============
       	$userId = 0;
         $isUser = 0;
         
@@ -343,8 +347,16 @@ class CartController extends Controller
         	$userId = $uObj->id;
          	
           	$uObj->increment('point', $addPoint);
-//              $uObj->point += $addPoint;
-//               $uObj->save();
+            
+            if($isCardRegist) { //カード登録時
+				$uObj->increment('card_regist_count', 1);
+            }
+            
+            if(isset($memberId)) { //gmo-member登録時 新規登録以外はnullとなる
+            	$uObj->member_id = $memberId;
+                $uObj->member_regist_date = date('Y-m-d H:i:s', time());
+            	$uObj->save();
+            }
                      
          	$isUser = 1;   
         }
@@ -363,6 +375,14 @@ class CartController extends Controller
             if($regist) {   
                 $userData['password'] = bcrypt($userData['password']);
       			$userData['point'] = $addPoint;
+                
+                if($isCardRegist) { //カード登録時
+					$userData['card_regist_count'] = 1;
+            	}
+            
+            	if(isset($memberId)) { //gmo-member登録時 新規登録以外はnullとなる
+            		$userData['member_id'] = $memberId;
+            	}
                 
 //                $userData['birth_year'] = $userData['birth_year'] ? $userData['birth_year'] : null;
 //                $userData['birth_month'] = $userData['birth_month'] ? $userData['birth_month'] : null;
@@ -438,9 +458,7 @@ class CartController extends Controller
        		$payPaymentCode = 'GMO後払い';
        }
        
-       //order_numberの変数入れ
-       $orderNumber = $all['order_number'];
-       
+
        
        //SaleRelationのcreate
         $saleRel = $this->saleRel->create([
@@ -660,102 +678,114 @@ class CartController extends Controller
         $isRegistUser = session('all.regist');
         $isRegistCard = session('all.data.is_regist_card') != '' ? session('all.data.is_regist_card') : 0;
         
-        $gmoId = null;
+        $cardSeqSession = session('all.data.card_seq');
         
-        if(Auth::check() && isset($user->find(Auth::id())->gmo_id)) {
-            $gmoId = $user->find(Auth::id())->gmo_id;
+        $memberId = null;
+        $cardSeqNum = null;
+        
+        if($cardSeqSession != '' && $cardSeqSession != 99) {
+            $cardSeqNum = $cardSeqSession;
         }
-        else {
-            $gmoId = Ctm::getOrderNum(15);
+        
+        
+        if(Auth::check() ) {
+            $u = $this->user->find(Auth::id());
+            
+            if(isset($u->member_id)) {
+            	$memberId = $u->member_id;
+            }
         }
+        
+//        echo $isRegistCard;
+//        exit;
         
         //$allData['user']; //session(all.data.user)
         
-//        echo $userId;
-//        exit;
-        
-        
-        if( $isRegistCard) {
+        if($isRegistCard && $cardSeqSession == 99) { //決済の下に移動すればダブルTokenでエラーに出来る
             
-            //会員登録 するときしない時の条件 -------------------------------------------
-        	//GMOの保管期間を調べる必要があるかも
-        	//2重登録はされないようなのでカード登録なら必ずここを通すか？？
+            if(! isset($memberId)) {
+                //会員登録-------------------------------------------
+                //会員だがmemberId nullの時、新規会員登録の時
+                //GMOの保管期間は無限
+                //2重登録はされないようなのでカード登録なら必ずここを通すか？？
+                
+                $memberId = Ctm::getOrderNum(15);
+                
+                $userRegDatas = [
+                    'SiteID' => $this->gmoId['siteId'],
+                    'SitePass' => $this->gmoId['sitePass'],
+                    'MemberID' => $memberId,
+                    //'MemberName'] => ,
+                ];
+                
+                $userRegResponse = Ctm::cUrlFunc("/payment/SaveMember.idPass", $userRegDatas);
+                
+                //$userRegResponse Error処理をここに ***********
             
-            $userRegDatas = array();
-            //$gmoId = Ctm::getOrderNum(15);
-            
-            //Data
-            $userRegDatas['SiteID'] = 'tsite00032753';
-            $userRegDatas['SitePass'] = 'uu6xvemh';
-            $userRegDatas['MemberID'] = $gmoId;
-            //$registDatas['MemberName'] = ;
-            
-            //curl init
-            $userRegCh = curl_init();
-            
-            //option
-            $options[CURLOPT_URL] = $url . "/payment/SaveMember.idPass";
-            $options[CURLOPT_POSTFIELDS] = http_build_query($userRegDatas);
-            
-            //curl setOption
-            curl_setopt_array($userRegCh, $options);
-            
-            //response
-            $userRegResponse = curl_exec($userRegCh);
-            curl_close($userRegCh);
-            
-            //$userRegResponse Error処理をここに ***********
-        
 
-        
+                session()->put('all.data.member_id', $memberId);
+            }
         
             //クレカ登録 -----------------------------------------
-            $cardRegDatas = array();
+            $cardRegDatas = [
+            	'SiteID' => $this->gmoId['siteId'],
+            	'SitePass' => $this->gmoId['sitePass'],
+           		'MemberID' => $memberId, //ここでnullであることはない
+            	//$registDatas['MemberName'] = ;
+            	'Token' => $data['token'],
+            ];
             
-            $cardRegDatas['SiteID'] = 'tsite00032753';
-            $cardRegDatas['SitePass'] = 'uu6xvemh';
-            $cardRegDatas['MemberID'] = $gmoId;
-            //$registDatas['MemberName'] = ;
-            $cardRegDatas['Token'] = $data['token'];
+            $cardRegResponse = Ctm::cUrlFunc("/payment/SaveCard.idPass", $cardRegDatas);
             
-            //curl init
-            $cardRegCh = curl_init();
+            //正常：CardSeq=0&CardNo=*************111&Forward=2a99662
+            $cardRegArr = explode('&', $cardRegResponse);
+        	$cardRegSuccess = array();
+        
+        
+            foreach($cardRegArr as $res) {
+                $arr = explode('=', $res);
+                $cardRegSuccess[$arr[0]] = $arr[1];
+            }
             
-            //option
-            $options[CURLOPT_URL] = $url . "/payment/SaveCard.idPass";
-            $options[CURLOPT_POSTFIELDS] = http_build_query($cardRegDatas);
-            
-            //setOption
-            curl_setopt_array($cardRegCh, $options);
-            
-            //response
-            $cardRegResponse = curl_exec($cardRegCh);
-            curl_close($cardRegCh);
-            
-            echo $cardRegResponse;
-            exit;
+            //$userRegResponse Error処理をここに ***********
+            if(array_key_exists('ErrCode', $cardRegSuccess)) {
+                //return view('cart.error', ['erroeName'=>'取引実行エラー（5001'.$cardRegSuccess['ErrInfo'].'）', 'active'=>3]);
+            }
+            else {
+            	$cardSeqNum = $cardRegSuccess['CardSeq'];
+            }
+
+            session()->put('all.data.card_regist', 1);
+//            echo $cardRegResponse;
+//            exit;
         
         }
-        
         
         
         //決済 -------------------------------------------
         //取引実行 ---------------------------------
-        $datas = array();
         
+        $switchSec = 1;
+        
+        if($switchSec) {
         //User識別
-        $datas['ShopID'] = 'tshop00036826'; //
-        $datas['ShopPass'] = 'bgx3a3xf'; //
-        //$datas['ShopPass'] = 'bgx3a3x'; //パスワードを変えると意図的にエラーにできる
+        $trstDatas = [
+        	'ShopID' => $this->gmoId['shopId'],
+        	'ShopPass' => $this->gmoId['shopPass'],
+	        //'ShopPass' => 'bgx3a3x'; //パスワードを変えると意図的にエラーにできる
         
-        $datas['JobCd'] = 'CAPTURE';
-        $datas['OrderID'] = $data['OrderID'];
-        $datas['Amount'] = $data['Amount'];
+        	'JobCd' => 'CAPTURE',
+        	'OrderID' => $data['OrderID'],
+        	'Amount' => $data['Amount'],
+        ];
         
-        //echo $data['token'];
         //print_r($datas);
         //exit;
-
+        
+        $trstResponse = Ctm::cUrlFunc("payment/EntryTran.idPass", $trstDatas);
+        
+        
+		/*
         $ch = curl_init();
         
         $options = [
@@ -770,12 +800,13 @@ class CartController extends Controller
         
         $response = curl_exec($ch);
         curl_close($ch);
+        */
         
         //ErrCode=E01&ErrInfo=E01040010
         //AccessID=5bdbac2fa1e034a90227382dcd67239f&AccessPass=96bb7efe36501aba8865696db0f9687c
         //echo $response;
                 
-        $resArr = explode('&', $response);
+        $resArr = explode('&', $trstResponse);
         $sucArr = array();
         
         
@@ -786,7 +817,7 @@ class CartController extends Controller
         
         //Error時
         if(array_key_exists('ErrCode', $sucArr)) {
-        	return view('cart.error', ['erroeName'=>'取引実行エラー（5001）', 'active'=>3]);
+        	return view('cart.error', ['erroeName'=>'取引実行エラー（5001'.$sucArr['ErrInfo'].'）', 'active'=>3]);
         }
         
         
@@ -795,27 +826,30 @@ class CartController extends Controller
         
         
         //決済実行 -------------------------
-        $settleArr = [
+        $settleDatas = [
         	'AccessID' => $sucArr['AccessID'],
-            //'AccessID' => 1234,
+            //'AccessID' => 1234, //このIDを変えるとエラーに出来る
             'AccessPass' => $sucArr['AccessPass'],
             'OrderID' => $data['OrderID'],
-            'Method' => 1,
-            'Token' => $data['token'],
+            'Method' => 1, //支払い方法 
         ];
         
-        $settleCh = curl_init();
+        if(isset($cardSeqNum)) { //カード登録時 登録したカード連番を利用
+            $settleDatas['SiteID'] = $this->gmoId['siteId'];
+            $settleDatas['SitePass'] = $this->gmoId['sitePass'];
+           	$settleDatas['MemberID'] = $memberId;
+            $settleDatas['CardSeq'] = $cardSeqNum;
+        }
+        else { //カード登録しない時 Tokenを利用
+        	$settleDatas['Token'] = $data['token'];
+        }
         
-        $options[CURLOPT_URL] = $url . "payment/ExecTran.idPass";
-        $options[CURLOPT_POSTFIELDS] = http_build_query($settleArr);
+        //cUrl
+        $settleResponse = Ctm::cUrlFunc("payment/ExecTran.idPass", $settleDatas);
         
-        curl_setopt_array($settleCh, $options);
-        
-        $resSecond = curl_exec($settleCh);
-        curl_close($settleCh);
         
         //返るresponseを配列に
-        $resSecondArr = explode('&', $resSecond);
+        $resSecondArr = explode('&', $settleResponse);
         $sucSecArr = array();
         
         foreach($resSecondArr as $res) {
@@ -834,12 +868,17 @@ class CartController extends Controller
             	return redirect('shop/form?carderr=1000');
             }
             else {
-        		return view('cart.error', ['erroeName'=>'決済実行エラー（5002）', 'active'=>3]);
+        		return view('cart.error', ['erroeName'=>'決済実行エラー（5002-'.$sucSecArr['ErrInfo'].'）', 'active'=>3]);
             }
         }
         
 //        echo $resSecond;
 //        exit;
+
+		}//switchSec
+        
+        
+        
         
         return redirect('shop/thankyou');
         
@@ -1237,14 +1276,14 @@ class CartController extends Controller
         
         //UserInfo
         if(isset($data['user'])) { //Authでなければ$data['user']にデータが入る
-        	$user_id = Ctm::getOrderNum(15);
+        	//$user_id = Ctm::getOrderNum(15);
         	$user_name = $data['user']['name'];
          	$user_email = $data['user']['email'];   
         }
         else {
         	$u = $this->user->find(Auth::id());
         	
-            $user_id = isset($u->gmo_id) ? $u->gmo_id : Ctm::getOrderNum(15);
+            //$user_id = isset($u->gmo_id) ? $u->gmo_id : Ctm::getOrderNum(15);
         	$user_name = $u->name;
             $user_email = $u->email;
         }
@@ -1310,6 +1349,7 @@ class CartController extends Controller
         $settles['OrderID'] = $orderNum;
         //$settles['JobCd'] = 'CAPTURE';
         $settles['Amount'] = $totalFee;
+        //$settles['CardSeq'] = $data['card_seq'];
         //$settles['ItemCode'] = $number; //省略推奨
         
 //        $settles['user_id'] = $user_id;
@@ -1416,13 +1456,55 @@ class CartController extends Controller
        	
         //User   
         $userObj = null;
+        $regCardDatas = array();
+        $regCardErrors = array();
+                
         if(Auth::check()) {
         	$userObj = $this->user->find(Auth::id());
+            
+            //クレカ参照
+            if(isset($userObj->member_id) && $userObj->card_regist_count) {
+            	
+                $cardDatas = [
+                    'SiteID' => $this->gmoId['siteId'],
+                    'SitePass' => $this->gmoId['sitePass'],
+                    'MemberID' => $userObj->member_id,
+                    'SeqMode' => 0,
+                ];
+                
+                $cardResponse = Ctm::cUrlFunc("/payment/SearchCard.idPass", $cardDatas);
+                
+//                echo $cardResponse;
+//                exit;
+            	
+                //正常：CardSeq=0|1|2|3|4&DefaultFlag=0|0|0|0|0&CardName=||||&CardNo=*************111|*************111|*************111|*************111|*************111&Expire=1905|1904|1908|1907|1910&HolderName=||||&DeleteFlag=0|0|0|0|0
+                $cardArr = explode('&', $cardResponse);
+                
+                foreach($cardArr as $res) {
+                    $arr = explode('=', $res);
+                    $regCardDatas[$arr[0]] = explode('|', $arr[1]);
+                }
+                
+//                print_r($regCardDatas);
+//                exit;
+                
+                //$userRegResponse Error処理をここに ***********
+                if(array_key_exists('ErrCode', $cardDatas)) {
+                	$regCardErrors = $regCardDatas;
+                    //return view('cart.error', ['erroeName'=>'取引実行エラー（5001'.$cardRegSuccess['ErrInfo'].'）', 'active'=>3]);
+                }
+//                else {
+//                    $registCardNum = $cardRegSuccess['CardSeq'];
+//                }
+            }
+            
         } 
         
-        //代引きが可能かどうかを判定してboolを渡す
+
+        //itemDataのSession入れ
         $sesItems = session('item.data');
         
+        //代引きが可能かどうかを判定してboolを渡す
         $codCheck = 0;
         foreach($sesItems as $item) {
         	$cod = $this->item->find($item['item_id'])->cod;
@@ -1451,7 +1533,7 @@ class CartController extends Controller
 //        exit;
 
      
-     	return view('cart.form', ['regist'=>$regist, 'payMethod'=>$payMethod, 'pmChilds'=>$pmChilds, 'prefs'=>$prefs, 'userObj'=>$userObj, 'codCheck'=>$codCheck, 'dgGroup'=>$dgGroup, 'cardErrors'=>$cardErrors, 'active'=>2]);   
+     	return view('cart.form', ['regist'=>$regist, 'payMethod'=>$payMethod, 'pmChilds'=>$pmChilds, 'prefs'=>$prefs, 'userObj'=>$userObj, 'codCheck'=>$codCheck, 'dgGroup'=>$dgGroup, 'regCardDatas'=>$regCardDatas, 'regCardErros'=>$regCardErrors, 'cardErrors'=>$cardErrors, 'active'=>2]);   
     }
     
     
