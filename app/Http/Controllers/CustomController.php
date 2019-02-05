@@ -323,7 +323,7 @@ class CustomController extends Controller
         $eng = array_merge(range('a', 'z'));
         $num = array_merge(range('0', '9'));
         
-        $alphaNum = 3;
+        $alphaNum = $length > 12 ? 5 : 3; //13桁以上ならアルファベットを5文字にする
         $intNum = $length - $alphaNum;
         
         $r_str = null;
@@ -437,7 +437,9 @@ class CustomController extends Controller
     }
     
     static function gmoId()
-    {    	
+    {
+    	// 変更する場合は、js内にも1カ所あるので注意*******   	
+        
         if(Setting::get()->first()->is_product) { //本番
         	return [
             	'siteId' =>'tsite00032753',

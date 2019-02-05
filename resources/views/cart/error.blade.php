@@ -34,21 +34,16 @@
          <?php //print_r($data); ?>   
 
             <div class="clearfix contents text-center">
-                <?php
-                    //$pmName = $pmModel->find($pm)->name; 
-                    $thankStr = "お買い上げ、ありがとうございます。<br>ご注文が完了致しました。";
-                ?>
                 
-                @if(isset($erroeName))
-                	{{ $erroeName }}<br>
-                @endif
+                <span class="text-danger"><i class="fal fa-exclamation-triangle"></i> ご注文が完了していません。</span>
                 
-                ご注文を正しく進めることができませんでした。<br>
-                
-                @if(isset($data['order_number']))
-                    ご注文番号：[ {{ $data['order_number'] }} ] <br>
-                @endif
-                
+                <p class="mt-2">
+	                ご注文を正常に進めることができませんでした。<br>
+    	            入力情報を再確認の上、最初からやり直すか<br>別のお支払い方法を選択下さい。<br>
+                    @if(isset($erroeName))
+                        <span class="text-small text-secondary">{{ $erroeName }}</span>
+                    @endif
+                </p>
                 
                 
                 <div class="text-center mt-5 pb-3">

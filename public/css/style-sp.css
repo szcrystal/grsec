@@ -840,6 +840,10 @@ ORG END ======================== */
         margin-bottom: 0.4em;
     }
     
+    .wrap-new-card .col-md-2 {
+    	width: 40%;
+    }
+    
     .confirm .confirm-left,
     .confirm .confirm-right {
         float: none;

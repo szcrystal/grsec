@@ -679,7 +679,7 @@ var exe = (function() {
             	
             });
             
-            if($('.useCardRadio:checked').val() == 99 || ! $useCardRadio.length) {
+            if($('.useCardRadio:checked').val() == 99 || ! $useCardRadio.length) { //valが99か、radioCheckがない時（カード登録なしや非会員登録の時など）
             	$wrapNewCard.show();
             }
             
@@ -770,7 +770,7 @@ var exe = (function() {
                 var holdername = $("#holdername").val();
                 var tokennumber = $("#tokennumber").val();
                 
-                Multipayment.init("tshop00036826"); //ここを変えるか暗証番号の桁数を変えるとエラーにすることが出来る
+                Multipayment.init('tshop00036826'); //ここを変えるか暗証番号の桁数を変えるとエラーにすることが出来る
                 //Multipayment.init("tshop000");
                     
                 Multipayment.getToken({ 

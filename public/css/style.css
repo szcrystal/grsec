@@ -369,9 +369,13 @@ body {
 .wrap-new-card {
 	display: none;
 }
+.wrap-regist-card > div {
+	line-height: 1.1em;
+}
 .wrap-pmc { /* payMethod child wrap */
 	display: none;
 }
+
 
 /*.thumb-prev .no-img {*/
 /*    width: 100%;*/
@@ -1226,12 +1230,12 @@ body {
     //border: 1px solid red;
 }
 .loader {
-	font-size: 0.85em;
+	font-size: 1em;
 	display: none;
-	color: #3a3a3a;
+	color: #333;
     position: absolute;
     top: 100%;
-    left: 45.5%;
+    left: 45%;
     z-index: 99;
     border: none;
 }
