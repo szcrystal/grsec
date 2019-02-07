@@ -392,11 +392,12 @@ $url = $isMypage ? url('mypage/register') : url('register');
     
 <div class="table-responsive table-custom">
 	@if(! $isMypage)
-	<p class="mt-4 text-small">8文字以上（半角）で、忘れないものを入力して下さい。<br>メールアドレスとパスワードは当店をご利用の際に必要となります。</p>
+		<p class="mt-4 text-small">8文字以上（半角）で、忘れないものを入力して下さい。<br>メールアドレスとパスワードは当店をご利用の際に必要となります。</p>
 	@endif
-    <table class="table table-borderd border">
+    
          
-			@if(! $isMypage)
+    @if(! $isMypage)
+    	<table class="table table-borderd border">
              <tr class="form-group">
                  <th>パスワード<em>必須</em></th>
                    <td>
@@ -412,8 +413,8 @@ $url = $isMypage ? url('mypage/register') : url('register');
              </tr>
              
              <tr class="form-group">
-                 <th>パスワードの確認<em>必須</em></th>
-                   <td>
+                <th>パスワードの確認<em>必須</em></th>
+                <td>
                     <input type="password" class="form-control rounded-0 col-md-12{{ $errors->has('user.password_confirmation') ? ' is-invalid' : '' }}" name="user[password_confirmation]" value="{{ Ctm::isOld() ? old('user.password_confirmation') : (Session::has('all.data.user') ? session('all.data.user.password_confirmation') : '') }}">
                     
                     @if ($errors->has('user.password_confirmation'))
@@ -425,14 +426,99 @@ $url = $isMypage ? url('mypage/register') : url('register');
                 </td>
              </tr>
              
-             @else
+    @else
+        <table class="table table-borderd border mt-5">
+            <tr class="form-group"> 
+                <th>パスワードの変更</th>
+                <td>
+                    パスワードの変更は<a href="{{ url('password/reset') }}">こちら <i class="fal fa-angle-double-right"></i></a>
+                </td>
+            </tr>
              
-             <p class="mt-3">パスワードの変更は<a href="{{ url('password/reset') }}">こちら <i class="fal fa-angle-double-right"></i></a></p>
-             
-             @endif
-         
-         </table>
+    @endif
+    
+    </table>
+ </div>            
+ 
+    
+    @if($isMypage)
+    	<div class="table-responsive table-custom mt-5">
+    		<table class="table table-borderd border">
+                 <tr class="form-group">
+                    <th>登録済クレジットカード<br><small>＊登録最大数5つまで</small></th>
+                    <td>
+                        @if(count($regCardDatas) > 0)
+                            <div class="wrap-regist-card mt-3 mb-2">
+                                @if(isset($regCardErrors))
+                                    <small class="d-inline-block ml-4 mb-4">
+                                        <span class="text-danger"><i class="fal fa-exclamation-triangle"></i> 登録カード情報が取得出来ません。</span><br>
+                                        {{ $regCardErrors }}
+                                    </small>
+                                @else
+                                    
+                                    @foreach($regCardDatas['CardSeq'] as $k => $seqNum)
+                                        
+                                        @if(! $regCardDatas['DeleteFlag'][$k])
+                                        
+                                            <div class="mb-5 pb-1">
+                                                <label>・カード番号： </label>
+                                                <span>{{ $regCardDatas['CardNo'][$k] }}</span>
+                                                <input type="hidden" name="user[card_num][{{ $seqNum }}]" value="{{ $regCardDatas['CardNo'][$k] }}">
+                                                
+                                                <?php
+                                                    //wordwrap($regCardDatas['Expire'][$k], 2, '/', 1)
+                                                    $y = substr($regCardDatas['Expire'][$k], 0, 2); //年
+                                                    $m = substr($regCardDatas['Expire'][$k], 2); //月
+                                                ?>
+                                                
+                                                <small class="d-block ml-3">有効期限（月/年）：{{ $m.'/'.$y }}</small>
+                                                <input type="hidden" name="user[card_expire][{{ $seqNum }}]" value="{{ $m.'/'.$y }}">
+                                            
+                                            <?php
+                                                $checked = '';
+                                                if(Ctm::isOld()) {
+                                                    if(old('user.card_del.'. $k) == $seqNum)
+                                                        $checked = ' checked';
+                                                }
+                                                else {
+                                                    //if(isset($user) && $user->magazine) {
+                                                    //if(Session::has('all.data.user')  && session('all.data.user.magazine')) {
+                                                    //    $checked = ' checked';
+                                                    //}
+                                                }
+                                            ?>
+                                            
+                                            <input class="ml-3 mt-3" type="checkbox" name="user[card_del][{{ $seqNum }}]" value="{{ $seqNum }}"{{ $checked }}> <b>このカードを削除する</b>
+                                            
+                                            {{ $seqNum }}
+                                            
+                                            @if ($errors->has('user.card_del.'. $k))
+                                                <div class="help-block text-danger">
+                                                    <span class="fa fa-exclamation form-control-feedback"></span>
+                                                    <span>{{ $errors->first('user.card_del.'. $k) }}</span>
+                                                </div>
+                                            @endif
+                                            
+                                            </div>
+                                        
+                                        @endif
+                                        
+                                    @endforeach
+                                @endif
+                                
+                            </div>
+                        @else
+                            現在、登録しているカードはありません。<br>
+                            新規登録はお買い物中に登録出来ます。
+                        @endif  
+                        
+                    </td>
+                 </tr>
+            </table>
          </div>
+    @endif
+         
+         
 
         <div>
             <button class="btn btn-block btn-custom col-md-4 mt-5 mb-3 mx-auto py-2" type="submit" name="recognize" value="1">確認する</button>

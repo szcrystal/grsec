@@ -18,7 +18,11 @@
 $url = $isMypage ? url('mypage/register/end') : url('register/end');
 $str = $isMypage ? '変更する' : '登録する';
 ?>
-<p>入力内容をご確認下さい。<br>よろしければ{{ $str }}ボタンを押して下さい。</p>
+
+<p class="ml-2 mb-4 pb-2">
+	入力内容をご確認下さい。<br>よろしければ{{ $str }}ボタンを押して下さい。
+</p>
+
 @if (count($errors) > 0)
     <div class="alert alert-danger">
         <strong><i class="fas fa-exclamation-triangle"></i> Error!!</strong> 以下の入力を確認して下さい。<br><br>
@@ -137,8 +141,37 @@ $str = $isMypage ? '変更する' : '登録する';
                
             </td>
          </tr>
-</table>
+	</table>
 </div>
+
+@if($isMypage)
+    <div class="table-responsive table-custom mt-3">
+        <table class="table table-borderd border bg-white">
+             
+             <tr class="form-group">
+                 <th>登録削除クレジットカード</th>
+                   <td>
+                   		@if(isset($data['card_del']) && count($data['card_del']) > 0)
+                        	<div class="wrap-regist-card mt-2">
+                                @foreach($data['card_del'] as $k => $v)
+                                    <div class="mb-3 pb-3">
+                                        <label>・カード番号： </label>
+                                        <span>{{ $data['card_num'][$k] }}</span>
+                                        <small class="d-block ml-3">有効期限（月/年）：{{ $data['card_expire'][$k] }}</small>
+                                    </div>    
+                                @endforeach
+                            </div>
+                   		@else
+                   			なし
+                        @endif
+                   
+                </td>
+             </tr>
+        </table>
+    </div>
+@endif
+
+
  
 @if(! $isMypage)
  <div class="table-responsive table-custom mt-3">
@@ -158,7 +191,11 @@ $str = $isMypage ? '変更する' : '登録する';
 	{{-- <p class="text-center">この内容で登録します。</p> --}}
 	<form class="form-horizontal" role="form" method="POST" action="{{ $url }}">
 		@csrf
-		<button class="btn btn-block btn-custom col-md-3 my-4 mx-auto py-2" type="submit" name="recognize" value="1">{{ $str }}</button>                 
+        
+        <div>
+            <button class="btn btn-block btn-custom col-md-4 mt-5 mb-3 mx-auto py-2" type="submit" name="recognize" value="1">{{ $str }}</button>
+        </div>
+        
     </form>
 
 @if($isMypage)

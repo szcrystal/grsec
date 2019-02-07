@@ -837,9 +837,8 @@ use App\DeliveryGroup;
                                     
                                     <div class="wrap-all-card">
                                     
+                                    
                                     <?php //get RegistCard ------------------------- ?>
-                                    
-                                    
                                     
                                     @if(count($regCardDatas) > 0)
                                         <div class="wrap-regist-card mt-3 mb-2 ml-2 pl-3">
@@ -883,10 +882,9 @@ use App\DeliveryGroup;
                                         </div>
                                     @endif
                                     
+                                    
                                     <?php //NewCard ------------------------- ?>
-                                    
-                                    
-                                    
+
                                     <div class="mt-2 mb-5 ml-2 pl-3">
                                         
                                         @if(count($regCardDatas) > 0)

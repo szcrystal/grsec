@@ -31,6 +31,14 @@
 
 <div class="mt-3">
 <p>{{ $status }}</p>
+
+@if(isset($delCardErrors))
+	<p class="text-danger">
+    	<i class="fal fa-exclamation-triangle"></i> クレジットカードの登録削除を正常に進めることが出来ませんでした。
+        <small>{!! $delCardErrors !!}</small>
+    </p>
+@endif
+
 @if(! $isMypage)
 現在ログイン中です。<br>
 購入履歴や各種情報など、<a href="{{ url('mypage') }}">マイページ</a>より確認できます。

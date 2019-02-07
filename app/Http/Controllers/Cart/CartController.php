@@ -716,7 +716,7 @@ class CartController extends Controller
                     'SiteID' => $this->gmoId['siteId'],
                     'SitePass' => $this->gmoId['sitePass'],
                     'MemberID' => $memberId,
-                    //'MemberName'] => ,
+                    //'MemberName' => ,
                 ];
                 
                 $memberRegResponse = Ctm::cUrlFunc("/payment/SaveMember.idPass", $memberRegDatas);
@@ -747,6 +747,7 @@ class CartController extends Controller
             	'SiteID' => $this->gmoId['siteId'],
             	'SitePass' => $this->gmoId['sitePass'],
            		'MemberID' => $memberId, //ここでnullであることはない
+                'SeqMode' => 0, //cart中はCardSeqがずれることはないので論理で
             	//$registDatas['MemberName'] = ;
             	'Token' => $data['token'],
             ];
@@ -774,7 +775,8 @@ class CartController extends Controller
                 }
             }
             else {
-            	$cardSeqNum = $cardRegSuccess['CardSeq'];
+            	$cardSeqNum = $cardRegSuccess['CardSeq']; //新しい論理のCardSeq値が返る
+
                 
                 //カード登録するの判定をsessin入れ
                 session()->put('all.data.card_regist', 1);
@@ -842,7 +844,7 @@ class CartController extends Controller
         
         //Error時
         if(array_key_exists('ErrCode', $sucArr)) {
-        	return view('cart.error', ['erroeName'=>'実行エラー（5003-'.$sucArr['ErrInfo'].'）', 'active'=>3]);
+        	return view('cart.error', ['erroeName'=>'実行エラー[5003-'.$sucArr['ErrInfo'].']', 'active'=>3]);
         }
         
         
@@ -856,13 +858,14 @@ class CartController extends Controller
             //'AccessID' => 1234, //このIDを変えるとエラーに出来る
             'AccessPass' => $sucArr['AccessPass'],
             'OrderID' => $data['OrderID'],
-            'Method' => 1, //支払い方法 
+            'Method' => 1, //支払い方法:一括
         ];
         
         if(isset($cardSeqNum)) { //カード登録時 登録したカード連番を利用
             $settleDatas['SiteID'] = $this->gmoId['siteId'];
             $settleDatas['SitePass'] = $this->gmoId['sitePass'];
            	$settleDatas['MemberID'] = $memberId;
+            $settleDatas['SeqMode'] = 0; //cart中はCardSeqがずれることはないので論理で
             $settleDatas['CardSeq'] = $cardSeqNum;
         }
         else { //カード登録しない時 Tokenを利用
@@ -893,7 +896,7 @@ class CartController extends Controller
             	return redirect('shop/form?carderr=1000');
             }
             else {
-        		return view('cart.error', ['erroeName'=>'実行エラー（5004-'.$sucSecArr['ErrInfo'].'）', 'active'=>3]);
+        		return view('cart.error', ['erroeName'=>'実行エラー[5004-'.$sucSecArr['ErrInfo'].']', 'active'=>3]);
             }
         }
         
@@ -902,9 +905,8 @@ class CartController extends Controller
 
 		}//switchSec
         
-        
-        
-        
+
+
         return redirect('shop/thankyou');
         
         
@@ -1489,12 +1491,13 @@ class CartController extends Controller
             
             //クレカ参照
             if(isset($userObj->member_id) && $userObj->card_regist_count) {
-            	
+            	//論理モード: 削除カード取得されない 同じカード番号でも新規登録になる　
+                //物理モード: 削除カードも取得される　同じカード番号なら更新になる（期限など）
                 $cardDatas = [
                     'SiteID' => $this->gmoId['siteId'],
                     'SitePass' => $this->gmoId['sitePass'],
                     'MemberID' => $userObj->member_id,
-                    'SeqMode' => 0,
+                    'SeqMode' => 0, //cart中はCardSeqがずれることはないので論理で
                 ];
                 
                 $cardResponse = Ctm::cUrlFunc("/payment/SearchCard.idPass", $cardDatas);
@@ -1515,9 +1518,9 @@ class CartController extends Controller
                 
                 //$userRegResponse Error処理をここに ***********
                 if(array_key_exists('ErrCode', $regCardDatas)) {
-                	$regCardErrors = '（5101-';
+                	$regCardErrors = '[5101-';
                     $regCardErrors .= implode('|', $regCardDatas['ErrInfo']);
-                	$regCardErrors .= '）';
+                	$regCardErrors .= ']';
                 }
 				
 //                print_r($regCardErrors);

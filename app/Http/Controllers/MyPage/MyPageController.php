@@ -44,11 +44,8 @@ class MyPageController extends Controller
         $this->category = $category;
     	$this-> receiver = $receiver;
         
-//        $this->categorySecond = $categorySecond;
-//        $this -> tag = $tag;
-//        $this->tagRelation = $tagRelation;
-//        $this->consignor = $consignor;
-//        
+        $this->gmoId = Ctm::gmoId();
+                
         $this->perPage = 20;
         
     }
@@ -123,10 +120,12 @@ class MyPageController extends Controller
     
     public function getRegister(Request $request)
     {
-
         $prefs = $this->pref->all();
         
-       if($request->is('mypage/*')) {
+        $regCardDatas = array();
+        $regCardErrors = null;
+        
+       	if($request->is('mypage/*')) {
        		if(! Auth::check()) {
          		abort(404);
          	}
@@ -134,15 +133,61 @@ class MyPageController extends Controller
        			$uId = Auth::id();
         		$user = $this->user->find($uId);
        			$isMypage = 1;
+                
+                
+                            
+                //クレカ参照
+                if(isset($user->member_id) && $user->card_regist_count) {
+                    
+                    $cardDatas = [
+                        'SiteID' => $this->gmoId['siteId'],
+                        'SitePass' => $this->gmoId['sitePass'],
+                        'MemberID' => $user->member_id,
+                        'SeqMode' => 1, //削除時はまとめて削除が出来ないので、物理モードで。毎回論理値を返すと削除がおかしくなる。
+                    ];
+                    
+                    $cardResponse = Ctm::cUrlFunc("/payment/SearchCard.idPass", $cardDatas);
+                    
+    //                echo $cardResponse;
+    //                exit;
+                    
+                    //正常：CardSeq=0|1|2|3|4&DefaultFlag=0|0|0|0|0&CardName=||||&CardNo=*************111|*************111|*************111|*************111|*************111&Expire=1905|1904|1908|1907|1910&HolderName=||||&DeleteFlag=0|0|0|0|0
+                    $cardArr = explode('&', $cardResponse);
+                    
+                    foreach($cardArr as $res) {
+                        $arr = explode('=', $res);
+                        $regCardDatas[$arr[0]] = explode('|', $arr[1]);
+                    }
+                    
+    //                print_r($regCardDatas);
+    //                exit;
+                    
+                    //$userRegResponse Error処理をここに ***********
+                    if(array_key_exists('ErrCode', $regCardDatas)) {
+                        $regCardErrors = '[5201-';
+                        $regCardErrors .= implode('|', $regCardDatas['ErrInfo']);
+                        $regCardErrors .= ']';
+                    }
+                    
+    //                print_r($regCardErrors);
+    //                exit;
+                    
+                }
          	}      
        }
        else {
-       		$user = null;
-       		$isMypage = 0;
+       		if(Auth::check()) {
+            	return redirect('mypage/register');
+            }
+            else {
+       			$user = null;
+       			$isMypage = 0;
+            }
        }
+
        
-        //return view('auth.register', ['user'=>$user, 'prefs'=>$prefs, 'isMypage'=>1]);
-    	return view('mypage.form', ['user'=>$user, 'prefs'=>$prefs, 'isMypage'=>$isMypage]);
+       
+    	return view('mypage.form', ['user'=>$user, 'prefs'=>$prefs, 'isMypage'=>$isMypage, 'regCardDatas'=>$regCardDatas, 'regCardErrors'=>$regCardErrors]);
     }
     
     public function registerConfirm(Request $request)
@@ -244,6 +289,53 @@ class MyPageController extends Controller
             $data['birth_day'] = 0;
         }
         
+        if($isMypage && isset($data['card_del'])) {
+        	$delCardDatas = array();
+            $delCardErrors = null;
+            
+            foreach($data['card_del'] as $key => $val) {
+            
+                $cardDatas = [
+                    'SiteID' => $this->gmoId['siteId'],
+                    'SitePass' => $this->gmoId['sitePass'],
+                    'MemberID' => $user->member_id,
+                    //'MemberID' => 11111,
+                    'SeqMode' => 1, //削除時はまとめて削除が出来ないので、物理モードで。毎回論理値を返すと削除がおかしくなる。
+                    'CardSeq' => $val,
+                ];
+                
+                $cardResponse = Ctm::cUrlFunc("/payment/DeleteCard.idPass", $cardDatas);
+                
+//            	echo $cardResponse;
+//                exit;
+                
+                //正常：CardSeq=0|1|2|3|4&DefaultFlag=0|0|0|0|0&CardName=||||&CardNo=*************111|*************111|*************111|*************111|*************111&Expire=1905|1904|1908|1907|1910&HolderName=||||&DeleteFlag=0|0|0|0|0
+                $cardArr = explode('&', $cardResponse);
+                
+                foreach($cardArr as $res) {
+                    $arr = explode('=', $res);
+                    $delCardDatas[$arr[0]][$key] = explode('|', $arr[1]);
+                }
+                
+                
+                //$userRegResponse Error処理をここに ***********
+                if(array_key_exists('ErrCode', $delCardDatas)) {
+                	$delCardErrors .= "<br>";
+                    $delCardErrors .= '[5301-Seq:'. $val .'-'; //cardSeqナンバーをエラーに付ける
+                    $delCardErrors .= implode('|', $delCardDatas['ErrInfo'][$key]);
+                    $delCardErrors .= ']';
+                }
+                else {
+                	$user->decrement('card_regist_count');
+                }
+				
+                
+            }
+        
+        }
+        
+        
+        
         $user->fill($data);
         $user->save();
         //$user->update($data['user']);
@@ -261,7 +353,7 @@ class MyPageController extends Controller
         	Auth::login($user);
         }
         
-        return view('mypage.formEnd', ['isMypage'=>$isMypage, 'status'=>$status, ]);
+        return view('mypage.formEnd', ['isMypage'=>$isMypage, 'status'=>$status, 'delCardErrors'=>$delCardErrors, ]);
    
     }
     
