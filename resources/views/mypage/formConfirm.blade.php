@@ -149,22 +149,44 @@ $str = $isMypage ? '変更する' : '登録する';
         <table class="table table-borderd border bg-white">
              
              <tr class="form-group">
-                 <th>登録削除クレジットカード</th>
-                   <td>
-                   		@if(isset($data['card_del']) && count($data['card_del']) > 0)
-                        	<div class="wrap-regist-card mt-2">
-                                @foreach($data['card_del'] as $k => $v)
-                                    <div class="mb-3 pb-3">
-                                        <label>・カード番号： </label>
-                                        <span>{{ $data['card_num'][$k] }}</span>
-                                        <small class="d-block ml-3">有効期限（月/年）：{{ $data['card_expire'][$k] }}</small>
-                                    </div>    
-                                @endforeach
-                            </div>
-                   		@else
-                   			なし
+                <th>登録クレジットカードの変更</th>
+                <td>
+                	<?php $noRes = 0; ?>
+                    
+                    @if(isset($data['edit_mode']))
+
+                        @foreach($data['edit_mode'] as $k => $v)
+                        	@if($v)
+                            	<?php $noRes = 1; ?>
+                            
+                                <div class="wrap-regist-card mt-2 mb-3 pb-3"> 
+                                    @if($v == 1)
+                                        <label><i class="fas fa-circle text-small text-secondary"></i> 有効期限の変更</label>
+                                        <p class="ml-3">
+                                            <span>カード番号： {{ $data['card_num'][$k] }}</span>
+                                            <span class="d-block">有効期限（月/年）: <b>{{ $data['expire_month'][$k] }}/{{ $data['expire_year'][$k] }}</b></span>
+                                        </p>
+                                       
+                                    
+                                    @elseif($v == 2)
+                                        <label><i class="fas fa-circle text-small text-secondary"></i> 登録カードの削除</label>
+                                        <p class="ml-3">
+                                            <span>カード番号： {{ $data['card_num'][$k] }}</span>
+                                            <small class="d-block">有効期限（月/年）: {{ $data['expire_month'][$k] }}/{{ $data['expire_year'][$k] }}</small>
+                                        </p>
+                                        <?php $noRes = 1; ?>
+                                    
+                                    @endif
+                                </div>
+                            @endif
+                        @endforeach
+                        
+                        @if(! $noRes)
+                            なし
                         @endif
-                   
+
+                    @endif
+	                   
                 </td>
              </tr>
         </table>
@@ -192,8 +214,17 @@ $str = $isMypage ? '変更する' : '登録する';
 	<form class="form-horizontal" role="form" method="POST" action="{{ $url }}">
 		@csrf
         
-        <div>
-            <button class="btn btn-block btn-custom col-md-4 mt-5 mb-3 mx-auto py-2" type="submit" name="recognize" value="1">{{ $str }}</button>
+        <div class="mt-5 mb-3">
+        	<div class="loader-wrap">
+                <span class="loader"><i class="fas fa-square mr-1"></i> 処理中..</span>
+            </div>
+            
+            <?php $submitId = ''; ?>
+            @if($noRes)
+            	<?php $submitId = 'regist-submit'; ?>
+            @endif
+            
+            <button id="{{ $submitId }}" class="btn btn-block btn-custom col-md-4 mx-auto py-2" type="submit" name="recognize" value="1">{{ $str }}</button>
         </div>
         
     </form>

@@ -859,6 +859,10 @@ ORG END ======================== */
         width: 80px;
     }
     
+    .loader {
+    	font-size: 1em;
+    }
+    
     
 /*    .cart-btn-wrap > div:last-of-type{*/
 /*        float: right;*/

@@ -29,15 +29,23 @@
 
 <div class=" top-cont">
 
-<div class="mt-3">
+<div class="mt-3 ml-1">
 <p>{{ $status }}</p>
+
+@if(isset($editCardErrors))
+	<p class="text-danger">
+    	<i class="fal fa-exclamation-triangle"></i> 登録クレジットカードの更新を正常に進めることが出来ませんでした。
+        <small>{!! $editCardErrors !!}</small>
+    </p>
+@endif
 
 @if(isset($delCardErrors))
 	<p class="text-danger">
-    	<i class="fal fa-exclamation-triangle"></i> クレジットカードの登録削除を正常に進めることが出来ませんでした。
+    	<i class="fal fa-exclamation-triangle"></i> 登録クレジットカードの削除を正常に進めることが出来ませんでした。
         <small>{!! $delCardErrors !!}</small>
     </p>
 @endif
+
 
 @if(! $isMypage)
 現在ログイン中です。<br>

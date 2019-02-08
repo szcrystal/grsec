@@ -39,7 +39,8 @@
                 
                 <p class="mt-2">
 	                ご注文を正常に進めることができませんでした。<br>
-    	            入力情報を再確認の上、最初からやり直すか<br>別のお支払い方法を選択下さい。<br>
+    	            クレジットカード入力情報を再度ご確認の上<br>
+                    少し時間を置いてやり直すか<br>別のお支払い方法を選択下さい。<br><br>
                     @if(isset($erroeName))
                         <span class="text-small text-secondary">{{ $erroeName }}</span>
                     @endif
@@ -47,6 +48,7 @@
                 
                 
                 <div class="text-center mt-5 pb-3">
+                    <a href="{{ url('shop/cart') }}">カートに戻る <i class="fal fa-angle-double-right"></i></a><br><br>
                     <a href="{{ url('/') }}">HOMEへ <i class="fal fa-angle-double-right"></i></a>   
                 </div>    
    

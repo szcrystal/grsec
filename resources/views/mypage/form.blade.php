@@ -431,7 +431,7 @@ $url = $isMypage ? url('mypage/register') : url('register');
             <tr class="form-group"> 
                 <th>パスワードの変更</th>
                 <td>
-                    パスワードの変更は<a href="{{ url('password/reset') }}">こちら <i class="fal fa-angle-double-right"></i></a>
+                    パスワードの変更は <a href="{{ url('password/reset') }}">こちら <i class="fal fa-angle-double-right"></i></a>
                 </td>
             </tr>
              
@@ -441,89 +441,186 @@ $url = $isMypage ? url('mypage/register') : url('register');
  </div>            
  
     
-    @if($isMypage)
-    	<div class="table-responsive table-custom mt-5">
-    		<table class="table table-borderd border">
-                 <tr class="form-group">
-                    <th>登録済クレジットカード<br><small>＊登録最大数5つまで</small></th>
-                    <td>
-                        @if(count($regCardDatas) > 0)
-                            <div class="wrap-regist-card mt-3 mb-2">
-                                @if(isset($regCardErrors))
-                                    <small class="d-inline-block ml-4 mb-4">
-                                        <span class="text-danger"><i class="fal fa-exclamation-triangle"></i> 登録カード情報が取得出来ません。</span><br>
-                                        {{ $regCardErrors }}
-                                    </small>
-                                @else
+@if($isMypage)
+    <div class="table-responsive table-custom mt-5">
+        <table class="table table-borderd border">
+             <tr class="form-group">
+                <th>
+                    登録済クレジットカード<br>
+                    <small>＊登録最大数5つまで</small><br>
+                    <small class="text-danger">＊カード情報の登録は商品購入時に出来ます。</small>
+                </th>
+                <td>
+                    @if(count($regCardDatas) > 0)
+                        <div class="wrap-regist-card mt-3 mb-2">
+                            @if(isset($regCardErrors))
+                                <small class="d-inline-block ml-4 mb-4">
+                                    <span class="text-danger"><i class="fal fa-exclamation-triangle"></i> 登録カード情報が取得出来ません。</span><br>
+                                    {{ $regCardErrors }}
+                                </small>
+                            @else
+                                
+                                @foreach($regCardDatas['CardSeq'] as $k => $seqNum)
+                                    <?php
+                                        //ここではkeyもseqnumも同じものになる Array ( [0] => 0 [1] => 1 [2] => 2 [3] => 3)
+                                    ?>
                                     
-                                    @foreach($regCardDatas['CardSeq'] as $k => $seqNum)
-                                        
-                                        @if(! $regCardDatas['DeleteFlag'][$k])
-                                        
-                                            <div class="mb-5 pb-1">
-                                                <label>・カード番号： </label>
-                                                <span>{{ $regCardDatas['CardNo'][$k] }}</span>
-                                                <input type="hidden" name="user[card_num][{{ $seqNum }}]" value="{{ $regCardDatas['CardNo'][$k] }}">
-                                                
-                                                <?php
-                                                    //wordwrap($regCardDatas['Expire'][$k], 2, '/', 1)
-                                                    $y = substr($regCardDatas['Expire'][$k], 0, 2); //年
-                                                    $m = substr($regCardDatas['Expire'][$k], 2); //月
-                                                ?>
-                                                
-                                                <small class="d-block ml-3">有効期限（月/年）：{{ $m.'/'.$y }}</small>
-                                                <input type="hidden" name="user[card_expire][{{ $seqNum }}]" value="{{ $m.'/'.$y }}">
+                                    @if(! $regCardDatas['DeleteFlag'][$k])
+                                    
+                                        <div class="mb-5 pb-1">
+                                            
+                                            <label><i class="fas fa-circle text-small text-secondary"></i> カード番号： </label>
+                                            <span>{{ $regCardDatas['CardNo'][$k] }}</span>
+                                            <input type="hidden" name="user[card_num][{{ $seqNum }}]" value="{{ $regCardDatas['CardNo'][$k] }}">
                                             
                                             <?php
-                                                $checked = '';
-                                                if(Ctm::isOld()) {
-                                                    if(old('user.card_del.'. $k) == $seqNum)
-                                                        $checked = ' checked';
-                                                }
-                                                else {
-                                                    //if(isset($user) && $user->magazine) {
-                                                    //if(Session::has('all.data.user')  && session('all.data.user.magazine')) {
-                                                    //    $checked = ' checked';
-                                                    //}
-                                                }
+                                                //wordwrap($regCardDatas['Expire'][$k], 2, '/', 1)
+                                                $y = substr($regCardDatas['Expire'][$k], 0, 2); //年
+                                                $m = substr($regCardDatas['Expire'][$k], 2); //月
                                             ?>
                                             
-                                            <input class="ml-3 mt-3" type="checkbox" name="user[card_del][{{ $seqNum }}]" value="{{ $seqNum }}"{{ $checked }}> <b>このカードを削除する</b>
+                                            <small class="d-block ml-3">有効期限（月/年）：{{ $m.'/'.$y }}</small>
+                                            <input type="hidden" name="user[card_expire][{{ $seqNum }}]" value="{{ $m.'/'.$y }}">
+                                        
                                             
-                                            {{ $seqNum }}
                                             
-                                            @if ($errors->has('user.card_del.'. $k))
-                                                <div class="help-block text-danger">
-                                                    <span class="fa fa-exclamation form-control-feedback"></span>
-                                                    <span>{{ $errors->first('user.card_del.'. $k) }}</span>
+                                            
+                                            <div class="mt-4 mb-3 ml-2">
+                                                
+                                                <?php
+                                                    $time = new DateTime('now');
+                                                    $expireYear = $time->format('y');
+                                                    //$withYoubi .= ' (' . $week[$time->format('w')] . ')';
+                                                
+                                                    $yn = 0;
+                                                    $mn = 1;
+                                                    
+                                                    
+                                                    $radioChecked = '';
+                                                    $radioCheckedSec = '';
+                                                    
+                                                    if( Ctm::isOld()) {
+                                                        if(old('user.edit_mode.'.$seqNum) == 1) {
+                                                            $radioChecked = ' checked';
+                                                        }
+                                                        elseif(old('user.edit_mode.'.$seqNum) == 2) {
+                                                            $radioCheckedSec = ' checked';
+                                                        }
+                                                    }
+                                                ?>
+                                            
+                                                <label class="d-block mb-3">
+                                                    <input type="radio" name="user[edit_mode][{{ $seqNum }}]" class="editCardRadio ml-2" value="0" checked> 変更しない
+                                                </label>
+                                                
+                                                <label class="d-block mb-3">
+                                                    <input type="radio" name="user[edit_mode][{{ $seqNum }}]" class="editCardRadio ml-2" value="1"{{ $radioChecked }}> 有効期限（月/年）を変更する
+                                                </label>
+
+                                                <div class="wrap-expire mb-4" data-seq="{{ $seqNum }}">
+                                                    <select id="expire_month" class="form-control d-inline-block col-md-2 ml-4 pl-1{{ $errors->has('user.expire_month.'.$seqNum) ? ' is-invalid' : '' }}" name="user[expire_month][{{ $seqNum }}]">
+                                                        
+                                                        @while($mn < 13)
+                                                            <?php
+                                                                $expireMonth = str_pad($mn, 2, 0, STR_PAD_LEFT); //2桁0埋め
+                                                                
+                                                                $selected = '';
+                                                                if(Ctm::isOld()) {
+                                                                    if(old('user.expire_month.'.$seqNum) == $expireMonth)
+                                                                        $selected = ' selected';
+                                                                }
+                                                                else {
+                                                                    if($mn == $m) {
+                                                                        $selected = ' selected';
+                                                                    }
+                                                                }
+                                                            ?>
+                                                            
+                                                            <option value="{{ $expireMonth }}"{{ $selected }}>{{ $expireMonth }}</option>
+                                                            
+                                                            <?php $mn++; ?>
+                                                        @endwhile
+                                                    </select>
+                                                    <span class="mr-4">月</span>
+                                                    
+                                                    @if ($errors->has('user.expire_month.'.$seqNum))
+                                                        <div class="help-block text-danger">
+                                                            <span class="fa fa-exclamation form-control-feedback"></span>
+                                                            <span>{{ $errors->first('user.expire_month.'.$seqNum) }}</span>
+                                                        </div>
+                                                    @endif
+                                                    
+                                                    <select id="expire_year" class="form-control d-inline-block col-md-2{{ $errors->has('user.expire_year.'.$seqNum) ? ' is-invalid' : '' }}" name="user[expire_year][{{ $seqNum }}]">
+                                                        
+                                                        @while($yn < 11)
+                                                            <?php
+                                                                $selected = '';
+                                                                if(Ctm::isOld()) {
+                                                                    if(old('user.expire_year.'.$seqNum) == $expireYear + $yn)
+                                                                        $selected = ' selected';
+                                                                }
+                                                                else {
+                                                                    if($yn == $y) {
+                                                                        $selected = ' selected';
+                                                                    }
+                                                                }
+                                                            ?>
+                                                            
+                                                            <option value="{{ $expireYear + $yn }}"{{ $selected }}>{{ $expireYear + $yn }}</option>
+                                                            
+                                                            <?php $yn++; ?>
+                                                        @endwhile
+                                                    </select>
+                                                    <span>年</span>
+                                                    
+                                                    @if ($errors->has('user.expire_year.'.$seqNum))
+                                                        <div class="help-block text-danger">
+                                                            <span class="fa fa-exclamation form-control-feedback"></span>
+                                                            <span>{{ $errors->first('user.expire_year.'.$seqNum) }}</span>
+                                                        </div>
+                                                    @endif
+                                                
                                                 </div>
-                                            @endif
+                                                
+                                                
+                                                <label class="d-block mt-3">
+                                                    <input type="radio" name="user[edit_mode][{{ $seqNum }}]" class="editCardRadio ml-2" value="2"{{ $radioCheckedSec }}> このカードを削除する
+                                                </label>
+                                                    
+                                                @if ($errors->has('user.card_del.'. $seqNum))
+                                                    <div class="help-block text-danger">
+                                                        <span class="fa fa-exclamation form-control-feedback"></span>
+                                                        <span>{{ $errors->first('user.card_del.'. $seqNum) }}</span>
+                                                    </div>
+                                                @endif
                                             
                                             </div>
                                         
-                                        @endif
-                                        
-                                    @endforeach
-                                @endif
-                                
-                            </div>
-                        @else
-                            現在、登録しているカードはありません。<br>
-                            新規登録はお買い物中に登録出来ます。
-                        @endif  
-                        
-                    </td>
-                 </tr>
-            </table>
-         </div>
-    @endif
+                                        </div>
+                                    
+                                    @endif
+                                    
+                                @endforeach
+                            @endif
+                            
+                        </div>
+                    @else
+                        現在、登録しているカードはありません。<br>
+                        新規登録はお買い物中に登録出来ます。
+                    @endif  
+                    
+                </td>
+             </tr>
+        </table>
+     </div>
+@endif
          
          
 
-        <div>
-            <button class="btn btn-block btn-custom col-md-4 mt-5 mb-3 mx-auto py-2" type="submit" name="recognize" value="1">確認する</button>
-        </div>                
-    </form>
+    <div class="mt-5 mb-3">
+        <button class="btn btn-block btn-custom col-md-4 mx-auto py-2" type="submit" name="recognize" value="1">確認する</button>
+    </div>                
+</form>
 
 @if($isMypage)
 <a href="{{ url('mypage') }}" class="btn border-secondary bg-white mt-5">

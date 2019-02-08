@@ -289,51 +289,84 @@ class MyPageController extends Controller
             $data['birth_day'] = 0;
         }
         
-        if($isMypage && isset($data['card_del'])) {
-        	$delCardDatas = array();
-            $delCardErrors = null;
+        
+        //カード更新／削除 =======================
+        $editCardDatas = array();
+        $editCardErrors = null;
+        
+        $delCardDatas = array();
+        $delCardErrors = null;
+        
+        if($isMypage) {
+        
+        	foreach($data['edit_mode'] as $key => $val) {
             
-            foreach($data['card_del'] as $key => $val) {
+            	if($val == 1) { //カード期限更新
+                	$eCardDatas = [
+                        'SiteID' => $this->gmoId['siteId'],
+                        'SitePass' => $this->gmoId['sitePass'],
+                        'MemberID' => $user->member_id,
+                        //'MemberID' => 11111,
+                        'SeqMode' => 1, //削除時はまとめて削除が出来ないので、物理モードで。毎回論理値を返すと削除がおかしくなる。
+                        'CardSeq' => $key,
+                        'Expire' => $data['expire_year'][$key] . $data['expire_month'][$key],
+                        'UpdateType' => 2, //ここを2（カード番号以外を更新。カード番号は登録済みの値を引継ぐ）に指定しないと、トークンかカード番号が必要となる
+                    ];
+                    
+                    $eResponse = Ctm::cUrlFunc("/payment/SaveCard.idPass", $eCardDatas);
+                    
+                    $cardArr = explode('&', $eResponse);
+                    
+                    foreach($cardArr as $res) {
+                        $arr = explode('=', $res);
+                        $editCardDatas[$arr[0]][$key] = explode('|', $arr[1]);
+                    }
+                    
+                    
+                    //$userRegResponse Error処理をここに ***********
+                    if(array_key_exists('ErrCode', $editCardDatas)) {
+                        $editCardErrors .= "<br>";
+                        $editCardErrors .= '[5301-Seq:'. $key .'-'; //cardSeqナンバーをエラーに付ける
+                        $editCardErrors .= implode('|', $editCardDatas['ErrInfo'][$key]);
+                        $editCardErrors .= ']';
+                    }
+                    
+                }
+            	elseif($val == 2) { //カード削除
+                	$dCardDatas = [
+                        'SiteID' => $this->gmoId['siteId'],
+                        'SitePass' => $this->gmoId['sitePass'],
+                        'MemberID' => $user->member_id,
+                        //'MemberID' => 11111,
+                        'SeqMode' => 1, //削除時はまとめて削除が出来ないので、物理モードで。毎回論理値を返すと削除がおかしくなる。
+                        'CardSeq' => $key,
+                    ];
+                    
+                    $dCardResponse = Ctm::cUrlFunc("/payment/DeleteCard.idPass", $dCardDatas);
+                    
+                    //正常：CardSeq=0|1|2|3|4&DefaultFlag=0|0|0|0|0&CardName=||||&CardNo=*************111|*************111|*************111|*************111|*************111&Expire=1905|1904|1908|1907|1910&HolderName=||||&DeleteFlag=0|0|0|0|0
+                    $cardArr = explode('&', $dCardResponse);
+                    
+                    foreach($cardArr as $res) {
+                        $arr = explode('=', $res);
+                        $delCardDatas[$arr[0]][$key] = explode('|', $arr[1]);
+                    }
+                    
+                    
+                    //$userRegResponse Error処理をここに ***********
+                    if(array_key_exists('ErrCode', $delCardDatas)) {
+                        $delCardErrors .= "<br>";
+                        $delCardErrors .= '[5401-Seq:'. $key .'-'; //cardSeqナンバーをエラーに付ける
+                        $delCardErrors .= implode('|', $delCardDatas['ErrInfo'][$key]);
+                        $delCardErrors .= ']';
+                    }
+                    else {
+                        $user->decrement('card_regist_count'); //DBでカウントを減らす
+                    }
+                }
             
-                $cardDatas = [
-                    'SiteID' => $this->gmoId['siteId'],
-                    'SitePass' => $this->gmoId['sitePass'],
-                    'MemberID' => $user->member_id,
-                    //'MemberID' => 11111,
-                    'SeqMode' => 1, //削除時はまとめて削除が出来ないので、物理モードで。毎回論理値を返すと削除がおかしくなる。
-                    'CardSeq' => $val,
-                ];
-                
-                $cardResponse = Ctm::cUrlFunc("/payment/DeleteCard.idPass", $cardDatas);
-                
-//            	echo $cardResponse;
-//                exit;
-                
-                //正常：CardSeq=0|1|2|3|4&DefaultFlag=0|0|0|0|0&CardName=||||&CardNo=*************111|*************111|*************111|*************111|*************111&Expire=1905|1904|1908|1907|1910&HolderName=||||&DeleteFlag=0|0|0|0|0
-                $cardArr = explode('&', $cardResponse);
-                
-                foreach($cardArr as $res) {
-                    $arr = explode('=', $res);
-                    $delCardDatas[$arr[0]][$key] = explode('|', $arr[1]);
-                }
-                
-                
-                //$userRegResponse Error処理をここに ***********
-                if(array_key_exists('ErrCode', $delCardDatas)) {
-                	$delCardErrors .= "<br>";
-                    $delCardErrors .= '[5301-Seq:'. $val .'-'; //cardSeqナンバーをエラーに付ける
-                    $delCardErrors .= implode('|', $delCardDatas['ErrInfo'][$key]);
-                    $delCardErrors .= ']';
-                }
-                else {
-                	$user->decrement('card_regist_count');
-                }
-				
-                
             }
-        
         }
-        
         
         
         $user->fill($data);
@@ -353,7 +386,7 @@ class MyPageController extends Controller
         	Auth::login($user);
         }
         
-        return view('mypage.formEnd', ['isMypage'=>$isMypage, 'status'=>$status, 'delCardErrors'=>$delCardErrors, ]);
+        return view('mypage.formEnd', ['isMypage'=>$isMypage, 'status'=>$status, 'delCardErrors'=>$delCardErrors, 'editCardErrors'=>$editCardErrors, ]);
    
     }
     

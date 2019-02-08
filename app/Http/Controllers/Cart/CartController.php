@@ -734,7 +734,7 @@ class CartController extends Controller
                 //Error時 $memberRegResponse Error処理をここに ***********
                 //ErrCode=E01&ErrInfo=E01210002
                 if(array_key_exists('ErrCode', $memberRegSuccess)) {
-                    return view('cart.error', ['erroeName'=>'実行エラー（5001-'.$memberRegSuccess['ErrInfo'].'）', 'active'=>3]);
+                    return view('cart.error', ['erroeName'=>'[5001-'.$memberRegSuccess['ErrInfo'] . ']', 'active'=>3]);
                 }
                 else {
                 	session()->put('all.data.member_id', $memberId);
@@ -747,7 +747,7 @@ class CartController extends Controller
             	'SiteID' => $this->gmoId['siteId'],
             	'SitePass' => $this->gmoId['sitePass'],
            		'MemberID' => $memberId, //ここでnullであることはない
-                'SeqMode' => 0, //cart中はCardSeqがずれることはないので論理で
+                'SeqMode' => 0, //shopping中はCardSeqがずれることはないので論理で
             	//$registDatas['MemberName'] = ;
             	'Token' => $data['token'],
             ];
@@ -771,7 +771,7 @@ class CartController extends Controller
                     return redirect('shop/form?carderr=1000');
                 }
                 else {
-                    return view('cart.error', ['erroeName'=>'実行エラー（5002-'.$cardRegSuccess['ErrInfo'].'）', 'active'=>3]);
+                    return view('cart.error', ['erroeName'=>'[5002-'.$cardRegSuccess['ErrInfo'].']', 'active'=>3]);
                 }
             }
             else {
@@ -844,7 +844,7 @@ class CartController extends Controller
         
         //Error時
         if(array_key_exists('ErrCode', $sucArr)) {
-        	return view('cart.error', ['erroeName'=>'実行エラー[5003-'.$sucArr['ErrInfo'].']', 'active'=>3]);
+        	return view('cart.error', ['erroeName'=>'[5003-'.$sucArr['ErrInfo'].']', 'active'=>3]);
         }
         
         
@@ -865,7 +865,7 @@ class CartController extends Controller
             $settleDatas['SiteID'] = $this->gmoId['siteId'];
             $settleDatas['SitePass'] = $this->gmoId['sitePass'];
            	$settleDatas['MemberID'] = $memberId;
-            $settleDatas['SeqMode'] = 0; //cart中はCardSeqがずれることはないので論理で
+            $settleDatas['SeqMode'] = 0; //shopping中はCardSeqがずれることはないので論理で
             $settleDatas['CardSeq'] = $cardSeqNum;
         }
         else { //カード登録しない時 Tokenを利用
@@ -896,7 +896,7 @@ class CartController extends Controller
             	return redirect('shop/form?carderr=1000');
             }
             else {
-        		return view('cart.error', ['erroeName'=>'実行エラー[5004-'.$sucSecArr['ErrInfo'].']', 'active'=>3]);
+        		return view('cart.error', ['erroeName'=>'[5004-'.$sucSecArr['ErrInfo'].']', 'active'=>3]);
             }
         }
         
@@ -1497,7 +1497,7 @@ class CartController extends Controller
                     'SiteID' => $this->gmoId['siteId'],
                     'SitePass' => $this->gmoId['sitePass'],
                     'MemberID' => $userObj->member_id,
-                    'SeqMode' => 0, //cart中はCardSeqがずれることはないので論理で
+                    'SeqMode' => 0, //shopping中はCardSeqがずれることはないので論理で
                 ];
                 
                 $cardResponse = Ctm::cUrlFunc("/payment/SearchCard.idPass", $cardDatas);

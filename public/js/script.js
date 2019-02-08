@@ -656,14 +656,16 @@ var exe = (function() {
         },
         
         slidePayMethodChild: function() {
-        	$pmRadio = $('.payMethodRadio');
-            $useCardRadio = $('.useCardRadio');
+        	var $pmRadio = $('.payMethodRadio');
+            var $useCardRadio = $('.useCardRadio');
+            var $editCardRadio = $('.editCardRadio');
             
-            $wrapPmc = $('.wrap-pmc');
-            $wrapAllCard = $('.wrap-all-card');
-            $wrapNewCard = $('.wrap-new-card');
+            var $wrapPmc = $('.wrap-pmc');
+            var $wrapAllCard = $('.wrap-all-card');
+            var $wrapNewCard = $('.wrap-new-card');
+            var $wrapExpire = $editCardRadio.parent('label').next('.wrap-expire');
             
-            //クレカ
+            //クレカを選択した時
             if($('.payMethodRadio:checked').val() == 1) {
             	$wrapAllCard.show();
                 console.log($('.payMethodRadio:checked').val() + "a");
@@ -679,6 +681,7 @@ var exe = (function() {
             	
             });
             
+            //クレカ内にあるRadioCheck（登録カード or 新規カード）
             if($('.useCardRadio:checked').val() == 99 || ! $useCardRadio.length) { //valが99か、radioCheckがない時（カード登録なしや非会員登録の時など）
             	$wrapNewCard.show();
             }
@@ -693,7 +696,29 @@ var exe = (function() {
             
             });
             
-            console.log($('.payMethodRadio:checked').val());
+            //console.log($('.payMethodRadio:checked').val());
+            
+            
+            //マイページ：有効期限更新Radio                        
+            $('.editCardRadio:checked').each(function(e){
+                if($(this).val() == 1) {
+	                $(this).parent('label').next('.wrap-expire').show();
+    	        }
+            });
+            
+            $editCardRadio.on('change', function(e){
+            	var $wrapExpire = $(this).parent('label').siblings('.wrap-expire');
+                
+            	if($(this).val() == 1) {
+                	$wrapExpire.slideDown(100); 
+                }
+                else {
+                	$wrapExpire.slideUp(100);
+                }
+            	
+            });
+            
+            
             
             //ネットバンク銀行選択
 //            if($('.payMethodRadio:checked').val() == 3) {
@@ -806,6 +831,15 @@ var exe = (function() {
                 ); //Multipayment.getToken
                 
             }); //card-submit
+            
+            
+            
+            $('#regist-submit').on('click', function(){
+            	$(this).addClass('invisible');
+                $('.loader').show();
+                
+                //return false;
+            });
                 
         },
         

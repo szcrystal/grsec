@@ -356,7 +356,7 @@
         </small>
         
         <div class="loader-wrap">
-	        <span class="loader"><i class="fal fa-square-full mr-2"></i> 処理中..</span>
+	        <span class="loader mr-3"><i class="fas fa-square mr-1"></i> 処理中..</span>
   		</div>
     
         <input type="button" id="card-submit" class="btn btn-block btn-enji col-md-4 mb-4 mx-auto py-2" value="注文する">
