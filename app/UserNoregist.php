@@ -35,5 +35,7 @@ class UserNoregist extends Model
         'destination',
         
         'active',
+        'member_id',
+        
     ];
 }

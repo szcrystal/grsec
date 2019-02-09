@@ -30,6 +30,7 @@ use DB;
 use Delifee;
 use Exception;
 use Validator;
+use DateTime;
 
 class CartController extends Controller
 {
@@ -596,8 +597,10 @@ class CartController extends Controller
         
         //Mail送信 ----------------------------------------------
         //Ctm::sendMail($data, 'itemEnd');
+        
         //for User
         Mail::to($userData['email'], $userData['name'])->queue(new OrderEnd($saleRelId, 1));
+        
         //for Admin（3分後に送信）
         Mail::to($this->set->admin_email, $this->set->admin_name)->later(now()->addMinutes(3), new OrderEnd($saleRelId, 0))/*->queue(new OrderEnd($saleRelId, 0))*/;
         
@@ -1064,10 +1067,25 @@ class CartController extends Controller
         
         //クレカの時のバリデーション
         if($request->input('pay_method') == 1) {
+        	
+            $now = new DateTime();
+            $ym = $now->format('ym');
+            
+            $expire = $request->input('expire_year') . $request->input('expire_month');
+                    
         	$rules['cardno'] = 'required|digits_between:10,16|numeric';
             $rules['securitycode'] = 'required|digits_between:3,4|numeric';
-            $rules['expire_year'] = 'required|numeric';
-            $rules['expire_month'] = 'required|numeric';
+            $rules['expire_year'] = 'required';
+            $rules['expire_month'] = 'required';
+
+            $rules['expire'] = [
+                function($attribute, $value, $fail) use($ym, $expire) {
+                    if ($expire < $ym) {
+                        return $fail('「カード有効期限」が過去です。');
+                    }
+                },
+            ];
+                        
         }
         
          $messages = [
@@ -1079,10 +1097,10 @@ class CartController extends Controller
             'net_bank.required_if'=> '「お支払い方法」ネットバンク決済の銀行を選択して下さい。',
             'user_comment.max' => '「コメント」の文字数が長すぎます。',
             
-            'cardno.required_if' => '「カード番号」は必須です。',
-            'securitycode.required_if' => '「セキュリティコード」は必須です。',
-            'expire_year.required_if' => '「有効期限（年）」は必須です。',
-            'expire_month.required_if' => '「有効期限（月）」は必須です。',
+//            'cardno.required_if' => '「カード番号」は必須です。',
+//            'securitycode.required_if' => '「セキュリティコード」は必須です。',
+//            'expire_year.required_if' => '「有効期限（年）」は必須です。',
+//            'expire_month.required_if' => '「有効期限（月）」は必須です。',
             //'post_thumb.filenaming' => '「サムネイル-ファイル名」は半角英数字、及びハイフンとアンダースコアのみにして下さい。',
             //'post_movie.filenaming' => '「動画-ファイル名」は半角英数字、及びハイフンとアンダースコアのみにして下さい。',
             //'slug.unique' => '「スラッグ」が既に存在します。',

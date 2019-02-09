@@ -258,18 +258,19 @@ class MyPageController extends Controller
         return view('mypage.formConfirm', ['data'=>$data, 'isMypage'=>$isMypage]);
     }
     
+    //会員登録 新規／変更併用
     public function registerEnd(Request $request)
     {
     	$isMypage = $request->is('mypage/*') ? 1 : 0;
      
          //print_r(session('registUser'));
         //exit;      
-     
-     	if(session('registUser') !== null) {
+     	        
+     	if($request->session()->has('registUser')) {
       		$data = session('registUser');
       	}
        	else {
-        	abort(404);
+        	return redirect('/');
         }            
         
         
@@ -382,7 +383,8 @@ class MyPageController extends Controller
         }
         else {
             $status = "会員情報が登録されました。";
-        	Mail::to($user->email, $user->name)->send(new Register($user->id));
+            
+        	Mail::to($user->email, $user->name)->queue(new Register($user->id));
         	Auth::login($user);
         }
         
@@ -390,10 +392,13 @@ class MyPageController extends Controller
    
     }
     
+    
+    //User退会
     public function getOptout()
     {
-    	
-     	return view('mypage.optout', []);   
+    	$user = $this->user->find(Auth::id());
+        
+     	return view('mypage.optout', ['user'=>$user, ]);   
     }
     
     public function postOptout(Request $request)
@@ -431,6 +436,84 @@ class MyPageController extends Controller
         $this->validate($request, $rules, $messages);
         $data = $request->all();
         
+        
+        //Member/クレカ登録削除
+        $delMemberErrors = null;
+        $delCardErrors = null;
+        
+        if(isset($userModel->member_id)) {
+        	
+            //クレカ削除 ================================
+            if($userModel->card_regist_count) {
+            	
+                $count = $userModel->card_regist_count;
+                $num = 0;
+                
+                while($num < $count) {
+                    $dCardDatas = [
+                        'SiteID' => $this->gmoId['siteId'],
+                        'SitePass' => $this->gmoId['sitePass'],
+                        'MemberID' => $userModel->member_id,
+                        //'MemberID' => 11111,
+                        'SeqMode' => 0, //論理モードで
+                        'CardSeq' => $num, //論理モードを繰り返すのでseqは毎回0になる
+                    ];
+                    
+                    $dCardResponse = Ctm::cUrlFunc("/payment/DeleteCard.idPass", $dCardDatas);
+                    
+                    //正常：CardSeq=0|1|2|3|4&DefaultFlag=0|0|0|0|0&CardName=||||&CardNo=*************111|*************111|*************111|*************111|*************111&Expire=1905|1904|1908|1907|1910&HolderName=||||&DeleteFlag=0|0|0|0|0
+                    $cardArr = explode('&', $dCardResponse);
+                    
+                    foreach($cardArr as $res) {
+                        $arr = explode('=', $res);
+                        $delCardDatas[$arr[0]][$num] = explode('|', $arr[1]);
+                    }
+                    
+                    
+                    //$userRegResponse Error処理をここに ***********
+                    if(array_key_exists('ErrCode', $delCardDatas)) {
+                        $delCardErrors .= "<br>";
+                        $delCardErrors .= '[mp-5501-Seq:'. $num .'-'; //cardSeqナンバーをエラーに付ける
+                        $delCardErrors .= implode('|', $delCardDatas['ErrInfo'][$num]);
+                        $delCardErrors .= ']';
+                    }
+                    
+                    $num++;
+                }
+
+            }
+            
+            //Member削除 ======================================
+        	$dMemberDatas = [
+                //'SiteID' => $this->gmoId['siteId'],
+                'SiteID' => 11111,
+                'SitePass' => $this->gmoId['sitePass'],
+                'MemberID' => $userModel->member_id,
+            ];
+            
+            $dMemberResponse = Ctm::cUrlFunc("/payment/DeleteMember.idPass", $dMemberDatas);
+            
+            //正常：CardSeq=0|1|2|3|4&DefaultFlag=0|0|0|0|0&CardName=||||&CardNo=*************111|*************111|*************111|*************111|*************111&Expire=1905|1904|1908|1907|1910&HolderName=||||&DeleteFlag=0|0|0|0|0
+            $cardArr = explode('&', $dMemberResponse);
+            
+            foreach($cardArr as $res) {
+                $arr = explode('=', $res);
+                $delMemberDatas[$arr[0]] = explode('|', $arr[1]);
+            }
+            
+            
+            //$userRegResponse Error処理をここに ***********
+            if(array_key_exists('ErrCode', $delMemberDatas)) {
+                $delMemberErrors .= "<br>";
+                $delMemberErrors .= '[mp-5601-'; //cardSeqナンバーをエラーに付ける
+                $delMemberErrors .= implode('|', $delMemberDatas['ErrInfo']);
+                $delMemberErrors .= ']';
+            }
+        
+            
+        }
+        
+        
         //UserNoregistに移す
         $userArr = $userModel->toArray();
         $userArr['active'] = 2;
@@ -441,10 +524,18 @@ class MyPageController extends Controller
         $userModel->delete();
 
 		$isMypage = 2;
-  		$status = "会員の退会手続きが完了しました。<br>HOMEへお戻り下さい。";      
+        
+        if(isset($delCardErrors) || isset($delMemberErrors) ) {
+        	$status = "会員の退会手続きが完了しましたが、以下についてご確認下さい。"; 
+        }
+        else {
+  			$status = "会員の退会手続きが完了しました。<br>HOMEへお戻り下さい。"; 
+        }     
      	
-        return view('mypage.formEnd', ['isMypage'=>$isMypage, 'status'=>$status, ]);   
+        return view('mypage.formEnd', ['isMypage'=>$isMypage, 'status'=>$status, 'delCardErrors'=>$delCardErrors, 'delMemberErrors'=>$delMemberErrors, ]);   
     }
+    
+    
     
     public function favorite()
     {

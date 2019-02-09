@@ -954,7 +954,7 @@ use App\DeliveryGroup;
                                             
                                                 <label class="d-block">有効期限（月/年）</label>
                                                 
-                                                <select id="expire_month" class="form-control d-inline-block col-md-2{{ $errors->has('expire_month') ? ' is-invalid' : '' }}" name="expire_month">
+                                                <select id="expire_month" class="form-control d-inline-block col-md-2{{ $errors->has('expire_month') || $errors->has('expire') ? ' is-invalid' : '' }}" name="expire_month">
                                                     
                                                     @while($mn < 13)
                                                         <?php
@@ -980,13 +980,13 @@ use App\DeliveryGroup;
                                                 <span class="mr-4">月</span>
                                                 
                                                 @if ($errors->has('expire_month'))
-                                                    <div class="help-block text-danger">
+                                                    <div class="help-block text-danger col-md-2">
                                                         <span class="fa fa-exclamation form-control-feedback"></span>
                                                         <span>{{ $errors->first('expire_month') }}</span>
                                                     </div>
                                                 @endif
                                                 
-                                                <select id="expire_year" class="form-control d-inline-block col-md-2{{ $errors->has('expire_year') ? ' is-invalid' : '' }}" name="expire_year">
+                                                <select id="expire_year" class="form-control d-inline-block col-md-2{{ $errors->has('expire_year') || $errors->has('expire') ? ' is-invalid' : '' }}" name="expire_year">
                                                     
                                                     @while($yn < 11)
                                                         <?php
@@ -1010,9 +1010,17 @@ use App\DeliveryGroup;
                                                 <span>年</span>
                                                 
                                                 @if ($errors->has('expire_year'))
-                                                    <div class="help-block text-danger">
+                                                    <div class="help-block text-danger col-md-2">
                                                         <span class="fa fa-exclamation form-control-feedback"></span>
                                                         <span>{{ $errors->first('expire_year') }}</span>
+                                                    </div>
+                                                @endif
+                                                
+                                                <input type="hidden" name="expire" value="1">
+                                                @if ($errors->has('expire'))
+                                                    <div class="help-block text-danger">
+                                                        <span class="fa fa-exclamation form-control-feedback"></span>
+                                                        <span>{{ $errors->first('expire') }}</span>
                                                     </div>
                                                 @endif
                                                 

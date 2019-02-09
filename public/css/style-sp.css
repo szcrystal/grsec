@@ -840,8 +840,15 @@ ORG END ======================== */
         margin-bottom: 0.4em;
     }
     
-    .wrap-new-card .col-md-2 {
+    .wrap-new-card .col-md-2 { /* クレカ有効期限 Shop/Mypage */
     	width: 40%;
+    }
+    .wrap-expire .col-md-2 { /* クレカ有効期限 Shop/Mypage */
+    	width: 40% !important;
+    }
+    .wrap-birth .col-md-2,
+    .wrap-birth .col-md-1 { /*ユーザー登録 Birth */
+    	width: 25% !important;
     }
     
     .confirm .confirm-left,

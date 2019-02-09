@@ -219,10 +219,12 @@ $str = $isMypage ? '変更する' : '登録する';
                 <span class="loader"><i class="fas fa-square mr-1"></i> 処理中..</span>
             </div>
             
-            <?php $submitId = ''; ?>
-            @if($noRes)
-            	<?php $submitId = 'regist-submit'; ?>
-            @endif
+            <?php 
+            	$submitId = '';
+            	
+                if($isMypage && $noRes)
+            		$submitId = 'regist-submit';
+            ?>
             
             <button id="{{ $submitId }}" class="btn btn-block btn-custom col-md-4 mx-auto py-2" type="submit" name="recognize" value="1">{{ $str }}</button>
         </div>

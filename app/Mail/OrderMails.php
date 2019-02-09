@@ -90,7 +90,7 @@ class OrderMails extends Mailable
         return $this->from(env('ADMIN_EMAIL', 'no-reply@green-rocket.jp'), $this->setting->admin_name)
                     ->view('emails.orderMails')
                     ->with([
-                    	'templ' => $templ, //ここをコメントアウトすればFailedJobの確認ができる
+                    	'templ' => $templ, //ここをコメントアウトすればFailedJobの確認ができる。errorメールの送信はProviders/AppServiceProvider内にて
                         //'header' => $templ->header,
                         //'footer' => $templ->footer, 
                         //'thisSale' => $thisSale,

@@ -35,7 +35,6 @@
 @endif
 
 
-
 <form class="form-horizontal" role="form" method="POST" action="{{ url('mypage/optout') }}">
 
     {{ csrf_field() }}
@@ -74,13 +73,30 @@
     </table>
 </div>
 
-	<button class="btn btn-block btn-custom col-md-3 my-4 mx-auto py-2" type="submit" name="recognize" value="1">退会する</button>                 
+    
+    <div class="mt-4 mb-3">
+        <div class="loader-wrap">
+            <span class="loader"><i class="fas fa-square mr-1"></i> 処理中..</span>
+        </div>
+        
+        <?php 
+            $submitId = ''; 
+            
+            if(isset($user->member_id) && $user->card_regist_count) {
+                $submitId = 'regist-submit';
+            }
+        ?>
+        
+        <button id="{{ $submitId }}" class="btn btn-block btn-custom col-md-4 mx-auto py-2" type="submit" name="recognize" value="1">退会する</button>
+    </div>
+    
+    
     </form>
 
 </div>
 
 <a href="{{ url('mypage') }}" class="btn border-secondary bg-white mt-5">
-<i class="fas fa-angle-double-left"></i> マイページに戻る
+<i class="fal fa-angle-double-left"></i> マイページに戻る
 </a>
 
 

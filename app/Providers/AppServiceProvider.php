@@ -9,6 +9,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Validator;
 
 use Mail;
+use Ctm;
 
 /* **** for dip */
 //use Illuminate\Support\Facades\Schema;
@@ -50,7 +51,7 @@ class AppServiceProvider extends ServiceProvider
             //この辺りを変更した後は、php artisan queue:restart が必要となる
             Mail::raw($str, function ($message) {
             	
-                if(env('FAILED_JOB_MAIL') != '') {
+                if(Ctm::isEnv('product') || Ctm::isEnv('alpha')) {
                     $message -> from('no-reply@green-rocket.jp', 'GR-SYSTEM')
                              -> to(env('FAILED_JOB_MAIL'))
                              -> cc('szk.create@gmail.com')

@@ -10,9 +10,9 @@
         <div class="panel panel-default">
 
             <div class="panel-body">
-                {{-- @include('main.shared.main') --}}
 
 				<div class="main-list clearfix">
+
 <h3 class="mb-3 card-header">
 @if($isMypage == 2)
 退会手続きの完了
@@ -30,7 +30,7 @@
 <div class=" top-cont">
 
 <div class="mt-3 ml-1">
-<p>{{ $status }}</p>
+<p>{!! $status !!}</p>
 
 @if(isset($editCardErrors))
 	<p class="text-danger">
@@ -46,11 +46,21 @@
     </p>
 @endif
 
+@if(isset($delMemberErrors))
+	<p class="text-danger">
+    	<i class="fal fa-exclamation-triangle"></i> クレジットカード登録情報の削除を正常に進めることが出来ませんでした。
+        <small>{!! $delMemberErrors !!}</small>
+    </p>
+@endif
+
+
 
 @if(! $isMypage)
-現在ログイン中です。<br>
-購入履歴や各種情報など、<a href="{{ url('mypage') }}">マイページ</a>より確認できます。
-
+<p class="m-0 p-0">現在ログイン中です。<br>
+購入履歴や各種情報など、<a href="{{ url('mypage') }}">マイページ</a>より確認できます。</p>
+<a href="{{ url('mypage') }}" class="btn border-secondary bg-white mt-5">
+<i class="fal fa-angle-double-left"></i> マイページへ
+</a>
 @endif
 </div>
 

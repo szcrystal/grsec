@@ -240,7 +240,7 @@ $url = $isMypage ? url('mypage/register') : url('register');
         
          <tr class="form-group">
              <th>生年月日</th>
-               <td>
+               <td class="wrap-birth">
                    
                 <select class="form-control rounded-0 select-first col-md-2 d-inline{{ $errors->has('user.birth_year') ? ' is-invalid' : '' }}" name="user[birth_year]">
                     <option value="0" selected>年</option>
@@ -446,9 +446,9 @@ $url = $isMypage ? url('mypage/register') : url('register');
         <table class="table table-borderd border">
              <tr class="form-group">
                 <th>
-                    登録済クレジットカード<br>
-                    <small>＊登録最大数5つまで</small><br>
-                    <small class="text-danger">＊カード情報の登録は商品購入時に出来ます。</small>
+                    登録済クレジットカード
+                    <small>＊登録最大数5つまで</small>
+                    <small>＊カード情報の新規登録はお買い物中に出来ます。</small>
                 </th>
                 <td>
                     @if(count($regCardDatas) > 0)
@@ -482,9 +482,7 @@ $url = $isMypage ? url('mypage/register') : url('register');
                                             <small class="d-block ml-3">有効期限（月/年）：{{ $m.'/'.$y }}</small>
                                             <input type="hidden" name="user[card_expire][{{ $seqNum }}]" value="{{ $m.'/'.$y }}">
                                         
-                                            
-                                            
-                                            
+
                                             <div class="mt-4 mb-3 ml-2">
                                                 
                                                 <?php
@@ -517,8 +515,8 @@ $url = $isMypage ? url('mypage/register') : url('register');
                                                     <input type="radio" name="user[edit_mode][{{ $seqNum }}]" class="editCardRadio ml-2" value="1"{{ $radioChecked }}> 有効期限（月/年）を変更する
                                                 </label>
 
-                                                <div class="wrap-expire mb-4" data-seq="{{ $seqNum }}">
-                                                    <select id="expire_month" class="form-control d-inline-block col-md-2 ml-4 pl-1{{ $errors->has('user.expire_month.'.$seqNum) ? ' is-invalid' : '' }}" name="user[expire_month][{{ $seqNum }}]">
+                                                <div class="wrap-expire ml-3 pl-1 mb-4" data-seq="{{ $seqNum }}">
+                                                    <select id="expire_month" class="form-control d-inline-block col-md-2{{ $errors->has('user.expire_month.'.$seqNum) ? ' is-invalid' : '' }}" name="user[expire_month][{{ $seqNum }}]">
                                                         
                                                         @while($mn < 13)
                                                             <?php
@@ -560,7 +558,7 @@ $url = $isMypage ? url('mypage/register') : url('register');
                                                                         $selected = ' selected';
                                                                 }
                                                                 else {
-                                                                    if($yn == $y) {
+                                                                    if($expireYear + $yn == $y) {
                                                                         $selected = ' selected';
                                                                     }
                                                                 }

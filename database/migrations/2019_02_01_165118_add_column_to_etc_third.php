@@ -36,6 +36,11 @@ class AddColumnToEtcThird extends Migration
         });
         
         
+        //User NoRegistの関連カラム
+        Schema::table('user_noregists', function (Blueprint $table) {
+        	$table->string('member_id')->after('active')->nullable()->default(NULL);
+        });
+        
     }
 
     /**
@@ -73,6 +78,13 @@ class AddColumnToEtcThird extends Migration
         if (Schema::hasColumn('users', 'card_regist_count')) {
             Schema::table('users', function (Blueprint $table) {
                 $table->dropColumn('card_regist_count');
+            });
+        }
+        
+        //user NoRegist gmo関連のカラム
+        if (Schema::hasColumn('user_noregists', 'member_id')) {
+            Schema::table('user_noregists', function (Blueprint $table) {
+                $table->dropColumn('member_id');
             });
         }
         

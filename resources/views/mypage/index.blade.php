@@ -40,12 +40,13 @@
         </li>
     	
         <li class="mb-5">
-     	   <a href="{{ url('mypage/register') }}" class="d-inline-block text-big"><i class="fal fa-edit"></i> 会員情報の変更/メルマガ登録・解除</a>
-           <p>会員情報の変更、メルマガの登録・解除はこちらから</p>
+     	   <a href="{{ url('mypage/register') }}" class="d-inline-block text-big"><i class="fal fa-edit"></i> 会員登録情報の変更</a>
+           <p>会員情報の変更や登録済クレジットカードの削除や有効期限変更、メルマガの登録・解除はこちらから</p>
         </li>
      	
         <li class="mb-5">
       	   <a href="{{ url('password/reset') }}" class="d-inline-block text-big"><i class="fal fa-key"></i> パスワードの変更</a>
+           <p>パスワードの変更はこちらより変更して下さい。</p>
         </li>
 
         <li class="mb-5">

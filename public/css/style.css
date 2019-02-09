@@ -222,6 +222,7 @@ body {
 }
 .table-custom th small {
 	display: block;
+    margin-top: 0.3em;
 }
 .btn-custom {
 	background: #3a3b3c;
@@ -1224,6 +1225,12 @@ body {
     left: 6%;
 }
 
+@keyframes rt {
+    100% {
+        -webkit-transform: rotateZ(360deg);
+        transform: rotateZ(400deg);
+    }
+}
 .loader-wrap {
 	height: 1.5em;
     line-height: 5em;
@@ -1235,13 +1242,13 @@ body {
 .loader {
 	font-size: 0.95em;
 	display: none;
-	color: #4a4a4a;
+	color: #3a3a3a;
     //opacity: 1;
 /*    position: absolute;*/
 /*    top: 100%;*/
 /*    left: 45%;*/
 /*    z-index: 99;*/
-    border: none;
+    //border: none;
 }
 .main-atcl .loader {
 	
@@ -1258,16 +1265,11 @@ body {
 	left: 27%;
 }
 .loader .fas {
-    color: #5a5a5a;
-	-webkit-animation: rt 1s infinite linear alternate;
-    animation: rt 1s infinite linear alternate;
+    color: #C15360;
+	-webkit-animation: rt 1s infinite linear alternate-reverse;
+    animation: rt 1s infinite linear alternate-reverse;
 }
-@keyframes rt {
-    100% {
-        -webkit-transform: rotateY(360deg);
-        transform: rotateY(360deg);
-    }
-}
+
 
 /* Archive */
 
