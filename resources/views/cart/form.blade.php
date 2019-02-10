@@ -310,7 +310,7 @@ use App\DeliveryGroup;
     
          <tr class="form-group">
              <th>生年月日</th>
-               <td>
+               <td class="wrap-birth">
                    
                 <select class="form-control select-first col-md-2 d-inline{{ $errors->has('user.birth_year') ? ' is-invalid' : '' }}" name="user[birth_year]">
                     <option value="0" selected>年</option>
@@ -830,7 +830,7 @@ use App\DeliveryGroup;
                             <label class="d-block mb-3">
                                 @if(! $codCheck && $method->id == 5)
                                     <input type="radio" name="pay_method" class="payMethodRadio ml-2" value="{{ $method->id }}" disabled> {{ $method->name }}
-                                    <span class="text-secondary ml-3"><i class="fas fa-exclamation-circle"></i> ご注文商品の代金引換決済はご利用できません。</span> 
+                                    <span class="text-secondary text-small ml-3"><i class="fas fa-exclamation-circle"></i> ご注文商品の代金引換決済はご利用できません。</span> 
                                     
                                 @elseif($method->id == 1)
                                     <input type="radio" name="pay_method" class="payMethodRadio ml-2" value="{{ $method->id }}"{{ $checked }}> {{ $method->name }}
@@ -841,7 +841,7 @@ use App\DeliveryGroup;
                                     <?php //get RegistCard ------------------------- ?>
                                     
                                     @if(count($regCardDatas) > 0)
-                                        <div class="wrap-regist-card mt-3 mb-2 ml-2 pl-3">
+                                        <div class="wrap-regist-card mt-3 mb-2 ml-1 pl-3">
                                             @if(isset($regCardErrors))
                                             	<small class="d-inline-block ml-4 mb-4">
                                                 	<span class="text-danger"><i class="fal fa-exclamation-triangle"></i> 登録カード情報が取得出来ません。</span><br>
@@ -885,10 +885,11 @@ use App\DeliveryGroup;
                                     
                                     <?php //NewCard ------------------------- ?>
 
-                                    <div class="mt-2 mb-5 ml-2 pl-3">
+                                    <div class="mt-2 mb-5 ml-1 pl-3">
                                         
                                         @if(count($regCardDatas) > 0)
                                             <?php 
+                                            	$ml = ' ml-4';
                                                 $checked = '';
                                                 
                                                 if( Ctm::isOld()) {
@@ -905,13 +906,15 @@ use App\DeliveryGroup;
                                         
                                             <input type="radio" name="card_seq" class="useCardRadio ml-2" value="99"{{ $checked }}> 新しいクレジットカードを使う
                                         @else
+                                        	<?php $ml = ' ml-2'; ?>
+                                            
                                             <input type="hidden" name="card_seq" value="99">
                                         @endif
                                         
-                                        <div class="wrap-new-card mt-3 ml-4 pl-1">
+                                        <div class="wrap-new-card mt-3 pl-1{{ $ml }}">
                                         	
                                             @if (count($cardErrors) > 0)
-                                            	<p>
+                                            	<p class="mb-1">
                                                 <span class="fa fa-exclamation form-control-feedback text-danger"></span>
                                                 <span class="text-danger">{{ $cardErrors['carderr'] }}</span>
                                                 </p>
@@ -932,7 +935,7 @@ use App\DeliveryGroup;
                                             
                                             <div class="mb-3">
                                                 <label>セキュリティコード</label>
-                                                <input type="text" id="securitycode" class="form-control col-md-5{{ $errors->has('securitycode') ? ' is-invalid' : '' }}" name="securitycode" value="{{ Ctm::isOld() ? old('securitycode') : (Session::has('all.data.securitycode') ? session('all.data.securitycode') : '') }}" placeholder="例）1234（半角数字）">
+                                                <input type="text" id="securitycode" class="form-control col-md-5{{ $errors->has('securitycode') ? ' is-invalid' : '' }}" name="securitycode" value="{{ Ctm::isOld() ? old('securitycode') : (Session::has('all.data.securitycode') ? session('all.data.securitycode') : '') }}" placeholder="例）1234（3〜4桁 半角数字）">
                                        
                                                 @if ($errors->has('securitycode'))
                                                     <div class="help-block text-danger receiver-error">
@@ -1016,7 +1019,7 @@ use App\DeliveryGroup;
                                                     </div>
                                                 @endif
                                                 
-                                                <input type="hidden" name="expire" value="1">
+                                                <input type="hidden" name="expire" value="">
                                                 @if ($errors->has('expire'))
                                                     <div class="help-block text-danger">
                                                         <span class="fa fa-exclamation form-control-feedback"></span>
@@ -1026,6 +1029,7 @@ use App\DeliveryGroup;
                                                 
                                             </div>
                                             
+                                            </div><!-- ErrorBlock -->
                                             
                                             @if($regist || (isset($userObj) && $userObj->card_regist_count < 6))
                                             	@if(isset($userObj) && $userObj->card_regist_count > 4)
@@ -1056,7 +1060,6 @@ use App\DeliveryGroup;
                                                 @endif
                                             @endif
                                         
-                                        </div>
                                         </div>
                                         
                                         {{--

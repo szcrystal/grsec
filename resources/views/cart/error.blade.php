@@ -37,10 +37,10 @@
                 
                 <span class="text-danger"><i class="fal fa-exclamation-triangle"></i> ご注文が完了していません。</span>
                 
-                <p class="mt-2">
+                <p class="mt-3">
 	                ご注文を正常に進めることができませんでした。<br>
     	            クレジットカード入力情報を再度ご確認の上<br>
-                    少し時間を置いてやり直すか<br>別のお支払い方法を選択下さい。<br><br>
+                    少し時間を置いてやり直すか、別のお支払い方法を選択して下さい。<br><br>
                     @if(isset($erroeName))
                         <span class="text-small text-secondary">{{ $erroeName }}</span>
                     @endif

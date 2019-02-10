@@ -448,16 +448,16 @@ $url = $isMypage ? url('mypage/register') : url('register');
                 <th>
                     登録済クレジットカード
                     <small>＊登録最大数5つまで</small>
-                    <small>＊カード情報の新規登録はお買い物中に出来ます。</small>
+                    <small>＊カード情報の新規登録は購入時に出来ます。</small>
                 </th>
                 <td>
                     @if(count($regCardDatas) > 0)
                         <div class="wrap-regist-card mt-3 mb-2">
                             @if(isset($regCardErrors))
-                                <small class="d-inline-block ml-4 mb-4">
+                                <span class="d-inline-block ml-2 mb-4 text-small">
                                     <span class="text-danger"><i class="fal fa-exclamation-triangle"></i> 登録カード情報が取得出来ません。</span><br>
                                     {{ $regCardErrors }}
-                                </small>
+                                </span>
                             @else
                                 
                                 @foreach($regCardDatas['CardSeq'] as $k => $seqNum)
@@ -467,9 +467,9 @@ $url = $isMypage ? url('mypage/register') : url('register');
                                     
                                     @if(! $regCardDatas['DeleteFlag'][$k])
                                     
-                                        <div class="mb-5 pb-1">
+                                        <div class="mb-4 pb-1">
                                             
-                                            <label><i class="fas fa-circle text-small text-secondary"></i> カード番号： </label>
+                                            <label><i class="fas fa-circle text-small text-gray"></i> カード番号： </label>
                                             <span>{{ $regCardDatas['CardNo'][$k] }}</span>
                                             <input type="hidden" name="user[card_num][{{ $seqNum }}]" value="{{ $regCardDatas['CardNo'][$k] }}">
                                             
@@ -483,7 +483,7 @@ $url = $isMypage ? url('mypage/register') : url('register');
                                             <input type="hidden" name="user[card_expire][{{ $seqNum }}]" value="{{ $m.'/'.$y }}">
                                         
 
-                                            <div class="mt-4 mb-3 ml-2">
+                                            <div class="mt-3 mb-4 ml-2">
                                                 
                                                 <?php
                                                     $time = new DateTime('now');
@@ -515,8 +515,8 @@ $url = $isMypage ? url('mypage/register') : url('register');
                                                     <input type="radio" name="user[edit_mode][{{ $seqNum }}]" class="editCardRadio ml-2" value="1"{{ $radioChecked }}> 有効期限（月/年）を変更する
                                                 </label>
 
-                                                <div class="wrap-expire ml-3 pl-1 mb-4" data-seq="{{ $seqNum }}">
-                                                    <select id="expire_month" class="form-control d-inline-block col-md-2{{ $errors->has('user.expire_month.'.$seqNum) ? ' is-invalid' : '' }}" name="user[expire_month][{{ $seqNum }}]">
+                                                <div class="wrap-expire ml-3 pl-1 mb-3" data-seq="{{ $seqNum }}">
+                                                    <select id="expire_month" class="form-control d-inline-block col-md-2{{ $errors->has('user.expire_month.'.$seqNum) || $errors->has('user.expire.'.$seqNum) ? ' is-invalid' : '' }}" name="user[expire_month][{{ $seqNum }}]">
                                                         
                                                         @while($mn < 13)
                                                             <?php
@@ -548,7 +548,7 @@ $url = $isMypage ? url('mypage/register') : url('register');
                                                         </div>
                                                     @endif
                                                     
-                                                    <select id="expire_year" class="form-control d-inline-block col-md-2{{ $errors->has('user.expire_year.'.$seqNum) ? ' is-invalid' : '' }}" name="user[expire_year][{{ $seqNum }}]">
+                                                    <select id="expire_year" class="form-control d-inline-block col-md-2{{ $errors->has('user.expire_year.'.$seqNum) || $errors->has('user.expire.'.$seqNum) ? ' is-invalid' : '' }}" name="user[expire_year][{{ $seqNum }}]">
                                                         
                                                         @while($yn < 11)
                                                             <?php
@@ -575,6 +575,14 @@ $url = $isMypage ? url('mypage/register') : url('register');
                                                         <div class="help-block text-danger">
                                                             <span class="fa fa-exclamation form-control-feedback"></span>
                                                             <span>{{ $errors->first('user.expire_year.'.$seqNum) }}</span>
+                                                        </div>
+                                                    @endif
+                                                    
+                                                    <input type="hidden" name="user[expire][{{ $seqNum }}]" value="">
+                                                    @if ($errors->has('user.expire.'.$seqNum))
+                                                        <div class="help-block text-danger mt-1">
+                                                            <span class="fa fa-exclamation form-control-feedback"></span>
+                                                            <span>{{ $errors->first('user.expire.'.$seqNum) }}</span>
                                                         </div>
                                                     @endif
                                                 

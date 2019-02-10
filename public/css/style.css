@@ -271,6 +271,9 @@ body {
 .text-brown {
 	color: sienna;
 }
+.text-gray {
+	color: #afafaf;
+}
 .border-gray {
 	border-color: #ddd;
 }

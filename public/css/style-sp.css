@@ -847,7 +847,7 @@ ORG END ======================== */
     	width: 40% !important;
     }
     .wrap-birth .col-md-2,
-    .wrap-birth .col-md-1 { /*ユーザー登録 Birth */
+    .wrap-birth .col-md-1 { /*ユーザー登録/shopユーザー登録 Birth */
     	width: 25% !important;
     }
     

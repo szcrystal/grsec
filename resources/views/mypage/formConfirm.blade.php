@@ -161,7 +161,7 @@ $str = $isMypage ? '変更する' : '登録する';
                             
                                 <div class="wrap-regist-card mt-2 mb-3 pb-3"> 
                                     @if($v == 1)
-                                        <label><i class="fas fa-circle text-small text-secondary"></i> 有効期限の変更</label>
+                                        <label><i class="fas fa-circle text-small text-gray"></i> 有効期限の変更</label>
                                         <p class="ml-3">
                                             <span>カード番号： {{ $data['card_num'][$k] }}</span>
                                             <span class="d-block">有効期限（月/年）: <b>{{ $data['expire_month'][$k] }}/{{ $data['expire_year'][$k] }}</b></span>

@@ -737,7 +737,7 @@ class CartController extends Controller
                 //Error時 $memberRegResponse Error処理をここに ***********
                 //ErrCode=E01&ErrInfo=E01210002
                 if(array_key_exists('ErrCode', $memberRegSuccess)) {
-                    return view('cart.error', ['erroeName'=>'[5001-'.$memberRegSuccess['ErrInfo'] . ']', 'active'=>3]);
+                    return view('cart.error', ['erroeName'=>'[cc-5001-'.$memberRegSuccess['ErrInfo'] . ']', 'active'=>3]);
                 }
                 else {
                 	session()->put('all.data.member_id', $memberId);
@@ -769,18 +769,18 @@ class CartController extends Controller
             
             //$userRegResponse Error処理をここに ***********
             if(array_key_exists('ErrCode', $cardRegSuccess)) {
-                if(strpos($cardRegSuccess['ErrCode'], 'G') !== false || strpos($cardRegSuccess['ErrCode'], 'C') !== false) {
+            	//カード会社から返却された時 or E61010002（カード番号異常/利用不可カードの時）
+                if(strpos($cardRegSuccess['ErrCode'], 'G') !== false || strpos($cardRegSuccess['ErrCode'], 'C') !== false || strpos($cardRegSuccess['ErrInfo'], 'E61010002') !== false) {
                     //$errors['carderr'] = 'カード情報が正しくないか、お取り扱いが出来ません。';
-                    return redirect('shop/form?carderr=1000');
+                    return redirect('shop/form?carderr=1000')->with('ErrInfo', '[cc-5002-'.$cardRegSuccess['ErrInfo'].']');;
                 }
                 else {
-                    return view('cart.error', ['erroeName'=>'[5002-'.$cardRegSuccess['ErrInfo'].']', 'active'=>3]);
+                    return view('cart.error', ['erroeName'=>'[cc-5002-'.$cardRegSuccess['ErrInfo'].']', 'active'=>3]);
                 }
             }
             else {
             	$cardSeqNum = $cardRegSuccess['CardSeq']; //新しい論理のCardSeq値が返る
 
-                
                 //カード登録するの判定をsessin入れ
                 session()->put('all.data.card_regist', 1);
             }
@@ -847,7 +847,7 @@ class CartController extends Controller
         
         //Error時
         if(array_key_exists('ErrCode', $sucArr)) {
-        	return view('cart.error', ['erroeName'=>'[5003-'.$sucArr['ErrInfo'].']', 'active'=>3]);
+        	return view('cart.error', ['erroeName'=>'[cc-5003-'.$sucArr['ErrInfo'].']', 'active'=>3]);
         }
         
         
@@ -894,12 +894,13 @@ class CartController extends Controller
         
         //Error時
         if(array_key_exists('ErrCode', $sucSecArr)) {
-        	if(strpos($sucSecArr['ErrCode'], 'G') !== false || strpos($sucSecArr['ErrCode'], 'C') !== false) {
+        	//カード会社から返却された時 or E01260010（カード番号異常/利用不可カードの時。カード登録時と返るエラー番号が違うので注意）
+        	if(strpos($sucSecArr['ErrCode'], 'G') !== false || strpos($sucSecArr['ErrCode'], 'C') !== false || strpos($sucSecArr['ErrInfo'], 'E01260010') !== false) {
             	//$errors['carderr'] = 'カード情報が正しくないか、お取り扱いが出来ません。';
-            	return redirect('shop/form?carderr=1000');
+            	return redirect('shop/form?carderr=1000')->with('ErrInfo', '[cc-5004-'.$sucSecArr['ErrInfo'].']');
             }
             else {
-        		return view('cart.error', ['erroeName'=>'[5004-'.$sucSecArr['ErrInfo'].']', 'active'=>3]);
+        		return view('cart.error', ['erroeName'=>'[cc-5004-'.$sucSecArr['ErrInfo'].']', 'active'=>3]);
             }
         }
         
@@ -1080,9 +1081,8 @@ class CartController extends Controller
 
             $rules['expire'] = [
                 function($attribute, $value, $fail) use($ym, $expire) {
-                    if ($expire < $ym) {
-                        return $fail('「カード有効期限」が過去です。');
-                    }
+                    if ($expire < $ym) 
+                        return $fail('「有効期限」は現在以降を指定して下さい。');
                 },
             ];
                         
@@ -1443,12 +1443,14 @@ class CartController extends Controller
 //         exit;
 
 		
-		//カードトークン取得でエラーが返った時 getで?carderr=122を付ける
+		//カードトークン取得でエラーが返った時 or 決済実行でカード情報エラーの時 getで?carderr=122を付ける
         $cardErrors = array();
         if($request->has('carderr') && $request->input('carderr')) {
         	
         	if($request->input('carderr') == 1000) { //決済を実行してカードに問題がある時ここにエラーコード1000でリダイレクトさせている
-            	$cardErrors['carderr'] = 'カード情報が正しくないか、お取り扱いが出来ません。';
+            	$errInfo = session()->has('ErrInfo') ? session('ErrInfo') : '';
+            	
+                $cardErrors['carderr'] = 'カード情報が正しくないか、お取り扱いができません。' . $errInfo;
             }
             else {
         		$cardErrors['carderr'] = 'カード情報が正しくありません。';

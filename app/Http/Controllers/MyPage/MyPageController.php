@@ -21,6 +21,7 @@ use App\Mail\Register;
 use Mail;
 use Auth;
 use Ctm;
+use DateTime;
 
 use Illuminate\Validation\Rule;
 
@@ -133,14 +134,13 @@ class MyPageController extends Controller
        			$uId = Auth::id();
         		$user = $this->user->find($uId);
        			$isMypage = 1;
-                
-                
-                            
+           
                 //クレカ参照
                 if(isset($user->member_id) && $user->card_regist_count) {
                     
                     $cardDatas = [
                         'SiteID' => $this->gmoId['siteId'],
+                        //'SiteID' => 11111,
                         'SitePass' => $this->gmoId['sitePass'],
                         'MemberID' => $user->member_id,
                         'SeqMode' => 1, //削除時はまとめて削除が出来ないので、物理モードで。毎回論理値を返すと削除がおかしくなる。
@@ -164,7 +164,7 @@ class MyPageController extends Controller
                     
                     //$userRegResponse Error処理をここに ***********
                     if(array_key_exists('ErrCode', $regCardDatas)) {
-                        $regCardErrors = '[5201-';
+                        $regCardErrors = '[mp-5201-';
                         $regCardErrors .= implode('|', $regCardDatas['ErrInfo']);
                         $regCardErrors .= ']';
                     }
@@ -215,6 +215,27 @@ class MyPageController extends Controller
             'user.password_confirmation' => 'sometimes|required',                      
   
         ];
+        
+        $editModes = $request->input('user.edit_mode.*');
+        
+        foreach($editModes as $key => $val) {
+        	if($val == 1) {
+                $now = new DateTime();
+                $ym = $now->format('ym');
+                
+                $expire = $request->input('user.expire_year.'.$key) . $request->input('user.expire_month.'.$key);
+
+                $rules['user.expire.'.$key] = [
+                    function($attribute, $value, $fail) use($ym, $expire) {
+                        if ($expire < $ym) 
+                            return $fail('「有効期限」は現在以降を指定して下さい。');
+                    },
+                ];
+            }
+        }
+        //exit;
+        
+        
         
         //if(! $isMypage) {
         //    $rules['user.password'] = 'required|min:8|confirmed';
