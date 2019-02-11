@@ -341,8 +341,16 @@
 </div>
 
 <div class="mt-5">
+<?php
+	$isCard = 0;
+    if($data['pay_method'] == 1) {
+    	if(! isset($data['card_seq']) || (isset($data['card_seq']) && $data['card_seq'] == 99)) {
+        	$isCard = 1;
+        }
+    }
+?>
 
-@if($data['pay_method'] == 1)
+@if($isCard)
 <form id="getTokenForm">
 
 	@foreach($cardInfo as $key => $ci)
@@ -372,13 +380,13 @@
 <form id="purchaseForm" class="form-horizontal" role="form" method="POST" action="{{ $actionUrl }}">
     {{ csrf_field() }}
     
-    
+    {{--
     @if($data['pay_method'] == 5)
     	<input type="hidden" name="trans_code" value="888888">
     @elseif($data['pay_method'] == 6)
     	<input type="hidden" name="trans_code" value="999999">
     @endif   
-    
+    --}}
     
     @foreach($settles as $key => $settle)
     	<input type="hidden" name="{{ $key }}" value="{{ $settle }}">
@@ -386,15 +394,15 @@
     
     <input type="hidden" value="" id="token" name="token">
     
-    @if($data['pay_method'] != 1)
-    	<?php
-        	$disabled = '';
+    @if(! $isCard)
+    	<?php        	
+            $disabled = '';
             if(count($errors) > 0) {
             	$disabled = ' disabled';
             }
         ?>
         
-    	<small class="col-md-5 mx-auto d-block px-5 mb-4 confirm-small">
+    	<small class="col-md-5 mx-auto d-block px-5 mb-1 confirm-small">
             @if($errors->has('konbiniLimit'))
                 <span class="text-danger text-big">
                     {{ $errors->first('konbiniLimit') }}<br>
@@ -411,7 +419,16 @@
             @endif
         </small>
         
-    	<button class="btn btn-block btn-enji col-md-4 mb-4 mx-auto py-2" type="submit"{{ $disabled }}>注文する</button>
+        {{--
+        @if($data['pay_method'] == 1 && $data['card_seq'] != 99)
+        	//$existId = ''; 
+        --}}
+            
+        	<div class="loader-wrap">
+                <span class="loader mr-3"><i class="fas fa-square mr-1"></i> 処理中..</span>
+            </div>
+        
+    	<button id="exist-submit" class="btn btn-block btn-enji col-md-4 mb-4 mx-auto py-2" type="submit"{{ $disabled }}>注文する</button>
     @endif
   
 </form>

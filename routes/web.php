@@ -144,8 +144,12 @@ Route::get('/shop/form', 'Cart\CartController@postForm');
 Route::post('/shop/confirm', 'Cart\CartController@postConfirm');
 Route::get('/shop/confirm', 'Cart\CartController@postConfirm');
 
-Route::post('/shop/paydo', 'Cart\CartController@postGmoPay');
+//クレカ
+Route::post('/shop/paydo', 'Cart\CartController@postCardPay');
 Route::get('/shop/error', 'Cart\CartController@getShopError');
+
+//後払い
+Route::post('/shop/afterdo', 'Cart\CartController@postAfterPay');
 
 Route::post('/shop/thankyou', 'Cart\CartController@getThankyou');
 Route::get('/shop/thankyou', 'Cart\CartController@getThankyou');

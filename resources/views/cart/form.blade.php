@@ -803,13 +803,14 @@ use App\DeliveryGroup;
                 	<h3 class="card-header mt-5">お支払い方法</h3>
    					<a href="{{ url('about-pay') }}" class="d-inline-block mt-2 ml-1 text-small" target="_brank">お支払についてのご注意はこちら <i class="fal fa-angle-double-right"></i></a>
                     
-                    <fieldset class="form-group my-3 pt-2 pb-4 py-2{{ $errors->has('pay_method') ? ' border border-danger' : '' }}">
-                        @if ($errors->has('pay_method'))
-                            <div class="help-block text-danger mb-2">
-                                <span class="fa fa-exclamation form-control-feedback"></span>
-                                <span>{{ $errors->first('pay_method') }}</span>
-                            </div>
-                        @endif
+                    @if ($errors->has('pay_method'))
+                        <div class="help-block text-danger mt-2 mb-0">
+                            <span class="fa fa-exclamation form-control-feedback"></span>
+                            <span>{{ $errors->first('pay_method') }}</span>
+                        </div>
+                    @endif
+                    
+                    <fieldset class="form-group mt-1 mb-2 pb-4 pt-3 pb-2{{ $errors->has('pay_method') ? ' border border-danger' : '' }}">
 
                         @foreach($payMethod as $method)
                             <?php 

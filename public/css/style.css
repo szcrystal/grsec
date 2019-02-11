@@ -1235,8 +1235,8 @@ body {
     }
 }
 .loader-wrap {
-	height: 1.5em;
-    line-height: 5em;
+	height: 1em;
+    line-height: 4.2em;
     text-align: center;
     position: relative;
     z-index: 999;
@@ -1314,6 +1314,9 @@ body {
 	cursor: pointer;
     font-size: 0.85em;
     //border: 1px solid #dfdfdf;
+}
+.more-tgl:hover {
+	color: #959595;
 }
 .more-list {
 	display: none;

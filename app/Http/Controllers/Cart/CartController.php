@@ -648,7 +648,158 @@ class CartController extends Controller
       //https://192.168.10.16/shop/thankyou?trans_code=718177&order_number=1449574270&state=5&payment_code=18&user_id=9999    
     }
     
+    public function postAfterPay(Request $request)
+    {
+    	$all = session('all'); //session(all): regist, allPrice, order_number
+      	$allData = $all['data']; //session(all.data): destination, pay_method, user,
+        $userData = Auth::check() ? $this->user->find(Auth::id()) : $allData['user']; //session(all.data.user)
+      	$receiverData = $allData['receiver']; //session('all.data.receiver');
+        
+        $data = $request->all();
+        
+    	$url= 'http://localhost/get.php';
+        
+        $now = new DateTime();
+        
+        //渡すdata
+        $shopTransactionId = $all['order_number']; //orderNum
+		$shopOrderDate = $now->format('Y/m/d');
+        $fullName = $userData['name'];
+        $fullKanaName = $userData['hurigana'];
+        
+        
+        //Header Info
+//        $header = 
+//        text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
+//        ;:
+//        ;:gzip,deflate,sdch
+//        ;:ja,en-US;q=0.8,en;q=0.6
+//        ;:
+//        ;:keep-alive
+//        ;:
+//        ;:gmops.sample.jp;:http://gmops.sample.jp/・・・ /load_payment_module.php・・・ (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/30.0.1599.69 Safari/537.36
+//        ;:
+//        ;:
+//        ;:
+//        ;:
+//        ;:Content-Length--1384::Origin--http://gmops.sample.jp:Content-Type--application/・・・; fraudbuster-key=gmops.sample.jp%2320131016113214LBzGq
+//        ;:125.203.57.230
+//        ;:
+        
+        
+$xml=<<<XML
+<?xml version="1.0" encoding="UTF-8" ?>
+<request>
+    <shopInfo>
+ 		<authenticationId>1000000001</authenticationId>
+        <shopCode>ab000000-01</shopCode>
+        <connectPassword>12345678</connectPassword>
+    </shopInfo>
     
+    <httpInfo>
+    	<httpHeader></httpHeader>
+		<deviceInfo></deviceInfo>
+    </httpinfo>
+    
+    <buyer>
+    	<shopTransactionId>{$shopTransactionId}</shopTransactionId>
+        <shopOrderDate>{$shopOrderDate}</shopOrderDate>
+		<fullName>{$userData['name']}</fullName>
+		<fullKanaName>ヤマダ タロウ</fullKanaName>
+        <zipCode>150-0043</zipCode>
+		<address>東京都渋谷区道玄坂 1−14−6</address>
+        <companyName></companyName>
+        <departmentName></departmentName>
+        <tel1>0120-1111-2222</tel1>
+        <tel2></tel2>
+        <email1>gmo@gmo.biz</email1>
+        <email2></email2>
+        <billedAmount>10001</billedAmount>
+        <gmoExtend1></gmoExtend1>
+        <paymentType>2</paymentType>
+		<sex>1</sex>
+    	<birthday>1996/01/01</birthday>
+        <memberRegistDate>2015/12/22</memberRegistDate>
+        <buyCount>5</buyCount>
+        <buyAmoutTotal>15000</buyAmoutTotal>
+        <memberId>1234567890</memberId>
+	</buyer>
+ 
+    <deliveries>
+    	<delivery>
+			<deliveryCustomer>
+				<fullName>山田 太郎</fullName>
+                <fullKanaName>ヤマダ タロウ</fullKanaName>
+                <zipCode>150-0043</zipCode>
+                <address>東京後渋谷区道玄坂 1−14−6</address>
+                <companyName></companyName>
+                <departmentName></departmentName>
+                <tel>0120-1111-2222</tel>
+			</deliveryCustomer>
+            
+            <details>
+			    <detail>
+					<detailName>鉛筆</detailName>
+                    <detailPrice>120</detailPrice>
+                    <detailQuantity>1</detailQuantity>
+                    <gmoExtend2></gmoExtend2>
+                    <gmoExtend3></gmoExtend3>
+                    <gmoExtend4></gmoExtend4>
+                    <detailBrand>鉛筆メーカー</detailBrand>
+                    <detailCategory>文具</detailCategory>
+				</detail>
+                
+                <detail>
+					<detailName>消しゴム</detailName>
+                    <detailPrice>105</detailPrice>
+                    <detailQuantity>2</detailQuantity>
+                    <gmoExtend2></gmoExtend2>
+                    <gmoExtend3></gmoExtend3>
+                    <gmoExtend4></gmoExtend4>
+                    <detailBrand>消しゴムメーカー</detailBrand>
+                    <detailCategory>文具</detailCategory>
+				</detail>
+            </details>
+		</delivery>
+	</deliveries>
+</request>
+XML;
+
+
+/*
+        $ch = curl_init();
+        
+        $options = [
+            CURLOPT_URL => $url . "payment/EntryTran.idPass",
+            CURLOPT_RETURNTRANSFER => true, //文字列として返す
+            CURLOPT_POST => true,
+            CURLOPT_POSTFIELDS => http_build_query($datas),
+            CURLOPT_TIMEOUT => 20, // タイムアウト時間
+        ];
+        
+        curl_setopt_array($ch, $options);
+        
+        $response = curl_exec($ch);
+        curl_close($ch);
+*/
+
+ 
+//        $ch = curl_init();
+//        curl_setopt($ch, CURLOPT_URL, $url);
+//        curl_setopt($ch, CURLOPT_POST, TRUE);
+//        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+//        curl_setopt($ch, CURLOPT_HTTPHEADER, Array("Content-Type: text/xml"));
+//        curl_setopt($ch, CURLOPT_POSTFIELDS, $xml);
+//         
+//        $result = curl_exec($ch);
+         
+//        var_dump($result);
+        
+        return view('cart.end', ['xml'=>$xml, 'active'=>4,]);
+    }
+    
+    
+    //決済エラー画面
     public function getShopError(Request $request)
     {
     	$data = $request->all();
@@ -656,8 +807,8 @@ class CartController extends Controller
     	return view('cart.error', []);
     }
     
-    
-    public function postGmoPay(Request $request)
+    //クレカ決済 Confirm上でトークンを取得後ここにPostされる
+    public function postCardPay(Request $request)
     {
     	//1回postで送信（file_get_contentsで）し、結果がxmlで返る。その結果が正常ならepsilonへリダイレクトするという仕様
         //イプシロン_system_manual.pdfの47ページに返り値があり
@@ -1068,23 +1219,25 @@ class CartController extends Controller
         
         //クレカの時のバリデーション
         if($request->input('pay_method') == 1) {
-        	
-            $now = new DateTime();
-            $ym = $now->format('ym');
+            if(! $request->has('card_seq') || ($request->has('card_seq') && $request->input('card_seq') == 99)) {
             
-            $expire = $request->input('expire_year') . $request->input('expire_month');
-                    
-        	$rules['cardno'] = 'required|digits_between:10,16|numeric';
-            $rules['securitycode'] = 'required|digits_between:3,4|numeric';
-            $rules['expire_year'] = 'required';
-            $rules['expire_month'] = 'required';
+                $now = new DateTime();
+                $ym = $now->format('ym');
+                
+                $expire = $request->input('expire_year') . $request->input('expire_month');
+                        
+                $rules['cardno'] = 'required|digits_between:10,16|numeric';
+                $rules['securitycode'] = 'required|digits_between:3,4|numeric';
+                $rules['expire_year'] = 'required';
+                $rules['expire_month'] = 'required';
 
-            $rules['expire'] = [
-                function($attribute, $value, $fail) use($ym, $expire) {
-                    if ($expire < $ym) 
-                        return $fail('「有効期限」は現在以降を指定して下さい。');
-                },
-            ];
+                $rules['expire'] = [
+                    function($attribute, $value, $fail) use($ym, $expire) {
+                        if ($expire < $ym) 
+                            return $fail('「有効期限」は現在以降を指定して下さい。');
+                    },
+                ];
+            }
                         
         }
         
@@ -1340,6 +1493,9 @@ class CartController extends Controller
         	//$settles['url'] = url('shop/thankyou');
             $actionUrl = url('shop/thankyou');
         }
+        elseif($data['pay_method'] == 4) { //後払い
+        	$actionUrl = url('shop/afterdo');
+        }
         else { //代引きと銀振以外
         	$actionUrl = url('shop/paydo');
             //$actionUrl = "https://pt01.mul-pay.jp/payment/EntryTran.idPass";
@@ -1355,27 +1511,27 @@ class CartController extends Controller
             
         }
         
-        $payCode = 0;
-        if($data['pay_method'] == 1) { //クレカ
-        	$payCode = '10000-0000-00000-00000-00000-00000-00000';
-        }
-        elseif($data['pay_method'] == 2) { //コンビニ
-        	$payCode = '00100-0000-00000-00000-00000-00000-00000';
-        }
-        elseif($data['pay_method'] == 3) { // ネットバンク
-        	if($data['net_bank'] == 1) {
-            	$payCode = '00010-0000-00000-00000-00000-00000-00000';
-            }
-            elseif($data['net_bank'] == 2) {
-            	$payCode = '00001-0000-00000-00000-00000-00000-00000';
-            }
-            elseif($data['net_bank'] == 3) {
-            	$payCode = '00000-0000-00000-00100-00000-00000-00000';
-            }
-        }
-        elseif($data['pay_method'] == 4) { //後払い
-            $payCode = '00000-0000-00000-00010-00000-00000-00000';
-        }
+//        $payCode = 0;
+//        if($data['pay_method'] == 1) { //クレカ
+//        	$payCode = '10000-0000-00000-00000-00000-00000-00000';
+//        }
+//        elseif($data['pay_method'] == 2) { //コンビニ
+//        	$payCode = '00100-0000-00000-00000-00000-00000-00000';
+//        }
+//        elseif($data['pay_method'] == 3) { // ネットバンク
+//        	if($data['net_bank'] == 1) {
+//            	$payCode = '00010-0000-00000-00000-00000-00000-00000';
+//            }
+//            elseif($data['net_bank'] == 2) {
+//            	$payCode = '00001-0000-00000-00000-00000-00000-00000';
+//            }
+//            elseif($data['net_bank'] == 3) {
+//            	$payCode = '00000-0000-00000-00100-00000-00000-00000';
+//            }
+//        }
+//        elseif($data['pay_method'] == 4) { //後払い
+//            $payCode = '00000-0000-00000-00010-00000-00000-00000';
+//        }
 //        elseif($data['pay_method'] == 4) { //代引き
 //            $payCode = '10000-0000-00000-00000-00000-00000-00000'; // ???
 //        }

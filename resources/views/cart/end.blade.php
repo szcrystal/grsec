@@ -22,8 +22,8 @@
 
                     <div class="clearfix contents text-center">
                     	<?php
-                     	   	$pmName = $pmModel->find($pm)->name; 
-                        	$thankStr = "お買い上げ、ありがとうございます。<br>ご注文が完了致しました。";
+//                     	   	$pmName = $pmModel->find($pm)->name; 
+//                        	$thankStr = "お買い上げ、ありがとうございます。<br>ご注文が完了致しました。";
                         ?>
                         
                         お買い上げ、ありがとうございます。<br>ご注文が完了致しました。<br>
@@ -31,7 +31,11 @@
                         @if(isset($orderNumber))
                         	ご注文番号：[ {{ $orderNumber }} ] <br>
                         @endif
+                      	
                         
+                        @if(isset($xml) && $xml != '')
+                        	{!! nl2br($xml) !!}
+                        @endif
                      	
 					{{--
                         

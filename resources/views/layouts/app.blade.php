@@ -51,26 +51,27 @@ use App\Setting;
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
 @if(! Ctm::isAgent('sp'))
-<script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.10.0/js/lightbox.min.js" type="text/javascript"></script>
+
 @endif
 
 <script type="text/javascript" src="//jpostal-1006.appspot.com/jquery.jpostal.js"></script>
 <script src="//code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 
-@if(Setting::first()->is_product)
-<script src="https://p01.mul-pay.jp/ext/js/token.js"></script>
-@else
-<script src="https://pt01.mul-pay.jp/ext/js/token.js"></script>
+@if(Request::is('shop/confirm'))
+    @if(Setting::first()->is_product)
+    <script src="https://p01.mul-pay.jp/ext/js/token.js"></script>
+    @else
+    <script src="https://pt01.mul-pay.jp/ext/js/token.js"></script>
+    @endif
 @endif
 
-<script src="{{ asset('js/script.js' . $getNow) }}"></script>
-
-@if(! Ctm::isAgent('sp'))
+@if(! Ctm::isAgent('sp') && Request::is('item/*'))
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.10.0/js/lightbox.min.js" type="text/javascript"></script>
 <script>
     lightbox.option({
     	'fadeDuration': 400,
         'resizeDuration': 500,
-    	'positionFromTop': 80,
+    	'positionFromTop': 50,
         'wrapAround': true,
       	'showImageNumberLabel': false,
       	'maxWidth': 800,
@@ -78,7 +79,7 @@ use App\Setting;
 </script>
 @endif
 
-
+<script src="{{ asset('js/script.js' . $getNow) }}"></script>
 
 </body>
 </html>

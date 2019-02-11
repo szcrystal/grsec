@@ -834,7 +834,7 @@ var exe = (function() {
             
             
             
-            $('#regist-submit').on('click', function(){
+            $('#regist-submit, #exist-submit').on('click', function(){
             	$(this).addClass('invisible');
                 $('.loader').show();
                 
