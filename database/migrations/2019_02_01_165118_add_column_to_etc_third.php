@@ -13,16 +13,23 @@ class AddColumnToEtcThird extends Migration
      */
     public function up()
     {
-        Schema::table('sales', function (Blueprint $table) {
-        	$table->timestamp('cancel_date')->after('is_cancel')->nullable()->default(NULL);
+    	// keep/cancel date
+    	Schema::table('sales', function (Blueprint $table) {
+        	$table->timestamp('keep_date')->after('is_cancel')->nullable()->default(NULL);
         });
         
+        Schema::table('sales', function (Blueprint $table) {
+        	$table->timestamp('cancel_date')->after('keep_date')->nullable()->default(NULL);
+        });
+        
+        
+        // shop中のコメントカラム
         Schema::table('sale_relations', function (Blueprint $table) {
         	$table->text('user_comment')->after('destination')->nullable()->default(NULL);
         });
         
         
-        //users gmo関連のカラム
+        // users gmo関連のカラム
         Schema::table('users', function (Blueprint $table) {
         	$table->string('member_id')->after('remember_token')->nullable()->default(NULL);
         });
@@ -36,9 +43,15 @@ class AddColumnToEtcThird extends Migration
         });
         
         
-        //User NoRegistの関連カラム
+        // User NoRegistの関連カラム
         Schema::table('user_noregists', function (Blueprint $table) {
         	$table->string('member_id')->after('active')->nullable()->default(NULL);
+        });
+        
+        
+        // PayMethod activeカラム
+        Schema::table('pay_methods', function (Blueprint $table) {
+        	$table->boolean('active')->after('sec_name')->nullable()->default(1);
         });
         
     }
@@ -50,6 +63,12 @@ class AddColumnToEtcThird extends Migration
      */
     public function down()
     {
+    	if (Schema::hasColumn('sales', 'keep_date')) {
+            Schema::table('sales', function (Blueprint $table) {
+                $table->dropColumn('keep_date');
+            });
+        }
+        
         if (Schema::hasColumn('sales', 'cancel_date')) {
             Schema::table('sales', function (Blueprint $table) {
                 $table->dropColumn('cancel_date');
@@ -85,6 +104,12 @@ class AddColumnToEtcThird extends Migration
         if (Schema::hasColumn('user_noregists', 'member_id')) {
             Schema::table('user_noregists', function (Blueprint $table) {
                 $table->dropColumn('member_id');
+            });
+        }
+        
+        if (Schema::hasColumn('pay_methods', 'active')) {
+            Schema::table('pay_methods', function (Blueprint $table) {
+                $table->dropColumn('active');
             });
         }
         

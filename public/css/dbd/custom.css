@@ -90,6 +90,11 @@ h1 {
 	padding: 0.5em 0 0.7em !important;
     //border: 1px solid red;
 }
+
+.table-fixed {
+	table-layout: fixed;
+}
+
 /*<div class=​"col-sm-12 col-md-6">​*/
 /*<div class=​"dataTables_filter" id=​"dataTable_filter">​*/
 /*<label>​*/

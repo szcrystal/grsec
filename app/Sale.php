@@ -45,6 +45,7 @@ class Sale extends Model
         
         'is_keep',
         'is_cancel',
+        'keep_date',
         'cancel_date',
         
 //        'thanks_done',

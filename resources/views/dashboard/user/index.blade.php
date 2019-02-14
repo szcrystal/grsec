@@ -56,7 +56,7 @@
     <div class="mb-3">
     	
      	   
-        <div class="mb-5 text-right">
+        <div class="mb-3 text-right">
         	<?php $noR = ''; ?>
         	@if(Request::has('no_r'))
             	<?php $noR = '?no_r=1'; ?>
@@ -73,14 +73,15 @@
               <thead>
                 <tr>
                   <th>ID</th>
-                  <th>名前</th>
-                  <th>住所</th>
-                  <th>メールアドレス</th>
+                  <th style="min-width:5em;">名前</th>
+                  <th style="min-width:12em;">住所</th>
+                  <th style="min-width:8em;">メールアドレス</th>
                   <th>TEL</th>
                   @if($isUser) 
                   	<th>メルマガ</th>
+                    <th style="min-width: 3em;">クレカ<br>登録</th>
                   @endif
-                  <th>登録日</th>
+                  <th>会員登録日</th>
                   <th></th>
                   
                 </tr>
@@ -90,7 +91,7 @@
               @foreach($userObjs as $user)
                 <tr>
                   	<td>{{ $user->id }}</td>
-                    <td>{{ $user->name }}</td>
+                    <td style="word-break:break-all;">{{ $user->name }}</td>
                     <td>{{ $user->prefecture }}{{ $user->address_1 }}{{ $user->address_2 }}<br>{{ $user->address_3 }}</td>
                   	
                     <td><a href="mailto:{{ $user->email }}">{{ $user->email }}</a></td>
@@ -102,6 +103,16 @@
                             <span class="text-success">登録済</span>
                             @else
                             <span class="text-warning">未登録</span>
+                            @endif
+                        </td>
+                        
+                        <td>
+                            @if(isset($user->member_id))
+                            	@if($user->card_regist_count)
+                            	<span class="text-small">クレカ登録済：{{ $user->card_regist_count }}</span>
+                                @endif
+                            @else
+                            	<span class="text-small">未登録</span>
                             @endif
                         </td>
                     @endif

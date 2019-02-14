@@ -411,7 +411,7 @@
             @elseif($errors->has('gmoLimit'))
                 <span class="text-danger text-big">
                     {{ $errors->first('gmoLimit') }}<br>
-                    戻ってお支払い方法か購入商品を変更して下さい。
+                    戻ってお支払い方法か購入商品/数量を変更して下さい。
                 </span>
             @else
                 上記ご注文内容で注文を確定します。<br>

@@ -146,7 +146,7 @@ class MyPageController extends Controller
                         'SeqMode' => 1, //削除時はまとめて削除が出来ないので、物理モードで。毎回論理値を返すと削除がおかしくなる。
                     ];
                     
-                    $cardResponse = Ctm::cUrlFunc("/payment/SearchCard.idPass", $cardDatas);
+                    $cardResponse = Ctm::cUrlFunc("SearchCard.idPass", $cardDatas);
                     
     //                echo $cardResponse;
     //                exit;
@@ -335,7 +335,7 @@ class MyPageController extends Controller
                         'UpdateType' => 2, //ここを2（カード番号以外を更新。カード番号は登録済みの値を引継ぐ）に指定しないと、トークンかカード番号が必要となる
                     ];
                     
-                    $eResponse = Ctm::cUrlFunc("/payment/SaveCard.idPass", $eCardDatas);
+                    $eResponse = Ctm::cUrlFunc("SaveCard.idPass", $eCardDatas);
                     
                     $cardArr = explode('&', $eResponse);
                     
@@ -364,7 +364,7 @@ class MyPageController extends Controller
                         'CardSeq' => $key,
                     ];
                     
-                    $dCardResponse = Ctm::cUrlFunc("/payment/DeleteCard.idPass", $dCardDatas);
+                    $dCardResponse = Ctm::cUrlFunc("DeleteCard.idPass", $dCardDatas);
                     
                     //正常：CardSeq=0|1|2|3|4&DefaultFlag=0|0|0|0|0&CardName=||||&CardNo=*************111|*************111|*************111|*************111|*************111&Expire=1905|1904|1908|1907|1910&HolderName=||||&DeleteFlag=0|0|0|0|0
                     $cardArr = explode('&', $dCardResponse);

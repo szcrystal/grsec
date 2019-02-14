@@ -48,7 +48,22 @@ use App\Item;
                 @include('main.shared.smallThumbnail')
                 
             	<div>
-                	
+                	@if($sale->is_cancel)
+                    	<span class="text-danger text-small">キャンセル 
+                        @if(isset($sale->cancel_date))
+                        [{{ Ctm::changeDate($sale->cancel_date, 1) }}]
+                        @endif
+                        </span><br>
+                    @else
+                    	@if($sale->is_keep)
+                        	<span class="text-success text-small">お取り置き中 
+                            @if(isset($sale->keep_date))
+                            [{{ Ctm::changeDate($sale->keep_date, 1) }}〜]
+                            @endif
+                            </span><br> 
+                        @endif
+                    @endif
+                    
              		{{ Ctm::getItemTitle($item) }}&nbsp;
               		[{{ $item->number }}]
                		<span class="d-block mt-1">¥{{ number_format($sale->single_price) }}（税込）</span> 
@@ -133,11 +148,27 @@ use App\Item;
                         </div>
                         
                         <div class="float-left w-70">
-                            <b>{{ Ctm::getItemTitle($item) }}</b>&nbsp;
+                        	@if($sale->is_cancel)
+                                <span class="text-danger">キャンセル 
+                                @if(isset($sale->cancel_date))
+                                	[{{ Ctm::changeDate($sale->cancel_date, 1) }}]
+                                @endif
+                                </span><br>
+                            @else
+                                @if($sale->is_keep)
+                                    <span class="text-success">お取り置き中 
+                                    @if(isset($sale->keep_date))
+                                    	[{{ Ctm::changeDate($sale->keep_date, 1) }}〜] 
+                                    @endif
+                                    </span><br>
+                                @endif
+                            @endif
+                            
+                            <b>{{ Ctm::getItemTitle($item) }}</b><br>
                             [{{ $item->number }}]
                            <span class="d-block mt-1">¥{{ number_format($sale->single_price) }}（税込）</span> 
                            
-                           数量:{{ $sale->item_count }}
+                           数量：{{ $sale->item_count }}
                            
                            <p>金額合計（税込）:<b>
                            ¥{{ number_format($sale->total_price) }}&nbsp;&nbsp;
@@ -169,8 +200,8 @@ use App\Item;
                        </div>
                        
                        
-                       <div class="w-50 float-right mt-3">
-                       		<a href="{{ url('mypage/history/'.$sale->id) }}" class="btn btn-block border-secondary text-small bg-white mb-2 w-100 rounded-0">詳細を確認 <i class="fal fa-angle-double-right"></i></a>
+                       <div class="w-100 float-right my-3">
+                       		<a href="{{ url('mypage/history/'.$sale->id) }}" class="btn btn-block border-secondary text-small bg-white mb-3 w-100 rounded-0">詳細を確認 <i class="fal fa-angle-double-right"></i></a>
                             
                             <form class="form-horizontal" role="form" method="POST" action="{{ url('shop/cart') }}">
                                 {{ csrf_field() }}
@@ -180,7 +211,7 @@ use App\Item;
                                 <input type="hidden" name="item_id[]" value="{{ $item->id }}">
                                 <input type="hidden" name="uri" value="{{ Request::path() }}"> 
                                                   
-                               <button class="btn btn-custom text-center text-small w-100" type="submit" name="regist_off" value="1">もう一度購入</button>                 
+                               <button class="btn btn-custom text-center text-small w-100" type="submit" name="regist_off" value="1"><i class="fal fa-cart-arrow-down"></i> もう一度購入</button>                 
                             </form>
                        </div>
                        

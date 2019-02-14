@@ -622,14 +622,13 @@ $url = $isMypage ? url('mypage/register') : url('register');
 @endif
          
          
-
-    <div class="mt-5 mb-3">
+    <div class="mt-4 mb-4">
         <button class="btn btn-block btn-custom col-md-4 mx-auto py-2" type="submit" name="recognize" value="1">確認する</button>
     </div>                
 </form>
 
 @if($isMypage)
-<a href="{{ url('mypage') }}" class="btn border-secondary bg-white mt-5">
+<a href="{{ url('mypage') }}" class="btn border-secondary bg-white my-3">
 <i class="fal fa-angle-double-left"></i> マイページに戻る
 </a>
 @endif

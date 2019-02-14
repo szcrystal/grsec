@@ -294,14 +294,33 @@ class SaleController extends Controller
         }
         
         $data = $request->all();
+        
+        //個別Sale／Item取得
+        $saleModel = $this->sale->find($data['saleId']); //saleIdとsale_idsの両方あるので注意
+        $item = $this->item->find($saleModel->item_id);
+        
+        $status = "更新されました。"; 
 
+		//キャンセル／Keep
 		$data['is_cancel'] = isset($data['is_cancel']) ? $data['is_cancel'] : 0;
         $data['is_keep'] = isset($data['is_keep']) ? $data['is_keep'] : 0;
         
-        //cancelの時 日付を入力
-        $data['cancel_date'] = $data['is_cancel'] ? date('Y-m-d H:i:s', time()) : null;
+        //キャンセル時に在庫を戻す
+        if($data['is_cancel'] && ! isset($saleModel->cancel_date)) {
+        	$item->increment('stock', $saleModel->item_count);
+            $status .= 'キャンセルにより、在庫が戻されました。';
+        }
         
-        $saleModel = $this->sale->find($data['saleId']); //saleIdとsale_idsの両方あるので注意
+        //cancelの時 日付を入力
+        if($data['is_cancel'] && ! $saleModel->is_cancel) {
+        	$data['cancel_date'] = date('Y-m-d H:i:s', time());
+        }
+        
+        //Keep日付
+        if($data['is_keep'] && ! $saleModel->is_keep) {
+        	$data['keep_date'] = date('Y-m-d H:i:s', time());
+        }
+
         $saleModel->fill($data); //ここでのdeli_feeの更新は不要かも
         $saleModel->cost_price = $data['cost_price'] * $data['this_count'];
         $saleModel->save();
@@ -309,7 +328,7 @@ class SaleController extends Controller
         $saleRel = $this->saleRel->find($saleModel->salerel_id);
         //$saleRel->deli_fee = $data['deli_fee'];
 
-        $item = $this->item->find($saleModel->item_id);
+        
         $item->cost_price = $data['cost_price'];
         $item->save();
         
@@ -329,7 +348,7 @@ class SaleController extends Controller
         
             
         //if(isset($data['only_up'])) {  
-        	$status = "更新されました。";   
+        	  
             return redirect('dashboard/sales/'. $data['saleId'])->with('status', $status);
 //		}
 //        elseif(isset($data['with_mail'])) { 
@@ -608,6 +627,8 @@ class SaleController extends Controller
                             $u->point += $saleRel->use_point;
                             $u->save();
                         }
+                        
+                        
                     }
                     
                     $this->smf->updateOrCreate(

@@ -50,7 +50,7 @@
 
             {{ method_field('PUT') }}
 
-	<h4 class="mb-1">会員情報</h4>
+			<h4 class="mb-1">会員情報</h4>
             	<div class="table-responsive">
                     <table class="table table-bordered">
                         <colgroup>
@@ -139,10 +139,23 @@
                                 @endif
                             </tr>
                             @if($isUser)
-                            <tr>
-                            	<th>残ポイント</th>
-                             	<td>{{ $user->point }}</td>   
-                            </tr>
+                                <tr>
+                                    <th>残ポイント</th>
+                                    <td>{{ $user->point }}</td>   
+                                </tr>
+                                
+                                <tr>
+                                    <th>GmoID<br>クレカ登録数</th>
+                                    <td>
+                                    	@if(isset($user->member_id))
+                                    		{{ $user->member_id }}<br>
+                                    		{{ $user->card_regist_count }}
+                                        @else
+                                        	未登録<br>
+							            	<p class="m-0 p-0"><span class="text-small">利用可能なGmoID：</span>{{ Ctm::getOrderNum(11) }}</p>
+                                        @endif
+                                    </td>   
+                                </tr>
                             @endif
                             <tr>
                                 <th>登録日</th>
@@ -185,7 +198,7 @@
                     <table class="table table-bordered bg-white">
                     	<thead>
                      		<tr style="background: #dfdcdb;">
-                       			<th>SaleID</th>      
+                       			<th>SaleID<br>注文番号</th>      
                        			<th>(ID)商品名</th>
                           		<th>個数</th>
                             	<th>商品合計</th>
@@ -197,21 +210,34 @@
                         
                         <tbody>
                         	@foreach($sales as $sale)
-                        	<tr>
-                         		<td>{{ $sale->id }}</td>
-                           		<td>({{ $itemModel->find($sale->item_id)->id }}){{ $itemModel->find($sale->item_id)->title }}</td>
-                             	<td>{{ $sale->item_count }}</td>
-                              	<td>¥{{ number_format($sale->total_price) }}</td>
-                               <td>
-                               	@if($sale->deli_done)
-                                	<span class="text-success">発送済み</span>
-                                @else
-                                	<span class="text-danger">未発送</span>
-                                @endif   
-                               </td>   
-                              <td>{{ Ctm::changeDate($sale->created_at, 0)  }}</td>   
-                              <td><a href="{{ url('dashboard/sales/'.$sale->id) }}" class="btn btn-info">確認</a></td>              
-                            </tr>
+                            	<?php $item = $itemModel->find($sale->item_id); ?>
+                                
+                                <tr>
+                                    <td>
+                                        {{ $sale->id }}<br>
+                                        <a href="{{ url('dashboard/sales/order/'. $sale->order_number) }}">{{ $sale->order_number }}</a>
+                                    </td>
+                                    <td>
+                                        @if($item->main_img != '')
+                                          <img src="{{ Storage::url($item->main_img) }}" width="55" height="62">
+                                        @else
+                                          <span class="no-img">No Image</span>
+                                        @endif
+                                        
+                                        ({{ $item->id }}){{ $item->title }}
+                                    </td>
+                                    <td>{{ $sale->item_count }}</td>
+                                    <td>¥{{ number_format($sale->total_price) }}</td>
+                                   <td>
+                                    @if($sale->deli_done)
+                                        <span class="text-success">発送済み</span>
+                                    @else
+                                        <span class="text-danger">未発送</span>
+                                    @endif   
+                                   </td>   
+                                  <td>{{ Ctm::changeDate($sale->created_at, 0)  }}</td>   
+                                  <td><a href="{{ url('dashboard/sales/'.$sale->id) }}" class="btn btn-info">確認</a></td>              
+                                </tr>
                             @endforeach
                         </tbody>
                     </table>

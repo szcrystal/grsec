@@ -461,7 +461,10 @@ class CustomController extends Controller
     
     static function cUrlFunc($connectUrl, $datas)
     {
-    	$url = Setting::get()->first()->is_product ? "https://p01.mul-pay.jp/" : "https://pt01.mul-pay.jp/"; 
+    	$productUrl = "https://p01.mul-pay.jp/payment/";
+        $testUrl = "https://pt01.mul-pay.jp/payment/";
+        
+    	$url = Setting::get()->first()->is_product ? $productUrl : $testUrl; 
     	
         $options = [
             CURLOPT_URL => $url . $connectUrl,

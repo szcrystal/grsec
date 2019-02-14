@@ -57,7 +57,7 @@
                     </ul>
                     
                     @if(count($secondCate) > 0)
-                    	<div class="text-right text-small more-tgl pr-2">
+                    	<div class="text-right text-small more-tgl">
                         	もっと見る <i class="fal fa-angle-down"></i>
                         </div>
                         

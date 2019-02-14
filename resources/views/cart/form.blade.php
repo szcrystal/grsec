@@ -829,11 +829,8 @@ use App\DeliveryGroup;
                              ?>
                              
                             <label class="d-block mb-3">
-                                @if(! $codCheck && $method->id == 5)
-                                    <input type="radio" name="pay_method" class="payMethodRadio ml-2" value="{{ $method->id }}" disabled> {{ $method->name }}
-                                    <span class="text-secondary text-small ml-3"><i class="fas fa-exclamation-circle"></i> ご注文商品の代金引換決済はご利用できません。</span> 
-                                    
-                                @elseif($method->id == 1)
+                                   
+                                @if($method->id == 1)
                                     <input type="radio" name="pay_method" class="payMethodRadio ml-2" value="{{ $method->id }}"{{ $checked }}> {{ $method->name }}
                                     
                                     <div class="wrap-all-card">
@@ -1082,9 +1079,14 @@ use App\DeliveryGroup;
                                     </div>
                                     
                                     </div>
+                                
+                                
+                                @elseif(! $codCheck && $method->id == 5)
+                                    <input type="radio" name="pay_method" class="payMethodRadio ml-2" value="{{ $method->id }}" disabled> {{ $method->name }}
+                                    <span class="text-secondary text-small ml-3"><i class="fas fa-exclamation-circle"></i> ご注文商品の代金引換決済はご利用できません。</span> 
+                                 
                                     
-                                    
-                                @elseif($method->id != 2 && $method->id != 3)
+                                @else
                                     <input type="radio" name="pay_method" class="payMethodRadio ml-2" value="{{ $method->id }}"{{ $checked }}> {{ $method->name }}
                                     
                                     @if($method->id == 3)
@@ -1109,8 +1111,8 @@ use App\DeliveryGroup;
                                                 </span>   
                                             @endforeach
                                         </div>
-                                    
                                     @endif
+                                    
                                 @endif
                             </label>
                             
@@ -1129,9 +1131,11 @@ use App\DeliveryGroup;
     </form>
     
 </div>
+
 <a href="{{ url('shop/cart') }}" class="btn border-secondary bg-white my-3">
 <i class="fal fa-angle-double-left"></i> カートに戻る
 </a>
+
 </div>
 </div>
 </div>

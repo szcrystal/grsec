@@ -866,8 +866,11 @@ ORG END ======================== */
         width: 80px;
     }
     
+    .loader-wrap {
+    	line-height: 4.8em;
+    }
     .loader {
-    	font-size: 1em;
+    	font-size: 1.1em;
     }
     
     

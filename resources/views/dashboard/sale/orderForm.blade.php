@@ -202,6 +202,21 @@ use App\PayMethodChild;
                                 
                                 </td>
                             </tr>
+                                
+                            @if($saleRel->pay_method == 1)
+                            	<tr>
+                                    <th>GmoID<br>クレカ登録数</th>
+                                    <td>
+                                        @if(isset($users->member_id))
+                                            {{ $users->member_id }}<br>
+                                            {{ $users->card_regist_count }}
+                                        @else
+                                            未登録<br>
+                                            {{-- <p class="m-0 p-0"><span class="text-small">利用可能なGmoID：</span>{{ Ctm::getOrderNum(11) }}</p> --}}
+                                        @endif
+                                    </td>
+                                </tr>
+                            @endif
 
                   
                   			<?php 

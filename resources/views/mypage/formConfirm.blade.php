@@ -214,7 +214,7 @@ $str = $isMypage ? '変更する' : '登録する';
 	<form class="form-horizontal" role="form" method="POST" action="{{ $url }}">
 		@csrf
         
-        <div class="mt-5 mb-3">
+        <div class="mt-3 mb-4">
         	<div class="loader-wrap">
                 <span class="loader"><i class="fas fa-square mr-1"></i> 処理中..</span>
             </div>
@@ -232,9 +232,9 @@ $str = $isMypage ? '変更する' : '登録する';
     </form>
 
 @if($isMypage)
-<a href="{{ url('mypage/register') }}" class="btn border-secondary bg-white mt-5">
+<a href="{{ url('mypage/register') }}" class="btn border-secondary bg-white my-3">
 @else
-<a href="{{ url('register') }}" class="btn border-secondary bg-white mt-5">
+<a href="{{ url('register') }}" class="btn border-secondary bg-white my-3">
 @endif
 <i class="fal fa-angle-double-left"></i> 入力画面に戻る
 </a>
@@ -247,15 +247,5 @@ $str = $isMypage ? '変更する' : '登録する';
 @endsection
 
 
-{{--
-@section('leftbar')
-    @include('main.shared.leftbar')
-@endsection
-
-
-@section('rightbar')
-	@include('main.shared.rightbar')
-@endsection
---}}
 
 

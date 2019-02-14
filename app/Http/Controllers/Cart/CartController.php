@@ -818,16 +818,16 @@ XML;
     	$data = $request->all();
         
         //URL 接続ドメイン ---------------
-        $url = $this->set->is_product ? "https://p01.mul-pay.jp/" : "https://pt01.mul-pay.jp/";
+        //$url = $this->set->is_product ? "https://p01.mul-pay.jp/" : "https://pt01.mul-pay.jp/";
         
         //cUrl Option
-        $options = [
-            //CURLOPT_URL => $url . "/payment/SaveMember.idPass",
-            CURLOPT_RETURNTRANSFER => true, //文字列として返す
-            CURLOPT_POST => true,
-            //CURLOPT_POSTFIELDS => http_build_query($userRegDatas),
-            CURLOPT_TIMEOUT => 60, // タイムアウト時間
-        ];
+//        $options = [
+//            //CURLOPT_URL => $url . "/payment/SaveMember.idPass",
+//            CURLOPT_RETURNTRANSFER => true, //文字列として返す
+//            CURLOPT_POST => true,
+//            //CURLOPT_POSTFIELDS => http_build_query($userRegDatas),
+//            CURLOPT_TIMEOUT => 60, // タイムアウト時間
+//        ];
         
         
         $isRegistUser = session('all.regist');
@@ -873,7 +873,7 @@ XML;
                     //'MemberName' => ,
                 ];
                 
-                $memberRegResponse = Ctm::cUrlFunc("/payment/SaveMember.idPass", $memberRegDatas);
+                $memberRegResponse = Ctm::cUrlFunc("SaveMember.idPass", $memberRegDatas);
                 
                 //正常Str：MemberID=wff877177929430
                 $memberRegArr = explode('&', $memberRegResponse);
@@ -906,7 +906,7 @@ XML;
             	'Token' => $data['token'],
             ];
             
-            $cardRegResponse = Ctm::cUrlFunc("/payment/SaveCard.idPass", $cardRegDatas);
+            $cardRegResponse = Ctm::cUrlFunc("SaveCard.idPass", $cardRegDatas);
             
             //正常Str：CardSeq=0&CardNo=*************111&Forward=2a99662
             $cardRegArr = explode('&', $cardRegResponse);
@@ -963,7 +963,7 @@ XML;
         //print_r($datas);
         //exit;
         
-        $trstResponse = Ctm::cUrlFunc("payment/EntryTran.idPass", $trstDatas);
+        $trstResponse = Ctm::cUrlFunc("EntryTran.idPass", $trstDatas);
         
         
 		/*
@@ -1027,7 +1027,7 @@ XML;
         }
         
         //cUrl
-        $settleResponse = Ctm::cUrlFunc("payment/ExecTran.idPass", $settleDatas);
+        $settleResponse = Ctm::cUrlFunc("ExecTran.idPass", $settleDatas);
         
         
         //返るresponseを配列に
@@ -1422,12 +1422,17 @@ XML;
         }
         
         //GMO後払い手数料 ----------------
-        else if($data['pay_method'] == 4) { 
+        else if($data['pay_method'] == 4) {
+        	
         	$codFee = 205;
+            $codMax = 50000;
+            
+            $codTax = $codMax * ($this->set->tax_per / 100);
+            $codMax = $codMax + $codTax;
             
             //GMO後払い上限額
-            if( ($totalFee + $codFee) > 54000) {
-            	$errors['gmoLimit'] = 'GMO後払い決済の上限額54,000円を超えています。';
+            if( ($totalFee + $codFee) > $codMax) {
+            	$errors['gmoLimit'] = 'GMO後払い決済の上限額'. number_format($codMax) .'円を超えています。';
             }
         }
         
@@ -1649,7 +1654,7 @@ XML;
         }          
      
      	//PayMethod
-      	$payMethod = $this->payMethod->all();
+      	$payMethod = $this->payMethod->where('active', 1)->get();
         
         //PayMethodChild
       	$pmChilds = $this->payMethodChild->all();
@@ -1676,7 +1681,7 @@ XML;
                     'SeqMode' => 0, //shopping中はCardSeqがずれることはないので論理で
                 ];
                 
-                $cardResponse = Ctm::cUrlFunc("/payment/SearchCard.idPass", $cardDatas);
+                $cardResponse = Ctm::cUrlFunc("SearchCard.idPass", $cardDatas);
                 
 //                echo $cardResponse;
 //                exit;

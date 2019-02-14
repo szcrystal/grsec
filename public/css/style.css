@@ -330,7 +330,14 @@ body {
 	float: left;
     display: block;
     margin-right: 1em;
+    margin-bottom: 5px;
+    vertical-align: middle !important;
     //border: 1px solid red;
+}
+img.img-fluid + div {
+/*	float: left;*/
+    line-height: 1.5em;
+/*	border: 1px solid orange;*/
 }
 
 .cart-btn-wrap > div:first-of-type { /* カゴページの購入するボタンのwrap */
@@ -830,7 +837,7 @@ body {
 
 /* Article */
 .card-header {
-	font-weight: bold;
+	font-weight: normal;
     font-size: 1.6em;
     background: none;
     border-bottom: 1px solid #222;
@@ -1310,16 +1317,21 @@ body {
 	margin-bottom: 0.1em;
 }
 .more-tgl {
-	margin-top: -0.7em;
+	display: block;
+	margin: -1em 0 0.8em;
 	cursor: pointer;
     font-size: 0.85em;
+    padding: 0.2em 0.7em 0.2em 0;
     //border: 1px solid #dfdfdf;
 }
 .more-tgl:hover {
 	color: #959595;
+    cursor: pointer;
 }
 .more-list {
 	display: none;
+    padding-top: 0;
+    margin-top: 0;
 }
 
 

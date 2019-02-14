@@ -29,21 +29,46 @@
        		<td>{{ $sale->order_number }}</td>      
         </tr>
         <tr>
-             <th>ご注文日</th>
+            <th>ご注文日</th>
             <td>{{ Ctm::changeDate($sale->created_at, 1) }}</td>      
         </tr>
+ 
         <tr>
-             <th>発送日</th>
-            <td>
-            @if($sale->deli_done)
-            {{ Ctm::changeDate($sale->deli_start_date, 1) }}
+        	@if($sale->is_cancel)
+                <th>ステータス</th>
+                <td>
+                    <span class="text-danger">キャンセル 
+                    @if(isset($sale->cancel_date))
+                    [{{ Ctm::changeDate($sale->cancel_date, 1) }}]
+                    @endif
+                    </span>
+                </td>
             @else
-            <span class="text-info">発送準備中です。</span>
+                @if($sale->is_keep)
+                	<th>ステータス</th>
+                	<td>
+                    	<span class="text-success">お取り置き中 
+                        @if(isset($sale->keep_date))
+                        [{{ Ctm::changeDate($sale->keep_date, 1) }}〜]
+                        @endif
+                        </span>
+                    </td>
+                @else
+                	<th>発送日</th>
+                    <td>
+                        @if($sale->deli_done)
+                            {{ Ctm::changeDate($sale->deli_start_date, 1) }}
+                        @else
+                            <span class="text-info">発送準備中</span>
+                        @endif
+                    </td>
+                @endif
             @endif
-            </td>      
+                    
+                  
         </tr>
         <tr>
-             <th>枯れ保証期間</th>
+             <th>枯れ保証期間 残</th>
             <td>
             	@if($item->is_ensure)
                     @if($sale->deli_done)
@@ -70,12 +95,12 @@
 	<div class="table-responsive table-cart mt-4">
     <table class="table table-bordered bg-white">
         <thead>
-              <tr>
+            <tr>
                 <th>商品名</th>
                 <th>数量</th>
                 <th>金額（税込）</th>
             </tr>
-          </thead>  
+        </thead>  
     
         <tbody>
              
@@ -164,7 +189,7 @@
         @if(Auth::check())
         <tr>
             <th><label class="control-label">利用ポイント</label></th>
-             <td>-{{ $sale->use_point }}</td>
+             <td>{{ $sale->use_point }}</td>
         </tr>
         @endif
         
@@ -212,7 +237,7 @@
 
 </div>
 
-<div class="mt-5">
+<div class="mt-4">
 <form class="form-horizontal" role="form" method="POST" action="{{ url('shop/cart') }}">
     {{ csrf_field() }}
                                                            
@@ -227,7 +252,7 @@
    
 </form>
 
-<a href="{{ url('mypage/history') }}" class="btn border border-secondary bg-white mt-5">
+<a href="{{ url('mypage/history') }}" class="btn border border-secondary bg-white my-3">
 <i class="fal fa-angle-double-left"></i> 購入履歴一覧に戻る
 </a>
 
