@@ -47,34 +47,37 @@ use App\Item;
                 
                 @include('main.shared.smallThumbnail')
                 
-            	<div>
+            	<div class="w-75 float-left">
                 	@if($sale->is_cancel)
-                    	<span class="text-danger text-small">キャンセル 
+                    	<span class="text-danger text-small"><b>キャンセル 
                         @if(isset($sale->cancel_date))
                         [{{ Ctm::changeDate($sale->cancel_date, 1) }}]
                         @endif
-                        </span><br>
+                        </b></span><br>
                     @else
                     	@if($sale->is_keep)
-                        	<span class="text-success text-small">お取り置き中 
+                        	<span class="text-success text-small"><b>お取り置き中 
                             @if(isset($sale->keep_date))
                             [{{ Ctm::changeDate($sale->keep_date, 1) }}〜]
                             @endif
-                            </span><br> 
+                            </b></span><br> 
                         @endif
                     @endif
                     
-             		{{ Ctm::getItemTitle($item) }}&nbsp;
+             		{{ Ctm::getItemTitle($item) }}<br>
               		[{{ $item->number }}]
                		<span class="d-block mt-1">¥{{ number_format($sale->single_price) }}（税込）</span> 
                </div>
             </td>
-             <td>{{ $sale->item_count }}</td>
-             <td>
+            
+            <td>{{ $sale->item_count }}</td>
+            
+            <td>
              	¥{{ number_format($sale->total_price) }}<br>
              	[{{ $pm->find($sale->pay_method)->name }}]
             </td>
-             <td>
+            
+            <td>
              	@if($item->is_ensure)
                     @if($sale->deli_done)
                     <?php 

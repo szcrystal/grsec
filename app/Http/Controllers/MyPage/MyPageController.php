@@ -561,7 +561,8 @@ class MyPageController extends Controller
     public function favorite()
     {
     	$user = $this->user->find(Auth::id());
-     	$itemIds = $this->favorite->where(['user_id'=>$user->id])->get()->map(function($obj){
+     	
+        $itemIds = $this->favorite->where(['user_id'=>$user->id])->get()->map(function($obj){
          	return $obj->item_id;
         })->all();
       

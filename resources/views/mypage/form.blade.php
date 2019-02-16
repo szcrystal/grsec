@@ -469,7 +469,7 @@ $url = $isMypage ? url('mypage/register') : url('register');
                                     
                                         <div class="mb-4 pb-1">
                                             
-                                            <label><i class="fas fa-circle text-small text-gray"></i> カード番号： </label>
+                                            <label><i class="fas fa-square text-small text-gray"></i> カード番号： </label>
                                             <span>{{ $regCardDatas['CardNo'][$k] }}</span>
                                             <input type="hidden" name="user[card_num][{{ $seqNum }}]" value="{{ $regCardDatas['CardNo'][$k] }}">
                                             

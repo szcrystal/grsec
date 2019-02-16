@@ -28,7 +28,7 @@
               <th>ID</th>
               <th>お問合せ日</th>
               <th>種別</th>
-              <th>名前</th>
+              <th style="min-width:5em;">名前</th>
               <th>メルアド</th>
               <th>内容</th>
               <th></th>

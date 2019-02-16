@@ -499,6 +499,90 @@ use App\Setting;
                             </tr>
                             
                             
+                            <tr>
+                            	<th>枯れ保証期間 残</th>
+                                <td>
+                                    @if($item->is_ensure)
+                                        @if($sale->deli_done)
+                                            <?php 
+                                               $days = Ctm::getKareHosyou($sale->deli_schedule_date);   
+                                            ?>
+                                            
+                                            @if($days['diffDay'])
+                                                {{ $days['limit'] }}まで<br>
+                                                <b>残{{ $days['diffDay'] }}日</b>
+                                            @else
+                                                {{ $days['limit'] }}にて<br>
+                                                <b>枯れ保証期間終了</b>
+                                            @endif
+                                        
+
+                                        @else
+                                            未発送
+                                        @endif
+                                    @else
+                                      枯れ保証なし
+                                    @endif
+                            	</td>
+                            </tr>
+                            
+                            <tr>
+                            	<th>ステータス</th>
+                                <td>
+                                	<fieldset class="form-group checkbox">
+                                        <label class="{{ $errors->has('is_keep') ? 'is-invalid' : '' }}">
+                                            <?php
+                                                $checked = '';
+                                                if(Ctm::isOld()) {
+                                                    if(old('is_keep'))
+                                                        $checked = ' checked';
+                                                }
+                                                else {
+                                                    if(isset($sale) && $sale->is_keep) {
+                                                        $checked = ' checked';
+                                                    }
+                                                }
+                                            ?>
+                                            
+                                            <input type="checkbox" name="is_keep" value="1"{{ $checked }}> お取り置きにする
+                                        </label>
+                                        
+                                        @if ($errors->has('is_keep'))
+                                            <br><span class="help-block text-danger text-small">
+                                                {{ $errors->first('is_keep') }}
+                                            </span>
+                                        @endif
+                                    </fieldset>
+                                    
+                                    <fieldset class="form-group checkbox">
+                                        <label class="{{ $errors->has('is_cancel') ? 'is-invalid' : '' }}">
+                                            <?php
+                                                $checked = '';
+                                                if(Ctm::isOld()) {
+                                                    if(old('is_cancel'))
+                                                        $checked = ' checked';
+                                                }
+                                                else {
+                                                    if(isset($sale) && $sale->is_cancel) {
+                                                        $checked = ' checked';
+                                                    }
+                                                }
+                                            ?>
+                                            
+                                            <input type="checkbox" name="is_cancel" value="1"{{ $checked }}> キャンセルする
+                                        </label>
+                                        
+                                        @if ($errors->has('is_cancel'))
+                                            <br><span class="help-block text-danger text-small">
+                                                {{ $errors->first('is_cancel') }}
+                                            </span>
+                                        @endif
+                                        
+                                    </fieldset>
+                                </td>
+                            </tr>
+                            
+                            
                   
                   			<?php 
                                 $all = 0;
@@ -575,65 +659,10 @@ use App\Setting;
                                 <td><span style="font-size:1.2em;">¥{{ number_format($total + $all) }}</span></td>
                             </tr>
 
-							<tr>
-                            	<th></th>
-                                <td>
-                                	<fieldset class="form-group checkbox">
-                                        <label class="{{ $errors->has('is_keep') ? 'is-invalid' : '' }}">
-                                            <?php
-                                                $checked = '';
-                                                if(Ctm::isOld()) {
-                                                    if(old('is_keep'))
-                                                        $checked = ' checked';
-                                                }
-                                                else {
-                                                    if(isset($sale) && $sale->is_keep) {
-                                                        $checked = ' checked';
-                                                    }
-                                                }
-                                            ?>
-                                            <input type="checkbox" name="is_keep" value="1"{{ $checked }}> お取り置きにする
-                                        </label>
-                                        
-                                        @if ($errors->has('is_keep'))
-                                            <br><span class="help-block text-danger text-small">
-                                                {{ $errors->first('is_keep') }}
-                                            </span>
-                                        @endif
-                                        
-                                    </fieldset>
-                                </td>
-                            </tr>
 							
-                            <tr>
-                            	<th></th>
-                                <td>
-                                	<fieldset class="form-group checkbox">
-                                        <label class="{{ $errors->has('is_cancel') ? 'is-invalid' : '' }}">
-                                            <?php
-                                                $checked = '';
-                                                if(Ctm::isOld()) {
-                                                    if(old('is_cancel'))
-                                                        $checked = ' checked';
-                                                }
-                                                else {
-                                                    if(isset($sale) && $sale->is_cancel) {
-                                                        $checked = ' checked';
-                                                    }
-                                                }
-                                            ?>
-                                            <input type="checkbox" name="is_cancel" value="1"{{ $checked }}> キャンセルする
-                                        </label>
-                                        
-                                        @if ($errors->has('is_cancel'))
-                                            <br><span class="help-block text-danger text-small">
-                                                {{ $errors->first('is_cancel') }}
-                                            </span>
-                                        @endif
-                                        
-                                    </fieldset>
-                                </td>
-                            </tr>
+                            
+                            
+                            
                             
                         </tbody>
                     </table>

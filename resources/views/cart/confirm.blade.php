@@ -424,9 +424,9 @@
         	//$existId = ''; 
         --}}
             
-        	<div class="loader-wrap">
-                <span class="loader mr-3"><i class="fas fa-square mr-1"></i> 処理中..</span>
-            </div>
+        <div class="loader-wrap">
+            <span class="loader mr-3"><i class="fas fa-square mr-1"></i> 処理中..</span>
+        </div>
         
     	<button id="exist-submit" class="btn btn-block btn-enji col-md-4 mb-4 mx-auto py-2" type="submit"{{ $disabled }}>注文する</button>
     @endif

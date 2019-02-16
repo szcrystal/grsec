@@ -331,7 +331,7 @@ body {
     display: block;
     margin-right: 1em;
     margin-bottom: 5px;
-    vertical-align: middle !important;
+    vertical-align: top !important;
     //border: 1px solid red;
 }
 img.img-fluid + div {
@@ -1142,11 +1142,15 @@ img.img-fluid + div {
 	margin-left: 0.5em;
 }
 
-
+/* おすすめ情報部分 */
 .top-second .meta {
 	width: 58%;
     float: right;
     //border: 1px solid red;
+}
+.top-second .meta h3 {
+	//border: 1px solid red;
+    margin: 0 0 0.4em;
 }
 
 

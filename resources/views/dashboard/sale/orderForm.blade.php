@@ -689,11 +689,11 @@ use App\PayMethodChild;
                     
                     <div class="clearfix">
                     
-                    @if($saleRel->pay_method == 2 || $saleRel->pay_method == 6 || Ctm::isEnv('local'))
-                        <div class="form-group clearfix my-3">
-                            <button type="submit" class="btn btn-danger col-md-12 text-white py-2" name="with_preview" value="{{ $templs['payDone'] }}"><i class="fa fa-yen"></i> 入金済</button>
-                        </div>
-                    @endif
+                        @if($saleRel->pay_method == 2 || $saleRel->pay_method == 6 || Ctm::isEnv('local'))
+                            <div class="form-group clearfix my-3">
+                                <button type="submit" class="btn btn-danger col-md-12 text-white py-2" name="with_preview" value="{{ $templs['payDone'] }}"><i class="fa fa-yen"></i> 入金済</button>
+                            </div>
+                        @endif
                     
                     
                         <div class="form-group clearfix my-3">
@@ -717,7 +717,7 @@ use App\PayMethodChild;
                         </div>
                         
                         <div class="form-group clearfix my-3">
-                            <button type="submit" class="btn btn-danger col-md-12 text-white py-2" name="with_preview" value="{{ $templs['cancel'] }}"><i class="fa fa-times"></i> キャンセル</button>
+                            <button type="submit" class="btn btn-danger col-md-12 text-white py-2" name="with_preview" value="{{ $templs['cancel'] }}"><i class="fa fa-ban"></i> キャンセル</button>
                         </div>
                         
                         <div class="form-group clearfix my-3">
@@ -725,7 +725,7 @@ use App\PayMethodChild;
                         </div>
                         
                         <div class="form-group clearfix my-3">
-                            <button type="submit" class="btn btn-blue col-md-12 text-white py-2" name="with_preview" value="{{ $templs['sekkai_iou'] }}"><i class="fa fa-envelope"></i> 石灰硫黄合剤説明</button>
+                            <button type="submit" class="btn btn-blue col-md-12 text-white py-2" name="with_preview" value="{{ $templs['sekkai_iou'] }}"><i class="fa fa-envelope"></i> 石灰硫黄合剤</button>
                         </div>
                     </div>
                 

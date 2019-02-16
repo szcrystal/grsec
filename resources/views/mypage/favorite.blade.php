@@ -4,6 +4,7 @@
 
 <?php
 use App\Item;
+use App\Favorite;
 ?>
 
 <div id="main" class="mp-favorite">
@@ -34,12 +35,14 @@ use App\Item;
         <tbody>
             @foreach($items as $item)
             <tr>
-                 <td><i class="fas fa-heart text-enji"></i> {{ Ctm::changeDate($item->created_at, 1) }}</td>
-                 <td class="clearfix">
+            	<?php $fav = Favorite::where(['user_id'=>$user->id, 'item_id'=>$item->id])->first(); ?>
+                
+                <td><i class="fas fa-heart text-enji"></i> {{ Ctm::changeDate($fav->created_at, 1) }}</td>
+                <td class="clearfix">
                     
                     @include('main.shared.smallThumbnail')
                     
-                    <div>
+                    <div class="w-75 float-left">
                         <a href="{{ url('item/'.$item->id) }}"> 
                             {{ $item->title }}<br>
                             [{{ $item->number }}]
