@@ -1216,6 +1216,9 @@ img.img-fluid + div {
 .fav-temp {
 	cursor: default;
 }
+.fav:hover {
+	opacity: 0.65;
+}
 .fav-on {
 	
 }
@@ -1901,11 +1904,11 @@ select.potSetSelect {
 .login {
 	margin-top: 6em;
 }
-.login h4 {
-	font-weight: bold;
-    padding-bottom: 0.2em;
-    border-bottom: 1px solid #222;
-}
+/*.login h4 {*/
+/*	font-weight: normal;*/
+/*    padding-bottom: 0.2em;*/
+/*    border-bottom: 1px solid #222;*/
+/*}*/
 .login label {
 	font-weight: bold;
     font-size: 0.95em;

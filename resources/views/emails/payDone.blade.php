@@ -55,6 +55,14 @@
 
 <?php $num++; ?>
 @endforeach
+
+@if(isset($saleRel->user_comment) && $saleRel->user_comment != '')
+【コメント】：
+<div style="margin: 0 0 1.0em 1.0em;">
+{!! nl2br($saleRel->user_comment) !!}
+</div>
+@endif
+
 【お買上金額】：
 <div style="margin: 0 0 1.0em 1.0em;">
 商品金額合計：￥{{ number_format($saleRel->all_price) }} <br>
