@@ -120,7 +120,7 @@
                             }
                         ?>
             
-                        <input type="checkbox" name="is_product" value="1"{{ $checked }}> 本番環境（イプシロン）に接続する
+                        <input type="checkbox" name="is_product" value="1"{{ $checked }}> 本番環境（GMO）に接続する
                     </label>
                 </div>
             </fieldset>

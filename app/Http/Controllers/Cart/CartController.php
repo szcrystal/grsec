@@ -1610,8 +1610,13 @@ XML;
         	
         	if($request->input('carderr') == 1000) { //決済を実行してカードに問題がある時ここにエラーコード1000でリダイレクトさせている
             	$errInfo = session()->has('ErrInfo') ? session('ErrInfo') : '';
+                $errText = 'カード情報が正しくないか、お取り扱いができません。';
+                //Local時のみエラーコード
+                if(Ctm::isEnv('local')) {
+                	$errText .= $errInfo;
+                }
             	
-                $cardErrors['carderr'] = 'カード情報が正しくないか、お取り扱いができません。' . $errInfo;
+                $cardErrors['carderr'] = $errText;
             }
             else {
         		$cardErrors['carderr'] = 'カード情報が正しくありません。';
@@ -1688,7 +1693,7 @@ XML;
             	
                 //正常：CardSeq=0|1|2|3|4&DefaultFlag=0|0|0|0|0&CardName=||||&CardNo=*************111|*************111|*************111|*************111|*************111&Expire=1905|1904|1908|1907|1910&HolderName=||||&DeleteFlag=0|0|0|0|0
                 $cardArr = explode('&', $cardResponse);
-                
+                                
                 foreach($cardArr as $res) {
                     $arr = explode('=', $res);
                     $regCardDatas[$arr[0]] = explode('|', $arr[1]);
@@ -1698,6 +1703,7 @@ XML;
 //                exit;
                 
                 //$userRegResponse Error処理をここに ***********
+                //Local時のみエラーコード
                 if(array_key_exists('ErrCode', $regCardDatas)) {
                 	$regCardErrors = '[5101-';
                     $regCardErrors .= implode('|', $regCardDatas['ErrInfo']);

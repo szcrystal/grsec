@@ -455,8 +455,8 @@ $url = $isMypage ? url('mypage/register') : url('register');
                         <div class="wrap-regist-card mt-3 mb-2">
                             @if(isset($regCardErrors))
                                 <span class="d-inline-block ml-2 mb-4 text-small">
-                                    <span class="text-danger"><i class="fal fa-exclamation-triangle"></i> 登録カード情報が取得出来ません。</span><br>
-                                    {{ $regCardErrors }}
+                                    <span class="text-danger"><i class="fal fa-exclamation-triangle"></i> 登録カード情報が取得出来ません。</span>
+                                    <br><small class="text-secondary">{{ $regCardErrors }}</small>
                                 </span>
                             @else
                                 

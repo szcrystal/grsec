@@ -841,9 +841,11 @@ use App\DeliveryGroup;
                                     @if(count($regCardDatas) > 0)
                                         <div class="wrap-regist-card mt-3 mb-2 ml-1 pl-3">
                                             @if(isset($regCardErrors))
-                                            	<small class="d-inline-block ml-4 mb-4">
-                                                	<span class="text-danger"><i class="fal fa-exclamation-triangle"></i> 登録カード情報が取得出来ません。</span><br>
-                                                	{{ $regCardErrors }}
+                                            	<small class="d-inline-block ml-3 mb-3">
+                                                	<span class="text-danger"><i class="fal fa-exclamation-triangle"></i> 登録カード情報が取得出来ません。</span>
+                                                    @if(isset($regCardErrors))
+                                                    <br><span class="text-secondary">{{ $regCardErrors }}</span>
+                                                    @endif
                                                 </small>
                                             @else
                                                 @foreach($regCardDatas['CardSeq'] as $k => $seqNum)
@@ -1031,7 +1033,7 @@ use App\DeliveryGroup;
                                             
                                             @if($regist || (isset($userObj) && $userObj->card_regist_count < 6))
                                             	@if(isset($userObj) && $userObj->card_regist_count > 4)
-                                                	<span class="text-small text-secondary"><i class="fal fa-exclamation"></i> 新規カード登録不可（最大5つまで）</span>
+                                                	<span class="text-small text-secondary"><i class="fas fa-exclamation-circle"></i> 新規カード登録不可（最大5つまで）</span>
                                                 @else
                                                     <label class="mt-2">
                                                         <?php                            
@@ -1083,7 +1085,7 @@ use App\DeliveryGroup;
                                 
                                 @elseif(! $codCheck && $method->id == 5)
                                     <input type="radio" name="pay_method" class="payMethodRadio ml-2" value="{{ $method->id }}" disabled> {{ $method->name }}
-                                    <span class="text-secondary text-small ml-3"><i class="fas fa-exclamation-circle"></i> ご注文商品の代金引換決済はご利用できません。</span> 
+                                    <span class="text-secondary text-small ml-3"><i class="fas fa-exclamation-circle"></i> ご注文商品の代金引換はご利用できません。</span> 
                                  
                                     
                                 @else

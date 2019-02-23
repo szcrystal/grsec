@@ -32,7 +32,6 @@
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>アーカイブ画像</th>
                         <th>子カテゴリー名</th>
                         <th>スラッグ</th>
                         <th>親カテゴリー</th>
@@ -47,14 +46,6 @@
                         <tr>
                             <td>
                                 {{$subCate->id}}
-                            </td>
-                            
-                            <td>
-                              @if(isset($subCate->main_img) && $subCate->main_img != '')
-                              <img src="{{ Storage::url($subCate->main_img) }}" width="60" height="70">
-                              @else
-                              <span class="no-img">No Image</span>
-                              @endif
                             </td>
                             
                             <td>

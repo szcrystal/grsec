@@ -471,7 +471,7 @@ class CustomController extends Controller
             CURLOPT_RETURNTRANSFER => true, //文字列として返す
             CURLOPT_POST => true,
             CURLOPT_POSTFIELDS => http_build_query($datas),
-            CURLOPT_TIMEOUT => 60, // タイムアウト時間
+            CURLOPT_TIMEOUT => 120, // タイムアウト時間
         ];
         
         //curl init
