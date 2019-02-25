@@ -278,8 +278,13 @@ use App\PayMethodChild;
                                             	<th>数量</th>
                                                 <td>
                                                 	{{ $sale->item_count }}
-                                                	@if($sale->is_keep)
-                                                    <b class="ml-2 text-small">[お取り置き]</b>
+                                                	
+                                                    @if($sale->is_cancel)
+                                                    	<b class="ml-2 text-small">[キャンセル]</b>
+                                                    @else
+                                                        @if($sale->is_keep)
+                                                            <b class="ml-2 text-small">[お取り置き中]</b>
+                                                        @endif
                                                     @endif
                                                 </td>
                                             </tr>
@@ -437,7 +442,11 @@ use App\PayMethodChild;
                                             	<th>お取り置き</th>
                                                 <td>
                                                 	@if($sale->is_keep)
-                                                    <span class="text-info">お取り置き中</span><br>
+                                                        <span class="text-info">お取り置き中  
+                                                            @if(isset($sale->keep_date))
+                                                                {{ Ctm::changeDate($sale->keep_date, 1) }}〜
+                                                            @endif
+                                                        </span><br>
                                                     @else
                                                     --
                                                     @endif 
@@ -448,7 +457,11 @@ use App\PayMethodChild;
                                             	<th>キャンセル状況／<br>キャンセルメール</th>
                                                 <td>
                                                 	@if($sale->is_cancel)
-                                                    <span class="text-danger">キャンセル済</span><br>
+                                                    <span class="text-danger">キャンセル済
+                                                    	@if(isset($sale->cancel_date))
+                                                            {{ Ctm::changeDate($sale->cancel_date, 1) }}
+                                                        @endif
+                                                    </span><br>
                                                     @else
                                                     --<br>
                                                     <input type="hidden" name="is_cancel[{{ $sale->id }}]" value="{{ $sale->is_cancel }}">
