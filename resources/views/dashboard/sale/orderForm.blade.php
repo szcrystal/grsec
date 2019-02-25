@@ -209,7 +209,7 @@ use App\PayMethodChild;
                                     <td>
                                         @if(isset($users->member_id))
                                             {{ $users->member_id }}<br>
-                                            {{ $users->card_regist_count }}
+                                            <small>登録数：</small>{{ $users->card_regist_count }}
                                         @else
                                             未登録<br>
                                             {{-- <p class="m-0 p-0"><span class="text-small">利用可能なGmoID：</span>{{ Ctm::getOrderNum(11) }}</p> --}}

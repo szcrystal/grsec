@@ -1499,7 +1499,8 @@ XML;
             $actionUrl = url('shop/thankyou');
         }
         elseif($data['pay_method'] == 4) { //後払い
-        	$actionUrl = url('shop/afterdo');
+        	//$actionUrl = url('shop/afterdo');
+            $actionUrl = url('shop/thankyou');
         }
         else { //代引きと銀振以外
         	$actionUrl = url('shop/paydo');
