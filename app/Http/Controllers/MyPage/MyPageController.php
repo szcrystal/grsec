@@ -244,9 +244,10 @@ class MyPageController extends Controller
         //if(! Auth::check()) {
             //$rules['user.prefecture'] = 'required';
              
-          if(! Ctm::isLocal()) {
-              $rules['user.email'] = 'filled|email|unique:users,email|max:255';
-          }   
+        if(! Ctm::isLocal()) {
+        	$uId = Auth::id();    
+            $rules['user.email'] = 'filled|email|unique:users,email,'.$uId.',id|max:255';
+        }   
                
         //}
         
