@@ -138,6 +138,7 @@
                                     </td>
                                 @endif
                             </tr>
+                            
                             @if($isUser)
                                 <tr>
                                     <th>残ポイント</th>
@@ -149,14 +150,15 @@
                                     <td>
                                     	@if(isset($user->member_id))
                                     		{{ $user->member_id }}<br>
-                                    		{{ $user->card_regist_count }}
+                                    		<small>登録数: </small>{{ $user->card_regist_count }}
                                         @else
                                         	未登録<br>
-							            	<p class="m-0 p-0"><span class="text-small">利用可能なGmoID：</span>{{ Ctm::getOrderNum(11) }}</p>
+							            	{{-- <p class="m-0 p-0"><span class="text-small">利用可能なGmoID：</span>{{ Ctm::getOrderNum(11) }}</p> --}}
                                         @endif
                                     </td>   
                                 </tr>
                             @endif
+                            
                             <tr>
                                 <th>登録日</th>
                             	<td>{{ Ctm::changeDate($user->created_at) }}</td>

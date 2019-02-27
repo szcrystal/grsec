@@ -102,7 +102,7 @@
             
             <fieldset class="mb-4 form-group">
                 <label for="stock" class="control-label">容量</label>
-                <input class="form-control col-md-10{{ $errors->has('capacity') ? ' is-invalid' : '' }}" name="capacity" value="{{ Ctm::isOld() ? old('capacity') : (isset($dg) ? $dg->capacity : '') }}">
+                <input class="form-control col-md-6{{ $errors->has('capacity') ? ' is-invalid' : '' }}" name="capacity" value="{{ Ctm::isOld() ? old('capacity') : (isset($dg) ? $dg->capacity : '') }}">
                 
 
                 @if ($errors->has('capacity'))
@@ -113,26 +113,42 @@
                 @endif
             </fieldset>
             
-            
-            
-            <fieldset class="form-group mb-2">
-                    <div class="checkbox">
-                        <label>
-                            <?php
-                                $checked = '';
-                                if(Ctm::isOld()) {
-                                    if(old('is_time'))
-                                        $checked = ' checked';
-                                }
-                                else {
-                                    if(isset($dg) && $dg->is_time) {
-                                        $checked = ' checked';
-                                    }
-                                }
-                            ?>
-                            <input type="checkbox" name="is_time" value="1"{{ $checked }}> 時間指定を可能にする
-                        </label>
+            <fieldset class="mb-4 form-group">
+                <label class="control-label">送料表名<small class="text-gray">（オモテに表示させるタイトル。空ならリンクは生成されません。）</small></label>
+                <input class="form-control col-md-6{{ $errors->has('table_name') ? ' is-invalid' : '' }}" name="table_name" value="{{ Ctm::isOld() ? old('table_name') : (isset($dg) ? $dg->table_name : '') }}" placeholder="">
+                
+
+                @if ($errors->has('table_name'))
+                    <div class="text-danger">
+                        <span class="fa fa-exclamation form-control-feedback"></span>
+                        <span>{{ $errors->first('table_name') }}</span>
                     </div>
+                @endif
+                
+                @if(isset($edit) && isset($dg) && $dg->table_name != ''))
+                	<p class="mt-2 mb-0 py-1"><a href="{{ url('deli-fee/' . $id) }}" target="_brank">{{ url('deli-fee/' . $id) }}</a></p>
+            	@endif
+            </fieldset>
+
+            
+            <fieldset class="form-group mb-2 pt-2">
+                <div class="checkbox">
+                    <label>
+                        <?php
+                            $checked = '';
+                            if(Ctm::isOld()) {
+                                if(old('is_time'))
+                                    $checked = ' checked';
+                            }
+                            else {
+                                if(isset($dg) && $dg->is_time) {
+                                    $checked = ' checked';
+                                }
+                            }
+                        ?>
+                        <input type="checkbox" name="is_time" value="1"{{ $checked }}> 時間指定を可能にする
+                    </label>
+                </div>
             </fieldset>
             
             <fieldset class="mb-4 form-group">
@@ -147,6 +163,8 @@
                     </div>
                 @endif
             </fieldset>
+            
+            
             
 
             <div class="form-group">

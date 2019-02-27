@@ -283,7 +283,7 @@ use App\PayMethodChild;
                                                     	<b class="ml-2 text-small">[キャンセル]</b>
                                                     @else
                                                         @if($sale->is_keep)
-                                                            <b class="ml-2 text-small">[お取り置き中]</b>
+                                                            <b class="ml-2 text-small">[取り置き中]</b>
                                                         @endif
                                                     @endif
                                                 </td>

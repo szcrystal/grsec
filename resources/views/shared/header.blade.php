@@ -37,9 +37,11 @@
     
     <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.10.0/css/lightbox.css" rel="stylesheet">
     
-    <?php
-        $getNow = '?up=' . time();
-    ?>
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+    {{-- <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/> --}}
+
+    
+    <?php $getNow = '?up=' . time(); ?>
     
     <link href="{{ asset('css/style.css'. $getNow) }}" rel="stylesheet">
     

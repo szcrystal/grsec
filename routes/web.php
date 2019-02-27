@@ -99,6 +99,9 @@ if(Schema::hasTable('fixes')) {
     }
 }
 
+//DeliFeeTable
+Route::get('deli-fee/{dgId}', 'Main\HomeController@showDeliFeeTable');
+
 //New Item
 Route::get('new-items', 'Main\HomeController@uniqueArchive');
 

@@ -1516,16 +1516,22 @@ ul.side-rank {
     margin: 3px 0 0;
     padding: 0;
     display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
 	//border: 1px solid red;
 }
+
 .tophead-wrap .carousel-indicators li {
 	position: static;
-	width: 20% !important;
+	width: auto !important;
     height: auto !important;
-    flex: auto;
+    flex: 0 0 20% !important;
     cursor: pointer;
     margin: 0;
     padding: 4px;
+}
+.tophead-wrap .carousel-indicators li:nth-of-type(5n) {
+	margin-right: 0;
 }
 
 
@@ -1567,6 +1573,49 @@ ul.side-rank {
     //font-size: 0.8em;
 }
 
+
+/* Slider ********************** */
+.slider-nav {
+	position: relative;
+	//display: flex;
+}
+.slider-nav .slider-item {
+	//flex: auto;
+    padding: 5px;
+    //border: 1px solid red;
+}
+.slider-nav > div {
+	width: 100%;
+    //border: 1px solid red;
+}
+.slider-nav .slick-current {
+	background: #333;
+    //border: 3px solid red;
+    //padding: 0;
+}
+.slider-nav .slick-prev,
+.slider-nav .slick-next {
+	position: absolute;
+    top: 0;
+	background: rgba(0,0,0,0.65);
+    width: 2.5em;
+    border: 0;
+    box-shadow: 0;
+    color: #fff;
+    display: block;
+    height: 100%;
+    z-index: 99;
+}
+.slider-nav .slick-prev {
+    left: 0;
+}
+.slider-nav .slick-next {
+    right: 0;
+}
+
+
+/*<button class=​"slick-prev slick-arrow" aria-label=​"Previous" type=​"button" style>​Previous​</button>​*/
+/* Slider END ****************** */
 
 
 .single .head-frame h2 {

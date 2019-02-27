@@ -75,6 +75,8 @@
             }
         </style>
         
+        
+        
         <div class="">
           <div class="table-responsive">
             <table id="dataTable" class="table table-striped table-bordered table-hover bg-white" width="100%" cellspacing="0">
@@ -186,6 +188,9 @@
             </table>
           </div>
         </div>
+        
+        
+        
 
         <!-- <div class="card-footer small text-muted"></div> -->
 

@@ -418,6 +418,7 @@ use App\TopSetting;
                     
                     <?php
                     	$isCaution = isset($item->caution) && $item->caution != '';
+                        $dgId = $item->dg_id;
                     ?>
                     
                     @if(Ctm::isAgent('sp'))
@@ -449,7 +450,13 @@ use App\TopSetting;
                               <div class="card-body clearfix">
                                 {!! nl2br($item->about_ship) !!}
                                 
-                                @include('main.shared.deliFeeTable')
+                                @if($item->is_delifee_table)
+                                    <div class="btn btn-custom mt-2 slideDeli">
+                                        送料表を見る <i class="fal fa-angle-down"></i>
+                                    </div>
+                                	
+                                    @include('main.shared.deliFeeTable')
+                                @endif
                               </div>
                             </div>
                           </div>
@@ -518,7 +525,13 @@ use App\TopSetting;
                                         {!! nl2br($item->about_ship) !!}
                                     </div>
                                     
-                                    @include('main.shared.deliFeeTable')
+                                    @if($item->is_delifee_table)
+                                        <div class="btn btn-custom mt-2 slideDeli">
+                                            送料表を見る <i class="fal fa-angle-down"></i>
+                                        </div>
+                                        
+                                        @include('main.shared.deliFeeTable')
+                                    @endif
                                     
                                   </div>
                                   

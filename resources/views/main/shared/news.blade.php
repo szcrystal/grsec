@@ -8,6 +8,7 @@ use App\TopSetting;
     </div>
     
     @if(isset($isTop) && $isTop)
-        @include('main.shared.carousel')
+        {{-- @include('main.shared.carousel') --}}
+        @include('main.shared.slider')
     @endif
 </div>

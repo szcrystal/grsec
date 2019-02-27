@@ -13,6 +13,8 @@ use App\ItemImage;
 use App\Favorite;
 use App\ItemStockChange;
 use App\TopSetting;
+use App\DeliveryGroup;
+use App\DeliveryGroupRelation;
 
 
 use Illuminate\Http\Request;
@@ -25,7 +27,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class HomeController extends Controller
 {
-    public function __construct(Item $item, Category $category, CategorySecond $cateSec, Tag $tag, TagRelation $tagRel, Fix $fix, Setting $setting, ItemImage $itemImg, Favorite $favorite, ItemStockChange $itemSc, TopSetting $topSet)
+    public function __construct(Item $item, Category $category, CategorySecond $cateSec, Tag $tag, TagRelation $tagRel, Fix $fix, Setting $setting, ItemImage $itemImg, Favorite $favorite, ItemStockChange $itemSc, TopSetting $topSet, DeliveryGroup $dg, DeliveryGroupRelation $dgRel)
     {
         //$this->middleware('search');
         
@@ -41,6 +43,9 @@ class HomeController extends Controller
         $this->favorite = $favorite;
         $this->itemSc = $itemSc;
         $this->topSet = $topSet;
+        
+        $this->dg = $dg;
+        $this->dgRel = $dgRel;
         
         $this->perPage = env('PER_PAGE', Ctm::isAgent('sp') ? 21 : 20);
         
@@ -470,8 +475,6 @@ class HomeController extends Controller
     
     private function getStockSepIds($itemObjs)
     {
-    	
-        
         //ここで渡される$itemObjsはコレクションなので、以下記述がいつもと異なることに注意
         //$itemObjs = $itemObjs->where('open_status', 1)->where('is_potset', 0);とすることも可能
         
@@ -520,6 +523,19 @@ class HomeController extends Controller
     }
     
     
+    public function showDeliFeeTable($dgId)
+    {
+    	$dg = $this->dg->find($dgId);
+        
+        if(! isset($dg) || $dg->table_name == '' ) {
+            abort(404);
+        }
+        
+    	$dgRel = $this->dgRel->where('dg_id', $dgId)->get();
+        
+        return view('main.home.deliFee', ['dg'=>$dg, 'dgRel'=>$dgRel, 'dgId'=>$dgId ]);
+        
+    }
     
     
     public function create()

@@ -174,6 +174,8 @@ return [
         'set_date' => '「日付」',
         
         'capacity' => '「容量」',
+        'table_name' => '「送料表名」',
+        
         'admin_name' => '「管理者名」',
         'admin_email' => '「管理者メールアドレス」',
         'permission' => '「権限」',

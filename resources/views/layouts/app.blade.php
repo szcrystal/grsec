@@ -57,6 +57,7 @@ use App\Setting;
 <script type="text/javascript" src="//jpostal-1006.appspot.com/jquery.jpostal.js"></script>
 <script src="//code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 
+
 @if(Request::is('shop/confirm'))
     @if(Setting::first()->is_product)
     <script src="https://p01.mul-pay.jp/ext/js/token.js"></script>
@@ -78,6 +79,31 @@ use App\Setting;
     });
 </script>
 @endif
+
+<script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+
+<script>
+$(document).ready(function() {
+	$('.slider-top').slick({
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          arrows: false,
+          fade: false,
+          asNavFor: '.slider-nav'
+    });
+    
+    $('.slider-nav').slick({
+          slidesToShow: 5,
+          slidesToScroll: 1,
+          asNavFor: '.slider-top',
+          dots: false,
+          centerMode: true,
+          focusOnSelect: true,
+          prevArrow: '<span class="slick-prev"><i class="fal fa-angle-left"></i></span>',
+          nextArrow: '<span class="slick-next"><i class="fal fa-angle-right"></i></span>',
+    });
+});
+</script>
 
 <script src="{{ asset('js/script.js' . $getNow) }}"></script>
 

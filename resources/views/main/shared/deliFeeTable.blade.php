@@ -4,12 +4,8 @@ use App\Prefecture;
 use App\DeliveryGroupRelation;
 ?>
 
-@if($item->is_delifee_table)
-    <div class="btn btn-custom mt-2 slideDeli">
-        送料表を見る <i class="fal fa-angle-down"></i>
-    </div>
     <?php
-        $dgRels = DeliveryGroupRelation::where('dg_id', $item->dg_id)->get();
+        $dgRels = DeliveryGroupRelation::where('dg_id', $dgId)->get();
     ?>
     
     <div class="table-deli clearfix">
@@ -76,6 +72,5 @@ use App\DeliveryGroupRelation;
         </div>
     
     </div>
-@endif
 
 
