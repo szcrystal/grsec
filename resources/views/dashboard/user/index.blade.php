@@ -91,7 +91,12 @@
               @foreach($userObjs as $user)
                 <tr>
                   	<td>{{ $user->id }}</td>
-                    <td style="word-break:break-all;">{{ $user->name }}</td>
+                    <td style="word-break:break-all;">
+                    	{{ $user->name }}
+                    	@if(! $user->active)
+                            <span class="text-warning"><b>[退会]</b></span>
+                        @endif
+                    </td>
                     <td>{{ $user->prefecture }}{{ $user->address_1 }}{{ $user->address_2 }}<br>{{ $user->address_3 }}</td>
                   	
                     <td><a href="mailto:{{ $user->email }}">{{ $user->email }}</a></td>

@@ -3,15 +3,26 @@ $(document).ready(function() {
   $('#dataTable').DataTable(
   	{
         order: [0, 'desc'],
-        lengthMenu: [ 20, 50, 100, 200, 300],               
-		displayLength: 50 // 件数デフォルト50
+        lengthMenu: [20, 50, 100, 200, 300],               
+		displayLength: 50, // 件数デフォルト50
+        bStateSave: true,
+        oLanguage: {
+          oPaginate: {
+            sNext: '>',
+            sPrevious: '<',
+          }
+        },
+        //sPaginationType: "full_numbers",
+        dom: "<'row'<'col-md-3'l><'col-md-9'fp>>" +
+         "<'row'<'col-sm-12'tr>>" +
+         "<'row'<'col-sm-5'i><'col-sm-7'p>>", //lはプルダウン fは検索 pはpagination trはテーブル iはインフォ
     }
   
   );
 });
 
 
-
+//https://stackoverflow.com/questions/39407881/pagination-at-top-and-bottom-with-datatables
 //<script>
 //        	$(document).ready(function() {
 //              $('#dataTable').DataTable({

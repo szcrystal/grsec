@@ -302,7 +302,7 @@ class MailMagazineController extends Controller
 //            $noUserArr = array();
             
             //from User
-            $userMag = $this->user->where('magazine', 1)->get();
+            $userMag = $this->user->where(['magazine'=>1, 'active'=>1])->get();
             
             foreach($userMag as $val) {
                 $users['user'][$val->id] = $val->email;

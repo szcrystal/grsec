@@ -30,7 +30,7 @@
 
     <!-- Bootstrap Core JavaScript -->
     
-	
+<?php $getNow = '' . time(); ?>	
 
 <!-- Bootstrap core JavaScript-->
     <script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -50,17 +50,9 @@
     <!-- Custom scripts for all pages-->
     <script src="{{ asset('/js/dbd/sb-admin.min.js') }}"></script>
 
-    <!-- これを入れるとテーブルの並べ替えなどがjsで動くようになる -->
+    <!-- テーブルの並べ替えなどがjsで動くようになる -->
     <script src="{{ asset('/js/dbd/sb-admin-datatables.js') }}"></script>
     
-        
-
-	<?php
-        $getNow = '' . time();
-    ?>
-    
 	<script src="{{ asset('/js/dbd/custom.js?up=' . time()) }}"></script>
-
-
 
 

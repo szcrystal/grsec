@@ -778,6 +778,39 @@ var exe = (function() {
 
         },
         
+        //TopSliderの枠調整
+        setSliderFrame: function() {
+        	function set() {
+                var $thisItem = $('.this-item');
+                var $current = $('.slider-nav.slick-initialized .slick-current');
+                
+                var pad = 5;
+                
+                var w = $current.width() + pad;
+                var h = $current.height() + (pad*2);
+                
+                var posiL = ($('.slider-wrap').width() - w) / 2;
+                //var posiL
+                
+                $thisItem.css({width:w, height:h, left:posiL});
+            }
+            
+            set();
+            
+            $('.slider-nav').on('setPosition', function(){
+            	//if($(window).width() > 1200) {
+            		set();
+                //}
+            });
+            
+            
+//            $(window).on('resize', function(){
+//            	set();
+//            });
+            
+        },
+        
+        
         getCardToken: function() {
         	
             $('#card-submit').on('click', function() {
@@ -914,6 +947,7 @@ $(function(e){ //ready
     exe.toggleSideMenu();
     
     exe.accordionMoveUp();
+    exe.setSliderFrame();
     
     exe.getCardToken();
 });

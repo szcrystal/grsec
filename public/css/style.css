@@ -1576,13 +1576,20 @@ ul.side-rank {
 
 
 /* Slider ********************** */
-.slider-nav {
+.slider-wrap {
 	position: relative;
+    //border: 1px solid orange;
+}
+.slider-nav {
+	//position: relative;
 	//display: flex;
+    margin-top: 3px;
+    //background: #333;
 }
 .slider-nav .slider-item {
 	//flex: auto;
-    padding: 5px;
+    padding: 5px 2.5px;
+    outline: 0;
     //border: 1px solid red;
 }
 .slider-nav > div {
@@ -1590,28 +1597,52 @@ ul.side-rank {
     //border: 1px solid red;
 }
 .slider-nav .slick-current {
-	background: #333;
+	//background: #333;
     //border: 3px solid red;
     //padding: 0;
 }
 .slider-nav .slick-prev,
 .slider-nav .slick-next {
 	position: absolute;
-    top: 0;
-	background: rgba(0,0,0,0.65);
-    width: 2.5em;
+    top: 30%;
+    margin-bottom: 10px;
+	background: rgba(0,0,0,0.75);
+    font-size: 2.6em;
+    width: 1.1em;
+    height: 1.1em;
+    line-height: 1.1em;
+    border-radius: 50%;
     border: 0;
     box-shadow: 0;
     color: #fff;
     display: block;
-    height: 100%;
+    text-align: center;
     z-index: 99;
+    cursor: pointer;
 }
 .slider-nav .slick-prev {
-    left: 0;
+    left: 1%;
 }
 .slider-nav .slick-next {
-    right: 0;
+    right: 1%;
+}
+.slider-nav .slick-prev:hover,
+.slider-nav .slick-next:hover {
+	opacity: 0.8;
+}
+.slider-wrap .this-item {
+	display: block;
+	position: absolute;
+    bottom: 0;
+    left: 43%;
+    z-index: 999;
+    width: 263px;
+    height: 120px;
+    border: 5px solid #2d2d2d;
+    //background: red;
+}
+.slick-initialized {
+	//border: 3px solid blue;
 }
 
 

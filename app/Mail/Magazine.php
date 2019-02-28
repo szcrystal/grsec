@@ -52,7 +52,7 @@ class Magazine extends Mailable
     {
         //$set = Setting::get()->first();
         
-     	$templ = MailTemplate::where(['type_code'=>'itemEnd', ])->get()->first();
+     	//$templ = MailTemplate::where(['type_code'=>'itemEnd', ])->get()->first();
       
       	$subject = $this->data['title'];
 
@@ -60,8 +60,8 @@ class Magazine extends Mailable
         return $this->from(env('ADMIN_EMAIL', 'no-reply@green-rocket.jp'), $this->setting->admin_name)
         			->view('emails.magazine')
            			->with([
-              			'header' => $templ->header,
-                        'footer' => $templ->footer, 
+//              			'header' => $templ->header,
+//                        'footer' => $templ->footer, 
                         //'sales' => $sales,
                         //'order_number' => $this->order_number,
                       	//'setting' => $set,

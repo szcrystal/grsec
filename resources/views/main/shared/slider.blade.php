@@ -33,13 +33,13 @@
     
     	@foreach($caros as $caro)
     		<div class="slider-item">
-                	<img class="w-100" src="{{ Storage::url($caro->img_path) }}" alt="">
+                <img class="w-100" src="{{ Storage::url($caro->img_path) }}" alt="">
     		</div>
-
         @endforeach
 </div>
 
 @endif
-  
+
+<span class="this-item"></span>
 
 </div>

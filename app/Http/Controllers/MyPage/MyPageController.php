@@ -216,27 +216,28 @@ class MyPageController extends Controller
   
         ];
         
-        $editModes = $request->input('user.edit_mode.*');
+        $editModes = $request->has('user.edit_mode.*') ? $request->input('user.edit_mode.*') : array();
         
-        foreach($editModes as $key => $val) {
-        	if($val == 1) {
-                $now = new DateTime();
-                $ym = $now->format('ym');
-                
-                $expire = $request->input('user.expire_year.'.$key) . $request->input('user.expire_month.'.$key);
+        if(count($editModes)) {
+            foreach($editModes as $key => $val) {
+                if($val == 1) {
+                    $now = new DateTime();
+                    $ym = $now->format('ym');
+                    
+                    $expire = $request->input('user.expire_year.'.$key) . $request->input('user.expire_month.'.$key);
 
-                $rules['user.expire.'.$key] = [
-                    function($attribute, $value, $fail) use($ym, $expire) {
-                        if ($expire < $ym) 
-                            return $fail('「有効期限」は現在以降を指定して下さい。');
-                    },
-                ];
+                    $rules['user.expire.'.$key] = [
+                        function($attribute, $value, $fail) use($ym, $expire) {
+                            if ($expire < $ym) 
+                                return $fail('「有効期限」は現在以降を指定して下さい。');
+                        },
+                    ];
+                }
             }
         }
         //exit;
         
-        
-        
+
         //if(! $isMypage) {
         //    $rules['user.password'] = 'required|min:8|confirmed';
        //}
@@ -320,7 +321,7 @@ class MyPageController extends Controller
         $delCardDatas = array();
         $delCardErrors = null;
         
-        if($isMypage) {
+        if($isMypage && isset($data['edit_mode']) && count($data['edit_mode'])) {
         
         	foreach($data['edit_mode'] as $key => $val) {
             
@@ -481,7 +482,7 @@ class MyPageController extends Controller
                         'CardSeq' => $num, //論理モードを繰り返すのでseqは毎回0になる
                     ];
                     
-                    $dCardResponse = Ctm::cUrlFunc("/payment/DeleteCard.idPass", $dCardDatas);
+                    $dCardResponse = Ctm::cUrlFunc("DeleteCard.idPass", $dCardDatas);
                     
                     //正常：CardSeq=0|1|2|3|4&DefaultFlag=0|0|0|0|0&CardName=||||&CardNo=*************111|*************111|*************111|*************111|*************111&Expire=1905|1904|1908|1907|1910&HolderName=||||&DeleteFlag=0|0|0|0|0
                     $cardArr = explode('&', $dCardResponse);
@@ -507,13 +508,13 @@ class MyPageController extends Controller
             
             //Member削除 ======================================
         	$dMemberDatas = [
-                //'SiteID' => $this->gmoId['siteId'],
-                'SiteID' => 11111,
+                'SiteID' => $this->gmoId['siteId'],
+                //'SiteID' => 11111,
                 'SitePass' => $this->gmoId['sitePass'],
                 'MemberID' => $userModel->member_id,
             ];
             
-            $dMemberResponse = Ctm::cUrlFunc("/payment/DeleteMember.idPass", $dMemberDatas);
+            $dMemberResponse = Ctm::cUrlFunc("DeleteMember.idPass", $dMemberDatas);
             
             //正常：CardSeq=0|1|2|3|4&DefaultFlag=0|0|0|0|0&CardName=||||&CardNo=*************111|*************111|*************111|*************111|*************111&Expire=1905|1904|1908|1907|1910&HolderName=||||&DeleteFlag=0|0|0|0|0
             $cardArr = explode('&', $dMemberResponse);
@@ -542,8 +543,19 @@ class MyPageController extends Controller
         $this->userNor->create($userArr);
         
         //Userから消す
+//        $saleRels = $this->saleRel->where(['is_user'=>1, 'user_id'=>$userId])->get();
+//        
+//        if(count($saleRels)) {
+//        	foreach($saleRels as $saleRel) {
+//        		$saleRel->is_user = 0;
+//                $saleRel->save();
+//            }
+//        }
+        
         Auth::logout();
-        $userModel->delete();
+        //$userModel->delete();
+        $userModel->active = 0;
+        $userModel->save();
 
 		$isMypage = 2;
         

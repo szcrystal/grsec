@@ -80,13 +80,15 @@ use App\Setting;
 </script>
 @endif
 
+@if(isset($isTop) && $isTop)
 <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
-
 <script>
 $(document).ready(function() {
 	$('.slider-top').slick({
           slidesToShow: 1,
           slidesToScroll: 1,
+          autoplay: true,
+          autoplaySpeed: 10000,
           arrows: false,
           fade: false,
           asNavFor: '.slider-nav'
@@ -104,6 +106,7 @@ $(document).ready(function() {
     });
 });
 </script>
+@endif
 
 <script src="{{ asset('js/script.js' . $getNow) }}"></script>
 

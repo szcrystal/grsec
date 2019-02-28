@@ -96,11 +96,17 @@ use App\Setting;
                                 <th>購入者</th>
                                 <td>
                                     @if($saleRel->is_user)
-                                        <span class="text-dark">会員</span>: 
-                                        <a href="{{ url('dashboard/users/'. $saleRel->user_id) }}">
-                                        <?php
+                                    	<?php
                                         	$users = $users->find($saleRel->user_id);
                                         ?>
+                                        <span class="text-dark">
+                                        	会員
+                                        	@if(! $users->active)
+                                                <span class="text-warning"><b>[退会]</b></span>
+                                            @endif
+                                        </span> 
+                                        <a href="{{ url('dashboard/users/'. $saleRel->user_id) }}">
+                                        
                                     @else
                                          <span class="text-danger">非会員</span>: 
                                          <a href="{{ url('dashboard/users/'. $saleRel->user_id.'?no_r=1') }}">

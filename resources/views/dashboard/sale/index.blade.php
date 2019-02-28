@@ -350,7 +350,12 @@ use App\PayMethodChild;
                   <td style="word-break:break-all;">
                   	@if($saleRel->is_user)
                     	<?php $u = $users->find($saleRel->user_id); ?>
-                		<span class="text-primary"><small>会員</small></span><br>
+                		<span class="text-primary">
+                        	<small>会員</small>
+                        	@if(! $u->active)
+                            	<small class="text-warning"><b>[退会]</b></small>
+                            @endif
+                        </span><br>
                 	@else
                     	<?php $u = $userNs->find($saleRel->user_id); ?>
                  		<span class="text-danger"><small>非会員</small></span><br>

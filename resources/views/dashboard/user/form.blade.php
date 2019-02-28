@@ -63,9 +63,14 @@
                                 <th></th>
                                 <td>
                                 	@if($isUser)
-                                 		<span class="text-primary text-big"><b>会員</b></a>   
+                                 		<span class="text-primary text-big">
+                                        	<b>会員
+                                            	@if(! $user->active)
+                                                    <span class="text-warning"><b>[退会]</b></span>
+                                                @endif
+                                            </b>  
                                  	@else
-                                  		<span class="text-warning text-big"><b>非会員</b></a>   
+                                  		<span class="text-warning text-big"><b>非会員</b>   
                                   	@endif      
                                 </td>
                             </tr>

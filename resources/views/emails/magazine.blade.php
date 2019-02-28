@@ -12,11 +12,12 @@
 {!! nl2br($data['contents']) !!}
 
 <br><br>
-<br><br><br><br><br>
+<br><br><br>
 
+<hr>
 ◎配信停止について<br>
 メールマガジンの配信を解除するには、こちらのページより設定して下さい。<br>
-https://green-rocket.jp/mypage
+{{ url('mypage') }}
 <br><br>
 ＊ご利用にはログインが必要です。
 <br>

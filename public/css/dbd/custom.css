@@ -116,6 +116,9 @@ input[type="search"].form-control {
 	width: 23em !important;
 }
 
+.paginate_button a {
+	outline: 0 !important;
+}
 
 .table-tyumon th {
 	width: 27%;

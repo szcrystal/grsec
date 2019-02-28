@@ -60,6 +60,8 @@ class LoginController extends Controller
         $data = $request->all();
         
         $credentials = $request->only('email', 'password');
+        $credentials['active'] = 1;
+        
         $remember = $request->has('remember') ? 1 : 0;
         
         $prevUrl = $request->has('to_cart') ? '/shop/cart' : $data['previous'];
