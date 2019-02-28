@@ -113,6 +113,7 @@
                 @endif
             </fieldset>
             
+            {{--
             <fieldset class="mb-4 form-group">
                 <label class="control-label">送料表名<small class="text-gray">（オモテに表示させるタイトル。空ならリンクは生成されません。）</small></label>
                 <input class="form-control col-md-6{{ $errors->has('table_name') ? ' is-invalid' : '' }}" name="table_name" value="{{ Ctm::isOld() ? old('table_name') : (isset($dg) ? $dg->table_name : '') }}" placeholder="">
@@ -125,10 +126,11 @@
                     </div>
                 @endif
                 
-                @if(isset($edit) && isset($dg) && $dg->table_name != ''))
+                @if(isset($edit) && isset($dg->table_name) && $dg->table_name != ''))
                 	<p class="mt-2 mb-0 py-1"><a href="{{ url('deli-fee/' . $id) }}" target="_brank">{{ url('deli-fee/' . $id) }}</a></p>
             	@endif
             </fieldset>
+            --}}
 
             
             <fieldset class="form-group mb-2 pt-2">

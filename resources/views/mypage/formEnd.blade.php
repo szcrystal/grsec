@@ -16,8 +16,14 @@
 <h3 class="mb-3 card-header">
 @if($isMypage == 2)
 退会手続きの完了
+<?php
+	$errorStr = '';
+?>
 @else
 会員情報の登録完了
+<?php
+	$errorStr = 'カード情報をご確認の上、少し時間を空けて再度お試し下さい。';
+?>
 @endif
 </h3>
 
@@ -27,14 +33,17 @@
     </div>
 @endif
 
-<div class=" top-cont">
+<div class="top-cont">
 
 <div class="mt-3 ml-1">
 <p>{!! $status !!}</p>
 
+
+
 @if(isset($editCardErrors))
 	<p class="text-danger">
-    	<i class="fal fa-exclamation-triangle"></i> 登録クレジットカードの更新を正常に進めることが出来ませんでした。
+    	<i class="fal fa-exclamation-triangle"></i> 
+        登録クレジットカードの更新を正常に進めることが出来ませんでした。
         <small>{!! $editCardErrors !!}</small>
     </p>
 @endif
@@ -51,6 +60,17 @@
     	<i class="fal fa-exclamation-triangle"></i> クレジットカード登録情報の削除を正常に進めることが出来ませんでした。
         <small>{!! $delMemberErrors !!}</small>
     </p>
+@endif
+
+@if(isset($editCardErrors) || isset($delCardErrors) || isset($delMemberErrors))
+    @if($isMypage != 2)
+    	{{ $errorStr }}<br><br>
+    @else
+        <?php
+            $mailLink = '<a href="mailto:info@green-rocket.jp">info@green-rocket.jp</a> までご連絡をお願い致します。';
+        ?>
+        {!! $mailLink !!}<br><br>
+    @endif
 @endif
 
 

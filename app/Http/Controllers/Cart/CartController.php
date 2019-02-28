@@ -838,7 +838,7 @@ XML;
         $memberId = null;
         $cardSeqNum = null;
         
-        //カード登録番号を新しい変数に入れる　新しいカードであればこの変数はnullのまま
+        //カード登録番号を新しい変数に入れる　新しいカードであればこの変数($cardSeqNum)はnullのまま
         if($cardSeqSession != '' && $cardSeqSession != 99) {
             $cardSeqNum = $cardSeqSession;
         }
@@ -1495,7 +1495,6 @@ XML;
         $actionUrl = '';
         
         if($data['pay_method'] == 5 || $data['pay_method'] == 6) { //代引きと銀振
-        	//$settles['url'] = url('shop/thankyou');
             $actionUrl = url('shop/thankyou');
         }
         elseif($data['pay_method'] == 4) { //後払い
@@ -1504,17 +1503,6 @@ XML;
         }
         else { //代引きと銀振以外
         	$actionUrl = url('shop/paydo');
-            //$actionUrl = "https://pt01.mul-pay.jp/payment/EntryTran.idPass";
-            
-//        	$isProduct = $this->set->is_product;
-//            
-//            if($isProduct) { //本番環境
-//            	$settles['url'] = "https://secure.epsilon.jp/cgi-bin/order/receive_order3.cgi"; //本番(完了通知書：contract_66254480.pdf内にあり)
-//            }
-//            else { //テスト環境
-//            	$settles['url'] = "https://beta.epsilon.jp/cgi-bin/order/receive_order3.cgi"; //テスト環境
-//            }
-            
         }
         
 //        $payCode = 0;

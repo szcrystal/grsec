@@ -448,7 +448,7 @@ $url = $isMypage ? url('mypage/register') : url('register');
                 <th>
                     登録済クレジットカード
                     <small>＊登録最大数5つまで</small>
-                    <small>＊カード情報の新規登録は購入時に出来ます。</small>
+                    <small>＊カード情報の登録は購入時に出来ます。</small>
                 </th>
                 <td>
                     @if(count($regCardDatas) > 0)

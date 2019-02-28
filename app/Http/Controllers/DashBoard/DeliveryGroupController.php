@@ -103,7 +103,7 @@ class DeliveryGroupController extends Controller
         $rules = [
         	'name' => 'required|max:255',
             'capacity' => 'required|max:255',
-            'table_name' => 'required|max:255',
+            //'table_name' => 'required|max:255',
             //'table_name' => 'alpha_dash|unique:delivery_groups,slug,'.$editId.'|max:255',
             'time_table' => 'required_with:is_time|max:255',
             
