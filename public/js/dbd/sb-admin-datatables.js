@@ -5,7 +5,7 @@ $(document).ready(function() {
         order: [0, 'desc'],
         lengthMenu: [20, 50, 100, 200, 300],               
 		displayLength: 50, // 件数デフォルト50
-        bStateSave: true,
+        bStateSave: false, //前回表示の維持
         oLanguage: {
           oPaginate: {
             sNext: '>',

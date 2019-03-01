@@ -784,12 +784,12 @@ var exe = (function() {
                 var $thisItem = $('.this-item');
                 var $current = $('.slider-nav.slick-initialized .slick-current');
                 
-                var pad = 5;
+                var pad = 4;
                 
                 var w = $current.width() + pad;
                 var h = $current.height() + (pad*2);
                 
-                var posiL = ($('.slider-wrap').width() - w) / 2;
+                var posiL = ($('.slider-wrap').width() - w ) / 2;
                 //var posiL
                 
                 $thisItem.css({width:w, height:h, left:posiL});

@@ -725,7 +725,7 @@
             </fieldset>
             
             <fieldset class="mb-2 form-group">
-                <label for="stock" class="control-label">在庫数</label>
+                <label for="stock" class="control-label">在庫数<small>（ポット親の時の在庫関連は全て無関係。空 or 1入力でOK。子ポットは要入力）</small></label>
                 <input class="form-control col-md-6{{ $errors->has('stock') ? ' is-invalid' : '' }}" name="stock" value="{{ Ctm::isOld() ? old('stock') : (isset($item) ? $item->stock : '') }}">
                 
 
