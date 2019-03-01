@@ -200,11 +200,26 @@ class MyPageController extends Controller
     public function postRegister(Request $request)
     {
     	$isMypage = $request->is('mypage/*') ? 1 : 0;
-    	
+        
+        //email用validationの配列
+        $mailValid = ['filled', 'email', 'max:255'];
+        
+        if($isMypage) {
+        	$uId = Auth::id(); //マイページの時は自分のidを除外するので 
+            $mailValid[] = Rule::unique('users', 'email')->ignore($uId, 'id')->where(function ($query) {
+                return $query->where('active', 1); //uniqueする対象をactive:1のみにする
+            });
+        } 
+        else {
+        	$mailValid[] = Rule::unique('users', 'email')->where(function ($query) {
+                return $query->where('active', 1); //uniqueする対象をactive:1のみにする
+            });
+        }
+        
         $rules = [
             'user.name' => 'required|max:255',
             'user.hurigana' => 'required|max:255',
-            'user.email' => 'required|email|max:255',
+            'user.email' => $mailValid,
             'user.tel_num' => 'required|numeric',
 //            'cate_id' => 'required',
             'user.post_num' => 'required|nullable|numeric|digits:7', //numeric|max:7
@@ -245,10 +260,7 @@ class MyPageController extends Controller
         //if(! Auth::check()) {
             //$rules['user.prefecture'] = 'required';
              
-        if(! Ctm::isLocal()) {
-        	$uId = Auth::id();    
-            $rules['user.email'] = 'filled|email|unique:users,email,'.$uId.',id|max:255';
-        }   
+        
                
         //}
         

@@ -32,6 +32,8 @@ use Exception;
 use Validator;
 use DateTime;
 
+use Illuminate\Validation\Rule;
+
 class CartController extends Controller
 {
     public function __construct(Item $item, Setting $setting, User $user, UserNoregist $userNor, Sale $sale, SaleRelation $saleRel, Receiver $receiver, PayMethod $payMethod, Prefecture $prefecture, DeliveryGroup $dg, DeliveryGroupRelation $dgRel, Favorite $favorite, PayMethodChild $payMethodChild)
@@ -1165,9 +1167,7 @@ XML;
     	if(Auth::check()) {
      		$pt = $this->user->find(Auth::id())->point;
      	}
-      
-//      echo $request->input('user.prefecture');  
-//      exit; 
+
 
         $rules = [
             'user.name' => 'sometimes|required|max:255',
@@ -1208,11 +1208,16 @@ XML;
         
         
         //会員新規登録時でのemailバリデーション
-        if(! Auth::check()) {
-        	//$rules['user.prefecture'] = 'required';
-         	
-          	if($request->input('regist') && ! Ctm::isLocal()) {
-          		$rules['user.email'] = 'filled|email|unique:users,email|max:255';
+        if(! Auth::check()) {         	
+          	if($request->input('regist')) {
+          		$rules['user.email'] = [
+                	'filled',
+                    'email',
+                    'max:255',
+                    Rule::unique('users', 'email')->where(function ($query) {
+                		return $query->where('active', 1); //uniqueする対象をactive:1のみにする
+            		}),
+            	];
           	}
         }
         
