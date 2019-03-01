@@ -331,7 +331,7 @@ class MyPageController extends Controller
                         'SitePass' => $this->gmoId['sitePass'],
                         'MemberID' => $user->member_id,
                         //'MemberID' => 11111,
-                        'SeqMode' => 1, //削除時はまとめて削除が出来ないので、物理モードで。毎回論理値を返すと削除がおかしくなる。
+                        'SeqMode' => 1, //削除時はまとめて削除が出来ないので、物理モードで。毎回論理値を返すとSeqNumberがずれて削除がおかしくなる。
                         'CardSeq' => $key,
                         'Expire' => $data['expire_year'][$key] . $data['expire_month'][$key],
                         'UpdateType' => 2, //ここを2（カード番号以外を更新。カード番号は登録済みの値を引継ぐ）に指定しないと、トークンかカード番号が必要となる
@@ -537,12 +537,12 @@ class MyPageController extends Controller
         }
         
         
-        //UserNoregistに移す
-        $userArr = $userModel->toArray();
-        $userArr['active'] = 2;
-        $this->userNor->create($userArr);
+        //UserNoregistに移していたが->中止 -------------------------------
+//        $userArr = $userModel->toArray();
+//        $userArr['active'] = 2;
+//        $this->userNor->create($userArr);
         
-        //Userから消す
+        //Userから消す->だったが中止しactiveを0にする ----------------------
 //        $saleRels = $this->saleRel->where(['is_user'=>1, 'user_id'=>$userId])->get();
 //        
 //        if(count($saleRels)) {

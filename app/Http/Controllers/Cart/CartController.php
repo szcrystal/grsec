@@ -810,11 +810,6 @@ XML;
     //クレカ決済 Confirm上でトークンを取得後ここにPostされる
     public function postCardPay(Request $request)
     {
-    	//1回postで送信（file_get_contentsで）し、結果がxmlで返る。その結果が正常ならepsilonへリダイレクトするという仕様
-        //イプシロン_system_manual.pdfの47ページに返り値があり
-        //しかし、この仕様については詳しく書いていない。サンプルCGIを見ろということらしい
-        //https://www.epsilon.jp/developer/each_time.html
-        
     	$data = $request->all();
         
         //URL 接続ドメイン ---------------
@@ -955,7 +950,7 @@ XML;
         	'ShopPass' => $this->gmoId['shopPass'],
 	        //'ShopPass' => 'bgx3a3x'; //パスワードを変えると意図的にエラーにできる
         
-        	'JobCd' => 'CAPTURE',
+        	'JobCd' => 'CAPTURE', //即時売上
         	'OrderID' => $data['OrderID'],
         	'Amount' => $data['Amount'],
         ];
@@ -964,8 +959,7 @@ XML;
         //exit;
         
         $trstResponse = Ctm::cUrlFunc("EntryTran.idPass", $trstDatas);
-        
-        
+
 		/*
         $ch = curl_init();
         
@@ -1065,6 +1059,11 @@ XML;
         return redirect('shop/thankyou');
         
         
+        //Epsilon
+        //1回postで送信（file_get_contentsで）し、結果がxmlで返る。その結果が正常ならepsilonへリダイレクトするという仕様
+        //イプシロン_system_manual.pdfの47ページに返り値があり
+        //しかし、この仕様については詳しく書いていない。サンプルCGIを見ろということらしい
+        //https://www.epsilon.jp/developer/each_time.html
         
         $strData = implode(',', $datas);
         
@@ -1390,6 +1389,7 @@ XML;
         
         $codFee = 0;
         $errors = array();
+        
         //コンビニ手数料 --------------
         if($data['pay_method'] == 2) { 
         	//https://www.epsilon.jp/pricelist/com_conv.html
@@ -1435,7 +1435,6 @@ XML;
             	$errors['gmoLimit'] = 'GMO後払い決済の上限額'. number_format($codMax) .'円を超えています。';
             }
         }
-        
         
         //代引き手数料 -----------
         else if($data['pay_method'] == 5) { 
@@ -1504,7 +1503,8 @@ XML;
         else { //代引きと銀振以外
         	$actionUrl = url('shop/paydo');
         }
-        
+
+/*        
 //        $payCode = 0;
 //        if($data['pay_method'] == 1) { //クレカ
 //        	$payCode = '10000-0000-00000-00000-00000-00000-00000';
@@ -1529,7 +1529,7 @@ XML;
 //        elseif($data['pay_method'] == 4) { //代引き
 //            $payCode = '10000-0000-00000-00000-00000-00000-00000'; // ???
 //        }
-        
+*/
         //User識別
         $cardInfo['cardno'] = $data['cardno'];
         $cardInfo['securitycode'] = $data['securitycode'];
@@ -1546,7 +1546,7 @@ XML;
         $settles['Amount'] = $totalFee;
         //$settles['CardSeq'] = $data['card_seq'];
         //$settles['ItemCode'] = $number; //省略推奨
-        
+/*        
 //        $settles['user_id'] = $user_id;
 //        $settles['user_name'] = $user_name;
 //        $settles['user_mail_add'] = $user_email;
@@ -1563,7 +1563,7 @@ XML;
 //        //$settles['page_type'] = 12;
 ////        $settles['version'] = 2;
 //        $settles['character_code'] = 'UTF8';
-        
+*/        
         //注文番号のsession入れ
         session(['all.order_number'=>$settles['OrderID']]);
         

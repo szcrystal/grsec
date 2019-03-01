@@ -2,6 +2,9 @@
 
 @section('content')
 
+<?php
+	use App\Setting;
+?>
 
 <div id="main" class="confirm">
 
@@ -367,7 +370,10 @@
 	        <span class="loader mr-3"><i class="fas fa-square mr-1"></i> 処理中..</span>
   		</div>
     
-        <input type="button" id="card-submit" class="btn btn-block btn-enji col-md-4 mb-4 mx-auto py-2" value="注文する">
+    	<?php
+        	$isProduct = Setting::get()->first()->is_product ? 1 : 0;
+        ?>
+        <input type="button" id="card-submit" class="btn btn-block btn-enji col-md-4 mb-4 mx-auto py-2" data-product="{{ $isProduct }}" value="注文する">
         
         {{--
         <button class="btn btn-block btn-enji col-md-4 mb-4 mx-auto py-2" type="submit" name="regist_off" value="1"{{ $disabled }} onclick="doPurchase()">注文する</button>

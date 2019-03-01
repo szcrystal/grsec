@@ -438,14 +438,15 @@ class CustomController extends Controller
     
     static function gmoId()
     {
-    	// 変更する場合は、js内にも1カ所あるので注意*******   	
+    	// 変更する場合は、script.js内にも1カ所あるので注意******* 
+        // jsの読み込み部分（app.blade.phpの末尾）も本番orNotで別れているか確認 	
         
         if(Setting::get()->first()->is_product) { //本番
         	return [
-            	'siteId' =>'tsite00032753',
-                'sitePass' => 'uu6xvemh',
-                'shopId' =>'tshop00036826',
-                'shopPass' => 'bgx3a3xf',
+            	'siteId' =>'mst2000018199',
+                'sitePass' => 'ahek2dxr',
+                'shopId' =>'9200000204151',
+                'shopPass' => '93ry4brr',
         	];	
         }
         else { //テスト

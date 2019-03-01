@@ -817,9 +817,12 @@ var exe = (function() {
             	
                 $(this).addClass('invisible');
                 $('.loader').fadeIn(100);
-                //exit;
+                //exit();
                 
+                //本番 or Not
+                var isProduct = $(this).data('product');
             
+            	//必要要素の値取得
                 var cardno, expire, securitycode, holdername;
                 
                 var cardno = $("#cardno").val();
@@ -828,7 +831,11 @@ var exe = (function() {
                 var holdername = $("#holdername").val();
                 var tokennumber = $("#tokennumber").val();
                 
-                Multipayment.init('tshop00036826'); //ここを変えるか暗証番号の桁数を変えるとエラーにすることが出来る
+                //shopId
+                var shopId = isProduct ? '9200000204151' : 'tshop00036826';
+                
+
+                Multipayment.init(shopId); //ここを変えるか暗証番号の桁数を変えるとエラーにすることが出来る
                 //Multipayment.init("tshop000");
                     
                 Multipayment.getToken({ 

@@ -94,7 +94,7 @@
                     <td style="word-break:break-all;">
                     	{{ $user->name }}
                     	@if(! $user->active)
-                            <span class="text-warning"><b>[退会]</b></span>
+                            <br><span class="text-warning"><b>[退会]</b></span>
                         @endif
                     </td>
                     <td>{{ $user->prefecture }}{{ $user->address_1 }}{{ $user->address_2 }}<br>{{ $user->address_3 }}</td>
