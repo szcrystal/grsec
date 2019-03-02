@@ -60,8 +60,12 @@ class CustomController extends Controller
         $salePer = Setting::get()->first()->sale_per;
         $tax_per = Setting::get()->first()->tax_per;
         
-        $waribiki = $price * ($salePer/100);
-        $price = $price - $waribiki;
+        //1円の時のSale計算は矛盾が出るので除外
+        if($price > 1) {
+            $waribiki = $price * ($salePer/100);
+            $price = floor($price - $waribiki);
+        }
+        
         $tax = floor($price * $tax_per/100);   
      	$price = $price + $tax;
                 
