@@ -47,8 +47,9 @@ class CustomController extends Controller
     static function getPriceWithTax($price)
     {
     	$tax_per = Setting::get()->first()->tax_per;
-     	$tax = floor($price * $tax_per/100);   
-     	$price = $price + $tax;
+     	
+        $tax = $price * $tax_per/100;   
+     	$price = floor($price + $tax);
       	
         return $price;      
     }
@@ -63,12 +64,15 @@ class CustomController extends Controller
         //1円の時のSale計算は矛盾が出るので除外
         if($price > 1) {
             $waribiki = $price * ($salePer/100);
-            $price = floor($price - $waribiki);
+            $price = $price - $waribiki;
         }
         
-        $tax = floor($price * $tax_per/100);   
-     	$price = $price + $tax;
-                
+        $tax = $price * $tax_per/100;   
+     	$price = floor($price + $tax); //最終的な金額にfloorをしないとsaleの時で小数点が出る
+        
+//        echo $tax . "/" . $price;
+//        exit;
+        
         return $price;
         
     }

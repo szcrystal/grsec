@@ -245,7 +245,7 @@ class CartController extends Controller
         //商品に入力されているSale金額が最優先
         //1円の時のSale計算は矛盾が出るので除外
         
-        $isSale = $this->setting->get()->first()->is_sale;
+        $isSale = $this->set->is_sale;
         $price = 0;
         
         if(isset($item->sale_price)) {
