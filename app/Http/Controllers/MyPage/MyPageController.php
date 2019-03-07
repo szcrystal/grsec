@@ -364,6 +364,7 @@ class MyPageController extends Controller
                         $editCardErrors .= "<br>";
                         $editCardErrors .= '[5301-Seq:'. $key .'-'; //cardSeqナンバーをエラーに付ける
                         $editCardErrors .= implode('|', $editCardDatas['ErrInfo'][$key]);
+                        //$editCardErrors .= '42G830000';
                         $editCardErrors .= ']';
                     }
                     

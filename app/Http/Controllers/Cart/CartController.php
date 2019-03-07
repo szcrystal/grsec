@@ -882,6 +882,8 @@ class CartController extends Controller
         //cUrl
         $settleResponse = Ctm::cUrlFunc("ExecTran.idPass", $settleDatas);
         
+//        echo $settleResponse;
+//        exit;
         
         //返るresponseを配列に
         $resSecondArr = explode('&', $settleResponse);
@@ -892,14 +894,19 @@ class CartController extends Controller
         	$sucSecArr[$arr[0]] = $arr[1];
         }
         
-        //echo $resSecond;
-//        print_r($sucSecArr);
-//        exit;
+        //print_r($sucSecArr);
+        //$sucSecArr['ErrInfo'] = 'E61010002|E41170099';
+        //exit;
         
         //Error時
         if(array_key_exists('ErrCode', $sucSecArr)) {
         	//カード会社から返却された時 or E01260010（カード番号異常/利用不可カードの時。カード登録時と返るエラー番号が違うので注意）
-        	if(strpos($sucSecArr['ErrCode'], 'G') !== false || strpos($sucSecArr['ErrCode'], 'C') !== false || strpos($sucSecArr['ErrInfo'], 'E01260010') !== false) {
+        	if(
+            	strpos($sucSecArr['ErrCode'], 'G') !== false || 
+                strpos($sucSecArr['ErrCode'], 'C') !== false || 
+                strpos($sucSecArr['ErrInfo'], 'E01260010') !== false ||
+                strpos($sucSecArr['ErrInfo'], 'E411') !== false
+                ) {
             	//$errors['carderr'] = 'カード情報が正しくないか、お取り扱いが出来ません。';
             	return redirect('shop/form?carderr=1000')->with('ErrInfo', '[cc-5004-'.$sucSecArr['ErrInfo'].']');
             }

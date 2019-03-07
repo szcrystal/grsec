@@ -39,11 +39,15 @@
 <p>{!! $status !!}</p>
 
 
-
 @if(isset($editCardErrors))
 	<p class="text-danger">
     	<i class="fal fa-exclamation-triangle"></i> 
         登録クレジットカードの更新を正常に進めることが出来ませんでした。
+        
+        @if(strpos($editCardErrors, '42G830000') !== false) 
+        	<?php $errorStr = '正しい有効期限であることなど' . $errorStr; ?>
+        @endif
+        
         <small>{!! $editCardErrors !!}</small>
     </p>
 @endif
