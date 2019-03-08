@@ -57,7 +57,9 @@ use App\TopSetting;
         <div class="panel-body">
         	
             @if($type == 'category' || $type == 'subcategory' || $type == 'tag')
-                @include('main.shared.upper')
+            	@if(Request::query('page') < 2)
+	                @include('main.shared.upper')
+                @endif
             @endif
             
             
