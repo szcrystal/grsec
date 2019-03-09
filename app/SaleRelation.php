@@ -41,6 +41,6 @@ class SaleRelation extends Model
         'information_foot',
         'memo',
         'craim',
-        
+        'agent_type',
     ];
 }

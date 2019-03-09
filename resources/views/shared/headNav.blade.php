@@ -102,9 +102,9 @@
             </div>
             
             <address class="float-right">
-                <p>営業時間：月曜日〜土曜日/定休日：日曜日・祝日</p>
+                <p>営業日：月〜金曜（土曜不定休）<br>定休日：日・祝日</p>
                 <ul class="list-unstyled clearfix">
-                    <li><i class="fal fa-phone"></i> 0299-53-0030</li>
+                	<li></li>
                     <li><i class="fal fa-envelope"></i> <a href="mailto:info@green-rocket.jp">info@green-rocket.jp</a></li>
                 </ul>
             </address>

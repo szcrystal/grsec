@@ -515,6 +515,7 @@ img.img-fluid + div {
 .head-second {
     padding: 0.4em 1em 0.6em;
     margin-top: 5.5em;
+    
 }
 .head-second > p {
 	text-align: center;
@@ -522,7 +523,7 @@ img.img-fluid + div {
     font-size: 1.7em;
     font-weight: normal;
     padding: 0;
-    margin: 0 0 0.2em;
+    margin: 0 0 0.1em;
 }
 
 
@@ -558,7 +559,7 @@ img.img-fluid + div {
 }
 .s-form {
 	float: left;
-	margin-top: 0.4em;
+	margin-top: 1em;
 }
 .s-form input.form-control {
     background: #fff;

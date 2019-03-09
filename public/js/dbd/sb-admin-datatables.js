@@ -16,6 +16,9 @@ $(document).ready(function() {
         dom: "<'row'<'col-md-3'l><'col-md-9'fp>>" +
          "<'row'<'col-sm-12'tr>>" +
          "<'row'<'col-sm-5'i><'col-sm-7'p>>", //lはプルダウン fは検索 pはpagination trはテーブル iはインフォ
+//        "<'row'<'col-md-3'l><'col-md-9'fp>>" +
+//         "<'row'<'col-sm-12'tr>>" +
+//         "<'row'<'col-sm-5'i><'col-sm-7'p>>"
     }
   
   );

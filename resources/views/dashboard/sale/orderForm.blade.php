@@ -324,10 +324,11 @@ use App\PayMethodChild;
                                             <tr>
                                             	<th>ご希望配送日時</th>
                                                 <td>
+                                                	日付:
                                                 	@if(isset($sale->plan_date))
-                                                        {{ $sale->plan_date }}&nbsp;
+                                                        {{ $sale->plan_date }}／
                                                     @endif
-                                                    
+                                                    時間:
                                                     @if(isset($sale->plan_time))
                                                         {{ $sale->plan_time }}
                                                     @endif
@@ -384,9 +385,12 @@ use App\PayMethodChild;
                                                 </td>
                                             </tr>
 
+											<tr>
+                                            	<td colspan="2" class="bg-white pt-2 pb-1 pl-1 text-small"><b>メール送信</b></td>
+                                            </tr>
  											
                                             <tr>
-                                            	<th>サンクスメール</th>
+                                            	<th>サンクス</th>
                                                 <td>
                                                 	<?php $sendMail = SendMailFlag::where(['sale_id'=>$sale->id, 'templ_id'=>$templs['thanks']])->get(); ?>
                                                 	
@@ -398,7 +402,7 @@ use App\PayMethodChild;
                                                 </td>
                                             </tr>
                                             <tr>
-                                            	<th>在庫確認中メール</th>
+                                            	<th>在庫確認中</th>
                                                 <td>
                                                 	<?php $sendMail = SendMailFlag::where(['sale_id'=>$sale->id, 'templ_id'=>$templs['stockNow']])->get(); ?>
                                                     
@@ -410,7 +414,7 @@ use App\PayMethodChild;
                                                 </td>
                                             </tr>
                                             <tr>
-                                            	<th>植え付け方法メール</th>
+                                            	<th>植え付け方法</th>
                                                 <td>
                                                 	<?php $sendMail = SendMailFlag::where(['sale_id'=>$sale->id, 'templ_id'=>$templs['howToUe']])->get(); ?>
                                                     
@@ -422,7 +426,7 @@ use App\PayMethodChild;
                                                 </td>
                                             </tr>
                                             <tr>
-                                            	<th>出荷完了（伝票未）メール</th>
+                                            	<th>出荷完了（伝票未）</th>
                                                 <td>
                                                 	<?php $sendMail = SendMailFlag::where(['sale_id'=>$sale->id, 'templ_id'=>$templs['deliDoneNo']])->get(); ?>
                                                     
@@ -434,7 +438,7 @@ use App\PayMethodChild;
                                                 </td>
                                             </tr>
                                             <tr>
-                                            	<th>出荷完了メール</th>
+                                            	<th>出荷完了</th>
                                                 <td>
                                                 	<?php $sendMail = SendMailFlag::where(['sale_id'=>$sale->id, 'templ_id'=>$templs['deliDone']])->get(); ?>
                                                     
@@ -445,6 +449,37 @@ use App\PayMethodChild;
                                                     @endif
                                                 </td>
                                             </tr>
+                                            
+                                            <tr>
+                                            	<th>シマトネ越冬</th>
+                                                <td>
+                                                	<?php $sendMail = SendMailFlag::where(['sale_id'=>$sale->id, 'templ_id'=>$templs['simatone_ettou']])->get(); ?>
+                                                    
+                                                	@if($sendMail->isNotEmpty())
+                                                    <span class="text-success">済 （{{ date('Y/m/d H:i', strtotime($sendMail->first()->created_at)) }}）</span>
+                                                    @else
+                                                    <span class="text-danger">未</span>
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                            
+                                            <tr>
+                                            	<th>石灰硫黄合剤</th>
+                                                <td>
+                                                	<?php $sendMail = SendMailFlag::where(['sale_id'=>$sale->id, 'templ_id'=>$templs['sekkai_iou']])->get(); ?>
+                                                    
+                                                	@if($sendMail->isNotEmpty())
+                                                    <span class="text-success">済 （{{ date('Y/m/d H:i', strtotime($sendMail->first()->created_at)) }}）</span>
+                                                    @else
+                                                    <span class="text-danger">未</span>
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                            
+                                            <tr>
+                                            	<td colspan="2" class="bg-white pt-2 pb-1 pl-1 text-small"><b>ステータス</b></td>
+                                            </tr>
+                                            
                                             <tr>
                                             	<th>お取り置き</th>
                                                 <td>
@@ -592,10 +627,10 @@ use App\PayMethodChild;
                             
                             @if($saleRel->pay_method == 2 || $saleRel->pay_method == 6)
                             <tr>
-                                <th>入金</th>
+                                <th>入金状況／<br>入金メール</th>
                            
                                 <td class="clearfix">
-                                	<fieldset class="form-group checkbox">
+                                	<fieldset class="form-group checkbox mb-0 pb-0">
                                         <label>
                                             <?php
                                                 $checked = '';
@@ -611,7 +646,15 @@ use App\PayMethodChild;
                                             ?>
                                             <input type="checkbox" name="pay_done" value="1"{{ $checked }}> 入金済みにする
                                         </label>
-                                    </fieldset>   
+                                    </fieldset>
+                                    
+                                    <?php $sendMail = SendMailFlag::where(['sale_id'=>$sale->id, 'templ_id'=>$templs['payDone']])->get(); ?>
+                                                    
+                                    @if($sendMail->isNotEmpty())
+                                    <span class="text-success">メール 済 （{{ date('Y/m/d H:i', strtotime($sendMail->first()->created_at)) }}）</span>
+                                    @else
+                                    <span class="text-danger">メール 未</span>
+                                    @endif
                                 </td>
                             </tr>
                             @endif

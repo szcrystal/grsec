@@ -50,7 +50,13 @@ use App\CategorySecond;
         </li>
     
     @else
-    	<li class="breadcrumb-item active" aria-current="page">
+    	@if(isset($orgItem))
+        	<li class="breadcrumb-item" aria-current="page">
+            	<a href="{{ url('item/' . $orgItem->id) }}">{{ $orgItem->title }}</a>
+            </li>
+        @endif
+    	
+        <li class="breadcrumb-item active" aria-current="page">
         	{{ $title }}
         </li>
         

@@ -209,6 +209,8 @@ class HomeController extends Controller
         $whereArr = ['open_status'=>1, 'is_potset'=>0];
         
         $items = null;
+        
+        $orgItem = null;
         $title = '';
         
         if($path == 'new-items') {
@@ -270,6 +272,27 @@ class HomeController extends Controller
             $title = '最近チェックしたアイテム';               
         }
         
+        elseif($path == 'item/packing') { //同梱包可能商品レコメンド -> 同じ出荷元で同梱包可能なもの
+        	
+            $orgId = $request->query('orgId');
+            $orgItem = $this->item->find($orgId);
+            
+            if(isset($orgId) && isset($orgItem) && $orgItem->is_once) {
+            	$whereArr = array_merge($whereArr, ['consignor_id'=>$orgItem->consignor_id, 'is_once'=>1, 'is_once_recom'=>0]);
+            
+                $items = $this->item->whereNotIn('id', [$orgItem->id])->where($whereArr)->orderBy('updated_at','desc')->paginate($this->perPage);
+
+                //ページネーションのリンクにqueryをつける
+                $items->appends(['orgId' => $orgId]);
+                                
+                $title = '"' . $orgItem->title . '" ' . 'と同梱包可能な商品';
+            }
+            else {
+               abort(404); 
+            }
+ 
+        }
+        
         $metaTitle = $title;
         $metaDesc = '';
         $metaKeyword = '';
@@ -278,9 +301,10 @@ class HomeController extends Controller
         	abort(404);
         }
         
-        return view('main.archive.index', ['items'=>$items, 'type'=>'unique', 'title'=>$title, 'metaTitle'=>$metaTitle, 'metaDesc'=>$metaDesc, 'metaKeyword'=>$metaKeyword,]);
+        return view('main.archive.index', ['items'=>$items, 'type'=>'unique', 'title'=>$title, 'metaTitle'=>$metaTitle, 'metaDesc'=>$metaDesc, 'metaKeyword'=>$metaKeyword, 'orgItem'=>$orgItem]);
  
     }
+    
     
     
     //RecommendInfo : Cate/SubCate/Tag

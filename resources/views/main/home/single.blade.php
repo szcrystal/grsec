@@ -42,7 +42,9 @@ use App\TopSetting;
             
             <div class="single-left">
             
-            	<?php //================================================================= ?>
+            	<?php //================================================================= 
+                	$itemId = $item->id;
+                ?>
                 
                 @if($item -> main_img)
                     <div id="carouselExampleIndicators" class="carousel slide" data-ride="false" data-interval="false">
@@ -577,6 +579,10 @@ use App\TopSetting;
                                     </ul>
                                 </div>
                                 @endforeach
+                                
+                                @if(strpos($key, '同梱包可能') !== false && Ctm::isEnv('local'))
+                                	<a href="{{ url('item/packing?orgId=' . $itemId) }}" class="btn border-secondary bg-white mt-0 mb-4 text-center w-100">同梱包可能な商品を全て見る <i class="fal fa-angle-double-right"></i></a>
+                                @endif
                             </div>
                         @endif
                     @endforeach   

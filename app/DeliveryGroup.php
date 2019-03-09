@@ -11,7 +11,8 @@ class DeliveryGroup extends Model
         'open_status',
         'capacity',
         'factor',
-        //'take_charge',
+        'table_name',
+        'table_comment',
         'is_time',
         'time_table',
     ];

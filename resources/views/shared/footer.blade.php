@@ -74,21 +74,11 @@
                 <table class="table">      
                     <tr>
                         <th>営業時間</th>
-                        <td>8：00-17：00</td>
+                        <td>9：00-16：00</td>
                     </tr>
                     <tr>
                         <th>定休日</th>
-                        <td>日曜・祝日</td>
-                    </tr>
-                    <tr>
-                        <th>TEL</th>
-                        <td>
-                        @if(Ctm::isAgent('sp'))
-                        	<a href="tel:0299530030">0299-53-0030</a>
-                        @else
-                        	0299-53-0030
-                        @endif
-                        </td>
+                        <td>日曜・祝日 / 土曜不定休</td>
                     </tr>
                     <tr>
                         <th>MAIL</th>

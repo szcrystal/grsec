@@ -113,10 +113,10 @@
                 @endif
             </fieldset>
             
-            {{--
+            
             <fieldset class="mb-4 form-group">
-                <label class="control-label">送料表名<small class="text-gray">（オモテに表示させるタイトル。空ならリンクは生成されません。）</small></label>
-                <input class="form-control col-md-6{{ $errors->has('table_name') ? ' is-invalid' : '' }}" name="table_name" value="{{ Ctm::isOld() ? old('table_name') : (isset($dg) ? $dg->table_name : '') }}" placeholder="">
+                <label class="control-label">送料表の名前<small class="text-gray">（オモテに表示させるタイトル。空ならリンクは生成されません。）</small></label>
+                <input class="form-control col-md-6{{ $errors->has('table_name') ? ' is-invalid' : '' }}" name="table_name" value="{{ Ctm::isOld() ? old('table_name') : (isset($dg) ? $dg->table_name : '') }}" placeholder="6ポット以上の送料・・ など">
                 
 
                 @if ($errors->has('table_name'))
@@ -126,11 +126,23 @@
                     </div>
                 @endif
                 
-                @if(isset($edit) && isset($dg->table_name) && $dg->table_name != ''))
+                @if(isset($edit) && isset($dg->table_name) && $dg->table_name != '')
                 	<p class="mt-2 mb-0 py-1"><a href="{{ url('deli-fee/' . $id) }}" target="_brank">{{ url('deli-fee/' . $id) }}</a></p>
             	@endif
             </fieldset>
-            --}}
+            
+            <fieldset class="mb-4 form-group">
+                <label class="control-label">送料表の補足<small class="text-gray">（オモテに表示させる補足。タイトルの下に表示。）</small></label>
+                <textarea class="form-control col-md-10{{ $errors->has('table_comment') ? ' is-invalid' : '' }}" name="table_comment" rows="5">{{ Ctm::isOld() ? old('table_comment') : (isset($dg) ? $dg->table_comment : '') }}</textarea>
+                
+
+                @if ($errors->has('table_comment'))
+                    <div class="text-danger">
+                        <span class="fa fa-exclamation form-control-feedback"></span>
+                        <span>{{ $errors->first('table_comment') }}</span>
+                    </div>
+                @endif
+            </fieldset>
 
             
             <fieldset class="form-group mb-2 pt-2">

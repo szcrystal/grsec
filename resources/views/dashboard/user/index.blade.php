@@ -113,9 +113,7 @@
                         
                         <td>
                             @if(isset($user->member_id))
-                            	@if($user->card_regist_count)
-                            	<span class="text-small">クレカ登録済：{{ $user->card_regist_count }}</span>
-                                @endif
+                            	<span class="text-small">登録数：{{ $user->card_regist_count }}</span>
                             @else
                             	<span class="text-small">未登録</span>
                             @endif

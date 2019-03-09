@@ -465,8 +465,18 @@ class CartController extends Controller
        
 
        
-       //SaleRelationのcreate
-        $saleRel = $this->saleRel->create([
+       	//SaleRelationのcreate -------
+        if(Ctm::isAgent('sp')) {
+        	$agentType = 1;
+        }
+        elseif(Ctm::isAgent('tab')) {
+        	$agentType = 2;
+        }
+        else {
+        	$agentType = 0;	
+        }
+        
+    	$saleRel = $this->saleRel->create([
             'order_number' => $orderNumber, //コンビニなし
             'regist' =>$all['regist'],
             'user_id' =>$userId,
@@ -491,8 +501,9 @@ class CartController extends Controller
             
             'pay_payment_code' => $payPaymentCode, //ネットバンク、GMO後払いのみ  
             'pay_result' => isset($data['result']) ? $data['result'] : null, //クレカのみ
-            'pay_state' => isset($data['state']) ? $data['state'] : null,  //ネットバンク、GMO後払いのみ  
-        
+            'pay_state' => isset($data['state']) ? $data['state'] : null,  //ネットバンク、GMO後払いのみ
+              
+        	'agent_type' => $agentType,
         ]);
         
         $saleRelId = $saleRel->id;

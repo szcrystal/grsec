@@ -111,6 +111,9 @@ Route::get('ranking', 'Main\HomeController@uniqueArchive');
 //Recent Check
 Route::get('recent-items', 'Main\HomeController@uniqueArchive');
 
+//Recent Check
+Route::get('item/packing', 'Main\HomeController@uniqueArchive');
+
 //Recommend Info
 Route::get('recommend-info', 'Main\HomeController@recomInfo');
 

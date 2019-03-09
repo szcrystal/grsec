@@ -26,7 +26,11 @@ use App\TopSetting;
 <div id="main" class="fix-page deli-fee">
 
     <div class="panel panel-default">
-        <h2 class="mb-4 card-header">{{ $dg->name }}</h2>
+        <h2 class="mb-3 card-header">{{ $dg->table_name }}</h2>
+        
+        @if(isset($dg->table_comment) && $dg->table_comment != '')
+        	<p class="mt-0 mb-3 p-0">{!! nl2br($dg->table_comment) !!}</p>
+        @endif
 
         <div class="panel-body">
 

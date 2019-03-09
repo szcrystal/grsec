@@ -76,6 +76,10 @@ use App\Setting;
 @endif
 
 @if(isset($isTop) && $isTop)
+<?php
+	$slideNum = Ctm::isAgent('sp') ? 3 : 5;
+?>
+
 <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
 <script>
 $(document).ready(function() {
@@ -90,7 +94,7 @@ $(document).ready(function() {
     });
     
     $('.slider-nav').slick({
-          slidesToShow: 5,
+          slidesToShow: {{ $slideNum }},
           slidesToScroll: 1,
           asNavFor: '.slider-top',
           dots: false,
