@@ -784,7 +784,9 @@ var exe = (function() {
                 var $thisItem = $('.this-item');
                 var $current = $('.slider-nav.slick-initialized .slick-current');
                 
-                var pad = 4;
+                var $prevNext = $('.slick-prev, .slick-next');
+                
+                var pad = parseInt($thisItem.css('borderWidth')); //pxが付くので
                 
                 var w = $current.width() + pad;
                 var h = $current.height() + (pad*2);
@@ -793,6 +795,8 @@ var exe = (function() {
                 //var posiL
                 
                 $thisItem.css({width:w, height:h, left:posiL});
+                
+                $prevNext.css({top: h/2 - $prevNext.height()/2});
             }
             
             set();
@@ -802,11 +806,7 @@ var exe = (function() {
             		set();
                 //}
             });
-            
-            
-//            $(window).on('resize', function(){
-//            	set();
-//            });
+
             
         },
         

@@ -56,12 +56,12 @@ $isSale = Setting::get()->first()->is_sale;
 @endif
 </span>
 
-<span class="d-block text-blue text-middle">
-    @if($obj->is_once)
-    同梱包可能
-    @else
-    同梱包不可
-    @endif
+
+@if($obj->is_once)
+    <span class="d-block text-blue text-middle">同梱包可能
+@else
+    <span class="d-block text-enji text-middle">同梱包不可
+@endif
 </span>
 
 

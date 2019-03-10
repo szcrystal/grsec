@@ -282,7 +282,7 @@ for SP
     	margin-top: 5.8em;
     }
     .fix-wrap {
-    	margin-top: 70px;
+    	margin-top: 39px;
     }
     .tophead-wrap {
     	//display: none;
@@ -317,7 +317,7 @@ for SP
 	.site-header {
 		position: relative;
         box-sizing: content-box;
-        padding: 0.15em 0;
+        padding: 0.3em 0;
         border-bottom: 1px solid #d5d5d5;
         border-top: 0;
         //margin: 36px 0 0;
@@ -403,13 +403,13 @@ for SP
         //border: 1px solid red;
     }
     .nav-tgl {
-        padding: 0.2em 0.2em 0.2em 0.2em;
+        padding: 0.3em 0.2em 0.3em 0.3em;
         top: 0;
         left: 1.0%;
         font-size: 1.7em;
     }
     .s-tgl {
-        padding: 0.35em 0.3em 0.2em 0.3em;
+        padding: 0.55em 0.35em 0.3em 0.3em;
         top: 0;
         right: 1.0%;
         font-size: 1.3em;
@@ -1075,6 +1075,18 @@ ORG END ======================== */
     }
     .tophead-wrap .carousel-indicators li {
     	padding: 2px;
+    }
+    
+    /* Slide */
+    .slider-nav .slick-prev,
+    .slider-nav .slick-next {
+        top: 20%;
+    }
+    .slider-nav .slider-item {
+    	padding: 3px;
+    }
+    .slider-wrap .this-item {
+    	border-width: 3px;
     }
     
     /* Archive */

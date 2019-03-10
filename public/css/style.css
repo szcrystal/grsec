@@ -849,11 +849,13 @@ img.img-fluid + div {
 	margin-bottom: 4.5em;
 }
 .wrap-atcl .btn-custom { /*もっと見る */
-	font-weight: bold;
+	//font-weight: bold;
     margin-top: 1.5em;
 }
-.wrap-atcl a.btn-custom:hover {
-	background: #3a3b3c !important;
+.wrap-atcl a.btn-custom:hover,
+.single-recom a.btn-custom:hover {
+	background: #3f3e3d !important;
+    border-color: #3f3e3d !important;
     color: #fff !important;
     opacity: 1;
 }
@@ -1589,7 +1591,7 @@ ul.side-rank {
 }
 .slider-nav .slider-item {
 	//flex: auto;
-    padding: 4px 4px;
+    padding: 4px;
     outline: 0;
     //border: 1px solid red;
 }
@@ -1605,13 +1607,13 @@ ul.side-rank {
 .slider-nav .slick-prev,
 .slider-nav .slick-next {
 	position: absolute;
-    top: 30%;
+    /* top: 0; jsにて */
     //margin-bottom: 10px;
-	background: rgba(0,0,0,0.7);
-    font-size: 2.6em;
-    width: 1.1em;
-    height: 1.1em;
-    line-height: 1.1em;
+	background: rgba(0,0,0,0.65);
+    font-size: 1.8em;
+    width: 1.6em;
+    height: 1.6em;
+    line-height: 1.6em;
     border-radius: 50%;
     border: 0;
     box-shadow: 0;
@@ -1629,7 +1631,7 @@ ul.side-rank {
 }
 .slider-nav .slick-prev:hover,
 .slider-nav .slick-next:hover {
-	opacity: 0.8;
+	background: rgba(0,0,0,0.85);
 }
 .slider-wrap .this-item {
 	display: block;

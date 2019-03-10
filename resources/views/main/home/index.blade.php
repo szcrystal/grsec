@@ -67,7 +67,7 @@ use App\TopSetting;
                 @endforeach
             </div>
             
-            <a href="{{ url($slug) }}" class="btn btn-block mx-auto btn-custom bg-white border-secondary text-dark rounded-0">もっと見る</a>
+            <a href="{{ url($slug) }}" class="btn btn-block btn-custom bg-white border-secondary text-dark rounded-0">もっと見る <i class="fal fa-angle-double-right"></i></a>
             
         </div>
         
@@ -127,7 +127,7 @@ use App\TopSetting;
         
     </div>
     
-    <a href="{{ url('recommend-info') }}" class="btn btn-block mx-auto btn-custom bg-white border-secondary text-dark rounded-0">もっと見る</a>
+    <a href="{{ url('recommend-info') }}" class="btn btn-block btn-custom bg-white border-secondary text-dark rounded-0">もっと見る <i class="fal fa-angle-double-right"></i></a>
     
 </div>
 @endif
