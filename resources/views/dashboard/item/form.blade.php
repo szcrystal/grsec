@@ -58,11 +58,20 @@
             {{ session('status') }}
         </div>
     @endif
+    
+    @if(session('rewriteError'))
+    	<div class="alert alert-danger">
+            <strong>Error!!</strong> 追加できません<br><br>
+            <ul>
+                <li>{{ session('rewriteError') }}</li>
+            </ul>
+        </div>
+    @endif
         
     <div class="col-lg-12 mb-5">
         <form class="form-horizontal" role="form" method="POST" action="/dashboard/items" enctype="multipart/form-data">
         
-        	<div class="form-group mb-0">
+        	<div class="form-group mb-4">
                 <div class="clearfix">
                     <button type="submit" class="btn btn-primary btn-block mx-auto w-btn w-25">更　新</button>
                 </div>
@@ -77,8 +86,26 @@
                 <input type="hidden" name="edit_id" value="{{ $id }}">
             @endif
 
-			<div class="form-group">
-                <div class="col-md-12 text-right mb-3 pb-3 mt-0">
+			<div class="form-group clearfix">
+            	
+                @if(session('rewriteError'))
+                    <div class="float-left col-md-6 mb-3 pb-0 mt-0 pl-0">
+                        <div class="checkbox">
+                            <label>
+                                <?php
+                                    $checked = '';
+                                    if(Ctm::isOld()) {
+                                        if(old('force_up'))
+                                            $checked = ' checked';
+                                    }
+                                ?>
+                                <input type="checkbox" name="force_up" value="1"{{ $checked }}> <span class="text-danger">強制的に更新する</span>
+                            </label>
+                        </div>
+                    </div>
+                @endif
+                
+                <div class="float-right col-md-5 text-right mb-3 pb-0 mt-0">
                     <div class="checkbox">
                         <label>
                             <?php

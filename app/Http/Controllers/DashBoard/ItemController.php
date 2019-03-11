@@ -16,7 +16,6 @@ use App\Setting;
 use App\ItemStockChange;
 use App\Icon;
 
-
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -24,7 +23,10 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 
 use App\Http\Requests;
 
+use Auth;
+use Ctm;
 use Storage;
+use DateTime;
 
 class ItemController extends Controller
 {
@@ -252,6 +254,10 @@ class ItemController extends Controller
         
         $data['icon_id'] = isset($data['icons']) ? implode(',', $data['icons']) : '';
         
+        //上書き制御用データ
+        $forceUp = isset($data['force_up']) ? 1 : 0;
+        $data['admin_id'] = Auth::guard('admin')->id();
+        
         //ポットセットの時、親にtrueをセットする->不要にした
 //        if($data['is_potset']) {
 //            $pItem = $this->item->find($data['pot_parent_id']);
@@ -265,7 +271,40 @@ class ItemController extends Controller
         if($editId) { //update（編集）の時
             $status = '商品が更新されました！';
             $item = $this->item->find($editId);
-            //echo date('Y-m-d H:i:s', time());
+            
+            //上書き更新の制御 ------------
+            if(! $forceUp && Ctm::isEnv('local')) {
+            	
+                $isAdmin = 0;
+                $errorStr = '他の管理者さんが';
+                
+                if(isset($item->admin_id)) { //管理者が自分でないことを確認 自分の場合はスルーする
+                	$admin = $this->admin->find($item->admin_id);
+                    
+                    $errorStr = $admin->name . 'さんが';
+                    $isAdmin = $admin->id == $data['admin_id'];
+                }
+                
+                if(! $isAdmin) { //前回更新が自分でなければ上書き制限をかける
+                    $upDate = new DateTime($item->updated_at);
+                    $nowDate = new DateTime();
+
+                    $diff = $upDate->diff($nowDate);                    
+                    //print_r($diff);
+                    //exit;
+                    
+                    $rewriteTime = $this->setting->first()->rewrite_time;
+                    
+                    if(! $diff->y && ! $diff->m && ! $diff->d && ! $diff->h && $diff->i < $rewriteTime) {
+                        
+                        $errorStr .= $diff->i . '分前に更新しています。上書きする場合は「強制更新」をONにして更新して下さい。';
+                        
+                        return back()->withInput()->with('rewriteError', $errorStr);
+                    }
+                }
+            }
+            //上書き更新の制御 END ------------
+            
 
             //stockChange save 新着情報用
             if($item->stock < $data['stock']) { //在庫が増えた時のみにしている 増えた時のみitemStockChangeにsave

@@ -181,7 +181,9 @@ return [
         'permission' => '「権限」',
         'tax_per' => '「消費税率」',
         'sale_per' => '「割引率」',
+        'point_per' => '「還元率」',
         'kare_ensure' => '「枯れ保証日数」',
+        'rewrite_time' => '「上書き制限時間（分）」',
         
         'cardno' => '「カード番号」',
         'expire_year' => '「カード有効期限（年）」',

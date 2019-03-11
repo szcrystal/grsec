@@ -30,6 +30,11 @@ class AddColumnToEtcFour extends Migration
         });
         
         
+        Schema::table('settings', function (Blueprint $table) {
+        	$table->integer('rewrite_time')->after('cot_per')->nullable()->default(30);
+        });
+        
+        
     }
 
     /**
@@ -63,7 +68,11 @@ class AddColumnToEtcFour extends Migration
             });
         }
         
-        
+        if (Schema::hasColumn('settings', 'rewrite_time')) {
+            Schema::table('settings', function (Blueprint $table) {
+                $table->dropColumn('rewrite_time');
+            });
+        }
         
     }
 }

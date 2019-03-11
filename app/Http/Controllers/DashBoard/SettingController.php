@@ -94,16 +94,18 @@ class SettingController extends Controller
         $rules = [
             'admin_name' => 'required|max:255',
             'admin_email' => 'required|max:255',
-            'tax_per' => 'required|numeric',
-            'sale_per' => 'required_with:is_sale|nullable|numeric',
-            'kare_ensure' => 'required|numeric',
+            'tax_per' => 'required|numeric', //この辺りは小数点もあるのでnumericで
+            'sale_per' => 'required_with:is_sale|nullable|numeric', //この辺りは小数点もあるのでnumericで
+            'point_per' => 'required_with:is_point|nullable|numeric', //この辺りは小数点もあるのでnumericで
+            'kare_ensure' => 'required|integer', //小数点無しなのでinteger
+            'rewrite_time' => 'required|integer', //小数点無しなのでinteger
             //'main_img' => 'filenaming',
         ];
         
          $messages = [
             // 'name.required' => '「出荷元名」を入力して下さい。',
             'sale_per.required_with' => '「割引率」を指定して下さい。',
-            
+            //'rewrite_time' => ,
             //'post_thumb.filenaming' => '「サムネイル-ファイル名」は半角英数字、及びハイフンとアンダースコアのみにして下さい。',
             //'post_movie.filenaming' => '「動画-ファイル名」は半角英数字、及びハイフンとアンダースコアのみにして下さい。',
             //'slug.unique' => '「スラッグ」が既に存在します。',

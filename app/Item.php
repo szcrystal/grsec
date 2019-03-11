@@ -70,6 +70,7 @@ class Item extends Model
         //'open_date',
         'view_count',
         'sale_count',
+        'admin_id',
 
     ];
     

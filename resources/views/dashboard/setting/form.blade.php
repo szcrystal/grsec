@@ -44,7 +44,7 @@
         </div>
     @endif
         
-    <div class="col-lg-11">
+    <div class="col-lg-12">
         <form class="form-horizontal" role="form" method="POST" action="/dashboard/settings" enctype="multipart/form-data">
         	
          	<div class="form-group">
@@ -101,7 +101,7 @@
             </fieldset>
             
             
-            <h4 class="mt-5 pt-4"><span class="text-info">■</span> Shop設定</h4>
+            <h4 class="mt-5 pt-4"><span class="text-info">■</span> ショップ設定</h4>
             <hr>
             
             <fieldset class="form-group mb-4">
@@ -231,7 +231,7 @@
             </fieldset>
             
             
-            <h4 class="mt-5 pt-4"><span class="text-info">■</span> 画像設定</h4>
+            <h4 class="mt-5 pt-4"><span class="text-info">■</span> 商品／画像設定</h4>
             <hr>
             
             
@@ -269,6 +269,20 @@
             @endif
             
             
+            <fieldset class="pt-4 mb-4 form-group{{ $errors->has('rewrite_time') ? ' has-error' : '' }}">
+                <label>商品編集 上書き不可制限時間（分単位）</label><br>
+                <input class="form-control d-inline-block col-md-4{{ $errors->has('rewrite_time') ? ' is-invalid' : '' }}" name="rewrite_time" value="{{ Ctm::isOld() ? old('rewrite_time') : (isset($setting) ? $setting->rewrite_time : '') }}"> <span>分</span>
+
+                @if ($errors->has('rewrite_time'))
+                    <div class="text-danger">
+                        <span class="fa fa-exclamation form-control-feedback"></span>
+                        <span>{{ $errors->first('rewrite_time') }}</span>
+                    </div>
+                @endif
+            </fieldset>
+            
+            <hr>
+            
  			<fieldset class="pt-4 mb-4 form-group{{ $errors->has('snap_news') ? ' has-error' : '' }}">
                 <label>TOPお知らせ用画像の枚数</label><br>
                 <input class="form-control d-inline-block col-md-4{{ $errors->has('snap_news') ? ' is-invalid' : '' }}" name="snap_news" value="{{ Ctm::isOld() ? old('snap_news') : (isset($setting) ? $setting->snap_news : '') }}"> <span>枚</span>
@@ -294,6 +308,8 @@
                 @endif
             </fieldset>
             
+            <hr>
+            
             <fieldset class="mb-4 form-group{{ $errors->has('snap_primary') ? ' has-error' : '' }}">
                 <label>商品サブ画像の枚数</label><br>
                 <input class="form-control d-inline-block col-md-4{{ $errors->has('snap_primary') ? ' is-invalid' : '' }}" name="snap_primary" value="{{ Ctm::isOld() ? old('snap_primary') : (isset($setting) ? $setting->snap_primary : '') }}"> <span>枚</span>
@@ -318,6 +334,7 @@
                 @endif
             </fieldset>
             
+            <hr>
             
             <fieldset class="mb-4 form-group{{ $errors->has('snap_block_a') ? ' has-error' : '' }}">
                 <label>上部コンテンツ（Aブロック）の個数</label><br>
@@ -355,6 +372,7 @@
                 @endif
             </fieldset>
             
+            <hr>
             
             <fieldset class="mb-4 form-group{{ $errors->has('snap_category') ? ' has-error' : '' }}">
                 <label>カテゴリー・タグ画像の枚数</label><br>
@@ -379,8 +397,6 @@
                     </div>
                 @endif
             </fieldset>
-            
-            
             
             
             
