@@ -581,7 +581,7 @@ use App\TopSetting;
                                 @endforeach
                                 
                                 @if(strpos($key, '同梱包可能') !== false && Ctm::isEnv('local'))
-                                	<a href="{{ url('item/packing?orgId=' . $itemId) }}" class="btn btn-block btn-custom bg-white border-secondary text-dark rounded-0 mt-0 mb-5 text-center">同梱包可能な商品を全て見る <i class="fal fa-angle-double-right"></i></a>
+                                	<a href="{{ url('item/packing?orgId=' . $itemId) }}" class="btn btn-block btn-custom bg-white border-secondary rounded-0 mt-0 mb-5 text-center">同梱包可能な商品を全て見る <i class="fal fa-angle-double-right"></i></a>
                                 @endif
                             </div>
                         @endif

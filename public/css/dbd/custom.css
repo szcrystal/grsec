@@ -235,7 +235,13 @@ label em {
     cursor: pointer;
 }
 
-
+.spare-tgl {
+	cursor: pointer;
+    //background: #f8f8f8;
+}
+.spare-box {
+	display: none;
+}
 
 
 /* Tag */

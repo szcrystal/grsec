@@ -848,9 +848,11 @@ img.img-fluid + div {
 .wrap-atcl {
 	margin-bottom: 4.5em;
 }
-.wrap-atcl .btn-custom { /*もっと見る */
+.wrap-atcl .btn-custom,
+.single-recom .btn-custom { /*もっと見る */
 	//font-weight: bold;
     margin-top: 1.5em;
+	color: #313131;
 }
 .wrap-atcl a.btn-custom:hover,
 .single-recom a.btn-custom:hover {

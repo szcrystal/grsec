@@ -205,8 +205,12 @@
             @endfor
     	</div>
      	--}}
+        
+        <div class="spare-img-wrap">
+        
+        <span class="spare-tgl d-block text-center bg-gray text-primary border border-secondary py-1 w-100 rounded">サブ画像を開く <i class="fa fa-caret-down"></i></span>
                     
-  		<div class="clearfix mb-3">
+  		<div class="clearfix mb-3 spare-box">
             <hr class="my-4">
             <?php
                 $s=0;
@@ -291,7 +295,7 @@
                 <?php $s++; ?>
             @endwhile
 
-
+        </div>
         </div>
             
             

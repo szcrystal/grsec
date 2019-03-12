@@ -276,28 +276,32 @@ class ItemController extends Controller
             if(! $forceUp && Ctm::isEnv('local')) {
             	
                 $isAdmin = 0;
-                $errorStr = '他の管理者さんが';
+                $errorStr = '他の管理者さんが、';
                 
-                if(isset($item->admin_id)) { //管理者が自分でないことを確認 自分の場合はスルーする
+                if(isset($item->admin_id)) { //管理者が自分でないことを確認 自分の場合は上書き制限をかけない
                 	$admin = $this->admin->find($item->admin_id);
                     
-                    $errorStr = $admin->name . 'さんが';
+                    $errorStr = $admin->name . 'さんが、';
                     $isAdmin = $admin->id == $data['admin_id'];
                 }
                 
                 if(! $isAdmin) { //前回更新が自分でなければ上書き制限をかける
                     $upDate = new DateTime($item->updated_at);
                     $nowDate = new DateTime();
-
-                    $diff = $upDate->diff($nowDate);                    
+                    
+                    $diff = $nowDate->diff($upDate); //$nowDateにmodifyをした後だと狂うので先にdiffを取得しておく
                     //print_r($diff);
                     //exit;
                     
                     $rewriteTime = $this->setting->first()->rewrite_time;
+                    $limitDate = $nowDate->modify('-'.$rewriteTime.' minutes'); // 制限時間のDate Objを取得
                     
-                    if(! $diff->y && ! $diff->m && ! $diff->d && ! $diff->h && $diff->i < $rewriteTime) {
+                    //Timestamp比較で
+                    if($limitDate->format('U') < $upDate->format('U')) { // or $limit->getTimestamp()
+
+                        $minute = $diff->h ? ($diff->h * 60) + $diff->i : $diff->i; //差が1時間以上であれば分にして足す
                         
-                        $errorStr .= $diff->i . '分前に更新しています。上書きする場合は「強制更新」をONにして更新して下さい。';
+                        $errorStr .= $minute . '分前に更新しています。上書きする場合は「強制更新」をONにして更新して下さい。';
                         
                         return back()->withInput()->with('rewriteError', $errorStr);
                     }

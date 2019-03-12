@@ -685,6 +685,15 @@ var exe = (function() {
             
         },
         
+        openSpareImg: function() {
+        	$('.spare-tgl').on('click', function(){
+            	$(this).next('.spare-box').slideToggle(200);
+            
+            });
+        	
+        },
+        
+        
         openTable: function(){
         	
             $('.open-tgl').on('click', function(){
@@ -764,6 +773,7 @@ $(function(e){ //ready
     
     exe.changeSearch();
     
+    exe.openSpareImg();
     exe.openTable();
     exe.openBlock();
     exe.openPreview();

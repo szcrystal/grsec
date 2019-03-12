@@ -9,7 +9,7 @@
         </label>
 
         <?php
-            $rows = (isset($type) && $type == 'top') ? 20 : 35;
+            $rows = (isset($type) && $type == 'top') ? 20 : 33;
         ?>
         
         <textarea class="form-control" name="contents" rows="{{ $rows }}">{{ Ctm::isOld() ? old('contents') : (isset($obj) ? $obj->contents : '') }}</textarea>
@@ -109,12 +109,17 @@
     
     @if(isset($type) && $type == 'top')
     	<h5>TOPヘッダースライド画像</h5>
-        <label class="mt-3 mb-4"><span class="text-small p-0 m-0">*（縦横サイズは任意、全ての画像を同じサイズで揃えて下さい。）</span></label> 
+        <label class="mt-3 mb-4"><span class="text-small p-0 m-0">*（縦横サイズは任意、全ての画像を同じサイズで揃えて下さい。）</span></label>
+        <?php $spareClass = ''; ?> 
     @else
     	<h5>コンテンツ画像</h5>
+        <span class="spare-tgl d-block bg-gray text-center text-primary border border-secondary py-1 mb-5 w-100 rounded">画像を開く <i class="fa fa-caret-down"></i></span>
+        <?php $spareClass = 'spare-box'; ?>
     @endif
     
-    <div class="clearfix mb-3">
+    
+    
+    <div class="clearfix mb-3 {{ $spareClass }}">
     	<span class="text-small text-secondary d-block mb-3">＊UPする画像のファイル名は全て半角英数字とハイフンのみで構成して下さい。(abc-123.jpg など)</span>
 
         <?php
