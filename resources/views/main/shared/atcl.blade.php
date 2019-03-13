@@ -30,8 +30,9 @@ use App\Icon;
     
     $isStock = 0;
     $imgClass = '';
-        
-    $pots = Item::where(['is_potset'=>1, 'pot_parent_id'=>$item->id])->get();
+    
+    //pot売り切れ判定
+    $pots = Item::where(['is_potset'=>1, 'pot_parent_id'=>$item->id, 'open_status'=>1])->get();
     
     if($pots->isNotEmpty()) {
         foreach($pots as $pot) {
