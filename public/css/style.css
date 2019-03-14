@@ -1702,7 +1702,7 @@ ul.side-rank {
 	font-size: 1.2em;
     margin-top: 0.5em;
     text-align: center;
-    color: tomato;
+    //color: tomato;
 }
 
 .single .btn[type="submit"]:disabled {
