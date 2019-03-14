@@ -113,7 +113,7 @@
         <?php $spareClass = ''; ?> 
     @else
     	<h5>コンテンツ画像</h5>
-        <span class="spare-tgl d-block bg-gray text-center text-primary border border-secondary py-1 mb-5 w-100 rounded">画像を開く <i class="fa fa-caret-down"></i></span>
+        <span class="spare-tgl d-block bg-gray text-center text-primary border border-gray py-1 mb-5 w-100 rounded">コンテンツ画像を開く <i class="fa fa-caret-down"></i></span>
         <?php $spareClass = 'spare-box'; ?>
     @endif
     

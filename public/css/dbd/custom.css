@@ -237,7 +237,9 @@ label em {
 
 .spare-tgl {
 	cursor: pointer;
-    //background: #f8f8f8;
+}
+.spare-tgl:hover {
+	opacity: 0.7;
 }
 .spare-box {
 	display: none;

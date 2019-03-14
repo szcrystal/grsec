@@ -8,10 +8,7 @@ use App\TopSetting;
     </div>
     
     @if(isset($isTop) && $isTop)
-        @if(Ctm::isEnv('local'))
-        	@include('main.shared.slider')
-		@else
-        	@include('main.shared.carousel')
-        @endif
+        @include('main.shared.slider')
+        {{-- @include('main.shared.carousel') --}}
     @endif
 </div>

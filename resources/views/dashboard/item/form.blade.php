@@ -208,7 +208,7 @@
         
         <div class="spare-img-wrap">
         
-        <span class="spare-tgl d-block text-center bg-gray text-primary border border-secondary py-1 w-100 rounded">サブ画像を開く <i class="fa fa-caret-down"></i></span>
+        <span class="spare-tgl d-block text-center bg-gray text-primary border border-gray py-1 w-100 rounded">サブ画像を開く <i class="fa fa-caret-down"></i></span>
                     
   		<div class="clearfix mb-3 spare-box">
             <hr class="my-4">
