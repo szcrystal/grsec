@@ -1081,6 +1081,9 @@ ORG END ======================== */
     .slider-nav .slick-prev,
     .slider-nav .slick-next {
         top: 20%;
+        width: 1.4em;
+        height: 1.4em;
+        line-height: 1.4em;
     }
     .slider-nav .slider-item {
     	padding: 3px;
