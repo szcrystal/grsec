@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 use Ctm;
+use DateTime;
 
 class ContactController extends Controller
 {
@@ -37,12 +38,7 @@ class ContactController extends Controller
      */
     public function index()
     {
-//        $objs = $this->category->all();
-//        
-//        $cate_option = $objs->map(function ($obj) {
-//            return $obj->category;
-//        });
-		
+    	//ask category
   		$cate_option = [
     		'商品について',
       		'商品の入荷時期について',
@@ -51,13 +47,29 @@ class ContactController extends Controller
           	'サイトの使用方法について',
            	'その他',              
         ];
+        
+        //request day
+        $now = new DateTime('now');
+        $nowDate = $now->format('Y-m-d');
+        $reqDays = array();
+    
+        for($plusDay = 1; $plusDay < 31; $plusDay++) {
+            //$d = new DateTime("+". $plusDay . " days");
+            //$first = $d->format('Y-m-d');
+            
+            $d = $plusDay ? $now->modify("+1 days")->format('Y-m-d') : $nowDate; //nowにmodifyすると持続されるので+1days
+            $reqDays[$d] = Ctm::getDateWithYoubi($d); //引数はstr(Y-m-d)で
+        }
+        
+        //request time
+        $reqTimes = [
+        	'9:00〜10:00',
+            '10:00〜11:00',
+            '13:00〜14:00',
+            '14:00〜15:00',
+            '15:00〜16:00',
+        ];
 
-//        $atclObj = NULL;
-//        $select = '';
-//        if($id) {
-//            $atclObj = $this->article->find($id);
-//            $select = '削除依頼';
-//        }
 
 		$title = 'お問い合わせ';
         $type = 'contact';
@@ -66,7 +78,7 @@ class ContactController extends Controller
 //        $metaDesc = $setting->meta_description;
 //        $metaKeyword = $setting->meta_keyword;
 
-        return view('main.contact.index', ['cate_option'=>$cate_option, 'metaTitle'=>$metaTitle, 'title'=>$title, 'type'=>$type]);
+        return view('main.contact.index', ['cate_option'=>$cate_option, 'reqDays'=>$reqDays, 'reqTimes'=>$reqTimes, 'metaTitle'=>$metaTitle, 'title'=>$title, 'type'=>$type]);
     }
     
 

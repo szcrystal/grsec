@@ -175,6 +175,7 @@ return [
         
         'capacity' => '「容量」',
         'table_name' => '「送料表名」',
+        'time_table' => '「時間割」',
         
         'admin_name' => '「管理者名」',
         'admin_email' => '「管理者メールアドレス」',

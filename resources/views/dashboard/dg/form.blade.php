@@ -166,7 +166,7 @@
             </fieldset>
             
             <fieldset class="mb-4 form-group">
-                <label for="time_table" class="control-label">時間割（各時間帯をカンマで区切って下さい）</label>
+                <label for="time_table" class="control-label">時間割（各時間帯を半角カンマで区切って下さい）</label>
                 <input class="form-control col-md-12{{ $errors->has('time_table') ? ' is-invalid' : '' }}" name="time_table" value="{{ Ctm::isOld() ? old('time_table') : (isset($dg) ? $dg->time_table : '') }}" placeholder="午前,12:00~14:00,14:00~16:00">
                 
 

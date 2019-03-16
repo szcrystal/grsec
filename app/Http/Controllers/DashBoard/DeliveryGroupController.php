@@ -105,13 +105,21 @@ class DeliveryGroupController extends Controller
             'capacity' => 'required|max:255',
             //'table_name' => 'required|max:255',
             //'table_name' => 'alpha_dash|unique:delivery_groups,slug,'.$editId.'|max:255',
-            'time_table' => 'required_with:is_time|max:255',
+            'time_table' => [
+            	'required_with:is_time',
+            	'max:255',
+                function($attribute, $value, $fail) {
+                    if (strpos($value, '、') !== false) {
+                        return $fail('「時間割」に全角のカンマがあります。');
+                    }
+                }
+            ],
             
             //'main_img' => 'filenaming',
         ];
         
          $messages = [
-            'time_table.required_with' => '「時間帯」を入力して下さい。',
+            //'time_table.required_with' => '「時間割」を入力して下さい。',
             'name.required' => '「配送区分名」を入力して下さい。',
             'name.max' => '「配送区分名」は255文字以内で入力して下さい。',
             //'post_thumb.filenaming' => '「サムネイル-ファイル名」は半角英数字、及びハイフンとアンダースコアのみにして下さい。',
