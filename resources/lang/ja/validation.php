@@ -116,6 +116,7 @@ return [
         'password_confirmation' => '「パスワードの確認」', 
         'name' => '「お名前」', // forお問い合わせ
         'email' => '「メールアドレス」',// forお問い合わせ
+        'tel_num' => '「電話番号」',
         
         'user.name' => '「氏名」',
         'user.hurigana' => '「フリガナ」',
@@ -138,10 +139,9 @@ return [
         'receiver.address_1' => '「配送先住所1」',
         'receiver.address_2' => '「配送先住所2」',
         
-        
-        
-        
         'ask_category' => '「お問い合わせ種別」',
+        'request_day' => '「ご希望日」',
+        'request_time' => '「ご希望時間帯」',
         //'name' => '「ユーザー名」',
         'email' => '「メールアドレス」',
         'context' => '「コメント」',

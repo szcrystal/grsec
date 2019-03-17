@@ -381,8 +381,11 @@ class CustomController extends Controller
         */
 		
         $time = new DateTime($dateNormalFormat);
-		$withYoubi = $time->format('Y/m/d');
-        $withYoubi .= ' (' . $week[$time->format('w')] . ')';
+        
+        $ymd = $time->format('Y/m/d');
+        $w = $time->format('w');
+        
+        $withYoubi = $ymd . ' (' . $week[$w] . ')';        
         
         return $withYoubi;
     }

@@ -53,18 +53,24 @@ class ContactController extends Controller
         $nowDate = $now->format('Y-m-d');
         $reqDays = array();
     
-        for($plusDay = 1; $plusDay < 31; $plusDay++) {
-            //$d = new DateTime("+". $plusDay . " days");
-            //$first = $d->format('Y-m-d');
+        for($plusDay = 1; $plusDay < 21; $plusDay++) {
             
-            $d = $plusDay ? $now->modify("+1 days")->format('Y-m-d') : $nowDate; //nowにmodifyすると持続されるので+1days
-            $reqDays[$d] = Ctm::getDateWithYoubi($d); //引数はstr(Y-m-d)で
+            $d = $plusDay ? $now->modify("+1 days") : $now; //nowにmodifyすると持続されるので+1days
+            
+            $ymd = $d->format('Y-m-d');
+            $w = $d->format('w');
+            
+            if($w && $w != 6) {
+            	$withYoubi = Ctm::getDateWithYoubi($ymd);
+	            $reqDays[$withYoubi] = $withYoubi; //引数はstr(Y-m-d)で
+            }
         }
         
         //request time
         $reqTimes = [
         	'9:00〜10:00',
             '10:00〜11:00',
+            '11:00〜12:00',
             '13:00〜14:00',
             '14:00〜15:00',
             '15:00〜16:00',
@@ -101,20 +107,31 @@ class ContactController extends Controller
      */
     public function store(Request $request)
     {
+    	$isAskType = $request->input('is_ask_type');
+         
         $rules = [
         	'ask_category' => 'required',
             'name' => 'required|max:255',
-            'email' => 'required|email|max:255', /* |unique:admins 注意:unique */
-			'comment' => 'required',
+            'email' => 'required|email|max:255',
+//			'comment' => 'required',
         ];
         
-        $messages = [
-            //'ask_category.required' => '「お名前」を入力して下さい。',
-            //'email.required' => '「メールアドレス」を入力して下さい。',
+        if(! $isAskType) { //Telの時
+        	$telRules = [
+            	'tel_num'=>'required|numeric',
+                'request_day'=>'required',
+                'request_time'=>'required',
+            ];
             
-            //'post_thumb.filenaming' => '「サムネイル-ファイル名」は半角英数字、及びハイフンとアンダースコアのみにして下さい。',
-            //'post_movie.filenaming' => '「動画-ファイル名」は半角英数字、及びハイフンとアンダースコアのみにして下さい。',
-            //'slug.unique' => '「スラッグ」が既に存在します。',
+            $rules = array_merge($rules, $telRules);
+        	//array_splice($rules, 2, 0, $telRules);
+        }
+        
+        $rules['comment'] = 'required'; //Tel/Mail両方
+        
+        $messages = [
+            'comment.required' => '「お問い合わせ内容」は必須です。',
+            //'email.required' => '「メールアドレス」を入力して下さい。',
         ];
         
         $this->validate($request, $rules, $messages);
@@ -156,6 +173,9 @@ class ContactController extends Controller
         }
         
         $data = session('contact');
+        
+//        print_r($data);
+//        exit;
         
         $contactModel = $this->contact;
         
