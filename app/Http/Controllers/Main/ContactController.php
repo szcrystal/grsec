@@ -107,7 +107,7 @@ class ContactController extends Controller
      */
     public function store(Request $request)
     {
-    	$isAskType = $request->input('is_ask_type');
+    	//$isAskType = $request->input('is_ask_type');
          
         $rules = [
         	'ask_category' => 'required',
@@ -116,16 +116,16 @@ class ContactController extends Controller
 //			'comment' => 'required',
         ];
         
-        if(! $isAskType) { //Telの時
-        	$telRules = [
-            	'tel_num'=>'required|numeric',
-                'request_day'=>'required',
-                'request_time'=>'required',
-            ];
-            
-            $rules = array_merge($rules, $telRules);
-        	//array_splice($rules, 2, 0, $telRules);
-        }
+//        if(! $isAskType) { //Telの時
+//        	$telRules = [
+//            	'tel_num'=>'required|numeric',
+//                'request_day'=>'required',
+//                'request_time'=>'required',
+//            ];
+//            
+//            $rules = array_merge($rules, $telRules);
+//        	//array_splice($rules, 2, 0, $telRules);
+//        }
         
         $rules['comment'] = 'required'; //Tel/Mail両方
         

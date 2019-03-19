@@ -650,7 +650,7 @@ img.img-fluid + div {
 	display: block;
 	float: none;
 	width: 100%;
-/*    border: 1px solid #d8d8d8;*/
+    //border: 1px solid red;
 /*    border-width: 1px 0 0;*/
 	//margin-top: 7.8em;
     /*background: #FDFBFC;*//*#ececec*/
@@ -664,6 +664,7 @@ img.img-fluid + div {
 	padding: 0;
     height: 2.9em;
     position: relative;
+    width: 100%;
 }
 .main-navi > ul:after {
 	display: block;
@@ -680,6 +681,7 @@ img.img-fluid + div {
     text-align: center;
     border: 1px solid #d8d8d8;
     border-width: 1px 1px 1px 0;
+    //box-sizing: border-box;
     //border-right: 1px solid #d8d8d8;    
 }
 .main-navi > ul > li:hover {
@@ -709,8 +711,21 @@ img.img-fluid + div {
     height: 100%;
 }
 .main-navi > ul > li:last-of-type {
-	border-right: 0/* 1px solid #d8d8d8*/;
+	border-right: 0;
 }
+/* IE11 */
+@media all and (-ms-high-contrast:none) {
+    *::-ms-backdrop, .main-navi > ul > li:last-of-type {
+      width: calc(100% / 7 - 1px);
+    } 
+}
+/* Edge */
+@supports (-ms-ime-align:auto) {
+  .main-navi > ul > li:last-of-type {
+  	width: calc(100% / 7 - 1px);
+  }
+}
+
 .main-navi > ul > li.nav-active {
 	background: #faf9fa/*#fdfcfd*/;
 }
@@ -1609,18 +1624,17 @@ ul.side-rank {
 .slider-nav .slick-prev,
 .slider-nav .slick-next {
 	position: absolute;
+    display: block;
     /* top: 0; jsにて */
-    //margin-bottom: 10px;
 	background: rgba(0,0,0,0.65);
     font-size: 1.8em;
     width: 1.5em;
     height: 1.5em;
-    line-height: 1.5em;
+    line-height: 1.55em;
     border-radius: 50%;
     border: 0;
     box-shadow: 0;
     color: #fff;
-    display: block;
     text-align: center;
     z-index: 99;
     cursor: pointer;
@@ -1643,7 +1657,9 @@ ul.side-rank {
     z-index: 999;
     width: 263px;
     height: 120px;
-    border: 4px solid #151515;
+    border-width: 4px;
+    border-style: solid;
+    border-color: #151515;
     //background: red;
 }
 .slick-initialized {

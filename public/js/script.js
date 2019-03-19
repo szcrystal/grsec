@@ -786,23 +786,26 @@ var exe = (function() {
                 
                 var $prevNext = $('.slick-prev, .slick-next');
                 
-                var pad = parseInt($thisItem.css('borderWidth')); //pxが付くので
-                
+                //var pad = parseInt($thisItem.css('borderWidth')); //pxが付くので firefoxで効かないのでborder-top-widthとする必要がある
+                var pad = parseInt($thisItem.css('border-top-width'));
+
                 var w = $current.width() + pad;
                 var h = $current.height() + (pad*2);
                 
                 var posiL = ($('.slider-wrap').width() - w ) / 2;
-                //var posiL
                 
                 $thisItem.css({width:w, height:h, left:posiL});
                 
-                $prevNext.css({top: h/2 - $prevNext.height()/2});
+                $prevNext.css({top:h/2 - ($prevNext.height()/2)});
+                
+                //$('h2').text(pad + '/');
             }
             
-            set();
+            //set(); //docu.ready時は不要 下記setPositionでsetされる
             
             $('.slider-nav').on('setPosition', function(){
-            	//if($(window).width() > 1200) {
+            //$(window).on('resize', function() {
+                //if($(window).width() > 1200) {
             		set();
                 //}
             });
