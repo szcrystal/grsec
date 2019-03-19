@@ -116,16 +116,17 @@ class ContactController extends Controller
 //			'comment' => 'required',
         ];
         
-//        if(! $isAskType) { //Telの時
-//        	$telRules = [
-//            	'tel_num'=>'required|numeric',
-//                'request_day'=>'required',
-//                'request_time'=>'required',
-//            ];
-//            
-//            $rules = array_merge($rules, $telRules);
-//        	//array_splice($rules, 2, 0, $telRules);
-//        }
+        //ここだけをコメントアウトすれば元のフォームで送信出来る
+        if(! $request->input('is_ask_type')) { //Telの時
+        	$telRules = [
+            	'tel_num'=>'required|numeric',
+                'request_day'=>'required',
+                'request_time'=>'required',
+            ];
+            
+            $rules = array_merge($rules, $telRules);
+        	//array_splice($rules, 2, 0, $telRules);
+        }
         
         $rules['comment'] = 'required'; //Tel/Mail両方
         
@@ -141,11 +142,14 @@ class ContactController extends Controller
         
         $request->session()->put('contact', $data);
         
-        $metaTitle = 'お問い合わせ 確認';
+        $title = 'お問い合わせ 確認';
+        $type = 'caontact';
+        
+        $metaTitle = $title;
 //        $metaDesc = $setting->meta_description;
 //        $metaKeyword = $setting->meta_keyword;
         
-        return view('main.contact.confirm', ['data'=>$data, 'metaTitle'=>$metaTitle]);
+        return view('main.contact.confirm', ['data'=>$data, 'metaTitle'=>$metaTitle, 'title'=>$title, 'type'=>$type]);
         
         
 //        $contactModel = $this->contact;
@@ -199,11 +203,13 @@ class ContactController extends Controller
         	$request->session()->forget('contact');
         }
         
-        $metaTitle = 'お問い合わせ 完了';
+        $title = 'お問い合わせ 完了';
+        $type = 'caontact';
+        $metaTitle = $title;
 //        $metaDesc = $setting->meta_description;
 //        $metaKeyword = $setting->meta_keyword;
         
-        return view('main.contact.done', ['metaTitle'=>$metaTitle])->with('status', '送信されました！');
+        return view('main.contact.done', ['metaTitle'=>$metaTitle, 'title'=>$title, 'type'=>$type])->with('status', '送信されました！');
         //return redirect('mypage/'.$id.'/edit')->with('status', '記事が追加されました！');
         
         

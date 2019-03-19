@@ -243,6 +243,9 @@ use App\PayMethodChild;
                     <th>金額計（税込）</th>
                     <th>リピ情報（最新5件）</th>
                   	<th></th>
+                    @if(Auth::guard('admin')->id() == 2)
+                    	<th>Agt</th>
+                    @endif
                 </tr>
               </thead>
               
@@ -259,6 +262,9 @@ use App\PayMethodChild;
                     <th>金額計（税込）</th>
                     <th>リピ情報（最新5件）</th>
                   	<th></th>
+                    @if(Auth::guard('admin')->id() == 2)
+                    	<th>Agt</th>
+                    @endif
                 </tr>
               </tfoot>
               
@@ -454,7 +460,24 @@ use App\PayMethodChild;
                     <br>
                     <small class="text-secondary ml-1 d-none">{{ $saleRel->order_number }}</small>
                 </td>
-                  
+                
+                	@if(Auth::guard('admin')->id() == 2)
+                        <td>
+                        	@if(isset($saleRel->agent_type))
+                            	@if(! $saleRel->agent_type)
+                                	PC
+                                @elseif($saleRel->agent_type == 1)
+                                	TAB
+                                @elseif($saleRel->agent_type == 2)
+                                	SP
+                                @else
+                                	--
+                                @endif
+                            @else
+                            	--
+                            @endif
+                        </td>
+                  	@endif
                 </tr>
             @endforeach
 

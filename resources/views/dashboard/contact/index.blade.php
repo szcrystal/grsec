@@ -19,7 +19,6 @@
         </div>
     @endif
 
-    {{ $contacts->links() }}
         
     <div class="table-responsive">
         <table id="dataTable" class="table table-striped table-bordered table-hover bg-white"{{-- id="dataTable"--}} width="100%" cellspacing="0">
@@ -97,8 +96,6 @@
         </tbody>
         </table>
         </div>
-    
-    {{ $contacts->links() }}
-        
+
 @endsection
 

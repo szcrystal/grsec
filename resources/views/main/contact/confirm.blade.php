@@ -1,6 +1,10 @@
 @extends('layouts.app')
 
-
+{{--
+@section('bread')
+@include('main.shared.bread')
+@endsection
+--}}
 
 @section('content')
     <div class="row contact">
@@ -18,87 +22,55 @@
                         <table class="table table-bordered bg-white">
                             
                             <tbody>
-                            	@if(Ctm::isEnv('local'))
                                 	
-                                	<tr class="form-group">
-                                        <th>お問い合わせ方法</th>
-                                        <td>
-                                        	@if(! $data['is_ask_type'])
-                                            	お電話でのお問い合わせ
-                                            @else
-                                            	メールでのお問い合わせ
-                                            @endif
-                                        </td>
-                                    </tr>
-                                    
-                                	<tr class="form-group">
-                                        <th>お問い合わせ種別</th>
-                                        <td>{{ $data['ask_category'] }}</td>
-                                    </tr>
-
-                                    <tr class="form-group">
-                                        <th>お名前</th>
-                                        <td>{{ $data['name'] }}</td>
-                                    </tr>
-
-									@if(! $data['is_ask_type'])
-                                    	<tr class="form-group">
-                                            <th>電話番号</th>
-                                            <td>{{ $data['tel_num'] }}</td>
-                                        </tr>
-                                    	<tr class="form-group">
-                                            <th>ご希望日</th>
-                                            <td>{{ $data['request_day'] }}</td>
-                                        </tr>
-                                    	<tr class="form-group">
-                                            <th>ご希望時間帯</th>
-                                            <td>{{ $data['request_time'] }}</td>
-                                        </tr>
-                                    @endif
-                                    
-                                    <tr class="form-group">
-                                        <th>メールアドレス</th>
-                                        <td>{{ $data['email'] }}</td>
-                                    </tr>
-                                    
-                                    <tr class="form-group">
-                                        <th>お問い合わせ内容</th>
-                                        <td>
-                                            <p>{!! nl2br($data['comment']) !!}</p>
-                                        </td>
-                                    </tr>
+                                <tr class="form-group">
+                                    <th>お問い合わせ方法</th>
+                                    <td>
+                                        @if(! $data['is_ask_type'])
+                                            電話
+                                        @else
+                                            メール
+                                        @endif
+                                    </td>
+                                </tr>
                                 
-                                @else
-                                    <tr class="form-group">
-                                        <th>お問い合わせ種別</th>
-                                        <td>
-                                            {{ $data['ask_category'] }}
-                                        </td>
-                                    </tr>
+                                <tr class="form-group">
+                                    <th>お問い合わせ種別</th>
+                                    <td>{{ $data['ask_category'] }}</td>
+                                </tr>
 
-                                    <tr class="form-group">
-                                        <th>お名前</th>
-                                        <td>
-                                            {{ $data['name'] }}
-                                        </td>
-                                    </tr>
+                                <tr class="form-group">
+                                    <th>お名前</th>
+                                    <td>{{ $data['name'] }}</td>
+                                </tr>
 
+                                @if(! $data['is_ask_type'])
                                     <tr class="form-group">
-                                        <th>メールアドレス</th>
-                                        <td>
-                                            {{ $data['email'] }}
-                                        </td>
+                                        <th>電話番号</th>
+                                        <td>{{ $data['tel_num'] }}</td>
                                     </tr>
-                                    
                                     <tr class="form-group">
-                                        <th>お問い合わせ内容</th>
-                                        <td>
-                                            <p>
-                                            {!! nl2br($data['comment']) !!}
-                                            </p>
-                                        </td>
+                                        <th>ご希望日</th>
+                                        <td>{{ $data['request_day'] }}</td>
+                                    </tr>
+                                    <tr class="form-group">
+                                        <th>ご希望時間帯</th>
+                                        <td>{{ $data['request_time'] }}</td>
                                     </tr>
                                 @endif
+                                
+                                <tr class="form-group">
+                                    <th>メールアドレス</th>
+                                    <td>{{ $data['email'] }}</td>
+                                </tr>
+                                
+                                <tr class="form-group">
+                                    <th>お問い合わせ内容</th>
+                                    <td>
+                                        <p>{!! nl2br($data['comment']) !!}</p>
+                                    </td>
+                                </tr>
+                                
                             </tbody>
                 		</table>
                         
@@ -122,7 +94,6 @@
                 </div>
 
 				</div><!-- panel-body -->
-
             </div><!-- panel -->
             
 
