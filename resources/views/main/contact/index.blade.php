@@ -16,7 +16,7 @@
                 <p class="mt-3">グリーンロケットをご利用いただき誠にありがとうございます。<br>以下より、ご希望のお問い合わせをお選び下さい。</p> 
             </div>
 
-            <div class="panel-body mt-5">
+            <div class="panel-body mt-5 mb-4">
 
                 <?php
                     $telActive = '';
@@ -40,7 +40,7 @@
                     
                 <ul class="nav nav-tabs mt-4">
                     <li class="nav-item">
-                       <a href="#tab-1" class="nav-link {{ $telActive }}" data-toggle="tab"><i class="fal fa-phone"></i> お電話でのお問い合わせ</a>
+                       <a href="#tab-1" class="nav-link {{ $telActive }}" data-toggle="tab"><i class="fal fa-phone"></i> 電話でのお問い合わせ</a>
                     </li>
                     <li class="nav-item">
                        <a href="#tab-2" class="nav-link {{ $mailActive }}" data-toggle="tab"><i class="fal fa-envelope"></i> メールでのお問い合わせ</a>

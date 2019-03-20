@@ -8,6 +8,7 @@ class Item extends Model
 {
     protected $fillable = [ //varchar:文字数
         'open_status',
+        'is_secret',
                     
         'number',
         'title',

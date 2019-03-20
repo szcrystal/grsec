@@ -33,65 +33,84 @@ use App\TopSetting;
 <div id="main" class="archive">
 
 <div class="panel panel-default top-cont">
-
-        <div class="panel-heading">
-            <h2 class="mb-3 card-header">
-            @if($type == 'category')
-                {{ $cate->name }}
-            @elseif($type == 'subcategory')
-                <small class="d-block pb-2">{{ $cate->name }}</small>{{ $subcate->name }}
-            @elseif($type == 'tag')
-                タグ：{{ $tag->name }}
-            @elseif($type=='search')
-                @if(!count($items))
-                検索ワード：{{ $searchStr }}の商品がありません
-                @else
-                検索ワード：{{ $searchStr }}
-                @endif
-            @elseif($type == 'unique')
-                {{ $title }}
-            @endif
-            </h2>
-        </div>
-        
-        <div class="panel-body">
-        	
-            @if($type == 'category' || $type == 'subcategory' || $type == 'tag')
-            	@if(Request::query('page') < 2)
-	                @include('main.shared.upper')
-                @endif
-            @endif
-            
-            
-            <div class="pagination-wrap">
-            	{{ $items->links() }}
-            </div>
-            
-            <?php 
-            	$n = Ctm::isAgent('sp') ? 3 : 4;
-                $itemArr = array_chunk($items->all(), $n); 
-            ?>
-            
-            @foreach($itemArr as $itemVal)
-                <div class="clearfix">
+	
+    <?php $orgObj = null; ?>
     
-                @foreach($itemVal as $item)
-                    <article class="main-atcl">
-                            
-                       	<?php $strNum = Ctm::isAgent('sp') ? 16 : 25; ?>
-                    	@include('main.shared.atcl')
-                            
-                    </article>
-                @endforeach
+    <div class="panel-heading">
+        <h2 class="mb-3 card-header">
+        @if($type == 'category')
+            {{ $cate->name }}
+            <?php $orgObj = $cate; ?>
+            
+        @elseif($type == 'subcategory')
+            <small class="d-block pb-2">{{ $cate->name }}</small>{{ $subcate->name }}
+            <?php $orgObj = $subcate; ?>
+            
+        @elseif($type == 'tag')
+            タグ：{{ $tag->name }}
+            <?php $orgObj = $tag; ?>
+            
+        @elseif($type=='search')
+            @if(!count($items))
+            検索ワード：{{ $searchStr }}の商品がありません
+            @else
+            検索ワード：{{ $searchStr }}
+            @endif
+        @elseif($type == 'unique')
+            {{ $title }}
+        @endif
+        </h2>
+    </div>
+        
+    <div class="panel-body">
+        
+        @if($type == 'category' || $type == 'subcategory' || $type == 'tag')
+            @if(Request::query('page') < 2)
+                @include('main.shared.upper')
+            
+                <div>
+                    @if(isset($orgObj->upper_title) && $orgObj->upper_title != '')
+                        <h3 class="upper-title">{{ $orgObj->upper_title }}</h3>
+                    @endif
+                    
+                    @if(isset($orgObj->upper_text) && $orgObj->upper_text != '')
+                        <p class="upper-text px-1">{!! nl2br($orgObj->upper_text) !!}</p>
+                    @endif
                 
                 </div>
-            @endforeach
+            @endif
+        @endif
         
-        </div>
-            
+        
         <div class="pagination-wrap">
-        	{{ $items->links() }}
+            {{ $items->links() }}
         </div>
+        
+        <?php 
+            $n = Ctm::isAgent('sp') ? 3 : 4;
+            $itemArr = array_chunk($items->all(), $n); 
+        ?>
+        
+        @foreach($itemArr as $itemVal)
+            <div class="clearfix">
+
+            @foreach($itemVal as $item)
+                <article class="main-atcl">
+                        
+                    <?php $strNum = Ctm::isAgent('sp') ? 16 : 25; ?>
+                    @include('main.shared.atcl')
+                        
+                </article>
+            @endforeach
+            
+            </div>
+        @endforeach
+    
+    </div>
+        
+    <div class="pagination-wrap">
+        {{ $items->links() }}
+    </div>
             
 </div>
 </div>

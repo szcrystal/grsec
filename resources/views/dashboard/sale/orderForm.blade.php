@@ -326,11 +326,15 @@ use App\PayMethodChild;
                                                 <td>
                                                 	日付:
                                                 	@if(isset($sale->plan_date))
-                                                        {{ $sale->plan_date }}／
+                                                        {{ $sale->plan_date }}
+                                                    @else
+                                                    	--
                                                     @endif
-                                                    時間:
+                                                    ／ 時間:
                                                     @if(isset($sale->plan_time))
                                                         {{ $sale->plan_time }}
+                                                    @else
+                                                    	--
                                                     @endif
                                                 </td>
                                             </tr>

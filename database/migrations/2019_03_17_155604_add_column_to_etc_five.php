@@ -21,7 +21,26 @@ class AddColumnToEtcFive extends Migration
             $table->integer('is_ask_type')->after('comment')->nullable()->default(NULL); //booleanではなくintにしている
         });
         
+        //Item
+        Schema::table('items', function (Blueprint $table) {
+        	$table->boolean('is_secret')->after('open_status')->nullable()->default(0);
+        });
         
+        //Cate CateSec Tag
+        Schema::table('categories', function (Blueprint $table) {
+        	$table->string('upper_title')->after('meta_keyword')->nullable()->default(NULL);
+        	$table->text('upper_text')->after('upper_title')->nullable()->default(NULL);
+        });
+        
+        Schema::table('category_seconds', function (Blueprint $table) {
+        	$table->string('upper_title')->after('meta_keyword')->nullable()->default(NULL);
+        	$table->text('upper_text')->after('upper_title')->nullable()->default(NULL);
+        });
+        
+        Schema::table('tags', function (Blueprint $table) {
+        	$table->string('upper_title')->after('meta_keyword')->nullable()->default(NULL);
+        	$table->text('upper_text')->after('upper_title')->nullable()->default(NULL);
+        });
     }
 
     /**
@@ -31,6 +50,7 @@ class AddColumnToEtcFive extends Migration
      */
     public function down()
     {
+    	//Contact
         if (Schema::hasColumn('contacts', 'tel_num')) {
             Schema::table('contacts', function (Blueprint $table) {
                 $table->dropColumn('tel_num');
@@ -52,6 +72,52 @@ class AddColumnToEtcFive extends Migration
         if (Schema::hasColumn('contacts', 'is_ask_type')) {
             Schema::table('contacts', function (Blueprint $table) {
                 $table->dropColumn('is_ask_type');
+            });
+        }
+        
+        //Item
+        if (Schema::hasColumn('items', 'is_secret')) {
+            Schema::table('items', function (Blueprint $table) {
+                $table->dropColumn('is_secret');
+            });
+        }
+        
+        //Cate
+        if (Schema::hasColumn('categories', 'upper_title')) {
+            Schema::table('categories', function (Blueprint $table) {
+                $table->dropColumn('upper_title');
+            });
+        }
+        
+        if (Schema::hasColumn('categories', 'upper_text')) {
+            Schema::table('categories', function (Blueprint $table) {
+                $table->dropColumn('upper_text');
+            });
+        }
+        
+        //CateSec
+        if (Schema::hasColumn('category_seconds', 'upper_title')) {
+            Schema::table('category_seconds', function (Blueprint $table) {
+                $table->dropColumn('upper_title');
+            });
+        }
+        
+        if (Schema::hasColumn('category_seconds', 'upper_text')) {
+            Schema::table('category_seconds', function (Blueprint $table) {
+                $table->dropColumn('upper_text');
+            });
+        }
+        
+        //Tag
+        if (Schema::hasColumn('tags', 'upper_title')) {
+            Schema::table('tags', function (Blueprint $table) {
+                $table->dropColumn('upper_title');
+            });
+        }
+        
+        if (Schema::hasColumn('tags', 'upper_text')) {
+            Schema::table('tags', function (Blueprint $table) {
+                $table->dropColumn('upper_text');
             });
         }
     }

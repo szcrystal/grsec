@@ -26,11 +26,9 @@
             <tr>
               <th>ID</th>
               <th>お問合せ日</th>
-              <th style="min-width:3em;">希望方法／状況</th>
-              <th style="min-width:3em;">種別</th>
+              <th>種別</th>
               <th style="min-width:5em;">名前</th>
-              <th>メルアド／TEL番</th>
-              <th style="min-width:6em;">希望日／時間帯</th>
+              <th>メルアド</th>
               <th>内容</th>
               <th></th>
             </tr>
@@ -48,24 +46,6 @@
                 <td>
                 	{{ Ctm::changeDate($obj->created_at) }}
                 </td>
-                
-                <td>
-                	@if(isset($obj->is_ask_type))
-                        @if(! $obj->is_ask_type)
-                            <span class="text-success">電話</span>
-                        @else
-                            <span class="text-primary">メール</span>
-                        @endif
-                        <br>
-                        @if($obj->status)
-                        	<span class="text-small">対応済<span>
-                        @else
-                        	<span class="text-small text-danger">未対応</span>
-                        @endif
-                    @else
-                    	--
-                    @endif
-                </td>
 
 				<td>
 	        		{{$obj->ask_category}}
@@ -76,12 +56,7 @@
                 </td>
 
                 <td>
-                	<a href="mailto:{{ $obj->email }}">{{ $obj->email }}</a><br>
-                    {{ $obj->tel_num }}
-                </td>
-                
-                <td>
-                	<span class="text-small">{{ $obj->request_day }}<br>{{ $obj->request_time }}</span>
+                	<a href="mailto:{{ $obj->email }}">{{ $obj->email }}</a>
                 </td>
 
                 <td>
@@ -91,7 +66,7 @@
                         //echo mb_strlen($obj->comment);  
                     ?>
                     
-                    <span class="text-small">{{ Ctm::shortStr($obj->comment, 100) }}</span>
+                    {{ Ctm::shortStr($obj->comment, 100) }}
                 	
                 </td>
 

@@ -18,6 +18,9 @@ class Tag extends Model
         'meta_title',
         'meta_description',
         'meta_keyword',
+        
+        'upper_title',
+        'upper_text',
             
         'contents',
         

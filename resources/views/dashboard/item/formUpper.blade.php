@@ -85,7 +85,7 @@ use App\Category;
         </div>
     @endif
         
-    <div class="col-lg-12 mb-4">
+    <div style="min-height:900px;" class="col-lg-12 mb-5">
         <form class="form-horizontal" role="form" method="POST" action="/dashboard/upper" enctype="multipart/form-data">
         
         	<div class="form-group mb-0">
@@ -215,12 +215,56 @@ use App\Category;
                         <?php $n++; ?>
                     @endwhile
                     
+                    
                     <div class="form-group mt-5 mb-5 pt-3">
                         <button type="submit" class="btn btn-primary btn-block w-btn w-25 mx-auto">更　新</button>
                     </div>
                 </div>
             
             @endforeach
+            
+            
+            <?php 
+            //サムネイル上部 upper_title upper_text ================================== 
+            ?>
+            
+            @if($type != 'item')
+                <hr class="mt-3">
+                <h4 class="mt-5 mb-3 p-2 bg-secondary text-light text-uppercase block-tgl">サムネイル紹介コメント</h4>
+                
+                <div class="block-all-wrap pt-2">
+                    <fieldset class="my-3 form-group">
+                        <label>タイトル</label>
+                        <input class="form-control col-md-12{{ $errors->has('upper_title') ? ' is-invalid' : '' }}" name="upper_title" value="{{ Ctm::isOld() ? old(upper_title) : (isset($orgObj) ? $orgObj->upper_title : '') }}" placeholder="">
+
+                        @if ($errors->has('upper_title'))
+                            <div class="text-danger">
+                                <span class="fa fa-exclamation form-control-feedback"></span>
+                                <span>{{ $errors->first('upper_title') }}</span>
+                            </div>
+                        @endif
+                    </fieldset>
+                    
+                    <fieldset class="my-3 form-group">
+                        <label class="control-label">コメント</label>
+                        <textarea class="form-control{{ $errors->has('upper_text') ? ' is-invalid' : '' }}" name="upper_text" rows="10">{{ Ctm::isOld() ? old('upper_text') : (isset($orgObj) ? $orgObj->upper_text : '') }}</textarea>
+
+                        @if ($errors->has('upper_text'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('upper_text') }}</strong>
+                            </span>
+                        @endif
+                    </fieldset>
+                    
+                    <div class="form-group mt-5 mb-5 pt-3">
+                        <button type="submit" class="btn btn-primary btn-block w-btn w-25 mx-auto">更　新</button>
+                    </div>
+                </div>
+            @endif
+            
+            <?php 
+            //サムネイル上部 END upper_title upper_text ================================== 
+            ?>
         
         </form>
 

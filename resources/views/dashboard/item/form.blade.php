@@ -123,6 +123,25 @@
                             <input type="checkbox" name="open_status" value="1"{{ $checked }}> この商品を非公開にする
                         </label>
                     </div>
+                    
+                    <div class="checkbox">
+                        <label>
+                            <?php
+                                $secChecked = '';
+                                if(Ctm::isOld()) {
+                                    if(old('is_secret'))
+                                        $secChecked = ' checked';
+                                }
+                                else {
+                                    if(isset($item) && $item->is_secret) {
+                                        $secChecked = ' checked';
+                                    }
+                                }
+                            ?>
+                            <input type="checkbox" name="is_secret" value="1"{{ $secChecked }}> シークレット商品にする
+                        </label>
+                    </div>
+                    
                 </div>
             </div>
         

@@ -229,6 +229,28 @@ class ItemUpperController extends Controller
         
 //        print_r($data['block']);
 //        exit;
+		
+        //サムネイル用コメント -----
+        $orgObj = null;
+        $ups = [
+        	'upper_title'=>$data['upper_title'],
+            'upper_text'=>$data['upper_text'],
+        ];
+        
+		if($type == 'cate') {
+        	$orgObj = $this->category->find($editId);
+        }
+        else if($type == 'subcate') {
+        	$orgObj = $this->categorySecond->find($editId);
+        }
+        else if($type == 'tag') {
+        	$orgObj = $this->tag->find($editId);
+        }
+        
+        if(isset($orgObj)) {
+        	$orgObj->update($ups);
+        }
+        //サムネイル用コメント END -----
 
 		$status = '上部コンテンツが編集されました。';
 

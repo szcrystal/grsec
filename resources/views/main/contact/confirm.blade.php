@@ -16,7 +16,7 @@
                     <p class="mt-3">以下の内容で送信します。<br>よろしければ「送信する」ボタンを押して下さい。</p>
                 </div>
 
-                <div class="panel-body mt-5">
+                <div class="panel-body mt-5 mb-4">
 
 					<div class="table-responsive table-custom">
                         <table class="table table-bordered bg-white">

@@ -241,6 +241,7 @@ class ItemController extends Controller
         
         //status
         $data['open_status'] = isset($data['open_status']) ? 0 : 1;
+        $data['is_secret'] = isset($data['is_secret']) ? 0 : 1;
         
         //stock_show
         $data['is_ensure'] = isset($data['is_ensure']) ? 1 : 0;
@@ -273,7 +274,7 @@ class ItemController extends Controller
             $item = $this->item->find($editId);
             
             //上書き更新の制御 ------------
-            if(! $forceUp && Ctm::isEnv('local')) {
+            if(! $forceUp) {
             	
                 $isAdmin = 0;
                 $errorStr = '他の管理者さんが、';

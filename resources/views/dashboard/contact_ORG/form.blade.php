@@ -40,17 +40,18 @@
         </div>
     @endif
         
-    <div class="mb-5">
-        <form class="form-horizontal" role="form" method="POST" action="/dashboard/contacts">
+    <div class="col-lg-12 mb-5">
+        <form class="form-horizontal" role="form" method="POST" action="/dashboard/contacts/{{$id}}">
 
             {{ csrf_field() }}
-            
-            <input type="hidden" name="edit_id" value="{{ $id }}">
+
+            {{ method_field('PUT') }}
+
 
             	<div class="table-responsive">
                     <table class="table table-bordered">
                         <colgroup>
-                            <col style="background: #dfdcdb; width: 22%;" class="cth">
+                            <col style="background: #dfdcdb; width: 25%;" class="cth">
                             <col style="background: #fefefe;" class="ctd">
                         </colgroup>
                         
@@ -59,21 +60,6 @@
                                 <th>お問い合わせ日</th>
                                 <td>
                                     {{ Ctm::changeDate($contact->created_at) }}
-                                </td>
-                            </tr>
-                            
-                            <tr>
-                                <th>希望方法</th>
-                                <td>
-                                    @if(isset($contact->is_ask_type))
-                                        @if(! $contact->is_ask_type)
-                                            <span class="text-success">電話</span>
-                                        @else
-                                            <span class="text-primary">メール</span>
-                                        @endif
-                                    @else
-                                        --
-                                    @endif
                                 </td>
                             </tr>
 
@@ -90,55 +76,27 @@
                                 <th>メールアドレス</th>
                                 <td><a href="mailto:{{ $contact->email }}">{{ $contact->email }}</a></td>
                             </tr>
-                            
-                            <tr>
-                                <th>電話番号</th>
-                                <td>{{ $contact->tel_num }}</td>
-                            </tr>
-                            
-                            <tr>
-                                <th>ご希望日</th>
-                                <td>{{ $contact->request_day }}</td>
-                            </tr>
-                            
-                            <tr>
-                                <th>ご希望時間帯</th>
-                                <td>{{ $contact->request_time }}</td>
-                            </tr>
-                            
                             <tr>
                                 <th>内容</th>
                                 <td>{!! nl2br($contact->comment) !!}</td>
                             </tr>
                             
-                            
+                            {{--
                             <tr>
-                                <th>ステータス</th>
+                                <th>対応状況</th>
                                 <td>
                                     <div class="form-group{{ $errors->has('status') ? ' has-error' : '' }}">
-                                        <div class="checkbox">
-                                        
-                                            <?php
-                                                $checked = '';
-                                                
-                                                if(Ctm::isOld()) {
-                                                    if(old('status'))
-                                                        $checked = 'checked';
-                                                }
-                                                else {
-                                                    if(isset($contact) && $contact->status) 
-                                                        $checked = 'checked';
-                                                }
-                                            ?>
-                                            
-                                            <label>
-                                                <input type="checkbox" name="status" value="1" {{ $checked }}> 対応済みにする
-                                            </label>
+                                        <div class="col-md-10">
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox" name="status" value="1"{{isset($contact) && $contact->status ? ' checked' : '' }}> 対応済みにする
+                                                </label>
+                                            </div>
                                         </div>
                                     </div>
                                 </td>
                             </tr>
-                            
+                            --}}
 
                             <tr>
 
@@ -149,13 +107,13 @@
                     </table>
                 </div>
 
-				
+				{{--
                 <div class="form-group mb-5">
                     <div class="clearfix">
                         <button type="submit" class="btn btn-primary btn-block mx-auto w-btn w-25">更　新</button>
                     </div>
                 </div>
-                
+                --}}
 
         </form>
     </div>
