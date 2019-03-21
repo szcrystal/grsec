@@ -65,7 +65,7 @@ p {
 {!! nl2br($footer) !!}
 @endif
 
-<div style="margin:4em 0;">
+<div style="margin:4em 0 2em;">
 {!! nl2br($setting->mail_footer) !!}
 </div>
 <br>

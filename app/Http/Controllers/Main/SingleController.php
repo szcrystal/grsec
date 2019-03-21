@@ -48,7 +48,8 @@ class SingleController extends Controller
 //        $this->totalize = $totalize;
 //        $this->totalizeAll = $totalizeAll;
         
-        //$this->perPage = env('PER_PAGE', 21);
+        $this->whereArr = ['open_status'=>1, 'is_secret'=>0, 'is_potset'=>0]; //こことSingleとSearchとCtm::isPotParentAndStockにある
+        
         $this->itemPerPage = 15;
         
     }
@@ -57,21 +58,22 @@ class SingleController extends Controller
     {
         $item = $this->item->find($id);
         
+        $whereArr = $this->whereArr;
+        
         if(!isset($item)) {
             abort(404);
         }
         else {
-            if($item->is_potset || ! $item->open_status)
+            if($item->is_potset || ! $item->open_status || $item->is_secret)
             	abort(404);
         }
         
         $cate = $this->category->find($item->cate_id);
         $subCate = $this->subCate->find($item->subcate_id);
         
-        $whereArr = ['open_status'=>1, 'is_potset'=>0];
-        
+
         //ポットセットがある場合
-        $potSets = $this->item->where(['open_status'=>1, 'pot_parent_id'=>$item->id])->orderBy('pot_count', 'asc')->get();
+        $potSets = $this->item->where(['open_status'=>1, 'is_secret'=>0, 'pot_parent_id'=>$item->id])->orderBy('pot_count', 'asc')->get();
         
         
         //Other Atcl
@@ -120,15 +122,15 @@ class SingleController extends Controller
         $chunkNum = $getNum/2;
         
         if($item->is_once) {
-        	$isOnceItems = $this->item->whereNotIn('id', [$item->id])->where(['consignor_id'=>$item->consignor_id, 'is_once'=>1, 'is_once_recom'=>0, 'open_status'=>1, 'is_potset'=>0])->inRandomOrder()->take($getNum)->get()->chunk($chunkNum);
+        	$isOnceItems = $this->item->whereNotIn('id', [$item->id])->where($whereArr)->where(['consignor_id'=>$item->consignor_id, 'is_once'=>1, 'is_once_recom'=>0])->inRandomOrder()->take($getNum)->get()->chunk($chunkNum);
             //->inRandomOrder()->take()->get() もあり クエリビルダに記載あり
         }
         
         // レコメンド：同カテゴリー
-        $recomCateItems = $this->item->whereNotIn('id', [$item->id])->where(['cate_id'=>$item->cate_id, 'open_status'=>1, 'is_potset'=>0])->inRandomOrder()->take($getNum)->get()->chunk($chunkNum);
+        $recomCateItems = $this->item->whereNotIn('id', [$item->id])->where($whereArr)->where(['cate_id'=>$item->cate_id])->inRandomOrder()->take($getNum)->get()->chunk($chunkNum);
         
         // レコメンド：同カテゴリーのランキング
-        $recomCateRankItems = $this->item->whereNotIn('id', [$item->id])->where(['cate_id'=>$item->cate_id, 'open_status'=>1, 'is_potset'=>0])->orderBy('view_count', 'desc')->take($getNum)->get()->chunk($chunkNum);
+        $recomCateRankItems = $this->item->whereNotIn('id', [$item->id])->where($whereArr)->where(['cate_id'=>$item->cate_id])->orderBy('view_count', 'desc')->take($getNum)->get()->chunk($chunkNum);
         
         
         //Recommend レコメンド 先頭タグと同じものをレコメンド ==============
@@ -168,7 +170,7 @@ class SingleController extends Controller
             //->inRandomOrder()->take()->get() もあり クエリビルダに記載あり
         }
         else {
-        	$recommends = $this->item->whereNotIn('id', [$item->id])->where(['subcate_id'=>$item->subcate_id, 'open_status'=>1, 'is_potset'=>0])->inRandomOrder()->take($getNum)->get()->chunk($chunkNum);
+        	$recommends = $this->item->whereNotIn('id', [$item->id])->where($whereArr)->where(['subcate_id'=>$item->subcate_id])->inRandomOrder()->take($getNum)->get()->chunk($chunkNum);
             //->inRandomOrder()->take()->get() もあり クエリビルダに記載あり
         }
         

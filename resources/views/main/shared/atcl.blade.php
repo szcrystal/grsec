@@ -28,25 +28,12 @@ use App\Icon;
     $isSp = Ctm::isAgent('sp');
     $isSale = Setting::get()->first()->is_sale;
     
-    $isStock = 0;
     $imgClass = '';
     
     //pot売り切れ判定
-    $pots = Item::where(['is_potset'=>1, 'pot_parent_id'=>$item->id, 'open_status'=>1])->get();
+    $potsArr = Ctm::isPotParentAndStock($item->id); //親ポットか、Stockあるか、その子ポットのObjsを取る
     
-    if($pots->isNotEmpty()) {
-        foreach($pots as $pot) {
-            if($pot->stock) {
-                $isStock = 1;
-                break;
-            }
-        }
-    }
-    else {
-    	if($item->stock) {
-        	$isStock = 1;
-        }
-    }
+    $isStock = $potsArr['isPotParent'] ? $potsArr['isStock'] : ($item->stock ? 1 : 0); //pot親でない時は通常Itemの在庫を見る
    
 ?>
 
@@ -91,14 +78,11 @@ use App\Icon;
         
     <div class="price">
         <?php
-            $pots = Item::where(['is_potset'=>1, 'pot_parent_id'=>$item->id])->orderBy('price', 'asc')->get();
-            $isPotParent = $pots->isNotEmpty();
+            $isPotParent = $potsArr['isPotParent'];
+            $thisItem = $item;
             
             if($isPotParent) {
-                $thisItem = $pots->first();
-            }
-            else {
-                $thisItem = $item;
+                $thisItem = $potsArr['pots']->sortBy('price')->first();
             }
         ?>
         

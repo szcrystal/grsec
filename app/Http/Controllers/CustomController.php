@@ -391,6 +391,7 @@ class CustomController extends Controller
     }
     
     
+    //UpperContentsの書き出しを配列で
     static function getUpperArr($parentId, $type)
     {
     	//ItemUpper
@@ -426,6 +427,31 @@ class CustomController extends Controller
     }
     
     
+    //親ポットの在庫Stock判定
+    static function isPotParentAndStock($itemId)
+    {
+        $isPotParent = 0; //このitemがpotParentなら、1
+    	$isStock = 0; //このpotParentの子供ポットの在庫が全て0なら、0
+        
+    	$pots = Item::where(['open_status'=>1, 'is_secret'=>0, 'is_potset'=>1, 'pot_parent_id'=>$itemId])->get();
+    
+        if($pots->isNotEmpty()) {
+            foreach($pots as $pot) {
+                if($pot->stock) {
+                    $isStock = 1;
+                    break;
+                }
+            }
+            
+            $isPotParent = 1;
+        }
+        
+        return ['isPotParent'=>$isPotParent, 'isStock'=>$isStock, 'pots'=>$pots];
+    }
+    
+    
+    
+    //管理画面：管理者権限の判定
     static function checkRole($roleName)
     {
     	$per = Auth::guard('admin')->user()->permission;

@@ -47,6 +47,8 @@ class HomeController extends Controller
         $this->dg = $dg;
         $this->dgRel = $dgRel;
         
+        $this->whereArr = ['open_status'=>1, 'is_secret'=>0, 'is_potset'=>0]; //こことSingleとSearchとCtm::isPotParentAndStockにある
+        
         $this->perPage = env('PER_PAGE', Ctm::isAgent('sp') ? 21 : 20);
         
         //$this->itemPerPage = 15;
@@ -59,7 +61,7 @@ class HomeController extends Controller
 
         $cates = $this->category->all();
         
-        $whereArr = ['open_status'=>1, 'is_potset'=>0];
+        $whereArr = $this->whereArr;
         $whereArrSec = ['open_status'=>1/*,'feature'=>1*/];
         
         
@@ -206,7 +208,7 @@ class HomeController extends Controller
     {
     	$path = $request->path();
         
-        $whereArr = ['open_status'=>1, 'is_potset'=>0];
+        $whereArr = $this->whereArr;
         
         $items = null;
         
@@ -272,7 +274,7 @@ class HomeController extends Controller
             $title = '最近チェックしたアイテム';               
         }
         
-        elseif($path == 'item/packing') { //同梱包可能商品レコメンド -> 同じ出荷元で同梱包可能なもの
+        elseif($path == 'item/packing') { //同梱包可能商品レコメンド -> 同じ出荷元で同梱包可能なもの の一覧用
         	
             $orgId = $request->query('orgId');
             $orgItem = $this->item->find($orgId);
@@ -390,11 +392,13 @@ class HomeController extends Controller
     {
     	$cate = $this->category->where('slug', $slug)->first();
         
+        $whereArr = $this->whereArr;
+        
         if(!isset($cate)) {
             abort(404);
         }
         
-        $itemObjs = $this->item->where(['cate_id'=>$cate->id, 'open_status'=>1, 'is_potset'=>0])->get();
+        $itemObjs = $this->item->where($whereArr)->where(['cate_id'=>$cate->id])->get();
         
         //在庫有りなしでソートしたidを取得
         $stockIds = $this->getStockSepIds($itemObjs); //$itemObjsはコレクション
@@ -425,15 +429,16 @@ class HomeController extends Controller
     public function subCategory($slug, $subSlug)
     {
     	$cate = $this->category->where('slug', $slug)->first();
-        
         $subcate = $this->cateSec->where('slug', $subSlug)->first();
+        
+        $whereArr = $this->whereArr;
         
         if(!isset($cate) || !isset($subcate)) {
             abort(404);
         }
         
-        
-        $itemObjs = $this->item->where(['subcate_id'=>$subcate->id, 'open_status'=>1, 'is_potset'=>0])->get();
+        //$whereArr['subcate_id'] = $subcate->id;
+        $itemObjs = $this->item->where($whereArr)->where(['subcate_id'=>$subcate->id])->get();
         
         //在庫有りなしでソートしたidを取得
         $stockIds = $this->getStockSepIds($itemObjs); //$itemObjsはコレクション
@@ -464,6 +469,8 @@ class HomeController extends Controller
     {
     	$tag = $this->tag->where('slug', $slug)->first();
         
+        $whereArr = $this->whereArr;
+        
         if(!isset($tag)) {
             abort(404);
         }
@@ -472,7 +479,7 @@ class HomeController extends Controller
         	return $obj -> item_id;
         })->all();
         
-        $itemObjs = $this->item->whereIn('id', $tagItemIds)->where(['open_status'=>1, 'is_potset'=>0])->get();
+        $itemObjs = $this->item->whereIn('id', $tagItemIds)->where($whereArr)->get();
         
         //在庫有りなしでソートしたidを取得
         $stockIds = $this->getStockSepIds($itemObjs); //$itemObjsはコレクション
@@ -518,21 +525,29 @@ class HomeController extends Controller
         
         //pot親の時にpotの子のstockを見る
         foreach($stockIds as $stockId) {
-        	$pots = $this->item->where(['is_potset'=>1, 'pot_parent_id'=>$stockId])->get();
+        	$switchArr = Ctm::isPotParentAndStock($stockId); //親ポットか、Stockあるか、その子ポットのObjsを取る
             
-            if($pots->isNotEmpty()) {
-            	$switch = 0;
-            	foreach($pots as $pot) {
-                	if($pot->stock) {
-                    	$switch = 1;
-                    	break;
-                    }
-                }
-                
-                if(! $switch) {
-                	$potsStockFalses[] = $stockId;
-                }
-            } 
+            //親ポットで子ポットの在庫が全て0の時
+            if($switchArr['isPotParent'] && ! $switchArr['isStock']) {
+            	$potsStockFalses[] = $stockId;
+            }
+/*        	
+//            $pots = $this->item->where(['is_potset'=>1, 'pot_parent_id'=>$stockId])->get();
+//            
+//            if($pots->isNotEmpty()) {
+//            	$switch = 0;
+//            	foreach($pots as $pot) {
+//                	if($pot->stock) {
+//                    	$switch = 1;
+//                    	break;
+//                    }
+//                }
+//                
+//                if(! $switch) {
+//                	$potsStockFalses[] = $stockId;
+//                }
+//            }
+*/
         }
         
         //potSetの親はstockTrue,stockFalseどちらにも入る可能性があるので両方から重複idを取り除く
@@ -547,6 +562,7 @@ class HomeController extends Controller
     }
     
     
+    //送料区分別 送料表のページ
     public function showDeliFeeTable($dgId)
     {
     	$dg = $this->dg->find($dgId);

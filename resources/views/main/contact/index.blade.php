@@ -107,6 +107,7 @@
                                                             }
                                                         }
                                                     ?>
+                                                    
                                                     <option value="{{ $val }}"{{ $selected }}>{{ $val }}</option>
                                                 @endforeach
                                             </select>
@@ -170,7 +171,7 @@
                                     <tr class="form-group">
                                         <th>ご希望日<em>必須</em>
                                             @if(! $i)
-                                                <small class="text-danger">指定日が祝日の場合は・・・</small>
+                                                <small class="text-danger">*指定日が祝日の場合は・・・</small>
                                             @endif
                                         </th>
                                         <td>
@@ -210,7 +211,7 @@
                                     <tr class="form-group">
                                         <th>ご希望時間帯<em>必須</em>
                                             @if(! $i)
-                                                <small>9時〜16時（12〜13時除く）</small>
+                                                <small>*9時〜16時（12〜13時除く）</small>
                                             @endif
                                         </th>
                                         <td>

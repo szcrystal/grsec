@@ -120,6 +120,7 @@
                                     }
                                 }
                             ?>
+                            
                             <input type="checkbox" name="open_status" value="1"{{ $checked }}> この商品を非公開にする
                         </label>
                     </div>
@@ -138,6 +139,7 @@
                                     }
                                 }
                             ?>
+                            
                             <input type="checkbox" name="is_secret" value="1"{{ $secChecked }}> シークレット商品にする
                         </label>
                     </div>

@@ -28,6 +28,8 @@ class SearchController extends Controller
         //$this->tagGroup = $tagGroup;
         $this->category = $category;
         
+        $this->whereArr = ['open_status'=>1, 'is_secret'=>0, 'is_potset'=>0]; //こことSingleとSearchとCtm::isPotParentAndStockにある
+        
         $this->perPage = env('PER_PAGE', Ctm::isAgent('sp') ? 21 : 20);
     }
 
@@ -40,6 +42,8 @@ class SearchController extends Controller
     {
         $searchs = $request->s;
         //exit();
+        
+        $whereArr = $this->whereArr;
         
         $objs = $this->returnSearchObj($searchs);
         extract($objs); //$allResultはコレクション->all()で配列になっている -> 該当するIDを配列で取得に変更
@@ -62,9 +66,11 @@ class SearchController extends Controller
         //Custom pagination END
         */
         
-        $allResults = $this->item->whereIn('id', $allResIds)->where(['open_status'=>1, 'is_potset'=>0
-            //['open_status', '=', 1], ['del_status', '=', 0], ['owner_id', '>', 0]
-        ])->orderBy('created_at','DESC')->paginate($this->perPage);
+        $allResults = $this->item->whereIn('id', $allResIds)->where($whereArr)->orderBy('created_at','DESC')->paginate($this->perPage);
+        
+//        $allResults = $this->item->whereIn('id', $allResIds)->where(['open_status'=>1, 'is_potset'=>0
+//            //['open_status', '=', 1], ['del_status', '=', 0], ['owner_id', '>', 0]
+//        ])->orderBy('created_at','DESC')->paginate($this->perPage);
         
         //Sidebar
 //        $rankName = '全体';
