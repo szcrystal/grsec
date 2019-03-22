@@ -27,7 +27,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class HomeController extends Controller
 {
-    public function __construct(Item $item, Category $category, CategorySecond $cateSec, Tag $tag, TagRelation $tagRel, Fix $fix, Setting $setting, ItemImage $itemImg, Favorite $favorite, ItemStockChange $itemSc, TopSetting $topSet, DeliveryGroup $dg, DeliveryGroupRelation $dgRel)
+    public function __construct(Item $item, Category $category, CategorySecond $cateSec, Tag $tag, TagRelation $tagRel, Fix $fix, Setting $setting, ItemImage $itemImg, Favorite $favorite, ItemStockChange $itemSc, TopSetting $topSet, DeliveryGroup $dg, DeliveryGroupRelation $dgRel, Auth $auth)
     {
         //$this->middleware('search');
         
@@ -46,9 +46,10 @@ class HomeController extends Controller
         
         $this->dg = $dg;
         $this->dgRel = $dgRel;
-        
-        $this->whereArr = ['open_status'=>1, 'is_secret'=>0, 'is_potset'=>0]; //こことSingleとSearchとCtm::isPotParentAndStockにある
-        
+                
+        //ここでAuth::check()は効かない
+        $this->whereArr = ['open_status'=>1, 'is_potset'=>0]; //こことSingleとSearchとCtm::isPotParentAndStockにある
+                
         $this->perPage = env('PER_PAGE', Ctm::isAgent('sp') ? 21 : 20);
         
         //$this->itemPerPage = 15;
@@ -62,7 +63,6 @@ class HomeController extends Controller
         $cates = $this->category->all();
         
         $whereArr = $this->whereArr;
-        $whereArrSec = ['open_status'=>1/*,'feature'=>1*/];
         
         
 //        $tagIds = TagRelation::where('item_id', 1)->get()->map(function($obj){

@@ -106,46 +106,42 @@
                 @endif
                 
                 <div class="float-right col-md-5 text-right mb-3 pb-0 mt-0">
-                    <div class="checkbox">
-                        <label>
+                	<fieldset class="mt-1 mb-5 form-group">
+                        <label class="mr-2">公開状況</label>
+                        <select class="form-control d-inline-block col-md-7{{ $errors->has('open_status') ? ' is-invalid' : '' }}" name="open_status">
                             <?php
-                                $checked = '';
-                                if(Ctm::isOld()) {
-                                    if(old('open_status'))
-                                        $checked = ' checked';
-                                }
-                                else {
-                                    if(isset($item) && ! $item->open_status) {
-                                        $checked = ' checked';
-                                    }
-                                }
+                                $itemStates = ['非公開にする'=>0, 'シークレットにする'=>2];
                             ?>
                             
-                            <input type="checkbox" name="open_status" value="1"{{ $checked }}> この商品を非公開にする
-                        </label>
-                    </div>
-                    
-                    <div class="checkbox">
-                        <label>
-                            <?php
-                                $secChecked = '';
-                                if(Ctm::isOld()) {
-                                    if(old('is_secret'))
-                                        $secChecked = ' checked';
-                                }
-                                else {
-                                    if(isset($item) && $item->is_secret) {
-                                        $secChecked = ' checked';
+                            <option selected value="1">公開中</option>
+                            @foreach($itemStates as $key => $itemStateNum)
+                                <?php
+                                    $selected = '';
+                                    if(Ctm::isOld()) {
+                                        if(old('open_status') == $itemStateNum)
+                                            $selected = ' selected';
                                     }
-                                }
-                            ?>
+                                    else {
+                                        if(isset($item) && $item->open_status == $itemStateNum) {
+                                            $selected = ' selected';
+                                        }
+                                    }
+                                ?>
+                                
+                                <option value="{{ $itemStateNum }}"{{ $selected }}>{{ $key }}</option>
+                            @endforeach
                             
-                            <input type="checkbox" name="is_secret" value="1"{{ $secChecked }}> シークレット商品にする
-                        </label>
-                    </div>
-                    
+                        </select>
+                        
+                        @if ($errors->has('open_status'))
+                            <span class="help-block text-warning">
+                                <strong>{{ $errors->first('open_status') }}</strong>
+                            </span>
+                        @endif   
+                    </fieldset>
                 </div>
-            </div>
+                
+        	</div>
         
         <span class="text-small text-secondary d-block mb-3">＊UPする画像のファイル名は全て半角英数字とハイフンのみで構成して下さい。(abc-123.jpg など)</span>
         <hr>

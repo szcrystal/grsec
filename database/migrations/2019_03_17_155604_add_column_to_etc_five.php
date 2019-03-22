@@ -13,6 +13,7 @@ class AddColumnToEtcFive extends Migration
      */
     public function up()
     {
+        
     	//Contact add
         Schema::table('contacts', function (Blueprint $table) {
         	$table->string('tel_num')->after('ask_category')->nullable()->default(NULL);
@@ -23,10 +24,14 @@ class AddColumnToEtcFive extends Migration
         
         //Item
         Schema::table('items', function (Blueprint $table) {
-        	$table->boolean('is_secret')->after('open_status')->nullable()->default(0);
+        	//$table->boolean('is_secret')->after('open_status')->nullable()->default(0);
+            $table->integer('open_status')->change();
+            
+            //is_potsetをintegerにして親子の判別値をそれぞれ入れるかどうするか　下記は一旦保留
+            //$table->boolean('is_pot_parent')->after('catchcopy')->nullable()->default(0);
         });
         
-        //Cate CateSec Tag
+        //Cate CateSec Tag For Upper Comment
         Schema::table('categories', function (Blueprint $table) {
         	$table->string('upper_title')->after('meta_keyword')->nullable()->default(NULL);
         	$table->text('upper_text')->after('upper_title')->nullable()->default(NULL);
@@ -41,6 +46,7 @@ class AddColumnToEtcFive extends Migration
         	$table->string('upper_title')->after('meta_keyword')->nullable()->default(NULL);
         	$table->text('upper_text')->after('upper_title')->nullable()->default(NULL);
         });
+        
     }
 
     /**
@@ -76,11 +82,18 @@ class AddColumnToEtcFive extends Migration
         }
         
         //Item
-        if (Schema::hasColumn('items', 'is_secret')) {
+        if (Schema::hasColumn('items', 'open_status')) {
             Schema::table('items', function (Blueprint $table) {
-                $table->dropColumn('is_secret');
+                $table->boolean('open_status')->change();
             });
         }
+        
+//        if (Schema::hasColumn('items', 'is_pot_parent')) {
+//            Schema::table('items', function (Blueprint $table) {
+//                $table->dropColumn('is_pot_parent');
+//            });
+//        }
+        
         
         //Cate
         if (Schema::hasColumn('categories', 'upper_title')) {

@@ -28,7 +28,7 @@ class SearchController extends Controller
         //$this->tagGroup = $tagGroup;
         $this->category = $category;
         
-        $this->whereArr = ['open_status'=>1, 'is_secret'=>0, 'is_potset'=>0]; //こことSingleとSearchとCtm::isPotParentAndStockにある
+        $this->whereArr = ['open_status'=>1, 'is_potset'=>0]; //こことSingleとSearchとCtm::isPotParentAndStockにある
         
         $this->perPage = env('PER_PAGE', Ctm::isAgent('sp') ? 21 : 20);
     }

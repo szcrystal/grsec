@@ -269,7 +269,6 @@
             @endif
             
             
-            @if(Ctm::isEnv('local'))
             <fieldset class="pt-4 mb-4 form-group{{ $errors->has('rewrite_time') ? ' has-error' : '' }}">
                 <label>商品編集 上書き不可制限時間（分単位）</label><br>
                 <input class="form-control d-inline-block col-md-4{{ $errors->has('rewrite_time') ? ' is-invalid' : '' }}" name="rewrite_time" value="{{ Ctm::isOld() ? old('rewrite_time') : (isset($setting) ? $setting->rewrite_time : '') }}"> <span>分</span>
@@ -283,7 +282,6 @@
             </fieldset>
             
             <hr>
-            @endif
             
  			<fieldset class="pt-4 mb-4 form-group{{ $errors->has('snap_news') ? ' has-error' : '' }}">
                 <label>TOPお知らせ用画像の枚数</label><br>

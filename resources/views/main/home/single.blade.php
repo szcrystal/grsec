@@ -200,6 +200,9 @@ use App\TopSetting;
                                     <div class="potset-text">
                                         <h3>
                                             {{ $potSet->title }}
+                                            @if(Ctm::isEnv('local'))
+                                            	<small>[{{ $potSet->id }}]</small>
+                                            @endif
                                         </h3>
                                         
                                         <div class="price-meta">

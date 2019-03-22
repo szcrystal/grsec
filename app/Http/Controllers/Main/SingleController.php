@@ -48,7 +48,7 @@ class SingleController extends Controller
 //        $this->totalize = $totalize;
 //        $this->totalizeAll = $totalizeAll;
         
-        $this->whereArr = ['open_status'=>1, 'is_secret'=>0, 'is_potset'=>0]; //こことSingleとSearchとCtm::isPotParentAndStockにある
+        $this->whereArr = ['open_status'=>1, 'is_potset'=>0]; //こことSingleとSearchとCtm::isPotParentAndStockにある
         
         $this->itemPerPage = 15;
         
@@ -64,7 +64,7 @@ class SingleController extends Controller
             abort(404);
         }
         else {
-            if($item->is_potset || ! $item->open_status || $item->is_secret)
+            if($item->is_potset || ! $item->open_status) // || $item->is_secret
             	abort(404);
         }
         
@@ -73,7 +73,7 @@ class SingleController extends Controller
         
 
         //ポットセットがある場合
-        $potSets = $this->item->where(['open_status'=>1, 'is_secret'=>0, 'pot_parent_id'=>$item->id])->orderBy('pot_count', 'asc')->get();
+        $potSets = $this->item->where(['open_status'=>1, 'pot_parent_id'=>$item->id])->orderBy('pot_count', 'asc')->get();
         
         
         //Other Atcl

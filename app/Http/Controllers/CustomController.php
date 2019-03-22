@@ -433,7 +433,7 @@ class CustomController extends Controller
         $isPotParent = 0; //このitemがpotParentなら、1
     	$isStock = 0; //このpotParentの子供ポットの在庫が全て0なら、0
         
-    	$pots = Item::where(['open_status'=>1, 'is_secret'=>0, 'is_potset'=>1, 'pot_parent_id'=>$itemId])->get();
+    	$pots = Item::where(['open_status'=>1, 'is_potset'=>1, 'pot_parent_id'=>$itemId])->get();
     
         if($pots->isNotEmpty()) {
             foreach($pots as $pot) {

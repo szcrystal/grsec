@@ -240,8 +240,8 @@ class ItemController extends Controller
 //        exit;
         
         //status
-        $data['open_status'] = isset($data['open_status']) ? 0 : 1;
-        $data['is_secret'] = isset($data['is_secret']) ? 1 : 0;
+//        $data['open_status'] = isset($data['open_status']) ? 0 : 1;
+//        $data['is_secret'] = isset($data['is_secret']) ? 1 : 0;
         
         //stock_show
         $data['is_ensure'] = isset($data['is_ensure']) ? 1 : 0;
