@@ -160,9 +160,7 @@ use App\PayMethodChild;
                                      <a href="mailto:{{ $users->email }}">{{ $users->email }}</a><br>
                                      
                                      〒{{ Ctm::getPostNum($users->post_num) }}<br>
-                                     {{ $users->prefecture }}
-                                     {{ $users->address_1 }}
-                                     {{ $users->address_2 }}
+                                     {{ $users->prefecture }}{{ $users->address_1 }}{{ $users->address_2 }}&nbsp;
                                      {{ $users->address_3 }}<br>
                                      TEL：{{ $users->tel_num }}
                                      

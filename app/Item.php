@@ -68,6 +68,9 @@ class Item extends Model
         'meta_description',
         'meta_keyword',
         
+        'upper_title',
+        'upper_text',
+        
         //'open_date',
         'view_count',
         'sale_count',

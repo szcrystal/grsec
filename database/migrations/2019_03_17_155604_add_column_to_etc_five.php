@@ -29,6 +29,9 @@ class AddColumnToEtcFive extends Migration
             
             //is_potsetをintegerにして親子の判別値をそれぞれ入れるかどうするか　下記は一旦保留
             //$table->boolean('is_pot_parent')->after('catchcopy')->nullable()->default(0);
+            
+            $table->string('upper_title')->after('meta_keyword')->nullable()->default(NULL);
+        	$table->text('upper_text')->after('upper_title')->nullable()->default(NULL);
         });
         
         //Cate CateSec Tag For Upper Comment
@@ -93,6 +96,18 @@ class AddColumnToEtcFive extends Migration
 //                $table->dropColumn('is_pot_parent');
 //            });
 //        }
+
+		if (Schema::hasColumn('items', 'upper_title')) {
+            Schema::table('items', function (Blueprint $table) {
+                $table->boolean('upper_title')->change();
+            });
+        }
+        if (Schema::hasColumn('items', 'upper_text')) {
+            Schema::table('items', function (Blueprint $table) {
+                $table->boolean('upper_text')->change();
+            });
+        }
+        
         
         
         //Cate

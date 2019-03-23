@@ -237,13 +237,16 @@ class ItemUpperController extends Controller
             'upper_text'=>$data['upper_text'],
         ];
         
-		if($type == 'cate') {
+        if($type == 'item') {
+        	$orgObj = $this->item->find($editId);
+        }
+		elseif($type == 'cate') {
         	$orgObj = $this->category->find($editId);
         }
-        else if($type == 'subcate') {
+        elseif($type == 'subcate') {
         	$orgObj = $this->categorySecond->find($editId);
         }
-        else if($type == 'tag') {
+        elseif($type == 'tag') {
         	$orgObj = $this->tag->find($editId);
         }
         

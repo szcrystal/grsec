@@ -1851,8 +1851,8 @@ h3.upper-title {
 .upper-wrap h4 {
 	font-size: 1.4em;
 	border-bottom: 1px solid #bbb;
+    margin-top: 0.4em;
     margin-bottom: 0.7em;
-    margin-top: 0.2em;
     padding-bottom: 0.1em;
     padding-left: 0.3em;
 }
