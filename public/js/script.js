@@ -787,7 +787,7 @@ var exe = (function() {
                 var $prevNext = $('.slick-prev, .slick-next');
                 
                 //var pad = parseInt($thisItem.css('borderWidth')); //pxが付くので firefoxで効かないのでborder-top-widthとする必要がある
-                var pad = parseInt($thisItem.css('border-top-width'));
+                var pad = parseInt($thisItem.css('borderTopWidth'));
 
                 var w = $current.width() + pad;
                 var h = $current.height() + (pad*2);
