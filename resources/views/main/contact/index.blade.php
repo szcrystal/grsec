@@ -169,35 +169,9 @@
                                     </tr>
                                     
                                     <tr class="form-group">
-                                        <th>ご希望日<em>必須</em>
-                                            @if(! $i)
-                                                <small class="text-danger">*指定日が祝日の場合は・・・</small>
-                                            @endif
-                                        </th>
+                                        <th>ご希望日<em>必須</em><small>例）03/15、3月15日など月日を入力下さい</small></th>
                                         <td>
-                                            <select class="form-control col-md-9{{ $isActive && $errors->has('request_day') ? ' is-invalid' : '' }}" name="request_day">
-                                        
-                                            <option disabled selected>選択して下さい</option>
-
-                                            @foreach($reqDays as $key => $day)
-                                                <?php
-                                                    $selected = '';
-                                                    //$key = date('Y-m-d', $key);
-                                                    
-                                                    if(Ctm::isOld()) {
-                                                        if(old('request_day') == $key)
-                                                            $selected = ' selected';
-                                                    }
-                                                    else {
-                                                        if($isActive && Session::has('contact') && session('contact.request_day') == $key) {
-                                                            $selected = ' selected';
-                                                        }
-                                                    }                                                    ?>
-                                                
-                                                <option value="{{ $key }}"{{ $selected }}>{{ $day }}</option>
-                                            @endforeach
-                                            
-                                            </select>
+                                        	<input class="form-control rounded-0 col-md-12{{ $isActive && $errors->has('request_day') ? ' is-invalid' : '' }}" name="request_day" value="{{ Ctm::isOld() ? old('request_day') : ($isActive && Session::has('contact') ? session('contact.request_day') : '') }}" placeholder="例）03/11、3月11日など月日を入力下さい">
                                             
                                             @if ($isActive && $errors->has('request_day'))
                                                 <div class="text-danger">

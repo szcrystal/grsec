@@ -1595,11 +1595,11 @@ class CartController extends Controller
         $sesItems = session('item.data');
         
         //代引きが可能かどうかを判定してboolを渡す
-        $codCheck = 1;
+        $codCheck = 0;
         foreach($sesItems as $item) {
         	$cod = $this->item->find($item['item_id'])->cod;
-            if(! $cod) {
-          		$codCheck = 0;
+            if($cod) {
+          		$codCheck = 1;
             	break;      
           	}      
         }
