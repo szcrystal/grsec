@@ -110,6 +110,7 @@ class ContactController extends Controller
     	//$isAskType = $request->input('is_ask_type');
          
         $rules = [
+        	'is_ask_type' => 'required',
         	'ask_category' => 'required',
             'name' => 'required|max:255',
             'email' => 'required|email|max:255',
@@ -117,7 +118,7 @@ class ContactController extends Controller
         ];
         
         //ここだけをコメントアウトすれば元のフォームで送信出来る
-        if(! $request->input('is_ask_type')) { //Telの時
+        if($request->is_ask_type == 1) { //Telの時
         	$telRules = [
             	'tel_num'=>'required|numeric',
                 'request_day'=>'required',

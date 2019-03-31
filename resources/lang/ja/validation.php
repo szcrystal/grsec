@@ -139,6 +139,7 @@ return [
         'receiver.address_1' => '「配送先住所1」',
         'receiver.address_2' => '「配送先住所2」',
         
+        'is_ask_type' => '「ご希望方法」',
         'ask_category' => '「お問い合わせ種別」',
         'request_day' => '「ご希望日」',
         'request_time' => '「ご希望時間帯」',

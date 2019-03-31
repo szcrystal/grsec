@@ -101,7 +101,7 @@
             
             @elseif($data['pay_method'] == 4)
                 <tr>
-                    <th>GMO後払い手数料</th>
+                    <th>後払い手数料</th>
                     <td>¥{{ number_format($codFee) }}</td>
                 </tr>
             
@@ -157,6 +157,7 @@
                 <th>お支払い方法</th>
                 <td class="{{ count($errors) > 0 ? 'alert-danger' : '' }}">
                     {{ $payMethod->find($data['pay_method'])->name }}
+                    
                     @if($data['pay_method'] == 3)
                         <br><span class="text-small">{{ $pmChild->find($data['net_bank'])->name }}</span>
                     @endif
@@ -386,14 +387,6 @@
 <form id="purchaseForm" class="form-horizontal" role="form" method="POST" action="{{ $actionUrl }}">
     {{ csrf_field() }}
     
-    {{--
-    @if($data['pay_method'] == 5)
-    	<input type="hidden" name="trans_code" value="888888">
-    @elseif($data['pay_method'] == 6)
-    	<input type="hidden" name="trans_code" value="999999">
-    @endif   
-    --}}
-    
     @foreach($settles as $key => $settle)
     	<input type="hidden" name="{{ $key }}" value="{{ $settle }}">
     @endforeach
@@ -424,11 +417,7 @@
                 <b>「注文する」ボタンをクリックすると注文を確定します。</b>
             @endif
         </small>
-        
-        {{--
-        @if($data['pay_method'] == 1 && $data['card_seq'] != 99)
-        	//$existId = ''; 
-        --}}
+
             
         <div class="loader-wrap">
             <span class="loader mr-3"><i class="fas fa-square mr-1"></i> 処理中..</span>

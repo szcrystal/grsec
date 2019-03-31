@@ -1,10 +1,10 @@
 @extends('layouts.app')
 
-
+{{--
 @section('bread')
 @include('main.shared.bread')
 @endsection
-
+--}}
 
 @section('content')
 <div class="row contact">
@@ -13,153 +13,147 @@
 
             <div class="panel-heading">
                 <h2 class="card-header">お問い合わせ</h2>
-                <p class="mt-3">グリーンロケットをご利用いただき誠にありがとうございます。<br>以下より、ご希望のお問い合わせをお選び下さい。</p> 
+                <p class="mt-3">
+                	グリーンロケットをご利用いただき誠にありがとうございます。<br>
+                    お問い合わせのご希望方法より、お電話かメールのどちらかを選択して下さい。<br><br>
+                    お電話でのお問合わせをご希望の方は、こちらより改めて専門スタッフがお電話致します。<br>
+                    ご希望の日時を入力頂き、送信をお願い致します。<br>
+                    <span class="text-small"><b>営業時間：9:00〜16:00／月〜金（土曜不定休、日・祝休）</b></span>
+                </p> 
             </div>
 
-            <div class="panel-body mt-5 mb-4">
-
-                <?php
-                    $telActive = '';
-                    $mailActive = '';
-                ?>
-                        
-                @if(Ctm::isOld() || Session::has('contact'))
-                    <?php
-                        //echo session('contact.is_ask_type').'/'.old('is_ask_type');
-                                                  
-                        if( (old('is_ask_type') !== null && ! old('is_ask_type')) || 
-                            (session('contact.is_ask_type') !== null && ! session('contact.is_ask_type')) 
-                        ) {
-                            $telActive = 'active';
-                        }
-                        else { 
-                            $mailActive = 'active';
-                        }
-                    ?>
+            <div class="panel-body mt-5">
+            
+            	@if (count($errors) > 0)
+                    <div class="alert alert-danger">
+                        <i class="far fa-exclamation-triangle"></i> 確認して下さい。
+                        <ul class="mt-2">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
                 @endif
-                    
-                <ul class="nav nav-tabs mt-4">
-                    <li class="nav-item">
-                       <a href="#tab-1" class="nav-link {{ $telActive }}" data-toggle="tab"><i class="fal fa-phone"></i> 電話でのお問い合わせ</a>
-                    </li>
-                    <li class="nav-item">
-                       <a href="#tab-2" class="nav-link {{ $mailActive }}" data-toggle="tab"><i class="fal fa-envelope"></i> メールでのお問い合わせ</a>
-                    </li>
-                </ul>
-                
 
-                <div class="tab-content mt-4 px-1">
-                    
-                    @for($i = 0; $i < 2; $i++)
-                        <?php
-                            $isActive = 0;
-                            
-                            if( (! $i && $telActive != '') || ($i && $mailActive != '') ) {
-                                $isActive = 1;
-                            }
-                        ?>
-
-                    <div id="tab-{{ $i+1 }}" class="tab-pane {{ $isActive ? 'active' : '' }}">
-                        
-                        @if ($isActive && count($errors) > 0)
-                            <div class="alert alert-danger">
-                                <i class="far fa-exclamation-triangle"></i> 確認して下さい。
-                                <ul class="mt-2">
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        @endif
-                        
-                        <p>
-                            @if(! $i)
-                            お電話でのお問合わせをご希望の方は、こちらより改めて専門スタッフがお電話致します。<br>
-                            ご希望の時間帯をお選び頂き、送信をお願い致します。<br>
-                            <span class="text-small"><b>営業時間：9:00〜16:00／月〜金（土曜不定休、日・祝休）</b></span>
-                            @endif
-                        </p>
-                    
-                        <div class="table-responsive table-custom mt-4 pt-1">
-                            <form class="form-horizontal" role="form" method="POST" action="/contact">
-                                {{ csrf_field() }}
-
-                                <input type="hidden" name="is_ask_type" value="{{ $i }}">
-
-                            <table class="table table-bordered">
-                                
-                                <tbody>
-                                    <tr class="form-group">
-                                        <th>お問い合わせ種別<em>必須</em></th>
-                                        <td>
-                                            <select class="form-control col-md-9{{ $isActive && $errors->has('ask_category') ? ' is-invalid' : '' }}" name="ask_category">
-                                                <option disabled selected>選択して下さい</option>
-                                                @foreach($cate_option as $val)
-                                                    <?php
-                                                        $selected = '';
-                                                        if(Ctm::isOld()) {
-                                                            if(old('ask_category') == $val)
-                                                                $selected = ' selected';
-                                                        }
-                                                        else {
-                                                            if($isActive && Session::has('contact') && session('contact.ask_category') == $val) {
-                                                                $selected = ' selected';
-                                                            }
-                                                        }
-                                                    ?>
                                                     
-                                                    <option value="{{ $val }}"{{ $selected }}>{{ $val }}</option>
-                                                @endforeach
-                                            </select>
+                <div class="table-responsive table-custom mt-4 pt-1">
+                    <form class="form-horizontal" role="form" method="POST" action="/contact">
+                        {{ csrf_field() }}
 
-                                            @if ($isActive && $errors->has('ask_category'))
-                                                <span class="text-danger">
-                                                    <span class="fa fa-exclamation form-control-feedback"></span>
-                                                    <span>{{ $errors->first('ask_category') }}</span>
-                                                </span>
-                                            @endif
+                        <table class="table table-bordered">
+                            
+                            <tbody>
+                                <tr class="form-group">
+                                    <th>ご希望方法</th>
+                                    <td>
+                                        <label class="d-block p-1 my-0{{ $errors->has('is_ask_type') ? ' border border-danger' : '' }}">
+                                        
+                                        <?php 
+                                            $askTypes = [1 =>'電話', 2 =>'メール'];
+                                        ?>
+                                            
+                                        @foreach($askTypes as $k => $v) 
+                                            <?php
+                                                $checked = '';
+                                                
+                                                if( Ctm::isOld()) {
+                                                    if(old('is_ask_type') == $k) {
+                                                        $checked = ' checked';
+                                                    }
+                                                }
+                                                elseif(Session::has('contact')) {
+                                                    if(session('contact.is_ask_type') == $k) {
+                                                        $checked = ' checked';
+                                                    }
+                                                }
+                                            ?>
+                                        
+                                            <span class="askRadioWrap">
+                                                <input type="radio" name="is_ask_type" class="isAskType" value="{{ $k }}" {{ $checked }}><span class="mr-3"> {{ $v }}</span>
+                                            </span>
+                                        
+                                        @endforeach
+                            
+                                        </label>
+                                        
+                                        @if ($errors->has('is_ask_type'))
+                                            <span class="text-danger">
+                                                <span class="fa fa-exclamation form-control-feedback"></span>
+                                                <span>{{ $errors->first('is_ask_type') }}</span>
+                                            </span>
+                                        @endif
+                                    </td>
+                                
+                                </tr>
+                            
+                                <tr class="form-group">
+                                    <th>お問い合わせ種別<em>必須</em></th>
+                                    <td>
+                                        <select class="form-control col-md-9{{ $errors->has('ask_category') ? ' is-invalid' : '' }}" name="ask_category">
+                                            <option disabled selected>選択して下さい</option>
+                                            @foreach($cate_option as $val)
+                                                <?php
+                                                    $selected = '';
+                                                    if(Ctm::isOld()) {
+                                                        if(old('ask_category') == $val)
+                                                            $selected = ' selected';
+                                                    }
+                                                    else {
+                                                        if(Session::has('contact') && session('contact.ask_category') == $val) {
+                                                            $selected = ' selected';
+                                                        }
+                                                    }
+                                                ?>
+                                                <option value="{{ $val }}"{{ $selected }}>{{ $val }}</option>
+                                            @endforeach
+                                        </select>
 
-                                        </td>
-                                    </tr>
+                                        @if ($errors->has('ask_category'))
+                                            <span class="text-danger">
+                                                <span class="fa fa-exclamation form-control-feedback"></span>
+                                                <span>{{ $errors->first('ask_category') }}</span>
+                                            </span>
+                                        @endif
+
+                                    </td>
+                                </tr>
 
 
-                                    <tr class="form-group">
-                                        <th>お名前<em>必須</em></th>
-                                        <td>
-                                            <input class="form-control rounded-0 col-md-12{{ $isActive && $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ Ctm::isOld() ? old('name') : ($isActive && Session::has('contact') ? session('contact.name') : '') }}" placeholder="例）山田太郎">
-                                       
-                                            @if ($isActive && $errors->has('name'))
-                                                <div class="text-danger">
-                                                    <span class="fa fa-exclamation form-control-feedback"></span>
-                                                    <span>{{ $errors->first('name') }}</span>
-                                                </div>
-                                            @endif
-                                        </td>
-                                    </tr>
+                                <tr class="form-group">
+                                    <th>お名前<em>必須</em></th>
+                                    <td>
+                                        <input class="form-control rounded-0 col-md-12{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ Ctm::isOld() ? old('name') : (Session::has('contact') ? session('contact.name') : '') }}" placeholder="例）山田太郎">
+                                   
+                                        @if ($errors->has('name'))
+                                            <div class="text-danger">
+                                                <span class="fa fa-exclamation form-control-feedback"></span>
+                                                <span>{{ $errors->first('name') }}</span>
+                                            </div>
+                                        @endif
+                                    </td>
+                                </tr>
                                     
-                                    <tr class="form-group">
-                                        <th>
-                                            メールアドレス<em>必須</em>
-                                        </th>
-                                        <td>
-                                            <input class="form-control rounded-0 col-md-12{{ $isActive && $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ Ctm::isOld() ? old('email') : ($isActive && Session::has('contact') ? session('contact.email') : '') }}" placeholder="例）info@example.com">
-                                       
-                                            @if ($isActive && $errors->has('email'))
-                                                <div class="text-danger">
-                                                    <span class="fa fa-exclamation form-control-feedback"></span>
-                                                    <span>{{ $errors->first('email') }}</span>
-                                                </div>
-                                            @endif
-                                        </td>
-                                    </tr>
-                                    
-                                    @if(! $i)
-                                    <tr class="form-group">
+                                <tr class="form-group">
+                                    <th>メールアドレス<em>必須</em></th>
+                                    <td>
+                                        <input class="form-control rounded-0 col-md-12{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ Ctm::isOld() ? old('email') : (Session::has('contact') ? session('contact.email') : '') }}" placeholder="例）info@example.com">
+                                   
+                                        @if ($errors->has('email'))
+                                            <div class="text-danger">
+                                                <span class="fa fa-exclamation form-control-feedback"></span>
+                                                <span>{{ $errors->first('email') }}</span>
+                                            </div>
+                                        @endif
+                                    </td>
+                                </tr>
+                                
+                                
+                                    <tr class="form-group ask-tel-wrap">
                                         <th>電話番号<em>必須</em><small>例）09012345678ハイフンなし半角数字</small></th>
                                         <td>
-                                            <input class="form-control rounded-0 col-md-12{{ $isActive && $errors->has('tel_num') ? ' is-invalid' : '' }}" name="tel_num" value="{{ Ctm::isOld() ? old('tel_num') : ($isActive && Session::has('contact') ? session('contact.tel_num') : '') }}" placeholder="例）09012345678（ハイフンなし半角数字）">
+                                            <input class="form-control rounded-0 col-md-12{{ $errors->has('tel_num') ? ' is-invalid' : '' }}" name="tel_num" value="{{ Ctm::isOld() ? old('tel_num') : (Session::has('contact') ? session('contact.tel_num') : '') }}" placeholder="例）09012345678（ハイフンなし半角数字）">
                                        
-                                            @if ($isActive && $errors->has('tel_num'))
+                                            @if ($errors->has('tel_num'))
                                                 <div class="text-danger">
                                                     <span class="fa fa-exclamation form-control-feedback"></span>
                                                     <span>{{ $errors->first('tel_num') }}</span>
@@ -168,12 +162,12 @@
                                         </td>
                                     </tr>
                                     
-                                    <tr class="form-group">
-                                        <th>ご希望日<em>必須</em><small>例）03/15、3月15日など月日を入力下さい</small></th>
+                                    <tr class="form-group ask-tel-wrap">
+                                        <th>ご希望日<em>必須</em><small>例）3/15、3月15日など月日を入力下さい</small></th>
                                         <td>
-                                        	<input class="form-control rounded-0 col-md-12{{ $isActive && $errors->has('request_day') ? ' is-invalid' : '' }}" name="request_day" value="{{ Ctm::isOld() ? old('request_day') : ($isActive && Session::has('contact') ? session('contact.request_day') : '') }}" placeholder="例）03/11、3月11日など月日を入力下さい">
+                                            <input class="form-control rounded-0 col-md-12{{ $errors->has('request_day') ? ' is-invalid' : '' }}" name="request_day" value="{{ Ctm::isOld() ? old('request_day') : (Session::has('contact') ? session('contact.request_day') : '') }}" placeholder="例）3/15、3月15日など月日を入力下さい">
                                             
-                                            @if ($isActive && $errors->has('request_day'))
+                                            @if ($errors->has('request_day'))
                                                 <div class="text-danger">
                                                     <span class="fa fa-exclamation form-control-feedback"></span>
                                                     <span>{{ $errors->first('request_day') }}</span>
@@ -182,14 +176,12 @@
                                         </td>
                                     </tr>
                                     
-                                    <tr class="form-group">
+                                    <tr class="form-group ask-tel-wrap">
                                         <th>ご希望時間帯<em>必須</em>
-                                            @if(! $i)
-                                                <small>*9時〜16時（12〜13時除く）</small>
-                                            @endif
+                                            <small>*9時〜16時（12〜13時除く）</small>
                                         </th>
                                         <td>
-                                            <select class="form-control col-md-9{{ $isActive && $errors->has('request_time') ? ' is-invalid' : '' }}" name="request_time">
+                                            <select class="form-control col-md-9{{ $errors->has('request_time') ? ' is-invalid' : '' }}" name="request_time">
                                                 <option disabled selected>選択して下さい</option>
                                                 @foreach($reqTimes as $time)
                                                     <?php
@@ -199,7 +191,7 @@
                                                                 $selected = ' selected';
                                                         }
                                                         else {
-                                                            if($isActive && Session::has('contact') && session('contact.request_time') == $time) {
+                                                            if(Session::has('contact') && session('contact.request_time') == $time) {
                                                                 $selected = ' selected';
                                                             }
                                                         }
@@ -208,7 +200,7 @@
                                                 @endforeach
                                             </select>
 
-                                            @if ($isActive && $errors->has('request_time'))
+                                            @if ($errors->has('request_time'))
                                                 <span class="text-danger">
                                                     <span class="fa fa-exclamation form-control-feedback"></span>
                                                     <span>{{ $errors->first('request_time') }}</span>
@@ -217,17 +209,16 @@
 
                                         </td>
                                     </tr>
-                                    @endif
-                                    
+                                
                                     <tr class="form-group">
                                         <th>
                                             お問い合わせ内容<em>必須</em>
                                             <small>*具体的な内容を記載頂けますとスムーズです。</small>
                                         </th>
                                         <td>
-                                            <textarea id="comment" class="form-control rounded-0 col-md-12{{ $isActive && $errors->has('comment') ? ' is-invalid' : '' }}" name="comment" rows="20">{{ Ctm::isOld() ? old('comment') : ($isActive && Session::has('contact') ? session('contact.comment') : '') }}</textarea>
+                                            <textarea id="comment" class="form-control rounded-0 col-md-12{{ $errors->has('comment') ? ' is-invalid' : '' }}" name="comment" rows="20">{{ Ctm::isOld() ? old('comment') : (Session::has('contact') ? session('contact.comment') : '') }}</textarea>
 
-                                            @if ($isActive && $errors->has('comment'))
+                                            @if ($errors->has('comment'))
                                                 <span class="text-danger">
                                                     <span class="fa fa-exclamation form-control-feedback"></span>
                                                     <span>{{ $errors->first('comment') }}</span>
@@ -238,22 +229,17 @@
                                 </tbody>
                             </table>
                             
-                              
                             <div>
                                 <button type="submit" class="btn btn-block btn-custom col-md-4 mt-5 mb-4 mx-auto py-2">確認する</button>
                             </div>
+                        
                         </form>
-                        </div>
-
                     </div>
-                                              
-                    @endfor
-                
-                </div>
-
 
             
             </div><!-- panel-body -->
+
+
         </div><!-- panel -->
 
     </div>

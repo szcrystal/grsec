@@ -1301,7 +1301,7 @@ class CartController extends Controller
                    
         }
         
-        //GMO後払い手数料 ----------------
+        //NP後払い手数料 ----------------
         else if($data['pay_method'] == 4) {
         	
         	$codFee = 205;
@@ -1310,9 +1310,9 @@ class CartController extends Controller
             $codTax = $codMax * ($this->set->tax_per / 100);
             $codMax = $codMax + $codTax;
             
-            //GMO後払い上限額
+            //NP後払い上限額
             if( ($totalFee + $codFee) > $codMax) {
-            	$errors['gmoLimit'] = 'GMO後払い決済の上限額'. number_format($codMax) .'円を超えています。';
+            	$errors['gmoLimit'] = 'NP後払い決済の上限額'. number_format($codMax) .'円を超えています。';
             }
         }
         
@@ -1594,7 +1594,7 @@ class CartController extends Controller
         //itemDataのSession入れ
         $sesItems = session('item.data');
         
-        //代引きが可能かどうかを判定してboolを渡す
+        //代引きが可能かどうかを判定してboolを渡す 代引き可／不可混在の場合は「可能」となる
         $codCheck = 0;
         foreach($sesItems as $item) {
         	$cod = $this->item->find($item['item_id'])->cod;

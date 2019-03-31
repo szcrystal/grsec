@@ -51,10 +51,26 @@ use App\TopSetting;
             <?php $orgObj = $tag; ?>
             
         @elseif($type=='search')
-            @if(!count($items))
-            検索ワード：{{ $searchStr }}の商品がありません
+        	@if(Ctm::isEnv('local'))
+            	検索ワード：
+                @if($searchStr == '')
+                	未入力です
+                @else
+                    @if(!count($items))
+                    {{ $searchStr }}の商品がありません
+                    @else
+                    {{ $searchStr }}
+                    @endif
+                @endif
+            
             @else
-            検索ワード：{{ $searchStr }}
+            	検索ワード：
+        		@if(!count($items))
+                {{ $searchStr }}の商品がありません
+                @else
+                {{ $searchStr }}
+                @endif
+                
             @endif
         @elseif($type == 'unique')
             {{ $title }}

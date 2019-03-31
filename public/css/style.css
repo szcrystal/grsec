@@ -577,15 +577,16 @@ img.img-fluid + div {
     //box-shadow: none;
 }
 .btn-s {
-    //background: #50BFC2;
-    //padding: 0.4em 0.7em 0.4em;
+    background: none;
+    border: none;
+    box-shadow: 0;
+    padding: 0.1em 0.4em;
 /*    position: relative;*/
 /*    z-index: 10;*/
 /*    border-radius: 0;*/
-    //border: 1px solid #A1DBDD;
     color: #b5b5b5;
     cursor: pointer;
-    margin-left: -1.8em;
+    margin-left: -2.2em;
 }
 .s-form .form-control::placeholder {
 	color: #4a4a4a;

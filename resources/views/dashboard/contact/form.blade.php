@@ -66,10 +66,12 @@
                                 <th>希望方法</th>
                                 <td>
                                     @if(isset($contact->is_ask_type))
-                                        @if(! $contact->is_ask_type)
+                                        @if($contact->is_ask_type == 1)
                                             <span class="text-success">電話</span>
-                                        @else
+                                        @elseif($contact->is_ask_type == 2)
                                             <span class="text-primary">メール</span>
+                                        @else
+                                        	<span>--</span>
                                         @endif
                                     @else
                                         --

@@ -30,7 +30,7 @@
               <th style="min-width:3em;">種別</th>
               <th style="min-width:5em;">名前</th>
               <th>メルアド／TEL番</th>
-              <th style="min-width:6em;">希望日／時間帯</th>
+              <th style="min-width:6em;">希望日／時間</th>
               <th>内容</th>
               <th></th>
             </tr>
@@ -51,10 +51,12 @@
                 
                 <td>
                 	@if(isset($obj->is_ask_type))
-                        @if(! $obj->is_ask_type)
+                        @if($obj->is_ask_type == 1)
                             <span class="text-success">電話</span>
-                        @else
+                        @elseif($obj->is_ask_type == 2)
                             <span class="text-primary">メール</span>
+                        @else
+                        	<span>--</span>
                         @endif
                         <br>
                         @if($obj->status)

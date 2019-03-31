@@ -25,11 +25,11 @@ p {
 <br><br>
 <hr>
 <br>
-【ご希望お問い合わせ方法】
+【ご希望方法】
 <p>
-@if(! $data['is_ask_type'])
+@if($data['is_ask_type'] == 1)
 	電話
-@else
+@elseif($data['is_ask_type'] == 2)
 	メール
 @endif
 </p>
@@ -43,7 +43,7 @@ p {
 【メールアドレス】
 <p>{{ $data['email'] }}</p>
 
-@if(! $data['is_ask_type'])
+@if($data['is_ask_type'] == 1)
     【電話番号】
     <p>{{ $data['tel_num'] }}</p>
 

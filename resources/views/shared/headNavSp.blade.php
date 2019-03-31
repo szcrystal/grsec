@@ -47,7 +47,7 @@ use App\User;
                 {{-- csrf_field() --}}
 
                 <input type="search" class="form-control rounded-0" name="s" placeholder="何かお探しですか？">
-                <i class="fa fa-search btn-s"></i>
+                <button class="btn-s"><i class="fa fa-search"></i></button>
             </form>
         </div>
     </div>

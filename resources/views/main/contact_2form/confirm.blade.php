@@ -1,6 +1,10 @@
 @extends('layouts.app')
 
-
+{{--
+@section('bread')
+@include('main.shared.bread')
+@endsection
+--}}
 
 @section('content')
     <div class="row contact">
@@ -12,7 +16,7 @@
                     <p class="mt-3">以下の内容で送信します。<br>よろしければ「送信する」ボタンを押して下さい。</p>
                 </div>
 
-                <div class="panel-body mt-5">
+                <div class="panel-body mt-5 mb-4">
 
 					<div class="table-responsive table-custom">
                         <table class="table table-bordered bg-white">
@@ -20,12 +24,12 @@
                             <tbody>
                                 	
                                 <tr class="form-group">
-                                    <th>ご希望方法</th>
+                                    <th>お問い合わせ方法</th>
                                     <td>
-                                        @if($data['is_ask_type'] == 1)
-                                            お電話でのお問い合わせ
+                                        @if(! $data['is_ask_type'])
+                                            電話
                                         @else
-                                            メールでのお問い合わせ
+                                            メール
                                         @endif
                                     </td>
                                 </tr>
@@ -40,7 +44,7 @@
                                     <td>{{ $data['name'] }}</td>
                                 </tr>
 
-                                @if($data['is_ask_type'] == 1)
+                                @if(! $data['is_ask_type'])
                                     <tr class="form-group">
                                         <th>電話番号</th>
                                         <td>{{ $data['tel_num'] }}</td>
@@ -90,7 +94,6 @@
                 </div>
 
 				</div><!-- panel-body -->
-
             </div><!-- panel -->
             
 

@@ -668,7 +668,7 @@ var exe = (function() {
             //クレカを選択した時
             if($('.payMethodRadio:checked').val() == 1) {
             	$wrapAllCard.show();
-                console.log($('.payMethodRadio:checked').val() + "a");
+                //console.log($('.payMethodRadio:checked').val() + "a");
             }
             
             $pmRadio.on('change', function(e){
@@ -718,6 +718,33 @@ var exe = (function() {
             	
             });
             
+            
+            //Contact
+            var $askTelWrap = $('.ask-tel-wrap');
+            var v = $('.isAskType:checked').val();
+            
+            if(v == 1) {
+                $askTelWrap.show();
+            }
+            else if(v == 2) {
+                $askTelWrap.hide();
+            }
+            else {
+            	$askTelWrap.hide();
+            }
+            
+            
+            $('.isAskType').on('change', function(e){                
+                var vv = $(this).val();
+                
+            	if(vv == 1) {
+                	$askTelWrap.slideDown(50); 
+                }
+                else if(vv == 2) {
+                	$askTelWrap.slideUp(50);
+                }
+            	
+            });
             
             
             //ネットバンク銀行選択

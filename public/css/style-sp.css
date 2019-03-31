@@ -488,6 +488,7 @@ for SP
     	background: #fefffe;
         border-bottom: 1px solid #d5d5d5;
         padding: 0.5em 0;
+        position: relative;
         //border: 1px solid red;
     }
     .s-form {
@@ -499,6 +500,7 @@ for SP
         //border: 1px solid red;
     }
     .s-form input.form-control {
+    	position: static;
         border-radius: 0;
         width: 100%;
         //display: block;
@@ -506,10 +508,11 @@ for SP
         padding: 0.3em 0.8em;
     }
     .btn-s {
-/*    	position: absolute;*/
-/*        top: 0;*/
-/*        right: 0;*/
-    	margin-left: -2em;
+    	position: absolute;
+        top: 0.7em;
+        right: 4.5%;
+		//display: inline;
+    	//margin-left: -2em;
     }
     
 	.nav-sp-wrap {

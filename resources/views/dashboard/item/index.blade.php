@@ -2,6 +2,10 @@
 
 @section('content')
 
+<?php
+use App\Item;
+?>
+
     <div class="text-left">
 		<h1 class="Title"> 商品一覧</h1>
 		<p class="Description"></p>
@@ -9,7 +13,6 @@
 
 
     <div class="row">
-
 
     </div>
     <!-- /.row -->
@@ -69,13 +72,6 @@
         </div>
         --}}
         
-        <style>
-        	.w-5 {
-            	width: 5%;
-            }
-        </style>
-        
-        
         
         <div class="">
           <div class="table-responsive">
@@ -84,8 +80,8 @@
               <thead>
                 <tr>
                   <th>ID</th>
-                  <th style="width: 5%;">商品番号</th>
-                  <th>画像</th>
+                  <th style="width:5%;">商品番号</th>
+                  <!-- <th>画像</th> -->
                   <th>商品名</th>
                   <th style="width:8%;">カテゴリー</th>
                   <th>金額</th>
@@ -118,7 +114,7 @@
                   <td>{{ $item->id }}</td>
                   <td class="text-small">{{ $item->number }}</td>
                   
-                  
+                  <!--
                   <td>
                   @if($item->main_img != '')
                   <img src="{{ Storage::url($item->main_img) }}" width="70" height="60">
@@ -126,14 +122,21 @@
                   <span class="no-img">No Image</span>
                   @endif
                   </td>
+                  -->
                   
                   
                   <td>
+                  	@if($item->is_potset == 1)
+                    	<small style="display:inline-block; line-height:1.2em;" >{{ Item::find($item->pot_parent_id)->title }}</small><br>
+                    @endif
+                    
                   	{{ $item->title }}<br>
-                  	@if($item->open_status)
-                    <span class="text-success">公開中</span><br>
+                  	@if($item->open_status == 1)
+                    	<span class="text-success">公開中</span><br>
+                    @elseif($item->open_status == 2)
+                    	<span class="text-orange">シークレット</span><br>
                     @else
-                    <span class="text-warning">未公開（保存済）</span><br>
+                    	<span class="text-danger">非公開</span><br>
                     @endif
                   </td>
                   <td>
@@ -171,10 +174,7 @@
                 	{{ $item->sale_count }}
                 </td>
                 
-
-                
                 <td>
-                  	
                   	<small>{{ Ctm::changeDate($item->created_at, 0) }}</small>
                 </td>
                   

@@ -41,12 +41,15 @@ class SearchController extends Controller
     public function index(Request $request)
     {
         $searchs = $request->s;
-        //exit();
+        
+//        if($searchs == '') {
+//        	abort(404);
+//        }
         
         $whereArr = $this->whereArr;
         
         $objs = $this->returnSearchObj($searchs);
-        extract($objs); //$allResultはコレクション->all()で配列になっている -> 該当するIDを配列で取得に変更
+        extract($objs); //$allResultはコレクション->all()で配列になっている -> 該当するIDを配列で取得に変更 [$allResIds, $search] item->id、検索ワード
         
         /*
         //Custom Pagination
@@ -66,7 +69,14 @@ class SearchController extends Controller
         //Custom pagination END
         */
         
+//        if($searchs == '') {
+//        	$allResIds = array();
+//        }
+        
         $allResults = $this->item->whereIn('id', $allResIds)->where($whereArr)->orderBy('created_at','DESC')->paginate($this->perPage);
+        
+        //ページネーションのリンクにqueryをつける
+        //$allResults->appends(['s' => $searchs]);
         
 //        $allResults = $this->item->whereIn('id', $allResIds)->where(['open_status'=>1, 'is_potset'=>0
 //            //['open_status', '=', 1], ['del_status', '=', 0], ['owner_id', '>', 0]
