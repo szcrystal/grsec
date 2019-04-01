@@ -445,15 +445,11 @@ use App\Setting;
                             <tr>
                                 <th>手数料 [Y]</th>
                                 <td>
-                                	¥{{ number_format($sale->cod_fee) }}
-                                	@if($sale->pay_method == 2)
-                                    [コンビニ決済]
-                                    @elseif($sale->pay_method == 4)
-                                    [GMO後払い]
-                                    @elseif($sale->pay_method == 5)
-                                    [代引]
+                                	@if(! $sale->cod_fee)
+                                    	--
+                                    @else
+                                    	¥{{ number_format($sale->cod_fee) }} [{{ $pms->find($sale->pay_method)->name }}]
                                     @endif
-                                
                                 </td>
                             </tr>
 
