@@ -71,7 +71,7 @@ $num = 1;
 @if($saleRel->pay_method == 2)
 コンビニ決済手数料：￥{{ number_format($saleRel->cod_fee) }}<br>
 @elseif($saleRel->pay_method == 4)
-GMO後払い手数料：￥{{ number_format($saleRel->cod_fee) }}<br>
+後払い手数料：￥{{ number_format($saleRel->cod_fee) }}<br>
 @elseif($saleRel->pay_method == 5)
 代引手数料：￥{{ number_format($saleRel->cod_fee) }}<br>
 @endif
