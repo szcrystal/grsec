@@ -73,8 +73,15 @@ class SingleController extends Controller
         
 
         //ポットセットがある場合
-        $potSets = $this->item->where(['open_status'=>1, 'pot_parent_id'=>$item->id])->orderBy('pot_count', 'asc')->get();
+        $potWhere = ['open_status'=>1, 'is_potset'=>1, 'pot_parent_id'=>$item->id];
         
+        if(isset($item->pot_sort) && $item->pot_sort != '') {
+        	$potSorts = $item->pot_sort;
+        	$potSets = $this->item->where($potWhere)->orderByRaw("FIELD(id, $potSorts)")->get();
+        }
+        else {
+        	$potSets = $this->item->where($potWhere)->orderBy('pot_count', 'asc')->get();
+        }
         
         //Other Atcl
         $otherItem = $this->item->where($whereArr)->whereNotIn('id', [$id])->orderBy('created_at','DESC')->take(5)->get();

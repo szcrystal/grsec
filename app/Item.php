@@ -16,6 +16,7 @@ class Item extends Model
         'catchcopy',
         
         //'is_pot_parent',
+        'pot_sort',
         'is_potset',
         'pot_parent_id',
         'pot_count',

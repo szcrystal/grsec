@@ -46,7 +46,7 @@ use App\User;
             <form class="my-1 my-lg-0" role="form" method="GET" action="{{ url('search') }}">
                 {{-- csrf_field() --}}
 
-                <input type="search" class="form-control rounded-0" name="s" placeholder="何かお探しですか？">
+                <input type="search" class="form-control rounded-0" name="s" value="{{ Request::has('s') ? Request::input('s') : '' }}" placeholder="何かお探しですか？">
                 <button class="btn-s"><i class="fa fa-search"></i></button>
             </form>
         </div>

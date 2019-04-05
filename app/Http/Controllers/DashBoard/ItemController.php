@@ -161,6 +161,25 @@ class ItemController extends Controller
         	'number' => 'required|unique:items,number,'.$editId,
             'title' => 'required|max:255',
             'cate_id' => 'required',
+            
+            'pot_sort' => [
+            	'nullable',
+            	'max:255',
+                function($attribute, $value, $fail) {
+                    if (strpos($value, '、') !== false) {
+                        return $fail('「子ポット並び順」に全角のカンマがあります。');
+                    }
+                    else {
+                    	$nums = explode(',', $value);
+                        foreach($nums as $num) {
+                        	if(! is_numeric($num)) {
+                            	return $fail('「子ポット並び順」に全角の数字があります。');
+                            }
+                        }
+                    }
+                }
+            ],
+            
             //'dg_id' => 'required',
             'dg_id' => [ //dgに送料が入力されていない時
             	'required',

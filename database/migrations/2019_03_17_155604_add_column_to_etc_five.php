@@ -99,12 +99,12 @@ class AddColumnToEtcFive extends Migration
 
 		if (Schema::hasColumn('items', 'upper_title')) {
             Schema::table('items', function (Blueprint $table) {
-                $table->boolean('upper_title')->change();
+                $table->dropColumn('upper_title');
             });
         }
         if (Schema::hasColumn('items', 'upper_text')) {
             Schema::table('items', function (Blueprint $table) {
-                $table->boolean('upper_text')->change();
+                $table->dropColumn('upper_text');
             });
         }
         

@@ -417,6 +417,35 @@
             </fieldset>
             
             
+            <?php //ポットセット ================================ ?>
+            
+            <fieldset class="form-group mb-3 pb-4">
+                <label for="pot_sort" class="control-label">子ポット並び順<small>（ポットセット親の時に入力。子ポットのIDを希望順に半角カンマで区切って下さい）</small></label>
+                <input class="form-control col-md-8{{ $errors->has('pot_sort') ? ' is-invalid' : '' }}" name="pot_sort" value="{{ Ctm::isOld() ? old('pot_sort') : (isset($item) ? $item->pot_sort : '') }}">
+                
+
+                @if ($errors->has('pot_sort'))
+                    <div class="text-danger">
+                        <span class="fa fa-exclamation form-control-feedback"></span>
+                        <span>{{ $errors->first('pot_sort') }}</span>
+                    </div>
+                @endif
+                
+                @if(isset($edit))
+                    <div>
+                        <?php $ps = Ctm::isPotParentAndStock($item->id); ?>
+                        
+                        @if($ps['isPotParent'])
+                        	指定されている子ポット<br>
+                            
+                            @foreach($ps['pots'] as $ptChild)
+                                <a href="{{ url('/dashboard/items/'. $ptChild->id) }}" target="_brank" class="d-inline-block mr-3">[{{ $ptChild->id }}] {{ $ptChild->title }}</a>
+                            @endforeach
+                        @endif
+                    </div>
+                @endif
+            </fieldset>
+            
             <fieldset class="form-group mb-2 mt-3">
                     <div class="checkbox">
                         <label>
@@ -432,7 +461,7 @@
                                     }
                                 }
                             ?>
-                            <input type="checkbox" name="is_potset" value="1"{{ $checked }}> ポットセットにする
+                            <input type="checkbox" name="is_potset" value="1"{{ $checked }}> 子ポットセットにする
                         </label>
                     </div>
             </fieldset>
@@ -463,6 +492,7 @@
                 @endif
             </fieldset>
 
+            <?php //ポットセット END ================================ ?>
             
             
             <fieldset class="mb-4 form-group">

@@ -24,8 +24,10 @@ class CalcDelifeeController extends Controller
     private $koubokuSmId = 3;
     //千代田プランツ-高木コニファー大のid
     private $koubokuBgId = 4;
-    //千代田プランツ-下草コニファー ->下草のみなら大小関係しない通常計算
-    private $sitakoniId = 5;
+    //千代田プランツ-下草コニファー ->下草のみなら大小関係しない通常計算 ->変更大小ありの行き来するに変更 下草コニファー（大）となる
+    private $sitakoniBgId = 5;
+    //千代田プランツ-下草コニファー（小） ->2019/04追加->変更大小ありの行き来するに変更
+    private $sitakoniSmId = 19;
     
     
     //シモツケ(千代田プランツ)  -> 下草と同じ計算方法
@@ -47,7 +49,7 @@ class CalcDelifeeController extends Controller
     public function __construct($itemData, $prefId)
     {
     	/***********************
-         $itemDataはitemのobjectに[count]（購入個数）を足したものを配列に入れたもの
+         $itemDataはitemのobjectに[count]（購入個数）を足したObjectを一つずつ配列にしたもの
         ************************/
         
         $this->item = new Item;
@@ -167,9 +169,15 @@ class CalcDelifeeController extends Controller
             $deliveryFee += $smFee;        
         }
         else {  //個数x係数が20以上なら容量で割る各種計算が必要
+        	//$factor = 60;
             $amari = $factor % $bgCapa;
-            $answer = $factor / $bgCapa;
+            $answer = $factor / $bgCapa; //解の型は「double割るintの除算」なので、doubleになるので注意。$factorがdouble型なので（DBでもdouble型 ->小数点入力値あり）
             
+            //decimal = 小数点以下の数値
+            $isDecimalFactor = $factor - floor($factor);
+            $isDecimalAnswer = $answer - floor($answer); //小数点以下の数値があるかどうか。 切り捨てした数値を引いて例えば0.3など残ればtrueとなる
+//          echo ($isPointNum ? 1 : 0) . '::';
+
             //amariについて
             //0.3 % 6 = 0
             //1.3 % 6 = 1
@@ -179,7 +187,7 @@ class CalcDelifeeController extends Controller
             //12.3 % 6 = 0
             //13.3 % 6 = 1
             
-//            echo $amari . '/' . $answer. '/'. 27.9 % 6 . '/'. is_float($answer);
+//            echo $amari . '/' . $answer. '/'. 27.9 % 6 . '/'. is_float($answer). '/' . gettype($factor). '/' . gettype($bgCapa);
 //            exit;
             
             if($amari > 0) { //amariがある時 0以上の時
@@ -189,7 +197,7 @@ class CalcDelifeeController extends Controller
                 }
                 else {
                     if($amari <= $smCapa) { //40で割ったamariが下草小で可能の時 下草小のcapacity以下の時 合計係数が95なら40で割ると余は15となり下草小で可能
-                    	if($amari == $smCapa && is_float($answer)) { //factor:27.9 / 容量6の時など 27.9 / 6 小数点分でsmCapacityの容量を超えるので
+                    	if($amari == $smCapa && $isDecimalFactor) { //factor:27.9 / 容量6の時など 27.9 / 6 小数点分でsmCapacityの容量を超えるので -> 条件はfactorに小数点以下の数値があるかどうかにしている ->実際にどのような時に当てはまるか不明（もしかすると不要かも）
                         	$deliveryFee += $bgFee * ceil($answer); //切り上げ
                         }
                         else {
@@ -203,7 +211,8 @@ class CalcDelifeeController extends Controller
                 }
             }
             else { //amari 0 割り切れる時
-                if(is_float($answer)) { //割り切れる時で、なおかつ小数点の余がある時。12.3 / 6 の時amariは0だが、0.3の端数が出る
+                            
+                if($isDecimalAnswer) { //割り切れる時で、なおかつ小数点の余がある時。12.3 / 6 の時amariは0だが、0.3の端数が出る
                 	$deliveryFee += $smFee;
                     $deliveryFee += $bgFee * floor($answer); //切り捨て
                 }
@@ -301,30 +310,41 @@ class CalcDelifeeController extends Controller
         
         $koubokuBgId = $this-> koubokuBgId;
         $koubokuSmId = $this-> koubokuSmId;
-        $sitakoniId = $this-> sitakoniId;
+        
+        $sitakoniBgId = $this-> sitakoniBgId;
+        $sitakoniSmId = $this-> sitakoniSmId;
         
         $deliFee = 0;
         
         foreach($tiyodaItem as $itemObject) {
+        	//下草商品の係数の合計を算出
+            //★★★ 高木コニファーがあってもなくても、係数はその商品に指定されている係数にて計算している★★★
+            $factor += $itemObject->factor * $itemObject->count;
+            
+            
+            //高木があれば強制的に全て高木の計算になるのでその判定用のSwitch
             if($koubokuSmId == $itemObject->dg_id || $koubokuBgId == $itemObject->dg_id) {
                 $switch = 1;
-                break;
+                //break;
             }
         }
          
         //下草商品の係数の合計を算出
-        foreach($tiyodaItem as $ioi) {  //★★★ 高木コニファーがあってもなくても、係数はその商品に指定されている係数にて計算している★★★
-            $factor += $ioi->factor * $ioi->count;   
-        }
+//        foreach($tiyodaItem as $ioi) { //★★★ 高木コニファーがあってもなくても、係数はその商品に指定されている係数にて計算している★★★
+//            $factor += $ioi->factor * $ioi->count;   
+//        }
         
-//            echo $factor . '/'. $switch . '/' . $prefId;
+//            echo $factor . '/'. $switch . '/' . $this->prefId;
 //            exit;
         
         if($switch) {
             $deliFee = $this->specialCalc($koubokuSmId, $koubokuBgId, $factor); //下記の特別関数で計算
         }
         else { //下草コニファー（千代田プランツ）は大小の区別がないので通常計算で可能
-            $deliFee = $this->normalCalc($sitakoniId, $factor);
+            //2019/04変更 下草（低木）コニファー（小）を追加し、元の下草コニファーを（大）として、大小行き来の計算をする
+            //ORG
+            //$deliFee = $this->normalCalc($sitakoniId, $factor);
+            $deliFee = $this->specialCalc($sitakoniSmId, $sitakoniBgId, $factor);
         }
         
         return $deliFee;
@@ -473,7 +493,8 @@ class CalcDelifeeController extends Controller
         //同梱包可能で、配送区分も同じ場合を区別する必要がある
         //同梱包可能なもので配送区分の同じものと異なるものを分けて送料を出す
         foreach($this->itemData as $item) {
-        	
+        	//府中ガーデンとモリヤコニファーは特殊送料があるので送料有無どちらでも配列に入れる
+            
             //府中ガーデン下草->大小を行ったり来たりする
             if($item->dg_id == $this->sitakusaSmId || $item->dg_id == $this->sitakusaBgId) { //下草 府中ガーデンの時 送料有料／無料どちらも
             	if(! $item->is_once) { //下草府中ガーデンで同梱包不可のものはそれぞれ単独で -> 多数あるようなので、ここも重要
@@ -509,7 +530,7 @@ class CalcDelifeeController extends Controller
                 else { //同梱包可能なものは別配列へ入れて下記へ
 
 					// 高木コニファー(千代田プランツ)の時 高木用の配列に入れる->高木が一つでも含まれていれば高木。大小は府中ガーデン下草と同じ
-                    if($item->dg_id == $this->koubokuSmId || $item->dg_id == $this->koubokuBgId || $item->dg_id == $this->sitakoniId) {
+                    if($item->dg_id == $this->koubokuSmId || $item->dg_id == $this->koubokuBgId || $item->dg_id == $this->sitakoniSmId || $item->dg_id == $this->sitakoniBgId) {
                     	$tiyodaItem[] = $item;
                     }
                     //シモツケの時 シモツケ用の配列に入れる->府中ガーデン下草と同じ
