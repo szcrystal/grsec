@@ -123,6 +123,10 @@ class CalcDelifeeController extends Controller
         $answer = $factor / $capacity;
         $amari = $factor % $capacity;
         
+        //decimal = 小数点以下の数値
+        $isDecimalFactor = $factor - floor($factor);
+        $isDecimalAnswer = $answer - floor($answer); //小数点以下の数値があるかどうか。 切り捨てした数値を引いて例えば0.3など残ればtrueとなる
+        
         $fee = $this->dgRel->where(['dg_id'=>$dgId, 'pref_id'=>$prefId])->first()->fee;
     
         if($amari > 0) { //割り切れない時
@@ -135,7 +139,7 @@ class CalcDelifeeController extends Controller
             }
         }
         else { //割り切れる時
-            if(is_float($answer)) { //割り切れる時で、なおかつ小数点の余がある時。12.3 / 6 の時amariは0だが、0.3の端数が出る
+            if($isDecimalAnswer) { //割り切れる時($amariが0の時)で、なおかつ小数点の余がある時。12.3 / 6 の時amariは0だが、0.3の端数が出る
                 $deliveryFee += $fee * ceil($answer); //切り上げ
             }
             else {
@@ -171,7 +175,7 @@ class CalcDelifeeController extends Controller
         else {  //個数x係数が20以上なら容量で割る各種計算が必要
         	//$factor = 60;
             $amari = $factor % $bgCapa;
-            $answer = $factor / $bgCapa; //解の型は「double割るintの除算」なので、doubleになるので注意。$factorがdouble型なので（DBでもdouble型 ->小数点入力値あり）
+            $answer = $factor / $bgCapa; //解の型は「double / intの除算」により、doubleになるので注意（int同士の除算なら解はint）。$factorがdouble型なので（DB上double型 ->小数点入力値あり）
             
             //decimal = 小数点以下の数値
             $isDecimalFactor = $factor - floor($factor);
@@ -231,6 +235,9 @@ class CalcDelifeeController extends Controller
     }
     /* 下草　特別計算の関数 END ************************************************** */
     
+    
+    
+    /* ここから各送料区分ごとの送料関数 ******************************************** */
     
     //府中ガーデン下草（大・小）========================================================
     public function HutyuGardeSitakusa($sitakusaItem)
@@ -321,18 +328,12 @@ class CalcDelifeeController extends Controller
             //★★★ 高木コニファーがあってもなくても、係数はその商品に指定されている係数にて計算している★★★
             $factor += $itemObject->factor * $itemObject->count;
             
-            
             //高木があれば強制的に全て高木の計算になるのでその判定用のSwitch
             if($koubokuSmId == $itemObject->dg_id || $koubokuBgId == $itemObject->dg_id) {
-                $switch = 1;
+                if(! $switch) $switch = 1;
                 //break;
             }
         }
-         
-        //下草商品の係数の合計を算出
-//        foreach($tiyodaItem as $ioi) { //★★★ 高木コニファーがあってもなくても、係数はその商品に指定されている係数にて計算している★★★
-//            $factor += $ioi->factor * $ioi->count;   
-//        }
         
 //            echo $factor . '/'. $switch . '/' . $this->prefId;
 //            exit;
@@ -342,8 +343,7 @@ class CalcDelifeeController extends Controller
         }
         else { //下草コニファー（千代田プランツ）は大小の区別がないので通常計算で可能
             //2019/04変更 下草（低木）コニファー（小）を追加し、元の下草コニファーを（大）として、大小行き来の計算をする
-            //ORG
-            //$deliFee = $this->normalCalc($sitakoniId, $factor);
+            //ORG : $deliFee = $this->normalCalc($sitakoniId, $factor);
             $deliFee = $this->specialCalc($sitakoniSmId, $sitakoniBgId, $factor);
         }
         
@@ -474,10 +474,10 @@ class CalcDelifeeController extends Controller
     }
     //モリヤコニファー（大・小・下草）END ========================================================
     
-
+	/* 各送料区分ごとの送料関数 END ******************************************** */
     
     
-    /* Main *************************************************** */
+    /* Main **************************************************************** */
     public function getDelifee()
     {
     	//送料 ---------------------------------

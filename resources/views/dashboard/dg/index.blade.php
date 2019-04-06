@@ -76,7 +76,12 @@
                 <tr>
                   <td>{{ $dg->id }}</td>
                   
-                  <td>{{ $dg->name }}</td>
+                  <td>
+                  	{{ $dg->name }}
+                  	@if(! $dg->open_status)
+                    	<br><span class="text-danger text-small"><i class="fa fa-exclamation"></i> この区分は使用できません</span>
+                    @endif
+                  </td>
                   
                   <td>
                   <?php

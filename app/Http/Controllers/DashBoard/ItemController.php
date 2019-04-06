@@ -65,7 +65,7 @@ class ItemController extends Controller
     {
         
         //$itemObjs = Item::orderBy('id', 'desc')->paginate($this->perPage);
-        $itemObjs = Item::orderBy('id', 'desc')->get();
+        $itemObjs = $this->item->orderBy('id', 'desc')->get();
         
         $cates= $this->category;
         $subCates= $this->categorySecond;
@@ -103,7 +103,8 @@ class ItemController extends Controller
         $cates = $this->category->all();
         $subcates = $this->categorySecond->where(['parent_id'=>$item->cate_id])->get();
         $consignors = $this->consignor->all();
-        $dgs = $this->dg->all();
+        
+        $dgs = $this->dg->where('open_status', 1)->get();
         
         $spares = $this->itemImg->where(['item_id'=>$id, 'type'=>1])->get();
         $snaps = $this->itemImg->where(['item_id'=>$id, 'type'=>2])->get();
