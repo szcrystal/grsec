@@ -570,11 +570,7 @@ img.img-fluid + div {
     padding: 0.2em 0.8em;
 }
 .s-form input.form-control:focus {
-    //background: #3a3a3a;
     border: 1px solid #80bdff;
-    //color: #fff;
-    //border: none;
-    //box-shadow: none;
 }
 .btn-s {
     background: none;
@@ -630,7 +626,6 @@ img.img-fluid + div {
 	float: right; 
 	text-align: left;
 	font-family: 'Cuprum', sans-serif;
-	//border: 1px solid red;
 }
 .comp-info div {
 	font-weight: bold;
@@ -651,9 +646,8 @@ img.img-fluid + div {
 	display: block;
 	float: none;
 	width: 100%;
-    //border: 1px solid red;
 /*    border-width: 1px 0 0;*/
-	//margin-top: 7.8em;
+/*	margin-top: 7.8em;*/
     /*background: #FDFBFC;*//*#ececec*/
 /*	background: #eae8e8;*/
 }
