@@ -42,8 +42,8 @@ class ProcessFollowMail implements ShouldQueue
      * @return void
      */
     public function handle()
-    {
-	   	//$ss = $this->sales;
+    {        
+        
 		
         $sales = Sale::where('deli_done', 1)->get();
                     
@@ -52,6 +52,12 @@ class ProcessFollowMail implements ShouldQueue
         $ensure_96 = array();
         $ensure_155 = array();
         $noEnsure_33 = array();
+        
+        
+        //************************
+        //テストをする時は、secもbetaも一般ユーザーの情報が入っているので、メールが送られてしまうことに注意が必要
+        //特定のデータのみが対象となるようにする必要がある
+    	//************************
         
         //For Test ----------------------
         /*

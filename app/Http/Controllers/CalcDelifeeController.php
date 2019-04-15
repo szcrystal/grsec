@@ -315,6 +315,9 @@ class CalcDelifeeController extends Controller
         $factor = 0;
         $switch = 0; //高木コニファーがない時False 高木コニファーがある時True
         
+        $factorKouboku = 0;
+        $factorTeiboku = 0;
+        
         $koubokuBgId = $this-> koubokuBgId;
         $koubokuSmId = $this-> koubokuSmId;
         
@@ -324,22 +327,97 @@ class CalcDelifeeController extends Controller
         $deliFee = 0;
         
         foreach($tiyodaItem as $itemObject) {
-        	//下草商品の係数の合計を算出
-            //★★★ 高木コニファーがあってもなくても、係数はその商品に指定されている係数にて計算している★★★
-            $factor += $itemObject->factor * $itemObject->count;
-            
-            //高木があれば強制的に全て高木の計算になるのでその判定用のSwitch
+        	//高木があれば強制的に全て高木の計算になるのでその判定用のSwitch
             if($koubokuSmId == $itemObject->dg_id || $koubokuBgId == $itemObject->dg_id) {
-                if(! $switch) $switch = 1;
-                //break;
+                //if(! $switch) {
+                	$switch = 1;
+                	break;
+                //}
             }
         }
+        
+        foreach($tiyodaItem as $itemObject) {
+        	//下草商品の係数の合計を算出
+            //★★★ 高木コニファーがあってもなくても、係数はその商品に指定されている係数にて計算している★★★
+            
+            if($switch) {
+            	if($itemObject->dg_id == $koubokuBgId || $itemObject->dg_id == $koubokuSmId) {
+            		$factorKouboku += $itemObject->factor * $itemObject->count;
+                }
+                else {
+                	$factorTeiboku += $itemObject->factor * $itemObject->count;
+                }
+            }
+            else {
+            	$factor += $itemObject->factor * $itemObject->count;
+            }
+        }
+        
+        
+        if($factorKouboku > 0) {
+            $koubokuBgCapa = $this->dg->find($koubokuBgId)->capacity;
+            $koubokuSmCapa = $this->dg->find($koubokuSmId)->capacity;
+
+            //$capa = $koubokuBgCapa + $koubokuSmCapa;
+			$amariCapa = 0;
+            
+            if($factorKouboku <= $koubokuSmCapa) {
+            	if($factorKouboku < $koubokuSmCapa) {
+                	$amariCapa = $koubokuSmCapa - $factorKouboku;
+                }
+
+            }
+            else {
+                $amari = $factorKouboku % $koubokuBgCapa;
+                $answer = $factorKouboku / $koubokuBgCapa;
+                
+//                echo $amari. '/' . $factorKouboku;
+//                exit;
+                
+                if($amari > 0) {
+                    if($answer < 1) { //bgCapaに余裕が出る時
+                        $amariCapa = $koubokuBgCapa - $factorKouboku;
+                        
+//                        $factorKouboku = $factorKouboku + $amariCapa;
+//                        $factorTeiboku = $factorTeiboku - $amariCapa;
+                    }
+                    else { //昇格する時
+                        if($amari <= $koubokuSmCapa) {
+                        	if($amari < $koubokuSmCapa) {
+                            	$amariCapa = $koubokuSmCapa - $amari;
+                            }
+                        }
+                        else {
+                            $amariCapa = $koubokuBgCapa - $factorKouboku;
+                        }
+                        
+                    }
+                }
+            }
+            
+            
+            if($amariCapa > 0) {
+            	$factorKouboku = $factorKouboku + $amariCapa;
+                $factorTeiboku = $factorTeiboku - $amariCapa;
+            }
+        }
+        
         
 //            echo $factor . '/'. $switch . '/' . $this->prefId;
 //            exit;
         
         if($switch) {
-            $deliFee = $this->specialCalc($koubokuSmId, $koubokuBgId, $factor); //下記の特別関数で計算
+        	$subDf = 0;
+            
+            if($factorTeiboku > 0) {
+            	$subDf += $this->specialCalc($sitakoniSmId, $sitakoniBgId, $factorTeiboku);
+            }
+            
+            $subDf += $this->specialCalc($koubokuSmId, $koubokuBgId, $factorKouboku);
+            
+            $deliFee = $subDf;
+            
+            //$deliFee = $this->specialCalc($koubokuSmId, $koubokuBgId, $factor); //下記の特別関数で計算
         }
         else { //下草コニファー（千代田プランツ）は大小の区別がないので通常計算で可能
             //2019/04変更 下草（低木）コニファー（小）を追加し、元の下草コニファーを（大）として、大小行き来の計算をする

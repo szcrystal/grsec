@@ -35,6 +35,10 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
+    	//************************
+        //テストをする時は、secもbetaも一般ユーザーの情報が入っているのでメールが送られてしまうことに注意が必要
+    	//************************
+        
         if(Ctm::isEnv('product')) { //本番のみ
             //枯れ保証：フォローメールの送信(毎日6時に該当する日数の商品（ユーザー）にメール) ==============
             $schedule->job(new ProcessFollowMail)
