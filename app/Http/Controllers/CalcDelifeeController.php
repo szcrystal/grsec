@@ -327,24 +327,27 @@ class CalcDelifeeController extends Controller
         $deliFee = 0;
         
         foreach($tiyodaItem as $itemObject) {
-        	//高木があれば強制的に全て高木の計算になるのでその判定用のSwitch
+        	//高木があれば強制的に全て高木の計算になるのでその判定用のSwitchを作る
             if($koubokuSmId == $itemObject->dg_id || $koubokuBgId == $itemObject->dg_id) {
-                //if(! $switch) {
-                	$switch = 1;
-                	break;
-                //}
+                $switch = 1;
+                break;
             }
         }
         
         foreach($tiyodaItem as $itemObject) {
-        	//下草商品の係数の合計を算出
-            //★★★ 高木コニファーがあってもなくても、係数はその商品に指定されている係数にて計算している★★★
+        	//係数の合計を算出
+            /*★★★ 
+            高木コニファーがある場合は余る容量を算出する必要がある
+            余る場合はそこに低木を回し、残りの低木は低木としての大小SpecialCalcで計算する
+            高木のみ、低木のみであれば余りを出す必要はない
+            ★★★
+            */
             
             if($switch) {
-            	if($itemObject->dg_id == $koubokuBgId || $itemObject->dg_id == $koubokuSmId) {
+            	if($itemObject->dg_id == $koubokuBgId || $itemObject->dg_id == $koubokuSmId) { //高木用のfactorに加算
             		$factorKouboku += $itemObject->factor * $itemObject->count;
                 }
-                else {
+                else { //低木用のfactorに加算
                 	$factorTeiboku += $itemObject->factor * $itemObject->count;
                 }
             }
@@ -354,20 +357,26 @@ class CalcDelifeeController extends Controller
         }
         
         
-        if($factorKouboku > 0) {
+        //高木で余る容量を算出する 高木factorと低木factorがある時のみ下記計算にてfactorを計算し直す--------
+        if($factorKouboku > 0 && $factorTeiboku > 0) {
+        
+            //切り上げ 係数を切り上げる
+        	$factorKouboku = ceil($factorKouboku);
+            $factorTeiboku = ceil($factorTeiboku);
+            
+            //容量取得
             $koubokuBgCapa = $this->dg->find($koubokuBgId)->capacity;
             $koubokuSmCapa = $this->dg->find($koubokuSmId)->capacity;
 
-            //$capa = $koubokuBgCapa + $koubokuSmCapa;
 			$amariCapa = 0;
             
-            if($factorKouboku <= $koubokuSmCapa) {
-            	if($factorKouboku < $koubokuSmCapa) {
+            if($factorKouboku <= $koubokuSmCapa) { //合計factorが高木(小)で収まるなら
+                if($factorKouboku < $koubokuSmCapa) {
                 	$amariCapa = $koubokuSmCapa - $factorKouboku;
                 }
-
+				//factorと高木(小)容量が同じであれば、余りは出ないのでスルーする
             }
-            else {
+            else { //合計factorが高木(小)で収まらなければ、必ず昇格1回目は高木（大）になる
                 $amari = $factorKouboku % $koubokuBgCapa;
                 $answer = $factorKouboku / $koubokuBgCapa;
                 
@@ -375,49 +384,46 @@ class CalcDelifeeController extends Controller
 //                exit;
                 
                 if($amari > 0) {
-                    if($answer < 1) { //bgCapaに余裕が出る時
+                    if($answer < 1) { //bgCapaに余裕が出る時（昇格しない時） factor:3/capa:6 の時など amari:3/answer:0.5
                         $amariCapa = $koubokuBgCapa - $factorKouboku;
-                        
-//                        $factorKouboku = $factorKouboku + $amariCapa;
-//                        $factorTeiboku = $factorTeiboku - $amariCapa;
                     }
-                    else { //昇格する時
-                        if($amari <= $koubokuSmCapa) {
+                    else { //昇格する時 factor:7/capa:6 の時など amari:1/answer:1.11・・
+                        if($amari <= $koubokuSmCapa) { //amariが高木(小)容量内で収まる時
                         	if($amari < $koubokuSmCapa) {
                             	$amariCapa = $koubokuSmCapa - $amari;
                             }
+                            //amariと高木(小)容量が同じであれば、余りは出ないのでスルーする
                         }
                         else {
-                            $amariCapa = $koubokuBgCapa - $factorKouboku;
+                            $amariCapa = $koubokuBgCapa - $amari;
                         }
                         
                     }
                 }
+                //amariが0（割り切れる）であれば、余りは出ないのでスルーする
             }
             
-            
+            //余ったcapaを高木factorに回し、低木factorから引く
             if($amariCapa > 0) {
             	$factorKouboku = $factorKouboku + $amariCapa;
                 $factorTeiboku = $factorTeiboku - $amariCapa;
             }
         }
         
-        
 //            echo $factor . '/'. $switch . '/' . $this->prefId;
 //            exit;
         
         if($switch) {
-        	$subDf = 0;
+        	$teibokuDf = 0;
             
             if($factorTeiboku > 0) {
-            	$subDf += $this->specialCalc($sitakoniSmId, $sitakoniBgId, $factorTeiboku);
+            	$teibokuDf = $this->specialCalc($sitakoniSmId, $sitakoniBgId, $factorTeiboku);
             }
             
-            $subDf += $this->specialCalc($koubokuSmId, $koubokuBgId, $factorKouboku);
+            $deliFee = $this->specialCalc($koubokuSmId, $koubokuBgId, $factorKouboku) + $teibokuDf;
             
-            $deliFee = $subDf;
-            
-            //$deliFee = $this->specialCalc($koubokuSmId, $koubokuBgId, $factor); //下記の特別関数で計算
+            //2019/04変更
+            //$deliFee = $this->specialCalc($koubokuSmId, $koubokuBgId, $factor); //特別関数で計算
         }
         else { //下草コニファー（千代田プランツ）は大小の区別がないので通常計算で可能
             //2019/04変更 下草（低木）コニファー（小）を追加し、元の下草コニファーを（大）として、大小行き来の計算をする
