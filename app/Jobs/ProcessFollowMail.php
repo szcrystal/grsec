@@ -42,9 +42,8 @@ class ProcessFollowMail implements ShouldQueue
      * @return void
      */
     public function handle()
-    {        
-        
-		
+    {
+    
         $sales = Sale::where('deli_done', 1)->get();
                     
         $ensure_7 = array();
@@ -117,7 +116,7 @@ class ProcessFollowMail implements ShouldQueue
         $day_33 = 33;
         $day_96 = 96;
         $day_155 = 155;
-        $dayNo_33 = 33;
+        $dayNo_33 = 33; //ORG:33
         
         $current = new DateTime('now'); 
             
@@ -177,10 +176,12 @@ class ProcessFollowMail implements ShouldQueue
             $this->sendFollowMail($ensure_155, 'ensure_155');
         }
         
+        /* ***** 一旦枯れ保証なしメールは送らないこととした（2019/04） *****
         if(count($noEnsure_33) > 0) {
         	$this->sendFollowMail($noEnsure_33, 'no_ensure_33');
-            //ProcessFollowMail::dispatch($noEnsure_33, 33, false);
-        }  
+        }
+        */
+        
         //メール送信 END =============================================================
     }
     
