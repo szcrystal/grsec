@@ -75,10 +75,6 @@ use App\Setting;
 </script>
 @endif
 
-@if(isset(Setting::first()->analytics_code) && Setting::first()->analytics_code != '')
-{!! Setting::first()->analytics_code !!}
-@endif
-
 @if(isset($isTop) && $isTop)
 <?php
 	$slideNum = Ctm::isAgent('sp') ? 3 : 5;
@@ -112,6 +108,10 @@ $(document).ready(function() {
 @endif
 
 <script src="{{ asset('js/script.js' . $getNow) }}"></script>
+
+@if(isset(Setting::first()->analytics_code) && Setting::first()->analytics_code != '')
+{!! Setting::first()->analytics_code !!}
+@endif
 
 </body>
 </html>
