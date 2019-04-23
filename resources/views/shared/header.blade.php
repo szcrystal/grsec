@@ -58,13 +58,6 @@
 
     </script>
 
-<?php    
-use App\Setting;
-?>
-@if(isset(Setting::first()->analytics_code) && Setting::first()->analytics_code != '')
-{!! Setting::first()->analytics_code !!}
-@endif
-
 </head>
 
 

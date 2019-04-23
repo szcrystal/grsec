@@ -109,5 +109,10 @@ $(document).ready(function() {
 
 <script src="{{ asset('js/script.js' . $getNow) }}"></script>
 
+
+@if(isset(Setting::first()->analytics_code) && Setting::first()->analytics_code != '')
+{!! Setting::first()->analytics_code !!}
+@endif
+
 </body>
 </html>
