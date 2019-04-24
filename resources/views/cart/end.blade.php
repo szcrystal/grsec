@@ -121,7 +121,7 @@ dataLayer.push({
 ?>
 
 {
-'sku': "{{ $saleObj->item_id }}",
+'sku': "{{ $item->number }}",
 'name': "{{ $item->title }}",
 'category': '',
 'price': {{ $saleObj->total_price }},
