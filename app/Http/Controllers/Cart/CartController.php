@@ -512,6 +512,7 @@ class CartController extends Controller
         $receiver->save();
     
     	$saleIds = array();
+        $saleObjs = array();
         $stockNone = array();
         
         $prefectureId = $this->prefecture->where('name', $receiver->prefecture)->first()->id;
@@ -572,7 +573,8 @@ class CartController extends Controller
                 ]
             );
             
-            $saleIds[] = $sale->id; 
+            $saleIds[] = $sale->id;
+            $saleObjs[] = $sale; //for ggl
             
 
             //在庫引く処理
@@ -653,7 +655,7 @@ class CartController extends Controller
      
      	$pmModel = $this->payMethod;
      	
-        return view('cart.end', ['data'=>$data, 'pm'=>$pm, 'pmModel'=>$pmModel, 'paymentCode'=>$payPaymentCode, 'orderNumber'=>$orderNumber, 'active'=>4]);
+        return view('cart.end', ['data'=>$data, 'pm'=>$pm, 'pmModel'=>$pmModel, 'paymentCode'=>$payPaymentCode, 'orderNumber'=>$orderNumber, 'saleRel'=>$saleRel, 'saleObjs'=>$saleObjs, 'active'=>4]);
       
       
       //クレカからの戻りサンプルURL

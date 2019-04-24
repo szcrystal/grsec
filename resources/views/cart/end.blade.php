@@ -3,7 +3,7 @@
 @section('content')
 
 <?php
-// use App\User;
+use App\Item;
 
 ?>
 
@@ -104,4 +104,36 @@
             </div><!-- panelbody -->
 
     </div>
+
+@if(isset($saleRel) && count($saleObjs) > 0)
+<script>
+window.dataLayer = window.dataLayer || []
+dataLayer.push({
+'transactionId': "{{ $saleRel->order_number }}",
+'transactionAffiliation': 'Acme Clothing',
+'transactionTotal': {{ $saleRel->all_price }},
+'transactionTax': '',
+'transactionShipping': '',
+'transactionProducts': [
+@foreach($saleObjs as $saleObj)
+<?php
+	$item = Item::find($saleObj->item_id);
+?>
+
+{
+'sku': "{{ $saleObj->item_id }}",
+'name': "{{ $item->title }}",
+'category': '',
+'price': {{ $saleObj->total_price }},
+'quantity': {{ $saleObj->item_count }},
+},
+@endforeach
+
+]
+});
+</script>
+
+@endif
+    
+    
 @endsection
