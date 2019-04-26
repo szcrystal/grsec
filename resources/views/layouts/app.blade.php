@@ -1,5 +1,6 @@
 <?php
 use App\Setting;
+use App\Item;
 ?>
 
 @include('shared.header')
@@ -109,7 +110,7 @@ $(document).ready(function() {
 
 <script src="{{ asset('js/script.js' . $getNow) }}"></script>
 
-@if(Request::is('thankyou'))
+@if(Request::is('shop/thankyou'))
 @if(isset($saleRel) && count($saleObjs) > 0)
 <script>
 dataLayer = [{
