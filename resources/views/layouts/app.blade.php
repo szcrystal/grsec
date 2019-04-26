@@ -109,6 +109,34 @@ $(document).ready(function() {
 
 <script src="{{ asset('js/script.js' . $getNow) }}"></script>
 
+@if(Request::is('thankyou'))
+@if(isset($saleRel) && count($saleObjs) > 0)
+<script>
+dataLayer = [{
+'transactionId': "{{ $saleRel->order_number }}",
+'transactionAffiliation': 'Acme Clothing',
+'transactionTotal': {{ $saleRel->all_price }},
+'transactionTax': '',
+'transactionShipping': '',
+'transactionProducts': [
+@foreach($saleObjs as $saleObj)
+<?php $item = Item::find($saleObj->item_id); ?>
+
+{
+'sku': "{{ $item->number }}",
+'name': "{{ $item->title }}",
+'category': '',
+'price': {{ $saleObj->total_price }},
+'quantity': {{ $saleObj->item_count }},
+},
+@endforeach
+
+]
+}];
+</script>
+@endif
+@endif
+
 @if(isset(Setting::first()->analytics_code) && Setting::first()->analytics_code != '')
 {!! Setting::first()->analytics_code !!}
 @endif

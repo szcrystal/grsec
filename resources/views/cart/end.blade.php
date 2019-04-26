@@ -105,6 +105,7 @@ use App\Item;
 
     </div>
 
+{{--
 @if(isset($saleRel) && count($saleObjs) > 0)
 <script>
 window.dataLayer = window.dataLayer || []
@@ -114,6 +115,7 @@ dataLayer.push({
 'transactionTotal': {{ $saleRel->all_price }},
 'transactionTax': '',
 'transactionShipping': '',
+'event' : "trackTrans",
 'transactionProducts': [
 @foreach($saleObjs as $saleObj)
 <?php
@@ -134,6 +136,6 @@ dataLayer.push({
 </script>
 
 @endif
-    
+ --}}   
     
 @endsection
