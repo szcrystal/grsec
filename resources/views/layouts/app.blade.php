@@ -117,8 +117,8 @@ dataLayer = [{
 'transactionId': "{{ $saleRel->order_number }}",
 'transactionAffiliation': 'Acme Clothing',
 'transactionTotal': {{ $saleRel->all_price }},
-'transactionTax': '',
-'transactionShipping': '',
+'transactionTax': 1,
+'transactionShipping': 1,
 'transactionProducts': [
 @foreach($saleObjs as $saleObj)
 <?php $item = Item::find($saleObj->item_id); ?>
