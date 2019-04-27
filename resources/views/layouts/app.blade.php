@@ -116,8 +116,8 @@ dataLayer = [{
 'transactionId': "{{ $saleRel->order_number }}",
 'transactionAffiliation': {{ $saleRel->id }},
 'transactionTotal': {{ $saleRel->all_price }},
-'transactionTax': 1,
-'transactionShipping': 1,
+'transactionTax': 0,
+'transactionShipping': 0,
 'transactionProducts': [
 @foreach($saleObjs as $saleObj)
 <?php 
