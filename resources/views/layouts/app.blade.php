@@ -124,10 +124,16 @@ dataLayer = [{
 <?php 
 $item = Item::find($saleObj->item_id); 
 $title = $item->title;
-$cateName = Category::find($item->cate_id)->name;
+$cateName = '';
 
-if($item->is_potset) 
-	$title = Item::find($item->pot_parent_id)->title . '-' . $title;
+if($item->is_potset) {
+	$parent = Item::find($item->pot_parent_id);
+    $title = $parent->title . '-' . $title;
+    $cateName = Category::find($parent->cate_id)->name;
+}
+else {
+	$cateName = Category::find($item->cate_id)->name;
+}
 ?>
 
 {
