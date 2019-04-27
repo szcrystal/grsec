@@ -112,7 +112,8 @@ $(document).ready(function() {
 
 @if(Request::is('shop/thankyou') && isset($saleRel) && count($saleObjs) > 0)
 <script>
-dataLayer = [{
+window.dataLayer = window.dataLayer || [];
+dataLayer.push({
 'transactionId': "{{ $saleRel->order_number }}",
 'transactionAffiliation': {{ $saleRel->id }},
 'transactionTotal': {{ $saleRel->all_price }},
@@ -132,7 +133,7 @@ dataLayer = [{
 @endforeach
 
 ]
-}];
+});
 </script>
 @endif
 
