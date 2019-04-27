@@ -114,7 +114,7 @@ $(document).ready(function() {
 <script>
 dataLayer = [{
 'transactionId': "{{ $saleRel->order_number }}",
-'transactionAffiliation': 'Acme Clothing',
+'transactionAffiliation': {{ $saleRel->id }},
 'transactionTotal': {{ $saleRel->all_price }},
 'transactionTax': 1,
 'transactionShipping': 1,
