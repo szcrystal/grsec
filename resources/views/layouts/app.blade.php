@@ -112,8 +112,7 @@ $(document).ready(function() {
 
 @if(Request::is('shop/thankyou') && isset($saleRel) && count($saleObjs) > 0)
 <script>
-window.dataLayer = window.dataLayer || [];
-dataLayer.push({
+dataLayer = [{
 'transactionId': "{{ $saleRel->order_number }}",
 'transactionAffiliation': {{ $saleRel->id }},
 'transactionTotal': {{ $saleRel->all_price }},
@@ -121,11 +120,17 @@ dataLayer.push({
 'transactionShipping': 1,
 'transactionProducts': [
 @foreach($saleObjs as $saleObj)
-<?php $item = Item::find($saleObj->item_id); ?>
+<?php 
+$item = Item::find($saleObj->item_id); 
+$title = $item->title;
+
+if($item->is_potset) 
+	$title = Item::find($item->pot_parent_id)->title . '-' . $title;
+?>
 
 {
 'sku': "{{ $item->number }}",
-'name': "{{ $item->title }}",
+'name': "{{ $title }}",
 'category': '',
 'price': {{ $saleObj->total_price }},
 'quantity': {{ $saleObj->item_count }},
@@ -133,7 +138,7 @@ dataLayer.push({
 @endforeach
 
 ]
-});
+}];
 </script>
 @endif
 
