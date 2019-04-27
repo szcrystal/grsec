@@ -1,6 +1,7 @@
 <?php
 use App\Setting;
 use App\Item;
+use App\Category;
 ?>
 
 @include('shared.header')
@@ -123,6 +124,7 @@ dataLayer = [{
 <?php 
 $item = Item::find($saleObj->item_id); 
 $title = $item->title;
+$cateName = Category::find($item->cate_id)->name;
 
 if($item->is_potset) 
 	$title = Item::find($item->pot_parent_id)->title . '-' . $title;
@@ -131,7 +133,7 @@ if($item->is_potset)
 {
 'sku': "{{ $item->number }}",
 'name': "{{ $title }}",
-'category': '',
+'category': "{{ $cateName }}",
 'price': {{ $saleObj->total_price }},
 'quantity': {{ $saleObj->item_count }},
 },
