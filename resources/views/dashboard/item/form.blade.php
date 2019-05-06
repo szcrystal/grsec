@@ -278,7 +278,7 @@
                         </div>
 
                         <div class="col-md-8 pull-left text-left form-group{{ $errors->has('spare_thumb.'.$s) ? ' is-invalid' : '' }}">
-                            <label for="model_thumb" class="col-md-12 text-left">サブ画像 <span class="text-primary">{{ $s+1 }}</spa></label>
+                            <label for="model_thumb" class="col-md-12 text-left">サブ画像 <span class="text-primary">{{ $s+1 }}</span></label>
                             <div class="w-100">
                                 <input id="model_thumb" class="thumb-file" type="file" name="spare_thumb[]">
 

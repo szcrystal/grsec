@@ -430,7 +430,7 @@
             <h4 class="mt-5 pt-4"><span class="text-info">■</span> Other</h4>
             <hr>
             <fieldset class="mt-1 mb-4 form-group{{ $errors->has('analytics_code') ? ' has-error' : '' }}">
-                <label for="analytics_code" class="control-label">アナリティクスコード</label>
+                <label for="analytics_code" class="control-label">Googleコード</label>
 
                 <textarea id="analytics_code" type="text" class="form-control" name="analytics_code" rows="15">{{ Ctm::isOld() ? old('analytics_code') : (isset($setting) ? $setting->analytics_code : '') }}</textarea>
 
