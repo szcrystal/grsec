@@ -21,8 +21,10 @@ class SaleRelation extends Model
         'cod_fee',
         //'take_charge_fee',
         'use_point',
+        'add_point',
         'all_price',
-        
+		'total_price', 
+               
         'destination',
         'user_comment',
         

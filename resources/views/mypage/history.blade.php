@@ -30,7 +30,7 @@ use App\Item;
          	<th>商品名</th>
           	<th>数量</th>
            	<th>金額合計（税込）</th>
-			<th>枯れ保証期間 残</th>
+			<th>枯れ保証 残期間</th>
    			<th></th>         
         </tr>
         </thead>
@@ -112,7 +112,7 @@ use App\Item;
                   @endif
              </td>
              <td>
-             	<a href="{{ url('mypage/history/'.$sale->id) }}" class="btn btn-block border-secondary bg-white text-small mb-3 w-100 rounded-0">
+             	<a href="{{ url('mypage/history/'. $sale->salerel_id) }}" class="btn btn-block border-secondary bg-white text-small mb-3 w-100 rounded-0">
                 詳細を確認 <i class="fal fa-angle-double-right"></i>
                 </a>
                 

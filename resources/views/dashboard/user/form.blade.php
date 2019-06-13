@@ -199,7 +199,7 @@
                 
                 <h4 class="mt-3">購入商品</h4>
        
-        {{ $sales->links() }}
+        		{{ $sales->links() }}
         
                 <div class="table-responsive">
                     <table class="table table-bordered bg-white">
@@ -225,14 +225,19 @@
                                         <a href="{{ url('dashboard/sales/order/'. $sale->order_number) }}">{{ $sale->order_number }}</a>
                                     </td>
                                     <td>
-                                        @if($item->main_img != '')
-                                          <img src="{{ Storage::url($item->main_img) }}" width="55" height="62">
-                                        @else
-                                          <span class="no-img">No Image</span>
-                                        @endif
+                                        <div class="float-left mr-2">
+                                            @include('main.shared.smallThumbnail')
+                                        </div>
                                         
-                                        ({{ $item->id }}){{ $item->title }}
+                                        <a href="{{ url('dashboard/items/'. $sale->item_id) }}">
+                                            [{{ $sale->item_id }}] 
+                                            {{ Ctm::getItemTitle($item) }}<br>
+                                        </a>
+                                        <span class="text-small">商品番号: {{ $item->number }}</span><br>
+                                        <span class="text-small">¥{{ number_format($sale->single_price) }}</span>
+                                        
                                     </td>
+                                    
                                     <td>{{ $sale->item_count }}</td>
                                     <td>¥{{ number_format($sale->total_price) }}</td>
                                    <td>
@@ -243,7 +248,7 @@
                                     @endif   
                                    </td>   
                                   <td>{{ Ctm::changeDate($sale->created_at, 0)  }}</td>   
-                                  <td><a href="{{ url('dashboard/sales/'.$sale->id) }}" class="btn btn-info">確認</a></td>              
+                                  <td><a href="{{ url('dashboard/sales/'.$sale->id) }}" class="btn btn-info">注文確認</a></td>              
                                 </tr>
                             @endforeach
                         </tbody>

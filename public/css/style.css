@@ -1595,6 +1595,37 @@ ul.side-rank {
 	position: relative;
     //border: 1px solid orange;
 }
+
+.slider-top div img {
+	//border: 1px solid red;
+}
+.slider-top div img:hover {
+	opacity: 0.75;
+}
+
+.slick-dots {
+	top: 102%;
+	//border: 1px solid red;
+}
+/*.slick-dots li {*/
+/*	background: #555;*/
+/*    border-radius: 50%;*/
+/*    width: 9px;*/
+/*    height: 9px;*/
+/*    opacity: 0.3;*/
+/*}*/
+/*.slick-dots li.slick-active {*/
+/*	opacity: 1.0;*/
+/*}*/
+.slick-dots li button::before { /* dotはlist-styleのマークと思われる */
+/*	display: none;*/
+/*	width: 100%;*/
+/*	font-size: 2em;*/
+/*    background: red;*/
+/*	border: 1px solid red;*/
+}
+
+/* Slider Navi 現在未使用 */
 .slider-nav {
 	//position: relative;
 	//display: flex;
@@ -1644,6 +1675,7 @@ ul.side-rank {
 .slider-nav .slick-next:hover {
 	background: rgba(0,0,0,0.85);
 }
+/*
 .slider-wrap .this-item {
 	display: block;
 	position: absolute;
@@ -1657,6 +1689,7 @@ ul.side-rank {
     border-color: #151515;
     //background: red;
 }
+*/
 .slick-initialized {
 	//border: 3px solid blue;
 }

@@ -63,7 +63,6 @@ class ItemController extends Controller
     
     public function index()
     {
-        
         //$itemObjs = Item::orderBy('id', 'desc')->paginate($this->perPage);
         $itemObjs = $this->item->orderBy('id', 'desc')->get();
         
@@ -331,18 +330,22 @@ class ItemController extends Controller
             //上書き更新の制御 END ------------
             
 
-            //stockChange save 新着情報用
+            //stockChange save 新着情報用 Console/kernel -> Job/ProcessStockReset内にも記述する必要がある　-------------
             if($item->stock < $data['stock']) { //在庫が増えた時のみにしている 増えた時のみitemStockChangeにsave
 //            	$this->itemSc->updateOrCreate( //データがなければ各種設定して作成
 //                	['item_id'=>$item->id], 
 //                    ['is_auto'=>0]
 //                );
+
+				//子ポットの時は親IDをセットする
+				$itemScId = ($data['is_potset'] && $data['pot_parent_id']) ? $data['pot_parent_id'] : $item->id;
                 
-            	$itemSc = $this->itemSc->firstOrCreate( ['item_id'=>$item->id], ['is_auto'=>0]); //あれば取得、なければ作成
+            	$itemSc = $this->itemSc->firstOrCreate( ['item_id'=>$itemScId], ['is_auto'=>0]); //あれば取得、なければ作成
                 $itemSc->updated_at = date('Y-m-d H:i:s', time()); 
                 $itemSc->save();
             }
-            
+            //stockChange save 新着情報用 END -------------
+
             $item->update($data); //Item更新
             
         }

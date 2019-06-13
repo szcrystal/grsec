@@ -3,17 +3,16 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    {{-- <meta name="viewport" content="width=device-width, initial-scale=1"> --}}
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     
-    @if(Ctm::isEnv('alpha'))
+    @if(! Ctm::isEnv('product'))
     <meta name="robots" content="noindex, nofollow">
     @endif
     
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@if(isset($metaTitle)){{ $metaTitle }} | @endif{{ config('app.name', 'グリーンロケット') }}</title>
+    <title>@if(isset($metaTitle)){{ $metaTitle }}@endif</title>
     
     @if(isset($metaDesc))
     <meta name="description" content="{{ str_replace(PHP_EOL, '', $metaDesc) }}">
@@ -35,7 +34,8 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.10.0/css/lightbox.css" rel="stylesheet">
     @endif
 
-	@if(isset($isTop) && $isTop)    
+	@if(isset($isTop) && $isTop)
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
     <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
 	@endif
     
@@ -46,9 +46,6 @@
     @if(Ctm::isAgent('all'))
     <link href="{{ asset('css/style-sp.css' . $getNow) }}" rel="stylesheet">
 	@endif
-
-	{{-- <script type="text/javascript" src="//code.jquery.com/jquery-2.1.0.min.js"></script> --}}
-
 
     <!-- Scripts -->
     <script>

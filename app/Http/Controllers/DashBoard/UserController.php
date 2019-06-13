@@ -77,8 +77,7 @@ class UserController extends Controller
             
     	if($request->has('no_r')) {
             $model = $this->un;
-            $isUser = 0; 
-
+            $isUser = 0;
         }
         else {
             $model = $this->user;
@@ -88,7 +87,9 @@ class UserController extends Controller
         $user = $model->find($id);
         
         $itemModel = $this->item;
-        $relIds = $this->saleRel->where(['user_id'=>$user->id])->get()->map(function($obj){
+        
+        
+        $relIds = $this->saleRel->where(['user_id'=>$user->id, 'is_user'=>$isUser])->get()->map(function($obj) {
         	return $obj->id;
         })->all();
         

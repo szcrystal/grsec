@@ -79,7 +79,7 @@ use App\Category;
 
 @if(isset($isTop) && $isTop)
 <?php
-	$slideNum = Ctm::isAgent('sp') ? 3 : 5;
+	$slideNum = Ctm::isAgent('sp') ? 3 : 7; //要：奇数
 ?>
 
 <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
@@ -87,24 +87,30 @@ use App\Category;
 $(document).ready(function() {
 	$('.slider-top').slick({
           slidesToShow: 1,
+          dots: true,
+          @if(! Ctm::isAgent('sp'))
+          centerMode: true,
+          variableWidth: true,
+          @endif
+          
           slidesToScroll: 1,
           autoplay: true,
           autoplaySpeed: 10000,
           arrows: false,
           fade: false,
-          asNavFor: '.slider-nav',
+          //asNavFor: '.slider-nav',
     });
     
-    $('.slider-nav').slick({
-          slidesToShow: {{ $slideNum }},
-          slidesToScroll: 1,
-          asNavFor: '.slider-top',
-          dots: false,
-          centerMode: true,
-          focusOnSelect: true,
-          prevArrow: '<span class="slick-prev"><i class="fal fa-angle-left"></i></span>',
-          nextArrow: '<span class="slick-next"><i class="fal fa-angle-right"></i></span>',
-    });
+//    $('.slider-nav').slick({
+//          slidesToShow: {{ $slideNum }},
+//          slidesToScroll: 1,
+//          asNavFor: '.slider-top',
+//          dots: false,
+//          centerMode: true,
+//          focusOnSelect: true,
+//          prevArrow: '<span class="slick-prev"><i class="fal fa-angle-left"></i></span>',
+//          nextArrow: '<span class="slick-next"><i class="fal fa-angle-right"></i></span>',
+//    });
 });
 </script>
 @endif

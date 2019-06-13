@@ -837,7 +837,6 @@ var exe = (function() {
                 //}
             });
 
-            
         },
         
         
@@ -984,7 +983,7 @@ $(function(e){ //ready
     exe.toggleSideMenu();
     
     exe.accordionMoveUp();
-    exe.setSliderFrame();
+    //exe.setSliderFrame();
     
     exe.getCardToken();
 });

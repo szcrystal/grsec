@@ -90,16 +90,18 @@ class MyPageController extends Controller
      	return view('mypage.history', ['user'=>$user, 'saleRel'=>$saleRel, 'sales'=>$sales, 'pm'=>$pm]);   
     }
     
-    public function showHistory($saleId)
+    public function showHistory($saleRelId)
     {
         $uId = Auth::id();
         $user = $this->user->find($uId);
         
-        $sale = $this->sale->find($saleId);
+        $saleRel = $this->saleRel->find($saleRelId);
         
-        $item = $this->item->find($sale->item_id);
+        //$sales = $this->sale->find($saleId);
         
-        $saleRel = $this->saleRel->find($sale->salerel_id);
+        //$item = $this->item->find($sale->item_id);
+        
+        //$saleRel = $this->saleRel->find($sale->salerel_id);
         $receiver = $this->receiver->find($saleRel->receiver_id);
         
         $relIds = $this->saleRel->where(['user_id'=>$uId, 'is_user'=>1])->get()->map(function($obj){
@@ -109,13 +111,13 @@ class MyPageController extends Controller
 //        print_r($relIds);
 //        exit;
         
-        $sales = $this->sale->where(['salerel_id'=>$relIds])->get();
+        $sales = $this->sale->where(['salerel_id'=>$saleRel->id])->get();
         
-        $saleRel = $this->saleRel;
+        //$saleRel = $this->saleRel;
         
         $pm = $this->payMethod;
         
-         return view('mypage.historySingle', ['user'=>$user, 'sale'=>$sale, 'saleRel'=>$saleRel, 'receiver'=>$receiver, 'item'=>$item, 'pm'=>$pm]);   
+         return view('mypage.historySingle', ['user'=>$user, 'sales'=>$sales, 'saleRel'=>$saleRel, 'receiver'=>$receiver, 'pm'=>$pm]);   
     }
     
     

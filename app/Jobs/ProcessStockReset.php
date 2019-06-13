@@ -45,9 +45,12 @@ class ProcessStockReset implements ShouldQueue
                 $item->stock = $item->stock_reset_count;
                 $item->save();
                 
+                //子ポットの時は親のIDをセットする
+                $itemScId = $item->is_potset ? $item->pot_parent_id : $item->id;
+                                
                 //StockChange save
                 ItemStockChange::updateOrCreate( //データがなければ各種設定して作成
-                	['item_id'=>$item->id], 
+                	['item_id'=>$itemScId], 
                     ['is_auto'=>1, 'updated_at'=>date('Y-m-d H:i:s', time())]
                 ); 
                 

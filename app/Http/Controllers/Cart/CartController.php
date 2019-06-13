@@ -303,7 +303,7 @@ class CartController extends Controller
       	$allData = $all['data']; //session(all.data): destination, pay_method, user, receiver  
      	
       	$regist = $all['regist']; 
-       	$allPrice = $all['all_price']; 
+       	$allPrice = $all['all_price']; //商品合計のみの金額。SessionにTotalPrice（送料、手数料、マイナスポイント）は入れていない
         $deliFee = $all['deli_fee'];
         $codFee = $all['cod_fee'];
         //$takeChargeFee = $all['take_charge_fee'];
@@ -489,8 +489,9 @@ class CartController extends Controller
             'cod_fee' => $codFee,
             //'take_charge_fee' => $takeChargeFee,
             'use_point' => $usePoint,
+            'add_point' => $addPoint,
             'all_price' => $allPrice, //商品withTax x 個数 の合計　送料等は含まれない
-            
+            'total_price' => $allPrice + $deliFee + $codFee - $usePoint, //送料 手数料　含む全ての合計 SessionにTotalPrice（送料、手数料、マイナスポイント）は入れていない
             'destination' => $destination,
             'user_comment' => $allData['user_comment'],
             'deli_done' => 0,
@@ -1149,6 +1150,7 @@ class CartController extends Controller
         
         
         $data = $request->all();
+
         
 //        if(! Auth::check()) {
 //            //Birth Input 月日全て入力で登録することにしているがどうか
