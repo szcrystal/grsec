@@ -31,7 +31,9 @@ use App\PayMethodChild;
       <div class="col-sm-12 col-md-6 col-lg-6 col-xl-5 mb-5">
         <div class="bs-component clearfix">
         <div class="pull-left">
-            <a href="{{ url('/dashboard/sales') }}" class="btn bg-white border border-1 border-round border-secondary text-primary"><i class="fa fa-angle-double-left" aria-hidden="true"></i>一覧へ戻る</a>
+            <a href="{{ url('/dashboard/sales') }}" class="btn bg-white border border-1 border-round border-secondary text-primary d-block mb-2"><i class="fa fa-angle-double-left" aria-hidden="true"></i> 全一覧へ戻る</a>
+            
+            <a href="{{ url('/dashboard/sales?done=0') }}" class="btn bg-white border border-1 border-round border-secondary text-primary d-block"><i class="fa fa-angle-double-left" aria-hidden="true"></i> 未処理一覧へ戻る</a>
         </div>
         </div>
     </div>

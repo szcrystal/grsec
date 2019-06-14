@@ -9,7 +9,8 @@ class Setting extends Model
     protected $fillable = [ //varchar:文字数
                     
         'admin_name',
-        'admin_email' ,
+        'admin_email',
+        'admin_forward_email',
         'mail_footer',
         
         'is_product',

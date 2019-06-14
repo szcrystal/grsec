@@ -44,7 +44,7 @@
                             
                             <tbody>
                                 <tr class="form-group">
-                                    <th>ご希望方法</th>
+                                    <th>ご希望方法<em>必須</em></th>
                                     <td>
                                         <label class="d-block p-1 my-0{{ $errors->has('is_ask_type') ? ' border border-danger' : '' }}">
                                         

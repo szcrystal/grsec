@@ -51,7 +51,10 @@ class SaleController extends Controller
         $this->receiver = $receiver;
         $this->dg = $dg;
         $this->category = $category;
+        
         $this->setting = $setting;
+        $this->set = $this->setting->first();
+        
         $this->dc = $dc;
         $this->templ = $templ;
         $this->smf = $smf;
@@ -88,8 +91,6 @@ class SaleController extends Controller
     {
     	//$saleObjs = $this->sale->whereYear('created_at', '=','2017', 'and')->whereYear('created_at', '2018')->orderBy('id', 'asc')->get();
 //        $saleObjs = $this->sale->whereBetween(DB::raw('DATE(created_at)'), ['2017-01-01', '2018-05-31'])->orderBy('id', 'asc')->get();
-
-		
 
 		$saleForSum = null;
         
@@ -159,7 +160,19 @@ class SaleController extends Controller
             */
 
         }
-        else {
+        elseif($request->has('done')) { //一覧(未処理)の時
+            
+            $saleRelIds = $this->sale->where(['deli_done'=>0, 'is_keep'=>0, 'is_cancel'=>0])->get()->map(function($obj) {
+            	return $obj->salerel_id;
+            })->all();
+        	
+            $saleRelIds = array_unique($saleRelIds); //配列重複値を削除
+            $saleRelIds = array_values($saleRelIds); //keyを振り直す
+            
+            $saleObjs = $this->saleRel->whereIn('id', $saleRelIds)->orderBy('id', 'desc')->get();
+            
+        }
+        else { //一覧(全データ)の時
         	//$saleObjs = Sale::orderBy('id', 'desc')->paginate($this->perPage);
         	//$saleObjs = Sale::orderBy('id', 'desc')->get();
             $saleObjs = $this->saleRel->orderBy('id', 'desc')->get();
@@ -643,7 +656,19 @@ class SaleController extends Controller
              
                 }
                 
-                $mail = Mail::to($data['user_email'], $data['user_name'])->queue(new OrderMails($data['sale_ids'], $withMail)); //sale_ids->メール送信する複数商品　$withMail->メールテンプレのID
+                if($templ->type_code == 'thanks' || $templ->type_code == 'deliDoneNo' || $templ->type_code == 'deliDone') {
+                    Mail::to($data['user_email'], $data['user_name'])
+                        ->bcc($this->set->admin_forward_email, $this->set->admin_name)
+                        ->queue(new OrderMails($data['sale_ids'], $withMail));
+                }
+                else {
+                	Mail::to($data['user_email'], $data['user_name'])
+                        ->queue(new OrderMails($data['sale_ids'], $withMail)); //sale_ids->メール送信する複数商品　$withMail->メールテンプレのID
+                }
+                
+//                if($templ->type_code == 'thanks' || $templ->type_code == 'deliDoneNo' || $templ->type_code == 'deliDone') {
+//                	Mail::to($this->set->admin_forward_email, $this->set->admin_name)->queue(new OrderMails($data['sale_ids'], $withMail, 1));
+//                }
             }
             
             $status = '「' . $templ->type_name . '」メールが送信されました。'; //('. $mail . ')

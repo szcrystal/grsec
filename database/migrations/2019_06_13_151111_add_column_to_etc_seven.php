@@ -18,6 +18,11 @@ class AddColumnToEtcSeven extends Migration
             $table->integer('total_price')->after('all_price')->nullable()->default(NULL);
             $table->integer('add_point')->after('use_point')->nullable()->default(NULL);
         });
+        
+        //Setting
+        Schema::table('settings', function (Blueprint $table) {            
+            $table->string('admin_forward_email')->after('admin_email')->nullable()->default(NULL);
+        });
     }
 
     /**
@@ -40,6 +45,11 @@ class AddColumnToEtcSeven extends Migration
             });
         }
         
+        if (Schema::hasColumn('settings', 'admin_forward_email')) {
+            Schema::table('settings', function (Blueprint $table) {
+                $table->dropColumn('admin_forward_email');
+            });
+        }
         
     }
 }

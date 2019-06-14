@@ -229,7 +229,7 @@
         <tbody>
         	<tr>
             <td>
-            ご希望日：
+            <b class="text-small">ご希望日</b>：
             @if(isset($data['plan_date']))
             {{ $data['plan_date'] }}<br>
             @else
@@ -241,7 +241,7 @@
                 	@if(isset($item->plan_time))                   
                         <li class="mb-3">
                             {{ Ctm::getItemTitle($item) }}<br>
-                            ご希望時間：[ {{ $item->plan_time }} ]
+                            <b class="text-small">ご希望時間</b>：[ {{ $item->plan_time }} ]
                         </li>
                     @endif
                 @endforeach

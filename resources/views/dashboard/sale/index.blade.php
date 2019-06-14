@@ -9,7 +9,13 @@ use App\PayMethodChild;
 ?>
 
     <div class="text-left">
-		<h1 class="Title"> 売上一覧</h1>
+		<h1 class="Title">売上一覧
+        @if(Request::has('done'))
+        （未処理）
+        @else
+        （全データ）
+        @endif
+        </h1>
 		<p class="Description"></p>
     </div>
 

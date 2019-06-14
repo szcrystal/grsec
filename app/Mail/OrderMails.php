@@ -26,6 +26,7 @@ class OrderMails extends Mailable
     //public $saleId;
 	public $saleIds;
     public $mailId;
+    public $isForward;
     
 //    public $user;
 //    public $receiver;
@@ -39,13 +40,19 @@ class OrderMails extends Mailable
     public $mailTemplate;
     
     
-    public function __construct($saleIds, $mailId)
+    public function __construct($saleIds, $mailId, $isForward=0)
     {
         $this->setting = Setting::get()->first();
         
         //$this->saleId = $saleId;
         $this->saleIds = $saleIds; 
         $this->mailId = $mailId;
+        
+        $this->isForward = $isForward;
+        
+//        echo $this->isForward;
+//        exit;
+
         
 //        $this->saleRel = SaleRelation::find($saleRelId);
 //        $this->sales = Sale::where(['salerel_id'=>$this->saleRel->id])->get();       
@@ -70,6 +77,10 @@ class OrderMails extends Mailable
         
         //$templ = MailTemplate::where(['type_code'=>'itemDelivery', ])->get()->first();
         $templ = MailTemplate::find($this->mailId);
+
+		//転送メールのタイトルに「転送」の文字列を付ける
+        
+        $forwardTitle = $this->isForward ? '転送-' : '';
         
         //$thisSale = Sale::find($this->saleId);
         
@@ -87,7 +98,7 @@ class OrderMails extends Mailable
         $receiver = Receiver::find($saleRel->receiver_id);
 
         //return $this->from($this->setting->admin_email, $this->setting->admin_name)
-        return $this->from(env('ADMIN_EMAIL', 'no-reply@green-rocket.jp'), $this->setting->admin_name)
+        return $this->from('no-reply@green-rocket.jp', $this->setting->admin_name)
                     ->view('emails.orderMails')
                     ->with([
                     	'templ' => $templ, //ここをコメントアウトすればFailedJobの確認ができる。errorメールの送信はProviders/AppServiceProvider内にて
@@ -100,6 +111,6 @@ class OrderMails extends Mailable
                         'receiver' => $receiver,
                         'isUser' => 1,        
                     ])
-                    ->subject($templ->title);
+                    ->subject($forwardTitle . $templ->title);
     }
 }

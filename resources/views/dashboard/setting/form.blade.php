@@ -85,8 +85,17 @@
                 @endif
             </fieldset>
             
-            
-            
+            <fieldset class="mb-4 form-group{{ $errors->has('admin_forward_email') ? ' has-error' : '' }}">
+                <label>転送先メールアドレス（サンクス、出荷完了のみ）</label>
+                <input class="form-control{{ $errors->has('admin_forward_email') ? ' is-invalid' : '' }}" name="admin_forward_email" value="{{ Ctm::isOld() ? old('admin_forward_email') : (isset($setting) ? $setting->admin_forward_email : '') }}">
+
+                @if ($errors->has('admin_forward_email'))
+                    <div class="text-danger">
+                        <span class="fa fa-exclamation form-control-feedback"></span>
+                        <span>{{ $errors->first('admin_forward_email') }}</span>
+                    </div>
+                @endif
+            </fieldset>
             
             <fieldset class="mb-4 form-group{{ $errors->has('mail_footer') ? ' has-error' : '' }}">
                     <label for="mail_footer" class="control-label">共通メールフッター</label>

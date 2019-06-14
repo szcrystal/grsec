@@ -223,11 +223,12 @@
               </a>
               <ul class="sidenav-second-level collapse" id="sales">
                 <li>
-                  <a href="{{ url('dashboard/sales') }}">売上一覧</a>
+                  <a href="{{ url('dashboard/sales') }}">売上一覧（全データ）</a>
                 </li>
-
-
-              </ul>
+                <li>
+                  <a href="{{ url('dashboard/sales?done=0') }}">売上一覧（未処理）</a>
+                </li>
+            </ul>
             </li> 
             
             <div class="border border-secondary border-top-0 w-100 mx-auto"></div>
