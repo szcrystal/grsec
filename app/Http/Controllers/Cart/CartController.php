@@ -1305,7 +1305,7 @@ class CartController extends Controller
                    
         }
         
-        //NP後払い手数料 ----------------
+        //NP後払い手数料 -> 一律205 （190 + 税）----------------
         else if($data['pay_method'] == 4) {
         	
         	$codFee = 205;
@@ -1320,7 +1320,7 @@ class CartController extends Controller
             }
         }
         
-        //代引き手数料 -----------
+        //代引き手数料 -> 送料、ポイント利用含めたトータル金額に対して-----------
         else if($data['pay_method'] == 5) { 
         	
          	if($totalFee <= 10000) {

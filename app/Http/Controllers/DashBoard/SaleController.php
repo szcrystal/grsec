@@ -307,10 +307,13 @@ class SaleController extends Controller
         }
         
         $data = $request->all();
+
         
         //個別Sale／Item取得
         $saleModel = $this->sale->find($data['saleId']); //saleIdとsale_idsの両方あるので注意
         $item = $this->item->find($saleModel->item_id);
+        
+        $saleRel = $this->saleRel->find($saleModel->salerel_id);
         
         $status = "更新されました。"; 
 
@@ -318,10 +321,47 @@ class SaleController extends Controller
 		$data['is_cancel'] = isset($data['is_cancel']) ? $data['is_cancel'] : 0;
         $data['is_keep'] = isset($data['is_keep']) ? $data['is_keep'] : 0;
         
-        //キャンセル時に在庫を戻す
-        if($data['is_cancel'] && ! isset($saleModel->cancel_date)) {
-        	$item->increment('stock', $saleModel->item_count);
-            $status .= 'キャンセルにより、在庫が戻されました。';
+        //キャンセル時に購入金額と在庫を戻す
+        if($data['is_cancel']) {
+        
+            if(! isset($saleModel->cancel_date)) { //初キャンセルなら
+                //購入金額を戻す
+                $saleRel->decrement('all_price', $saleModel->total_price);
+                
+                //送料を計算し直す
+                /** $itemDataはitemのobjectに[count]（購入個数）を足したObjectを一つずつ配列にしたもの **/
+                            
+                $itemData = $this->sale->where(['salerel_id'=>$saleRel->id, 'is_cancel'=>0])->whereNotIn('id', [$saleModel->id])->get()->map(function($sale){
+                    $i = $this->item->find($sale->item_id);
+                    $i->count = $sale->item_count;
+                    return $i;
+                })->all();
+
+                if(count($itemData)) { //全キャンセルの時は送料を変更しない。一部キャンセルの時は送料を変更する
+                    $receiver = $this->receiver->find($saleRel->receiver_id);
+                    $prefId = $this->pref->where('name', $receiver->prefecture)->first()->id;
+                                                        
+                    $df = new Delifee($itemData, $prefId); //CalcDelifeeController Init 
+                    
+                    $saleRel->deli_fee = $df->getDelifee();
+                    $saleRel->save();
+                }
+                
+                //手数料も戻す必要があるか ==========
+                
+                //===============================
+                
+                //ポイントを戻す ==========
+                
+                //在庫を戻す
+                $item->increment('stock', $saleModel->item_count);
+                $status .= 'キャンセルにより、金額と在庫が戻されました。';
+            }
+        }
+        else { //キャンセルを取り消した時
+        	if(isset($saleModel->cancel_date)) {
+            
+            }
         }
         
         //cancelの時 日付を入力
@@ -338,7 +378,7 @@ class SaleController extends Controller
         $saleModel->cost_price = $data['cost_price'] * $data['this_count'];
         $saleModel->save();
         
-        $saleRel = $this->saleRel->find($saleModel->salerel_id);
+        
         //$saleRel->deli_fee = $data['deli_fee'];
 
         
@@ -640,8 +680,7 @@ class SaleController extends Controller
                             $u->point += $saleRel->use_point;
                             $u->save();
                         }
-                        
-                        
+                           
                     }
                     
                     $this->smf->updateOrCreate(

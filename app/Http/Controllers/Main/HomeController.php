@@ -163,7 +163,7 @@ class HomeController extends Controller
 //        );
         
         $collection = collect($res);
-        $allRecoms = $collection->sortByDesc('updated_at');
+        $allRecoms = $collection->sortByDesc('updated_at')->take(20);
         
 //        print_r($allRecoms);
 //        exit;

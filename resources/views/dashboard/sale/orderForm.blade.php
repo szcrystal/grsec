@@ -272,6 +272,14 @@ use App\PayMethodChild;
                                                 	@include('main.shared.smallThumbnail')
                                                     </div>
                                                     
+                                                    @if($sale->is_cancel)
+                                                    	<b class="text-small text-danger">キャンセル [{{ Ctm::changeDate($sale->cancel_date) }}]</b><br>
+                                                    @else
+                                                        @if($sale->is_keep)
+                                                            <b class="text-small text-success">取り置き中 [{{ Ctm::changeDate($sale->keep_date) }}]</b>
+                                                        @endif
+                                                    @endif
+                                                    
                                                 	<a href="{{ url('dashboard/items/'. $sale->item_id) }}">
                                                         [{{ $sale->item_id }}] 
                                                         {{ Ctm::getItemTitle($items->find($sale->item_id)) }}<br>
@@ -285,14 +293,6 @@ use App\PayMethodChild;
                                             	<th>数量</th>
                                                 <td>
                                                 	{{ $sale->item_count }}
-                                                	
-                                                    @if($sale->is_cancel)
-                                                    	<b class="ml-2 text-small">[キャンセル]</b>
-                                                    @else
-                                                        @if($sale->is_keep)
-                                                            <b class="ml-2 text-small">[取り置き中]</b>
-                                                        @endif
-                                                    @endif
                                                 </td>
                                             </tr>
                                             

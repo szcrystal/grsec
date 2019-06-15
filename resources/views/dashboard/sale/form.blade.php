@@ -458,7 +458,13 @@ use App\Setting;
                             <tr>
                                 <th>総合計（税込）[A]<br><small>* X,Yは含まず</small></th>
                                 <?php $total = $sale->total_price; ?>
-                                <td><span style="font-size: 1.3em;" class="text-success"><b>¥{{ number_format($total) }}</b></span></td>
+                                <td>
+                                	<span style="font-size:1.3em;" class="text-success"><b>¥{{ number_format($total) }}</b></span>
+                                	
+                                    @if($sale->is_cancel)
+                                        <span class="text-danger text-small"><b>（キャンセル）</b></span>
+                                    @endif
+                                </td>
                             </tr>
                             
                             <tr>
@@ -602,18 +608,25 @@ use App\Setting;
                                 	<a href="{{ url('dashboard/sales/'.$sameSale->id) }}" class="float-right btn border border-secondary text-dark bg-white"><i class="fa fa-arrow-right"></i> 売上個別情報</a>
                                     
                                     <div class="clearfix">
-                                    <div class="float-left mr-2 mb-1">
-                                        <?php $item = $items->find($sameSale->item_id); ?>
-                                        @include('main.shared.smallThumbnail')
-                                    </div>
-                                    
-                                    
-                                	<a href="{{ url('dashboard/items/'. $sameSale->item_id) }}">
-                                 	   
-                                    	[{{ $sameSale->item_id }}]
-                                    	{{ Ctm::getItemTitle($items->find($sameSale->item_id)) }}<br>
-                                    </a>
-                                    商品番号: {{ $items->find($sameSale->item_id)->number }}<br>
+                                        <div class="float-left mr-2 mb-1">
+                                            <?php $item = $items->find($sameSale->item_id); ?>
+                                            @include('main.shared.smallThumbnail')
+                                        </div>
+                                        
+                                        @if($sameSale->is_cancel)
+                                        	<span class="text-danger text-small"><b>キャンセル</b> [{{ $sameSale->cancel_date }}]</span><br>
+                                        @else
+                                        	@if($sameSale->is_keep)
+                                            	<span class="text-warning text-small"><b>お取り置き</b> [{{ $sameSale->keep_date }}]</span><br>
+                                            @endif
+                                        @endif
+                                        
+                                        <a href="{{ url('dashboard/items/'. $sameSale->item_id) }}">
+                                           
+                                            [{{ $sameSale->item_id }}]
+                                            {{ Ctm::getItemTitle($items->find($sameSale->item_id)) }}<br>
+                                        </a>
+                                        商品番号: {{ $items->find($sameSale->item_id)->number }}<br>
                                     </div>
                                     
                                     <div class="clearfix">
@@ -660,7 +673,7 @@ use App\Setting;
                             
                             <tr>
                                 <th>購入総合計（税込）[A+B]<br><small>* X,Yは含まず</small></th>
-                                <td><span style="font-size:1.2em;">¥{{ number_format($total + $all) }}</span></td>
+                                <td><span style="font-size:1.2em;">¥{{ number_format($saleRel->all_price) }}</span></td>
                             </tr>
 
 							
