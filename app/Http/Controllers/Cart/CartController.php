@@ -548,6 +548,7 @@ class CartController extends Controller
                     'deli_fee' => $singleDeliFee,
                     'cod_fee' => $codFee,
                     'use_point' => 0,
+                    'add_point' => $val['single_point'],
                     'single_price' => $this->getItemPrice($i),
                     'total_price' => $val['item_total_price'],
                     
@@ -1198,7 +1199,7 @@ class CartController extends Controller
         //都道府県ID
         $prefId = $this->prefecture->where('name', $prefName)->first()->id;
 		//$prefDeli = array();
-                
+        
         foreach($itemSes as $key => $val) {
         	$obj = $this->item->find($val['item_id']);
             
@@ -1215,6 +1216,9 @@ class CartController extends Controller
             $pointBack = $this->getPointBack($obj);
             $obj['point'] = ceil($val['item_total_price'] * $pointBack); //商品金額のみに対してのパーセント 切り上げ 切り捨て->floor()
 			$addPoint += $obj['point'];
+            
+            //Session入れ ポイント
+            session(['item.data.'. $key . '.single_point' => $obj['point']]);
             
             //配送希望時間
             if(isset($data['plan_time'])) {
@@ -1323,6 +1327,8 @@ class CartController extends Controller
         //代引き手数料 -> 送料、ポイント利用含めたトータル金額に対して-----------
         else if($data['pay_method'] == 5) { 
         	
+            $codFee = Ctm::daibikiCodFee($totalFee);
+/*            
          	if($totalFee <= 10000) {
           		$codFee = 324;
           	}
@@ -1343,7 +1349,8 @@ class CartController extends Controller
             }
             elseif ($totalFee >= 1000001 && $totalFee <= 999999999) {
                 $codFee = 4320;
-            }           
+            }
+*/
         }
         
         $totalFee = $totalFee + $codFee;

@@ -449,6 +449,54 @@ class CustomController extends Controller
         return ['isPotParent'=>$isPotParent, 'isStock'=>$isStock, 'pots'=>$pots];
     }
     
+    //代引き手数料計算
+    static function daibikiCodFee($totalFee)
+    {
+    	$codFee = 0;
+        
+    	if($totalFee <= 10000) {
+            $codFee = 324;
+        }
+        elseif ($totalFee >= 10001 && $totalFee <= 30000) {
+            $codFee = 432;
+        }
+        elseif ($totalFee >= 30001 && $totalFee <= 100000) {
+            $codFee = 648;
+        }
+        elseif ($totalFee >= 100001 && $totalFee <= 300000) {
+            $codFee = 1080;
+        }
+        elseif ($totalFee >= 300001 && $totalFee <= 500000) {
+            $codFee = 2160;
+        }
+        elseif ($totalFee >= 500001 && $totalFee <= 1000000) {
+            $codFee = 3240;
+        }
+        elseif ($totalFee >= 1000001 && $totalFee <= 999999999) {
+            $codFee = 4320;
+        }
+        
+        return $codFee;
+    }
+    
+//    static function getPointBack($item) {
+//        
+//        //商品に入力されているポイント還元率が最優先
+//        //$setting = $this->setting->get()->first();
+//        $pointBack = 0;
+//        
+//        if(isset($item->point_back)) {
+//            $pointBack = $item->point_back / 100;
+//        }
+//        else {
+//            if($this->set->is_point) {
+//                $pointBack = $this->set->point_per / 100;
+//            }
+//        }
+//        
+//        return $pointBack;
+//    }
+
     
     
     //管理画面：管理者権限の判定

@@ -677,37 +677,36 @@ use App\PayMethodChild;
                             </tr>
                             --}}
 
-                            
 
                         </tbody>
                     </table>
                 </div>
                 
                 <div class="mt-3">
-                	<h6>ご連絡事項（ユーザー反映/ホワイトボード）<span class="text-small">（全てのメールテンプレに反映されるので、非反映にする場合は空にして下さい。）</span></h6>
+                	<h6>ご連絡事項<small>（ユーザー反映/ホワイトボード/全てのメールテンプレに反映されるので、非反映にする場合は空にして下さい。）</small></h6>
                     
                 	<fieldset class="mt-3 mb-4 form-group{{ $errors->has('information') ? ' is-invalid' : '' }}">
                         <label for="information" class="control-label">ヘッダー内（商品情報の直上部分）</label>
 
-                            <textarea id="information" class="form-control" name="information" rows="12">{{ Ctm::isOld() ? old('information') : (isset($saleRel) ? $saleRel->information : '') }}</textarea>
+                        <textarea class="form-control" name="information" rows="12">{{ Ctm::isOld() ? old('information') : (isset($saleRel) ? $saleRel->information : '') }}</textarea>
 
-                            @if ($errors->has('information'))
-                                <span class="help-block">
-                                    <strong class="text-danger">{{ $errors->first('information') }}</strong>
-                                </span>
-                            @endif
+                        @if ($errors->has('information'))
+                            <span class="help-block">
+                                <strong class="text-danger">{{ $errors->first('information') }}</strong>
+                            </span>
+                        @endif
                     </fieldset>
                     
                     <fieldset class="mb-2 form-group{{ $errors->has('information_foot') ? ' is-invalid' : '' }}">
                         <label for="information_foot" class="control-label">フッター内（商品情報の直下部分）</label>
 
-                            <textarea id="information" class="form-control" name="information_foot" rows="12">{{ Ctm::isOld() ? old('information_foot') : (isset($saleRel) ? $saleRel->information_foot : '') }}</textarea>
+                        <textarea class="form-control" name="information_foot" rows="12">{{ Ctm::isOld() ? old('information_foot') : (isset($saleRel) ? $saleRel->information_foot : '') }}</textarea>
 
-                            @if ($errors->has('information_foot'))
-                                <span class="help-block">
-                                    <strong class="text-danger">{{ $errors->first('information_foot') }}</strong>
-                                </span>
-                            @endif
+                        @if ($errors->has('information_foot'))
+                            <span class="help-block">
+                                <strong class="text-danger">{{ $errors->first('information_foot') }}</strong>
+                            </span>
+                        @endif
                     </fieldset>
                 </div>
 
@@ -719,7 +718,7 @@ use App\PayMethodChild;
                 	<fieldset class="mt-5 mb-2 form-group{{ $errors->has('memo') ? ' is-invalid' : '' }}">
                         <label for="memo" class="control-label">メモ<span class="text-small">（内部のみ）</span></label>
 
-                            <textarea id="memo" class="form-control" name="memo" rows="10">{{ Ctm::isOld() ? old('memo') : (isset($saleRel) ? $saleRel->memo : '') }}</textarea>
+                            <textarea class="form-control" name="memo" rows="10">{{ Ctm::isOld() ? old('memo') : (isset($saleRel) ? $saleRel->memo : '') }}</textarea>
 
                             @if ($errors->has('memo'))
                                 <span class="help-block">
@@ -731,7 +730,7 @@ use App\PayMethodChild;
                     <fieldset class="mb-2 form-group{{ $errors->has('craim') ? ' is-invalid' : '' }}">
                         <label for="detail" class="control-label">クレーム<span class="text-small">（内部のみ）</span></label>
 
-                            <textarea id="detail" class="form-control" name="craim" rows="10">{{ Ctm::isOld() ? old('craim') : (isset($saleRel) ? $saleRel->craim : '') }}</textarea>
+                            <textarea class="form-control" name="craim" rows="10">{{ Ctm::isOld() ? old('craim') : (isset($saleRel) ? $saleRel->craim : '') }}</textarea>
 
                             @if ($errors->has('craim'))
                                 <span class="help-block">

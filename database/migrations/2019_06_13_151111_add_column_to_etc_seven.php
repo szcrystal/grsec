@@ -16,12 +16,17 @@ class AddColumnToEtcSeven extends Migration
         //SaleRel
         Schema::table('sale_relations', function (Blueprint $table) {            
             $table->integer('total_price')->after('all_price')->nullable()->default(NULL);
-            $table->integer('add_point')->after('use_point')->nullable()->default(NULL);
+            $table->integer('add_point')->after('use_point')->nullable()->default(0);
         });
         
         //Setting
         Schema::table('settings', function (Blueprint $table) {            
             $table->string('admin_forward_email')->after('admin_email')->nullable()->default(NULL);
+        });
+        
+        //Sale
+        Schema::table('sales', function (Blueprint $table) {            
+            $table->integer('add_point')->after('use_point')->nullable()->default(0);
         });
     }
 
@@ -45,9 +50,17 @@ class AddColumnToEtcSeven extends Migration
             });
         }
         
+        //Setting
         if (Schema::hasColumn('settings', 'admin_forward_email')) {
             Schema::table('settings', function (Blueprint $table) {
                 $table->dropColumn('admin_forward_email');
+            });
+        }
+        
+        //Sale
+        if (Schema::hasColumn('sales', 'add_point')) {
+            Schema::table('sales', function (Blueprint $table) {
+                $table->dropColumn('add_point');
             });
         }
         

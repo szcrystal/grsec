@@ -251,7 +251,6 @@ class SaleController extends Controller
 	//売上個別情報フォーム GET
     public function show($id)
     {
- 
         $sale = $this->sale->find($id);
         $saleRel = $this->saleRel->find($sale->salerel_id);
         
@@ -274,6 +273,7 @@ class SaleController extends Controller
         $dcs = $this->dc->all();
 
 		//個別送料 ----------------------
+        /*
         $item->count = $sale->item_count;
         $itemData[] = $item;
                 
@@ -281,9 +281,9 @@ class SaleController extends Controller
         
         $df = new Delifee($itemData, $prefId);
         $deliFee = $df->getDelifee();
-
+		*/
         
-        return view('dashboard.sale.form', ['sale'=>$sale, 'saleRel'=>$saleRel, 'sameSales'=>$sameSales, 'item'=>$item, 'items'=>$items, 'pms'=>$pms, 'users'=>$users, 'userNs'=>$userNs, 'receiver'=>$receiver, 'cates'=>$cates, 'itemDg'=>$itemDg, 'dcs'=>$dcs, 'deliFee'=>$deliFee, 'id'=>$id, 'edit'=>1]);
+        return view('dashboard.sale.form', ['sale'=>$sale, 'saleRel'=>$saleRel, 'sameSales'=>$sameSales, 'item'=>$item, 'items'=>$items, 'pms'=>$pms, 'users'=>$users, 'userNs'=>$userNs, 'receiver'=>$receiver, 'cates'=>$cates, 'itemDg'=>$itemDg, 'dcs'=>$dcs, 'id'=>$id, 'edit'=>1]);
     }
     
     //売上個別情報 POST
@@ -325,19 +325,31 @@ class SaleController extends Controller
         if($data['is_cancel']) {
         
             if(! isset($saleModel->cancel_date)) { //初キャンセルなら
-                //購入金額を戻す
-                $saleRel->decrement('all_price', $saleModel->total_price);
-                
-                //送料を計算し直す
-                /** $itemDataはitemのobjectに[count]（購入個数）を足したObjectを一つずつ配列にしたもの **/
                             
                 $itemData = $this->sale->where(['salerel_id'=>$saleRel->id, 'is_cancel'=>0])->whereNotIn('id', [$saleModel->id])->get()->map(function($sale){
                     $i = $this->item->find($sale->item_id);
                     $i->count = $sale->item_count;
                     return $i;
                 })->all();
+                
+                
+                $u = null;
+                
+                //追加したポイントをユーザーの保有ポイントから引く
+                if($saleRel->is_user) {
+                	$u = $this->user->find($saleRel->user_id);
+                    
+                	if($saleModel->add_point) {
+                    	$u->decrement('point', $saleModel->add_point);
+                    }
+                }
 
-                if(count($itemData)) { //全キャンセルの時は送料を変更しない。一部キャンセルの時は送料を変更する
+                
+                if(count($itemData)) { //一部キャンセルの時 => 一部キャンセル時に金額や送料を変更する。全キャンセルの時は送料を変更しない。
+                	//購入金額を戻す
+	                $saleRel->decrement('all_price', $saleModel->total_price);
+
+					//送料を計算し直す /** $itemDataはitemのobjectに[count]（購入個数）を足したObjectを一つずつ配列にしたもの **/
                     $receiver = $this->receiver->find($saleRel->receiver_id);
                     $prefId = $this->pref->where('name', $receiver->prefecture)->first()->id;
                                                         
@@ -345,14 +357,31 @@ class SaleController extends Controller
                     
                     $saleRel->deli_fee = $df->getDelifee();
                     $saleRel->save();
+                    
+                    //add_pointを戻す
+                    $saleRel->decrement('add_point', $saleModel->add_point);
+                    
+                    
+                    //手数料も戻す必要があるか ==========
+                    if($saleRel->payMethod == 5) {
+                        $totalFee = $saleRel->deli_fee + $saleRel->all_price - $saleRel->use_point;
+                        $codFee = Ctm::daibikiCodFee($totalFee);
+                        
+                        $saleRel->cod_fee = $codFee;
+                    	$saleRel->save();
+                    }
                 }
-                
-                //手数料も戻す必要があるか ==========
+                else { //全キャンセルの時 saleのis_cancelが全て1の時
+                	//ポイントを戻す すべての商品をキャンセルかどうかを確認 まとめ買いの一部のみキャンセルならそのままポイント使用する==========                    
+                    if($saleRel->is_user && $saleRel->use_point) { //ユーザーでポイント使用がある時
+                        $u->increment('point', $saleRel->use_point);
+                    }
+                	
+                }
                 
                 //===============================
                 
-                //ポイントを戻す ==========
-                
+ 
                 //在庫を戻す
                 $item->increment('stock', $saleModel->item_count);
                 $status .= 'キャンセルにより、金額と在庫が戻されました。';
@@ -427,7 +456,7 @@ class SaleController extends Controller
     	 
     	$saleRel = $this->saleRel->where('order_number', $orderNum)->first();
         
-        $saleObjs= $this->sale->where('order_number', $orderNum)->get();
+        $sales= $this->sale->where('order_number', $orderNum)->get();
         
         
         $items = $this->item;
@@ -443,7 +472,8 @@ class SaleController extends Controller
     	$cates = $this->category;
         $templs = $this->templIds;
         
-        //個別送料 ----------------------
+        //個別送料 DBにsingleのdeli_feeとして購入時に計算して入れていたので不要 ----------------------
+        /*
         $sales = array();
         $prefId = $this->pref->where('name', $receiver->prefecture)->first()->id;
         
@@ -460,7 +490,7 @@ class SaleController extends Controller
         }
         
         $sales = collect($sales);
-        
+        */
         
         return view('dashboard.sale.orderForm', ['saleRel'=>$saleRel, 'sales'=>$sales, 'items'=>$items, 'pms'=>$pms, 'users'=>$users, 'userNs'=>$userNs, 'receiver'=>$receiver, 'cates'=>$cates, 'id'=>$orderNum, 'templs'=>$templs, 'edit'=>1]);
     }
@@ -664,6 +694,7 @@ class SaleController extends Controller
                         $sale->deli_sended_date = date('Y-m-d H:i:s', time());
                         $sale ->save();
                     }
+                    /*
                     elseif($templ->type_code == 'cancel') { //キャンセルの時ポイントを戻す
                         $allSales = $this->sale->where(['salerel_id'=>$saleRel->id,])->get();
                         
@@ -680,8 +711,8 @@ class SaleController extends Controller
                             $u->point += $saleRel->use_point;
                             $u->save();
                         }
-                           
                     }
+                    */
                     
                     $this->smf->updateOrCreate(
                         ['sale_id'=>$sale->id, 'templ_id'=>$templ->id],
