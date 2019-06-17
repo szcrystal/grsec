@@ -32,7 +32,7 @@ use App\Item;
         </tr>
         <tr>
             <th>ご注文日</th>
-            <td>{{ Ctm::changeDate($saleRel->created_at, 1) }}</td>      
+            <td>{{ Ctm::changeDate($saleRel->created_at, 0) }}</td>      
         </tr>
  
         
@@ -47,7 +47,7 @@ use App\Item;
                 <th>商品名</th>
                 <th>数量</th>
                 <th>金額（税込）</th>
-                <th>ステータス</th>
+                <th style="min-width:7em;">ステータス</th>
                 <th>枯れ保証 残期間</th>
             </tr>
         </thead>  
@@ -93,37 +93,32 @@ use App\Item;
                 	¥{{ number_format($price) }}
                 </td>
 
-                @if($sale->is_cancel)
-                    <td>
+                <td>
+                    @if($sale->is_cancel)
                         <span class="text-enji">
                         キャンセル
                         @if(isset($sale->cancel_date))
-                        	<br><span class="text-small">{{ Ctm::changeDate($sale->cancel_date, 1) }}</span>
+                            <br><span class="text-small">{{ Ctm::changeDate($sale->cancel_date, 1) }}</span>
                         @endif
                         
                         </span>
-                    </td>
-                @else
-                    @if($sale->is_keep)
-                        <td>
+                    @else
+                        @if($sale->is_keep)
                             <span class="text-success">お取り置き中 
                             @if(isset($sale->keep_date))
-                            	<br><span class="text-small">{{ Ctm::changeDate($sale->keep_date, 1) }}〜</span>
+                                <br><span class="text-small">{{ Ctm::changeDate($sale->keep_date, 1) }}〜</span>
                             @endif
                             </span>
-                        </td>
-                    @else
-                        <td>
-                        	発送済
+                        @else
                             @if($sale->deli_done)
-                                <br><span class="text-small">{{ Ctm::changeDate($sale->deli_start_date, 1) }}</span>
+                                発送済<br><span class="text-small">{{ Ctm::changeDate($sale->deli_start_date, 1) }}</span>
                             @else
                                 <span class="text-info">発送準備中</span>
                             @endif
-                        </td>
+                        @endif
                     @endif
-                @endif
-        
+        		</td>
+                
                 <td>
                 	@if($sale->is_cancel)
                     	--
@@ -205,7 +200,7 @@ use App\Item;
         
         <tbody>
         <tr>
-            <th class="w-50"><label class="control-label">商品金額合計（税込）</label></th>
+            <th><label class="control-label">商品金額合計（税込）</label></th>
             <td>
             	¥{{ number_format($saleRel->all_price) }}
             </td>
@@ -247,7 +242,7 @@ use App\Item;
 <div class="table-responsive table-custom mt-3">
     <table class="table border table-borderd bg-white">
         <tr>
-            <th class="w-50"><label class="control-label">ポイント発生</label></th>
+            <th><label class="control-label">ポイント発生</label></th>
             <td>
 				{{ $saleRel->add_point }}
             </td>
@@ -261,7 +256,7 @@ use App\Item;
     <table class="table border table-borderd bg-white">
         
         <tr>
-            <th class="w-50"><label class="control-label">お支払い方法</label></th>
+            <th><label class="control-label">お支払い方法</label></th>
             <td>
             	{{ $pm->find($saleRel->pay_method)->name }}
             </td>

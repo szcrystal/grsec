@@ -77,7 +77,7 @@ class ContactController extends Controller
         ];
 
 
-		$title = 'お問い合わせ';
+		$title = 'お問い合わせ' . '｜植木買うならグリーンロケット';
         $type = 'contact';
         
         $metaTitle = $title;

@@ -25,6 +25,9 @@
 <hr>
 【ご注文番号】：{{ $saleRel->order_number }}<br>
 【ご注文日】：{{ Ctm::changeDate($saleRel->created_at, 1) }}<br>
+@if(isset($saleRelCancel))
+	【キャンセル日】：{{ Ctm::changeDate($saleRelCancel->created_at, 1) }}<br>
+@endif
 【ご注文者】：{{ $user->name }} 様<br>
 【お届け先】： 
 <div style="margin: 0 0 1.5em 1.0em;">
@@ -40,9 +43,11 @@
 @foreach($sales as $sale)
 <div style="margin: 0 0 1.5em 1.0em;">
 <div>{{ $num }}.</div>
+
 @if($sale->is_keep)
-	<b>[お取り置き商品]</b><br>
+    <b>[お取り置き商品]</b><br>
 @endif
+
 商品番号: {{ $itemModel->find($sale->item_id)->number }}<br>
 商品名: {{ Ctm::getItemTitle($itemModel->find($sale->item_id)) }}<br>
 数量: {{ $sale->item_count}}<br>
@@ -91,43 +96,68 @@
 <?php $num++; ?>
 @endforeach
 
-@if(isset($saleRel->user_comment) && $saleRel->user_comment != '')
-【コメント】：
-<div style="margin: 0 0 1.0em 1.0em;">
-{!! nl2br($saleRel->user_comment) !!}
-</div>
+
+<?php
+//if($allCancel) {
+//	$relModel = $saleRelCancel;
+//}
+//else {
+//	$relModel = $saleRel;
+//}
+?>
+
+@if(! isset($allCancel))
+    @if(isset($saleRel->user_comment) && $saleRel->user_comment != '')
+    【コメント】：
+    <div style="margin: 0 0 1.0em 1.0em;">
+    {!! nl2br($saleRel->user_comment) !!}
+    </div>
+    @endif
+
+    【ご注文金額】：
+    <div style="margin: 0 0 1.0em 1.0em;">
+    商品金額合計：￥{{ number_format($saleRel->all_price) }} <br>
+    送料：￥{{ number_format($saleRel->deli_fee) }}<br>
+    
+    @if($saleRel->pay_method == 2)
+    	コンビニ決済手数料：￥{{ number_format($saleRel->cod_fee) }}<br>
+    @elseif($saleRel->pay_method == 4)
+    	後払い手数料：￥{{ number_format($saleRel->cod_fee) }}<br>
+    @elseif($saleRel->pay_method == 5)
+    	代引手数料：￥{{ number_format($saleRel->cod_fee) }}<br>
+    @endif
+    
+    @if($saleRel->is_user)
+    	ポイント利用：{{ $saleRel->use_point }}ポイント<br>
+    @endif
+
+    <?php
+    	if(isset($saleRel->total_price)) {
+        	$allTotal = $saleRel->total_price;
+        }
+        else {
+        	$allTotal = $saleRel->all_price + $saleRel->deli_fee + $saleRel->cod_fee - $saleRel->use_point;
+        }
+    ?>
+
+    <b style="display:block; font-size:1.1em; margin-top:0.5em;">ご注文金額合計：￥{{ number_format($allTotal) }} （税込）</b>
+    </div>
+
+    【お支払方法】：{{ $pmModel->find($saleRel->pay_method)->name }}
+    @if($saleRel->pay_method == 3)
+    	（{{ $pmChildModel->find($saleRel->pay_method_child)->name }}）
+    @elseif($templ->type_code == 'thanks' && $saleRel->pay_method == 6)
+        <div style="margin: 0 0 0.2em 0.8em;">
+        	{!! nl2br($setting['bank_info']) !!}
+        </div>
+    @endif
+
 @endif
 
-【ご注文金額】：
-<div style="margin: 0 0 1.0em 1.0em;">
-商品金額合計：￥{{ number_format($saleRel->all_price) }} <br>
-送料：￥{{ number_format($saleRel->deli_fee) }}<br>
-@if($saleRel->pay_method == 2)
-コンビニ決済手数料：￥{{ number_format($saleRel->cod_fee) }}<br>
-@elseif($saleRel->pay_method == 4)
-後払い手数料：￥{{ number_format($saleRel->cod_fee) }}<br>
-@elseif($saleRel->pay_method == 5)
-代引手数料：￥{{ number_format($saleRel->cod_fee) }}<br>
-@endif
-@if($saleRel->is_user)
-ポイント利用：{{ $saleRel->use_point }}ポイント<br>
-@endif
-<?php
-$allTotal = $saleRel->all_price + $saleRel->deli_fee + $saleRel->cod_fee - $saleRel->use_point;
-?>
-<b style="display:block; font-size:1.1em; margin-top:0.5em;">ご注文金額合計：￥{{ number_format($allTotal) }} （税込）</b>
-</div>
-【お支払方法】：{{ $pmModel->find($saleRel->pay_method)->name }}
-@if($saleRel->pay_method == 3)
-（{{ $pmChildModel->find($saleRel->pay_method_child)->name }}）
-@elseif($templ->type_code == 'thanks' && $saleRel->pay_method == 6)
-<div style="margin: 0 0 0.2em 0.8em;">
-{!! nl2br($setting['bank_info']) !!}
-</div>
-@endif
 <br>
 <hr>
 <br>
+
 @if($isUser)
 	@if(isset($saleRel->information_foot) && $saleRel->information_foot != '')
     	{!! nl2br($saleRel->information_foot) !!}<br><br><br>

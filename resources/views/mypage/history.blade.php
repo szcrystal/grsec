@@ -204,7 +204,7 @@ use App\Item;
                        
                        
                        <div class="w-100 float-right my-3">
-                       		<a href="{{ url('mypage/history/'.$sale->id) }}" class="btn btn-block border-secondary text-small bg-white mb-3 w-100 rounded-0">詳細を確認 <i class="fal fa-angle-double-right"></i></a>
+                       		<a href="{{ url('mypage/history/'. $sale->salerel_id) }}" class="btn btn-block border-secondary text-small bg-white mb-3 w-100 rounded-0">詳細を確認 <i class="fal fa-angle-double-right"></i></a>
                             
                             <form class="form-horizontal" role="form" method="POST" action="{{ url('shop/cart') }}">
                                 {{ csrf_field() }}

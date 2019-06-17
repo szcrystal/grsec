@@ -63,10 +63,9 @@ class MyPageController extends Controller
         $uId = Auth::id();
         $user = $this->user->find($uId);
         
+		$metaTitle = 'マイページ' . '｜植木買うならグリーンロケット';        
         
-        //$status = $this->articlePost->where(['base_id'=>15])->first()->open_date;
-        
-        return view('mypage.index', ['user'=>$user, ]);
+        return view('mypage.index', ['user'=>$user, 'metaTitle'=>$metaTitle]);
     }
     
     public function history()
@@ -87,7 +86,9 @@ class MyPageController extends Controller
         //$item = $this->item;
         $pm = $this->payMethod;
         
-     	return view('mypage.history', ['user'=>$user, 'saleRel'=>$saleRel, 'sales'=>$sales, 'pm'=>$pm]);   
+        $metaTitle = '購入履歴一覧' . '｜植木買うならグリーンロケット';
+        
+     	return view('mypage.history', ['user'=>$user, 'saleRel'=>$saleRel, 'sales'=>$sales, 'pm'=>$pm, 'metaTitle'=>$metaTitle]);   
     }
     
     public function showHistory($saleRelId)
@@ -117,7 +118,9 @@ class MyPageController extends Controller
         
         $pm = $this->payMethod;
         
-         return view('mypage.historySingle', ['user'=>$user, 'sales'=>$sales, 'saleRel'=>$saleRel, 'receiver'=>$receiver, 'pm'=>$pm]);   
+        $metaTitle = '購入履歴詳細' . '｜植木買うならグリーンロケット';
+        
+         return view('mypage.historySingle', ['user'=>$user, 'sales'=>$sales, 'saleRel'=>$saleRel, 'receiver'=>$receiver, 'pm'=>$pm, 'metaTitle'=>$metaTitle]);   
     }
     
     
@@ -187,9 +190,10 @@ class MyPageController extends Controller
             }
        }
 
+
+       	$metaTitle = '新規会員登録' . '｜植木買うならグリーンロケット';
        
-       
-    	return view('mypage.form', ['user'=>$user, 'prefs'=>$prefs, 'isMypage'=>$isMypage, 'regCardDatas'=>$regCardDatas, 'regCardErrors'=>$regCardErrors]);
+    	return view('mypage.form', ['user'=>$user, 'prefs'=>$prefs, 'isMypage'=>$isMypage, 'regCardDatas'=>$regCardDatas, 'regCardErrors'=>$regCardErrors, 'metaTitle'=>$metaTitle]);
     }
     
     public function registerConfirm(Request $request)

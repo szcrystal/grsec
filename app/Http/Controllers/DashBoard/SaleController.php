@@ -18,6 +18,7 @@ use App\DeliveryCompany;
 use App\MailTemplate;
 use App\SendMailFlag;
 use App\Prefecture;
+use App\SaleRelationCancel;
 
 use App\Mail\OrderSend;
 use App\Mail\OrderMails;
@@ -34,7 +35,7 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class SaleController extends Controller
 {
-    public function __construct(Admin $admin, Sale $sale, SaleRelation $saleRel, Item $item, User $user, PayMethod $payMethod, UserNoregist $userNoregist, Receiver $receiver, DeliveryGroup $dg, Consignor $consignor, Category $category, Setting $setting, DeliveryCompany $dc, MailTemplate $templ, SendMailFlag $smf, Prefecture $pref)
+    public function __construct(Admin $admin, Sale $sale, SaleRelation $saleRel, Item $item, User $user, PayMethod $payMethod, UserNoregist $userNoregist, Receiver $receiver, DeliveryGroup $dg, Consignor $consignor, Category $category, Setting $setting, DeliveryCompany $dc, MailTemplate $templ, SendMailFlag $smf, Prefecture $pref, SaleRelationCancel $saleRelCancel)
     {
         
         $this -> middleware(['adminauth', 'role:isAdmin']);
@@ -59,6 +60,7 @@ class SaleController extends Controller
         $this->templ = $templ;
         $this->smf = $smf;
         $this->pref = $pref;
+        $this->saleRelCancel = $saleRelCancel;
 
 		$templCodes = [
         	'payDone',
@@ -314,6 +316,7 @@ class SaleController extends Controller
         $item = $this->item->find($saleModel->item_id);
         
         $saleRel = $this->saleRel->find($saleModel->salerel_id);
+
         
         $status = "更新されました。"; 
 
@@ -323,9 +326,21 @@ class SaleController extends Controller
         
         //キャンセル時に購入金額と在庫を戻す
         if($data['is_cancel']) {
-        
+        	
+            //キャンセルしていない商品（購入状態の商品）があるかどうか。なければデータcreateする
+            $isFirstCancel = $this->sale->where(['salerel_id'=>$saleRel->id])->whereNotNull('cancel_date')->get()->isEmpty();
+            
+            if($isFirstCancel) {
+            	$saleRelArr = $saleRel->toArray();
+                $saleRelArr['salerel_id'] = $saleRel->id;
+                
+                $this->saleRelCancel->create($saleRelArr);
+            }
+                    
+            
             if(! isset($saleModel->cancel_date)) { //初キャンセルなら
-                            
+                
+                //キャンセルされていない商品を取得
                 $itemData = $this->sale->where(['salerel_id'=>$saleRel->id, 'is_cancel'=>0])->whereNotIn('id', [$saleModel->id])->get()->map(function($sale){
                     $i = $this->item->find($sale->item_id);
                     $i->count = $sale->item_count;
@@ -335,7 +350,7 @@ class SaleController extends Controller
                 
                 $u = null;
                 
-                //追加したポイントをユーザーの保有ポイントから引く
+                //追加したポイントをユーザーの保有ポイントから引く　一部キャンセル／全キャンセルどちらも必ずすることとなる
                 if($saleRel->is_user) {
                 	$u = $this->user->find($saleRel->user_id);
                     
@@ -361,15 +376,19 @@ class SaleController extends Controller
                     //add_pointを戻す
                     $saleRel->decrement('add_point', $saleModel->add_point);
                     
+                    //total
+                    $totalFee = $saleRel->all_price + $saleRel->deli_fee - $saleRel->use_point;
                     
                     //手数料も戻す必要があるか ==========
                     if($saleRel->payMethod == 5) {
-                        $totalFee = $saleRel->deli_fee + $saleRel->all_price - $saleRel->use_point;
                         $codFee = Ctm::daibikiCodFee($totalFee);
                         
                         $saleRel->cod_fee = $codFee;
                     	$saleRel->save();
                     }
+                    
+                	$saleRel->total_price = $totalFee + $saleRel->cod_fee;
+                    $saleRel->save();
                 }
                 else { //全キャンセルの時 saleのis_cancelが全て1の時
                 	//ポイントを戻す すべての商品をキャンセルかどうかを確認 まとめ買いの一部のみキャンセルならそのままポイント使用する==========                    
@@ -378,11 +397,9 @@ class SaleController extends Controller
                     }
                 	
                 }
-                
-                //===============================
-                
- 
-                //在庫を戻す
+
+
+                //在庫を戻す ===============================
                 $item->increment('stock', $saleModel->item_count);
                 $status .= 'キャンセルにより、金額と在庫が戻されました。';
             }
@@ -457,7 +474,13 @@ class SaleController extends Controller
     	$saleRel = $this->saleRel->where('order_number', $orderNum)->first();
         
         $sales= $this->sale->where('order_number', $orderNum)->get();
-        
+
+		//キャンセル用
+        //全キャンセルかどうかの判定        
+        $allCancel = $sales->where('is_cancel', 0)->isEmpty();
+		
+        //キャンセルデータ　なければ空
+    	$saleRelCancel = SaleRelationCancel::where('salerel_id', $saleRel->id)->first();
         
         $items = $this->item;
         $pms = $this->payMethod;
@@ -492,7 +515,7 @@ class SaleController extends Controller
         $sales = collect($sales);
         */
         
-        return view('dashboard.sale.orderForm', ['saleRel'=>$saleRel, 'sales'=>$sales, 'items'=>$items, 'pms'=>$pms, 'users'=>$users, 'userNs'=>$userNs, 'receiver'=>$receiver, 'cates'=>$cates, 'id'=>$orderNum, 'templs'=>$templs, 'edit'=>1]);
+        return view('dashboard.sale.orderForm', ['saleRel'=>$saleRel, 'sales'=>$sales, 'items'=>$items, 'pms'=>$pms, 'users'=>$users, 'userNs'=>$userNs, 'receiver'=>$receiver, 'cates'=>$cates, 'id'=>$orderNum, 'templs'=>$templs, 'allCancel'=>$allCancel, 'saleRelCancel'=>$saleRelCancel, 'edit'=>1]);
     }
     
     

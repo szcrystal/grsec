@@ -295,7 +295,7 @@ class HomeController extends Controller
  
         }
         
-        $metaTitle = $title;
+        $metaTitle = $title . '｜植木買うならグリーンロケット';
         $metaDesc = '';
         $metaKeyword = '';
         
@@ -355,7 +355,7 @@ class HomeController extends Controller
             $title = 'おすすめ情報';
         }
         
-        $metaTitle = $title;
+        $metaTitle = $title . '｜植木買うならグリーンロケット';
         $metaDesc = '';
         $metaKeyword = '';
         
@@ -379,7 +379,7 @@ class HomeController extends Controller
         $title = $fix->title;
         $type = 'fix';
         
-        $metaTitle = isset($fix->meta_title) ? $fix->meta_title : $title;
+        $metaTitle = isset($fix->meta_title) ? $fix->meta_title : $title . '｜植木買うならグリーンロケット';
 //        $metaDesc = $item->meta_description;
 //        $metaKeyword = $item->meta_keyword;
         
@@ -414,7 +414,7 @@ class HomeController extends Controller
         $upperRelArr = Ctm::getUpperArr($cate->id, 'cate');
         
         //Meta
-        $metaTitle = isset($cate->meta_title) ? $cate->meta_title : $cate->name;
+        $metaTitle = isset($cate->meta_title) ? $cate->meta_title : $cate->name . '｜植木買うならグリーンロケット';
         $metaDesc = $cate->meta_description;
         $metaKeyword = $cate->meta_keyword;
         
@@ -453,7 +453,7 @@ class HomeController extends Controller
         $upperRelArr = Ctm::getUpperArr($subcate->id, 'subcate');
         
         //Meta
-        $metaTitle = isset($subcate->meta_title) ? $subcate->meta_title : $subcate->name;
+        $metaTitle = isset($subcate->meta_title) ? $subcate->meta_title : $subcate->name . '｜植木買うならグリーンロケット';
         $metaDesc = $subcate->meta_description;
         $metaKeyword = $subcate->meta_keyword;
         
@@ -493,7 +493,7 @@ class HomeController extends Controller
         //Upper取得
         $upperRelArr = Ctm::getUpperArr($tag->id, 'tag');
         
-        $metaTitle = isset($tag->meta_title) ? $tag->meta_title : $tag->name;
+        $metaTitle = isset($tag->meta_title) ? $tag->meta_title : $tag->name . '｜植木買うならグリーンロケット';
         $metaDesc = $tag->meta_description;
         $metaKeyword = $tag->meta_keyword;
         
@@ -512,11 +512,11 @@ class HomeController extends Controller
         //ORG : $whereArr = ['open_status'=>1, 'is_potset'=>0];
         //$stockTrues = $this->item->where($whereArr)->whereNotIn('stock', [0])->orderBy('id', 'desc')->get()->map(function($obj){
         
-        $stockTrues = $itemObjs->whereNotIn('stock', [0])->sortByDesc('id')->map(function($obj){
+        $stockTrues = $itemObjs->whereNotIn('stock', [0])->sortByDesc('id')->map(function($obj){ //Desc 降順 3,2,1
         	return $obj->id;
         })->all();
                 
-        $stockFalses = $itemObjs->where('stock', 0)->sortByDesc('id')->map(function($objSec){
+        $stockFalses = $itemObjs->where('stock', 0)->sortByDesc('id')->map(function($objSec){ //Desc 降順 3,2,1
         	return $objSec->id;
         })->all();
         

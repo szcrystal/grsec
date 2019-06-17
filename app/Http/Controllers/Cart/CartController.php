@@ -656,8 +656,10 @@ class CartController extends Controller
 		}   
      
      	$pmModel = $this->payMethod;
+        
+        $metaTitle = 'ご注文完了' . '｜植木買うならグリーンロケット';
      	
-        return view('cart.end', ['data'=>$data, 'pm'=>$pm, 'pmModel'=>$pmModel, 'paymentCode'=>$payPaymentCode, 'orderNumber'=>$orderNumber, 'saleRel'=>$saleRel, 'saleObjs'=>$saleObjs, 'active'=>4]);
+        return view('cart.end', ['data'=>$data, 'pm'=>$pm, 'pmModel'=>$pmModel, 'paymentCode'=>$payPaymentCode, 'orderNumber'=>$orderNumber, 'saleRel'=>$saleRel, 'saleObjs'=>$saleObjs, 'metaTitle'=>$metaTitle, 'active'=>4]);
       
       
       //クレカからの戻りサンプルURL
@@ -1473,7 +1475,9 @@ class CartController extends Controller
 //        print_r($userArr);
 //        exit;
         
-        return view('cart.confirm', ['data'=>$data, 'userArr'=>$userArr, 'itemData'=>$itemData, 'regist'=>$regist, 'allPrice'=>$allPrice, 'settles'=>$settles, 'payMethod'=>$payMethod, 'pmChild'=>$pmChild, 'deliFee'=>$deliFee, 'codFee'=>$codFee, 'usePoint'=>$usePoint, 'addPoint'=>$addPoint, 'actionUrl'=>$actionUrl, 'cardInfo'=>$cardInfo, 'active'=>3])->withErrors($errors);
+        $metaTitle = 'ご注文内容の確認' . '｜植木買うならグリーンロケット';
+        
+        return view('cart.confirm', ['data'=>$data, 'userArr'=>$userArr, 'itemData'=>$itemData, 'regist'=>$regist, 'allPrice'=>$allPrice, 'settles'=>$settles, 'payMethod'=>$payMethod, 'pmChild'=>$pmChild, 'deliFee'=>$deliFee, 'codFee'=>$codFee, 'usePoint'=>$usePoint, 'addPoint'=>$addPoint, 'actionUrl'=>$actionUrl, 'cardInfo'=>$cardInfo, 'metaTitle'=>$metaTitle, 'active'=>3])->withErrors($errors);
     }
     
     
@@ -1633,8 +1637,9 @@ class CartController extends Controller
 //        print_r($dgGroup);
 //        exit;
 
+		$metaTitle = 'ご注文情報の入力' . '｜植木買うならグリーンロケット';
      
-     	return view('cart.form', ['regist'=>$regist, 'payMethod'=>$payMethod, 'pmChilds'=>$pmChilds, 'prefs'=>$prefs, 'userObj'=>$userObj, 'codCheck'=>$codCheck, 'dgGroup'=>$dgGroup, 'regCardDatas'=>$regCardDatas, 'regCardErrors'=>$regCardErrors, 'cardErrors'=>$cardErrors, 'active'=>2]);   
+     	return view('cart.form', ['regist'=>$regist, 'payMethod'=>$payMethod, 'pmChilds'=>$pmChilds, 'prefs'=>$prefs, 'userObj'=>$userObj, 'codCheck'=>$codCheck, 'dgGroup'=>$dgGroup, 'regCardDatas'=>$regCardDatas, 'regCardErrors'=>$regCardErrors, 'cardErrors'=>$cardErrors, 'metaTitle'=>$metaTitle, 'active'=>2]);   
     }
     
     
@@ -1815,8 +1820,9 @@ class CartController extends Controller
 //            $allPrice = array_sum($priceArr);
         }
         
+        $metaTitle = '買い物カゴの確認' . '｜植木買うならグリーンロケット'; 
         
-        return view('cart.index', ['itemData'=>$itemData, 'allPrice'=>$allPrice, 'uri'=>session('org_url'), 'prefs'=>$prefs, 'prefId'=>$prefId, 'deliFee'=>$deliFee, 'active'=>1 ]);
+        return view('cart.index', ['itemData'=>$itemData, 'allPrice'=>$allPrice, 'uri'=>session('org_url'), 'prefs'=>$prefs, 'prefId'=>$prefId, 'deliFee'=>$deliFee, 'metaTitle'=>$metaTitle, 'active'=>1 ]);
         
         //$tax_per = $this->set->tax_per;
 //        print_r($itemSes);

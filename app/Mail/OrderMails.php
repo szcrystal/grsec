@@ -13,6 +13,7 @@ use App\Item;
 use App\PayMethod;
 use App\PayMethodChild;
 use App\DeliveryCompany;
+use App\SaleRelationCancel;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
@@ -79,7 +80,7 @@ class OrderMails extends Mailable
         $templ = MailTemplate::find($this->mailId);
 
 		//転送メールのタイトルに「転送」の文字列を付ける
-        
+        //現在 Bccで送信にしているので不要 -> 転送用として直接2通目を送るかどうか検討中
         $forwardTitle = $this->isForward ? '転送-' : '';
         
         //$thisSale = Sale::find($this->saleId);
@@ -96,6 +97,16 @@ class OrderMails extends Mailable
         
 
         $receiver = Receiver::find($saleRel->receiver_id);
+        
+        //キャンセルメール用
+        $allCancel = null;
+        $saleRelCancel = null;
+        
+        if($templ->type_code == 'cancel') {
+        	$allCancel = $sales->where('is_cancel', 0)->isEmpty();
+            
+            $saleRelCancel = SaleRelationCancel::where('salerel_id', $saleRelId)->first();
+        }
 
         //return $this->from($this->setting->admin_email, $this->setting->admin_name)
         return $this->from('no-reply@green-rocket.jp', $this->setting->admin_name)
@@ -107,9 +118,11 @@ class OrderMails extends Mailable
                         //'thisSale' => $thisSale,
                         'sales' => $sales,
                         'saleRel' => $saleRel,
+                        'saleRelCancel' => $saleRelCancel,
                         'user' => $user,
                         'receiver' => $receiver,
-                        'isUser' => 1,        
+                        'isUser' => 1,
+                        'allCancel'=> $allCancel,       
                     ])
                     ->subject($forwardTitle . $templ->title);
     }
