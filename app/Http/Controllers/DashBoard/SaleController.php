@@ -27,6 +27,7 @@ use App\Mail\PayDone;
 use Mail;
 use DB;
 use Delifee;
+use Ctm;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -327,8 +328,10 @@ class SaleController extends Controller
         //キャンセル時に購入金額と在庫を戻す
         if($data['is_cancel']) {
         	
-            //キャンセルしていない商品（購入状態の商品）があるかどうか。なければデータcreateする
+            //他にキャンセルしていない商品（購入状態の商品）があるかどうか。なければsaleRelCancelにデータcreateする。
+            //cancel_dateがnullかどうかで区別する必要がある。is_cancelでの判別だと何度もデータ作成されてしまうので。
             $isFirstCancel = $this->sale->where(['salerel_id'=>$saleRel->id])->whereNotNull('cancel_date')->get()->isEmpty();
+            //$isFirstCancel = $this->sale->where(['salerel_id'=>$saleRel->id, 'is_cancel'=>1])->get()->isEmpty();
             
             if($isFirstCancel) {
             	$saleRelArr = $saleRel->toArray();
@@ -338,7 +341,7 @@ class SaleController extends Controller
             }
                     
             
-            if(! isset($saleModel->cancel_date)) { //初キャンセルなら
+            if(! isset($saleModel->cancel_date)) { //初キャンセルなら　その商品に対して初めてのキャンセルなら
                 
                 //キャンセルされていない商品を取得
                 $itemData = $this->sale->where(['salerel_id'=>$saleRel->id, 'is_cancel'=>0])->whereNotIn('id', [$saleModel->id])->get()->map(function($sale){
@@ -379,8 +382,11 @@ class SaleController extends Controller
                     //total
                     $totalFee = $saleRel->all_price + $saleRel->deli_fee - $saleRel->use_point;
                     
+//                    echo $totalFee;
+//                    exit;
+                    
                     //手数料も戻す必要があるか ==========
-                    if($saleRel->payMethod == 5) {
+                    if($saleRel->pay_method == 5) {
                         $codFee = Ctm::daibikiCodFee($totalFee);
                         
                         $saleRel->cod_fee = $codFee;
@@ -391,11 +397,16 @@ class SaleController extends Controller
                     $saleRel->save();
                 }
                 else { //全キャンセルの時 saleのis_cancelが全て1の時
-                	//ポイントを戻す すべての商品をキャンセルかどうかを確認 まとめ買いの一部のみキャンセルならそのままポイント使用する==========                    
+                	//use_pointを戻す すべての商品をキャンセルかどうかを確認 まとめ買いの一部のみキャンセルならそのままポイント使用する==========                    
                     if($saleRel->is_user && $saleRel->use_point) { //ユーザーでポイント使用がある時
                         $u->increment('point', $saleRel->use_point);
                     }
-                	
+                    
+                    //saleRelのデータを戻す　（一時退避させたsaleRelCancelから）
+                    $src = $this->saleRelCancel->where('salerel_id', $saleRel->id)->first()->toArray();
+                	$saleRel->update($src);
+                    
+                    //ここでsaleRelCancelのデータを消すかどうするか 
                 }
 
 
@@ -404,7 +415,7 @@ class SaleController extends Controller
                 $status .= 'キャンセルにより、金額と在庫が戻されました。';
             }
         }
-        else { //キャンセルを取り消した時
+        else { //キャンセルを取り消した時 cancel_dateが入っていることが条件
         	if(isset($saleModel->cancel_date)) {
             
             }

@@ -274,6 +274,9 @@ body {
 .text-gray {
 	color: #afafaf;
 }
+.text-warn {
+	color: #F1A916;
+}
 .border-gray {
 	border-color: #ddd;
 }

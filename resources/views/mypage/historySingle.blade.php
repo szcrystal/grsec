@@ -41,14 +41,11 @@ use App\Item;
     </div>
 	
 	<div class="table-responsive table-cart mt-4">
-    <table class="table table-bordered bg-white text-small">
+    <table class="table table-bordered bg-white">
         <thead>
             <tr>
-                <th>商品名</th>
-                <th>数量</th>
-                <th>金額（税込）</th>
-                <th style="min-width:7em;">ステータス</th>
-                <th>枯れ保証 残期間</th>
+                <th>購入商品</th>
+                
             </tr>
         </thead>  
     
@@ -59,13 +56,78 @@ use App\Item;
              <?php $item = Item::find($sale->item_id); ?>
              
              <tr>
-                <td class="clearfix">
+                <td class="clearfix col-md-12">
 
-                	@include('main.shared.smallThumbnail')
-                	
-                    <div>
-                    	<a href="{{ url('item/' . $item->id) }}">{{ Ctm::getItemTitle($item) }}</a><br>[ {{ $item->number }} ]
-                    	<span class="d-block mt-1">¥{{ number_format($sale->single_price) }}（税込）</span>
+					<div class="float-left col-md-2">
+                		@include('main.shared.smallThumbnail')
+                	</div>
+                    
+                    <div class="float-left col-md-10">
+                    	
+                        <span class="d-block">
+                            <a href="{{ url('item/' . $item->id) }}">{{ Ctm::getItemTitle($item) }}</a>
+                            <br>[ {{ $item->number }} ]
+                            <br>¥{{ number_format($sale->single_price) }}（税込）
+                        </span>
+                        
+                        <span class="d-block mt-2"><span class="text-small">数量</span> {{ $sale->item_count }}</span>
+                        
+                        <span class="d-block mt-1"><span class="text-small">金額（税込）</span> ¥{{ number_format($sale->total_price) }}</span>
+                        
+                        <span class="d-block mt-1">
+                        	<span class="text-small">ステータス&nbsp;</span>
+                        	
+                            @if($sale->is_cancel)
+                                <span class="text-enji">
+                                キャンセル
+                                @if(isset($sale->cancel_date))
+                                    <span class="text-small ml-1">[{{ Ctm::changeDate($sale->cancel_date, 1) }}]</span>
+                                @endif
+                                
+                                </span>
+                            @else
+                                @if($sale->is_keep)
+                                    <span class="text-success">お取り置き中 
+                                    @if(isset($sale->keep_date))
+                                        <span class="text-small ml-1">[{{ Ctm::changeDate($sale->keep_date, 1) }}〜]</span>
+                                    @endif
+                                    </span>
+                                @else
+                                    @if($sale->deli_done)
+                                        <span class="text-info">発送済<span class="text-small ml-1">[{{ Ctm::changeDate($sale->deli_start_date, 1) }}]</span></span>
+                                    @else
+                                        <span class="text-warn">発送準備中</span>
+                                    @endif
+                                @endif
+                            @endif
+                        </span>
+                        
+                        <span class="d-block mt-1"><span class="text-small">枯れ保証残期間&nbsp;</span> 
+                            @if($sale->is_cancel)
+                                --
+                            @else
+                                @if($item->is_ensure)
+                                    @if($sale->deli_done)
+                                        
+                                        <?php $days = Ctm::getKareHosyou($sale->deli_schedule_date); ?>
+                                        
+                                        @if($days['diffDay'])
+                                            {{ $days['limit'] }}まで&nbsp;
+                                            <b class="text-big">残{{ $days['diffDay'] }}日</b>
+                                        @else
+                                            {{ $days['limit'] }}にて<br>
+                                            <b class="text-big">枯れ保証期間終了</b>
+                                        @endif
+                                    @else
+                                        未発送
+                                    @endif
+                                @else
+                                    枯れ保証なし
+                                @endif
+                            @endif
+                        </span>
+                        
+                        
                         
                         <form class="form-horizontal" role="form" method="POST" action="{{ url('shop/cart') }}">
                             {{ csrf_field() }}
@@ -76,71 +138,12 @@ use App\Item;
                             <input type="hidden" name="uri" value="{{ Request::path() }}"> 
                             
                             <div class="mt-3">
-                                <button class="btn btn-block btn-custom py-1 text-small" type="submit" name="regist_off" value="1"><i class="fal fa-cart-arrow-down"></i> もう一度購入</button>
+                                <button class="btn btn-block btn-custom py-1" type="submit" name="regist_off" value="1"><i class="fal fa-cart-arrow-down"></i> もう一度購入</button>
                            </div>  
                         </form>
                     </div>
+                
                 </td>
-                
-                <td>{{ $sale->item_count }}</td>
-
-                <td>
-                <?php
-                	//各所で使用する
-                     $price = $sale->total_price;
-                ?>
-                
-                	¥{{ number_format($price) }}
-                </td>
-
-                <td>
-                    @if($sale->is_cancel)
-                        <span class="text-enji">
-                        キャンセル
-                        @if(isset($sale->cancel_date))
-                            <br><span class="text-small">{{ Ctm::changeDate($sale->cancel_date, 1) }}</span>
-                        @endif
-                        
-                        </span>
-                    @else
-                        @if($sale->is_keep)
-                            <span class="text-success">お取り置き中 
-                            @if(isset($sale->keep_date))
-                                <br><span class="text-small">{{ Ctm::changeDate($sale->keep_date, 1) }}〜</span>
-                            @endif
-                            </span>
-                        @else
-                            @if($sale->deli_done)
-                                発送済<br><span class="text-small">{{ Ctm::changeDate($sale->deli_start_date, 1) }}</span>
-                            @else
-                                <span class="text-info">発送準備中</span>
-                            @endif
-                        @endif
-                    @endif
-        		</td>
-                
-                <td>
-                	@if($sale->is_cancel)
-                    	--
-                    @else
-                        @if($item->is_ensure)
-                            @if($sale->deli_done)
-                                <?php $days = Ctm::getKareHosyou($sale->deli_schedule_date); ?>
-                                @if($days['diffDay'])
-                                    {{ $days['limit'] }}まで<br>
-                                    <b class="text-big">残{{ $days['diffDay'] }}日</b>
-                                @else
-                                    {{ $days['limit'] }}にて<br>
-                                    <b class="text-big">枯れ保証期間終了</b>
-                                @endif
-                            @else
-                                未発送
-                            @endif
-                        @else
-                            枯れ保証なし
-                        @endif
-                    @endif
-                </td>      
             </tr>
              
             @endforeach
@@ -201,7 +204,7 @@ use App\Item;
         <tbody>
         <tr>
             <th><label class="control-label">商品金額合計（税込）</label></th>
-            <td>
+            <td class="w-50">
             	¥{{ number_format($saleRel->all_price) }}
             </td>
         </tr>
@@ -243,7 +246,7 @@ use App\Item;
     <table class="table border table-borderd bg-white">
         <tr>
             <th><label class="control-label">ポイント発生</label></th>
-            <td>
+            <td class="w-50">
 				{{ $saleRel->add_point }}
             </td>
         </tr>
@@ -257,7 +260,7 @@ use App\Item;
         
         <tr>
             <th><label class="control-label">お支払い方法</label></th>
-            <td>
+            <td class="w-50">
             	{{ $pm->find($saleRel->pay_method)->name }}
             </td>
         </tr>

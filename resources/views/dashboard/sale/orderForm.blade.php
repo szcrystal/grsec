@@ -539,7 +539,7 @@ use App\PayMethodChild;
                             @endforeach
                             
                             <?php
-                            	$relModel = $allCancel ? $saleRelCancel : $saleRel;
+                            	//$relModel = $allCancel ? $saleRelCancel : $saleRel;
                             ?>
                             
                             <tr>
@@ -548,17 +548,17 @@ use App\PayMethodChild;
                                 	$taxPer = Setting::get()->first()->tax_per;
                                     $taxPer = $taxPer/100 + 1; //$taxPer ->1.08
                                     
-                                	$ap = $relModel->all_price;
+                                	$ap = $saleRel->all_price;
                                     $zeinuki = ceil($ap / $taxPer);
                                 ?>
-                                <td><b style="font-size: 1.2em;">¥{{ number_format($relModel->all_price) }}<small>（税抜／税：{{ number_format($zeinuki) }}／{{ number_format($ap - $zeinuki) }}）</small></b></td>
+                                <td><b style="font-size: 1.2em;">¥{{ number_format($saleRel->all_price) }}<small>（税抜／税：{{ number_format($zeinuki) }}／{{ number_format($ap - $zeinuki) }}）</small></b></td>
                             </tr>
                             
                             <tr>
                                 <th>送料 [B]</th>
                                 <td>
                                 	<fieldset class="mt-2 mb-4 form-group">
-                                        <input class="form-control col-md-6 d-inline{{ $errors->has('deli_fee') ? ' is-invalid' : '' }}" name="deli_fee" value="{{ Ctm::isOld() ? old('deli_fee') : (isset($relModel->deli_fee) ? $relModel->deli_fee : '') }}">
+                                        <input class="form-control col-md-6 d-inline{{ $errors->has('deli_fee') ? ' is-invalid' : '' }}" name="deli_fee" value="{{ Ctm::isOld() ? old('deli_fee') : (isset($saleRel->deli_fee) ? $saleRel->deli_fee : '') }}">
                                         
                                         @if ($errors->has('deli_fee'))
                                             <div class="text-danger">
@@ -577,7 +577,7 @@ use App\PayMethodChild;
                                 	@if(! $sale->cod_fee)
                                     	--
                                     @else
-                                    	¥{{ number_format($relModel->cod_fee) }} [{{ $pms->find($relModel->pay_method)->name }}]
+                                    	¥{{ number_format($saleRel->cod_fee) }} [{{ $pms->find($saleRel->pay_method)->name }}]
                                     @endif
                                 	
                                 </td>
@@ -586,25 +586,30 @@ use App\PayMethodChild;
                             <tr>
                                 <th>ポイント利用 [D]</th>
                                 <td>
-	                                {{ $relModel->use_point }}
+	                                {{ $saleRel->use_point }}
                                 </td>
                             </tr>
                             
                             <tr>
                                 <th>購入総合計（税込）<br>[A+B+C-D]</th>
                                 <?php 
-                                	if(isset($relModel->total_price)) {
-                                    	$total = $relModel->total_price;
+                                	if(isset($saleRel->total_price)) {
+                                    	$total = $saleRel->total_price;
                                     }
                                     else {
-	                                	$total = $relModel->all_price + $relModel->deli_fee + $relModel->cod_fee - $relModel->use_point;
+	                                	$total = $saleRel->all_price + $saleRel->deli_fee + $saleRel->cod_fee - $saleRel->use_point;
                                     }
                                 ?>
                                 
                                 <td>
-                                	<b style="font-size:1.4em;" class="text-success">¥{{ number_format($total) }}</b><br>
-                                
+                                	<b style="font-size:1.4em;" class="text-success">¥{{ number_format($total) }}</b>
+                                    
+                                    @if($allCancel)
+                                		<br><span class="text-danger">全キャンセル</span>
+                                    @endif
+                                    
                                     @if($saleRel->pay_method == 6)
+                                    	<br>
                                         @if($saleRel->pay_done)
                                             <span class="text-success">入金済み</span>
                                         @else
@@ -621,7 +626,7 @@ use App\PayMethodChild;
 //                                    $taxPer = Setting::get()->first()->tax_per;
 //                                    $taxPer = $taxPer/100 + 1; //$taxPer ->1.08
 
-                                    $tax = $relModel->all_price - ($relModel->all_price / $taxPer); //$taxPer ->1.08
+                                    $tax = $saleRel->all_price - ($saleRel->all_price / $taxPer); //$taxPer ->1.08
 
                                     $arari = $total - $tax - $sales->sum('cost_price') - $sales->sum('charge_loss');
                                 ?>
