@@ -79,7 +79,7 @@ use App\Category;
 
 @if(isset($isTop) && $isTop)
 <?php
-	$slideNum = Ctm::isAgent('sp') ? 3 : 7; //要：奇数
+	$slideNum = Ctm::isAgent('sp') ? 3 : 7; //naviの画像個数 要：奇数
 ?>
 
 <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
@@ -88,6 +88,7 @@ $(document).ready(function() {
 	$('.slider-top').slick({
           slidesToShow: 1,
           dots: true,
+          
           @if(! Ctm::isAgent('sp'))
           centerMode: true,
           variableWidth: true,
@@ -95,9 +96,10 @@ $(document).ready(function() {
           
           slidesToScroll: 1,
           autoplay: true,
-          autoplaySpeed: 10000,
+          autoplaySpeed: 7000,
           arrows: false,
           fade: false,
+          pauseOnFocus: false,
           //asNavFor: '.slider-nav',
     });
     

@@ -443,14 +443,14 @@ use App\TopSetting;
                     	<div id="accordion" class="mt-4">
                           <div class="card">
                             <div class="card-header" id="headingOne">
-                                <a class="btn clearfix collapsed" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                <a class="btn clearfix" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                                   <i class="fal fa-info-circle"></i> 商品詳細
                                   <i class="fal fa-angle-down float-right"></i>
                                 </a>
                                 
                             </div>
 
-                            <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+                            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
                               <div class="card-body clearfix">
                                 {!! nl2br($item->explain) !!}
                               </div>

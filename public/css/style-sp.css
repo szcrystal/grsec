@@ -1081,6 +1081,16 @@ ORG END ======================== */
     }
     
     /* Slide */
+    .slider-top > div {
+    	width: 100%;
+    }
+    .slider-top > div img {
+    	width: 100%;
+    }
+    .slider-top div img:hover {
+    	opacity: 1;
+    }
+    /*
     .slider-nav .slick-prev,
     .slider-nav .slick-next {
         top: 20%;
@@ -1094,6 +1104,7 @@ ORG END ======================== */
     .slider-wrap .this-item {
     	border-width: 3px;
     }
+    */
     
     /* Archive */
     .pagination {
