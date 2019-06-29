@@ -151,6 +151,10 @@
         	{!! nl2br($setting['bank_info']) !!}
         </div>
     @endif
+    
+    @if($templ->type_code == 'payDone')
+    	<br><br>【ご入金確認日】：{{ Ctm::changeDate($saleRel->pay_date, 1) }} <br>
+    @endif
 
 @endif
 

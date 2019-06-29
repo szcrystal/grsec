@@ -104,7 +104,6 @@ class OrderMails extends Mailable
         
         if($templ->type_code == 'cancel') {
         	$allCancel = $sales->where('is_cancel', 0)->isEmpty();
-            
             $saleRelCancel = SaleRelationCancel::where('salerel_id', $saleRelId)->first();
         }
 

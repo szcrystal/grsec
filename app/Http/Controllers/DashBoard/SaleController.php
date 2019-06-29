@@ -577,14 +577,14 @@ class SaleController extends Controller
             ];
             
              $messages = [
-                 'pay_done.required' => '「入金」のチェックがされていません。',
+                 'pay_done.required' => '「入金」のチェックがされていないか、銀行振込ではありません。',
                // 'cate_id.required' => '「カテゴリー」を選択して下さい。',
             ];
             
             $this->validate($request, $rules, $messages);
 		}
         
-        if($withPreview && ! $withPayDone) {
+        if($withPreview/* && ! $withPayDone*/) {
         	$rules = [
                 'sale_ids' => 'required',
             ];
@@ -678,7 +678,8 @@ class SaleController extends Controller
             $templ = $this->templ->find($withPreview);
                     
         	if($templ->type_code == 'payDone') { //入金済みメール
-            	$previewRender = (new PayDone($saleRel->id))->render();
+            	//$previewRender = (new PayDone($saleRel->id))->render();
+                $previewRender = (new OrderMails($data['sale_ids'], $withPreview))->render();
             }
             else {
             	$previewRender = (new OrderMails($data['sale_ids'], $withPreview))->render();
@@ -697,7 +698,9 @@ class SaleController extends Controller
                 
                 //=== メールPayDoneやOrderMailsの中でinfomationデータをsmfから取得するようにする
                 
-                $mail = Mail::to($data['user_email'], $data['user_name'])->queue(new PayDone($saleRel->id));
+                //$mail = Mail::to($data['user_email'], $data['user_name'])->queue(new PayDone($saleRel->id));
+                Mail::to($data['user_email'], $data['user_name'])
+                        ->queue(new OrderMails($data['sale_ids'], $withMail));
                 //return redirect('dashboard/sales/order/'. $saleRel->order_number)->withInput()->with('preview', (new PayDone($saleRel->id))->render());
                 
                 $this->smf->updateOrCreate(
