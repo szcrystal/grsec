@@ -94,6 +94,7 @@ class SettingController extends Controller
         $rules = [
             'admin_name' => 'required|max:255',
             'admin_email' => 'required|max:255',
+            'admin_forward_email' => 'required|max:255',
             'tax_per' => 'required|numeric', //この辺りは小数点もあるのでnumericで
             'sale_per' => 'required_with:is_sale|nullable|numeric', //この辺りは小数点もあるのでnumericで
             'point_per' => 'required_with:is_point|nullable|numeric', //この辺りは小数点もあるのでnumericで

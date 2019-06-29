@@ -180,6 +180,7 @@ return [
         
         'admin_name' => '「管理者名」',
         'admin_email' => '「管理者メールアドレス」',
+        'admin_forward_email' => '「転送先メールアドレス」',
         'permission' => '「権限」',
         'tax_per' => '「消費税率」',
         'sale_per' => '「割引率」',

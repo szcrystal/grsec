@@ -619,8 +619,8 @@ class CartController extends Controller
         //for User
         Mail::to($userData['email'], $userData['name'])->queue(new OrderEnd($saleRelId, 1));
         
-        //for Admin（3分後に送信）
-        Mail::to($this->set->admin_email, $this->set->admin_name)->later(now()->addMinutes(3), new OrderEnd($saleRelId, 0))/*->queue(new OrderEnd($saleRelId, 0))*/;
+        //for Admin（3分後に送信 -> 1分後に変更）
+        Mail::to($this->set->admin_email, $this->set->admin_name)->later(now()->addMinutes(1), new OrderEnd($saleRelId, 0))/*->queue(new OrderEnd($saleRelId, 0))*/;
         
         if($regist) { //ユーザー新規登録の時
         	Mail::to($userData['email'], $userData['name'])->later(now()->addMinutes(2), new Register($userId))/*->queue(new Register($userId))*/; //for User New Regist

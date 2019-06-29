@@ -12,6 +12,6 @@ use App\Icon;
 
 @endforeach
             
- <span class="creca">クレジットカード可</span>       
+<span class="creca">クレカOK</span>       
 
 

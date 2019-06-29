@@ -447,7 +447,6 @@ use App\TopSetting;
                                   <i class="fal fa-info-circle"></i> 商品詳細
                                   <i class="fal fa-angle-down float-right"></i>
                                 </a>
-                                
                             </div>
 
                             <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
