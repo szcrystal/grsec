@@ -350,6 +350,7 @@ class CartController extends Controller
         	$uObj = $this->user->find(Auth::id());
         	$userId = $uObj->id;
          	
+            $uObj->decrement('point', $usePoint);
           	$uObj->increment('point', $addPoint);
             
             if($isCardRegist) { //カード登録時
@@ -588,7 +589,7 @@ class CartController extends Controller
             	$stockNone[] = $item->id;
             }
             
-            //Sale Count処理
+            //Sale Count処理（itemの売れた個数）
             if($item->is_potset) {
             	$this->item->find($item->pot_parent_id)->increment('sale_count', $val['item_count']);
             }
