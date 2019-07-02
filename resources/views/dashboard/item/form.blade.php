@@ -420,7 +420,7 @@
             <?php //ポットセット ================================ ?>
             
             <fieldset class="form-group mb-3 pb-4">
-                <label for="pot_sort" class="control-label">子ポット並び順<small>（ポットセット親の時に入力。子ポットのIDを希望順に半角カンマで区切って下さい）</small></label>
+                <label for="pot_sort" class="control-label">子ポット並び順<small>（ポット親の時に入力。子ポットのIDを希望順に半角カンマで区切って下さい）</small></label>
                 <input class="form-control col-md-8{{ $errors->has('pot_sort') ? ' is-invalid' : '' }}" name="pot_sort" value="{{ Ctm::isOld() ? old('pot_sort') : (isset($item) ? $item->pot_sort : '') }}">
                 
 
@@ -432,11 +432,11 @@
                 @endif
                 
                 @if(isset($edit))
-                    <div>
+                    <div class="mt-1">
                         <?php $ps = Ctm::isPotParentAndStock($item->id); ?>
                         
                         @if($ps['isPotParent'])
-                        	指定されている子ポット<br>
+                        	この親ポットに指定されている子ポット<br>
                             
                             @foreach($ps['pots'] as $ptChild)
                                 <a href="{{ url('/dashboard/items/'. $ptChild->id) }}" target="_brank" class="d-inline-block mr-3">[{{ $ptChild->id }}] {{ $ptChild->title }}</a>
@@ -467,7 +467,7 @@
             </fieldset>
             
             <fieldset class="mb-2 form-group">
-                <label for="pot_parent_id" class="control-label">ポットセット親ID</label>
+                <label for="pot_parent_id" class="control-label">ポットセット親ID<small>（ポット親の時は0を入力）</small></label>
                 <input class="form-control col-md-6{{ $errors->has('pot_parent_id') ? ' is-invalid' : '' }}" name="pot_parent_id" value="{{ Ctm::isOld() ? old('pot_parent_id') : (isset($item) ? $item->pot_parent_id : '') }}">
                 
 
@@ -803,7 +803,7 @@
             </fieldset>
             
             <fieldset class="mb-2 form-group">
-                <label for="stock" class="control-label">在庫数<small>（ポット親の時の在庫関連は全て無関係。空 or 1入力でOK。子ポットは要入力）</small></label>
+                <label for="stock" class="control-label">在庫数<small>（ポット親の時は1を入力。ポット親の在庫関連は全て無関係となり、子ポットは要入力）</small></label>
                 <input class="form-control col-md-6{{ $errors->has('stock') ? ' is-invalid' : '' }}" name="stock" value="{{ Ctm::isOld() ? old('stock') : (isset($item) ? $item->stock : '') }}">
                 
 

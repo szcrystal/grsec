@@ -523,14 +523,26 @@ class HomeController extends Controller
         $stockIds = array_merge($stockTrues, $stockFalses);
         $potsStockFalses = array();
         
+        
         //pot親の時にpotの子のstockを見る
         foreach($stockIds as $stockId) {
         	$switchArr = Ctm::isPotParentAndStock($stockId); //親ポットか、Stockあるか、その子ポットのObjsを取る
             
             //親ポットで子ポットの在庫が全て0の時
-            if($switchArr['isPotParent'] && ! $switchArr['isStock']) {
-            	$potsStockFalses[] = $stockId;
-            }
+            if($switchArr['isPotParent']) { 
+                if(! $switchArr['isStock']) { //子ポット在庫が全て0の時
+                    $potsStockFalses[] = $stockId;
+                }
+                else { // 子ポットに在庫があっても親に在庫0が指定されている時。本来0が入力されてはならない。
+                    if(! $this->item->find($stockId)->stock) {
+                		$stockTrues[] = $stockId;
+                        rsort($stockTrues);
+                        
+                        //ここで重複があっても最後にwhereInする時に省かれるので影響しないが一応重複IDを削除しておく
+                        $stockFalses = array_diff($stockFalses, $stockTrues); //stockFalseから重複IDを削除
+                    }
+                }
+        	}
 /*        	
 //            $pots = $this->item->where(['is_potset'=>1, 'pot_parent_id'=>$stockId])->get();
 //            
@@ -549,6 +561,7 @@ class HomeController extends Controller
 //            }
 */
         }
+        
         
         //potSetの親はstockTrue,stockFalseどちらにも入る可能性があるので両方から重複idを取り除く
         $stockTrues = array_diff($stockTrues, $potsStockFalses); //stockTrueから重複IDを削除
