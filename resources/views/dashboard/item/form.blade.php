@@ -589,7 +589,7 @@
             </fieldset>
             
             <fieldset class="mb-4 form-group">
-                <label for="sale_price" class="control-label">セール価格<span><small>（ポット親でSaleにしたい時は1を入力）</small></label>
+                <label for="sale_price" class="control-label">セール価格<span><small>（ポット親でSaleにしたい時は1を入力。）</small></label>
                 <input class="form-control col-md-6{{ $errors->has('sale_price') ? ' is-invalid' : '' }}" name="sale_price" value="{{ Ctm::isOld() ? old('sale_price') : (isset($item) ? $item->sale_price : '') }}">
                 
 
