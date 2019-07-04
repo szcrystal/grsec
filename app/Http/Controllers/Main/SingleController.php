@@ -128,7 +128,7 @@ class SingleController extends Controller
         $getNum = Ctm::isAgent('sp') ? 6 : 6;
         $chunkNum = $getNum/2;
         
-        //在庫がないIDを取得する
+        //在庫がないIDを取得する 以下のwhereNotInで使用する ===========
         $noStockIds = $this->item->whereNotIn('id', [$item->id])->where($whereArr)->get()->map(function($obj) {
             $switchArr = Ctm::isPotParentAndStock($obj->id); //親ポットか、Stockあるか、その子ポットのObjsを取る。$switchArr['isPotParent'] ! $switchArr['isStock']
             if($switchArr['isPotParent']) {
@@ -143,6 +143,7 @@ class SingleController extends Controller
     
         $noStockIds = array_filter($noStockIds);
         $noStockIds[] = $item->id;
+        //在庫がないID END ===========
         
         if($item->is_once) {
         	$isOnceItems = $this->item->whereNotIn('id', $noStockIds)->where($whereArr)->where(['consignor_id'=>$item->consignor_id, 'is_once'=>1, 'is_once_recom'=>0])->inRandomOrder()->take($getNum)->get()->chunk($chunkNum);
@@ -150,16 +151,12 @@ class SingleController extends Controller
         }
         
         // レコメンド：同カテゴリー 植木庭木の時のみsubcateに合わせる
-        if($item->cate_id == 1) 
-        	$whereArr['subcate_id'] = $item->subcate_id;
-        else 
-        	$whereArr['cate_id'] = $item->cate_id;
-        
-        
-        $recomCateItems = $this->item->whereNotIn('id', $noStockIds)->where($whereArr)/*->where($cateArr)*/->inRandomOrder()->take($getNum)->get()->chunk($chunkNum);
+        $cateArr = ($item->cate_id == 1) ? ['subcate_id' => $item->subcate_id] : ['cate_id' => $item->cate_id];
+                
+        $recomCateItems = $this->item->whereNotIn('id', $noStockIds)->where($whereArr)->where($cateArr)->inRandomOrder()->take($getNum)->get()->chunk($chunkNum);
         
         // レコメンド：同カテゴリーのランキング
-        $recomCateRankItems = $this->item->whereNotIn('id', $noStockIds)->where($whereArr)/*->where($cateArr)*/->orderBy('view_count', 'desc')->take($getNum)->get()->chunk($chunkNum);
+        $recomCateRankItems = $this->item->whereNotIn('id', $noStockIds)->where($whereArr)->where($cateArr)->orderBy('view_count', 'desc')->take($getNum)->get()->chunk($chunkNum);
         
         
         //Recommend レコメンド 先頭タグと同じものをレコメンド ==============
