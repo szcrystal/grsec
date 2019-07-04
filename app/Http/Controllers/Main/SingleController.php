@@ -128,16 +128,38 @@ class SingleController extends Controller
         $getNum = Ctm::isAgent('sp') ? 6 : 6;
         $chunkNum = $getNum/2;
         
+        //在庫がないIDを取得する
+        $noStockIds = $this->item->whereNotIn('id', [$item->id])->where($whereArr)->get()->map(function($obj) {
+            $switchArr = Ctm::isPotParentAndStock($obj->id); //親ポットか、Stockあるか、その子ポットのObjsを取る。$switchArr['isPotParent'] ! $switchArr['isStock']
+            if($switchArr['isPotParent']) {
+                if(! $switchArr['isStock'])
+                    return $obj->id;
+            }
+            else {
+                if(! $obj->stock)
+                    return $obj->id;
+            }
+        })->all();
+    
+        $noStockIds = array_filter($noStockIds);
+        $noStockIds[] = $item->id;
+        
         if($item->is_once) {
-        	$isOnceItems = $this->item->whereNotIn('id', [$item->id])->where($whereArr)->where(['consignor_id'=>$item->consignor_id, 'is_once'=>1, 'is_once_recom'=>0])->inRandomOrder()->take($getNum)->get()->chunk($chunkNum);
+        	$isOnceItems = $this->item->whereNotIn('id', $noStockIds)->where($whereArr)->where(['consignor_id'=>$item->consignor_id, 'is_once'=>1, 'is_once_recom'=>0])->inRandomOrder()->take($getNum)->get()->chunk($chunkNum);
             //->inRandomOrder()->take()->get() もあり クエリビルダに記載あり
         }
         
-        // レコメンド：同カテゴリー
-        $recomCateItems = $this->item->whereNotIn('id', [$item->id])->where($whereArr)->where(['cate_id'=>$item->cate_id])->inRandomOrder()->take($getNum)->get()->chunk($chunkNum);
+        // レコメンド：同カテゴリー 植木庭木の時のみsubcateに合わせる
+        if($item->cate_id == 1) 
+        	$whereArr['subcate_id'] = $item->subcate_id;
+        else 
+        	$whereArr['cate_id'] = $item->cate_id;
+        
+        
+        $recomCateItems = $this->item->whereNotIn('id', $noStockIds)->where($whereArr)/*->where($cateArr)*/->inRandomOrder()->take($getNum)->get()->chunk($chunkNum);
         
         // レコメンド：同カテゴリーのランキング
-        $recomCateRankItems = $this->item->whereNotIn('id', [$item->id])->where($whereArr)->where(['cate_id'=>$item->cate_id])->orderBy('view_count', 'desc')->take($getNum)->get()->chunk($chunkNum);
+        $recomCateRankItems = $this->item->whereNotIn('id', $noStockIds)->where($whereArr)/*->where($cateArr)*/->orderBy('view_count', 'desc')->take($getNum)->get()->chunk($chunkNum);
         
         
         //Recommend レコメンド 先頭タグと同じものをレコメンド ==============
@@ -173,11 +195,11 @@ class SingleController extends Controller
 //            print_r($res);
 //            exit;
             
-            $recommends = $this->item->whereNotIn('id', [$item->id])->whereIn('id', $res)->where($whereArr)->inRandomOrder()->take($getNum)->get()->chunk($chunkNum);
+            $recommends = $this->item->whereNotIn('id', $noStockIds)->whereIn('id', $res)->where($whereArr)->inRandomOrder()->take($getNum)->get()->chunk($chunkNum);
             //->inRandomOrder()->take()->get() もあり クエリビルダに記載あり
         }
         else {
-        	$recommends = $this->item->whereNotIn('id', [$item->id])->where($whereArr)->where(['subcate_id'=>$item->subcate_id])->inRandomOrder()->take($getNum)->get()->chunk($chunkNum);
+        	$recommends = $this->item->whereNotIn('id', $noStockIds)->where($whereArr)->where(['subcate_id'=>$item->subcate_id])->inRandomOrder()->take($getNum)->get()->chunk($chunkNum);
             //->inRandomOrder()->take()->get() もあり クエリビルダに記載あり
         }
         

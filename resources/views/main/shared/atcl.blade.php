@@ -8,21 +8,21 @@ use App\Icon;
 ?>
 
 <?php
-	$isCate = (isset($type) && $type == 'category') ? 1 : 0;
+	$isCate = (isset($type) && $type == 'category') ? 1 : 0; //categoryページならの判別
 	
     $category = Category::find($item->cate_id);
     $link = url('/item/'. $item->id);
     ///$linkName = isset($category->link_name) ? $category->link_name : $category->name;
     
     
-    if($isCate && isset($item->subcate_id)) {
+    if(($isCate && isset($item->subcate_id)) || $category->id == 1) {
         $subCate = CategorySecond::find($item->subcate_id);
         $cateLink = url('category/'. $category->slug . '/' . $subCate->slug);
         $cateName = isset($subCate->link_name) ? $subCate->link_name : $subCate->name;
     }
     else {
-    	$cateLink = url('category/'. $category->slug);
-    	$cateName = isset($category->link_name) ? $category->link_name : $category->name;
+        $cateLink = url('category/'. $category->slug);
+        $cateName = isset($category->link_name) ? $category->link_name : $category->name;
     }
 
     $isSp = Ctm::isAgent('sp');

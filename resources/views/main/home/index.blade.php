@@ -46,6 +46,7 @@ use App\TopSetting;
                         @endif
                                                         
                         <?php $strNum = Ctm::isAgent('sp') ? 16 : 25; ?>
+                        
                         @include('main.shared.atcl')
  
                     </article>

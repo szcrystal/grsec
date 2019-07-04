@@ -142,8 +142,8 @@ class HomeController extends Controller
         
         //array
         $firstItems = [
-        	'新着情報'=> $newItems,
             '人気ランキング'=> $rankItems,
+            '新着情報'=> $newItems,
             '最近チェックしたアイテム'=> $cookieItems,
         ];
         //FirstItem END ================================
