@@ -312,7 +312,8 @@ use App\TopSetting;
                     
 
                     <div class="favorite my-4" data-type='single'>
-                        @if(Auth::check())
+                        
+                        @if(! Auth::check())
                             <?php
                                 if($isFav) {
                                     $on = ' d-none';
