@@ -135,6 +135,9 @@ Route::resource('contact', 'Main\ContactController');
 Route::get('/item/{id}', 'Main\SingleController@index');
 Route::post('/item/script', 'Main\SingleController@postScript');
 
+//CacheFavorite
+Route::get('/favorite', 'Main\SingleController@favIndex');
+
 //Shop Cart
 Route::post('/cart/form', 'Main\SingleController@postForm');
 Route::post('/cart/payment', 'Main\SingleController@postCart');

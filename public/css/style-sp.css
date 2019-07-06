@@ -719,6 +719,9 @@ ORG END ======================== */
         //font-size: 0.9em;
         table-layout: fixed;
     }
+    .table-cart th {
+    	width: 20%;
+    }
     .table-cart .table thead th {
    		//font-size: 0.9em;
         vertical-align: middle;

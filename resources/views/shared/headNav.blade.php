@@ -35,9 +35,12 @@
                 		<a href="{{ url('first-guide') }}">初めての方へ</a>
                     @endif
                 </li>
+                
+                <?php $favUrl = 'favorite'; ?>
 
                 @if(! Auth::check())
                     <li><a href="{{ url('login') }}">ログイン</a></li>
+                     
                 @else
                 	<li><a href="{{ url('mypage') }}">マイページ</a></li>
                     
@@ -51,9 +54,9 @@
                                 {{ csrf_field() }}
                             </form>
                     </li>
-                    
-                    <li><a href="{{ url('mypage/favorite') }}"><i class="fal fa-heart"></i></a></li>
                 	
+                    <?php $favUrl = 'mypage/' . $favUrl; ?>
+                    
                     {{--
                     <li class="dropdown show">
                       <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user"></i></a>
@@ -77,6 +80,7 @@
                     --}}
                 @endif
                 
+                <li><a href="{{ url($favUrl) }}"><i class="fal fa-heart"></i></a></li>
                 
                 <li><a href="{{ url('shop/cart') }}"><i class="fal fa-shopping-cart"></i></a></li>
                 <li><a href="{{ url('contact') }}"><i class="fal fa-envelope"></i></a></li>

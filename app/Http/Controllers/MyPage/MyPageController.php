@@ -610,11 +610,17 @@ class MyPageController extends Controller
             	$item->saleDate = 0;
             }       
         	//$item->saled = 1;
-        }      
-       
-       	$cates = $this->category;   
+            
+            $fav = $this->favorite->where(['user_id'=>$user->id, 'item_id'=>$item->id])->first();
+       		$item->fav_created_at = $fav->created_at;
+        }
+        
+        
+       	
+        
+        //$cates = $this->category;   
       
-        return view('mypage.favorite', ['user'=>$user, 'items'=>$items, 'cates'=>$cates, ]);   
+        return view('mypage.favorite', ['user'=>$user, 'items'=>$items ]);   
     }
     
     public function create()

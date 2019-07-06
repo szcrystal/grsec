@@ -10,6 +10,7 @@ use App\TagRelation;
 use App\ItemImage;
 use App\Favorite;
 use App\User;
+use App\FavoriteCookie;
 
 use App\ItemUpper;
 use App\ItemUpperRelation;
@@ -21,10 +22,11 @@ use Illuminate\Support\Facades\Cache;
 use Auth;
 use Ctm;
 use Cookie;
+use DateTime;
 
 class SingleController extends Controller
 {
-    public function __construct(Item $item, Category $category, CategorySecond $subCate, Tag $tag, TagRelation $tagRel, ItemImage $itemImg, Favorite $favorite, User $user, ItemUpper $itemUpper, ItemUpperRelation $itemUpperRel)
+    public function __construct(Item $item, Category $category, CategorySecond $subCate, Tag $tag, TagRelation $tagRel, ItemImage $itemImg, Favorite $favorite, User $user, ItemUpper $itemUpper, ItemUpperRelation $itemUpperRel, FavoriteCookie $favCookie)
     {
         //$this->middleware('search');
         
@@ -39,6 +41,7 @@ class SingleController extends Controller
         
         $this->upper = $itemUpper;
         $this->upperRel = $itemUpperRel;
+        $this->favCookie = $favCookie;
 //        $this->tag = $tag;
 //        $this->tagRelation = $tagRelation;
 //        $this->tagGroup = $tagGroup;
@@ -113,14 +116,13 @@ class SingleController extends Controller
         	
             if(isset($fav)) $isFav = 1;   
         }
-        else { //Cache確認
-        	$cookieIds = Cookie::get('fav_ids');
-//        echo $cookieIds;
+        else { //Cookie確認
+        	$favKey = Cookie::get('fav_key');
+//        echo $favKey;
 //        exit;
-
-            $cookieArr = explode(',', $cookieIds);
-        
-	        if(in_array($item->id, $cookieArr)) $isFav = 1;
+			$favCookie = $this->favCookie->where(['key'=>$favKey, 'item_id'=>$item->id])->first();
+            
+            if(isset($favCookie)) $isFav = 1;
         }
         
         //View Count
@@ -368,6 +370,65 @@ class SingleController extends Controller
         
     }
     
+    
+    public function favIndex()
+    {
+    	$items = null;
+        $getNum = Ctm::isAgent('sp') ? 8 : 8;
+        
+        $favKey = Cookie::get('fav_key');
+        
+        if(isset($favKey)) {
+        	Cookie::queue(Cookie::make('fav_key', $favKey, env('FAV_COOKIE_TIME', 129600) )); //分指定 3ヶ月 2month->86400 このfavIndxを開いた時に更新する
+        }
+//        }
+//        else {
+//            $favKey = Ctm::getOrderNum(30);
+//            Cookie::queue(Cookie::make('fav_key', $favKey, env('FAV_COOKIE_TIME', 86400) )); //分指定 2ヶ月
+//        }
+        
+//        echo $favKey;
+//        exit;
+        
+        $itemIds = $this->favCookie->where(['key'=>$favKey])->orderBy('created_at', 'desc')->get()->map(function($obj){
+        	return $obj->item_id;
+        })->all();
+        
+        $itemIdStr = implode(',', $itemIds);
+        
+        if(count($itemIds)) {
+            
+	        $chunkNum = Ctm::isAgent('sp') ? $getNum/2 : $getNum;
+          	
+	        $items = $this->item->whereIn('id', $itemIds)->where($this->whereArr)->orderByRaw("FIELD(id, $itemIdStr)")->paginate(20);
+            //->orderByRaw("FIELD(id, $cookieIds)")->take($getNum)->get()->chunk($chunkNum);
+            
+            foreach($items as $item) {
+            	$fav = $this->favCookie->where(['key'=>$favKey, 'item_id'=>$item->id])->first();
+                
+            	$item->fav_created_at = $fav->created_at;
+            }
+            
+		} 
+       
+//       	foreach($items as $item) {
+//        	$fav = $this->favorite->where(['user_id'=>$user->id, 'item_id'=>$item->id])->first();
+//            
+//         	if($fav->sale_id) {
+//          		$item->saleDate = $this->sale->find($fav->sale_id)->created_at;
+//          	}
+//            else {
+//            	$item->saleDate = 0;
+//            }       
+//        	//$item->saled = 1;
+//        }      
+       
+      
+        return view('mypage.favorite', ['items'=>$items ]); 
+    
+    }
+    
+    
     //お気に入り ajax
     public function postScript(Request $request)
     {
@@ -392,16 +453,10 @@ class SingleController extends Controller
                 $str = "お気に入りから削除されました";
             }
             else {
-                    
-                $favModel = $this->favorite->updateOrCreate(
-                    ['user_id'=>$user->id, 'item_id'=>$itemId],
-                    [
-                        'user_id'=>$user->id,
-                        'item_id'=>$itemId,
-    //                            'type' => 1,
-    //                            'number'=> $count+1,
-                    ]
-                );
+                $this->favorite->create([
+                    'user_id'=>$user->id,
+                    'item_id'=>$itemId,
+                ]);
                 
                 $str = "お気に入りに登録されました";       
             }
@@ -410,67 +465,37 @@ class SingleController extends Controller
             // Favorite END ========================================================
         }
         else {
-            //Cache お気に入り ===================
-            $cookieArr = array();
-            $cacheItems = null;
-            $getNum = Ctm::isAgent('sp') ? 8 : 8;
+            //Cookie お気に入り DB ===================
             
-            
-            $cookieIds = Cookie::get('fav_ids');
-            $cookieArr = explode(',', $cookieIds); 
-    //        echo $cookieIds;
-    //        exit;
-            
-    //        if(isset($cookieIds) && $cookieIds != '') {
-    //	        $cookieArr = explode(',', $cookieIds); 
-    //            
-    //	        $chunkNum = Ctm::isAgent('sp') ? $getNum/2 : $getNum;
-    //          	
-    //	        $cacheItems = $this->item->whereIn('id', $cookieArr)->whereNotIn('id', [$item->id])->where($whereArr)->orderByRaw("FIELD(id, $cookieIds)")->take($getNum)->get()->chunk($chunkNum);
-    //		}
-
-            if(!$isOn) { //お気に入り解除の時
-            	$index = array_search($itemId, $cookieArr); //key取得                    
-                unset($cookieArr[$index]);
-                $cookieArr = array_values($cookieArr);
-                
-            	$str = "お気に入りから削除されました";
+            if(Cookie::has('fav_key')) {
+            	$favKey = Cookie::get('fav_key');
             }
             else {
+                $favKey = Ctm::getOrderNum(30);
+            }
             
-                if(! in_array($itemId, $cookieArr)) { //配列にidがない時 or cachIdsが空の時
-                    $count = array_unshift($cookieArr, $itemId); //配列の最初に追加
+			Cookie::queue(Cookie::make('fav_key', $favKey, env('FAV_COOKIE_TIME', 129600) )); //分指定 3ヶ月 2month->86400　ここの操作後に2ヶ月更新するようにしている 
+            
+            if(! $isOn) { //お気に入り解除の時
+            	$favModel = $this->favCookie->where(['key'=>$favKey, 'item_id'=>$itemId])->first();
+                
+                if($favModel !== null) 
+                    $favModel->delete();
+                
+                $str = "お気に入りから削除されました";
+            }
+            else {
+                $this->favCookie->create([
+                    'key'=> $favKey,
+                    'item_id'=> $itemId,
+                    'type'=> 'favorite',
                     
-                    if($count > 16) {
-                        $cookieArr = array_slice($cookieArr, 0, 16); //16個分を切り取る
-                    } 
-                }
-                else { //配列にidがある時 
-                    $index = array_search($itemId, $cookieArr); //key取得
-                    
-                    //$split = array_splice($cacheIds, $index, 1); //keyからその要素を削除
-                    unset($cookieArr[$index]);
-                    $cookieArr = array_values($cookieArr);
-                    
-                    $count = array_unshift($cookieArr, $itemId); //配列の最初に追加
-                }
+                ]);
                 
                 $str = "お気に入りに登録されました"; 
             }
-            
-            $cookieIds = implode(',', $cookieArr);
-            Cookie::queue(Cookie::make('fav_ids', $cookieIds, env('FAV_COOKIE_TIME', 43200) ));
         
         }
-//        $num = 1;
-//        $spares = $this->itemImg->where(['item_id'=>$itemId, 'type'=>1])->get();
-        
-        //Snapのナンバーを振り直す
-//        foreach($spares as $spare) {
-//            $spare->number = $num;
-//            $spare->save();
-//            $num++;
-//        }
         
 
         return response()->json(['str'=>$str]/*, 200*/); //200を指定も出来るが自動で200が返される  
