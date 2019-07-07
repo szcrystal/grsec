@@ -203,21 +203,44 @@ body {
 	font-size: 0.95em;
     //position: relative;
 }
-.table-cart .table th,
-.table-cart .table td {
-	border-top-width: 0 !important;
+.table-cart thead th {
+	background: #ececec;
+	font-size: 0.95em;
+}
+.table-cart .table tbody th,
+.table-cart .table tbody td {
+	//border-top-width: 0 !important;
     border-bottom: 1px solid #e3e3e3 !important;
 }
-.table-cart th {
+.table-cart tbody th {
 	background: none;
     width: 11%;
 	//border-bottom: 0 !important;
 }
-.table-cart th .img-fluid {
+.confirm .table-cart tbody th {
+	width: 15%;
+}
+.table-cart tbody th .img-fluid {
 	width: 100%;
 }
 .table-cart td {
 	border-left: 0 !important;
+}
+.confirm .table-cart .table {
+	border: 1px solid #e3e3e3;
+}
+
+/* cart-index部分 */
+.table-foot tr th {
+	width: 80%;
+}
+.table.table-foot tr th,
+.table.table-foot tr td {
+	border-top: 0 !important;
+}
+.table.table-foot tr:last-of-type th,
+.table.table-foot tr:last-of-type td {
+	border-bottom: 0 !important;
 }
 .table-custom th:after {
 	display: block;

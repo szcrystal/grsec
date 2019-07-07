@@ -39,111 +39,118 @@
 <form id="with1" class="form-horizontal" role="form" method="POST" action="{{ url('shop/cart') }}">
       {{ csrf_field() }}
                         
-<div class="table-responsive table-cart">
-	<table class="table table-bordered bg-white">
-		<thead>
-  			<tr>
-                <th>商品名</th>
-                <th>数量</th>
-                <th>金額<span class="text-small">（税込）</span></th>
-                <th></th>
-            </tr>
-  		</thead>  
+<div class="table-responsive table-cart clearfix">
+	<table class="table bg-white">
     
     	<tbody>
         	<?php $disabled = ''; ?>
+
      		
      		@foreach($itemData as $key => $item)    
-     		<tr class="{{ $errors->has('no_delivery.'. $key) ? 'tr-danger-border' : '' }}">
-                <td class="clearfix">
-                	
-                    <?php $obj = $item; ?>
-                    @include('main.shared.smallThumbnail')
-                	
-                    <?php
-                        $urlId = $item->is_potset ? $item->pot_parent_id : $item->id; 
-                    ?>
+                <tr class="clearfix {{ $errors->has('no_delivery.'. $key) ? 'tr-danger-border' : '' }}">
+                    <th>
+                        @include('main.shared.smallThumbnail')
+                    </th>
                     
-                	<a href="{{ url('item/'. $urlId) }}">
-                        {!! Ctm::getItemTitle($item, 1) !!}
-                        <br>
-                        [ {{ $item->number }} ]
-                 	</a>   
-                	<span class="d-block mt-1">¥{{ Ctm::getItemPrice($item) }}（税込）</span>
-                </td>
-                	
-                <td>
-                    <fieldset class="mb-4 form-group">
+                    <td class="clearfix">
                         
-                        <input type="hidden" name="last_item_id[]" value="{{ $item->id }}">
+                        <?php 
+                            $obj = $item;
+                            $urlId = $item->is_potset ? $item->pot_parent_id : $item->id; 
+                        ?>
                         
-                        @if(! $item->stock)
-                        	<small class="text-danger"><i class="far fa-exclamation-triangle"></i> <b>売切れ商品です。<br>カートから削除して進んで下さい。</b></small>
-                            <input type="hidden" name="last_item_count[]" value="0">
-                            <?php $disabled = ' disabled'; ?>
-                        @else
-                            <select class="form-control col-md-11{{ $errors->has('last_item_count') ? ' is-invalid' : '' }}" name="last_item_count[]">
-                                    
-                                    <?php
-                                        $max = 100;
-                                        if($item->stock < 100) {
-                                            $max = $item->stock;
-                                        }
-                                    ?>
-                                    
-                                    @for($i=1; $i <= $max; $i++)
+                        
+                        
+                        <div>
+                            <a href="{{ url('item/'. $urlId) }}">{!! Ctm::getItemTitle($item, 1) !!}</a>
+                            <br>
+                            <span class="mr-3">[ {{ $item->number }} ]</span>¥{{ Ctm::getItemPrice($item) }}（税込）
+                        </div>
+                        
+                        <div class="clearfix">
+                        	<p class="m-0"><span class="text-small">数量：</span>{{ $item->count }}</p>
+                            <p class="m-0"><span class="text-small">金額<span class="text-small">（税込）：</span></span>¥{{ number_format( $item->total_price ) }}</p>
+                            
+                        </div>
+                    </td>
+                          
+                    <td class="text-right border border-danger">
+                    	<button class="btn btn-line" type="submit" name="del_item_key" value="{{ $key }}"><i class="fal fa-times"></i></button>
+                        
+                        <div class="mt-3">
+                            <fieldset class="form-group">
+                                <input type="hidden" name="last_item_id[]" value="{{ $item->id }}">
+                                
+                                @if(! $item->stock)
+                                    <small class="text-danger"><i class="far fa-exclamation-triangle"></i> <b>売切れ商品です。<br>カートから削除して進んで下さい。</b></small>
+                                    <input type="hidden" name="last_item_count[]" value="0">
+                                    <?php $disabled = ' disabled'; ?>
+                                @else
+                                    <select class="form-control d-inline {{ $errors->has('last_item_count') ? ' is-invalid' : '' }}" name="last_item_count[]">
+                                            
                                         <?php
-                                            $selected = '';
-                                            if(Ctm::isOld()) {
-                                                if(old('last_item_count.'. $key) == $i)
-                                                    $selected = ' selected';
-                                            }
-                                            else {
-                                                if($i == $item->count) {
-                                                    $selected = ' selected';
-                                                }
+                                            $max = 100;
+                                            if($item->stock < 100) {
+                                                $max = $item->stock;
                                             }
                                         ?>
-                                        <option value="{{ $i }}"{{ $selected }}>{{ $i }}</option>
-                                    @endfor
-                            </select>
-                            <span class="text-warning"></span>
+                                        
+                                        @for($i=1; $i <= $max; $i++)
+                                            <?php
+                                                $selected = '';
+                                                if(Ctm::isOld()) {
+                                                    if(old('last_item_count.'. $key) == $i)
+                                                        $selected = ' selected';
+                                                }
+                                                else {
+                                                    if($i == $item->count) {
+                                                        $selected = ' selected';
+                                                    }
+                                                }
+                                            ?>
+                                            
+                                            <option value="{{ $i }}"{{ $selected }}>{{ $i }}</option>
+                                        @endfor
+                                    </select>
+                                    
+                                    <span class="text-warning"></span>
+                                    
+                                    @if ($errors->has('last_item_count'))
+                                        <div class="help-block text-danger">
+                                            <span class="fa fa-exclamation form-control-feedback"></span>
+                                            <span>{{ $errors->first('last_item_count.'. $key) }}</span>
+                                        </div>
+                                    @endif
+                                
+                                @endif
+                                
+                            </fieldset>
+                        </div>
                             
-                            @if ($errors->has('last_item_count'))
-                                <div class="help-block text-danger">
-                                    <span class="fa fa-exclamation form-control-feedback"></span>
-                                    <span>{{ $errors->first('last_item_count.'. $key) }}</span>
-                                </div>
-                            @endif
-                        
-                        @endif
-                        
-                    </fieldset>
-                </td>
-                
-                <td>¥{{ number_format( $item->total_price ) }}</td>
-                
-                <td>
-   						{{--
-                 		<input type="hidden" name="item_id" value="{{ $item->id }}">
-                   		<input type="hidden" name="delete_item" value="1">  
-                     	--}}             
-                		<button class="btn btn-line w-100" type="submit" name="del_item_key" value="{{ $key }}"><i class="fal fa-times"></i> 削除</button>
+                    </td>
 
-                </td>        
-
-       		</tr> 
+                </tr> 
         	 @endforeach
           	            
-         </tbody> 
+         </tbody>
          
-         <tfoot>
+         </table>
+         
+         
+         
+
+	<table class="table table-foot">
+         <tbody class="clearfix">
          	<tr>
-          		<td colspan="2" class="text-right text-big">
+          		<th class="text-right text-big">
                 	<b>小計</b>
+                </th>
+                
+            	<td class="text-big">
+                	<b>¥{{ number_format($allPrice) }}</b>
                 </td>
-            	<td class="text-big"><b>¥{{ number_format($allPrice) }}</b></td>
-             	<td>	
+             	
+                <td class="col-md-3">	
                     <input type="hidden" name="calc" value="1" form="re">
                     <button class="btn btn-line px-2 w-100" type="submit" name="re_calc" value="1"{{ $disabled }}><i class="fal fa-redo"></i> 再計算</button>
                     {{-- <input type="submit" name="re_calc" value="再計算"> --}}
@@ -152,23 +159,34 @@
             
             @if(isset($deliFee))
                 <tr>
-                    <td colspan="2" class="text-right text-big"><b>送料</b></td>
-                    <td class="text-big"><b>¥{{ number_format($deliFee) }}</b></td>
+                    <th class="text-right text-big">
+                    	<b>送料</b>
+                    </th>
+                    
+                    <td class="text-big">
+                    	<b>¥{{ number_format($deliFee) }}</b>
+                    </td>
+                    
                     <td></td>
                 </tr>
                 
                 <tr>
-                    <td colspan="2" class="text-right text-big"><b>合計 <small>（小計+送料）</small></b></td>
-                    <td class="text-big text-danger"><b>¥{{ number_format($allPrice + $deliFee) }}</b></td>
+                    <th class="text-right text-big">
+                    	<b>合計 <small>(小計+送料)</small></b>
+                    </th>
+                    
+                    <td class="text-big text-danger">
+                    	<b>¥{{ number_format($allPrice + $deliFee) }}</b>
+                    </td>
+                    
                     <td></td>
                 </tr>
             @endif
            
            
             <tr>
-                <td colspan="3" class="clearfix">
-                                    
-                    <div class="float-right col-md-2 p-0 m-0">
+                <td colspan="2" class="clearfix">                
+                    <div class="float-right col-md-3 p-0 m-0">
                         {{-- <label class="control-label mb-0 text-small d-inline col-md-6"><b>配送先都道府県</b></label> --}}
                     
                         <select id="pref" class="form-control rounded-0 d-inline{{ $errors->has('pref_id') ? ' is-invalid' : '' }}" name="pref_id">
@@ -203,19 +221,18 @@
                         @endif
                     </div>
                 </td>
+                
                 <td>
                     <button class="btn px-2 w-100 bg-enji" type="submit" name="delifee_calc" value="1"{{ $disabled }}><b>送料計算</b></button>
                 </td>
             </tr>
-            
-            <tr>
-           		<td colspan="5" class="text-right">
-           			<span class="text-enji"><i class="fas fa-exclamation-triangle"></i> 上記の「小計」に送料は含まれておりません。送料を確認する場合は「配送先都道府県」を選択して「送料計算」を押して下さい。</span>
-                </td>
-           </tr>
            
-         </tfoot>        
+         </tbody>        
 	</table>
+    
+    <div class="float-right col-md-5 mb-3 border border-danger">
+    	<span class="text-enji"><i class="fas fa-exclamation-triangle"></i> 上記の「小計」に送料は含まれておりません。送料を確認する場合は「配送先都道府県」を選択して「送料計算」を押して下さい。</span>
+    </div>
 </div>
 
 <div class="clearfix mt-3 cart-btn-wrap">

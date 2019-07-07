@@ -717,7 +717,7 @@ ORG END ======================== */
         width: 99.5%;
         margin: auto;
         //font-size: 0.9em;
-        table-layout: fixed;
+/*        table-layout: fixed;*/
     }
     .table-cart th {
     	width: 20%;

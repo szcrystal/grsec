@@ -32,40 +32,39 @@
 <div class="confirm-left">
 	<h5 class="card-header mb-3 py-2">ご注文の商品</h5>
 	<div class="table-responsive table-cart">
-        <table class="table table-bordered bg-white">
+        <table class="table bg-white">
+        	{{--
             <thead>
-                  <tr>
-                    <th>商品名</th>
-                    <th>数量</th>
-                    <th>金額<span class="text-small">（税込）</span></th>
+                <tr>
+                    <th colspan="2">商品名</th>
                 </tr>
-              </thead>  
-        
+            </thead>  
+            --}}
+            
             <tbody>
                  
-                 @foreach($itemData as $item)    
+                 @foreach($itemData as $item)
+                 	
+                    <?php //$obj = $item; ?>
+                      
                  <tr>
+                 	<th>
+                    	@include('main.shared.smallThumbnail')
+                    </th>
+                    
                     <td>
-                        <?php $obj = $item; ?>
-                        @include('main.shared.smallThumbnail')
-
-                        {!! Ctm::getItemTitle($item, 1) !!}
-                        <br>
-                        [ {{ $item->number }} ]
-                        <span class="d-block mt-1">¥{{ Ctm::getItemPrice($item) }}（税込）</span>
+                        <div>
+                            {!! Ctm::getItemTitle($item, 1) !!}
+                            <br>
+                            <span class="mr-2">[ {{ $item->number }} ]</span>
+                            ¥{{ Ctm::getItemPrice($item) }}（税込）
+                        </div>
+                        
+                        <p class="m-0 p-0 text-big"><span class="text-small">数量：</span>{{ $item->count }}</p>
+                        <p class="m-0 p-0 text-big"><span class="text-small">金額（税込）：</span>¥{{ number_format( $item->item_total_price ) }}</p>
                     </td>
                     
-                    <td>{{ $item->count }}</td>
-
-                    <td>
-                        ¥{{ number_format( $item->item_total_price ) }}
                     
-                        {{--
-                        @if(isset($item->deli_time))
-                            <br><small class="pt-3">ご希望配送時間：</small><br>{{ $item->deli_time }}
-                        @endif
-                        --}}
-                    </td>
 
                    </tr> 
                  @endforeach
@@ -114,7 +113,7 @@
             
             @if(Auth::check())
             <tr>
-                <th>利用ポイント</th>
+                <th>ポイント利用</th>
                  <td>{{ $usePoint }}</td>
             </tr>
             @endif
