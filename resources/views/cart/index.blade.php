@@ -4,9 +4,6 @@
 
 <div id="main" class="cart-index">
 
-        <div class="panel panel-default">
-
-            <div class="panel-body">
 
 <div class="top-cont clearfix">
 
@@ -40,7 +37,7 @@
       {{ csrf_field() }}
                         
 <div class="table-responsive table-cart clearfix">
-	<table class="table bg-white">
+	<table class="table">
     
     	<tbody>
         	<?php $disabled = ''; ?>
@@ -59,72 +56,81 @@
                             $urlId = $item->is_potset ? $item->pot_parent_id : $item->id; 
                         ?>
                         
-                        
-                        
+  
                         <div>
                             <a href="{{ url('item/'. $urlId) }}">{!! Ctm::getItemTitle($item, 1) !!}</a>
                             <br>
                             <span class="mr-3">[ {{ $item->number }} ]</span>¥{{ Ctm::getItemPrice($item) }}（税込）
                         </div>
                         
-                        <div class="clearfix">
-                        	<p class="m-0"><span class="text-small">数量：</span>{{ $item->count }}</p>
-                            <p class="m-0"><span class="text-small">金額<span class="text-small">（税込）：</span></span>¥{{ number_format( $item->total_price ) }}</p>
+                        <div class="clearfix mt-2">
+                        	<div class="">
+                            	
+                            	<fieldset class="form-group p-0 m-0">
+                                	<input type="hidden" name="last_item_id[]" value="{{ $item->id }}">
+                                    
+                                	<span class="text-small">数量：</span>
+                                    
+                                    
+                                    @if(! $item->stock)
+                                        <small class="text-danger"><i class="far fa-exclamation-triangle"></i> <b>売切れ商品です。<br>カートから削除して進んで下さい。</b></small>
+                                        <input type="hidden" name="last_item_count[]" value="0">
+                                        <?php $disabled = ' disabled'; ?>
+                                    @else
+                                        
+                                        <select class="form-control select-count {{ $errors->has('last_item_count') ? ' is-invalid' : '' }}" name="last_item_count[]">
+                                                
+                                            <?php
+                                                $max = 100;
+                                                if($item->stock < 100) {
+                                                    $max = $item->stock;
+                                                }
+                                            ?>
+                                            
+                                            @for($i=1; $i <= $max; $i++)
+                                                <?php
+                                                    $selected = '';
+                                                    if(Ctm::isOld()) {
+                                                        if(old('last_item_count.'. $key) == $i)
+                                                            $selected = ' selected';
+                                                    }
+                                                    else {
+                                                        if($i == $item->count) {
+                                                            $selected = ' selected';
+                                                        }
+                                                    }
+                                                ?>
+                                                
+                                                <option value="{{ $i }}"{{ $selected }}>{{ $i }}</option>
+                                            @endfor
+                                        </select>
+                                                                                
+                                        @if ($errors->has('last_item_count'))
+                                            <div class="help-block text-danger">
+                                                <span class="fa fa-exclamation form-control-feedback"></span>
+                                                <span>{{ $errors->first('last_item_count.'. $key) }}</span>
+                                            </div>
+                                        @endif
+                                    
+                                    @endif
+                                    
+                                </fieldset>
+                            </div>
+                            
+                            <div class="">
+                            	<span class="text-small">小計<span class="text-small">（税込）：</span></span>¥{{ number_format( $item->total_price ) }}
+                            </div>
+                            
                             
                         </div>
                     </td>
                           
-                    <td class="text-right border border-danger">
-                    	<button class="btn btn-line" type="submit" name="del_item_key" value="{{ $key }}"><i class="fal fa-times"></i></button>
+                    <td class="text-right">
+                    	<button class="btn btn-cart-del mb-4" type="submit" name="del_item_key" value="{{ $key }}"><i class="fal fa-times"></i></button>
                         
                         <div class="mt-3">
-                            <fieldset class="form-group">
-                                <input type="hidden" name="last_item_id[]" value="{{ $item->id }}">
-                                
-                                @if(! $item->stock)
-                                    <small class="text-danger"><i class="far fa-exclamation-triangle"></i> <b>売切れ商品です。<br>カートから削除して進んで下さい。</b></small>
-                                    <input type="hidden" name="last_item_count[]" value="0">
-                                    <?php $disabled = ' disabled'; ?>
-                                @else
-                                    <select class="form-control d-inline {{ $errors->has('last_item_count') ? ' is-invalid' : '' }}" name="last_item_count[]">
-                                            
-                                        <?php
-                                            $max = 100;
-                                            if($item->stock < 100) {
-                                                $max = $item->stock;
-                                            }
-                                        ?>
-                                        
-                                        @for($i=1; $i <= $max; $i++)
-                                            <?php
-                                                $selected = '';
-                                                if(Ctm::isOld()) {
-                                                    if(old('last_item_count.'. $key) == $i)
-                                                        $selected = ' selected';
-                                                }
-                                                else {
-                                                    if($i == $item->count) {
-                                                        $selected = ' selected';
-                                                    }
-                                                }
-                                            ?>
-                                            
-                                            <option value="{{ $i }}"{{ $selected }}>{{ $i }}</option>
-                                        @endfor
-                                    </select>
-                                    
-                                    <span class="text-warning"></span>
-                                    
-                                    @if ($errors->has('last_item_count'))
-                                        <div class="help-block text-danger">
-                                            <span class="fa fa-exclamation form-control-feedback"></span>
-                                            <span>{{ $errors->first('last_item_count.'. $key) }}</span>
-                                        </div>
-                                    @endif
-                                
-                                @endif
-                                
-                            </fieldset>
+                        	
+                            
                         </div>
                             
                     </td>
@@ -135,26 +141,28 @@
          </tbody>
          
          </table>
+    </div>
          
          
          
-
-	<table class="table table-foot">
+	<div class="table-responsive table-foot">
+	<table class="table">
          <tbody class="clearfix">
          	<tr>
           		<th class="text-right text-big">
-                	<b>小計</b>
+                	<b>小計</b>   
                 </th>
                 
             	<td class="text-big">
                 	<b>¥{{ number_format($allPrice) }}</b>
                 </td>
              	
+                {{--
                 <td class="col-md-3">	
                     <input type="hidden" name="calc" value="1" form="re">
                     <button class="btn btn-line px-2 w-100" type="submit" name="re_calc" value="1"{{ $disabled }}><i class="fal fa-redo"></i> 再計算</button>
-                    {{-- <input type="submit" name="re_calc" value="再計算"> --}}
                 </td>
+                --}}
           	</tr>
             
             @if(isset($deliFee))
@@ -167,7 +175,6 @@
                     	<b>¥{{ number_format($deliFee) }}</b>
                     </td>
                     
-                    <td></td>
                 </tr>
                 
                 <tr>
@@ -179,13 +186,18 @@
                     	<b>¥{{ number_format($allPrice + $deliFee) }}</b>
                     </td>
                     
-                    <td></td>
+                </tr>
+            @else
+            	<tr>
+                	<td colspan="2" class="text-right">
+                        <span class="text-enji"><i class="fas fa-exclamation-triangle"></i> <b>送料は含まれてません。</b></span>
+                    </td>
                 </tr>
             @endif
            
            
             <tr>
-                <td colspan="2" class="clearfix">                
+                <th class="clearfix">                
                     <div class="float-right col-md-3 p-0 m-0">
                         {{-- <label class="control-label mb-0 text-small d-inline col-md-6"><b>配送先都道府県</b></label> --}}
                     
@@ -220,19 +232,25 @@
                             </div>
                         @endif
                     </div>
-                </td>
+                </th	>
                 
                 <td>
+                	<button class="btn px-2 w-100 bg-enji" type="submit" name="delifee_calc" value="1"{{ $disabled }}><i class="fal fa-redo"></i> 再計算</button>
+                	{{--
                     <button class="btn px-2 w-100 bg-enji" type="submit" name="delifee_calc" value="1"{{ $disabled }}><b>送料計算</b></button>
+                    --}}
                 </td>
             </tr>
            
          </tbody>        
 	</table>
     
-    <div class="float-right col-md-5 mb-3 border border-danger">
-    	<span class="text-enji"><i class="fas fa-exclamation-triangle"></i> 上記の「小計」に送料は含まれておりません。送料を確認する場合は「配送先都道府県」を選択して「送料計算」を押して下さい。</span>
-    </div>
+    @if(! isset($deliFee))
+        <div class="float-right col-md-5 mb-3 border border-danger">
+            <span class="text-enji"><i class="fas fa-exclamation-triangle"></i> 数量変更の場合は「数量」を、送料を確認する場合は「配送先都道府県」を選択して「再計算」を押して下さい。</span>
+        </div>
+    @endif
+    
 </div>
 
 <div class="clearfix mt-3 cart-btn-wrap">
@@ -273,7 +291,7 @@
 	</div>
     
 </div>
-    </form>  
+</form>  
 @endif
 
 
@@ -310,8 +328,7 @@
 </div>
 
 
-</div>
-</div>
+
 </div>
 
 @endsection

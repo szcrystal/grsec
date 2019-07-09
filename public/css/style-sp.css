@@ -789,28 +789,50 @@ ORG END ======================== */
 /*    }*/
     
     
+    /* cart-index部分 */
     .table-cart .btn {
     	font-size: 0.85em;
         width: 100%;
     }
+    .table-cart .btn-cart-del {
+    	font-size: 1.5em;
+        padding-right: 0;
+    }
     .table-cart .btn .fal { /* 再計算等のアイコン */
     	//display: none;
-    	font-size: 0.75em;
+    	font-size: 0.8em;
         margin: 0;
         vertical-align: 1px;
     }
-    .table-cart td {
-    	padding-left: 0.3em;
-        padding-right: 0.3em;
+    .table-cart tbody th {
+    	width: 18%;
+    }
+    .cart-index .table-cart td:last-of-type,
+	.cart-index .table-foot td:last-of-type {
+		//width: 22%;
+    }
+    .table-cart tr td {
+    	padding-left: 0.4em;
+        padding-right: 0.4em;
     }
     .cart-index .table-cart td .text-enji {
     	font-size: 1.05em;
     }
-    .table-cart td:first-of-type {
-    	//font-size: 90%;
-    }
+
     .table-cart tr:last-of-type .text-right { /* cart index 数量変更後は、、の文言部分 */
     	text-align: left !important;
+    }
+    
+    .table-foot tr th,
+    .table-foot tr td {
+        padding: 0.2em 0.7em;
+    }
+    .table-foot tr th {
+        width: 68%;
+    }
+    .table-foot tr td {
+    	padding-left: 0.2em;
+        text-align: right;
     }
     
     .cart-btn-wrap > div:first-of-type .table {

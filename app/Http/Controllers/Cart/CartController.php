@@ -1650,7 +1650,10 @@ class CartController extends Controller
         $allPrice = 0;
         $prefs = $this->prefecture->all();
         
-        if($request->has('delifee_calc')/* && ! $request->input('pref_id')*/) {
+        /*
+        if($request->has('delifee_calc')
+        	// && ! $request->input('pref_id')
+        ) {
         	//return redirect('shop/cart')->withErrors(['pref_id'=>'選択して下さい'])->withInput();
         	$rules = [
                 'pref_id' => [
@@ -1664,6 +1667,7 @@ class CartController extends Controller
         
         	$this->validate($request, $rules);
         }
+        */
 
         
 //        echo date('Y/m/d', '2018-04-01 12:57:30');

@@ -100,11 +100,10 @@ button.btn:disabled,
 button.btn-line:disabled {
 	cursor: default;
     background: #bbb;
+	border-color: #bbb;
     opacity: 1;
     color: #fff;
-    border-color: #bbb;
 }
-
 
 input[type=checkbox] {
   -ms-transform: scale(1, 1);
@@ -209,7 +208,7 @@ body {
 }
 .table-cart .table tbody th,
 .table-cart .table tbody td {
-	//border-top-width: 0 !important;
+	border-top-width: 0 !important;
     border-bottom: 1px solid #e3e3e3 !important;
 }
 .table-cart tbody th {
@@ -224,23 +223,47 @@ body {
 	width: 100%;
 }
 .table-cart td {
-	border-left: 0 !important;
+	//border-left: 0 !important;
+    
 }
 .confirm .table-cart .table {
 	border: 1px solid #e3e3e3;
 }
 
 /* cart-index部分 */
+.cart-index .table-cart td:last-of-type,
+.cart-index .table-foot td:last-of-type {
+	//width: 18%;
+    //border: 1px solid blue;
+}
+.cart-index .table-cart select.form-control {
+	display: inline-block !important;
+    border: 1px solid red !important;
+    font-size: 0.95em;
+    width: 4.5em;
+    margin: 0;
+    padding: 0;
+}
+.table-foot tr th,
+.table-foot tr td {
+	border-top: 0 !important;
+    padding: 0.3em 0.7em;
+}
 .table-foot tr th {
 	width: 80%;
 }
-.table.table-foot tr th,
-.table.table-foot tr td {
-	border-top: 0 !important;
+.table-foot tr td {
+	//text-align: right;
+    padding-left: 1.2em;
 }
-.table.table-foot tr:last-of-type th,
-.table.table-foot tr:last-of-type td {
+
+.table-foot tr:last-of-type th,
+.table-foot tr:last-of-type td {
 	border-bottom: 0 !important;
+    padding-top: 1.4em;
+}
+.table-foot tr:last-of-type td {
+	//width: 35%;
 }
 .table-custom th:after {
 	display: block;
@@ -268,6 +291,14 @@ body {
     color: #fff;
     border-radius: 0;
     cursor: pointer;
+}
+.btn-cart-del {
+	background: none;
+    border: 0;
+    font-size: 1.3em;
+    padding-top: 0;
+    padding-right: 0;
+    line-height: 0;
 }
 .btn-line {
 	border: 1px solid #8a8a8a;
@@ -369,7 +400,7 @@ body {
 	width: 53%;
 }
 .table-cart .table {
-	width: 99.7%;
+	//width: 99.7%;
 }
 .table-cart .table td img.img-fluid {
 	float: left;
