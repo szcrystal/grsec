@@ -402,7 +402,7 @@ class HomeController extends Controller
         
         //在庫有りなしでソートしたidを取得
         $stockIds = $this->getStockSepIds($itemObjs); //$itemObjsはコレクション
-
+        
         //Controller内でないと下記のダブルクオーテーションで囲まないと効かない(tag.blade.phpに記載あり)
         $strs = implode(',', $stockIds); //$strs = '"'. implode('","', $stockIds) .'"';
 
@@ -512,11 +512,11 @@ class HomeController extends Controller
         //ORG : $whereArr = ['open_status'=>1, 'is_potset'=>0];
         //$stockTrues = $this->item->where($whereArr)->whereNotIn('stock', [0])->orderBy('id', 'desc')->get()->map(function($obj){
         
-        $stockTrues = $itemObjs->whereNotIn('stock', [0])->sortByDesc('id')->map(function($obj){ //Desc 降順 3,2,1
+        $stockTrues = $itemObjs->whereNotIn('stock', [0])->sortByDesc('updated_at')->map(function($obj){ //Desc 降順 3,2,1
         	return $obj->id;
         })->all();
                 
-        $stockFalses = $itemObjs->where('stock', 0)->sortByDesc('id')->map(function($objSec){ //Desc 降順 3,2,1
+        $stockFalses = $itemObjs->where('stock', 0)->sortByDesc('updated_at')->map(function($objSec){ //Desc 降順 3,2,1
         	return $objSec->id;
         })->all();
         
@@ -533,7 +533,7 @@ class HomeController extends Controller
                 if(! $switchArr['isStock']) { //子ポット在庫が全て0の時
                     $potsStockFalses[] = $stockId;
                 }
-                else { // 子ポットに在庫があっても親に在庫0が指定されている時。本来0が入力されてはならない。
+                else { // 子ポットに在庫があっても親に在庫0が指定されている時。本来0が入力されてはならない。現在の0を1に修正すればこの部分は不要
                     if(! $this->item->find($stockId)->stock) {
                 		$stockTrues[] = $stockId;
                         rsort($stockTrues);
@@ -565,12 +565,18 @@ class HomeController extends Controller
         
         //potSetの親はstockTrue,stockFalseどちらにも入る可能性があるので両方から重複idを取り除く
         $stockTrues = array_diff($stockTrues, $potsStockFalses); //stockTrueから重複IDを削除
-        $stockFalses = array_diff($stockFalses, $potsStockFalses); //stockFalseから重複IDを削除
+        $stockFalses = array_diff($stockFalses, $potsStockFalses); //stockFalseから重複IDを削除 親ポットの在庫は1に固定したので$stockFalsesに親ポットが入ることはないのでここは不要かも
         
         $stockFalses = array_merge($stockFalses, $potsStockFalses); //stockFalseにmergeして、その中でsortする
-        rsort($stockFalses); //降順 3,2,1,
+        //rsort($stockFalses); //降順 3,2,1,
         
-        return array_merge($stockTrues, $stockFalses); //重複を削除したstockTrueとstockFalseをmergeする
+        $stockFalsesLast = $this->item->whereIn('id', $stockFalses)->orderBy('updated_at', 'desc')->get()->map(function($obj){
+        	return $obj->id;
+        })->all();
+        
+        
+        //return ['stockTrue'=>$stockTrues, 'stockFalse'=>$stockFalses];
+        return array_merge($stockTrues, $stockFalsesLast); //重複を削除したstockTrueとstockFalseをmergeする
         
     }
     

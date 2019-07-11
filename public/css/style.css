@@ -238,23 +238,35 @@ body {
 }
 .cart-index .table-cart select.form-control {
 	display: inline-block !important;
-    border: 1px solid red !important;
+    //border: 1px solid red !important;
     font-size: 0.95em;
-    width: 4.5em;
+    width: 7em;
     margin: 0;
     padding: 0;
 }
 .table-foot tr th,
 .table-foot tr td {
 	border-top: 0 !important;
-    padding: 0.3em 0.7em;
+    padding: 0.2em 0.7em;
+}
+.table-foot {
+	font-size: 1.1em;
 }
 .table-foot tr th {
 	width: 80%;
+    font-weight: normal;
 }
 .table-foot tr td {
 	//text-align: right;
     padding-left: 1.2em;
+}
+.cart-note {
+	float: right;
+    text-align: left;
+    font-size: 0.95em;
+	border: 2px solid #C15360;
+    padding: 0.1em 0 0.1em 0.8em;
+    width: 53%;
 }
 
 .table-foot tr:last-of-type th,

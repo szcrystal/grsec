@@ -70,7 +70,7 @@ class SearchController extends Controller
         */
         
         
-        $allResults = $this->item->whereIn('id', $allResIds)->where($whereArr)->orderBy('created_at','DESC')->paginate($this->perPage);
+        $allResults = $this->item->whereIn('id', $allResIds)->where($whereArr)->orderBy('updated_at','DESC')->paginate($this->perPage);
         
         //ページネーションのリンクにqueryをつける
         $allResults->appends(['s' => $searchs]);

@@ -69,7 +69,7 @@
                             	<fieldset class="form-group p-0 m-0">
                                 	<input type="hidden" name="last_item_id[]" value="{{ $item->id }}">
                                     
-                                	<span class="text-small">数量：</span>
+                                	<span class="text-small"><b>数量</b>：</span>
                                     
                                     
                                     @if(! $item->stock)
@@ -117,8 +117,8 @@
                                 </fieldset>
                             </div>
                             
-                            <div class="">
-                            	<span class="text-small">小計<span class="text-small">（税込）：</span></span>¥{{ number_format( $item->total_price ) }}
+                            <div class="mt-1">
+                            	<span class="text-small"><b>小計<span class="text-small">（税込）</b>：</span></span>¥{{ number_format( $item->total_price ) }}
                             </div>
                             
                             
@@ -150,7 +150,7 @@
          <tbody class="clearfix">
          	<tr>
           		<th class="text-right text-big">
-                	<b>小計</b>   
+                	小計   
                 </th>
                 
             	<td class="text-big">
@@ -168,7 +168,7 @@
             @if(isset($deliFee))
                 <tr>
                     <th class="text-right text-big">
-                    	<b>送料</b>
+                    	送料
                     </th>
                     
                     <td class="text-big">
@@ -179,7 +179,7 @@
                 
                 <tr>
                     <th class="text-right text-big">
-                    	<b>合計 <small>(小計+送料)</small></b>
+                    	合計 <small>(小計+送料)</small>
                     </th>
                     
                     <td class="text-big text-danger">
@@ -190,19 +190,20 @@
             @else
             	<tr>
                 	<td colspan="2" class="text-right">
-                        <span class="text-enji"><i class="fas fa-exclamation-triangle"></i> <b>送料は含まれてません。</b></span>
+                        <span class="text-enji text-small"><i class="fas fa-exclamation-triangle"></i> <b>送料は含まれておりません</b></span>
                     </td>
                 </tr>
             @endif
            
            
             <tr>
-                <th class="clearfix">                
-                    <div class="float-right col-md-3 p-0 m-0">
+            	<th class="pt-3 text-right text-big"><span class="d-inline-block pt-1">配送先都道府県</span></th>
+                <td class="pt-3">                
+                    <div class="w-100 p-0 m-0">
                         {{-- <label class="control-label mb-0 text-small d-inline col-md-6"><b>配送先都道府県</b></label> --}}
                     
-                        <select id="pref" class="form-control rounded-0 d-inline{{ $errors->has('pref_id') ? ' is-invalid' : '' }}" name="pref_id">
-                            <option selected value="0">配送先都道府県</option>
+                        <select id="pref" class="form-control d-inline{{ $errors->has('pref_id') ? ' is-invalid' : '' }}" name="pref_id">
+                            <option selected value="0">選択下さい</option>
                             <?php
     //                            use App\Prefecture;
     //                            $prefs = Prefecture::all();  
@@ -232,10 +233,22 @@
                             </div>
                         @endif
                     </div>
-                </th	>
+                </td>
+                
+                
+            </tr>
+            
+            <tr>
+            	<th class="clearfix">
+                	@if(! isset($deliFee))
+                        <div class="cart-note">
+                            <span class="text-enji"><i class="fas fa-exclamation-triangle"></i> 数量変更の場合は「数量」を、送料確認の場合は「配送先都道府県」を選択して「再計算」を押して下さい。</span>
+                        </div>
+                    @endif
+                </th>
                 
                 <td>
-                	<button class="btn px-2 w-100 bg-enji" type="submit" name="delifee_calc" value="1"{{ $disabled }}><i class="fal fa-redo"></i> 再計算</button>
+                	<button class="btn px-2 w-100 bg-enji" type="submit" name="re_calc" value="1"{{ $disabled }}><i class="fal fa-redo"></i> 再計算</button>
                 	{{--
                     <button class="btn px-2 w-100 bg-enji" type="submit" name="delifee_calc" value="1"{{ $disabled }}><b>送料計算</b></button>
                     --}}
@@ -245,11 +258,7 @@
          </tbody>        
 	</table>
     
-    @if(! isset($deliFee))
-        <div class="float-right col-md-5 mb-3 border border-danger">
-            <span class="text-enji"><i class="fas fa-exclamation-triangle"></i> 数量変更の場合は「数量」を、送料を確認する場合は「配送先都道府県」を選択して「再計算」を押して下さい。</span>
-        </div>
-    @endif
+    
     
 </div>
 
@@ -264,14 +273,14 @@
             <div class="table-responsive">
                 <table class="table">
                     <tr>
-                        <th rowspan="2" class="border-0">会員登録がまだの方</th>
-                        <td class="border-0"><button class="btn btn-block btn-custom mb-1 py-2 px-5" type="submit" name="regist_on" value="1" formaction="{{ url('shop/form') }}"{{ $disabled }}>会員登録をして購入手続きへ</button></td>
+                        <th rowspan="2" class="border-0">会員登録がまだの方 <i class="far fa-arrow-alt-right"></i></th>
+                        <td class="border-0"><button class="btn btn-block btn-custom mb-0 py-2 px-5" type="submit" name="regist_on" value="1" formaction="{{ url('shop/form') }}"{{ $disabled }}>会員登録をして購入手続きへ</button></td>
                    </tr>
                    <tr class="border-0">
                         <td class="border-0"><button class="btn btn-block btn-custom mb-4 py-2 px-5" type="submit" name="regist_off" value="1" formaction="{{ url('shop/form') }}"{{ $disabled }}>会員登録せずに購入手続きへ</button></td>               
                     </tr>
                     <tr>
-                        <th class="border-0">会員登録がお済みの方</th>      
+                        <th class="border-0">会員登録がお済みの方 <i class="far fa-arrow-alt-right"></i></th>      
                         <td class="border-0">	
                         <a href="{{ url('login?to_cart=1') }}" class="btn btn-block btn-custom mb-2 py-2 px-5">ログインする</a>
                         {{--

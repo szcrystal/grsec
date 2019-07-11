@@ -1650,7 +1650,7 @@ class CartController extends Controller
         $allPrice = 0;
         $prefs = $this->prefecture->all();
         
-        /*
+        
         if($request->has('delifee_calc')
         	// && ! $request->input('pref_id')
         ) {
@@ -1667,7 +1667,7 @@ class CartController extends Controller
         
         	$this->validate($request, $rules);
         }
-        */
+        
 
         
 //        echo date('Y/m/d', '2018-04-01 12:57:30');
@@ -1798,7 +1798,7 @@ class CartController extends Controller
             //$itemDataはitemのobjに[count]が入ったものの配列
 
 			// 送料計算 ===========================
-            if(isset($data['delifee_calc']) && $data['delifee_calc']) {
+            if(isset($data['delifee_calc']) || (isset($data['re_calc']) && $prefId)) {
 
 //                print_r($itemData);
 //                exit;

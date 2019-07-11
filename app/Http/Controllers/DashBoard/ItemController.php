@@ -358,14 +358,23 @@ class ItemController extends Controller
             $this->itemSc->create(['item_id'=>$item->id, 'is_auto'=>0]);
         }
         
-        //potsetの時 parentのpot_parent_idに0をセットする
+        //potsetの時 parentのpot_parent_idに0をセットする 親ポットのpot_parent_id:0、stock:1が固定値
         if($item->is_potset) {
         	$parentItem = $this->item->find($item->pot_parent_id);
             
-            if(isset($parentItem) && ! isset($parentItem->pot_parent_id)) {
-            	$parentItem->pot_parent_id = 0;
+            if(isset($parentItem)) {
+            	if(! isset($parentItem->pot_parent_id)) { //pot_parent_idに0をセット
+            		$parentItem->pot_parent_id = 0;
+                }
+                
+                if(! $parentItem->stock) { //stockを1にセット
+                	$parentItem->stock = 1;
+                }
+                
+                $parentItem->updated_at = date('Y-m-d H:i:s', time()); //アーカイブの更新順並べ用。子ポット更新時に親ポットのupdated_atを更新する
             	$parentItem->save();
             }
+            
         }
         
 //        $item->fill($data);

@@ -820,7 +820,7 @@ ORG END ======================== */
     }
 
     .table-cart tr:last-of-type .text-right { /* cart index 数量変更後は、、の文言部分 */
-    	text-align: left !important;
+    	//text-align: left !important;
     }
     
     .table-foot tr th,
@@ -828,11 +828,17 @@ ORG END ======================== */
         padding: 0.2em 0.7em;
     }
     .table-foot tr th {
-        width: 68%;
+        width: 65%;
     }
     .table-foot tr td {
     	padding-left: 0.2em;
         text-align: right;
+    }
+    .cart-note {
+        padding-left: 0.2em;
+        padding-right: 0.1em;
+        font-size: 0.9em;
+        width: 100%;
     }
     
     .cart-btn-wrap > div:first-of-type .table {
