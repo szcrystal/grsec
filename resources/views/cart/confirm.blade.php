@@ -79,7 +79,7 @@
 
 <div class="confirm-right mt-3">
     <h5 class="">&nbsp;</h5>
-    <div class="table-responsive show-price table-custom">
+    <div class="table-responsive show-price table-normal">
         <table class="table border table-borderd bg-white">
             
             <tbody>
@@ -129,7 +129,7 @@
     </div>
 
     @if($regist || Auth::check())
-        <div class="table-responsive table-custom show-price mt-3">
+        <div class="table-responsive table-normal show-price mt-3">
             <table class="table border table-borderd bg-white">
 
                 @if(Auth::check())
@@ -146,7 +146,7 @@
         </div>
     @endif
 
-    <div class="table-responsive table-custom show-price mt-3">
+    <div class="table-responsive table-normal show-price mt-3">
         <table class="table border table-borderd bg-white"> 
             <tr>
                 <th>お支払い方法</th>
@@ -189,12 +189,12 @@
         	<tr>
             <td>
         
-@if(isset($data['destination']))
+@if(isset($data['destination']) && $data['destination'])
     〒{{ Ctm::getPostNum($data['receiver']['post_num']) }}<br>
     {{ $data['receiver']['prefecture'] }}&nbsp;
     {{ $data['receiver']['address_1'] }}&nbsp;
     {{ $data['receiver']['address_2'] }}<br>
-    {{ $data['receiver']['address_3'] }}
+    {{-- $data['receiver']['address_3'] --}}
     <span class="d-block mt-2">{{ $data['receiver']['name'] }} 様</span>
     TEL : {{ $data['receiver']['tel_num'] }}
     
@@ -203,7 +203,7 @@
 	{{ $userArr['prefecture'] }}&nbsp;
     {{ $userArr['address_1'] }}&nbsp;
     {{ $userArr['address_2'] }}<br>
-    {{ $userArr['address_3'] }}
+    {{-- $userArr['address_3'] --}}
     <span class="d-block mt-2">{{ $userArr['name'] }} 様</span>
     TEL : {{ $userArr['tel_num'] }}
     
@@ -265,7 +265,7 @@
 お客様情報
 @endif
 </h5>
-<div class="table-responsive table-custom">
+<div class="table-responsive table-normal">
     <table class="table border table-borderd bg-white">
         
         <tbody>
@@ -291,9 +291,11 @@
              		{{ $userArr['prefecture'] }}&nbsp;
              		{{ $userArr['address_1'] }}&nbsp;
                     {{ $userArr['address_2'] }}<br>
-               		{{ $userArr['address_3'] }}
+               		{{-- $userArr['address_3'] --}}
              </td>
         </tr>
+        
+        {{--
         <tr>
             <th>性別</th>
              <td>
@@ -314,6 +316,7 @@
               	@endif   
             </td>
         </tr>
+        --}}
         
         <tr>
             <th>メールマガジンの登録</th>

@@ -464,26 +464,33 @@ var exe = (function() {
         
         outReceive: function() {
         	var $destination = $('input[name="destination"]');
+            var $destinationCheck = $('input[name="destination"]:checked');
          	var $em = $('.receiver').find('em');
             var $rWrap = $('.receiver-wrap');
              
-              if($destination.is(':checked')) {
-              	$rWrap.show();
-              	$em.show();
-              }
-              else {
-              	$rWrap.hide();
-              	$em.hide();
-              }
+            console.log($destination.val());
+             
+            //if($destination.is(':checked')) {
+            if($destinationCheck.val() == 1) {
+                $rWrap.show();
+                $em.show();
+            }
+            else {
+                $rWrap.hide();
+                $em.hide();
+            }
 
             $destination.on('click', function(){
-                if($(this).is(':checked')) { 
+            	
+                console.log($(this).val());
+                
+                //if($(this).is(':checked')) {
+                if($(this).val() == 1) { 
                     $em.fadeIn(30, function(){
                     	$rWrap.slideDown(300);
                     });
                 }
                 else {
-                	
                     $rWrap.slideUp(300, function(){
                     	$em.fadeOut(30);
                     });

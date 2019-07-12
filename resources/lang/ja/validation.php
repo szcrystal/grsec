@@ -59,7 +59,7 @@ return [
     'numeric'              => ':attributeは半角数字にして下さい。',
     'regex'                => ':attributeの書式が正しくありません。',
     'required'             => ':attributeは必須です。',
-    'required_if'          => ':otherが:valueの時、:attributeは必須です。',
+    'required_if'          => /*':otherが:valueの時、'*/':attributeは必須です。',
     //'required_with'        => ':valuesの時、:attributeは必須です。',
     'required_with'        => ':attributeは必須です。',
     'required_with_all'    => ':valuesが存在する時、:attributeは必須です。',

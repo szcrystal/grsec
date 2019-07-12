@@ -73,7 +73,7 @@
                                     
                                     
                                     @if(! $item->stock)
-                                        <small class="text-danger"><i class="far fa-exclamation-triangle"></i> <b>売切れ商品です。<br>カートから削除して進んで下さい。</b></small>
+                                        <span class="text-small text-danger"><i class="far fa-exclamation-triangle"></i> <b>売切れ商品です。カートから削除して進んで下さい。</b></span>
                                         <input type="hidden" name="last_item_count[]" value="0">
                                         <?php $disabled = ' disabled'; ?>
                                     @else
@@ -127,11 +127,6 @@
                           
                     <td class="text-right">
                     	<button class="btn btn-cart-del mb-4" type="submit" name="del_item_key" value="{{ $key }}"><i class="fal fa-times"></i></button>
-                        
-                        <div class="mt-3">
-                        	
-                            
-                        </div>
                             
                     </td>
 
@@ -189,7 +184,7 @@
                 </tr>
             @else
             	<tr>
-                	<td colspan="2" class="text-right">
+                	<td colspan="2" class="text-right pt-0">
                         <span class="text-enji text-small"><i class="fas fa-exclamation-triangle"></i> <b>送料は含まれておりません</b></span>
                     </td>
                 </tr>

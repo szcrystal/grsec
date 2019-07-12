@@ -145,20 +145,6 @@ use App\DeliveryGroup;
          </tr>
          
          <tr class="form-group">
-             <th>メールアドレス<em>必須</em></th>
-               <td>
-                <input type="email" class="form-control col-md-12{{ $errors->has('user.email') ? ' is-invalid' : '' }}" name="user[email]" value="{{ Ctm::isOld() ? old('user.email') : (Session::has('all.data.user') ? session('all.data.user.email') : '') }}" placeholder="例）abcde@example.com">
-                
-                @if ($errors->has('user.email'))
-                    <div class="help-block text-danger">
-                        <span class="fa fa-exclamation form-control-feedback"></span>
-                        <span>{{ $errors->first('user.email') }}</span>
-                    </div>
-                @endif
-            </td>
-         </tr>
-         
-         <tr class="form-group">
              <th>電話番号<em>必須</em>
              	<small>例）09012345678ハイフンなし半角数字</small>
              </th>
@@ -226,9 +212,9 @@ use App\DeliveryGroup;
          </tr>
          
          <tr class="form-group">
-             <th>住所1（都市区）<em>必須</em></th>
+             <th>住所1<span class="text-small">（都市区それ以降）</span><em>必須</em></th>
                <td>
-                <input id="address" type="text" class="form-control col-md-12{{ $errors->has('user.address_1') ? ' is-invalid' : '' }}" name="user[address_1]" value="{{ Ctm::isOld() ? old('user.address_1') : (Session::has('all.data.user') ? session('all.data.user.address_1') : '') }}" placeholder="例）小美玉市">
+                <input id="address" type="text" class="form-control col-md-12{{ $errors->has('user.address_1') ? ' is-invalid' : '' }}" name="user[address_1]" value="{{ Ctm::isOld() ? old('user.address_1') : (Session::has('all.data.user') ? session('all.data.user.address_1') : '') }}" placeholder="例）小美玉市下吉影1-1">
                 
                 @if ($errors->has('user.address_1'))
                     <div class="help-block text-danger">
@@ -240,9 +226,9 @@ use App\DeliveryGroup;
          </tr>
          
          <tr class="form-group">
-             <th>住所2（それ以降）<em>必須</em></th>
+             <th>住所2<span class="text-small">（建物/マンション名等）</span></th>
                <td>
-                <input type="text" class="form-control col-md-12{{ $errors->has('user.address_2') ? ' is-invalid' : '' }}" name="user[address_2]" value="{{ Ctm::isOld() ? old('user.address_2') : (Session::has('all.data.user') ? session('all.data.user.address_2') : '') }}" placeholder="例）下吉影1-1">
+                <input type="text" class="form-control col-md-12{{ $errors->has('user.address_2') ? ' is-invalid' : '' }}" name="user[address_2]" value="{{ Ctm::isOld() ? old('user.address_2') : (Session::has('all.data.user') ? session('all.data.user.address_2') : '') }}" placeholder="例）GRビル 101号">
                 
                 @if ($errors->has('user.address_2'))
                     <div class="help-block text-danger">
@@ -253,8 +239,56 @@ use App\DeliveryGroup;
             </td>
          </tr>
          
+         
          <tr class="form-group">
-             <th>住所3（建物/マンション名等）</th>
+             <th>メールアドレス<em>必須</em></th>
+               <td>
+                <input type="email" class="form-control col-md-12{{ $errors->has('user.email') ? ' is-invalid' : '' }}" name="user[email]" value="{{ Ctm::isOld() ? old('user.email') : (Session::has('all.data.user') ? session('all.data.user.email') : '') }}" placeholder="例）abcde@example.com">
+                
+                @if ($errors->has('user.email'))
+                    <div class="help-block text-danger">
+                        <span class="fa fa-exclamation form-control-feedback"></span>
+                        <span>{{ $errors->first('user.email') }}</span>
+                    </div>
+                @endif
+            </td>
+         </tr>
+         
+         
+         <tr class="form-group">
+             <th>パスワード<em>必須</em></th>
+               <td>
+                <input type="password" class="form-control col-md-12{{ $errors->has('user.password') ? ' is-invalid' : '' }}" name="user[password]" value="{{ Ctm::isOld() ? old('user.password') : (Session::has('all.data.user') ? session('all.data.user.password') : '') }}" placeholder="半角英数字8文字以上">
+                                    
+                @if ($errors->has('user.password'))
+                    <div class="help-block text-danger">
+                        <span class="fa fa-exclamation form-control-feedback"></span>
+                        <span>{{ $errors->first('user.password') }}</span>
+                    </div>
+                @endif
+            </td>
+         </tr>
+         
+         <tr class="form-group">
+             <th>パスワードの確認<em>必須</em></th>
+               <td>
+                <input type="password" class="form-control col-md-12{{ $errors->has('user.password_confirmation') ? ' is-invalid' : '' }}" name="user[password_confirmation]" value="{{ Ctm::isOld() ? old('user.password_confirmation') : (Session::has('all.data.user') ? session('all.data.user.password_confirmation') : '') }}">
+                
+                @if ($errors->has('user.password_confirmation'))
+                    <div class="help-block text-danger">
+                        <span class="fa fa-exclamation form-control-feedback"></span>
+                        <span>{{ $errors->first('user.password_confirmation') }}</span>
+                    </div>
+                @endif
+            </td>
+         </tr>
+         
+         
+         
+         
+         {{--
+         <tr class="form-group">
+             <th>住所3（）</th>
                <td>
                 <input type="text" class="form-control col-md-12{{ $errors->has('user.address_3') ? ' is-invalid' : '' }}" name="user[address_3]" value="{{ Ctm::isOld() ? old('user.address_3') : (Session::has('all.data.user') ? session('all.data.user.address_3') : '') }}" placeholder="例）GRビル 101号">
                 
@@ -266,234 +300,54 @@ use App\DeliveryGroup;
                 @endif
             </td>
          </tr>
+         --}}
+         
         </table>
         </div>
          
          
-         <div class="table-responsive table-custom">
-         <p class="mt-3 text-small">よろしければ以下もお答え下さい。</p>
-            <table class="table table-borderd border">
-
-         <tr class="form-group">
-             <th>性別</th>
-               <td>
-                <?php 
-                     $arrs = array('男性', '女性');
-                    
-                    function checked($str) {
-                        $checked = '';
-                        if( Ctm::isOld() && old('user.gender') == $str) {
-                            $checked = ' checked';
-                        }
-                        //elseif(isset($user) && $user->gender == $str) {
-                        elseif(Session::has('all.data.user')  && session('all.data.user.gender') == $str) {
-                            $checked = ' checked';
-                        }  
-                        return $checked;
-                      }             
-                 ?>  
-              
-                  @foreach($arrs as $arr)    
-                    <label class="radio-inline pr-3{{ $errors->has('user.gender') ? ' is-invalid' : '' }}">
-                        <input type="radio" name="user[gender]" value="{{ $arr }}"{{ checked($arr) }}>{{ $arr }}
-                    </label>
-                @endforeach
-                
-                @if ($errors->has('user.gender'))
-                    <div class="text-danger">
-                        <span class="fa fa-exclamation form-control-feedback"></span>
-                        <span>{{ $errors->first('user.gender') }}</span>
-                    </div>
-                @endif
-            </td>
-         </tr>
-    
-         <tr class="form-group">
-             <th>生年月日</th>
-               <td class="wrap-birth">
-                   
-                <select class="form-control select-first col-md-2 d-inline{{ $errors->has('user.birth_year') ? ' is-invalid' : '' }}" name="user[birth_year]">
-                    <option value="0" selected>年</option>
-                    <?php
-                        $yNow = date('Y');
-                        $y = 1920;
-                    ?>
-                    @while($y <= $yNow)
-                        <?php
-                            $selected = '';
-                            if(Ctm::isOld()) {
-                                if(old('user.birth_year') == $y)
-                                    $selected = ' selected';
-                            }
-                            else if(Session::has('all.data.user')) {
-                            	if(session('all.data.user.birth_year') == $y) {
-                                    $selected = ' selected';
-                                }                                
-                            }
-                            else {
-                                if($y == 1970) {
-                                    $selected = ' selected';
-                                }
-                            }
-                        ?>
-                        
-                        <option value="{{ $y }}"{{ $selected }}>{{ $y }}</option>
-                        
-                        <?php $y++; ?>
-                    
-                    @endwhile
-                </select>
-                <span class="mr-2">年</span>
-                
-                @if ($errors->has('user.birth_year'))
-                    <div class="help-block text-danger">
-                        <span class="fa fa-exclamation form-control-feedback"></span>
-                        <span>{{ $errors->first('user.birth_year') }}</span>
-                    </div>
-                @endif
-                
-                <select class="form-control select-first col-md-1 d-inline{{ $errors->has('user.birth_month') ? ' is-invalid' : '' }}" name="user[birth_month]">
-                    <option value="0" selected>月</option>
-                    <?php
-                        $m = 1;
-                    ?>
-                    @while($m <= 12)
-                        <?php
-                            $selected = '';
-                            if(Ctm::isOld()) {
-                                if(old('user.birth_month') == $m)
-                                    $selected = ' selected';
-                            }
-                            else {
-                                if(Session::has('all.data.user')  && session('all.data.user.birth_month') == $m) {
-                                    $selected = ' selected';
-                                }
-                            }
-                        ?>
-                        <option value="{{ $m }}"{{ $selected }}>{{ $m }}</option>
-                        
-                        <?php $m++; ?>
-                    
-                    @endwhile
-                </select>
-                <span class="mr-2">月</span>
-                
-                @if ($errors->has('user.birth_month'))
-                    <div class="help-block text-danger">
-                        <span class="fa fa-exclamation form-control-feedback"></span>
-                        <span>{{ $errors->first('user.birth_month') }}</span>
-                    </div>
-                @endif
-                
-                <select class="form-control select-first col-md-1 d-inline{{ $errors->has('user.birth_day') ? ' is-invalid' : '' }}" name="user[birth_day]">
-                    <option value="0" selected>日</option>
-                    <?php
-                        $d = 1;
-                    ?>
-                    @while($d <= 31)
-                        <?php
-                            $selected = '';
-                            if(Ctm::isOld()) {
-                                if(old('user.birth_day') == $d)
-                                    $selected = ' selected';
-                            }
-                            else {
-                                if(Session::has('all.data.user')  && session('all.data.user.birth_day') == $d) {
-                                    $selected = ' selected';
-                                }
-                            }
-                        ?>
-                        <option value="{{ $d }}"{{ $selected }}>{{ $d }}</option>
-                        
-                        <?php $d++; ?>
-                    
-                    @endwhile
-                </select>
-                <span>日</span>
-                
-                @if ($errors->has('user.birth_day'))
-                    <div class="help-block text-danger">
-                        <span class="fa fa-exclamation form-control-feedback"></span>
-                        <span>{{ $errors->first('user.birth_day') }}</span>
-                    </div>
-                @endif
-                
-            </td>
-         </tr>
-        </table>
-        </div>
          
         
         @if($regist)
-        <div id="magazine" class="table-responsive table-custom">
-        	<p class="mt-3 text-small">当店からのお知らせを希望しますか？</p>
-            <table class="table table-borderd border">
- 
-             <tr class="form-group">
-                 <th>メールマガジンの登録</th>
-                   <td>
-                    <?php
-                        $checked = '';
-                        if(Ctm::isOld()) {
-                            if(old('user.magazine'))
-                                $checked = ' checked';
-                        }
-                        else {
-                            if(Session::has('all.data.user')  && session('all.data.user.magazine')) {
-                                $checked = ' checked';
+            <div id="magazine" class="table-responsive table-custom">
+                <p class="mt-3 text-small mb-0 ml-2 pl-1"><i class="fas fa-square"></i> 当店からのお知らせを希望しますか？</p>
+                <table class="table table-borderd border">
+     
+                 <tr class="form-group">
+                     <th>メールマガジンの登録</th>
+                       <td>
+                        <?php
+                            $checked = '';
+                            if(Ctm::isOld()) {
+                                if(old('user.magazine'))
+                                    $checked = ' checked';
                             }
-                        }
-                    ?>
-                    <input type="checkbox" name="user[magazine]" value="1"{{ $checked }}> 登録する
-                    
-                    @if ($errors->has('user.magazine'))
-                        <div class="help-block text-danger">
-                            <span class="fa fa-exclamation form-control-feedback"></span>
-                            <span>{{ $errors->first('user.magazine') }}</span>
-                        </div>
-                    @endif
-                </td>
-             </tr>
-            </table>
-        </div>
-         
+                            else {
+                                if(Session::has('all.data.user')  && session('all.data.user.magazine')) {
+                                    $checked = ' checked';
+                                }
+                            }
+                        ?>
+                        
+                        <input id="check-magazine" type="checkbox" name="user[magazine]" value="1"{{ $checked }}>
+                        <label for="check-magazine" class="checks">登録する</label>
+                        
+                        {{--
+                        <input type="checkbox" name="user[magazine]" value="1"{{ $checked }}> 登録する
+                        --}}
+                        
+                        @if ($errors->has('user.magazine'))
+                            <div class="help-block text-danger">
+                                <span class="fa fa-exclamation form-control-feedback"></span>
+                                <span>{{ $errors->first('user.magazine') }}</span>
+                            </div>
+                        @endif
+                    </td>
+                 </tr>
+                </table>
+            </div>
+        @endif
  
-         <div class="table-responsive table-custom">
-            <p class="mt-3 text-small">8文字以上（半角）で、忘れないものを入力して下さい。<br>メールアドレスとパスワードは当店をご利用の際に必要となります。</p>
-            <table class="table table-borderd border">
-
-             <tr class="form-group">
-             	
-                 <th>パスワード<em>必須</em></th>
-                   <td>
-                    <input type="password" class="form-control col-md-12{{ $errors->has('user.password') ? ' is-invalid' : '' }}" name="user[password]" value="{{ Ctm::isOld() ? old('user.password') : (Session::has('all.data.user') ? session('all.data.user.password') : '') }}" placeholder="8文字以上">
-                                        
-                    @if ($errors->has('user.password'))
-                        <div class="help-block text-danger">
-                            <span class="fa fa-exclamation form-control-feedback"></span>
-                            <span>{{ $errors->first('user.password') }}</span>
-                        </div>
-                    @endif
-                </td>
-             </tr>
-             
-             <tr class="form-group">
-                 <th>パスワードの確認<em>必須</em></th>
-                   <td>
-                    <input type="password" class="form-control col-md-12{{ $errors->has('user.password_confirmation') ? ' is-invalid' : '' }}" name="user[password_confirmation]" value="{{ Ctm::isOld() ? old('user.password_confirmation') : (Session::has('all.data.user') ? session('all.data.user.password_confirmation') : '') }}">
-                    
-                    @if ($errors->has('user.password_confirmation'))
-                        <div class="help-block text-danger">
-                            <span class="fa fa-exclamation form-control-feedback"></span>
-                            <span>{{ $errors->first('user.password_confirmation') }}</span>
-                        </div>
-                    @endif
-                </td>
-             </tr>
-         @endif
-         
-         </table>
-         </div>
 
 @endif {{-- AuthCheck --}}                     
         
@@ -502,26 +356,44 @@ use App\DeliveryGroup;
                  
             <fieldset class="form-group col-md-12 text-left mt-3 py-3 border rounded bg-white">
                 <div class="checkbox">
-                    <label class="big-check">
-                        <?php                            
-                            $checked = '';
-                            if(Ctm::isOld()) {
-                            	 if(old('destination') !== null) 
-                                	$checked = ' checked';
-                            }
-                            else {
-                            	if(Session::has('all.data.destination') && session('all.data.destination'))
-                                	$checked = ' checked';
-                            }
-                        ?>
-                        
-                        <input type="checkbox" name="destination" value="1"{{ $checked }}> 別の住所へ配送する（上記の登録先住所以外へ配送希望の場合はここをチェックして配送先を入力して下さい。）
+                    
+                    <?php                            
+                        $checked = '';
+                        if(Ctm::isOld()) {
+                             if(old('destination')) 
+                                $checked = ' checked';
+                        }
+                        else {
+                            if(Session::has('all.data.destination') && session('all.data.destination')) 
+                                $checked = ' checked';
+                                
+                        }
+                    ?>
+                    
+                    <div>
+                    	<input id="radio01" type="radio" name="destination" value="0" checked>
+                    	<label for="radio01" class="radios">登録先と同じ</label>
+                    </div>
+                    
+                    <div>
+                    	<input id="radio02" type="radio" name="destination" value="1"{{ $checked }}>
+                    	<label for="radio02" class="radios">別の住所へお届け</label>
+                    </div>
+                    
+                    {{--
+                    <label class="d-block">                                      
+                    	<input type="radio" name="destination" class="destinationRadio ml-2" value="0" checked> 登録先と同じ
                     </label>
+                     
+                    <label class="d-block">
+                        <input type="radio" name="destination" class="destinationRadio ml-2" value="1"{{ $checked }}> 別の住所へお届け
+                    </label>
+                    --}}
                     
                     @if ($errors->has('receiver.*'))
                         <div class="help-block text-danger receiver-error">
                             <span class="fa fa-exclamation form-control-feedback"></span>
-                            <span>登録先住所と別の配送先をご希望の場合はここにチェックをして、下記項目の入力をして下さい。</span>
+                            <span>登録先住所に配送をご希望の場合は「登録先と同じ」にチェックをして下さい。</span>
                         </div>
                     @endif
                 </div>
@@ -625,9 +497,9 @@ use App\DeliveryGroup;
                      </tr>
                      
                      <tr class="form-group">
-                         <th>配送先住所1（都市区）<em>必須</em></th>
+                         <th>配送先住所1<span class="text-small">（都市区それ以降）</span><em>必須</em></th>
                            <td>
-                            <input id="address_2" type="text" class="form-control col-md-12{{ $errors->has('receiver.address_1') ? ' is-invalid' : '' }}" name="receiver[address_1]" value="{{ Ctm::isOld() ? old('receiver.address_1') : (Session::has('all.data.receiver') ? session('all.data.receiver.address_1') : '') }}" placeholder="例）小美玉市">
+                            <input id="address_2" type="text" class="form-control col-md-12{{ $errors->has('receiver.address_1') ? ' is-invalid' : '' }}" name="receiver[address_1]" value="{{ Ctm::isOld() ? old('receiver.address_1') : (Session::has('all.data.receiver') ? session('all.data.receiver.address_1') : '') }}" placeholder="例）小美玉市下吉影1-1">
                             
                             @if ($errors->has('receiver.address_1'))
                                 <div class="help-block text-danger receiver-error">
@@ -639,9 +511,9 @@ use App\DeliveryGroup;
                      </tr>
                      
                      <tr class="form-group">
-                         <th>配送先住所2（それ以降）<em>必須</em></th>
+                         <th>配送先住所2<span class="text-small">（建物/マンション名等）</span></th>
                            <td>
-                            <input type="text" class="form-control col-md-12{{ $errors->has('receiver.address_2') ? ' is-invalid' : '' }}" name="receiver[address_2]" value="{{ Ctm::isOld() ? old('receiver.address_2') : (Session::has('all.data.receiver') ? session('all.data.receiver.address_2') : '') }}" placeholder="例）下吉影1-1">
+                            <input type="text" class="form-control col-md-12{{ $errors->has('receiver.address_2') ? ' is-invalid' : '' }}" name="receiver[address_2]" value="{{ Ctm::isOld() ? old('receiver.address_2') : (Session::has('all.data.receiver') ? session('all.data.receiver.address_2') : '') }}" placeholder="例）GRビル 101号">
                             
                             @if ($errors->has('receiver.address_2'))
                                 <div class="help-block text-danger receiver-error">
@@ -652,8 +524,9 @@ use App\DeliveryGroup;
                         </td>
                      </tr>
                      
+                     {{--
                      <tr class="form-group">
-                         <th>配送先住所3（建物/マンション名等）</th>
+                         <th>配送先住所3（）</th>
                            <td>
                             <input type="text" class="form-control col-md-12{{ $errors->has('receiver.address_3') ? ' is-invalid' : '' }}" name="receiver[address_3]" value="{{ Ctm::isOld() ? old('receiver.address_3') : (Session::has('all.data.receiver') ? session('all.data.receiver.address_3') : '') }}" placeholder="GRビル 101号">
                             
@@ -665,6 +538,7 @@ use App\DeliveryGroup;
                             @endif
                         </td>
                      </tr>
+                     --}}
                      
                      </table>
                 </div> 
@@ -735,7 +609,7 @@ use App\DeliveryGroup;
                             <div class="mb-2 py-2">
                             
                             @if(session()->has('item.data') && count(session('item.data')) > 0)
-                                <p class="mb-1 pb-1">■下記の商品につきまして、ご希望配送時間の指定ができます。</p>
+                                <p class="mb-1 pb-2">■下記の商品につきまして、ご希望配送時間の指定ができます。</p>
                                  @foreach($val as $itemId)
                                  	<?php $i = Item::find($itemId); ?>
                                     ・<b>{{ Ctm::getItemTitle($i) }}</b><br>
@@ -743,15 +617,21 @@ use App\DeliveryGroup;
                             @endif
                              
                             
-                            <label class="d-block mt-2 mb-3 ml-1">
+                            <div class="mt-2 mb-3 ml-1">
                                 <?php
                                     $timeTable = DeliveryGroup::find($key)->time_table;
                                     $timeTable = explode(",", $timeTable);
                                 ?>
                                 
-                                <span class="deliRadioWrap">
+                                <label class="deliRadioWrap">
+                                	<input type="radio" name="plan_time[{{$key}}]" value="希望なし" class="deliRadio" checked>
+                    				<label class="radios">希望なし</label>
+                                    
+                                    {{--
                                 	<input type="radio" name="plan_time[{{$key}}]" class="deliRadio" value="希望なし" checked><span class="mr-3"> 希望なし</span>
-                                </span>
+                                    --}}
+                                </label>
+                                
                                 @foreach($timeTable as $table)
                                     <?php 
                                         $checked = '';
@@ -768,12 +648,17 @@ use App\DeliveryGroup;
                                         }
                                      ?>
                                     
-                                    <span class="deliRadioWrap">
+                                    <label class="deliRadioWrap">
+                                    	<input type="radio" name="plan_time[{{$key}}]" value="{{ $table }}" class="deliRadio" {{ $checked }}>
+                    					<label class="radios">{{ $table }}</label>
+                                    	
+                                        {{--
                                     	<input type="radio" name="plan_time[{{$key}}]" class="deliRadio" value="{{ $table }}" {{ $checked }}> <span class="mr-3">{{ $table }}</span>
-                                    </span>
+                                        --}}
+                                    </label>
                                 @endforeach
                                     
-                            </label>
+                            </div>
                             </div>
                             
                          @endforeach
@@ -828,10 +713,15 @@ use App\DeliveryGroup;
                                 }
                              ?>
                              
-                            <label class="d-block mb-3">
+                            <label class="d-block mb-2">
                                    
                                 @if($method->id == 1)
+                                	<input type="radio" name="pay_method" value="{{ $method->id }}" class="payMethodRadio"{{ $checked }}>
+                    				<label class="radios">{{ $method->name }}</label>
+                                    
+                                    {{--
                                     <input type="radio" name="pay_method" class="payMethodRadio ml-2" value="{{ $method->id }}"{{ $checked }}> {{ $method->name }}
+                                    --}}
                                     
                                     <div class="wrap-all-card">
                                     
@@ -1048,7 +938,12 @@ use App\DeliveryGroup;
                                                             }
                                                         ?>
                                                         
+                                                        <input id="check-regist-card" type="checkbox" name="is_regist_card" value="1"{{ $checked }}>
+                        								<label for="check-regist-card" class="checks">このクレジットカード情報を登録する</label>
+                                                        
+                                                        {{--
                                                         <input type="checkbox" name="is_regist_card" value="1"{{ $checked }}> このクレジットカード情報を登録する
+                                                        --}}
                                                         
                                                         @if ($errors->has('is_regist_card'))
                                                             <div class="help-block text-danger">
@@ -1084,12 +979,19 @@ use App\DeliveryGroup;
                                 
                                 
                                 @elseif(! $codCheck && $method->id == 5)
+                                	<input type="radio" name="pay_method" value="{{ $method->id }}" class="payMethodRadio" disabled>
+                    				<label class="radios">{{ $method->name }}</label>
+                                    
+                                    {{--
                                     <input type="radio" name="pay_method" class="payMethodRadio ml-2" value="{{ $method->id }}" disabled> {{ $method->name }}
+                                    --}}
                                     <span class="text-secondary text-small ml-3"><i class="fas fa-exclamation-circle"></i> ご注文商品の代金引換はご利用できません。</span> 
                                  
                                     
                                 @else
-                                    <input type="radio" name="pay_method" class="payMethodRadio ml-2" value="{{ $method->id }}"{{ $checked }}> {{ $method->name }}
+                                	<input type="radio" name="pay_method" value="{{ $method->id }}" class="payMethodRadio"{{ $checked }}>
+                    				<label class="radios">{{ $method->name }}</label>
+                                    
                                     
                                     @if($method->id == 3)
                                         <div class="wrap-pmc mt-1 pt-1 mb-3 ml-3 pl-2{{ $errors->has('net_bank') ? ' border border-danger' : '' }}">
@@ -1116,6 +1018,7 @@ use App\DeliveryGroup;
                                     @endif
                                     
                                 @endif
+                            
                             </label>
                             
                          @endforeach

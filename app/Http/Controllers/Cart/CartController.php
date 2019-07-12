@@ -309,8 +309,10 @@ class CartController extends Controller
         //$takeChargeFee = $all['take_charge_fee'];
         $usePoint = $all['use_point'];      
       	$addPoint = $all['add_point'];
-          
-        $destination = isset($allData['destination']) ? 1 : 0;
+        
+        $destination = $allData['destination'];
+        //$destination = isset($allData['destination']) ? 1 : 0;
+        
         $pm = $allData['pay_method'];
         
         $planTime = isset($allData['plan_time']) ? $allData['plan_time'] : array();
@@ -369,11 +371,11 @@ class CartController extends Controller
             $userData['magazine'] = isset($userData['magazine']) ? $userData['magazine'] : 0;
             
             //Birth Input 年月日1つでも0があるなら入力しない　ことにしているがどうか
-            if( ! $userData['birth_year'] || ! $userData['birth_month'] || ! $userData['birth_day']) {
-            	$userData['birth_year'] = 0;
-                $userData['birth_month'] = 0;
-                $userData['birth_day'] = 0;
-            }
+//            if( ! $userData['birth_year'] || ! $userData['birth_month'] || ! $userData['birth_day']) {
+//            	$userData['birth_year'] = 0;
+//                $userData['birth_month'] = 0;
+//                $userData['birth_day'] = 0;
+//            }
             
             session('all.data.user.magazine', $userData['magazine']); //session入れ　不要？？
             
@@ -435,7 +437,7 @@ class CartController extends Controller
           	$receiverData['prefecture'] = $userData['prefecture'];
           	$receiverData['address_1'] = $userData['address_1'];
            	$receiverData['address_2'] = $userData['address_2']; 
-            $receiverData['address_3'] = $userData['address_3'];               	  
+            //$receiverData['address_3'] = $userData['address_3'];               	  
         }
         
         $receiver = $this->receiver;
@@ -1054,26 +1056,26 @@ class CartController extends Controller
         $rules = [
             'user.name' => 'sometimes|required|max:255',
             'user.hurigana' => 'sometimes|required|max:255',
-            'user.email' => 'sometimes|required|email|max:255',
             'user.tel_num' => 'sometimes|required|numeric',
 //            'cate_id' => 'required',
 			'user.post_num' => 'sometimes|required|nullable|numeric|digits:7', //numeric|max:7
    			'user.prefecture' => 'sometimes|not_in:0',         
    			'user.address_1' => 'sometimes|required|max:255',
-      		'user.address_2' => 'sometimes|required|max:255',  
+      		//'user.address_2' => 'sometimes|required|max:255', 
+            'user.email' => 'sometimes|required|email|max:255', 
         	'user.password' => 'sometimes|required|min:8|confirmed', 
          	'user.password_confirmation' => 'sometimes|required|min:8',      
 			'use_point' => 'numeric|max:'.$pt,
    			        
 			//'destination' => 'required_without:receiver.name,receiver.hurigana,receiver.tel_num,receiver.post_num,receiver.prefecture,receiver.address_1,receiver.address_2,receiver.address_3',
-            'receiver.name' => 'required_with:destination|max:255',
-            'receiver.hurigana' => 'required_with:destination|max:255',
-            'receiver.tel_num' => 'required_with:destination|nullable|numeric',
-            'receiver.post_num' => 'required_with:destination|nullable|numeric|digits:7',
-            'receiver.prefecture' => 'required_with:destination',
-            'receiver.address_1' => 'required_with:destination|max:255',
-            'receiver.address_2' => 'required_with:destination|max:255',
-            'receiver.address_3' => 'max:255',
+            'receiver.name' => 'required_if:destination,1|max:255', //ORG:required_with:destination|max:255
+            'receiver.hurigana' => 'required_if:destination,1|max:255',
+            'receiver.tel_num' => 'required_if:destination,1|nullable|numeric',
+            'receiver.post_num' => 'required_if:destination,1|nullable|numeric|digits:7',
+            'receiver.prefecture' => 'required_if:destination,1',
+            'receiver.address_1' => 'required_if:destination,1|max:255',
+            //'receiver.address_2' => 'required_with:destination|max:255',
+            //'receiver.address_3' => 'max:255',
             
             'user_comment' => 'max:30000',
             
@@ -1090,17 +1092,19 @@ class CartController extends Controller
         
         
         //会員新規登録時でのemailバリデーション
-        if(! Auth::check()) {         	
-          	if($request->input('regist')) {
-          		$rules['user.email'] = [
-                	'filled',
-                    'email',
-                    'max:255',
-                    Rule::unique('users', 'email')->where(function ($query) {
-                		return $query->where('active', 1); //uniqueする対象をactive:1のみにする
-            		}),
-            	];
-          	}
+        if(! Ctm::isEnv('local')) {
+            if(! Auth::check()) {         	
+                if($request->input('regist')) {
+                    $rules['user.email'] = [
+                        'filled',
+                        'email',
+                        'max:255',
+                        Rule::unique('users', 'email')->where(function ($query) {
+                            return $query->where('active', 1); //uniqueする対象をactive:1のみにする
+                        }),
+                    ];
+                }
+            }
         }
         
         //クレカの時のバリデーション
@@ -1186,7 +1190,7 @@ class CartController extends Controller
 //        exit;
 
 		//ユーザー(配送先)の都道府県NameとIdを取得
-        if(isset($data['destination'])) {
+        if(isset($data['destination']) && $data['destination']) {
         	$prefName = $data['receiver']['prefecture'];
          	//$prefId = $this->prefecture->where('name', $prefName)->first()->id;   
         }
