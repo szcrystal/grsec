@@ -241,7 +241,8 @@ use App\TopSetting;
                                                     <fieldset class="clearfix text-right">
                                                     <label>数量</label>
                                                     
-                                                    <select class="potSetSelect form-control d-inline{{ $errors->has('item_count') ? ' is-invalid' : '' }}" name="item_count[]">
+                                                    <label class="select-wrap potSetSelect">
+                                                    <select class="form-control d-inline{{ $errors->has('item_count') ? ' is-invalid' : '' }}" name="item_count[]">
                                                         <option value="0" selected>選択</option>
                                                             <?php
                                                                 $max = 100;
@@ -265,6 +266,7 @@ use App\TopSetting;
                                                                 <option value="{{ $ii }}"{{ $selected }}>{{ $ii }}</option>
                                                             @endfor
                                                     </select>
+                                                    </label>
                                                     <span class="text-warning"></span>
                                                     
                                                     @if ($errors->has('item_count'))
@@ -351,7 +353,8 @@ use App\TopSetting;
                                     @endif
                                     </label>
                                     
-                                    <select class="form-control w-50 d-inline{{ $errors->has('item_count') ? ' is-invalid' : '' }}" name="item_count[]">
+                                    <label class="select-wrap w-50">
+                                    <select class="form-control {{ $errors->has('item_count') ? ' is-invalid' : '' }}" name="item_count[]">
                                         <option disabled selected>選択して下さい</option>
                                             <?php
                                                 $max = 100;
@@ -375,6 +378,7 @@ use App\TopSetting;
                                                 <option value="{{ $i }}"{{ $selected }}>{{ $i }}</option>
                                             @endfor
                                     </select>
+                                    </label>
                                     <span class="text-warning"></span>
                                     
                                     @if ($errors->has('item_count'))

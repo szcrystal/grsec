@@ -46,7 +46,7 @@
                                 <tr class="form-group">
                                     <th>ご希望方法<em>必須</em></th>
                                     <td>
-                                        <label class="d-block p-1 my-0{{ $errors->has('is_ask_type') ? ' border border-danger' : '' }}">
+                                        <div class="p-0 my-0{{ $errors->has('is_ask_type') ? ' border border-danger' : '' }}">
                                         
                                         <?php 
                                             $askTypes = [1 =>'電話', 2 =>'メール'];
@@ -68,13 +68,19 @@
                                                 }
                                             ?>
                                         
+                                        	
                                             <span class="askRadioWrap">
+                                            	<input id="is-ask-type-{{ $k }}" type="radio" name="is_ask_type" class="isAskType" value="{{ $k }}" {{ $checked }}>
+                                                <label for="is-ask-type-{{ $k }}" class="radios">{{ $v }}</label>
+                                                
+                                                {{--
                                                 <input type="radio" name="is_ask_type" class="isAskType" value="{{ $k }}" {{ $checked }}><span class="mr-3"> {{ $v }}</span>
+                                                --}}
                                             </span>
                                         
                                         @endforeach
                             
-                                        </label>
+                                        </div>
                                         
                                         @if ($errors->has('is_ask_type'))
                                             <span class="text-danger">
@@ -89,7 +95,8 @@
                                 <tr class="form-group">
                                     <th>お問い合わせ種別<em>必須</em></th>
                                     <td>
-                                        <select class="form-control col-md-9{{ $errors->has('ask_category') ? ' is-invalid' : '' }}" name="ask_category">
+                                    	<div class="select-wrap col-md-9 p-0">
+                                        <select class="form-control {{ $errors->has('ask_category') ? ' is-invalid' : '' }}" name="ask_category">
                                             <option disabled selected>選択して下さい</option>
                                             @foreach($cate_option as $val)
                                                 <?php
@@ -107,6 +114,7 @@
                                                 <option value="{{ $val }}"{{ $selected }}>{{ $val }}</option>
                                             @endforeach
                                         </select>
+                                        </div>
 
                                         @if ($errors->has('ask_category'))
                                             <span class="text-danger">
@@ -181,7 +189,8 @@
                                             <small>*9時〜16時（12〜13時除く）</small>
                                         </th>
                                         <td>
-                                            <select class="form-control col-md-9{{ $errors->has('request_time') ? ' is-invalid' : '' }}" name="request_time">
+                                        	<div class="select-wrap col-md-9 p-0">
+                                            <select class="form-control {{ $errors->has('request_time') ? ' is-invalid' : '' }}" name="request_time">
                                                 <option disabled selected>選択して下さい</option>
                                                 @foreach($reqTimes as $time)
                                                     <?php
@@ -199,7 +208,8 @@
                                                     <option value="{{ $time }}"{{ $selected }}>{{ $time }}</option>
                                                 @endforeach
                                             </select>
-
+											<div>
+                                            
                                             @if ($errors->has('request_time'))
                                                 <span class="text-danger">
                                                     <span class="fa fa-exclamation form-control-feedback"></span>

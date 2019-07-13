@@ -64,7 +64,7 @@ use App\DeliveryGroup;
     
 @if(Auth::check())
 <h3 class="mb-3 card-header">会員登録情報</h3>
-<div class="table-responsive table-custom">
+<div class="table-responsive table-normal">
     <table class="table table-borderd border">
 
         <tr>
@@ -179,28 +179,30 @@ use App\DeliveryGroup;
          <tr class="form-group">
              <th>都道府県<em>必須</em></th>
                <td>
-                <select id="pref" class="form-control select-first col-md-6{{ $errors->has('user.prefecture') ? ' is-invalid' : '' }}" name="user[prefecture]">
-                    <option selected value="0">選択して下さい</option>
-                    <?php
-//                        use App\Prefecture;
-//                        $prefs = Prefecture::all();  
-                    ?>
-                    @foreach($prefs as $pref)
+               	<div class="select-wrap col-md-6 p-0">
+                    <select id="pref" class="form-control select-first{{ $errors->has('user.prefecture') ? ' is-invalid' : '' }}" name="user[prefecture]">
+                        <option selected value="0">選択して下さい</option>
                         <?php
-                            $selected = '';
-                            if(Ctm::isOld()) {
-                                if(old('user.prefecture') == $pref->name)
-                                    $selected = ' selected';
-                            }
-                            else {
-                                if(Session::has('all.data.user')  && session('all.data.user.prefecture') == $pref->name) {
-                                    $selected = ' selected';
-                                }
-                            }
+    //                        use App\Prefecture;
+    //                        $prefs = Prefecture::all();  
                         ?>
-                        <option value="{{ $pref->name }}"{{ $selected }}>{{ $pref->name }}</option>
-                    @endforeach
-                </select>
+                        @foreach($prefs as $pref)
+                            <?php
+                                $selected = '';
+                                if(Ctm::isOld()) {
+                                    if(old('user.prefecture') == $pref->name)
+                                        $selected = ' selected';
+                                }
+                                else {
+                                    if(Session::has('all.data.user')  && session('all.data.user.prefecture') == $pref->name) {
+                                        $selected = ' selected';
+                                    }
+                                }
+                            ?>
+                            <option value="{{ $pref->name }}"{{ $selected }}>{{ $pref->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
                 
                 @if ($errors->has('user.prefecture'))
                     <div class="help-block text-danger">
@@ -354,9 +356,7 @@ use App\DeliveryGroup;
         <div class="receiver">
             <h3 class="mt-5 card-header">お届け先</h3>     
                  
-            <fieldset class="form-group col-md-12 text-left mt-3 py-3 border rounded bg-white">
-                <div class="checkbox">
-                    
+            <fieldset class="form-group mt-3 py-1">
                     <?php                            
                         $checked = '';
                         if(Ctm::isOld()) {
@@ -370,14 +370,14 @@ use App\DeliveryGroup;
                         }
                     ?>
                     
-                    <div>
-                    	<input id="radio01" type="radio" name="destination" value="0" checked>
-                    	<label for="radio01" class="radios">登録先と同じ</label>
+                    <div class="mb-2">
+                    	<input id="radio-destination-1" type="radio" name="destination" value="0" checked>
+                    	<label for="radio-destination-1" class="radios">登録先と同じ</label>
                     </div>
                     
                     <div>
-                    	<input id="radio02" type="radio" name="destination" value="1"{{ $checked }}>
-                    	<label for="radio02" class="radios">別の住所へお届け</label>
+                    	<input id="radio-destination-2" type="radio" name="destination" value="1"{{ $checked }}>
+                    	<label for="radio-destination-2" class="radios">別の住所へお届け</label>
                     </div>
                     
                     {{--
@@ -393,10 +393,9 @@ use App\DeliveryGroup;
                     @if ($errors->has('receiver.*'))
                         <div class="help-block text-danger receiver-error">
                             <span class="fa fa-exclamation form-control-feedback"></span>
-                            <span>登録先住所に配送をご希望の場合は「登録先と同じ」にチェックをして下さい。</span>
+                            <span>上記登録先住所に配送をご希望の場合は「登録先と同じ」にチェックをして下さい。</span>
                         </div>
                     @endif
-                </div>
             </fieldset>     
         
             <div class="table-responsive table-custom receiver-wrap">
@@ -465,27 +464,29 @@ use App\DeliveryGroup;
                      </tr>
                      
                      <tr class="form-group">
-                         <th>配送先都道府県<em>必須</em></th>
-                           <td>
-                            <select id="pref_2" class="form-control select-first col-md-6{{ $errors->has('receiver.prefecture') ? ' is-invalid' : '' }}" name="receiver[prefecture]">
-                                <option disabled selected>選択して下さい</option>
+                        <th>配送先都道府県<em>必須</em></th>
+                        <td>
+                           	<div class="select-wrap col-md-6 p-0">
+                                <select id="pref_2" class="form-control select-first {{ $errors->has('receiver.prefecture') ? ' is-invalid' : '' }}" name="receiver[prefecture]">
+                                    <option disabled selected>選択して下さい</option>
 
-                                @foreach($prefs as $pref)
-                                    <?php
-                                        $selected = '';
-                                        if(Ctm::isOld()) {
-                                            if(old('receiver.prefecture') == $pref->name)
-                                                $selected = ' selected';
-                                        }
-                                        else {
-                                            if(Session::has('all.data.receiver') && session('all.data.receiver.prefecture') == $pref->name) {
-                                                $selected = ' selected';
+                                    @foreach($prefs as $pref)
+                                        <?php
+                                            $selected = '';
+                                            if(Ctm::isOld()) {
+                                                if(old('receiver.prefecture') == $pref->name)
+                                                    $selected = ' selected';
                                             }
-                                        }
-                                    ?>
-                                    <option value="{{ $pref->name }}"{{ $selected }}>{{ $pref->name }}</option>
-                                @endforeach
-                            </select>
+                                            else {
+                                                if(Session::has('all.data.receiver') && session('all.data.receiver.prefecture') == $pref->name) {
+                                                    $selected = ' selected';
+                                                }
+                                            }
+                                        ?>
+                                        <option value="{{ $pref->name }}"{{ $selected }}>{{ $pref->name }}</option>
+                                    @endforeach
+                                </select>
+                             </div>   
                             
                             @if ($errors->has('receiver.prefecture'))
                                 <div class="help-block text-danger receiver-error">
@@ -493,6 +494,7 @@ use App\DeliveryGroup;
                                     <span>{{ $errors->first('receiver.prefecture') }}</span>
                                 </div>
                             @endif
+                            
                         </td>
                      </tr>
                      
@@ -553,7 +555,8 @@ use App\DeliveryGroup;
                     <fieldset class="mb-4 mt-3 col-md-7 form-group{{ $errors->has('plan_date') ? ' has-error' : '' }}">
                         <label for="plan_date" class="control-label">■ご希望日程<span class="text-small"></span></label>
                         
-                        <select class="form-control col-md-6{{ $errors->has('plan_date') ? ' is-invalid' : '' }}" name="plan_date">
+                        <div class="select-wrap col-md-6 p-0">
+                        <select class="form-control {{ $errors->has('plan_date') ? ' is-invalid' : '' }}" name="plan_date">
                             <option value="希望なし（最短出荷）" selected>希望なし（最短出荷）</option>
                             	<?php 
                                 	$days = array();
@@ -582,6 +585,7 @@ use App\DeliveryGroup;
                                     <option value="{{ $day }}"{{ $selected }}>{{ $day }}</option>
                                 @endforeach
                         </select>
+                        </div>
                         
                         @if ($errors->has('plan_date'))
                             <span class="help-block">
@@ -623,16 +627,16 @@ use App\DeliveryGroup;
                                     $timeTable = explode(",", $timeTable);
                                 ?>
                                 
-                                <label class="deliRadioWrap">
-                                	<input type="radio" name="plan_time[{{$key}}]" value="希望なし" class="deliRadio" checked>
-                    				<label class="radios">希望なし</label>
+                                <span class="deliRadioWrap">
+                                	<input id="radio-deli-no" type="radio" name="plan_time[{{$key}}]" value="希望なし" class="deliRadio" checked>
+                    				<label for="radio-deli-no" class="radios">希望なし</label>
                                     
                                     {{--
                                 	<input type="radio" name="plan_time[{{$key}}]" class="deliRadio" value="希望なし" checked><span class="mr-3"> 希望なし</span>
                                     --}}
-                                </label>
+                                </span>
                                 
-                                @foreach($timeTable as $table)
+                                @foreach($timeTable as $k => $table)
                                     <?php 
                                         $checked = '';
                                         
@@ -648,14 +652,14 @@ use App\DeliveryGroup;
                                         }
                                      ?>
                                     
-                                    <label class="deliRadioWrap">
-                                    	<input type="radio" name="plan_time[{{$key}}]" value="{{ $table }}" class="deliRadio" {{ $checked }}>
-                    					<label class="radios">{{ $table }}</label>
+                                    <span class="deliRadioWrap">
+                                    	<input id="radio-deli-{{ $k }}" type="radio" name="plan_time[{{$key}}]" value="{{ $table }}" class="deliRadio" {{ $checked }}>
+                    					<label for="radio-deli-{{ $k }}" class="radios">{{ $table }}</label>
                                     	
                                         {{--
                                     	<input type="radio" name="plan_time[{{$key}}]" class="deliRadio" value="{{ $table }}" {{ $checked }}> <span class="mr-3">{{ $table }}</span>
                                         --}}
-                                    </label>
+                                    </span>
                                 @endforeach
                                     
                             </div>
@@ -713,11 +717,11 @@ use App\DeliveryGroup;
                                 }
                              ?>
                              
-                            <label class="d-block mb-2">
+                            <div class="mb-3">
                                    
                                 @if($method->id == 1)
-                                	<input type="radio" name="pay_method" value="{{ $method->id }}" class="payMethodRadio"{{ $checked }}>
-                    				<label class="radios">{{ $method->name }}</label>
+                                	<input id="radio-pay-{{ $method->id }}" type="radio" name="pay_method" value="{{ $method->id }}" class="payMethodRadio"{{ $checked }}>
+                    				<label for="radio-pay-{{ $method->id }}" class="radios">{{ $method->name }}</label>
                                     
                                     {{--
                                     <input type="radio" name="pay_method" class="payMethodRadio ml-2" value="{{ $method->id }}"{{ $checked }}> {{ $method->name }}
@@ -755,16 +759,19 @@ use App\DeliveryGroup;
                                                     ?>
                                                      
                                                     <div class="mb-4 pb-1">
-                                                        <input type="radio" name="card_seq" class="useCardRadio ml-2" value="{{ $seqNum }}"{{ $checked }}> 
-                                                        <label>カード番号： </label>
-                                                        <span>{{ $regCardDatas['CardNo'][$k] }}</span>
+                                                        <input id="use-card-{{ $k }}" type="radio" name="card_seq" class="useCardRadio" value="{{ $seqNum }}"{{ $checked }}>
+                                                        <label for="use-card-{{ $k }}" class="radios">
+                                                        	カード番号： <span>{{ $regCardDatas['CardNo'][$k] }}</span>
+                                                        </label>
+                                                        
                                                         <?php
                                                         	//wordwrap($regCardDatas['Expire'][$k], 2, '/', 1)
                                                         	$y = substr($regCardDatas['Expire'][$k], 0, 2); //年
                                                             $m = substr($regCardDatas['Expire'][$k], 2); //月
                                                         ?>
                                                         
-                                                        <small class="d-block ml-4 pl-1">有効期限（月/年）：{{ $m.'/'.$y }}</small>
+                                                        <small class="d-block ml-4 mt-1">有効期限（月/年）：{{ $m.'/'.$y }}</small>
+                                                        
                                                     </div>
                                                 @endforeach
                                             @endif
@@ -794,7 +801,8 @@ use App\DeliveryGroup;
                                                 }
                                             ?>
                                         
-                                            <input type="radio" name="card_seq" class="useCardRadio ml-2" value="99"{{ $checked }}> 新しいクレジットカードを使う
+                                            <input id="use-new-card" type="radio" name="card_seq" class="useCardRadio" value="99"{{ $checked }}>
+                                            <label for="use-new-card" class="radios">新しいクレジットカードを使う</label>
                                         @else
                                         	<?php $ml = ' ml-2'; ?>
                                             
@@ -847,7 +855,8 @@ use App\DeliveryGroup;
                                             
                                                 <label class="d-block">有効期限（月/年）</label>
                                                 
-                                                <select id="expire_month" class="form-control d-inline-block col-md-2{{ $errors->has('expire_month') || $errors->has('expire') ? ' is-invalid' : '' }}" name="expire_month">
+                                                <label class="select-wrap col-md-2 p-0">
+                                                <select id="expire_month" class="form-control d-inline-block {{ $errors->has('expire_month') || $errors->has('expire') ? ' is-invalid' : '' }}" name="expire_month">
                                                     
                                                     @while($mn < 13)
                                                         <?php
@@ -870,7 +879,9 @@ use App\DeliveryGroup;
                                                         <?php $mn++; ?>
                                                     @endwhile
                                                 </select>
+                                                </label>
                                                 <span class="mr-4">月</span>
+                                                
                                                 
                                                 @if ($errors->has('expire_month'))
                                                     <div class="help-block text-danger col-md-2">
@@ -879,7 +890,8 @@ use App\DeliveryGroup;
                                                     </div>
                                                 @endif
                                                 
-                                                <select id="expire_year" class="form-control d-inline-block col-md-2{{ $errors->has('expire_year') || $errors->has('expire') ? ' is-invalid' : '' }}" name="expire_year">
+                                                <label class="select-wrap col-md-2 p-0">
+                                                <select id="expire_year" class="form-control d-inline-block {{ $errors->has('expire_year') || $errors->has('expire') ? ' is-invalid' : '' }}" name="expire_year">
                                                     
                                                     @while($yn < 11)
                                                         <?php
@@ -900,7 +912,10 @@ use App\DeliveryGroup;
                                                         <?php $yn++; ?>
                                                     @endwhile
                                                 </select>
+                                                </label>
                                                 <span>年</span>
+                                                
+                                                
                                                 
                                                 @if ($errors->has('expire_year'))
                                                     <div class="help-block text-danger col-md-2">
@@ -979,8 +994,8 @@ use App\DeliveryGroup;
                                 
                                 
                                 @elseif(! $codCheck && $method->id == 5)
-                                	<input type="radio" name="pay_method" value="{{ $method->id }}" class="payMethodRadio" disabled>
-                    				<label class="radios">{{ $method->name }}</label>
+                                	<input id="radio-pay-{{ $method->id }}" type="radio" name="pay_method" value="{{ $method->id }}" class="payMethodRadio" disabled>
+                    				<label for="radio-pay-{{ $method->id }}" class="radios">{{ $method->name }}</label>
                                     
                                     {{--
                                     <input type="radio" name="pay_method" class="payMethodRadio ml-2" value="{{ $method->id }}" disabled> {{ $method->name }}
@@ -989,8 +1004,8 @@ use App\DeliveryGroup;
                                  
                                     
                                 @else
-                                	<input type="radio" name="pay_method" value="{{ $method->id }}" class="payMethodRadio"{{ $checked }}>
-                    				<label class="radios">{{ $method->name }}</label>
+                                	<input id="radio-pay-{{ $method->id }}" type="radio" name="pay_method" value="{{ $method->id }}" class="payMethodRadio"{{ $checked }}>
+                    				<label for="radio-pay-{{ $method->id }}" class="radios">{{ $method->name }}</label>
                                     
                                     
                                     @if($method->id == 3)
@@ -1019,7 +1034,7 @@ use App\DeliveryGroup;
                                     
                                 @endif
                             
-                            </label>
+                            </div>
                             
                          @endforeach
                     

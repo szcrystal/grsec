@@ -77,8 +77,8 @@
                                         <input type="hidden" name="last_item_count[]" value="0">
                                         <?php $disabled = ' disabled'; ?>
                                     @else
-                                        
-                                        <select class="form-control select-count {{ $errors->has('last_item_count') ? ' is-invalid' : '' }}" name="last_item_count[]">
+                                       <label class="select-wrap col-md-2 p-0"> 
+                                        <select class="form-control {{ $errors->has('last_item_count') ? ' is-invalid' : '' }}" name="last_item_count[]">
                                                 
                                             <?php
                                                 $max = 100;
@@ -104,6 +104,7 @@
                                                 <option value="{{ $i }}"{{ $selected }}>{{ $i }}</option>
                                             @endfor
                                         </select>
+                                        </label>
                                                                                 
                                         @if ($errors->has('last_item_count'))
                                             <div class="help-block text-danger">
@@ -194,7 +195,7 @@
             <tr>
             	<th class="pt-3 text-right text-big"><span class="d-inline-block pt-1">配送先都道府県</span></th>
                 <td class="pt-3">                
-                    <div class="w-100 p-0 m-0">
+                    <div class="select-wrap w-100 p-0 m-0">
                         {{-- <label class="control-label mb-0 text-small d-inline col-md-6"><b>配送先都道府県</b></label> --}}
                     
                         <select id="pref" class="form-control d-inline{{ $errors->has('pref_id') ? ' is-invalid' : '' }}" name="pref_id">
@@ -220,14 +221,15 @@
                                 <option value="{{ $pref->id }}"{{ $selected }}>{{ $pref->name }}</option>
                             @endforeach
                         </select>
-                    
-                        @if ($errors->has('pref_id'))
-                            <div class="help-block text-danger">
-                                <span class="fa fa-exclamation form-control-feedback"></span>
-                                <span>{{ $errors->first('pref_id') }}</span>
-                            </div>
-                        @endif
                     </div>
+                    
+                    @if ($errors->has('pref_id'))
+                        <div class="help-block text-danger">
+                            <span class="fa fa-exclamation form-control-feedback"></span>
+                            <span>{{ $errors->first('pref_id') }}</span>
+                        </div>
+                    @endif
+                    
                 </td>
                 
                 
