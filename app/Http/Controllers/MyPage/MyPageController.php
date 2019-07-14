@@ -237,13 +237,14 @@ class MyPageController extends Controller
   
         ];
         
-        $editModes = $request->has('user.edit_mode.*') ? $request->input('user.edit_mode.*') : array();
+        $editModes = $request->has('user.edit_mode') ? $request->input('user.edit_mode.*') : array();
         
         if(count($editModes)) {
             foreach($editModes as $key => $val) {
                 if($val == 1) {
                     $now = new DateTime();
                     $ym = $now->format('ym');
+                    
                     
                     $expire = $request->input('user.expire_year.'.$key) . $request->input('user.expire_month.'.$key);
 
@@ -286,6 +287,10 @@ class MyPageController extends Controller
         
         $data['user']['magazine'] = isset($data['user']['magazine']) ? 1 : 0;
         
+        //address_3がセットされている古いユーザーのaddress_3を空にする
+//        if($request->has('is_old_user_addr3')) {
+//        	$data['user']['address_3'] =  '';
+//        }
         
 //        $data['user']['birth_year'] = $data['user']['birth_year'] ? $data['user']['birth_year'] : null;
 //        $data['user']['birth_month'] = $data['user']['birth_month'] ? $data['user']['birth_month'] : null;
@@ -325,11 +330,11 @@ class MyPageController extends Controller
         }
         
         //Birth Input 年月日1つでも0があるなら入力しない　ことにしているがどうか
-        if( ! $data['birth_year'] || ! $data['birth_month'] || ! $data['birth_day']) {
-            $data['birth_year'] = 0;
-            $data['birth_month'] = 0;
-            $data['birth_day'] = 0;
-        }
+//        if( ! $data['birth_year'] || ! $data['birth_month'] || ! $data['birth_day']) {
+//            $data['birth_year'] = 0;
+//            $data['birth_month'] = 0;
+//            $data['birth_day'] = 0;
+//        }
         
         
         //カード更新／削除 =======================

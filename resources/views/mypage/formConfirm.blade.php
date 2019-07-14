@@ -42,7 +42,7 @@ $str = $isMypage ? '変更する' : '登録する';
 
 <div class="">
 
-<div class="table-responsive table-custom">
+<div class="table-responsive table-normal">
     <table class="table table-borderd border bg-white">
         
         <tr class="form-group">
@@ -55,11 +55,6 @@ $str = $isMypage ? '変更する' : '登録する';
           <tr class="form-group">
              <th>フリガナ</th>
                <td>{{ $data['hurigana'] }}</td>
-         </tr>
-         
-         <tr class="form-group">
-             <th>メールアドレス</th>
-            <td>{{ $data['email'] }}</td>
          </tr>
          
          <tr class="form-group">
@@ -80,29 +75,57 @@ $str = $isMypage ? '変更する' : '登録する';
          </tr>
          
          <tr class="form-group">
-             <th>住所1（都市区）</th>
+             <th>住所1（都市区それ以降）</th>
                <td>{{ $data['address_1'] }}</td>
               
          </tr>
          
          <tr class="form-group">
-             <th>住所2（それ以降）</th>
+             <th>住所2（建物/マンション名等）</th>
                <td>{{ $data['address_2'] }}</td>
                 
             </td>
          </tr>
          
          <tr class="form-group">
-             <th>住所3（建物/マンション名等）</th>
+             <th>メールマガジンの登録</th>
+               <td>
+               @if(isset($data['magazine']) && $data['magazine'])
+               登録する
+               @else
+               登録しない
+               @endif
+               
+            </td>
+         </tr>
+         
+         <tr class="form-group">
+             <th>メールアドレス</th>
+            <td>{{ $data['email'] }}</td>
+         </tr>
+         
+        @if(! $isMypage)               
+            <tr class="form-group">
+                <th>パスワード</th>
+                <td>********（表示されません）</td>
+            </tr>
+        @endif
+
+         
+         {{--
+         <tr class="form-group">
+             <th>住所3（）</th>
                <td>
                @if(isset($data['address_3']))
                	{{ $data['address_3'] }}
                @endif
                </td>               
          </tr>
+         --}}
     </table>
 </div>
-         
+
+{{--
 <div class="table-responsive table-custom mt-3">
     <table class="table table-borderd border bg-white">
         
@@ -126,26 +149,11 @@ $str = $isMypage ? '変更する' : '登録する';
          
     </table>
 </div>
+--}}
 
-<div class="table-responsive table-custom mt-3">
-    <table class="table table-borderd border bg-white">
-         
-         <tr class="form-group">
-             <th>メールマガジンの登録</th>
-               <td>
-               @if(isset($data['magazine']) && $data['magazine'])
-               登録する
-               @else
-               登録しない
-               @endif
-               
-            </td>
-         </tr>
-	</table>
-</div>
 
 @if($isMypage)
-    <div class="table-responsive table-custom mt-3">
+    <div class="table-responsive table-normal mt-3">
         <table class="table table-borderd border bg-white">
              
              <tr class="form-group">
@@ -195,19 +203,6 @@ $str = $isMypage ? '変更する' : '登録する';
 
 
  
-@if(! $isMypage)
- <div class="table-responsive table-custom mt-3">
-    <table class="table table-borderd border bg-white">
-       
-         <tr class="form-group">
-             <th>パスワード</th>
-               <td>********（表示されません）</td>
-               
-         </tr>
-
-         </table>
-         </div>
-@endif
 
 
 	{{-- <p class="text-center">この内容で登録します。</p> --}}

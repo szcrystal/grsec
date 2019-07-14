@@ -1,6 +1,6 @@
 
 {{ $name }} 様
-<br /><br />
+<br><br>
 グリーンロケットです。<br>
 パスワードリセットのリクエストを受け付けました。<br><br>
 ▼パスワードリセット用のリンクは下記となります。<br>
@@ -10,11 +10,13 @@
 このリンクの有効時間は{{ config('auth.expire') }}分となります。<br>
 {{ config('auth.passwords.users.expire') }}以内にクリックをしてパスワードをリセットして下さい。
 
-<br /><br /><br />
+<br><br><br><br><br>
 
-
+<div>
 <?php
 use App\Setting;
 $setting = Setting::get()->first();
 ?>
-{{ $setting->mail_footer }}
+
+{!! nl2br($setting->mail_footer) !!}
+</div>

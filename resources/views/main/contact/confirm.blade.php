@@ -14,7 +14,7 @@
 
                 <div class="panel-body mt-5">
 
-					<div class="table-responsive table-custom">
+					<div class="table-responsive table-normal">
                         <table class="table table-bordered bg-white">
                             
                             <tbody>

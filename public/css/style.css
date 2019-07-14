@@ -58,11 +58,10 @@ select.form-control {
 /*    background: url(arrow01.png) right 50% no-repeat, -webkit-linear-gradient(top, #fff 0%,#efebe1 100%);*/
 }
 select.form-control option:disabled {
-	color: red !important;
-    font-size: 2em;
+	display: none !important;
 }
 select.form-control:focus {
-	background: rgba(250, 130, 143, 0.2) !important;
+	background: rgba(250, 130, 143, 0.1) !important;
 }
 .select-wrap {
 	position: relative;
@@ -350,21 +349,18 @@ body {
     font-weight: normal;
     //position: relative;
 }
-.table-custom th {
-    //background: #ececec;
-	font-size: 0.95em;
-    font-weight: normal;
-    //position: relative;
-}
 .table-normal th { /* 主にはshop confirm のユーザー登録や金額のテーブル */
-	background: #f5f5f5;
+	background: rgba(250, 130, 143, 0.1);
 	font-size: 0.95em;
     font-weight: normal;
     width: 26%;
 }
 .table-cart thead th {
-	background: #f5f5f5;
+	//background: #f5f5f5;
+    background: rgba(250, 130, 143, 0.1);
 	font-size: 0.95em;
+    font-weight: normal;
+    border-bottom: 0 !important;
 }
 .table-cart .table tbody th,
 .table-cart .table tbody td {
@@ -413,7 +409,7 @@ body {
 	font-size: 1.1em;
 }
 .table-foot tr th {
-	width: 80%;
+	width: 77%;
     font-weight: normal;
 }
 .table-foot tr td {
@@ -459,11 +455,23 @@ body {
 	display: block;
     margin-top: 0.3em;
 }
-.btn-custom {
-	background: #3a3b3c;
+.btn-custom,
+.btn-pink,
+.btn-white {
     color: #fff;
     border-radius: 0;
     cursor: pointer;
+}
+.btn-custom {
+	background: #3a3b3c;
+}
+.btn-pink {
+	background: #fa828f;
+}
+.btn-white {
+	border: 2px solid #fa828f;
+    background: #fff;
+    color: #fa828f;
 }
 .btn-cart-del {
 	background: none;
@@ -494,6 +502,9 @@ body {
 }
 .text-extra-small {
 	font-size: 0.7em;
+}
+.text-bold {
+	font-weight: bold;
 }
 .bg-gray {
 	background: #8f8f8f;
@@ -630,7 +641,7 @@ img.img-fluid + div {
 }
 
 .wrap-regist-card > div {
-	line-height: 1.1em;
+/*	line-height: 1.1em;*/
 }
 .wrap-pmc { /* payMethod child wrap */
 	display: none;

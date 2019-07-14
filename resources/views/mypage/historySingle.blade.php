@@ -23,7 +23,7 @@ use App\Item;
 <div class="confirm-left">
 	<h5 class="card-header mb-3 py-2">購入履歴詳細</h5>
 	
-	<div class="table-responsive table-custom">
+	<div class="table-responsive table-normal">
     <table class="table table-bordered bg-white">
         <tbody>
     	<tr>
@@ -44,8 +44,7 @@ use App\Item;
     <table class="table table-bordered bg-white">
         <thead>
             <tr>
-                <th>購入商品</th>
-                
+                <th>購入商品</th>  
             </tr>
         </thead>  
     
@@ -155,7 +154,7 @@ use App\Item;
 
 
 <h5 class="card-header mb-3 py-2 mt-4">配送情報</h5>
-<div class="table-responsive table-custom mt-3">
+<div class="table-responsive table-cart mt-3">
     <table class="table table-borderd border bg-white">
     	<thead>
      	   <tr><th>お届け先</th></tr>
@@ -164,23 +163,63 @@ use App\Item;
         <tbody>
         	<tr>
             <td>        
-    〒{{ Ctm::getPostNum($receiver->post_num) }}<br>
-    {{ $receiver->prefecture }}&nbsp;
-    {{ $receiver->address_1 }}&nbsp;
-    {{ $receiver->address_2 }}<br>
-    {{ $receiver->address_3 }}
-    <span class="d-block mt-2">{{ $receiver->name }} 様</span>
-    TEL : {{ $receiver->tel_num }}
-    
-	</td>
-	</tr>
+                〒{{ Ctm::getPostNum($receiver->post_num) }}<br>
+                {{ $receiver->prefecture }}&nbsp;
+                {{ $receiver->address_1 }}&nbsp;
+                {{ $receiver->address_2 }}<br>
+                {{ $receiver->address_3 }}
+                <span class="d-block mt-2">{{ $receiver->name }} 様</span>
+                TEL : {{ $receiver->tel_num }}
+            </td>
+            </tr>
          </tbody> 
     </table>
 </div>
 
+<div class="table-responsive table-cart mt-3">
+    <table class="table table-borderd border bg-white">
+    	<thead>
+     	   <tr><th>ご希望配送日時</th></tr>
+        </thead>
+        
+        <tbody>
+        	<tr>
+            <td>
+            	@foreach($sales as $sale)
+                    @if(isset($sale->plan_time)) 
+                        <b class="text-small">ご希望日</b>：
+                        @if(isset($sale->plan_date))
+                            {{ $sale->plan_date }}<br>
+                        @else
+                            最短出荷<br>
+                        @endif
+                        
+                        @break
+                    @endif
+                @endforeach
+                
+                <ul class="px-4 mt-3">
+                    @foreach($sales as $sale)
+                        @if(isset($sale->plan_time)) 
+                            <li class="mb-3">
+                            <?php $i = Item::find($sale->item_id); ?>
+                            
+                            {{ Ctm::getItemTitle($i) }}<br>
+                            <b class="text-small">ご希望時間</b>：[ {{ $sale->plan_time }} ]
+                            </li>
+                        @endif
+                    @endforeach
+                </ul>
+            
+        	</tr>
+            </td>
+        </tbody>
+    </table>
+</div>
+
 @if(isset($saleRel->user_comment))
-<h5 class="card-header mb-3 py-2 mt-4">コメント</h5>
-<div class="table-responsive table-custom mt-3">
+<h5 class="card-header mb-3 py-2 mt-4">その他コメント</h5>
+<div class="table-responsive table-cart mt-3">
     <table class="table table-borderd border bg-white">
         <tbody>
         	<tr>
@@ -198,7 +237,7 @@ use App\Item;
 
 <div class="confirm-right">
 <h5 class="mb-4">&nbsp;</h5>
-<div class="table-responsive table-custom">
+<div class="table-responsive table-normal">
     <table class="table border table-borderd bg-white">
         
         <tbody>
@@ -242,7 +281,7 @@ use App\Item;
 </div>
 
 @if(isset($saleRel->add_point))
-<div class="table-responsive table-custom mt-3">
+<div class="table-responsive table-normal mt-3">
     <table class="table border table-borderd bg-white">
         <tr>
             <th><label class="control-label">ポイント発生</label></th>
@@ -255,7 +294,7 @@ use App\Item;
 @endif
 
 
-<div class="table-responsive table-custom mt-3">
+<div class="table-responsive table-normal mt-3">
     <table class="table border table-borderd bg-white">
         
         <tr>

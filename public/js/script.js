@@ -709,12 +709,12 @@ var exe = (function() {
             //マイページ：有効期限更新Radio                        
             $('.editCardRadio:checked').each(function(e){
                 if($(this).val() == 1) {
-	                $(this).parent('label').next('.wrap-expire').show();
+	                $(this).parent('div').next('.wrap-expire').show();
     	        }
             });
             
             $editCardRadio.on('change', function(e){
-            	var $wrapExpire = $(this).parent('label').siblings('.wrap-expire');
+            	var $wrapExpire = $(this).parent('div').siblings('.wrap-expire');
                 
             	if($(this).val() == 1) {
                 	$wrapExpire.slideDown(100); 

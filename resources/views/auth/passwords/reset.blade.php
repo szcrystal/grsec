@@ -8,7 +8,9 @@
     
         <h4 class="card-header">パスワードのリセット</h4>
         
-        <p class="my-3 pb-1 mx-1">新しいパスワードを入力してリセットして下さい。</p>
+        <p class="my-3 pb-1 mx-1">
+        	登録しているメールアドレスと新しいパスワードを入力してリセットして下さい。
+        </p>
 
         <div class="card-body px-1">
             <form method="POST" action="{{ route('password.request') }}">
@@ -31,7 +33,7 @@
                 </fieldset>
 
                 <fieldset class="form-group row">
-                    <label for="password" class="col-md-3 col-form-label"><b>パスワード</b></label>
+                    <label for="password" class="col-md-3 col-form-label"><b>新パスワード</b></label>
 
                     <div class="col-md-8">
                         <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password">
@@ -45,7 +47,7 @@
                 </fieldset>
 
                 <fieldset class="form-group row">
-                    <label for="password-confirm" class="col-md-3 col-form-label"><b>パスワード（確認）</b></label><!-- text-md-right -->
+                    <label for="password-confirm" class="col-md-3 col-form-label"><b>新パスワード（確認）</b></label><!-- text-md-right -->
 
                     <div class="col-md-8">
                         <input id="password-confirm" type="password" class="form-control" name="password_confirmation">

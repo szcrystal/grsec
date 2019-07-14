@@ -73,20 +73,6 @@ $url = $isMypage ? url('mypage/register') : url('register');
          </tr>
          
          <tr class="form-group">
-             <th>メールアドレス<em>必須</em></th>
-               <td>
-                <input type="email" class="form-control rounded-0 col-md-12{{ $errors->has('user.email') ? ' is-invalid' : '' }}" name="user[email]" value="{{ Ctm::isOld() ? old('user.email') : (isset($user) ? $user->email : '') }}" placeholder="例）abcde@example.com">
-                
-                @if ($errors->has('user.email'))
-                    <div class="help-block text-danger">
-                        <span class="fa fa-exclamation form-control-feedback"></span>
-                        <span>{{ $errors->first('user.email') }}</span>
-                    </div>
-                @endif
-            </td>
-         </tr>
-         
-         <tr class="form-group">
              <th>電話番号<em>必須</em>
              	<small>例）09012345678ハイフンなし半角数字</small>
              </th>
@@ -120,58 +106,59 @@ $url = $isMypage ? url('mypage/register') : url('register');
          
          <tr class="form-group">
              <th>都道府県<em>必須</em></th>
-               <td>
-                <select id="pref" class="form-control rounded-0 select-first col-md-6{{ $errors->has('user.prefecture') ? ' is-invalid' : '' }}" name="user[prefecture]">
-                    <option disabled selected>選択して下さい</option>
-                    <?php
-//                        use App\Prefecture;
-//                        $prefs = Prefecture::all();  
-                    ?>
-                    @foreach($prefs as $pref)
-                        <?php
-                            $selected = '';
-                            if(Ctm::isOld()) {
-                                if(old('user.prefecture') == $pref->name)
-                                    $selected = ' selected';
-                            }
-                            else {
-                            	if(isset($user) && $user->prefecture == $pref->name) {
-                                //if(Session::has('all.data.user')  && session('all.data.user.prefecture') == $pref->name) {
-                                    $selected = ' selected';
-                                }
-                            }
-                        ?>
-                        <option value="{{ $pref->name }}"{{ $selected }}>{{ $pref->name }}</option>
-                    @endforeach
-                </select>
+             	<td>
+               		<div class="select-wrap col-md-6 p-0">
+            			<select id="pref" class="form-control select-first{{ $errors->has('user.prefecture') ? ' is-invalid' : '' }}" name="user[prefecture]">
+                            <option style="display:none;" disabled selected>選択して下さい</option>
+
+                            @foreach($prefs as $pref)
+                                <?php
+                                    $selected = '';
+                                    if(Ctm::isOld()) {
+                                        if(old('user.prefecture') == $pref->name)
+                                            $selected = ' selected';
+                                    }
+                                    else {
+                                        if(isset($user) && $user->prefecture == $pref->name) {
+                                        //if(Session::has('all.data.user')  && session('all.data.user.prefecture') == $pref->name) {
+                                            $selected = ' selected';
+                                        }
+                                    }
+                                ?>
+                                
+                                <option class="text-danger" value="{{ $pref->name }}"{{ $selected }}>{{ $pref->name }}</option>
+                                
+                            @endforeach
+                		</select>
+                	</div>
                 
-                @if ($errors->has('user.prefecture'))
-                    <div class="help-block text-danger">
-                        <span class="fa fa-exclamation form-control-feedback"></span>
-                        <span>{{ $errors->first('user.prefecture') }}</span>
-                    </div>
-                @endif
+                    @if ($errors->has('user.prefecture'))
+                        <div class="help-block text-danger">
+                            <span class="fa fa-exclamation form-control-feedback"></span>
+                            <span>{{ $errors->first('user.prefecture') }}</span>
+                        </div>
+                    @endif
             </td>
          </tr>
          
          <tr class="form-group">
-             <th>住所1（都市区）<em>必須</em></th>
-               <td>
-                <input id="address" type="text" class="form-control rounded-0 col-md-12{{ $errors->has('user.address_1') ? ' is-invalid' : '' }}" name="user[address_1]" value="{{ Ctm::isOld() ? old('user.address_1') : (isset($user) ? $user->address_1 : '') }}" placeholder="例）小美玉市">
-                
-                @if ($errors->has('user.address_1'))
-                    <div class="help-block text-danger">
-                        <span class="fa fa-exclamation form-control-feedback"></span>
-                        <span>{{ $errors->first('user.address_1') }}</span>
-                    </div>
-                @endif
+            <th>住所1（都市区それ以降）<em>必須</em></th>
+            <td>
+                    <input id="address" type="text" class="form-control rounded-0 col-md-12{{ $errors->has('user.address_1') ? ' is-invalid' : '' }}" name="user[address_1]" value="{{ Ctm::isOld() ? old('user.address_1') : (isset($user) ? $user->address_1 : '') }}" placeholder="例）小美玉市下吉影1-1">
+                    
+                    @if ($errors->has('user.address_1'))
+                        <div class="help-block text-danger">
+                            <span class="fa fa-exclamation form-control-feedback"></span>
+                            <span>{{ $errors->first('user.address_1') }}</span>
+                        </div>
+                    @endif
             </td>
          </tr>
          
          <tr class="form-group">
-             <th>住所2（それ以降）<em>必須</em></th>
+             <th>住所2（建物/マンション名等）<em>必須</em></th>
                <td>
-                <input type="text" class="form-control rounded-0 col-md-12{{ $errors->has('user.address_2') ? ' is-invalid' : '' }}" name="user[address_2]" value="{{ Ctm::isOld() ? old('user.address_2') : (isset($user) ? $user->address_2 : '') }}" placeholder="例）下吉影1-1">
+                <input type="text" class="form-control rounded-0 col-md-12{{ $errors->has('user.address_2') ? ' is-invalid' : '' }}" name="user[address_2]" value="{{ Ctm::isOld() ? old('user.address_2') : (isset($user) ? $user->address_2 : '') }}" placeholder="例）GRビル 101号">
                 
                 @if ($errors->has('user.address_2'))
                     <div class="help-block text-danger">
@@ -182,6 +169,8 @@ $url = $isMypage ? url('mypage/register') : url('register');
             </td>
          </tr>
          
+         
+         {{--
          <tr class="form-group">
              <th>住所3（建物/マンション名等）</th>
                <td>
@@ -195,171 +184,75 @@ $url = $isMypage ? url('mypage/register') : url('register');
                 @endif
             </td>
          </tr>
-         </table>
-         </div> 
+         --}}
          
-         <div class="table-responsive table-custom">
-         <p class="mt-4 text-small">よろしければ以下もお答え下さい。</p>
-   		 <table class="table table-borderd border">
-
-         <tr>
-         	<fieldset  class="form-group">
-             <th>性別</th>
-               <td>
-                <?php 
-                     $arrs = array('男性', '女性');
-                 ?>  
-                      
-                @foreach($arrs as $arr) 
-                      <?php
-                       $checked = '';   
-                    if( Ctm::isOld() && old('user.gender') == $arr) {
-                        $checked = ' checked';
-                    }
-                    else if(isset($user) && $user->gender == $arr) {
-                    //elseif(Session::has('all.data.user')  && session('all.data.user.gender') == $str) {
-                        $checked = ' checked';
-                    }
-                    ?>
-                      
-                    <label class="radio-inline pr-3{{ $errors->has('user.gender') ? ' is-invalid' : '' }}">
-                        <input type="radio" name="user[gender]" value="{{ $arr }}"{{ $checked }}>{{ $arr }}
-                    </label>
-                @endforeach
-                
-                @if ($errors->has('user.gender'))
-                    <div class="text-danger">
-                        <span class="fa fa-exclamation form-control-feedback"></span>
-                        <span>{{ $errors->first('user.gender') }}</span>
-                    </div>
-                @endif
-            </td>
-            </fieldset>
-         </tr>
-        
-        
          <tr class="form-group">
-             <th>生年月日</th>
-               <td class="wrap-birth">
-                   
-                <select class="form-control rounded-0 select-first col-md-2 d-inline{{ $errors->has('user.birth_year') ? ' is-invalid' : '' }}" name="user[birth_year]">
-                    <option value="0" selected>年</option>
-                    <?php
-                        $yNow = date('Y');
-                        $y = 1900;
-                    ?>
-                    @while($y <= $yNow)
-                        <?php
-                            $selected = '';
-                            if(Ctm::isOld()) {
-                                if(old('user.birth_year') == $y)
-                                    $selected = ' selected';
-                            }
-                            else if(isset($user) && $user->birth_year) {
-                                if($user->birth_year == $y) {
-                                //if(Session::has('all.data.user')  && session('all.data.user.birth_year') == $y) {
-                                    $selected = ' selected';
-                                }
-                            }
-                            else {
-                                if($y == 1970) {
-                                    $selected = ' selected';
-                                }
-                            }
-                        ?>
-                        
-                        <option value="{{ $y }}"{{ $selected }}>{{ $y }}</option>
-                        
-                        <?php $y++; ?>
-                    
-                    @endwhile
-                </select>
-                <span class="mr-2">年</span>
+             <th>メールアドレス<em>必須</em></th>
+               <td>
+                <input type="email" class="form-control rounded-0 col-md-12{{ $errors->has('user.email') ? ' is-invalid' : '' }}" name="user[email]" value="{{ Ctm::isOld() ? old('user.email') : (isset($user) ? $user->email : '') }}" placeholder="例）abcde@example.com">
                 
-                @if ($errors->has('user.birth_year'))
+                @if ($errors->has('user.email'))
                     <div class="help-block text-danger">
                         <span class="fa fa-exclamation form-control-feedback"></span>
-                        <span>{{ $errors->first('user.birth_year') }}</span>
+                        <span>{{ $errors->first('user.email') }}</span>
                     </div>
                 @endif
-                
-                <select class="form-control rounded-0 select-first col-md-1 d-inline{{ $errors->has('user.birth_month') ? ' is-invalid' : '' }}" name="user[birth_month]">
-                    <option value="0" selected>月</option>
-                    <?php
-                        $m = 1;
-                    ?>
-                    @while($m <= 12)
-                        <?php
-                            $selected = '';
-                            if(Ctm::isOld()) {
-                                if(old('user.birth_month') == $m)
-                                    $selected = ' selected';
-                            }
-                            else {
-                                if(isset($user) && $user->birth_month == $m) {
-                                //if(Session::has('all.data.user')  && session('all.data.user.birth_month') == $m) {
-                                    $selected = ' selected';
-                                }
-                            }
-                        ?>
-                        <option value="{{ $m }}"{{ $selected }}>{{ $m }}</option>
-                        
-                        <?php $m++; ?>
-                    
-                    @endwhile
-                </select>
-                <span class="mr-2">月</span>
-                
-                @if ($errors->has('user.birth_month'))
-                    <div class="help-block text-danger">
-                        <span class="fa fa-exclamation form-control-feedback"></span>
-                        <span>{{ $errors->first('user.birth_month') }}</span>
-                    </div>
-                @endif
-                
-                <select class="form-control select-first col-md-1 d-inline{{ $errors->has('user.birth_day') ? ' is-invalid' : '' }}" name="user[birth_day]">
-                    <option value="0" selected>日</option>
-                    <?php
-                        $d = 1;
-                    ?>
-                    @while($d <= 31)
-                        <?php
-                            $selected = '';
-                            if(Ctm::isOld()) {
-                                if(old('user.birth_day') == $d)
-                                    $selected = ' selected';
-                            }
-                            else {
-                                if(isset($user) && $user->birth_day == $d) {
-                                //if(Session::has('all.data.user')  && session('all.data.user.birth_day') == $d) {
-                                    $selected = ' selected';
-                                }
-                            }
-                        ?>
-                        <option value="{{ $d }}"{{ $selected }}>{{ $d }}</option>
-                        
-                        <?php $d++; ?>
-                    
-                    @endwhile
-                </select>
-                <span>日</span>
-                
-                @if ($errors->has('user.birth_day'))
-                    <div class="help-block text-danger">
-                        <span class="fa fa-exclamation form-control-feedback"></span>
-                        <span>{{ $errors->first('user.birth_day') }}</span>
-                    </div>
-                @endif
-                
             </td>
          </tr>
          
-         </table>
-         </div>
+         <tr>
+         	<th>
+            	@if(! $isMypage)
+	                パスワード<em>必須</em>
+            	@else
+                	パスワードの変更
+                @endif
+            </th>
+            <td>
+            	@if(! $isMypage)
+                    <input type="password" class="form-control rounded-0 col-md-12{{ $errors->has('user.password') ? ' is-invalid' : '' }}" name="user[password]" value="{{ Ctm::isOld() ? old('user.password') : (Session::has('all.data.user') ? session('all.data.user.password') : '') }}" placeholder="8文字以上（半角）">
+                                        
+                    @if ($errors->has('user.password'))
+                        <div class="help-block text-danger">
+                            <span class="fa fa-exclamation form-control-feedback"></span>
+                            <span>{{ $errors->first('user.password') }}</span>
+                        </div>
+                    @endif
+                    
+                @else
+					パスワードの変更は <a href="{{ url('password/reset') }}">こちら <i class="fal fa-angle-double-right"></i></a>
+                @endif
+            </td>
+         </tr>
          
+         @if(! $isMypage)
+         	<tr class="form-group">
+                <th>パスワードの確認<em>必須</em></th>
+                <td>
+                    <input type="password" class="form-control rounded-0 col-md-12{{ $errors->has('user.password_confirmation') ? ' is-invalid' : '' }}" name="user[password_confirmation]" value="{{ Ctm::isOld() ? old('user.password_confirmation') : (Session::has('all.data.user') ? session('all.data.user.password_confirmation') : '') }}">
+                    
+                    @if ($errors->has('user.password_confirmation'))
+                        <div class="help-block text-danger">
+                            <span class="fa fa-exclamation form-control-feedback"></span>
+                            <span>{{ $errors->first('user.password_confirmation') }}</span>
+                        </div>
+                    @endif
+                </td>
+             </tr>
+         @endif
+         
+    </table>
+</div> 
+
+
+ {{--
+ @include('mypage.genderBirth')
+ --}}                   
+
+
 <div id="magazine" class="table-responsive table-custom">
-<p class="mt-4 text-small">当店からのお知らせを希望しますか？</p>
-    <table class="table table-borderd border">
+<p class="mt-3 mb-0 ml-2 text-small">当店からのお知らせを希望しますか？</p>
+    <table class="table">
       
          <tr class="form-group">
              <th>メールマガジンの登録</th>
@@ -377,7 +270,9 @@ $url = $isMypage ? url('mypage/register') : url('register');
                         }
                     }
                 ?>
-                <input type="checkbox" name="user[magazine]" value="1"{{ $checked }}> 登録する
+                
+                <input id="user-magazine" type="checkbox" name="user[magazine]" value="1"{{ $checked }}>
+                <label for="user-magazine" class="checks">登録する</label>
                 
                 @if ($errors->has('user.magazine'))
                     <div class="help-block text-danger">
@@ -388,57 +283,7 @@ $url = $isMypage ? url('mypage/register') : url('register');
             </td>
          </tr>
     </table>
-    </div>
-    
-<div class="table-responsive table-custom">
-	@if(! $isMypage)
-		<p class="mt-4 text-small">8文字以上（半角）で、忘れないものを入力して下さい。<br>メールアドレスとパスワードは当店をご利用の際に必要となります。</p>
-	@endif
-    
-         
-    @if(! $isMypage)
-    	<table class="table table-borderd border">
-             <tr class="form-group">
-                 <th>パスワード<em>必須</em></th>
-                   <td>
-                    <input type="password" class="form-control rounded-0 col-md-12{{ $errors->has('user.password') ? ' is-invalid' : '' }}" name="user[password]" value="{{ Ctm::isOld() ? old('user.password') : (Session::has('all.data.user') ? session('all.data.user.password') : '') }}" placeholder="8文字以上">
-                                        
-                    @if ($errors->has('user.password'))
-                        <div class="help-block text-danger">
-                            <span class="fa fa-exclamation form-control-feedback"></span>
-                            <span>{{ $errors->first('user.password') }}</span>
-                        </div>
-                    @endif
-                </td>
-             </tr>
-             
-             <tr class="form-group">
-                <th>パスワードの確認<em>必須</em></th>
-                <td>
-                    <input type="password" class="form-control rounded-0 col-md-12{{ $errors->has('user.password_confirmation') ? ' is-invalid' : '' }}" name="user[password_confirmation]" value="{{ Ctm::isOld() ? old('user.password_confirmation') : (Session::has('all.data.user') ? session('all.data.user.password_confirmation') : '') }}">
-                    
-                    @if ($errors->has('user.password_confirmation'))
-                        <div class="help-block text-danger">
-                            <span class="fa fa-exclamation form-control-feedback"></span>
-                            <span>{{ $errors->first('user.password_confirmation') }}</span>
-                        </div>
-                    @endif
-                </td>
-             </tr>
-             
-    @else
-        <table class="table table-borderd border mt-5">
-            <tr class="form-group"> 
-                <th>パスワードの変更</th>
-                <td>
-                    パスワードの変更は <a href="{{ url('password/reset') }}">こちら <i class="fal fa-angle-double-right"></i></a>
-                </td>
-            </tr>
-             
-    @endif
-    
-    </table>
- </div>            
+</div>
  
     
 @if($isMypage)
@@ -469,7 +314,7 @@ $url = $isMypage ? url('mypage/register') : url('register');
                                     
                                         <div class="mb-4 pb-1">
                                             
-                                            <label><i class="fas fa-square text-small text-gray"></i> カード番号： </label>
+                                            <label class="mb-1"><i class="fas fa-square text-small text-gray"></i> カード番号： </label>
                                             <span>{{ $regCardDatas['CardNo'][$k] }}</span>
                                             <input type="hidden" name="user[card_num][{{ $seqNum }}]" value="{{ $regCardDatas['CardNo'][$k] }}">
                                             
@@ -481,9 +326,8 @@ $url = $isMypage ? url('mypage/register') : url('register');
                                             
                                             <small class="d-block ml-3">有効期限（月/年）：{{ $m.'/'.$y }}</small>
                                             <input type="hidden" name="user[card_expire][{{ $seqNum }}]" value="{{ $m.'/'.$y }}">
-                                        
-
-                                            <div class="mt-3 mb-4 ml-2">
+                                            
+                                            <div class="mt-2 mb-4 ml-2 pl-1">
                                                 
                                                 <?php
                                                     $time = new DateTime('now');
@@ -492,7 +336,6 @@ $url = $isMypage ? url('mypage/register') : url('register');
                                                 
                                                     $yn = 0;
                                                     $mn = 1;
-                                                    
                                                     
                                                     $radioChecked = '';
                                                     $radioCheckedSec = '';
@@ -507,38 +350,42 @@ $url = $isMypage ? url('mypage/register') : url('register');
                                                     }
                                                 ?>
                                             
-                                                <label class="d-block mb-3">
-                                                    <input type="radio" name="user[edit_mode][{{ $seqNum }}]" class="editCardRadio ml-2" value="0" checked> 変更しない
-                                                </label>
+                                                <div class="mb-2">
+                                                    <input id="editCardRadio-{{ $seqNum }}-1" type="radio" name="user[edit_mode][{{ $seqNum }}]" class="editCardRadio" value="0" checked>
+                                                    <label for="editCardRadio-{{ $seqNum }}-1" class="radios">変更しない</label>
+                                                </div>
                                                 
-                                                <label class="d-block mb-3">
-                                                    <input type="radio" name="user[edit_mode][{{ $seqNum }}]" class="editCardRadio ml-2" value="1"{{ $radioChecked }}> 有効期限（月/年）を変更する
-                                                </label>
+                                                <div class="mb-2">
+                                                    <input id="editCardRadio-{{ $seqNum }}-2" type="radio" name="user[edit_mode][{{ $seqNum }}]" class="editCardRadio" value="1"{{ $radioChecked }}>
+                                                    <label for="editCardRadio-{{ $seqNum }}-2" class="radios">有効期限（月/年）を変更する</label>
+                                                </div>
 
                                                 <div class="wrap-expire ml-3 pl-1 mb-3" data-seq="{{ $seqNum }}">
-                                                    <select id="expire_month" class="form-control d-inline-block col-md-2{{ $errors->has('user.expire_month.'.$seqNum) || $errors->has('user.expire.'.$seqNum) ? ' is-invalid' : '' }}" name="user[expire_month][{{ $seqNum }}]">
-                                                        
-                                                        @while($mn < 13)
-                                                            <?php
-                                                                $expireMonth = str_pad($mn, 2, 0, STR_PAD_LEFT); //2桁0埋め
-                                                                
-                                                                $selected = '';
-                                                                if(Ctm::isOld()) {
-                                                                    if(old('user.expire_month.'.$seqNum) == $expireMonth)
-                                                                        $selected = ' selected';
-                                                                }
-                                                                else {
-                                                                    if($mn == $m) {
-                                                                        $selected = ' selected';
+                                                	<div class="select-wrap d-inline-block col-md-2 p-0">
+                                                        <select id="expire_month" class="form-control{{ $errors->has('user.expire_month.'.$seqNum) || $errors->has('user.expire.'.$seqNum) ? ' is-invalid' : '' }}" name="user[expire_month][{{ $seqNum }}]">
+                                                            
+                                                            @while($mn < 13)
+                                                                <?php
+                                                                    $expireMonth = str_pad($mn, 2, 0, STR_PAD_LEFT); //2桁0埋め
+                                                                    
+                                                                    $selected = '';
+                                                                    if(Ctm::isOld()) {
+                                                                        if(old('user.expire_month.'.$seqNum) == $expireMonth)
+                                                                            $selected = ' selected';
                                                                     }
-                                                                }
-                                                            ?>
-                                                            
-                                                            <option value="{{ $expireMonth }}"{{ $selected }}>{{ $expireMonth }}</option>
-                                                            
-                                                            <?php $mn++; ?>
-                                                        @endwhile
-                                                    </select>
+                                                                    else {
+                                                                        if($mn == $m) {
+                                                                            $selected = ' selected';
+                                                                        }
+                                                                    }
+                                                                ?>
+                                                                
+                                                                <option value="{{ $expireMonth }}"{{ $selected }}>{{ $expireMonth }}</option>
+                                                                
+                                                                <?php $mn++; ?>
+                                                            @endwhile
+                                                        </select>
+                                                    </div>
                                                     <span class="mr-4">月</span>
                                                     
                                                     @if ($errors->has('user.expire_month.'.$seqNum))
@@ -548,27 +395,29 @@ $url = $isMypage ? url('mypage/register') : url('register');
                                                         </div>
                                                     @endif
                                                     
-                                                    <select id="expire_year" class="form-control d-inline-block col-md-2{{ $errors->has('user.expire_year.'.$seqNum) || $errors->has('user.expire.'.$seqNum) ? ' is-invalid' : '' }}" name="user[expire_year][{{ $seqNum }}]">
-                                                        
-                                                        @while($yn < 11)
-                                                            <?php
-                                                                $selected = '';
-                                                                if(Ctm::isOld()) {
-                                                                    if(old('user.expire_year.'.$seqNum) == $expireYear + $yn)
-                                                                        $selected = ' selected';
-                                                                }
-                                                                else {
-                                                                    if($expireYear + $yn == $y) {
-                                                                        $selected = ' selected';
+                                                    <div class="select-wrap d-inline-block col-md-2 p-0">
+                                                        <select id="expire_year" class="form-control{{ $errors->has('user.expire_year.'.$seqNum) || $errors->has('user.expire.'.$seqNum) ? ' is-invalid' : '' }}" name="user[expire_year][{{ $seqNum }}]">
+                                                            
+                                                            @while($yn < 11)
+                                                                <?php
+                                                                    $selected = '';
+                                                                    if(Ctm::isOld()) {
+                                                                        if(old('user.expire_year.'.$seqNum) == $expireYear + $yn)
+                                                                            $selected = ' selected';
                                                                     }
-                                                                }
-                                                            ?>
-                                                            
-                                                            <option value="{{ $expireYear + $yn }}"{{ $selected }}>{{ $expireYear + $yn }}</option>
-                                                            
-                                                            <?php $yn++; ?>
-                                                        @endwhile
-                                                    </select>
+                                                                    else {
+                                                                        if($expireYear + $yn == $y) {
+                                                                            $selected = ' selected';
+                                                                        }
+                                                                    }
+                                                                ?>
+                                                                
+                                                                <option value="{{ $expireYear + $yn }}"{{ $selected }}>{{ $expireYear + $yn }}</option>
+                                                                
+                                                                <?php $yn++; ?>
+                                                            @endwhile
+                                                        </select>
+                                                    </div>
                                                     <span>年</span>
                                                     
                                                     @if ($errors->has('user.expire_year.'.$seqNum))
@@ -589,9 +438,10 @@ $url = $isMypage ? url('mypage/register') : url('register');
                                                 </div>
                                                 
                                                 
-                                                <label class="d-block mt-3">
-                                                    <input type="radio" name="user[edit_mode][{{ $seqNum }}]" class="editCardRadio ml-2" value="2"{{ $radioCheckedSec }}> このカードを削除する
-                                                </label>
+                                                <div class="mt-2">
+                                                    <input id="editCardRadio-{{ $seqNum }}-3" type="radio" name="user[edit_mode][{{ $seqNum }}]" class="editCardRadio" value="2"{{ $radioCheckedSec }}>
+                                                    <label for="editCardRadio-{{ $seqNum }}-3" class="radios">このカードを削除する</label>
+                                                </div>
                                                     
                                                 @if ($errors->has('user.card_del.'. $seqNum))
                                                     <div class="help-block text-danger">

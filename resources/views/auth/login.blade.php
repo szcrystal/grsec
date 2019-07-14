@@ -63,9 +63,8 @@
                     <fieldset class="form-group row">
                         <div class="col-md-8 offset-md-3">
                             <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> ログイン状態を保存する
-                                </label>
+                                <input id="login-remember" type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}>
+                                <label for="login-remember" class="checks">ログイン状態を保存する</label>
                             </div>
                         </div>
                     </fieldset>

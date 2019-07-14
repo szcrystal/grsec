@@ -628,8 +628,8 @@ use App\DeliveryGroup;
                                 ?>
                                 
                                 <span class="deliRadioWrap">
-                                	<input id="radio-deli-no" type="radio" name="plan_time[{{$key}}]" value="希望なし" class="deliRadio" checked>
-                    				<label for="radio-deli-no" class="radios">希望なし</label>
+                                	<input id="radio-deli-{{ $key }}-no" type="radio" name="plan_time[{{$key}}]" value="希望なし" class="deliRadio" checked>
+                    				<label for="radio-deli-{{ $key }}-no" class="radios">希望なし</label>
                                     
                                     {{--
                                 	<input type="radio" name="plan_time[{{$key}}]" class="deliRadio" value="希望なし" checked><span class="mr-3"> 希望なし</span>
@@ -653,8 +653,8 @@ use App\DeliveryGroup;
                                      ?>
                                     
                                     <span class="deliRadioWrap">
-                                    	<input id="radio-deli-{{ $k }}" type="radio" name="plan_time[{{$key}}]" value="{{ $table }}" class="deliRadio" {{ $checked }}>
-                    					<label for="radio-deli-{{ $k }}" class="radios">{{ $table }}</label>
+                                    	<input id="radio-deli-{{ $key }}-{{ $k }}" type="radio" name="plan_time[{{$key}}]" value="{{ $table }}" class="deliRadio" {{ $checked }}>
+                    					<label for="radio-deli-{{ $key }}-{{ $k }}" class="radios">{{ $table }}</label>
                                     	
                                         {{--
                                     	<input type="radio" name="plan_time[{{$key}}]" class="deliRadio" value="{{ $table }}" {{ $checked }}> <span class="mr-3">{{ $table }}</span>
@@ -1045,7 +1045,7 @@ use App\DeliveryGroup;
         <input type="hidden" name="regist" value="{{ $regist }}">
         
         <div>
-        	<button class="btn btn-block btn-custom col-md-4 mb-4 mx-auto py-2" type="submit" name="recognize" value="1">確認する</button>
+        	<button class="btn btn-block btn-pink col-md-4 mb-4 mx-auto py-2" type="submit" name="recognize" value="1">確認する</button>
         </div>
        
     </form>
