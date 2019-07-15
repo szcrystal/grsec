@@ -162,7 +162,7 @@ use App\PayMethodChild;
                                      <a href="mailto:{{ $users->email }}">{{ $users->email }}</a><br>
                                      
                                      〒{{ Ctm::getPostNum($users->post_num) }}<br>
-                                     {{ $users->prefecture }}{{ $users->address_1 }}{{ $users->address_2 }}&nbsp;
+                                     {{ $users->prefecture }}{{ $users->address_1 }}&nbsp;{{ $users->address_2 }}
                                      {{ $users->address_3 }}<br>
                                      TEL：{{ $users->tel_num }}
                                      
@@ -176,7 +176,7 @@ use App\PayMethodChild;
                                 <th>配送先</th>
                                 <td>
                                 〒{{ Ctm::getPostNum($receiver->post_num) }}<br>
-                                {{ $receiver->prefecture }}{{ $receiver->address_1 }}{{ $receiver->address_2 }}&nbsp;
+                                {{ $receiver->prefecture }}{{ $receiver->address_1 }}&nbsp;{{ $receiver->address_2 }}
                                 {{ $receiver->address_3 }}<br>
                                 {{ $receiver->name }}<span class="text-small ml-1">（{{ $receiver->hurigana }}）</span> 様<br>
                                 TEL: {{ $receiver->tel_num }}

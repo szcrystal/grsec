@@ -617,15 +617,16 @@ class MyPageController extends Controller
         	//$item->saled = 1;
             
             $fav = $this->favorite->where(['user_id'=>$user->id, 'item_id'=>$item->id])->first();
+            
+            $item->fav_id = $fav->id;
        		$item->fav_created_at = $fav->created_at;
         }
         
-        
-       	
-        
-        //$cates = $this->category;   
+        $metaTitle = 'お気に入り一覧' . '｜植木買うならグリーンロケット';
+        $metaDesc = '';
+        $metaKeyword = '';
       
-        return view('mypage.favorite', ['user'=>$user, 'items'=>$items ]);   
+        return view('mypage.favorite', ['user'=>$user, 'items'=>$items, 'metaTitle'=>$metaTitle ]);   
     }
     
     public function create()

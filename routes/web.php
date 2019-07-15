@@ -136,7 +136,8 @@ Route::get('/item/{id}', 'Main\SingleController@index');
 Route::post('/item/script', 'Main\SingleController@postScript');
 
 //CacheFavorite
-Route::get('/favorite', 'Main\SingleController@favIndex');
+Route::get('favorite', 'Main\SingleController@favIndex');
+Route::post('favorite-del', 'Main\SingleController@postFavDel');
 
 //Shop Cart
 Route::post('/cart/form', 'Main\SingleController@postForm');

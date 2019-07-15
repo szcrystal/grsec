@@ -1377,6 +1377,10 @@ ORG END ======================== */
         //border: 1px solid red;
     }
     
+    .fav-btn-wrap { /* fav indexのbtn-wrap */
+        margin-top: 0.5em;
+    }
+    
     /* Footer */
     
     #colop .foot-wrap {

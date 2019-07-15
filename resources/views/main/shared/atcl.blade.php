@@ -4,6 +4,7 @@ use App\Item;
 use App\Category;
 use App\CategorySecond;
 use App\Favorite;
+use App\FavoriteCookie;
 use App\Icon;
 ?>
 
@@ -112,29 +113,44 @@ use App\Icon;
     </div>
     
 
-        @if(Auth::check())
-            <div class="favorite">
-                <?php
-                    if(Favorite::where(['user_id'=>Auth::id(), 'item_id'=>$item->id])->first()) {
-                        $on = ' d-none';
-                        $off = ' d-inline'; 
-                        $str = 'お気に入りの商品です';              
-                    }
-                    else {
-                        $on = ' d-inline';
-                        $off = ' d-none';
-                        $str = 'お気に入りに登録';
-                    }               
-                ?>
+    <div class="favorite">
+        <?php
+        	//お気に入り確認
+            $isFav = 0;
+            
+            if(Auth::check()) {
+                $fav = Favorite::where(['user_id'=>Auth::id(), 'item_id'=>$item->id])->first();
+                if(isset($fav)) $isFav = 1;   
+            }
+            else { //Cookie確認
+                $favKey = Cookie::get('fav_key');
+				
+                if(isset($favKey) && $favKey != '') {
+                	$favCookie = FavoriteCookie::where(['key'=>$favKey, 'item_id'=>$item->id])->first();
+                	if(isset($favCookie)) $isFav = 1;
+                }
+            }
 
-                <span class="fav fav-on{{ $on }}" data-id="{{ $item->id }}"><i class="fal fa-heart"></i></span>
-                <span class="fav fav-off{{ $off }}" data-id="{{ $item->id }}"><i class="fas fa-heart"></i></span>
-                <span class="loader"><i class="fas fa-square"></i></span>
-                <small class="fav-str">{{-- $str --}}</small>    
-            </div>
-        @else
-            {{-- <span class="fav-temp"><a href="{{ url('login') }}"><i class="far fa-heart"></i></a></span> --}}
-        @endif
+            //if(Favorite::where(['user_id'=>Auth::id(), 'item_id'=>$item->id])->first()) {
+            if($isFav) {
+                $on = ' d-none';
+                $off = ' d-inline'; 
+                $str = 'お気に入りの商品です';              
+            }
+            else {
+                $on = ' d-inline';
+                $off = ' d-none';
+                $str = 'お気に入りに登録';
+            }               
+        ?>
+
+        <span class="fav fav-on{{ $on }}" data-id="{{ $item->id }}"><i class="fal fa-heart"></i></span>
+        <span class="fav fav-off{{ $off }}" data-id="{{ $item->id }}"><i class="fas fa-heart"></i></span>
+        <span class="loader"><i class="fas fa-square"></i></span>
+        <small class="fav-str">{{-- $str --}}</small>    
+    </div>
+
+    {{-- <span class="fav-temp"><a href="{{ url('login') }}"><i class="far fa-heart"></i></a></span> --}}
     
     
 </div>

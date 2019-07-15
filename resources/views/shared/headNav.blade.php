@@ -40,7 +40,11 @@
 
                 @if(! Auth::check())
                     <li><a href="{{ url('login') }}">ログイン</a></li>
-                     
+                    
+                    <form id="for-favorite" action="" method="POST" style="display: none;">
+                        {{ csrf_field() }}
+                    </form>
+                    
                 @else
                 	<li><a href="{{ url('mypage') }}">マイページ</a></li>
                     

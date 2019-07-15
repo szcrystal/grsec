@@ -373,6 +373,10 @@ class SingleController extends Controller
     
     public function favIndex()
     {
+    	if(Auth::check()) {
+        	return redirect('mypage/favorite');
+        }
+        
     	$items = null;
         $getNum = Ctm::isAgent('sp') ? 8 : 8;
         
@@ -406,6 +410,7 @@ class SingleController extends Controller
             foreach($items as $item) {
             	$fav = $this->favCookie->where(['key'=>$favKey, 'item_id'=>$item->id])->first();
                 
+                $item->fav_id = $fav->id;
             	$item->fav_created_at = $fav->created_at;
             }
             
@@ -423,9 +428,31 @@ class SingleController extends Controller
 //        	//$item->saled = 1;
 //        }      
        
+       	$metaTitle = 'お気に入り一覧' . '｜植木買うならグリーンロケット';
+        $metaDesc = '';
+        $metaKeyword = '';
       
-        return view('mypage.favorite', ['items'=>$items ]); 
+        return view('mypage.favorite', ['items'=>$items, 'metaTitle'=>$metaTitle]); 
     
+    }
+    
+    //fav一覧からのfav delete
+    public function postFavDel(Request $request)
+    {
+    	$favDelId = $request->input('fav_del_id');
+        
+        if(Auth::check()) {
+        	$this->favorite->destroy($favDelId);
+            $redirectUrl = 'mypage/favorite';
+        }
+        else {
+        	$this->favCookie->destroy($favDelId);
+            $redirectUrl = 'favorite';
+        }
+        
+        
+        return redirect($redirectUrl);
+ 
     }
     
     

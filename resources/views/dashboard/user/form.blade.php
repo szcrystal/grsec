@@ -126,10 +126,13 @@
                                 <th>住所2</th>
                                 <td>{{ $user->address_2 }}</td>
                             </tr>
+                            
+                            {{--
                             <tr>
                                 <th>住所3</th>
                                 <td>{{ $user->address_3 }}</td>
                             </tr>
+                            --}}
                             
                             <tr>
                             	@if($isUser)
@@ -147,7 +150,12 @@
                             @if($isUser)
                                 <tr>
                                     <th>残ポイント</th>
-                                    <td>{{ $user->point }}</td>   
+                                    <td>
+                                    	{{ $user->point }}
+                                        {{--
+                                    	<input  class="form-control col-md-6{{ $errors->has('cost_price') ? ' is-invalid' : '' }}" name="point" value="{{ Ctm::isOld() ? old('point') : (isset($user) ? $user->point : '') }}">
+                                        --}}
+                                    </td>   
                                 </tr>
                                 
                                 <tr>
@@ -195,7 +203,13 @@
                     </table>
                 </div>
    
-   
+   				@if($isUser)
+                	{{--
+                    <div class="form-group mb-5">
+                        <button type="submit" class="btn btn-primary btn-block mx-auto w-btn w-25">更　新</button>
+                    </div>
+                    --}}
+                @endif
                 
                 <h4 class="mt-3">購入商品</h4>
        

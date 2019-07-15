@@ -26,7 +26,7 @@ use App\Item;
 </div>
 
 <div class="table-responsive table-cart min-height-45">
-    <table class="table bg-white">
+    <table class="table">
     	        
         <tbody>
         @foreach($sales as $sale)

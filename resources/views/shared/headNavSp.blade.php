@@ -151,11 +151,14 @@ use App\User;
 
         @if(! Auth::check())
             <li><a href="{{ url('login') }}"><i class="fal fa-sign-in"></i></a></li>
+            <li><a href="{{ url('favorite') }}"><i class="fal fa-heart"></i></a></li>
+            
+            <form id="for-favorite" action="" method="POST" style="display: none;">
+                {{ csrf_field() }}
+            </form>
         @else
             <li><a href="{{ url('mypage') }}"><i class="fal fa-user"></i></a></li>
-            
-            
-            
+
             <li><a href="{{ url('mypage/favorite') }}"><i class="fal fa-heart"></i></a></li>
             
             {{--

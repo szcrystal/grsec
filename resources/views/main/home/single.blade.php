@@ -313,40 +313,39 @@ use App\TopSetting;
                     </div>
                     
 
-                    <div class="favorite my-4" data-type='single'>
-                        
-                        @if(! Auth::check())
-                            <?php
-                                if($isFav) {
-                                    $on = ' d-none';
-                                    $off = ' d-inline'; 
-                                    $str = 'お気に入りの商品です';              
-                                }
-                                else {
-                                    $on = ' d-inline';
-                                    $off = ' d-none';
-                                    $str = 'お気に入りに登録';
-                                }               
-                            ?>
-
-                            <span class="fav fav-on{{ $on }}" data-id="{{ $item->id }}"><i class="far fa-heart"></i></span>
-                            <span class="fav fav-off{{ $off }}" data-id="{{ $item->id }}"><i class="fas fa-heart"></i></span>
-                            
-                            <small class="fav-str"><span class="loader"><i class="fas fa-square"></i></span>{{ $str }}</small> 
-                            
-                        @else
-                            <span class="fav-temp"><i class="far fa-heart"></i></span>
-                            <small class="fav-str"><a href="{{ url('login') }}"><b>ログイン</b></a>するとお気に入りに登録できます</small>   
-                        @endif 	   
-                    </div>
+                    @if(! Auth::check())
+                        <div class="pl-1">
+                            {{-- <span class="fav-temp"><i class="far fa-heart"></i></span> --}}
+                            <small class="p-0 m-0"><a href="{{ url('login') }}"><b>ログイン<i class="fal fa-angle-double-right"></i></b></a> すると永続してお気に入りに登録できます</small>
+                        </div>
+                    @endif
                     
+                    <div class="favorite mt-1 mb-4" data-type='single'>
+                        <?php
+                            if($isFav) {
+                                $on = ' d-none';
+                                $off = ' d-inline'; 
+                                $str = 'お気に入りの商品です';              
+                            }
+                            else {
+                                $on = ' d-inline';
+                                $off = ' d-none';
+                                $str = 'お気に入りに登録';
+                            }               
+                        ?>
+
+                        <span class="fav fav-on{{ $on }}" data-id="{{ $item->id }}"><i class="far fa-heart"></i></span>
+                        <span class="fav fav-off{{ $off }}" data-id="{{ $item->id }}"><i class="fas fa-heart"></i></span>
+                        
+                        <small class="fav-str"><span class="loader"><i class="fas fa-square"></i></span>{{ $str }}</small> 
+                    </div>
                     
 
                   	<div class="form-wrap">
                   		@if($item->stock > 0)
  
  							@if(! $isPotSet)
-                                <fieldset class="mb-4 form-group clearfix text-right">
+                                <fieldset class="mb-3 form-group clearfix text-right">
                                     <label>数量
                                     @if($item->stock_show)
                                         <span>（在庫：{{ $item->stock }}）</span>

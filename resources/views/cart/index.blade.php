@@ -127,8 +127,7 @@
                     </td>
                           
                     <td class="text-right">
-                    	<button class="btn btn-cart-del mb-4" type="submit" name="del_item_key" value="{{ $key }}"><i class="fal fa-times"></i></button>
-                            
+                    	<button class="btn btn-cart-del mb-4" type="submit" name="del_item_key" value="{{ $key }}"><i class="fal fa-times"></i></button>       
                     </td>
 
                 </tr> 
@@ -230,9 +229,7 @@
                         </div>
                     @endif
                     
-                </td>
-                
-                
+                </td>   
             </tr>
             
             <tr>

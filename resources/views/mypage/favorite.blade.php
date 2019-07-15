@@ -21,15 +21,15 @@ use App\CategorySecond;
 @else
 
 @if(! Auth::check())
-<p class="mb-5 text-small">
-お気に入りの操作が3ヶ月以上ない場合は自動で削除されます。<br>
+<p class="mb-5 ml-1 text-small">
+お気に入りに関する操作が3ヶ月以上ない場合は自動で削除されます。<br>
 また、ログインすると下記の登録された商品は表示されません。<br>
-永続してご利用になりたい場合は、<a href="{{ url('login') }}"><b>ログイン</b></a>してご利用下さい。
+永続してご利用になりたい場合は、<a href="{{ url('login') }}"><b>ログイン<i class="fal fa-angle-double-right"></i></b></a> してご利用下さい。
 </p>
 @endif
 
 <div class="table-responsive table-cart min-height-45">
-    <table class="table bg-white"> {{-- table-striped  --}}
+    <table class="table"> {{-- table-striped  --}}
         
         <tbody>
             @foreach($items as $item)
@@ -71,10 +71,10 @@ use App\CategorySecond;
                                 @endif
                             </span>
                             <br>
-                            <a href="{{ url('category/'. $cateSlug) }}" class="d-inline-block py-1">{{ $cateName }}</a>
+                            <span class="text-small">カテゴリー：</span><a href="{{ url('category/'. $cateSlug) }}" class="d-inline-block py-1">{{ $cateName }}</a>
                          </div>
                             
-                        <div class="mt-2 float-right col-md-3">
+                        <div class="fav-btn-wrap float-right col-md-3 p-0">
                             <a href="{{ url('item/'.$item->id) }}" class="btn border-secondary bg-white text-small w-100 rounded-0 mb-2">
                                 商品ページへ <i class="fal fa-angle-double-right"></i>
                             </a>
@@ -101,6 +101,13 @@ use App\CategorySecond;
                        </div>
 
                      </td>
+                     
+                     <td class="text-right">
+                     	<form class="form-horizontal" role="form" method="POST" action="{{ url('favorite-del') }}">
+                        	{{ csrf_field() }}
+                    		<button class="btn btn-cart-del mb-4" type="submit" name="fav_del_id" value="{{ $item->fav_id }}"><i class="fal fa-times"></i></button>
+                        </form>      
+                    </td>
                 </tr>
             @endforeach
         
