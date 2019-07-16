@@ -89,7 +89,7 @@ use App\CategorySecond;
                                     <input type="hidden" name="uri" value="{{ Request::path() }}"> 
                                         
                                     @if($item->saleDate)
-                                        <small class="d-block mb-2 mt-4">この商品は{{ Ctm::changeDate($item->saleDate, 1) }}<br>に購入しています</small>                   
+                                        <p class="text-extra-small mb-2">＊この商品は{{ Ctm::changeDate($item->saleDate, 1) }}に購入しています</p>                   
                                         <button class="btn btn-custom text-small w-100 text-center" type="submit" name="regist_off" value="1">もう一度購入</button>         
                                     @else   
                                         <button type="submit" class="btn btn-custom text-small text-center w-100">カートに入れる</button>

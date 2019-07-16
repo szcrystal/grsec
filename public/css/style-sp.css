@@ -334,6 +334,10 @@ for SP
     .for-sp {
         display: block;
     }
+    
+    .text-extra-small {
+        font-size: 0.75em;
+    }
 	
 
 /*	.site-header .logos {*/
@@ -440,7 +444,7 @@ for SP
     	opacity: 1;
     }
     #colop {
-    	margin-top: 0;
+    	margin-top: 4em;
     	margin-bottom: 36px;
     }
     #colop.single-colop {
@@ -735,22 +739,20 @@ ORG END ======================== */
         float: none;
     }
     .table-custom .table tbody th {
-    	padding: 0.5em 0.6em !important;
+    	padding: 0.4em 0.6em  0.3em !important;
         vertical-align: middle;
     }
     .table-custom .table select {
-    	width: 85%;
-        margin-bottom: 0.8em;
+    	width: 100%;
+        margin-bottom: 0;
     }
     .table-custom td {
-    	padding-left: 0.5em;
-        padding-right: 0.5em;
+    	padding: 0.2em 0.5em 0.6em;
     }
     .table-custom th small { /* 「ハイフンなし半角数字」のテキスト */
     	margin-top: 0;
         padding-bottom: 0.2em;
     }
-    
     
     
     .table-cart .table td img.img-fluid {
@@ -818,6 +820,16 @@ ORG END ======================== */
     .cart-index .table-cart td .text-enji {
     	font-size: 1.05em;
     }
+    
+    .select-cart-count { /* cart-index 数量 */
+        width: 28%;
+    }
+    .checks {
+    	margin-left: 0.2em;
+    }
+    .radios {
+    	margin-left: 0.4em;
+    }
 
     .table-cart tr:last-of-type .text-right { /* cart index 数量変更後は、、の文言部分 */
     	//text-align: left !important;
@@ -837,7 +849,7 @@ ORG END ======================== */
     .cart-note {
         padding-left: 0.2em;
         padding-right: 0.1em;
-        font-size: 0.9em;
+        font-size: 0.85em;
         width: 100%;
     }
     

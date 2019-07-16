@@ -41,7 +41,7 @@ textarea {
 }
 .form-control:focus {
 	border-color: #bfbfbf;
-    background: rgba(250, 130, 143, 0.2); /*#fa828f*/
+    background: rgba(250, 130, 143, 0.1); /*#fa828f*/
     outline: none;
     box-shadow: none !important;
     //box-shadow: 0 0 0 0.02rem rgba(250, 130, 143, 0.85) !important;
@@ -51,24 +51,41 @@ select.form-control {
 	-webkit-appearance: none;
 	box-shadow: none !important;
     background: #fff !important;
-    //color: #6f6f6f;
+	//color: #6f6f6f;
     cursor: pointer;
     outline: 0;
     //border: 1px solid red;
 /*    background: url(arrow01.png) right 50% no-repeat, -webkit-linear-gradient(top, #fff 0%,#efebe1 100%);*/
 }
-select.form-control option:disabled {
-	display: none !important;
-}
+/*select.form-control option:disabled {*/
+/*	display: none !important;*/
+/*	color: red !important;*/
+/*}*/
 select.form-control:focus {
 	background: rgba(250, 130, 143, 0.1) !important;
+    outline: 0;
 }
+/* IE11 */
+@media all and (-ms-high-contrast:none) {
+    *::-ms-backdrop, select.form-control:focus {
+      background: none !important;
+      border: 1px solid rgba(250, 130, 143, 0.75) !important;
+    } 
+}
+/* Edge */
+@supports (-ms-ime-align:auto) {
+  select.form-control:focus {
+  	background: none !important;
+    border: 1px solid rgba(250, 130, 143, 0.75) !important;
+  }
+}
+
 .select-wrap {
 	position: relative;
 }
 .select-wrap:after {
 	position: absolute;
-	top: 0.9em;
+	top: 0.95em;
   	right: 0.8em;
   	width: 0;
   	height: 0;
@@ -78,6 +95,9 @@ select.form-control:focus {
   	border-right: 6px solid transparent;
   	border-top: 6px solid #5a5a5a;
   	pointer-events: none;
+}
+.select-cart-count { /* cart-index 数量 */
+	width: 15%;
 }
 textarea {
 	width: 100%;

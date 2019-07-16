@@ -146,7 +146,7 @@ use App\DeliveryGroup;
          
          <tr class="form-group">
              <th>電話番号<em>必須</em>
-             	<small>例）09012345678ハイフンなし半角数字</small>
+             	{{-- <small>例）09012345678ハイフンなし半角数字</small> --}}
              </th>
                <td>
                 <input type="text" class="form-control col-md-12{{ $errors->has('user.tel_num') ? ' is-invalid' : '' }}" name="user[tel_num]" value="{{ Ctm::isOld() ? old('user.tel_num') : (Session::has('all.data.user') ? session('all.data.user.tel_num') : '') }}" placeholder="例）09012345678（ハイフンなし半角数字）">
@@ -162,7 +162,7 @@ use App\DeliveryGroup;
          
          <tr class="form-group">
              <th>郵便番号<em>必須</em>
-             	<small>例）1234567ハイフンなし半角数字</small>
+             	{{-- <small>例）1234567ハイフンなし半角数字</small> --}}
              </th>
                <td>
                 <input id="zipcode" type="text" class="form-control col-md-6{{ $errors->has('user.post_num') ? ' is-invalid' : '' }}" name="user[post_num]" value="{{ Ctm::isOld() ? old('user.post_num') : (Session::has('all.data.user') ? session('all.data.user.post_num') : '') }}" placeholder="例）1234567（ハイフンなし半角数字）">
@@ -354,7 +354,7 @@ use App\DeliveryGroup;
 @endif {{-- AuthCheck --}}                     
         
         <div class="receiver">
-            <h3 class="mt-5 card-header">お届け先</h3>     
+            <h3 class="mt-4 card-header">お届け先</h3>     
                  
             <fieldset class="form-group mt-3 py-1">
                     <?php                            
@@ -375,7 +375,7 @@ use App\DeliveryGroup;
                     	<label for="radio-destination-1" class="radios">登録先と同じ</label>
                     </div>
                     
-                    <div>
+                    <div class="">
                     	<input id="radio-destination-2" type="radio" name="destination" value="1"{{ $checked }}>
                     	<label for="radio-destination-2" class="radios">別の住所へお届け</label>
                     </div>
@@ -431,7 +431,7 @@ use App\DeliveryGroup;
                      
                      <tr class="form-group">
                          <th>配送先電話番号<em>必須</em>
-                         	<small>例）09012345678ハイフンなし半角数字</small>
+                         	{{-- <small>例）09012345678ハイフンなし半角数字</small> --}}
                          </th>
                            <td>
                             <input type="text" class="form-control col-md-12{{ $errors->has('receiver.tel_num') ? ' is-invalid' : '' }}" name="receiver[tel_num]" value="{{ Ctm::isOld() ? old('receiver.tel_num') : (Session::has('all.data.receiver') ? session('all.data.receiver.tel_num') : '') }}" placeholder="例）09012345678（ハイフンなし半角数字）">
@@ -449,7 +449,7 @@ use App\DeliveryGroup;
                      
                      <tr class="form-group">
                          <th>配送先郵便番号<em>必須</em>
-                         	<small>例）1234567ハイフンなし半角数字</small>
+                         	{{-- <small>例）1234567ハイフンなし半角数字</small> --}}
                          </th>
                            <td>
                             <input id="zipcode_2" type="text" class="form-control col-md-6{{ $errors->has('receiver.post_num') ? ' is-invalid' : '' }}" name="receiver[post_num]" value="{{ Ctm::isOld() ? old('receiver.post_num') : (Session::has('all.data.receiver') ? session('all.data.receiver.post_num') : '') }}" placeholder="例）1234567（ハイフンなし半角数字）">
@@ -550,7 +550,7 @@ use App\DeliveryGroup;
                 
                 
                 <div class="pt-3">
-                	<h3 class="card-header mt-5">配送希望日時</h3>
+                	<h3 class="card-header mt-4">配送希望日時</h3>
                     
                     <fieldset class="mb-4 mt-3 col-md-7 form-group{{ $errors->has('plan_date') ? ' has-error' : '' }}">
                         <label for="plan_date" class="control-label">■ご希望日程<span class="text-small"></span></label>
@@ -689,7 +689,7 @@ use App\DeliveryGroup;
                 
                 
                 <div>
-                	<h3 class="card-header mt-5">お支払い方法</h3>
+                	<h3 class="card-header mt-4">お支払い方法</h3>
    					<a href="{{ url('about-pay') }}" class="d-inline-block mt-2 ml-1 text-small" target="_brank">お支払についてのご注意はこちら <i class="fal fa-angle-double-right"></i></a>
                     
                     @if ($errors->has('pay_method'))

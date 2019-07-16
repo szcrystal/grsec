@@ -77,7 +77,7 @@
                                         <input type="hidden" name="last_item_count[]" value="0">
                                         <?php $disabled = ' disabled'; ?>
                                     @else
-                                       <label class="select-wrap col-md-2 p-0"> 
+                                       <label class="select-wrap select-cart-count p-0"> 
                                         <select class="form-control {{ $errors->has('last_item_count') ? ' is-invalid' : '' }}" name="last_item_count[]">
                                                 
                                             <?php
@@ -198,7 +198,7 @@
                         {{-- <label class="control-label mb-0 text-small d-inline col-md-6"><b>配送先都道府県</b></label> --}}
                     
                         <select id="pref" class="form-control d-inline{{ $errors->has('pref_id') ? ' is-invalid' : '' }}" name="pref_id">
-                            <option selected value="0">選択下さい</option>
+                            <option selected value="0">選択</option>
                             <?php
     //                            use App\Prefecture;
     //                            $prefs = Prefecture::all();  
@@ -236,8 +236,9 @@
             	<th class="clearfix">
                 	@if(! isset($deliFee))
                         <div class="cart-note">
-                            <span class="text-enji"><i class="fas fa-exclamation-triangle"></i> 数量変更の場合は「数量」を、送料確認の場合は「配送先都道府県」を選択して「再計算」を押して下さい。</span>
+                            <span class="text-enji"><i class="fas fa-exclamation-triangle"></i> 数量変更は「数量」を、送料確認は「配送先都道府県」を選択して「再計算」を押して下さい。</span>
                         </div>
+                        
                     @endif
                 </th>
                 
