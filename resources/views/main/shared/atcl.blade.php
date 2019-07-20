@@ -16,7 +16,7 @@ use App\Icon;
     ///$linkName = isset($category->link_name) ? $category->link_name : $category->name;
     
     
-    if(($isCate && isset($item->subcate_id)) || $category->id == 1) {
+    if( $category->id == 1 && isset($item->subcate_id) && $item->subcate_id != '') {
         $subCate = CategorySecond::find($item->subcate_id);
         $cateLink = url('category/'. $category->slug . '/' . $subCate->slug);
         $cateName = isset($subCate->link_name) ? $subCate->link_name : $subCate->name;

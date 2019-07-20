@@ -170,8 +170,7 @@ use App\TopSetting;
                     @if(! $isPotSet)
                         @if(isset($item->icon_id) && $item->icon_id != '')
                             <div class="icons">
-                                <?php $obj = $item; ?>
-                                @include('main.shared.icon')
+                                @include('main.shared.icon', ['obj'=>$item])
                             </div>
                         @endif
                     @endif
@@ -303,8 +302,7 @@ use App\TopSetting;
                     
                     @else
                         <div class="price-meta">
-                        	<?php $obj = $item; ?>
-                            @include('main.shared.priceMeta')
+                            @include('main.shared.priceMeta', ['obj'=>$item])
                         </div>
                     @endif
                     
@@ -591,8 +589,7 @@ use App\TopSetting;
                                     <ul class="clearfix">
                                         @foreach($recom as $item)
                                             <li class="main-atcl">
-                                                <?php $strNum = Ctm::isAgent('sp') ? 16 : 23; ?>
-                                                @include('main.shared.atcl')
+                                                @include('main.shared.atcl', ['strNum'=>Ctm::isAgent('sp') ? 16 : 23])
                                             </li>
                                         @endforeach
                                     </ul>
@@ -626,8 +623,7 @@ use App\TopSetting;
                         <ul class="clearfix">
                             @foreach($cacheItem as $item)                            
                                 <li class="main-atcl">
-                                    <?php $strNum = Ctm::isAgent('sp') ? 12 : 16; ?>
-                                    @include('main.shared.atcl')
+                                    @include('main.shared.atcl', ['strNum'=>Ctm::isAgent('sp') ? 12 : 16])
                                 </li>    
                             @endforeach      
                         </ul>

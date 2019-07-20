@@ -105,8 +105,8 @@ use App\TopSetting;
             @foreach($itemVal as $item)
                 <article class="main-atcl">
                         
-                    <?php $strNum = Ctm::isAgent('sp') ? 16 : 25; ?>
-                    @include('main.shared.atcl')
+                    <?php //$strNum = Ctm::isAgent('sp') ? 16 : 25; ?>
+                    @include('main.shared.atcl', ['strNum'=>Ctm::isAgent('sp') ? 16 : 25])
                         
                 </article>
             @endforeach
