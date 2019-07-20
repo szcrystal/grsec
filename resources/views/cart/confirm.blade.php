@@ -6,15 +6,11 @@
 	use App\Setting;
 ?>
 
-<div id="main" class="confirm">
-
-        <div class="panel panel-default">
-
-            <div class="panel-body">
-
+<div id="main" class="cart-all confirm">
 
 <div class="clearfix">
-@include('cart.guide')
+
+@include('cart.shared.guide', ['active'=>3])
 
 
 @if (count($errors) > 0)
@@ -428,16 +424,11 @@
 
 
 
-
-<a href="{{ url('shop/form') }}" class="btn border border-secondary bg-white my-3"><i class="fal fa-angle-double-left"></i> お客様情報の入力に戻る</a>
-</div>
-
-
-
-
+@includeWhen(Ctm::isEnv('local'), 'cart.shared.backBtn', ['urlForBack'=>'form', 'textForBack'=>'お客様情報の入力に戻る'])
 
 </div>
-</div>
+
+
 </div>
 
 @endsection

@@ -386,8 +386,13 @@ body {
 }
 .table-cart .table tbody th,
 .table-cart .table tbody td {
-	border-top-width: 0 !important;
+	//border-top-width: 0 !important;
+    border-top: 1px solid #e3e3e3 !important;
     border-bottom: 1px solid #e3e3e3 !important;
+}
+.table-cart .table tbody tr:first-of-type th,
+.table-cart .table tbody tr:first-of-type td {
+	//border-top: 1px solid #e3e3e3 !important;
 }
 .table-cart tbody th {
 	background: none;

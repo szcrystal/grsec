@@ -2,12 +2,14 @@
 use App\Setting;
 use App\Item;
 use App\Category;
+
+$cartAllClass = Request::is('shop/*') ? 'cart-all' : '';
 ?>
 
 @include('shared.header')
 <body>
 
-<div id="app">
+<div id="app" class="{{ $cartAllClass }}">
             
     @if(Ctm::isAgent('sp'))
         @include('shared.headNavSp')

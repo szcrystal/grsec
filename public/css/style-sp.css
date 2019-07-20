@@ -290,6 +290,7 @@ for SP
     .tophead-wrap + .container {
     	margin-top: 1.0em;
     }
+
     /* 先頭 Margin END */
     
     .telephone {
@@ -443,6 +444,15 @@ for SP
     #spCartBtn:active {
     	opacity: 1;
     }
+
+    
+    .cart-all #colop,
+    .cart-all .icon-belt,
+    .cart-all .nav-tgl,
+    .cart-all .s-tgl {
+    	display: none;
+    }
+    
     #colop {
     	margin-top: 4em;
     	margin-bottom: 36px;
@@ -687,6 +697,7 @@ ORG END ======================== */
     /* Shop */
     #guide {
     	margin: 1.4em 0 1.6em;
+        padding-top: 1em;
     }
     #guide br {
     	display: block;
@@ -1162,7 +1173,7 @@ ORG END ======================== */
     .single-left {
         float: none;
         width: 100%;
-        margin-top: 75px;
+        margin-top: 46px;
         //border: 1px solid orange;
     }
     .single-right {

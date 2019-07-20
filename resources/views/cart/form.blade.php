@@ -9,16 +9,11 @@ use App\DeliveryGroup;
 
 	{{-- @include('main.shared.carousel') --}}
 
-<div id="main" class="">
-
-        <div class="panel panel-default">
-
-            <div class="panel-body">
-                {{-- @include('main.shared.main') --}}
+<div id="main" class="cart-form">
 
 <div class="clearfix">
 
-@include('cart.guide')
+@include('cart.shared.guide', ['active'=>2])
 
 @if(count($cardErrors) > 0)
 	<div class="alert alert-danger">
@@ -82,7 +77,7 @@ use App\DeliveryGroup;
         <tr>
             <th>住所</th>
              <td>〒{{ Ctm::getPostNum( $userObj->post_num) }}<br>
-             {{ $userObj->prefecture }} {{ $userObj->address_1 }} {{ $userObj->address_2 }}<br>
+             {{ $userObj->prefecture }}{{ $userObj->address_1 }} {{ $userObj->address_2 }}<br>
              {{ $userObj->address_3 }}
              </td>   
         </tr>
@@ -260,7 +255,7 @@ use App\DeliveryGroup;
          <tr class="form-group">
              <th>パスワード<em>必須</em></th>
                <td>
-                <input type="password" class="form-control col-md-12{{ $errors->has('user.password') ? ' is-invalid' : '' }}" name="user[password]" value="{{ Ctm::isOld() ? old('user.password') : (Session::has('all.data.user') ? session('all.data.user.password') : '') }}" placeholder="半角英数字8文字以上">
+                <input type="password" class="form-control col-md-12{{ $errors->has('user.password') ? ' is-invalid' : '' }}" name="user[password]" value="{{ Ctm::isOld() ? old('user.password') : (Session::has('all.data.user') ? session('all.data.user.password') : '') }}" placeholder="8文字以上（半角）">
                                     
                 @if ($errors->has('user.password'))
                     <div class="help-block text-danger">
@@ -1052,13 +1047,11 @@ use App\DeliveryGroup;
     
 </div>
 
-<a href="{{ url('shop/cart') }}" class="btn border-secondary bg-white my-3">
-<i class="fal fa-angle-double-left"></i> カートに戻る
-</a>
+
+@includeWhen(Ctm::isEnv('local'), 'cart.shared.backBtn', ['urlForBack'=>'cart', 'textForBack'=>'カートに戻る'])
 
 </div>
-</div>
-</div>
+
 </div>
 </div>
 

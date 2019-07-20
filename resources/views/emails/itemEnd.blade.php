@@ -23,13 +23,12 @@
 <hr>
 【ご注文番号】：{{ $saleRel->order_number }}<br>
 【ご注文日】：{{ date('Y/m/d', time()) }}<br>
-【ご注文者】：{{ $user->name }} 様<br>
+【ご注文者】：{{ $user->name }} 様<br><br>
 【お届け先】： 
 <div style="margin: 0 0 1.5em 1.0em;">
 〒{{ Ctm::getPostNum($receiver->post_num) }}<br>
-{{ $receiver->prefecture }}{{ $receiver->address_1 }}{{ $receiver->address_2 }}<br>
-{{ $receiver->address_3 }}<br>
-{{ $receiver->name }} 様<br>
+{{ $receiver->prefecture }}{{ $receiver->address_1 }}<span style="margin-left:0.3em">{{ $receiver->address_2 }}</span><br>
+<p style="margin-top:0.2em">{{ $receiver->name }} 様</p>
 </div>
 
 @if(isset($sales->first()->plan_date))

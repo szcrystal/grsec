@@ -7,7 +7,7 @@
 
 <div class="top-cont clearfix">
 
-@include('cart.guide')
+@include('cart.shared.guide', ['active'=>1])
 
 @if(! count($itemData))
 	<div class="col-md-8 mx-auto text-center">
@@ -73,9 +73,11 @@
                                     
                                     
                                     @if(! $item->stock)
-                                        <span class="text-small text-danger"><i class="far fa-exclamation-triangle"></i> <b>売切れ商品です。カートから削除して進んで下さい。</b></span>
+                                        <span class="text-small text-danger"><i class="fas fa-exclamation-triangle"></i> <b>売切れ商品です。カートから削除して進んで下さい。</b></span>
                                         <input type="hidden" name="last_item_count[]" value="0">
+                                    
                                         <?php $disabled = ' disabled'; ?>
+                                    
                                     @else
                                        <label class="select-wrap select-cart-count p-0"> 
                                         <select class="form-control {{ $errors->has('last_item_count') ? ' is-invalid' : '' }}" name="last_item_count[]">
@@ -259,11 +261,17 @@
 
 <div class="clearfix mt-3 cart-btn-wrap">
 	
-	<div class="">
+	<div class="clearfix">
         <input type="hidden" name="from_cart" value="1">
 
+		@if($disabled)
+            <div class="text-right mb-1">
+            	<span class="text-small text-danger"><i class="fas fa-exclamation-triangle"></i> <b>売切れ商品をカートから削除して下さい。</b></span>
+            </div>
+        @endif
+
         @if(Auth::check())
-            <button class="btn btn-block btn-custom mb-4 py-2 px-5" type="submit" name="regist_off" value="1" formaction="{{ url('shop/form') }}"{{ $disabled }}>購入手続きへ <i class="fal fa-angle-double-right"></i></button>
+            <button class="btn btn-block btn-custom btn-pink mb-4 py-2 px-5" type="submit" name="regist_off" value="1" formaction="{{ url('shop/form') }}"{{ $disabled }}>購入手続きへ <i class="fal fa-angle-double-right"></i></button>
         @else
             <div class="table-responsive">
                 <table class="table">
@@ -290,11 +298,13 @@
                 </table>
             </div>
         @endif
+        
 	</div>
+    
+    
     
     <div class="">
 		<input type="hidden" name="uri" value="{{ $uri }}">
-        
 		<a href="{{ url($uri)}}" class="btn border border-secondary bg-white my-2"><i class="fal fa-angle-double-left"></i> 元に戻って買い物を続ける</a>
 	</div>
     

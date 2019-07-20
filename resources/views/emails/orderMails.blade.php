@@ -28,13 +28,12 @@
 @if(isset($saleRelCancel))
 	【キャンセル日】：{{ Ctm::changeDate($saleRelCancel->created_at, 1) }}<br>
 @endif
-【ご注文者】：{{ $user->name }} 様<br>
+【ご注文者】：{{ $user->name }} 様<br><br>
 【お届け先】： 
 <div style="margin: 0 0 1.5em 1.0em;">
-{{ $receiver->name }} 様<br>
 〒{{ Ctm::getPostNum($receiver->post_num) }}<br>
-{{ $receiver->prefecture }}{{ $receiver->address_1 }}{{ $receiver->address_2 }}<br>
-{{ $receiver->address_3 }}
+{{ $receiver->prefecture }}{{ $receiver->address_1 }}<span style="margin-left:0.3em">{{ $receiver->address_2 }}</span><br>
+<p style="margin-top:0.2em">{{ $receiver->name }} 様</p>
 </div>
 
 
