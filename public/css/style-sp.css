@@ -1278,11 +1278,13 @@ ORG END ======================== */
         padding-top: 1px;
         //border: 1px solid red;
     }
-    .upper-wrap + .head-frame .single-left {
+    .upper-wrap + .head-frame .single-left,
+    .upper-introduce-wrap + .head-frame .single-left {
     	margin-top: 1.5em;
         //border: 1px solid red;
     }
-    .upper-wrap h3 {
+    .upper-wrap h3,
+    h3.upper-title {
     	font-size: 1.4em;
         //margin: 1em 0 0.7em;
     }

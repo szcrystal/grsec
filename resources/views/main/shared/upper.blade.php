@@ -38,6 +38,7 @@
                     @endif
                     
                 @else
+
                     <div class="{{ $blockKey }}-block-wrap clearfix">
 
                         <?php
@@ -114,6 +115,7 @@
                         @endforeach
                          
                     </div>
+                    
                 @endif
                 
             @endforeach

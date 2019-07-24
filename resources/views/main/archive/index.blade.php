@@ -75,7 +75,7 @@ use App\TopSetting;
                 @include('main.shared.upper')
             
                 @if(isset($orgObj->upper_title) || isset($orgObj->upper_text))
-                    <div class="mb-4">
+                    <div class="upper-introduce-wrap mb-4">
                         @if(isset($orgObj->upper_title) && $orgObj->upper_title != '')
                             <h3 class="upper-title">{{ $orgObj->upper_title }}</h3>
                         @endif

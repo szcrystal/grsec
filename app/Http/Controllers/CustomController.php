@@ -401,12 +401,15 @@ class CustomController extends Controller
         $upper = ItemUpper::where(['parent_id'=>$parentId, 'type_code'=>$type, 'open_status'=>1])->first();
 		
         if(isset($upper)) {
-        	$upperRels = ItemUpperRelation::where(['upper_id'=>$upper->id, ])->orderBy('sort_num', 'asc')->get();
+        	
+            //登録されるブロックはa,b,cの3つのみ
+            
+        	$upperRels = ItemUpperRelation::where(['upper_id'=>$upper->id, ])->orderBy('id', 'asc')->get(); //->orderBy('sort_num', 'asc')
             
             if($upperRels->isNotEmpty()) {
             	foreach($upperRels as $upperRel) {
 
-                    if($upperRel->is_section) {
+                    if($upperRel->is_section) { //大タイトル・中タイトルがis_section:trueになる
                         if($upperRel->sort_num > 0) { //sort_numが1以上なら中タイトル 0は大タイトル(1つのみ)
                             $upperRelArr[$upperRel->block]['mid_section'][] = $upperRel;
                         }

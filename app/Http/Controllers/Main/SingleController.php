@@ -328,6 +328,9 @@ class SingleController extends Controller
 //        }
         
         $upperRelArr = Ctm::getUpperArr($id, 'item');
+        
+//        print_r($upperRelArr);
+//        exit;
 
 		
         $metaTitle = isset($item->meta_title) ? $item->meta_title : $item->title;
