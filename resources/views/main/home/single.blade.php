@@ -240,7 +240,7 @@ use App\TopSetting;
                                                     <fieldset class="clearfix text-right">
                                                     <label>数量</label>
                                                     
-                                                    <label class="select-wrap potSetSelect">
+                                                    <span class="select-wrap potSetSelect d-inline-block">
                                                     <select class="form-control d-inline{{ $errors->has('item_count') ? ' is-invalid' : '' }}" name="item_count[]">
                                                         <option value="0" selected>選択</option>
                                                             <?php
@@ -265,7 +265,7 @@ use App\TopSetting;
                                                                 <option value="{{ $ii }}"{{ $selected }}>{{ $ii }}</option>
                                                             @endfor
                                                     </select>
-                                                    </label>
+                                                    </span>
                                                     <span class="text-warning"></span>
                                                     
                                                     @if ($errors->has('item_count'))
@@ -350,7 +350,7 @@ use App\TopSetting;
                                     @endif
                                     </label>
                                     
-                                    <label class="select-wrap w-50">
+                                    <span class="select-wrap d-inline-block w-50">
                                     <select class="form-control {{ $errors->has('item_count') ? ' is-invalid' : '' }}" name="item_count[]">
                                         <option disabled selected>選択して下さい</option>
                                             <?php
@@ -375,7 +375,7 @@ use App\TopSetting;
                                                 <option value="{{ $i }}"{{ $selected }}>{{ $i }}</option>
                                             @endfor
                                     </select>
-                                    </label>
+                                    </span>
                                     <span class="text-warning"></span>
                                     
                                     @if ($errors->has('item_count'))
