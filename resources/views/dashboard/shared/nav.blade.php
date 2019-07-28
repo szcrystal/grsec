@@ -1,14 +1,14 @@
 <!-- Navigation-->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
 	
-    @if(env('APP_ENV') == 'alpha')
+    @if(Ctm::isEnv('alpha'))
 		<div style="background:red; color:#fff;" class="px-4 mr-1">This Is Alpha !</div>
     @endif
     
     <a style="width:auto;" class="navbar-brand pr-2" href="{{ url('dashboard') }}">グリーンロケット</a>
     
-    @if(env('APP_VERSION') != '')
-    	<span class="text-white">v {{ env('APP_VERSION') }}</span>
+    @if(config('app.app_version') != '')
+    	<span class="text-white">v {{ config('app.app_version') }}</span>
     @endif
     
     <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">

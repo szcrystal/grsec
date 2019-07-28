@@ -120,9 +120,16 @@ class MainController extends Controller
 //        echo $diff->time;
 //        exit;
             
-
-  
-        $str = env('APP_ENV') . "\n" . env('REMOTE_ADDR', '') . "\n" . env('HTTP_USER_AGENT', '');
+		
+        /*
+        $_SERVERの値とenv()が繋がっている（取得できる）
+        artisan config:cache後に、env()の値は取得できなくなるが$_SERVERのものは取得可能
+        但し、env()の2つ目引数で指定したデフォルト値があれば、それが優先されて取得可能
+  		config/app.phpに記載をすれば、config:cache後の取得は config('app.env')で取得できる
+        config(['app.env'=>'default'])のデフォルト値は効かない
+  		*/
+        
+        $str = config('app.env') . "\n" . env('REMOTE_ADDR', '') . "\n" . env('HTTP_USER_AGENT', '');
         //$str .= "<br>abcde" . '<a href="https://192.168.10.16">abcde</a>';
         
         if(! Ctm::isEnv('local')) {

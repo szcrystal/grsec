@@ -40,7 +40,7 @@ class ContactSend extends Mailable
       	$subject = $this->isUser ? $templ->title : 'お問い合わせがありました。-'. $this->data['ask_category'] . '-';
 
         //return $this->from($this->setting->admin_email, $this->setting->admin_name)
-        return $this->from(env('ADMIN_EMAIL', 'no-reply@green-rocket.jp'), $this->setting->admin_name)
+        return $this->from('no-reply@green-rocket.jp', $this->setting->admin_name)
         			->view('emails.contact')
            			->with([
               			'header' => $templ->header,

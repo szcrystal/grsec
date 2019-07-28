@@ -642,12 +642,12 @@ class CustomController extends Controller
     
     static function isLocal()
     {
-    	return env('APP_ENV') == 'local';
+    	return config('app.env') == 'local';
     }
     
     static function isEnv($envName)
     {
-    	return env('APP_ENV') == $envName;
+    	return config('app.env') == $envName;
     }
     
 }

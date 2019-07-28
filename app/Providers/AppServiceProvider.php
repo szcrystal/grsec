@@ -43,7 +43,7 @@ class AppServiceProvider extends ServiceProvider
 //            $report = report($e);
             
             
-            $str = env('APP_ENV') . "\n\n";
+            $str = config('app.env') . "\n\n";
             $str .= $event->job->getName() . "\n\n";
             $str .= $event->job->getRawBody() . "\n\n";
 

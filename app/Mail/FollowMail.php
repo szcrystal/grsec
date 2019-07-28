@@ -74,7 +74,7 @@ class FollowMail extends Mailable
       	$subject = $templ->title;
 
         //return $this->from($this->setting->admin_email, $this->setting->admin_name) //env('ADMIN_NAME', 'GREEN ROCKET')
-        return $this->from(env('ADMIN_EMAIL', 'no-reply@green-rocket.jp'), $this->setting->admin_name)
+        return $this->from('no-reply@green-rocket.jp', $this->setting->admin_name)
         			->view('emails.followMail')
            			->with([
               			'header' => $templ->header,

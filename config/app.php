@@ -107,6 +107,21 @@ return [
     'key' => env('APP_KEY'),
 
     'cipher' => 'AES-256-CBC',
+    
+    
+    
+    /*
+    Custom ENV =====================================
+    */
+    
+    'app_version' => env('APP_VERSION'),
+    
+    'cookie_time' => env('COOKIE_TIME', 43200),
+    
+    'fav_cookie_time' => env('FAV_COOKIE_TIME', 129600),
+    
+    
+    
 
     /*
     |--------------------------------------------------------------------------

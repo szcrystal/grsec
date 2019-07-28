@@ -259,8 +259,10 @@ class SingleController extends Controller
         
         $cookieIds = implode(',', $cookieArr);
         
-        Cookie::queue(Cookie::make('item_ids', $cookieIds, env('COOKIE_TIME', 43200) ));
+        Cookie::queue(Cookie::make('item_ids', $cookieIds, config('app.cookie_time') )); //43200->1ヶ月 appにcookie_timeをセットしているが、設定変更後artisan config:cacheをする必要があるので直接時間指定した方がいいのかもしれない
         
+//        echo env('APP_ENV');
+//        exit;
         
         /*
         if(cache()->has('item_ids')) {
@@ -374,6 +376,7 @@ class SingleController extends Controller
     }
     
     
+    //NoUser Favorite Index
     public function favIndex()
     {
     	if(Auth::check()) {
@@ -386,7 +389,7 @@ class SingleController extends Controller
         $favKey = Cookie::get('fav_key');
         
         if(isset($favKey)) {
-        	Cookie::queue(Cookie::make('fav_key', $favKey, env('FAV_COOKIE_TIME', 129600) )); //分指定 3ヶ月 2month->86400 このfavIndxを開いた時に更新する
+        	Cookie::queue(Cookie::make('fav_key', $favKey, config('app.fav_cookie_time') )); //分指定 129600に設定->3ヶ月 2month->86400 このfavIndxを開いた時に更新する
         }
 //        }
 //        else {
@@ -504,7 +507,7 @@ class SingleController extends Controller
                 $favKey = Ctm::getOrderNum(30);
             }
             
-			Cookie::queue(Cookie::make('fav_key', $favKey, env('FAV_COOKIE_TIME', 129600) )); //分指定 3ヶ月 2month->86400　ここの操作後に2ヶ月更新するようにしている 
+			Cookie::queue(Cookie::make('fav_key', $favKey, config('app.fav_cookie_time') )); //分指定 129600に設定->3ヶ月 2month->86400　ここの操作後に3ヶ月更新するようにしている 
             
             if(! $isOn) { //お気に入り解除の時
             	$favModel = $this->favCookie->where(['key'=>$favKey, 'item_id'=>$itemId])->first();
