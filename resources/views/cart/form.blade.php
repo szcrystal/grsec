@@ -995,7 +995,7 @@ use App\DeliveryGroup;
                                     {{--
                                     <input type="radio" name="pay_method" class="payMethodRadio ml-2" value="{{ $method->id }}" disabled> {{ $method->name }}
                                     --}}
-                                    <span class="text-secondary text-small ml-3"><i class="fas fa-exclamation-circle"></i> ご注文商品の代金引換はご利用できません。</span> 
+                                    <span class="text-secondary text-small ml-0"><i class="fas fa-exclamation-circle"></i> ご注文商品の代金引換はご利用できません。</span> 
                                  
                                     
                                 @else

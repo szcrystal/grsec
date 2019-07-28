@@ -7,6 +7,7 @@ $cartAllClass = Request::is('shop/*') ? 'cart-all' : '';
 ?>
 
 @include('shared.header')
+
 <body>
 
 <div id="app" class="{{ $cartAllClass }}">
@@ -21,12 +22,12 @@ $cartAllClass = Request::is('shop/*') ? 'cart-all' : '';
     
     {{-- @yield('belt') --}}
     
-    @if(isset($type) && $type == 'single')
+    @if( (isset($type) && $type == 'single' ) || Request::is('shop/*'))
         @if(! Ctm::isAgent('sp'))
             @include('main.shared.news')
         @endif
     @else
-    	@include('main.shared.news')
+        @include('main.shared.news')
     @endif
     
     <div class="container">
