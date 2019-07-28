@@ -914,6 +914,11 @@ ORG END ======================== */
         width: 100%;
     }
     
+    .confirm .confirm-right .table-normal.show-price tbody th { /* shop confirm ポイント利用などのテーブルのth */
+    	width: 26%;
+        font-size: 0.9em;
+    }
+    
     .no-img {
     	width: 70px;
     }

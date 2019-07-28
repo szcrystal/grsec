@@ -614,12 +614,9 @@ body {
 	float: right;
 	width: 35%;
 }
-.confirm .table-normal .table tbody th {
-	width: 30%;
-    //font-size: 0.9em;
-}
-.confirm .table-normal.show-price .table tbody th {
-	width: 53%;
+
+.confirm .confirm-right .table-normal.show-price tbody th { /* shop confirm ポイント利用などのテーブルのth */
+	width: 48%;
 }
 .table-cart .table {
 	//width: 99.7%;
