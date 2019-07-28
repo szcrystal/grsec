@@ -1204,10 +1204,10 @@ ORG END ======================== */
         margin-bottom: 0.3em;
     }
     .potSetSelect-wrap {
-        width: 60%;
+        width: 70%;
     }
-    select.potSetSelect {
-        width: 80%;
+    .potSetSelect {
+        width: 77%;
     }
     
     .nav-tabs .nav-link {
