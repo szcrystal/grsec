@@ -915,7 +915,7 @@ ORG END ======================== */
     }
     
     .confirm .confirm-right .table-normal.show-price tbody th { /* shop confirm ポイント利用などのテーブルのth */
-    	width: 26%;
+    	width: 30%;
         font-size: 0.9em;
     }
     
