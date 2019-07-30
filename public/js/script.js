@@ -254,25 +254,30 @@ var exe = (function() {
         
         //郵便番号のセット
         postNumSet: function() {
-        	$('#zipcode').jpostal({
-                postcode : [
-                    '#zipcode'
-                ],
-                address : {
-                    '#pref':'%3',
-                    '#address':'%4%5'
-                }
-            });
+        	
+            if($('#zipcode').length){ //jpostal.jsを必要時にのみロードしているので、zipcode要素がある時のみにしないと裏でエラーが出る
+                $('#zipcode').jpostal({
+                    postcode : [
+                        '#zipcode'
+                    ],
+                    address : {
+                        '#pref':'%3',
+                        '#address':'%4%5'
+                    }
+                });
+            }
             
-            $('#zipcode_2').jpostal({
-                postcode : [
-                    '#zipcode_2'
-                ],
-                address : {
-                    '#pref_2':'%3',
-                    '#address_2':'%4%5'
-                }
-            });
+            if($('#zipcode_2').length){
+                $('#zipcode_2').jpostal({
+                    postcode : [
+                        '#zipcode_2'
+                    ],
+                    address : {
+                        '#pref_2':'%3',
+                        '#address_2':'%4%5'
+                    }
+                });
+            }
             
         },
         
@@ -468,7 +473,7 @@ var exe = (function() {
          	var $em = $('.receiver').find('em');
             var $rWrap = $('.receiver-wrap');
              
-            console.log($destination.val());
+            //console.log($destination.val());
              
             //if($destination.is(':checked')) {
             if($destinationCheck.val() == 1) {
@@ -482,7 +487,7 @@ var exe = (function() {
 
             $destination.on('click', function(){
             	
-                console.log($(this).val());
+                //console.log($(this).val());
                 
                 //if($(this).is(':checked')) {
                 if($(this).val() == 1) { 
