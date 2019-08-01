@@ -255,6 +255,19 @@ use App\Setting;
                                     @endif
                                 </td>
                             </tr>
+                            
+                            @if($item->dg_id == 11)
+                                <tr>
+                                    <th>不在置き</th>
+                                    <td>
+                                        @if($sale->is_huzaioki)
+                                            了承する
+                                        @else
+                                            了承しない
+                                        @endif
+                                    </td>
+                                </tr>
+                            @endif
                              
                             <tr>
                             	<th>出荷予定日<br><span class="text-small text-secondary">（ユーザー反映）</span></th>

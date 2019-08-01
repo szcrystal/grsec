@@ -4,6 +4,7 @@
 
 <?php
 	use App\Setting;
+    use App\Item;
 ?>
 
 <div id="main" class="cart-all confirm">
@@ -220,13 +221,38 @@
         <tbody>
         	<tr>
             <td>
-            <b class="text-small">ご希望日</b>：
-            @if(isset($data['plan_date']))
-            {{ $data['plan_date'] }}<br>
-            @else
-            最短出荷<br>
-            @endif
-			
+            	<p>
+                <b class="text-small">ご希望日</b>：
+                @if(isset($data['plan_date']))
+                    {{ $data['plan_date'] }}<br>
+                    
+                    @if(isset($data['is_seinou']) && strpos($data['plan_date'], '日'))
+                        <span class="text-enji text-small">*ご希望日が日曜日の場合は、送料が1000円増しとなります。</span>
+                    @endif
+                @else
+                    最短出荷<br>
+                @endif
+                </p>
+            
+            
+            @if(isset($data['is_huzaioki']))
+            	<ul class="px-4 mt-3">
+                    @foreach($data['is_huzaioki'] as $itemIdKey => $vs)
+                    	<?php $si = Item::find($itemIdKey); ?>
+                        <li class="mb-2">
+                        	{{ Ctm::getItemTitle($si) }}：
+                            <b>
+                        	@if($vs)
+                            	不在置きを了承する
+                            @else
+                            	不在置きを了承しない
+                            @endif
+                            </b>
+                        </li>
+                    @endforeach
+                </ul>
+			@endif
+            
 			<ul class="px-4 mt-3">
                 @foreach($itemData as $item) 
                 	@if(isset($item->plan_time))                   
@@ -238,8 +264,8 @@
                 @endforeach
             </ul>
             
-        	</tr>
-            </td>
+        	</td>
+            </tr>
         </tbody>
     </table>
 </div>

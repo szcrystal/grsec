@@ -339,6 +339,19 @@ use App\PayMethodChild;
                                                 </td>
                                             </tr>
                                             
+                                            @if($items->find($sale->item_id)->dg_id == 11)
+                                            	<tr>
+                                            		<th>不在置き</th>
+                                                	<td>
+                                                    	@if($sale->is_huzaioki)
+                                                        	了承する
+                                                        @else
+                                                        	了承しない
+                                                        @endif
+                                                    </td>
+                                                </tr>
+                                            @endif
+                                            
                                             <tr>
                                             	<th>出荷予定日</th>
                                                 <td>

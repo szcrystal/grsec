@@ -557,7 +557,7 @@ use App\DeliveryGroup;
                                 	$days = array();
                                     $week = ['日', '月', '火', '水', '木', '金', '土'];
                                 
-                                    for($plusDay = 4; $plusDay < 64; $plusDay++) {
+                                    for($plusDay = 4; $plusDay < 64; $plusDay++) { //現在より4日後スタート、2ヶ月表示
                                         $now = date('Y-m-d', time());
                                         $first = strtotime($now." +". $plusDay . " day");
                                         $days[] = date('Y/m/d', $first) . '（' . $week[date('w', $first)] . '）';
@@ -577,10 +577,15 @@ use App\DeliveryGroup;
                                             }
                                         }
                                     ?>
+                                    
                                     <option value="{{ $day }}"{{ $selected }}>{{ $day }}</option>
                                 @endforeach
                         </select>
                         </div>
+                        
+                        @if(count($dgSeinou) > 0)
+                        	
+                        @endif
                         
                         @if ($errors->has('plan_date'))
                             <span class="help-block">
@@ -593,7 +598,63 @@ use App\DeliveryGroup;
                         --}}
 
                         
-                	</fieldset>
+                </fieldset>
+                
+                @if(count($dgSeinou) > 0)
+                	<fieldset class="form-group my-3 px-3 py-2{{ $errors->has('is_huzaioki.*') ? ' border border-danger' : '' }}">
+                        
+                        <p class="mb-1 pb-2">
+                            ■下記の商品につきまして
+                            <ul class="pl-4">
+                            <li>「ご希望日程」が日曜日の場合は、下記1商品につき送料が1000円増しとなります。
+                            <li>不在置きが可能の場合はチェックをして下さい。<br>
+                            <span class="text-enji text-small">※チェック時は商品代金から3000円引きとなります。その際、必ず「その他コメント」内に不在時の荷物の置き場所を記載して下さい。<br>
+                            例：玄関前、門扉の裏、玄関右側入り庭ウッドデッキ付近・・など
+                            </span>
+                            </ul>
+                        </p>
+                        
+                        @foreach($dgSeinou as $sk => $seinouItemId)
+                            
+                            <?php 
+                                $si = Item::find($seinouItemId);
+                            ?>
+                            
+                            <div class="mb-2">
+                            ・<b class="d-inline-block mb-1">{{ Ctm::getItemTitle($si) }}</b><br>
+                            
+                            <?php
+                                $checked = '';
+                                if(Ctm::isOld()) {
+                                    if(old('is_huzaioki.'. $si->id))
+                                        $checked = ' checked';
+                                }
+                                else {
+                                    if(Session::has('all.data.is_huzaioki.'. $si->id)  && session('all.data.is_huzaioki.'. $si->id)) {
+                                        $checked = ' checked';
+                                    }
+                                }
+                            ?>
+                            
+                            <input type="hidden" name="is_huzaioki[{{ $si->id }}]" value="0">
+                            
+                            <input id="check-magazine-{{ $sk }}" type="checkbox" name="is_huzaioki[{{ $si->id }}]" value="1"{{ $checked }}>
+                            <label for="check-magazine-{{ $sk }}" class="checks ml-1">不在置きを了承する</label>
+                            
+                            @if ($errors->has('is_huzaioki.'. $si->id))
+                                <div class="help-block text-danger">
+                                    <span class="fa fa-exclamation form-control-feedback"></span>
+                                    <span>{{ $errors->first('is_huzaioki.'. $si->id) }}</span>
+                                </div>
+                            @endif
+                            
+                            </div>
+                        @endforeach
+                        
+                        <input type="hidden" name="is_seinou" value="1">
+                    
+                    </fieldset>
+                @endif
 				
                 @if(count($dgGroup) > 0)
                     <fieldset class="form-group my-3 px-3 py-2{{ $errors->has('deli_time.*') ? ' border border-danger' : '' }}">

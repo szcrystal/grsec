@@ -57,8 +57,11 @@ class CartController extends Controller
         $this->dgRel = $dgRel;
         $this->favorite = $favorite;
         $this->payMethodChild = $payMethodChild;
+        
+        $this->dgSeinouId = 11;
 
-        $this->gmoId = Ctm::gmoId(); 
+        $this->gmoId = Ctm::gmoId();
+        
 //        $this->perPage = 20;
         
         // URLの生成
@@ -315,7 +318,11 @@ class CartController extends Controller
         
         $pm = $allData['pay_method'];
         
+        //配送時間
         $planTime = isset($allData['plan_time']) ? $allData['plan_time'] : array();
+        
+        //不在置き指定
+        $isHuzaioki = isset($allData['is_huzaioki']) ? $allData['is_huzaioki'] : null;
         
         $userData = Auth::check() ? $this->user->find(Auth::id()) : $allData['user']; //session(all.data.user)
       	$receiverData = $allData['receiver']; //session('all.data.receiver');
@@ -531,9 +538,23 @@ class CartController extends Controller
             $i->count = $val['item_count'];
             $oneItemData[] = $i;
             
+                        
             $df = new Delifee($oneItemData, $prefectureId);
             $singleDeliFee = $df->getDelifee();
-        
+            
+            $itemTotalPrice = $val['item_total_price'];
+        	
+            //西濃運輸の場合の日曜判定 -> 日曜配達はプラス1000円
+            if($i->dg_id == $this->dgSeinouId) {
+            	if(isset($allData['plan_date']) && strpos($allData['plan_date'], '日') !== false) {
+                	$singleDeliFee += 1000;
+                }
+                
+                if(isset($isHuzaioki[$i->id]) && $isHuzaioki[$i->id]) {
+                	$itemTotalPrice -= 3000;
+                }
+            }
+            
             $sale = $this->sale->create(
                 [
                 	'salerel_id' => $saleRelId,
@@ -553,13 +574,15 @@ class CartController extends Controller
                     'use_point' => 0,
                     'add_point' => $val['single_point'],
                     'single_price' => $this->getItemPrice($i),
-                    'total_price' => $val['item_total_price'],
+                    'total_price' => $itemTotalPrice,
                     
                     'cost_price' => $i->cost_price * $val['item_count'],
                     'charge_loss' => 0,
                     
                     'plan_date' => isset($allData['plan_date']) ? $allData['plan_date'] : null,
                     'plan_time' => isset($val['plan_time']) ? $val['plan_time'] : null,
+                    
+                    'is_huzaioki' => isset($isHuzaioki[$i->id]) ? $isHuzaioki[$i->id] : null,
                     
                     'deli_done' => 0,
                     'pay_done' => 0,
@@ -1077,7 +1100,16 @@ class CartController extends Controller
             //'receiver.address_2' => 'required_with:destination|max:255',
             //'receiver.address_3' => 'max:255',
             
-            'user_comment' => 'max:30000',
+            'user_comment' => [
+            	'max:30000',
+                function($attribute, $value, $fail) use($request) {
+                    if( $request->has('is_huzaioki') && in_array(1, $request->input('is_huzaioki')) ) {
+                    	if($value == '') {
+                        	return $fail('「不在置きを了承する」場合は「その他コメント」に不在時の荷物の置き場所を記載して下さい。');
+                        }
+                    }
+                },
+            ],
             
             'pay_method' => 'required', 
             'net_bank'=> 'required_if:pay_method,3',
@@ -1106,6 +1138,11 @@ class CartController extends Controller
                 }
             }
         }
+        
+        
+        //不在置き指定時のコメントバリデーション
+        
+        
         
         //クレカの時のバリデーション
         if($request->input('pay_method') == 1) {
@@ -1186,6 +1223,7 @@ class CartController extends Controller
         //商品テーブル用のオブジェクト取得 -------------------------------
         $itemData = array();
         $addPoint = 0;
+        $seinouSundayDeliFee = 0;
 //        print_r($itemSes);
 //        exit;
 
@@ -1236,10 +1274,31 @@ class CartController extends Controller
                 }
             }
             
+            //西濃運輸の場合に、日曜配送は+1000加算
+            if(isset($data['plan_date'])) {
+            	if($obj->dg_id == $this->dgSeinouId && strpos($data['plan_date'], '日') !== false) {
+                    $seinouSundayDeliFee += 1000;
+                }
+            }
+            
 			$itemData[] = $obj;
         }
         
         
+        //西濃運輸の場合に、不在置き指定で商品から3000円引き
+        if(isset($data['is_huzaioki'])) {
+        	foreach($data['is_huzaioki'] as $vs) {
+            	if($vs) {
+                	$allPrice -= 3000;
+                    
+                    //Session入れ 不在置き了承時のall_price
+                	session(['all.all_price'=>$allPrice]);
+                }
+            }
+        }
+        
+        
+
         //配送先都道府県への配送が可能かどうかを確認 -------------------------
         $df = new Delifee($itemData, $prefId); //CalcDelifeeController Init 
                 
@@ -1278,6 +1337,10 @@ class CartController extends Controller
         
         //送料 --------------
         $deliFee = $df->getDelifee();
+        
+        if($seinouSundayDeliFee) 
+        	$deliFee = $deliFee + $seinouSundayDeliFee;
+        
         $totalFee = $totalFee + $deliFee;
         //送料END -----------------
         
@@ -1624,14 +1687,20 @@ class CartController extends Controller
           	}      
         }
         
-        //時間指定の選択肢
+        //時間指定の選択肢　西濃運輸の不在置きチェック
         $dgGroup = array();
+        $dgSeinou = array();
+        
         foreach($sesItems as $item) {
         	$dgId = $this->item->find($item['item_id'])->dg_id;
             
+            if($dgId == $this->dgSeinouId) {
+            	$dgSeinou[] = $item['item_id'];
+            }
+            
             if($this->dg->find($dgId)->is_time) {
             	$dgGroup[$dgId][] = $item['item_id'];
-            }
+            }  
             
         }
         
@@ -1644,7 +1713,7 @@ class CartController extends Controller
 
 		$metaTitle = 'ご注文情報の入力' . '｜植木買うならグリーンロケット';
      
-     	return view('cart.form', ['regist'=>$regist, 'payMethod'=>$payMethod, 'pmChilds'=>$pmChilds, 'prefs'=>$prefs, 'userObj'=>$userObj, 'codCheck'=>$codCheck, 'dgGroup'=>$dgGroup, 'regCardDatas'=>$regCardDatas, 'regCardErrors'=>$regCardErrors, 'cardErrors'=>$cardErrors, 'metaTitle'=>$metaTitle]);   
+     	return view('cart.form', ['regist'=>$regist, 'payMethod'=>$payMethod, 'pmChilds'=>$pmChilds, 'prefs'=>$prefs, 'userObj'=>$userObj, 'codCheck'=>$codCheck, 'dgGroup'=>$dgGroup, 'dgSeinou'=>$dgSeinou, 'regCardDatas'=>$regCardDatas, 'regCardErrors'=>$regCardErrors, 'cardErrors'=>$cardErrors, 'metaTitle'=>$metaTitle]);   
     }
     
     
