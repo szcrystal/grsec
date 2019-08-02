@@ -544,7 +544,9 @@ class CartController extends Controller
             
             $itemTotalPrice = $val['item_total_price'];
         	
-            //西濃運輸の場合の日曜判定 -> 日曜配達はプラス1000円
+            // Seinou Correct **************************
+            //西濃運輸の場合の日曜判定 -> 日曜配達は+1000、不在置き了承-3000
+            /*
             if($i->dg_id == $this->dgSeinouId) {
             	if(isset($allData['plan_date']) && strpos($allData['plan_date'], '日') !== false) {
                 	$singleDeliFee += 1000;
@@ -554,6 +556,7 @@ class CartController extends Controller
                 	$itemTotalPrice -= 3000;
                 }
             }
+            */
             
             $sale = $this->sale->create(
                 [
@@ -1137,11 +1140,7 @@ class CartController extends Controller
                     ];
                 }
             }
-        }
-        
-        
-        //不在置き指定時のコメントバリデーション
-        
+        }        
         
         
         //クレカの時のバリデーション
@@ -1262,7 +1261,7 @@ class CartController extends Controller
             $obj['point'] = ceil($val['item_total_price'] * $pointBack); //商品金額のみに対してのパーセント 切り上げ 切り捨て->floor()
 			$addPoint += $obj['point'];
             
-            //Session入れ ポイント
+            //Session入れ ポイント計算後
             session(['item.data.'. $key . '.single_point' => $obj['point']]);
             
             //配送希望時間
@@ -1338,8 +1337,10 @@ class CartController extends Controller
         //送料 --------------
         $deliFee = $df->getDelifee();
         
-        if($seinouSundayDeliFee) 
-        	$deliFee = $deliFee + $seinouSundayDeliFee;
+        // Seinou Correct **************************
+        //if($seinouSundayDeliFee) { //西濃の日曜配達なら
+        	//$deliFee = $deliFee + $seinouSundayDeliFee;
+        //}
         
         $totalFee = $totalFee + $deliFee;
         //送料END -----------------
@@ -1694,9 +1695,10 @@ class CartController extends Controller
         foreach($sesItems as $item) {
         	$dgId = $this->item->find($item['item_id'])->dg_id;
             
-            if($dgId == $this->dgSeinouId) {
-            	$dgSeinou[] = $item['item_id'];
-            }
+            // Seinou Correct **************************
+//            if($dgId == $this->dgSeinouId) {
+//            	$dgSeinou[] = $item['item_id'];
+//            }
             
             if($this->dg->find($dgId)->is_time) {
             	$dgGroup[$dgId][] = $item['item_id'];

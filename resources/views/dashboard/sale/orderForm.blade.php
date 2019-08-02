@@ -339,7 +339,7 @@ use App\PayMethodChild;
                                                 </td>
                                             </tr>
                                             
-                                            @if($items->find($sale->item_id)->dg_id == 11)
+                                            @if($items->find($sale->item_id)->dg_id == 11111)
                                             	<tr>
                                             		<th>不在置き</th>
                                                 	<td>
